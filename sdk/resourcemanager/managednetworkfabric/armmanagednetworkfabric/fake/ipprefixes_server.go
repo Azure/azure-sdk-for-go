@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,6 +29,10 @@ type IPPrefixesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, ipPrefixName string, options *armmanagednetworkfabric.IPPrefixesClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.IPPrefixesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method IPPrefixesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, ipPrefixName string, body armmanagednetworkfabric.IPPrefixPatch, options *armmanagednetworkfabric.IPPrefixesClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.IPPrefixesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method IPPrefixesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, ipPrefixName string, options *armmanagednetworkfabric.IPPrefixesClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.IPPrefixesClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type IPPrefixesServer struct {
 	// NewListBySubscriptionPager is the fake for method IPPrefixesClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armmanagednetworkfabric.IPPrefixesClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.IPPrefixesClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method IPPrefixesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, ipPrefixName string, body armmanagednetworkfabric.IPPrefixPatch, options *armmanagednetworkfabric.IPPrefixesClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.IPPrefixesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewIPPrefixesServerTransport creates a new instance of IPPrefixesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewIPPrefixesServerTransport(srv *IPPrefixesServer) *IPPrefixesServerTransp
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.IPPrefixesClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.IPPrefixesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.IPPrefixesClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmanagednetworkfabric.IPPrefixesClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmanagednetworkfabric.IPPrefixesClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.IPPrefixesClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type IPPrefixesServerTransport struct {
 	srv                         *IPPrefixesServer
 	beginCreate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.IPPrefixesClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.IPPrefixesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.IPPrefixesClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmanagednetworkfabric.IPPrefixesClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmanagednetworkfabric.IPPrefixesClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.IPPrefixesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for IPPrefixesServerTransport.
@@ -96,14 +96,14 @@ func (i *IPPrefixesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = i.dispatchBeginCreate(req)
 			case "IPPrefixesClient.BeginDelete":
 				res.resp, res.err = i.dispatchBeginDelete(req)
+			case "IPPrefixesClient.BeginUpdate":
+				res.resp, res.err = i.dispatchBeginUpdate(req)
 			case "IPPrefixesClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
 			case "IPPrefixesClient.NewListByResourceGroupPager":
 				res.resp, res.err = i.dispatchNewListByResourceGroupPager(req)
 			case "IPPrefixesClient.NewListBySubscriptionPager":
 				res.resp, res.err = i.dispatchNewListBySubscriptionPager(req)
-			case "IPPrefixesClient.BeginUpdate":
-				res.resp, res.err = i.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (i *IPPrefixesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
+func (i *IPPrefixesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if i.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := i.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/ipPrefixes/(?P<ipPrefixName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.IPPrefixPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		ipPrefixNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ipPrefixName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, ipPrefixNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		i.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		i.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		i.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (i *IPPrefixesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (i *IPPrefixesServerTransport) dispatchNewListBySubscriptionPager(req *http
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		i.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (i *IPPrefixesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if i.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := i.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/ipPrefixes/(?P<ipPrefixName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.IPPrefixPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		ipPrefixNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ipPrefixName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := i.srv.BeginUpdate(req.Context(), resourceGroupNameParam, ipPrefixNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		i.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		i.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		i.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

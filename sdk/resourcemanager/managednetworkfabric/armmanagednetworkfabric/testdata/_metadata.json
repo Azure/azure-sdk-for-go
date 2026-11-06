@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.ManagedNetworkFabric": "2025-07-15"
+    "Microsoft.ManagedNetworkFabric": "2026-01-15-preview"
   },
-  "emitterVersion": "0.17.4"
+  "emitterVersion": "0.17.6"
 }

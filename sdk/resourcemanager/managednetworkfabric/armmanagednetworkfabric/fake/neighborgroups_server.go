@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,6 +29,14 @@ type NeighborGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, neighborGroupName string, options *armmanagednetworkfabric.NeighborGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginResync is the fake for method NeighborGroupsClient.BeginResync
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginResync func(ctx context.Context, resourceGroupName string, neighborGroupName string, options *armmanagednetworkfabric.NeighborGroupsClientBeginResyncOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientResyncResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method NeighborGroupsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, neighborGroupName string, body armmanagednetworkfabric.NeighborGroupPatch, options *armmanagednetworkfabric.NeighborGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NeighborGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, neighborGroupName string, options *armmanagednetworkfabric.NeighborGroupsClientGetOptions) (resp azfake.Responder[armmanagednetworkfabric.NeighborGroupsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,14 +48,6 @@ type NeighborGroupsServer struct {
 	// NewListBySubscriptionPager is the fake for method NeighborGroupsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armmanagednetworkfabric.NeighborGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armmanagednetworkfabric.NeighborGroupsClientListBySubscriptionResponse])
-
-	// BeginResync is the fake for method NeighborGroupsClient.BeginResync
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginResync func(ctx context.Context, resourceGroupName string, neighborGroupName string, options *armmanagednetworkfabric.NeighborGroupsClientBeginResyncOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientResyncResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method NeighborGroupsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, neighborGroupName string, body armmanagednetworkfabric.NeighborGroupPatch, options *armmanagednetworkfabric.NeighborGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNeighborGroupsServerTransport creates a new instance of NeighborGroupsServerTransport with the provided implementation.
@@ -58,10 +58,10 @@ func NewNeighborGroupsServerTransport(srv *NeighborGroupsServer) *NeighborGroups
 		srv:                         srv,
 		beginCreate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientCreateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientDeleteResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmanagednetworkfabric.NeighborGroupsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmanagednetworkfabric.NeighborGroupsClientListBySubscriptionResponse]](),
 		beginResync:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientResyncResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armmanagednetworkfabric.NeighborGroupsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armmanagednetworkfabric.NeighborGroupsClientListBySubscriptionResponse]](),
 	}
 }
 
@@ -71,10 +71,10 @@ type NeighborGroupsServerTransport struct {
 	srv                         *NeighborGroupsServer
 	beginCreate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientCreateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientDeleteResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmanagednetworkfabric.NeighborGroupsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmanagednetworkfabric.NeighborGroupsClientListBySubscriptionResponse]]
 	beginResync                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientResyncResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armmanagednetworkfabric.NeighborGroupsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armmanagednetworkfabric.NeighborGroupsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armmanagednetworkfabric.NeighborGroupsClientListBySubscriptionResponse]]
 }
 
 // Do implements the policy.Transporter interface for NeighborGroupsServerTransport.
@@ -102,16 +102,16 @@ func (n *NeighborGroupsServerTransport) dispatchToMethodFake(req *http.Request, 
 				res.resp, res.err = n.dispatchBeginCreate(req)
 			case "NeighborGroupsClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NeighborGroupsClient.BeginResync":
+				res.resp, res.err = n.dispatchBeginResync(req)
+			case "NeighborGroupsClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NeighborGroupsClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NeighborGroupsClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
 			case "NeighborGroupsClient.NewListBySubscriptionPager":
 				res.resp, res.err = n.dispatchNewListBySubscriptionPager(req)
-			case "NeighborGroupsClient.BeginResync":
-				res.resp, res.err = n.dispatchBeginResync(req)
-			case "NeighborGroupsClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -220,6 +220,98 @@ func (n *NeighborGroupsServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
+func (n *NeighborGroupsServerTransport) dispatchBeginResync(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginResync == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResync not implemented")}
+	}
+	beginResync := n.beginResync.get(req)
+	if beginResync == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/neighborGroups/(?P<neighborGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resync`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		neighborGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("neighborGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginResync(req.Context(), resourceGroupNameParam, neighborGroupNameParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResync = &respr
+		n.beginResync.add(req, beginResync)
+	}
+
+	resp, err := server.PollerResponderNext(beginResync, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginResync.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResync) {
+		n.beginResync.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (n *NeighborGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if n.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := n.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/neighborGroups/(?P<neighborGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.NeighborGroupPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		neighborGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("neighborGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, neighborGroupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		n.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		n.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		n.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (n *NeighborGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -320,98 +412,6 @@ func (n *NeighborGroupsServerTransport) dispatchNewListBySubscriptionPager(req *
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		n.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (n *NeighborGroupsServerTransport) dispatchBeginResync(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginResync == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginResync not implemented")}
-	}
-	beginResync := n.beginResync.get(req)
-	if beginResync == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/neighborGroups/(?P<neighborGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resync`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		neighborGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("neighborGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginResync(req.Context(), resourceGroupNameParam, neighborGroupNameParam, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginResync = &respr
-		n.beginResync.add(req, beginResync)
-	}
-
-	resp, err := server.PollerResponderNext(beginResync, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginResync.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginResync) {
-		n.beginResync.remove(req)
-	}
-
-	return resp, nil
-}
-
-func (n *NeighborGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if n.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := n.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/neighborGroups/(?P<neighborGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.NeighborGroupPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		neighborGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("neighborGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := n.srv.BeginUpdate(req.Context(), resourceGroupNameParam, neighborGroupNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		n.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		n.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		n.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

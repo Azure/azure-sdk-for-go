@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_Create.json
 func ExampleNetworkPacketBrokersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,6 +64,7 @@ func ExampleNetworkPacketBrokersClient_BeginCreate() {
 	// 			NeighborGroupIDs: []*string{
 	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup"),
 	// 			},
+	// 			SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 		},
@@ -97,7 +98,7 @@ func ExampleNetworkPacketBrokersClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_Delete.json
 func ExampleNetworkPacketBrokersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +119,92 @@ func ExampleNetworkPacketBrokersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_Update.json
+func ExampleNetworkPacketBrokersClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkPacketBrokersClient().BeginUpdate(ctx, "example-rg", "example-networkPacketBroker", armmanagednetworkfabric.NetworkPacketBrokerPatch{
+		Properties: &armmanagednetworkfabric.NetworkPacketBrokerPatchProperties{
+			SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
+		},
+		Tags: map[string]*string{
+			"keyId": to.Ptr("keyValue"),
+		},
+		Identity: &armmanagednetworkfabric.ManagedServiceIdentityPatch{
+			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
+			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
+				"key8793": {},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkPacketBrokersClientUpdateResponse{
+	// 	NetworkPacketBroker: armmanagednetworkfabric.NetworkPacketBroker{
+	// 		Properties: &armmanagednetworkfabric.NetworkPacketBrokerProperties{
+	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-networkFabric"),
+	// 			NetworkDeviceIDs: []*string{
+	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice"),
+	// 			},
+	// 			SourceInterfaceIDs: []*string{
+	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice/networkInterfaces/example-networkInterface"),
+	// 			},
+	// 			NetworkTapIDs: []*string{
+	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTaps/example-networkTap"),
+	// 			},
+	// 			NeighborGroupIDs: []*string{
+	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup"),
+	// 			},
+	// 			SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
+	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		},
+	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
+	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 			TenantID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
+	// 			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
+	// 				"key4876": &armmanagednetworkfabric.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 					ClientID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"keyId": to.Ptr("keyValue"),
+	// 		},
+	// 		Location: to.Ptr("eastuseuap"),
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/example-networkPacketBroker"),
+	// 		Name: to.Ptr("example-networkPacketBroker"),
+	// 		Type: to.Ptr("microsoft.managednetworkfabric/networkPacketBrokers"),
+	// 		SystemData: &armmanagednetworkfabric.SystemData{
+	// 			CreatedBy: to.Ptr("email@address.com"),
+	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("UserId"),
+	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_Get.json
 func ExampleNetworkPacketBrokersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,6 +238,7 @@ func ExampleNetworkPacketBrokersClient_Get() {
 	// 			NeighborGroupIDs: []*string{
 	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup"),
 	// 			},
+	// 			SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
 	// 			LastOperation: &armmanagednetworkfabric.LastOperationProperties{
 	// 				Details: to.Ptr("Succeeded"),
 	// 			},
@@ -188,7 +275,7 @@ func ExampleNetworkPacketBrokersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_ListByResourceGroup.json
 func ExampleNetworkPacketBrokersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -228,6 +315,7 @@ func ExampleNetworkPacketBrokersClient_NewListByResourceGroupPager() {
 		// 					NeighborGroupIDs: []*string{
 		// 						to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup"),
 		// 					},
+		// 					SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
 		// 					LastOperation: &armmanagednetworkfabric.LastOperationProperties{
 		// 						Details: to.Ptr("Succeeded"),
 		// 					},
@@ -268,7 +356,7 @@ func ExampleNetworkPacketBrokersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_ListBySubscription.json
 func ExampleNetworkPacketBrokersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -308,6 +396,7 @@ func ExampleNetworkPacketBrokersClient_NewListBySubscriptionPager() {
 		// 					NeighborGroupIDs: []*string{
 		// 						to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup"),
 		// 					},
+		// 					SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
 		// 					LastOperation: &armmanagednetworkfabric.LastOperationProperties{
 		// 						Details: to.Ptr("Succeeded"),
 		// 					},
@@ -346,85 +435,4 @@ func ExampleNetworkPacketBrokersClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_Update.json
-func ExampleNetworkPacketBrokersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkPacketBrokersClient().BeginUpdate(ctx, "example-rg", "example-networkPacketBroker", armmanagednetworkfabric.NetworkPacketBrokerPatch{
-		Tags: map[string]*string{
-			"keyId": to.Ptr("keyValue"),
-		},
-		Identity: &armmanagednetworkfabric.ManagedServiceIdentityPatch{
-			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
-			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
-				"key8793": {},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkPacketBrokersClientUpdateResponse{
-	// 	NetworkPacketBroker: armmanagednetworkfabric.NetworkPacketBroker{
-	// 		Properties: &armmanagednetworkfabric.NetworkPacketBrokerProperties{
-	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-networkFabric"),
-	// 			NetworkDeviceIDs: []*string{
-	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice"),
-	// 			},
-	// 			SourceInterfaceIDs: []*string{
-	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-networkDevice/networkInterfaces/example-networkInterface"),
-	// 			},
-	// 			NetworkTapIDs: []*string{
-	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTaps/example-networkTap"),
-	// 			},
-	// 			NeighborGroupIDs: []*string{
-	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
-	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-	// 		},
-	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
-	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 			TenantID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
-	// 			UserAssignedIdentities: map[string]*armmanagednetworkfabric.UserAssignedIdentity{
-	// 				"key4876": &armmanagednetworkfabric.UserAssignedIdentity{
-	// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 					ClientID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"keyId": to.Ptr("keyValue"),
-	// 		},
-	// 		Location: to.Ptr("eastuseuap"),
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkPacketBrokers/example-networkPacketBroker"),
-	// 		Name: to.Ptr("example-networkPacketBroker"),
-	// 		Type: to.Ptr("microsoft.managednetworkfabric/networkPacketBrokers"),
-	// 		SystemData: &armmanagednetworkfabric.SystemData{
-	// 			CreatedBy: to.Ptr("email@address.com"),
-	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("UserId"),
-	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

@@ -1,5 +1,96 @@
 # Release History
 
+## 3.0.0-beta.1 (2026-10-30)
+### Breaking Changes
+
+- Struct `ValidateConfigurationResponse` has been removed
+- Field `ValidateConfigurationResponse` of struct `AccessControlListsClientValidateConfigurationResponse` has been removed
+- Field `ValidateConfigurationResponse` of struct `L2IsolationDomainsClientValidateConfigurationResponse` has been removed
+- Field `ValidateConfigurationResponse` of struct `L3IsolationDomainsClientValidateConfigurationResponse` has been removed
+- Field `ValidateConfigurationResponse` of struct `NetworkFabricsClientValidateConfigurationResponse` has been removed
+- Field `ValidateConfigurationResponse` of struct `NetworkTapRulesClientValidateConfigurationResponse` has been removed
+- Field `ValidateConfigurationResponse` of struct `RoutePoliciesClientValidateConfigurationResponse` has been removed
+
+### Features Added
+
+- New value `ConfigurationStateCommitRollbackFailed`, `ConfigurationStateCommitStageFailed`, `ConfigurationStateCommitStaged` added to enum type `ConfigurationState`
+- New value `DeviceRoleTerminalServer` added to enum type `DeviceRole`
+- New enum type `ConfigurationRegenerationType` with values `ConfigurationRegenerationTypePartial`
+- New enum type `ConnectivityModel` with values `ConnectivityModelArcProxy`, `ConnectivityModelDirect`, `ConnectivityModelExpressRoute`, `ConnectivityModelNone`
+- New enum type `ControllerType` with values `ControllerTypeAristaCloudVision`, `ControllerTypeCiscoAci`, `ControllerTypeDirect`
+- New enum type `GenerateBaseConfiguration` with values `GenerateBaseConfigurationDisabled`, `GenerateBaseConfigurationEnabled`
+- New enum type `ManagementMode` with values `ManagementModeManaged`, `ManagementModeUnmanaged`
+- New enum type `NetworkFabricRefreshDeviceTypes` with values `NetworkFabricRefreshDeviceTypesCE`, `NetworkFabricRefreshDeviceTypesManagementSwitch`, `NetworkFabricRefreshDeviceTypesNPB`, `NetworkFabricRefreshDeviceTypesToR`
+- New enum type `OperationPolicy` with values `OperationPolicyFullControl`, `OperationPolicyValidateOnly`
+- New enum type `OperationalState` with values `OperationalStateDegraded`, `OperationalStateDown`, `OperationalStateUnknown`, `OperationalStateUp`
+- New function `*ClientFactory.NewEdgeConnectorsClient() *EdgeConnectorsClient`
+- New function `*ClientFactory.NewFabricsClient() *FabricsClient`
+- New function `NewEdgeConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EdgeConnectorsClient, error)`
+- New function `*EdgeConnectorsClient.BeginCreate(ctx context.Context, resourceGroupName string, edgeConnectorName string, body EdgeConnector, options *EdgeConnectorsClientBeginCreateOptions) (*runtime.Poller[EdgeConnectorsClientCreateResponse], error)`
+- New function `*EdgeConnectorsClient.BeginDelete(ctx context.Context, resourceGroupName string, edgeConnectorName string, options *EdgeConnectorsClientBeginDeleteOptions) (*runtime.Poller[EdgeConnectorsClientDeleteResponse], error)`
+- New function `*EdgeConnectorsClient.Get(ctx context.Context, resourceGroupName string, edgeConnectorName string, options *EdgeConnectorsClientGetOptions) (EdgeConnectorsClientGetResponse, error)`
+- New function `*EdgeConnectorsClient.NewListByResourceGroupPager(resourceGroupName string, options *EdgeConnectorsClientListByResourceGroupOptions) *runtime.Pager[EdgeConnectorsClientListByResourceGroupResponse]`
+- New function `*EdgeConnectorsClient.NewListBySubscriptionPager(options *EdgeConnectorsClientListBySubscriptionOptions) *runtime.Pager[EdgeConnectorsClientListBySubscriptionResponse]`
+- New function `*EdgeConnectorsClient.BeginUpdate(ctx context.Context, resourceGroupName string, edgeConnectorName string, body EdgeConnectorPatch, options *EdgeConnectorsClientBeginUpdateOptions) (*runtime.Poller[EdgeConnectorsClientUpdateResponse], error)`
+- New function `NewFabricsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FabricsClient, error)`
+- New function `*FabricsClient.BeginCreate(ctx context.Context, resourceGroupName string, fabricName string, body Fabric, options *FabricsClientBeginCreateOptions) (*runtime.Poller[FabricsClientCreateResponse], error)`
+- New function `*FabricsClient.BeginDelete(ctx context.Context, resourceGroupName string, fabricName string, options *FabricsClientBeginDeleteOptions) (*runtime.Poller[FabricsClientDeleteResponse], error)`
+- New function `*FabricsClient.Get(ctx context.Context, resourceGroupName string, fabricName string, options *FabricsClientGetOptions) (FabricsClientGetResponse, error)`
+- New function `*FabricsClient.NewListByResourceGroupPager(resourceGroupName string, options *FabricsClientListByResourceGroupOptions) *runtime.Pager[FabricsClientListByResourceGroupResponse]`
+- New function `*FabricsClient.NewListBySubscriptionPager(options *FabricsClientListBySubscriptionOptions) *runtime.Pager[FabricsClientListBySubscriptionResponse]`
+- New function `*FabricsClient.BeginUpdate(ctx context.Context, resourceGroupName string, fabricName string, body FabricPatch, options *FabricsClientBeginUpdateOptions) (*runtime.Poller[FabricsClientUpdateResponse], error)`
+- New struct `EdgeConnector`
+- New struct `EdgeConnectorListResult`
+- New struct `EdgeConnectorPatch`
+- New struct `EdgeConnectorPatchableProperties`
+- New struct `EdgeConnectorProperties`
+- New struct `Fabric`
+- New struct `FabricListResult`
+- New struct `FabricPatch`
+- New struct `FabricPatchableProperties`
+- New struct `FabricProperties`
+- New struct `InfraNetwork`
+- New struct `InfraNetworkOptionalIP`
+- New struct `InfrastructureNetworks`
+- New struct `InfrastructureServices`
+- New struct `NetworkPacketBrokerPatchProperties`
+- New struct `PatchInfraNetwork`
+- New struct `PatchInfrastructureNetworks`
+- New struct `PatchInfrastructureServices`
+- New struct `PatchPlatformProxy`
+- New struct `PlatformProxy`
+- New struct `PostUpgradeProfilePatchProperties`
+- New struct `PostUpgradeProfileProperties`
+- New struct `PreUpgradeProfilePatchProperties`
+- New struct `PreUpgradeProfileProperties`
+- New struct `RefreshConfigurationRequestProperties`
+- New struct `SecretArchivePatchSettings`
+- New struct `SecretArchiveSettings`
+- New struct `UpgradeProfileProperties`
+- New struct `UpgradeProfilePropertiesPatchProperties`
+- New struct `VMProfile`
+- New struct `ValidateConfigurationResponseProperties`
+- New struct `ValidateConfigurationResponseV2`
+- New anonymous field `ValidateConfigurationResponseV2` in struct `AccessControlListsClientValidateConfigurationResponse`
+- New anonymous field `ValidateConfigurationResponseV2` in struct `L2IsolationDomainsClientValidateConfigurationResponse`
+- New anonymous field `ValidateConfigurationResponseV2` in struct `L3IsolationDomainsClientValidateConfigurationResponse`
+- New field `AdministrativeState` in struct `NeighborGroupProperties`
+- New field `ControlPlaneACLs` in struct `NetworkBootstrapDevicePatchProperties`
+- New field `ControlPlaneACLs`, `OperationalState`, `SecretRotationStatus` in struct `NetworkBootstrapDeviceProperties`
+- New field `OperationalState` in struct `NetworkBootstrapInterfaceProperties`
+- New field `OperationalState` in struct `NetworkDeviceProperties`
+- New field `OperationalState`, `VMProfile` in struct `NetworkFabricControllerProperties`
+- New field `SecretArchiveSettings`, `UpgradeProfile` in struct `NetworkFabricPatchProperties`
+- New field `NetworkBootstrapDeviceID`, `OperationalState`, `SecretArchiveSettings`, `UpgradeProfile` in struct `NetworkFabricProperties`
+- New field `Body` in struct `NetworkFabricsClientBeginRefreshConfigurationOptions`
+- New anonymous field `ValidateConfigurationResponseV2` in struct `NetworkFabricsClientValidateConfigurationResponse`
+- New field `OperationalState` in struct `NetworkInterfaceProperties`
+- New field `Properties` in struct `NetworkPacketBrokerPatch`
+- New field `SourceNetworkTapRuleID` in struct `NetworkPacketBrokerProperties`
+- New anonymous field `ValidateConfigurationResponseV2` in struct `NetworkTapRulesClientValidateConfigurationResponse`
+- New anonymous field `ValidateConfigurationResponseV2` in struct `RoutePoliciesClientValidateConfigurationResponse`
+
+
 ## 2.0.0 (2026-04-14)
 ### Breaking Changes
 

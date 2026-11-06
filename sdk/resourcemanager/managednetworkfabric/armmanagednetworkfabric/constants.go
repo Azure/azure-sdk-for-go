@@ -5,7 +5,7 @@
 package armmanagednetworkfabric
 
 const (
-	version20250715 string = "2025-07-15"
+	version20260115Preview string = "2026-01-15-preview"
 )
 
 // ACLActionType - Type of actions that can be performed.
@@ -444,12 +444,35 @@ func PossibleConditionValues() []Condition {
 	}
 }
 
+// ConfigurationRegenerationType - Configuration Regeneration Type used for refresh configuration
+type ConfigurationRegenerationType string
+
+const (
+	// ConfigurationRegenerationTypePartial - Partial configuration regeneration indicates that the last known good configuration
+	// will be reapplied.
+	ConfigurationRegenerationTypePartial ConfigurationRegenerationType = "Partial"
+)
+
+// PossibleConfigurationRegenerationTypeValues returns the possible values for the ConfigurationRegenerationType const type.
+func PossibleConfigurationRegenerationTypeValues() []ConfigurationRegenerationType {
+	return []ConfigurationRegenerationType{
+		ConfigurationRegenerationTypePartial,
+	}
+}
+
 // ConfigurationState - Configuration state for the resource.
 type ConfigurationState string
 
 const (
 	// ConfigurationStateAccepted - Accepted Configuration State
 	ConfigurationStateAccepted ConfigurationState = "Accepted"
+	// ConfigurationStateCommitRollbackFailed - Rollback of configuration failed during staged commit rollback operation
+	ConfigurationStateCommitRollbackFailed ConfigurationState = "CommitRollbackFailed"
+	// ConfigurationStateCommitStageFailed - Pushing the updated configuration to the selected CE device failed during staged
+	// commit operation
+	ConfigurationStateCommitStageFailed ConfigurationState = "CommitStageFailed"
+	// ConfigurationStateCommitStaged - Updated configuration is pushed to the selected CE device during staged commit operation
+	ConfigurationStateCommitStaged ConfigurationState = "CommitStaged"
 	// ConfigurationStateDeferredControl - DeferredControl Configuration State
 	ConfigurationStateDeferredControl ConfigurationState = "DeferredControl"
 	// ConfigurationStateDeprovisioned - Deprovisioned Configuration State
@@ -480,6 +503,9 @@ const (
 func PossibleConfigurationStateValues() []ConfigurationState {
 	return []ConfigurationState{
 		ConfigurationStateAccepted,
+		ConfigurationStateCommitRollbackFailed,
+		ConfigurationStateCommitStageFailed,
+		ConfigurationStateCommitStaged,
 		ConfigurationStateDeferredControl,
 		ConfigurationStateDeprovisioned,
 		ConfigurationStateDeprovisioning,
@@ -510,6 +536,30 @@ func PossibleConfigurationTypeValues() []ConfigurationType {
 	return []ConfigurationType{
 		ConfigurationTypeFile,
 		ConfigurationTypeInline,
+	}
+}
+
+// ConnectivityModel - Connectivity model for EdgeConnector.
+type ConnectivityModel string
+
+const (
+	// ConnectivityModelArcProxy - Arc Proxy tunnel.
+	ConnectivityModelArcProxy ConnectivityModel = "arcProxy"
+	// ConnectivityModelDirect - Direct IP reachability.
+	ConnectivityModelDirect ConnectivityModel = "direct"
+	// ConnectivityModelExpressRoute - ExpressRoute private peering.
+	ConnectivityModelExpressRoute ConnectivityModel = "expressRoute"
+	// ConnectivityModelNone - No connectivity.
+	ConnectivityModelNone ConnectivityModel = "none"
+)
+
+// PossibleConnectivityModelValues returns the possible values for the ConnectivityModel const type.
+func PossibleConnectivityModelValues() []ConnectivityModel {
+	return []ConnectivityModel{
+		ConnectivityModelArcProxy,
+		ConnectivityModelDirect,
+		ConnectivityModelExpressRoute,
+		ConnectivityModelNone,
 	}
 }
 
@@ -582,6 +632,27 @@ func PossibleControlPlaneACLTTLMatchTypeValues() []ControlPlaneACLTTLMatchType {
 		ControlPlaneACLTTLMatchTypeGreaterThan,
 		ControlPlaneACLTTLMatchTypeLesserThan,
 		ControlPlaneACLTTLMatchTypeNotEquals,
+	}
+}
+
+// ControllerType - Controller type for device interaction.
+type ControllerType string
+
+const (
+	// ControllerTypeAristaCloudVision - Arista CloudVision API.
+	ControllerTypeAristaCloudVision ControllerType = "aristaCloudVision"
+	// ControllerTypeCiscoAci - Cisco ACI APIC REST API.
+	ControllerTypeCiscoAci ControllerType = "ciscoAci"
+	// ControllerTypeDirect - Direct gNMI/SSH.
+	ControllerTypeDirect ControllerType = "direct"
+)
+
+// PossibleControllerTypeValues returns the possible values for the ControllerType const type.
+func PossibleControllerTypeValues() []ControllerType {
+	return []ControllerType{
+		ControllerTypeAristaCloudVision,
+		ControllerTypeCiscoAci,
+		ControllerTypeDirect,
 	}
 }
 
@@ -676,6 +747,8 @@ const (
 	DeviceRoleManagementSwitch DeviceRole = "ManagementSwitch"
 	// DeviceRoleNPB - DeviceRole - Network Packet Broker (NPB)
 	DeviceRoleNPB DeviceRole = "NPB"
+	// DeviceRoleTerminalServer - Device Role Terminal Server (NetworkBootstrapDevice)
+	DeviceRoleTerminalServer DeviceRole = "TerminalServer"
 	// DeviceRoleToR - DeviceRole - Top of Rack (ToR)
 	DeviceRoleToR DeviceRole = "ToR"
 )
@@ -686,6 +759,7 @@ func PossibleDeviceRoleValues() []DeviceRole {
 		DeviceRoleCE,
 		DeviceRoleManagementSwitch,
 		DeviceRoleNPB,
+		DeviceRoleTerminalServer,
 		DeviceRoleToR,
 	}
 }
@@ -834,6 +908,26 @@ func PossibleGatewayTypeValues() []GatewayType {
 	return []GatewayType{
 		GatewayTypeInfrastructure,
 		GatewayTypeWorkload,
+	}
+}
+
+// GenerateBaseConfiguration - Allowed types for generate base configuration during network fabric refresh
+type GenerateBaseConfiguration string
+
+const (
+	// GenerateBaseConfigurationDisabled - Disabled indicates that base configuration should not be generated during network fabric
+	// refresh
+	GenerateBaseConfigurationDisabled GenerateBaseConfiguration = "Disabled"
+	// GenerateBaseConfigurationEnabled - Enabled indicates that base configuration should be generated during network fabric
+	// refresh
+	GenerateBaseConfigurationEnabled GenerateBaseConfiguration = "Enabled"
+)
+
+// PossibleGenerateBaseConfigurationValues returns the possible values for the GenerateBaseConfiguration const type.
+func PossibleGenerateBaseConfigurationValues() []GenerateBaseConfiguration {
+	return []GenerateBaseConfiguration{
+		GenerateBaseConfigurationDisabled,
+		GenerateBaseConfigurationEnabled,
 	}
 }
 
@@ -1027,6 +1121,24 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	}
 }
 
+// ManagementMode - Management mode for the Fabric.
+type ManagementMode string
+
+const (
+	// ManagementModeManaged - RP manages devices.
+	ManagementModeManaged ManagementMode = "managed"
+	// ManagementModeUnmanaged - Customer manages devices.
+	ManagementModeUnmanaged ManagementMode = "unmanaged"
+)
+
+// PossibleManagementModeValues returns the possible values for the ManagementMode const type.
+func PossibleManagementModeValues() []ManagementMode {
+	return []ManagementMode{
+		ManagementModeManaged,
+		ManagementModeUnmanaged,
+	}
+}
+
 // MicroBfdState - Micro Bidirectional Forwarding Detection (BFD) enabled/disabled state.
 type MicroBfdState string
 
@@ -1155,6 +1267,31 @@ func PossibleNetworkFabricLockTypeValues() []NetworkFabricLockType {
 	}
 }
 
+// NetworkFabricRefreshDeviceTypes - Device types for which the refresh configuration action will be applied: Example: CE
+// | ToR | NPB | ManagementSwitch.
+type NetworkFabricRefreshDeviceTypes string
+
+const (
+	// NetworkFabricRefreshDeviceTypesCE - DeviceType-CE(Customer Edge)
+	NetworkFabricRefreshDeviceTypesCE NetworkFabricRefreshDeviceTypes = "CE"
+	// NetworkFabricRefreshDeviceTypesManagementSwitch - DeviceType-ManagementSwitch
+	NetworkFabricRefreshDeviceTypesManagementSwitch NetworkFabricRefreshDeviceTypes = "ManagementSwitch"
+	// NetworkFabricRefreshDeviceTypesNPB - DeviceType-NPB(Network Packet Broker)
+	NetworkFabricRefreshDeviceTypesNPB NetworkFabricRefreshDeviceTypes = "NPB"
+	// NetworkFabricRefreshDeviceTypesToR - DeviceType-ToR(top of rack)
+	NetworkFabricRefreshDeviceTypesToR NetworkFabricRefreshDeviceTypes = "ToR"
+)
+
+// PossibleNetworkFabricRefreshDeviceTypesValues returns the possible values for the NetworkFabricRefreshDeviceTypes const type.
+func PossibleNetworkFabricRefreshDeviceTypesValues() []NetworkFabricRefreshDeviceTypes {
+	return []NetworkFabricRefreshDeviceTypes{
+		NetworkFabricRefreshDeviceTypesCE,
+		NetworkFabricRefreshDeviceTypesManagementSwitch,
+		NetworkFabricRefreshDeviceTypesNPB,
+		NetworkFabricRefreshDeviceTypesToR,
+	}
+}
+
 // NetworkFabricUpgradeAction - Action to be performed while upgrading the fabric.
 type NetworkFabricUpgradeAction string
 
@@ -1230,6 +1367,52 @@ func PossibleNniTypeValues() []NniType {
 	return []NniType{
 		NniTypeCE,
 		NniTypeNPB,
+	}
+}
+
+// OperationPolicy - Operation policy for device interaction.
+type OperationPolicy string
+
+const (
+	// OperationPolicyFullControl - Read, write, and remediate drift.
+	OperationPolicyFullControl OperationPolicy = "fullControl"
+	// OperationPolicyValidateOnly - Read device state and report drift.
+	OperationPolicyValidateOnly OperationPolicy = "validateOnly"
+)
+
+// PossibleOperationPolicyValues returns the possible values for the OperationPolicy const type.
+func PossibleOperationPolicyValues() []OperationPolicy {
+	return []OperationPolicy{
+		OperationPolicyFullControl,
+		OperationPolicyValidateOnly,
+	}
+}
+
+// OperationalState - Operational State represents the current runtime condition of a networking resource. It reflects the
+// actual health, reachability, and availability of the resource at a given point in time.
+type OperationalState string
+
+const (
+	// OperationalStateDegraded - Operational State Degraded indicates the resource is partially functional, some capabilities
+	// may be impaired, but the resource is still operational.
+	OperationalStateDegraded OperationalState = "Degraded"
+	// OperationalStateDown - Operational State Down indicates the resource is not functioning or not reachable and no meaningful
+	// operations can be performed.
+	OperationalStateDown OperationalState = "Down"
+	// OperationalStateUnknown - Operational State Unknown indicates the state of the resource cannot be determined.
+	OperationalStateUnknown OperationalState = "Unknown"
+	// OperationalStateUp - Operational State Up indicates the resource is operational and functioning normally and all required
+	// control-plane and (where applicable) data-plane operations are healthy.
+	OperationalStateUp OperationalState = "Up"
+)
+
+// PossibleOperationalStateValues returns the possible values for the OperationalState const type.
+func PossibleOperationalStateValues() []OperationalState {
+	return []OperationalState{
+		OperationalStateDegraded,
+		OperationalStateDown,
+		OperationalStateUnknown,
+		OperationalStateUp,
 	}
 }
 

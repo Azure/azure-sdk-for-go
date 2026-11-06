@@ -7,11 +7,11 @@ package armmanagednetworkfabric_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/Operations_List.json
+// Generated from example definition: 2026-01-15-preview/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Microsoft.ManagedNetworkFabric/NetworkFabricControllers/Read"),
 		// 				ActionType: to.Ptr(armmanagednetworkfabric.ActionTypeInternal),
-		// 				IsDataAction: to.Ptr(false),
+		// 				IsDataAction: to.Ptr(true),
 		// 				Origin: to.Ptr(armmanagednetworkfabric.OriginUserSystem),
 		// 				Display: &armmanagednetworkfabric.OperationDisplay{
 		// 					Provider: to.Ptr("Microsoft.ManagedNetworkFabric resource provider"),
@@ -51,7 +51,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Microsoft.ManagedNetworkFabric/NetworkFabricControllers/Write"),
 		// 				ActionType: to.Ptr(armmanagednetworkfabric.ActionTypeInternal),
-		// 				IsDataAction: to.Ptr(false),
+		// 				IsDataAction: to.Ptr(true),
 		// 				Origin: to.Ptr(armmanagednetworkfabric.OriginUserSystem),
 		// 				Display: &armmanagednetworkfabric.OperationDisplay{
 		// 					Provider: to.Ptr("Microsoft.ManagedNetworkFabric resource provider"),
@@ -63,7 +63,7 @@ func ExampleOperationsClient_NewListPager() {
 		// 			{
 		// 				Name: to.Ptr("Microsoft.ManagedNetworkFabric/NetworkFabricControllers/Delete"),
 		// 				ActionType: to.Ptr(armmanagednetworkfabric.ActionTypeInternal),
-		// 				IsDataAction: to.Ptr(false),
+		// 				IsDataAction: to.Ptr(true),
 		// 				Origin: to.Ptr(armmanagednetworkfabric.OriginUserSystem),
 		// 				Display: &armmanagednetworkfabric.OperationDisplay{
 		// 					Provider: to.Ptr("Microsoft.ManagedNetworkFabric resource provider"),

@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/azurestackhci/armazurestackhcivm"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -29,17 +28,13 @@ type VirtualMachineInstancesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceURI string, options *armazurestackhcivm.VirtualMachineInstancesClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method VirtualMachineInstancesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceURI string, options *armazurestackhcivm.VirtualMachineInstancesClientGetOptions) (resp azfake.Responder[armazurestackhcivm.VirtualMachineInstancesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method VirtualMachineInstancesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceURI string, options *armazurestackhcivm.VirtualMachineInstancesClientListOptions) (resp azfake.PagerResponder[armazurestackhcivm.VirtualMachineInstancesClientListResponse])
-
 	// BeginPause is the fake for method VirtualMachineInstancesClient.BeginPause
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginPause func(ctx context.Context, resourceURI string, options *armazurestackhcivm.VirtualMachineInstancesClientBeginPauseOptions) (resp azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientPauseResponse], errResp azfake.ErrorResponder)
+
+	// BeginPowerOff is the fake for method VirtualMachineInstancesClient.BeginPowerOff
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginPowerOff func(ctx context.Context, resourceURI string, body armazurestackhcivm.PowerOffVirtualMachineOptions, options *armazurestackhcivm.VirtualMachineInstancesClientBeginPowerOffOptions) (resp azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientPowerOffResponse], errResp azfake.ErrorResponder)
 
 	// BeginRestart is the fake for method VirtualMachineInstancesClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -60,6 +55,14 @@ type VirtualMachineInstancesServer struct {
 	// BeginUpdate is the fake for method VirtualMachineInstancesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceURI string, properties armazurestackhcivm.VirtualMachineInstanceUpdateRequest, options *armazurestackhcivm.VirtualMachineInstancesClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method VirtualMachineInstancesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceURI string, options *armazurestackhcivm.VirtualMachineInstancesClientGetOptions) (resp azfake.Responder[armazurestackhcivm.VirtualMachineInstancesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method VirtualMachineInstancesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceURI string, options *armazurestackhcivm.VirtualMachineInstancesClientListOptions) (resp azfake.PagerResponder[armazurestackhcivm.VirtualMachineInstancesClientListResponse])
 }
 
 // NewVirtualMachineInstancesServerTransport creates a new instance of VirtualMachineInstancesServerTransport with the provided implementation.
@@ -70,13 +73,14 @@ func NewVirtualMachineInstancesServerTransport(srv *VirtualMachineInstancesServe
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armazurestackhcivm.VirtualMachineInstancesClientListResponse]](),
 		beginPause:          newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientPauseResponse]](),
+		beginPowerOff:       newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientPowerOffResponse]](),
 		beginRestart:        newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientRestartResponse]](),
 		beginSave:           newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientSaveResponse]](),
 		beginStart:          newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientStartResponse]](),
 		beginStop:           newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientStopResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armazurestackhcivm.VirtualMachineInstancesClientListResponse]](),
 	}
 }
 
@@ -86,13 +90,14 @@ type VirtualMachineInstancesServerTransport struct {
 	srv                 *VirtualMachineInstancesServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armazurestackhcivm.VirtualMachineInstancesClientListResponse]]
 	beginPause          *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientPauseResponse]]
+	beginPowerOff       *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientPowerOffResponse]]
 	beginRestart        *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientRestartResponse]]
 	beginSave           *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientSaveResponse]]
 	beginStart          *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientStartResponse]]
 	beginStop           *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientStopResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armazurestackhcivm.VirtualMachineInstancesClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armazurestackhcivm.VirtualMachineInstancesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualMachineInstancesServerTransport.
@@ -120,12 +125,10 @@ func (v *VirtualMachineInstancesServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = v.dispatchBeginCreateOrUpdate(req)
 			case "VirtualMachineInstancesClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
-			case "VirtualMachineInstancesClient.Get":
-				res.resp, res.err = v.dispatchGet(req)
-			case "VirtualMachineInstancesClient.NewListPager":
-				res.resp, res.err = v.dispatchNewListPager(req)
 			case "VirtualMachineInstancesClient.BeginPause":
 				res.resp, res.err = v.dispatchBeginPause(req)
+			case "VirtualMachineInstancesClient.BeginPowerOff":
+				res.resp, res.err = v.dispatchBeginPowerOff(req)
 			case "VirtualMachineInstancesClient.BeginRestart":
 				res.resp, res.err = v.dispatchBeginRestart(req)
 			case "VirtualMachineInstancesClient.BeginSave":
@@ -136,6 +139,10 @@ func (v *VirtualMachineInstancesServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = v.dispatchBeginStop(req)
 			case "VirtualMachineInstancesClient.BeginUpdate":
 				res.resp, res.err = v.dispatchBeginUpdate(req)
+			case "VirtualMachineInstancesClient.Get":
+				res.resp, res.err = v.dispatchGet(req)
+			case "VirtualMachineInstancesClient.NewListPager":
+				res.resp, res.err = v.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -158,7 +165,7 @@ func (v *VirtualMachineInstancesServerTransport) dispatchBeginCreateOrUpdate(req
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -168,10 +175,7 @@ func (v *VirtualMachineInstancesServerTransport) dispatchBeginCreateOrUpdate(req
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		respr, errRespr := v.srv.BeginCreateOrUpdate(req.Context(), resourceURIParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -202,16 +206,13 @@ func (v *VirtualMachineInstancesServerTransport) dispatchBeginDelete(req *http.R
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		respr, errRespr := v.srv.BeginDelete(req.Context(), resourceURIParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -236,88 +237,19 @@ func (v *VirtualMachineInstancesServerTransport) dispatchBeginDelete(req *http.R
 	return resp, nil
 }
 
-func (v *VirtualMachineInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if v.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := v.srv.Get(req.Context(), resourceURIParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineInstance, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (v *VirtualMachineInstancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if v.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := v.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
-		resp := v.srv.NewListPager(resourceURIParam, nil)
-		newListPager = &resp
-		v.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armazurestackhcivm.VirtualMachineInstancesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		v.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		v.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (v *VirtualMachineInstancesServerTransport) dispatchBeginPause(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginPause == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginPause not implemented")}
 	}
 	beginPause := v.beginPause.get(req)
 	if beginPause == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default/pause`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default/pause`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		respr, errRespr := v.srv.BeginPause(req.Context(), resourceURIParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -342,22 +274,60 @@ func (v *VirtualMachineInstancesServerTransport) dispatchBeginPause(req *http.Re
 	return resp, nil
 }
 
+func (v *VirtualMachineInstancesServerTransport) dispatchBeginPowerOff(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginPowerOff == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginPowerOff not implemented")}
+	}
+	beginPowerOff := v.beginPowerOff.get(req)
+	if beginPowerOff == nil {
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default/powerOff`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armazurestackhcivm.PowerOffVirtualMachineOptions](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+		respr, errRespr := v.srv.BeginPowerOff(req.Context(), resourceURIParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginPowerOff = &respr
+		v.beginPowerOff.add(req, beginPowerOff)
+	}
+
+	resp, err := server.PollerResponderNext(beginPowerOff, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginPowerOff.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginPowerOff) {
+		v.beginPowerOff.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (v *VirtualMachineInstancesServerTransport) dispatchBeginRestart(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginRestart == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginRestart not implemented")}
 	}
 	beginRestart := v.beginRestart.get(req)
 	if beginRestart == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default/restart`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		respr, errRespr := v.srv.BeginRestart(req.Context(), resourceURIParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -388,16 +358,13 @@ func (v *VirtualMachineInstancesServerTransport) dispatchBeginSave(req *http.Req
 	}
 	beginSave := v.beginSave.get(req)
 	if beginSave == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default/save`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default/save`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		respr, errRespr := v.srv.BeginSave(req.Context(), resourceURIParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -428,16 +395,13 @@ func (v *VirtualMachineInstancesServerTransport) dispatchBeginStart(req *http.Re
 	}
 	beginStart := v.beginStart.get(req)
 	if beginStart == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default/start`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		respr, errRespr := v.srv.BeginStart(req.Context(), resourceURIParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -468,16 +432,13 @@ func (v *VirtualMachineInstancesServerTransport) dispatchBeginStop(req *http.Req
 	}
 	beginStop := v.beginStop.get(req)
 	if beginStop == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default/stop`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default/stop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		respr, errRespr := v.srv.BeginStop(req.Context(), resourceURIParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -508,7 +469,7 @@ func (v *VirtualMachineInstancesServerTransport) dispatchBeginUpdate(req *http.R
 	}
 	beginUpdate := v.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/(?P<resourceUri>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default`
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -518,10 +479,7 @@ func (v *VirtualMachineInstancesServerTransport) dispatchBeginUpdate(req *http.R
 		if err != nil {
 			return nil, err
 		}
-		resourceURIParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceUri")])
-		if err != nil {
-			return nil, err
-		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceURIParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
@@ -543,6 +501,66 @@ func (v *VirtualMachineInstancesServerTransport) dispatchBeginUpdate(req *http.R
 		v.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (v *VirtualMachineInstancesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if v.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances/default`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+	respr, errRespr := v.srv.Get(req.Context(), resourceURIParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineInstance, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (v *VirtualMachineInstancesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if v.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := v.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/(?P<resourceUri>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.AzureStackHCI/virtualMachineInstances`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
+		resp := v.srv.NewListPager(resourceURIParam, nil)
+		newListPager = &resp
+		v.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armazurestackhcivm.VirtualMachineInstancesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		v.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		v.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

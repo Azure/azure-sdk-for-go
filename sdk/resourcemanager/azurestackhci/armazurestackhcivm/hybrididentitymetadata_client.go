@@ -18,7 +18,7 @@ import (
 // HybridIdentityMetadataClient contains the methods for the HybridIdentityMetadata group.
 // Don't use this type directly, use NewHybridIdentityMetadataClient() instead.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-07-01-preview
 type HybridIdentityMetadataClient struct {
 	internal *arm.Client
 }
@@ -56,12 +56,7 @@ func (client *HybridIdentityMetadataClient) Get(ctx context.Context, resourceURI
 	if err != nil {
 		return HybridIdentityMetadataClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return HybridIdentityMetadataClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
@@ -76,15 +71,18 @@ func (client *HybridIdentityMetadataClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *HybridIdentityMetadataClient) getHandleResponse(resp *http.Response) (HybridIdentityMetadataClientGetResponse, error) {
+func (client *HybridIdentityMetadataClient) getHandleResponse(resp *http.Response, successCodes ...int) (HybridIdentityMetadataClientGetResponse, error) {
 	result := HybridIdentityMetadataClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridIdentityMetadata); err != nil {
 		return HybridIdentityMetadataClientGetResponse{}, err
 	}
@@ -106,39 +104,53 @@ func (client *HybridIdentityMetadataClient) NewListByVirtualMachineInstancePager
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByVirtualMachineInstanceCreateRequest(ctx, resourceURI, options)
-			}, nil)
+			req, err := client.listByVirtualMachineInstanceCreateRequest(ctx, resourceURI, nextLink, options)
 			if err != nil {
 				return HybridIdentityMetadataClientListByVirtualMachineInstanceResponse{}, err
 			}
-			return client.listByVirtualMachineInstanceHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return HybridIdentityMetadataClientListByVirtualMachineInstanceResponse{}, err
+			}
+			return client.listByVirtualMachineInstanceHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByVirtualMachineInstanceCreateRequest creates the ListByVirtualMachineInstance request.
-func (client *HybridIdentityMetadataClient) listByVirtualMachineInstanceCreateRequest(ctx context.Context, resourceURI string, _ *HybridIdentityMetadataClientListByVirtualMachineInstanceOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/hybridIdentityMetadata"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+func (client *HybridIdentityMetadataClient) listByVirtualMachineInstanceCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *HybridIdentityMetadataClientListByVirtualMachineInstanceOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/hybridIdentityMetadata"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByVirtualMachineInstanceHandleResponse handles the ListByVirtualMachineInstance response.
-func (client *HybridIdentityMetadataClient) listByVirtualMachineInstanceHandleResponse(resp *http.Response) (HybridIdentityMetadataClientListByVirtualMachineInstanceResponse, error) {
+func (client *HybridIdentityMetadataClient) listByVirtualMachineInstanceHandleResponse(resp *http.Response, successCodes ...int) (HybridIdentityMetadataClientListByVirtualMachineInstanceResponse, error) {
 	result := HybridIdentityMetadataClientListByVirtualMachineInstanceResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.HybridIdentityMetadataListResult); err != nil {
 		return HybridIdentityMetadataClientListByVirtualMachineInstanceResponse{}, err
 	}

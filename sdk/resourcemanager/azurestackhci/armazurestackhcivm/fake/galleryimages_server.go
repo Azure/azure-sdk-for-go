@@ -29,6 +29,10 @@ type GalleryImagesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, galleryImageName string, options *armazurestackhcivm.GalleryImagesClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhcivm.GalleryImagesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method GalleryImagesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryImageName string, properties armazurestackhcivm.GalleryImageTagsUpdate, options *armazurestackhcivm.GalleryImagesClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.GalleryImagesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method GalleryImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, galleryImageName string, options *armazurestackhcivm.GalleryImagesClientGetOptions) (resp azfake.Responder[armazurestackhcivm.GalleryImagesClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type GalleryImagesServer struct {
 	// NewListByResourceGroupPager is the fake for method GalleryImagesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armazurestackhcivm.GalleryImagesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armazurestackhcivm.GalleryImagesClientListByResourceGroupResponse])
-
-	// BeginUpdate is the fake for method GalleryImagesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, galleryImageName string, properties armazurestackhcivm.GalleryImageTagsUpdate, options *armazurestackhcivm.GalleryImagesClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.GalleryImagesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGalleryImagesServerTransport creates a new instance of GalleryImagesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewGalleryImagesServerTransport(srv *GalleryImagesServer) *GalleryImagesSer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armazurestackhcivm.GalleryImagesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armazurestackhcivm.GalleryImagesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armazurestackhcivm.GalleryImagesClientUpdateResponse]](),
 		newListAllPager:             newTracker[azfake.PagerResponder[armazurestackhcivm.GalleryImagesClientListAllResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armazurestackhcivm.GalleryImagesClientListByResourceGroupResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armazurestackhcivm.GalleryImagesClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type GalleryImagesServerTransport struct {
 	srv                         *GalleryImagesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armazurestackhcivm.GalleryImagesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armazurestackhcivm.GalleryImagesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armazurestackhcivm.GalleryImagesClientUpdateResponse]]
 	newListAllPager             *tracker[azfake.PagerResponder[armazurestackhcivm.GalleryImagesClientListAllResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armazurestackhcivm.GalleryImagesClientListByResourceGroupResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armazurestackhcivm.GalleryImagesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for GalleryImagesServerTransport.
@@ -96,14 +96,14 @@ func (g *GalleryImagesServerTransport) dispatchToMethodFake(req *http.Request, m
 				res.resp, res.err = g.dispatchBeginCreateOrUpdate(req)
 			case "GalleryImagesClient.BeginDelete":
 				res.resp, res.err = g.dispatchBeginDelete(req)
+			case "GalleryImagesClient.BeginUpdate":
+				res.resp, res.err = g.dispatchBeginUpdate(req)
 			case "GalleryImagesClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
 			case "GalleryImagesClient.NewListAllPager":
 				res.resp, res.err = g.dispatchNewListAllPager(req)
 			case "GalleryImagesClient.NewListByResourceGroupPager":
 				res.resp, res.err = g.dispatchNewListByResourceGroupPager(req)
-			case "GalleryImagesClient.BeginUpdate":
-				res.resp, res.err = g.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -126,7 +126,7 @@ func (g *GalleryImagesServerTransport) dispatchBeginCreateOrUpdate(req *http.Req
 	}
 	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/galleryImages/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/galleryImages/(?P<galleryImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -174,7 +174,7 @@ func (g *GalleryImagesServerTransport) dispatchBeginDelete(req *http.Request) (*
 	}
 	beginDelete := g.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/galleryImages/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/galleryImages/(?P<galleryImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -212,116 +212,13 @@ func (g *GalleryImagesServerTransport) dispatchBeginDelete(req *http.Request) (*
 	return resp, nil
 }
 
-func (g *GalleryImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if g.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/galleryImages/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	galleryImageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryImageName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.Get(req.Context(), resourceGroupNameParam, galleryImageNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GalleryImage, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (g *GalleryImagesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if g.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := g.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/galleryImages`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := g.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		g.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.GalleryImagesClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		g.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (g *GalleryImagesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if g.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := g.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/galleryImages`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := g.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		g.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.GalleryImagesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		g.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (g *GalleryImagesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := g.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/galleryImages/(?P<galleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/galleryImages/(?P<galleryImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -360,6 +257,109 @@ func (g *GalleryImagesServerTransport) dispatchBeginUpdate(req *http.Request) (*
 		g.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (g *GalleryImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if g.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/galleryImages/(?P<galleryImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	galleryImageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("galleryImageName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.Get(req.Context(), resourceGroupNameParam, galleryImageNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GalleryImage, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (g *GalleryImagesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := g.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/galleryImages`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := g.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		g.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.GalleryImagesClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		g.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (g *GalleryImagesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := g.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/galleryImages`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := g.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		g.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.GalleryImagesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		g.newListByResourceGroupPager.remove(req)
+	}
 	return resp, nil
 }
 

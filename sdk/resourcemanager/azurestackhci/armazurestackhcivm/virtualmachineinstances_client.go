@@ -18,7 +18,7 @@ import (
 // VirtualMachineInstancesClient contains the methods for the VirtualMachineInstances group.
 // Don't use this type directly, use NewVirtualMachineInstancesClient() instead.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-07-01-preview
 type VirtualMachineInstancesClient struct {
 	internal *arm.Client
 }
@@ -62,7 +62,7 @@ func (client *VirtualMachineInstancesClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - The operation to create or update a virtual machine instance. Please note some properties can be set only
+// createOrUpdate - The operation to create or update a virtual machine instance. Please note some properties can be set only
 // during virtual machine instance creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineInstancesClient) createOrUpdate(ctx context.Context, resourceURI string, resource VirtualMachineInstance, options *VirtualMachineInstancesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -80,13 +80,12 @@ func (client *VirtualMachineInstancesClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualMachineInstancesClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, resource VirtualMachineInstance, _ *VirtualMachineInstancesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
 	if resourceURI == "" {
@@ -98,7 +97,7 @@ func (client *VirtualMachineInstancesClient) createOrUpdateCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -130,7 +129,7 @@ func (client *VirtualMachineInstancesClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - The operation to delete a virtual machine instance.
+// deleteOperation - The operation to delete a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineInstancesClient) deleteOperation(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -147,13 +146,12 @@ func (client *VirtualMachineInstancesClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualMachineInstancesClient) deleteCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
 	if resourceURI == "" {
@@ -165,117 +163,9 @@ func (client *VirtualMachineInstancesClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Gets a virtual machine instance
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - options - VirtualMachineInstancesClientGetOptions contains the optional parameters for the VirtualMachineInstancesClient.Get
-//     method.
-func (client *VirtualMachineInstancesClient) Get(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientGetOptions) (VirtualMachineInstancesClientGetResponse, error) {
-	var err error
-	const operationName = "VirtualMachineInstancesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceURI, options)
-	if err != nil {
-		return VirtualMachineInstancesClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return VirtualMachineInstancesClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return VirtualMachineInstancesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *VirtualMachineInstancesClient) getCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *VirtualMachineInstancesClient) getHandleResponse(resp *http.Response) (VirtualMachineInstancesClientGetResponse, error) {
-	result := VirtualMachineInstancesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineInstance); err != nil {
-		return VirtualMachineInstancesClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Lists all of the virtual machine instances within the specified parent resource.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - options - VirtualMachineInstancesClientListOptions contains the optional parameters for the VirtualMachineInstancesClient.NewListPager
-//     method.
-func (client *VirtualMachineInstancesClient) NewListPager(resourceURI string, options *VirtualMachineInstancesClientListOptions) *runtime.Pager[VirtualMachineInstancesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[VirtualMachineInstancesClientListResponse]{
-		More: func(page VirtualMachineInstancesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *VirtualMachineInstancesClientListResponse) (VirtualMachineInstancesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineInstancesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceURI, options)
-			}, nil)
-			if err != nil {
-				return VirtualMachineInstancesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *VirtualMachineInstancesClient) listCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientListOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *VirtualMachineInstancesClient) listHandleResponse(resp *http.Response) (VirtualMachineInstancesClientListResponse, error) {
-	result := VirtualMachineInstancesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineInstanceListResult); err != nil {
-		return VirtualMachineInstancesClientListResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginPause - The operation to pause a virtual machine instance.
@@ -300,7 +190,7 @@ func (client *VirtualMachineInstancesClient) BeginPause(ctx context.Context, res
 	}
 }
 
-// Pause - The operation to pause a virtual machine instance.
+// pause - The operation to pause a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineInstancesClient) pause(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginPauseOptions) (*http.Response, error) {
 	var err error
@@ -317,13 +207,12 @@ func (client *VirtualMachineInstancesClient) pause(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// pauseCreateRequest creates the Pause request.
+// pauseCreateRequest creates the pause request.
 func (client *VirtualMachineInstancesClient) pauseCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginPauseOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/pause"
 	if resourceURI == "" {
@@ -335,8 +224,75 @@ func (client *VirtualMachineInstancesClient) pauseCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginPowerOff - The operation to power off a virtual machine instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - body - The content of the action request
+//   - options - VirtualMachineInstancesClientBeginPowerOffOptions contains the optional parameters for the VirtualMachineInstancesClient.BeginPowerOff
+//     method.
+func (client *VirtualMachineInstancesClient) BeginPowerOff(ctx context.Context, resourceURI string, body PowerOffVirtualMachineOptions, options *VirtualMachineInstancesClientBeginPowerOffOptions) (*runtime.Poller[VirtualMachineInstancesClientPowerOffResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.powerOff(ctx, resourceURI, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachineInstancesClientPowerOffResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualMachineInstancesClientPowerOffResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// powerOff - The operation to power off a virtual machine instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachineInstancesClient) powerOff(ctx context.Context, resourceURI string, body PowerOffVirtualMachineOptions, options *VirtualMachineInstancesClientBeginPowerOffOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VirtualMachineInstancesClient.BeginPowerOff"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.powerOffCreateRequest(ctx, resourceURI, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// powerOffCreateRequest creates the powerOff request.
+func (client *VirtualMachineInstancesClient) powerOffCreateRequest(ctx context.Context, resourceURI string, body PowerOffVirtualMachineOptions, _ *VirtualMachineInstancesClientBeginPowerOffOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/powerOff"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -362,7 +318,7 @@ func (client *VirtualMachineInstancesClient) BeginRestart(ctx context.Context, r
 	}
 }
 
-// Restart - The operation to restart a virtual machine instance.
+// restart - The operation to restart a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineInstancesClient) restart(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginRestartOptions) (*http.Response, error) {
 	var err error
@@ -379,13 +335,12 @@ func (client *VirtualMachineInstancesClient) restart(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// restartCreateRequest creates the Restart request.
+// restartCreateRequest creates the restart request.
 func (client *VirtualMachineInstancesClient) restartCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/restart"
 	if resourceURI == "" {
@@ -397,7 +352,7 @@ func (client *VirtualMachineInstancesClient) restartCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -424,7 +379,7 @@ func (client *VirtualMachineInstancesClient) BeginSave(ctx context.Context, reso
 	}
 }
 
-// Save - The operation to save a virtual machine instance.
+// save - The operation to save a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineInstancesClient) save(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginSaveOptions) (*http.Response, error) {
 	var err error
@@ -441,13 +396,12 @@ func (client *VirtualMachineInstancesClient) save(ctx context.Context, resourceU
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// saveCreateRequest creates the Save request.
+// saveCreateRequest creates the save request.
 func (client *VirtualMachineInstancesClient) saveCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginSaveOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/save"
 	if resourceURI == "" {
@@ -459,7 +413,7 @@ func (client *VirtualMachineInstancesClient) saveCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -486,7 +440,7 @@ func (client *VirtualMachineInstancesClient) BeginStart(ctx context.Context, res
 	}
 }
 
-// Start - The operation to start a virtual machine instance.
+// start - The operation to start a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineInstancesClient) start(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginStartOptions) (*http.Response, error) {
 	var err error
@@ -503,13 +457,12 @@ func (client *VirtualMachineInstancesClient) start(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// startCreateRequest creates the Start request.
+// startCreateRequest creates the start request.
 func (client *VirtualMachineInstancesClient) startCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/start"
 	if resourceURI == "" {
@@ -521,7 +474,7 @@ func (client *VirtualMachineInstancesClient) startCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -548,7 +501,7 @@ func (client *VirtualMachineInstancesClient) BeginStop(ctx context.Context, reso
 	}
 }
 
-// Stop - The operation to stop a virtual machine instance.
+// stop - The operation to stop a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineInstancesClient) stop(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientBeginStopOptions) (*http.Response, error) {
 	var err error
@@ -565,13 +518,12 @@ func (client *VirtualMachineInstancesClient) stop(ctx context.Context, resourceU
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// stopCreateRequest creates the Stop request.
+// stopCreateRequest creates the stop request.
 func (client *VirtualMachineInstancesClient) stopCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientBeginStopOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default/stop"
 	if resourceURI == "" {
@@ -583,7 +535,7 @@ func (client *VirtualMachineInstancesClient) stopCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -611,7 +563,7 @@ func (client *VirtualMachineInstancesClient) BeginUpdate(ctx context.Context, re
 	}
 }
 
-// Update - The operation to update a virtual machine instance.
+// update - The operation to update a virtual machine instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineInstancesClient) update(ctx context.Context, resourceURI string, properties VirtualMachineInstanceUpdateRequest, options *VirtualMachineInstancesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -628,13 +580,12 @@ func (client *VirtualMachineInstancesClient) update(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *VirtualMachineInstancesClient) updateCreateRequest(ctx context.Context, resourceURI string, properties VirtualMachineInstanceUpdateRequest, _ *VirtualMachineInstancesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
 	if resourceURI == "" {
@@ -646,7 +597,7 @@ func (client *VirtualMachineInstancesClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -654,4 +605,124 @@ func (client *VirtualMachineInstancesClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Gets a virtual machine instance
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - options - VirtualMachineInstancesClientGetOptions contains the optional parameters for the VirtualMachineInstancesClient.Get
+//     method.
+func (client *VirtualMachineInstancesClient) Get(ctx context.Context, resourceURI string, options *VirtualMachineInstancesClientGetOptions) (VirtualMachineInstancesClientGetResponse, error) {
+	var err error
+	const operationName = "VirtualMachineInstancesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceURI, options)
+	if err != nil {
+		return VirtualMachineInstancesClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return VirtualMachineInstancesClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *VirtualMachineInstancesClient) getCreateRequest(ctx context.Context, resourceURI string, _ *VirtualMachineInstancesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances/default"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *VirtualMachineInstancesClient) getHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineInstancesClientGetResponse, error) {
+	result := VirtualMachineInstancesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineInstance); err != nil {
+		return VirtualMachineInstancesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists all of the virtual machine instances within the specified parent resource.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - options - VirtualMachineInstancesClientListOptions contains the optional parameters for the VirtualMachineInstancesClient.NewListPager
+//     method.
+func (client *VirtualMachineInstancesClient) NewListPager(resourceURI string, options *VirtualMachineInstancesClientListOptions) *runtime.Pager[VirtualMachineInstancesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachineInstancesClientListResponse]{
+		More: func(page VirtualMachineInstancesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *VirtualMachineInstancesClientListResponse) (VirtualMachineInstancesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineInstancesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceURI, nextLink, options)
+			if err != nil {
+				return VirtualMachineInstancesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualMachineInstancesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *VirtualMachineInstancesClient) listCreateRequest(ctx context.Context, resourceURI string, nextLink string, _ *VirtualMachineInstancesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceUri}/providers/Microsoft.AzureStackHCI/virtualMachineInstances"
+		if resourceURI == "" {
+			return nil, errors.New("parameter resourceURI cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *VirtualMachineInstancesClient) listHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineInstancesClientListResponse, error) {
+	result := VirtualMachineInstancesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineInstanceListResult); err != nil {
+		return VirtualMachineInstancesClientListResponse{}, err
+	}
+	return result, nil
 }

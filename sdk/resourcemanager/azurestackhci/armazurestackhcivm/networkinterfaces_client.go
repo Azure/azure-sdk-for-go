@@ -19,7 +19,7 @@ import (
 // NetworkInterfacesClient contains the methods for the NetworkInterfaces group.
 // Don't use this type directly, use NewNetworkInterfacesClient() instead.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-07-01-preview
 type NetworkInterfacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type NetworkInterfacesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewNetworkInterfacesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkInterfacesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *NetworkInterfacesClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - The operation to create or update a network interface. Please note some properties can be set only during
+// createOrUpdate - The operation to create or update a network interface. Please note some properties can be set only during
 // network interface creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkInterfacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, networkInterfaceName string, resource NetworkInterface, options *NetworkInterfacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -85,17 +88,16 @@ func (client *NetworkInterfacesClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *NetworkInterfacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, resource NetworkInterface, _ *NetworkInterfacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkInterfaces/{networkInterfaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,7 +113,7 @@ func (client *NetworkInterfacesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -144,7 +146,7 @@ func (client *NetworkInterfacesClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - The operation to delete a network interface.
+// deleteOperation - The operation to delete a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkInterfacesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *NetworkInterfacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,17 +163,16 @@ func (client *NetworkInterfacesClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *NetworkInterfacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, _ *NetworkInterfacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkInterfaces/{networkInterfaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -187,184 +188,9 @@ func (client *NetworkInterfacesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Gets a network interface
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkInterfaceName - Name of the network interface
-//   - options - NetworkInterfacesClientGetOptions contains the optional parameters for the NetworkInterfacesClient.Get method.
-func (client *NetworkInterfacesClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *NetworkInterfacesClientGetOptions) (NetworkInterfacesClientGetResponse, error) {
-	var err error
-	const operationName = "NetworkInterfacesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
-	if err != nil {
-		return NetworkInterfacesClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return NetworkInterfacesClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return NetworkInterfacesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *NetworkInterfacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, _ *NetworkInterfacesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkInterfaces/{networkInterfaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if networkInterfaceName == "" {
-		return nil, errors.New("parameter networkInterfaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkInterfaceName}", url.PathEscape(networkInterfaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *NetworkInterfacesClient) getHandleResponse(resp *http.Response) (NetworkInterfacesClientGetResponse, error) {
-	result := NetworkInterfacesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterface); err != nil {
-		return NetworkInterfacesClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Lists all of the network interfaces in the specified subscription. Use the nextLink property in the response
-// to get the next page of network interfaces.
-//   - options - NetworkInterfacesClientListAllOptions contains the optional parameters for the NetworkInterfacesClient.NewListAllPager
-//     method.
-func (client *NetworkInterfacesClient) NewListAllPager(options *NetworkInterfacesClientListAllOptions) *runtime.Pager[NetworkInterfacesClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NetworkInterfacesClientListAllResponse]{
-		More: func(page NetworkInterfacesClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *NetworkInterfacesClientListAllResponse) (NetworkInterfacesClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetworkInterfacesClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return NetworkInterfacesClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *NetworkInterfacesClient) listAllCreateRequest(ctx context.Context, _ *NetworkInterfacesClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/networkInterfaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *NetworkInterfacesClient) listAllHandleResponse(resp *http.Response) (NetworkInterfacesClientListAllResponse, error) {
-	result := NetworkInterfacesClientListAllResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceListResult); err != nil {
-		return NetworkInterfacesClientListAllResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByResourceGroupPager - Lists all of the network interfaces in the specified resource group. Use the nextLink property
-// in the response to get the next page of network interfaces.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - NetworkInterfacesClientListByResourceGroupOptions contains the optional parameters for the NetworkInterfacesClient.NewListByResourceGroupPager
-//     method.
-func (client *NetworkInterfacesClient) NewListByResourceGroupPager(resourceGroupName string, options *NetworkInterfacesClientListByResourceGroupOptions) *runtime.Pager[NetworkInterfacesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[NetworkInterfacesClientListByResourceGroupResponse]{
-		More: func(page NetworkInterfacesClientListByResourceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *NetworkInterfacesClientListByResourceGroupResponse) (NetworkInterfacesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetworkInterfacesClient.NewListByResourceGroupPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
-			if err != nil {
-				return NetworkInterfacesClientListByResourceGroupResponse{}, err
-			}
-			return client.listByResourceGroupHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *NetworkInterfacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *NetworkInterfacesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkInterfaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *NetworkInterfacesClient) listByResourceGroupHandleResponse(resp *http.Response) (NetworkInterfacesClientListByResourceGroupResponse, error) {
-	result := NetworkInterfacesClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceListResult); err != nil {
-		return NetworkInterfacesClientListByResourceGroupResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginUpdate - The operation to update a network interface.
@@ -391,7 +217,7 @@ func (client *NetworkInterfacesClient) BeginUpdate(ctx context.Context, resource
 	}
 }
 
-// Update - The operation to update a network interface.
+// update - The operation to update a network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NetworkInterfacesClient) update(ctx context.Context, resourceGroupName string, networkInterfaceName string, properties NetworkInterfacesUpdateRequest, options *NetworkInterfacesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -408,17 +234,16 @@ func (client *NetworkInterfacesClient) update(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *NetworkInterfacesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, properties NetworkInterfacesUpdateRequest, _ *NetworkInterfacesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkInterfaces/{networkInterfaceName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -434,7 +259,7 @@ func (client *NetworkInterfacesClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -442,4 +267,205 @@ func (client *NetworkInterfacesClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Gets a network interface
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkInterfaceName - Name of the network interface
+//   - options - NetworkInterfacesClientGetOptions contains the optional parameters for the NetworkInterfacesClient.Get method.
+func (client *NetworkInterfacesClient) Get(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *NetworkInterfacesClientGetOptions) (NetworkInterfacesClientGetResponse, error) {
+	var err error
+	const operationName = "NetworkInterfacesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, networkInterfaceName, options)
+	if err != nil {
+		return NetworkInterfacesClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return NetworkInterfacesClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *NetworkInterfacesClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkInterfaceName string, _ *NetworkInterfacesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkInterfaces/{networkInterfaceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if networkInterfaceName == "" {
+		return nil, errors.New("parameter networkInterfaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkInterfaceName}", url.PathEscape(networkInterfaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *NetworkInterfacesClient) getHandleResponse(resp *http.Response, successCodes ...int) (NetworkInterfacesClientGetResponse, error) {
+	result := NetworkInterfacesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterface); err != nil {
+		return NetworkInterfacesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListAllPager - Lists all of the network interfaces in the specified subscription. Use the nextLink property in the response
+// to get the next page of network interfaces.
+//   - options - NetworkInterfacesClientListAllOptions contains the optional parameters for the NetworkInterfacesClient.NewListAllPager
+//     method.
+func (client *NetworkInterfacesClient) NewListAllPager(options *NetworkInterfacesClientListAllOptions) *runtime.Pager[NetworkInterfacesClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NetworkInterfacesClientListAllResponse]{
+		More: func(page NetworkInterfacesClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *NetworkInterfacesClientListAllResponse) (NetworkInterfacesClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetworkInterfacesClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return NetworkInterfacesClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkInterfacesClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *NetworkInterfacesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *NetworkInterfacesClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/networkInterfaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *NetworkInterfacesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (NetworkInterfacesClientListAllResponse, error) {
+	result := NetworkInterfacesClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceListResult); err != nil {
+		return NetworkInterfacesClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByResourceGroupPager - Lists all of the network interfaces in the specified resource group. Use the nextLink property
+// in the response to get the next page of network interfaces.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - NetworkInterfacesClientListByResourceGroupOptions contains the optional parameters for the NetworkInterfacesClient.NewListByResourceGroupPager
+//     method.
+func (client *NetworkInterfacesClient) NewListByResourceGroupPager(resourceGroupName string, options *NetworkInterfacesClientListByResourceGroupOptions) *runtime.Pager[NetworkInterfacesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[NetworkInterfacesClientListByResourceGroupResponse]{
+		More: func(page NetworkInterfacesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *NetworkInterfacesClientListByResourceGroupResponse) (NetworkInterfacesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "NetworkInterfacesClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return NetworkInterfacesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return NetworkInterfacesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client *NetworkInterfacesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *NetworkInterfacesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/networkInterfaces"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client *NetworkInterfacesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (NetworkInterfacesClientListByResourceGroupResponse, error) {
+	result := NetworkInterfacesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkInterfaceListResult); err != nil {
+		return NetworkInterfacesClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
 }

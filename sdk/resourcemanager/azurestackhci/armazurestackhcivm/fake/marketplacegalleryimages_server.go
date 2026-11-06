@@ -29,6 +29,10 @@ type MarketplaceGalleryImagesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, options *armazurestackhcivm.MarketplaceGalleryImagesClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method MarketplaceGalleryImagesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, properties armazurestackhcivm.MarketplaceGalleryImageTagsUpdate, options *armazurestackhcivm.MarketplaceGalleryImagesClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method MarketplaceGalleryImagesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, options *armazurestackhcivm.MarketplaceGalleryImagesClientGetOptions) (resp azfake.Responder[armazurestackhcivm.MarketplaceGalleryImagesClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type MarketplaceGalleryImagesServer struct {
 	// NewListByResourceGroupPager is the fake for method MarketplaceGalleryImagesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armazurestackhcivm.MarketplaceGalleryImagesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientListByResourceGroupResponse])
-
-	// BeginUpdate is the fake for method MarketplaceGalleryImagesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, properties armazurestackhcivm.MarketplaceGalleryImageTagsUpdate, options *armazurestackhcivm.MarketplaceGalleryImagesClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewMarketplaceGalleryImagesServerTransport creates a new instance of MarketplaceGalleryImagesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewMarketplaceGalleryImagesServerTransport(srv *MarketplaceGalleryImagesSer
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientUpdateResponse]](),
 		newListAllPager:             newTracker[azfake.PagerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientListAllResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientListByResourceGroupResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type MarketplaceGalleryImagesServerTransport struct {
 	srv                         *MarketplaceGalleryImagesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientUpdateResponse]]
 	newListAllPager             *tracker[azfake.PagerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientListAllResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientListByResourceGroupResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armazurestackhcivm.MarketplaceGalleryImagesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for MarketplaceGalleryImagesServerTransport.
@@ -96,14 +96,14 @@ func (m *MarketplaceGalleryImagesServerTransport) dispatchToMethodFake(req *http
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "MarketplaceGalleryImagesClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "MarketplaceGalleryImagesClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "MarketplaceGalleryImagesClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MarketplaceGalleryImagesClient.NewListAllPager":
 				res.resp, res.err = m.dispatchNewListAllPager(req)
 			case "MarketplaceGalleryImagesClient.NewListByResourceGroupPager":
 				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
-			case "MarketplaceGalleryImagesClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -126,7 +126,7 @@ func (m *MarketplaceGalleryImagesServerTransport) dispatchBeginCreateOrUpdate(re
 	}
 	beginCreateOrUpdate := m.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages/(?P<marketplaceGalleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages/(?P<marketplaceGalleryImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -174,7 +174,7 @@ func (m *MarketplaceGalleryImagesServerTransport) dispatchBeginDelete(req *http.
 	}
 	beginDelete := m.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages/(?P<marketplaceGalleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages/(?P<marketplaceGalleryImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -212,116 +212,13 @@ func (m *MarketplaceGalleryImagesServerTransport) dispatchBeginDelete(req *http.
 	return resp, nil
 }
 
-func (m *MarketplaceGalleryImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if m.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages/(?P<marketplaceGalleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	marketplaceGalleryImageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("marketplaceGalleryImageName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, marketplaceGalleryImageNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MarketplaceGalleryImage, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (m *MarketplaceGalleryImagesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := m.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := m.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		m.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.MarketplaceGalleryImagesClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		m.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (m *MarketplaceGalleryImagesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		m.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.MarketplaceGalleryImagesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		m.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (m *MarketplaceGalleryImagesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := m.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages/(?P<marketplaceGalleryImageName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages/(?P<marketplaceGalleryImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -360,6 +257,109 @@ func (m *MarketplaceGalleryImagesServerTransport) dispatchBeginUpdate(req *http.
 		m.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (m *MarketplaceGalleryImagesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if m.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages/(?P<marketplaceGalleryImageName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	marketplaceGalleryImageNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("marketplaceGalleryImageName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.Get(req.Context(), resourceGroupNameParam, marketplaceGalleryImageNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).MarketplaceGalleryImage, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (m *MarketplaceGalleryImagesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := m.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := m.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		m.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.MarketplaceGalleryImagesClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		m.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (m *MarketplaceGalleryImagesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/marketplaceGalleryImages`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := m.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		m.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.MarketplaceGalleryImagesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		m.newListByResourceGroupPager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01-preview/LogicalNetworks_CreateOrUpdate.json
 func ExampleLogicalNetworksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -57,7 +57,7 @@ func ExampleLogicalNetworksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_Delete.json
+// Generated from example definition: 2026-07-01-preview/LogicalNetworks_Delete.json
 func ExampleLogicalNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,130 +78,7 @@ func ExampleLogicalNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_Get.json
-func ExampleLogicalNetworksClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhcivm.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewLogicalNetworksClient().Get(ctx, "test-rg", "test-lnet", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhcivm.LogicalNetworksClientGetResponse{
-	// 	LogicalNetwork: armazurestackhcivm.LogicalNetwork{
-	// 		Name: to.Ptr("test-lnet"),
-	// 		Type: to.Ptr("Microsoft.AzureStackHCI/logicalNetworks"),
-	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
-	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/logicalNetworks/test-lnet"),
-	// 		Location: to.Ptr("West US2"),
-	// 		Properties: &armazurestackhcivm.LogicalNetworkProperties{
-	// 			ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_ListAll.json
-func ExampleLogicalNetworksClient_NewListAllPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhcivm.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewLogicalNetworksClient().NewListAllPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armazurestackhcivm.LogicalNetworksClientListAllResponse{
-		// 	LogicalNetworkListResult: armazurestackhcivm.LogicalNetworkListResult{
-		// 		Value: []*armazurestackhcivm.LogicalNetwork{
-		// 			{
-		// 				Name: to.Ptr("test-lnet"),
-		// 				Type: to.Ptr("Microsoft.AzureStackHCI/logicalNetworks"),
-		// 				ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
-		// 					Name: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
-		// 					Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/logicalNetworks/test-lnet"),
-		// 				Location: to.Ptr("West US2"),
-		// 				Properties: &armazurestackhcivm.LogicalNetworkProperties{
-		// 					ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_ListByResourceGroup.json
-func ExampleLogicalNetworksClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhcivm.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewLogicalNetworksClient().NewListByResourceGroupPager("test-rg", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armazurestackhcivm.LogicalNetworksClientListByResourceGroupResponse{
-		// 	LogicalNetworkListResult: armazurestackhcivm.LogicalNetworkListResult{
-		// 		Value: []*armazurestackhcivm.LogicalNetwork{
-		// 			{
-		// 				Name: to.Ptr("test-lnet"),
-		// 				Type: to.Ptr("Microsoft.AzureStackHCI/logicalNetworks"),
-		// 				ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
-		// 					Name: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
-		// 					Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/galleryImages/test-lnet"),
-		// 				Location: to.Ptr("West US2"),
-		// 				Properties: &armazurestackhcivm.LogicalNetworkProperties{
-		// 					ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-06-01-preview/LogicalNetworks_Update.json
+// Generated from example definition: 2026-07-01-preview/LogicalNetworks_Update.json
 func ExampleLogicalNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,4 +122,127 @@ func ExampleLogicalNetworksClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/LogicalNetworks_Get.json
+func ExampleLogicalNetworksClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhcivm.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewLogicalNetworksClient().Get(ctx, "test-rg", "test-lnet", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhcivm.LogicalNetworksClientGetResponse{
+	// 	LogicalNetwork: armazurestackhcivm.LogicalNetwork{
+	// 		Name: to.Ptr("test-lnet"),
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/logicalNetworks"),
+	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
+	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/logicalNetworks/test-lnet"),
+	// 		Location: to.Ptr("West US2"),
+	// 		Properties: &armazurestackhcivm.LogicalNetworkProperties{
+	// 			ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/LogicalNetworks_ListAll.json
+func ExampleLogicalNetworksClient_NewListAllPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhcivm.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLogicalNetworksClient().NewListAllPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armazurestackhcivm.LogicalNetworksClientListAllResponse{
+		// 	LogicalNetworkListResult: armazurestackhcivm.LogicalNetworkListResult{
+		// 		Value: []*armazurestackhcivm.LogicalNetwork{
+		// 			{
+		// 				Name: to.Ptr("test-lnet"),
+		// 				Type: to.Ptr("Microsoft.AzureStackHCI/logicalNetworks"),
+		// 				ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
+		// 					Name: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
+		// 					Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/logicalNetworks/test-lnet"),
+		// 				Location: to.Ptr("West US2"),
+		// 				Properties: &armazurestackhcivm.LogicalNetworkProperties{
+		// 					ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-07-01-preview/LogicalNetworks_ListByResourceGroup.json
+func ExampleLogicalNetworksClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhcivm.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewLogicalNetworksClient().NewListByResourceGroupPager("test-rg", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armazurestackhcivm.LogicalNetworksClientListByResourceGroupResponse{
+		// 	LogicalNetworkListResult: armazurestackhcivm.LogicalNetworkListResult{
+		// 		Value: []*armazurestackhcivm.LogicalNetwork{
+		// 			{
+		// 				Name: to.Ptr("test-lnet"),
+		// 				Type: to.Ptr("Microsoft.AzureStackHCI/logicalNetworks"),
+		// 				ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
+		// 					Name: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
+		// 					Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/test-rg/providers/Microsoft.AzureStackHCI/logicalNetworks/test-lnet"),
+		// 				Location: to.Ptr("West US2"),
+		// 				Properties: &armazurestackhcivm.LogicalNetworkProperties{
+		// 					ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

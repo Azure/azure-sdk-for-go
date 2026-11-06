@@ -27,11 +27,20 @@ type ServerFactory struct {
 	// HybridIdentityMetadataServer contains the fakes for client HybridIdentityMetadataClient
 	HybridIdentityMetadataServer HybridIdentityMetadataServer
 
+	// InboundRulesServer contains the fakes for client InboundRulesClient
+	InboundRulesServer InboundRulesServer
+
+	// LoadBalancersServer contains the fakes for client LoadBalancersClient
+	LoadBalancersServer LoadBalancersServer
+
 	// LogicalNetworksServer contains the fakes for client LogicalNetworksClient
 	LogicalNetworksServer LogicalNetworksServer
 
 	// MarketplaceGalleryImagesServer contains the fakes for client MarketplaceGalleryImagesClient
 	MarketplaceGalleryImagesServer MarketplaceGalleryImagesServer
+
+	// NATGatewaysServer contains the fakes for client NATGatewaysClient
+	NATGatewaysServer NATGatewaysServer
 
 	// NetworkInterfacesServer contains the fakes for client NetworkInterfacesClient
 	NetworkInterfacesServer NetworkInterfacesServer
@@ -39,8 +48,17 @@ type ServerFactory struct {
 	// NetworkSecurityGroupsServer contains the fakes for client NetworkSecurityGroupsClient
 	NetworkSecurityGroupsServer NetworkSecurityGroupsServer
 
+	// OperationsServer contains the fakes for client OperationsClient
+	OperationsServer OperationsServer
+
+	// PublicIPAddressesServer contains the fakes for client PublicIPAddressesClient
+	PublicIPAddressesServer PublicIPAddressesServer
+
 	// SecurityRulesServer contains the fakes for client SecurityRulesClient
 	SecurityRulesServer SecurityRulesServer
+
+	// SnapshotsServer contains the fakes for client SnapshotsClient
+	SnapshotsServer SnapshotsServer
 
 	// StorageContainersServer contains the fakes for client StorageContainersClient
 	StorageContainersServer StorageContainersServer
@@ -50,6 +68,12 @@ type ServerFactory struct {
 
 	// VirtualMachineInstancesServer contains the fakes for client VirtualMachineInstancesClient
 	VirtualMachineInstancesServer VirtualMachineInstancesServer
+
+	// VirtualNetworkSubnetsServer contains the fakes for client VirtualNetworkSubnetsClient
+	VirtualNetworkSubnetsServer VirtualNetworkSubnetsServer
+
+	// VirtualNetworksServer contains the fakes for client VirtualNetworksClient
+	VirtualNetworksServer VirtualNetworksServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -70,14 +94,22 @@ type ServerFactoryTransport struct {
 	trGalleryImagesServer            *GalleryImagesServerTransport
 	trGuestAgentsServer              *GuestAgentsServerTransport
 	trHybridIdentityMetadataServer   *HybridIdentityMetadataServerTransport
+	trInboundRulesServer             *InboundRulesServerTransport
+	trLoadBalancersServer            *LoadBalancersServerTransport
 	trLogicalNetworksServer          *LogicalNetworksServerTransport
 	trMarketplaceGalleryImagesServer *MarketplaceGalleryImagesServerTransport
+	trNATGatewaysServer              *NATGatewaysServerTransport
 	trNetworkInterfacesServer        *NetworkInterfacesServerTransport
 	trNetworkSecurityGroupsServer    *NetworkSecurityGroupsServerTransport
+	trOperationsServer               *OperationsServerTransport
+	trPublicIPAddressesServer        *PublicIPAddressesServerTransport
 	trSecurityRulesServer            *SecurityRulesServerTransport
+	trSnapshotsServer                *SnapshotsServerTransport
 	trStorageContainersServer        *StorageContainersServerTransport
 	trVirtualHardDisksServer         *VirtualHardDisksServerTransport
 	trVirtualMachineInstancesServer  *VirtualMachineInstancesServerTransport
+	trVirtualNetworkSubnetsServer    *VirtualNetworkSubnetsServerTransport
+	trVirtualNetworksServer          *VirtualNetworksServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -111,6 +143,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewHybridIdentityMetadataServerTransport(&s.srv.HybridIdentityMetadataServer)
 		})
 		resp, err = s.trHybridIdentityMetadataServer.Do(req)
+	case "InboundRulesClient":
+		initServer(&s.trMu, &s.trInboundRulesServer, func() *InboundRulesServerTransport { return NewInboundRulesServerTransport(&s.srv.InboundRulesServer) })
+		resp, err = s.trInboundRulesServer.Do(req)
+	case "LoadBalancersClient":
+		initServer(&s.trMu, &s.trLoadBalancersServer, func() *LoadBalancersServerTransport {
+			return NewLoadBalancersServerTransport(&s.srv.LoadBalancersServer)
+		})
+		resp, err = s.trLoadBalancersServer.Do(req)
 	case "LogicalNetworksClient":
 		initServer(&s.trMu, &s.trLogicalNetworksServer, func() *LogicalNetworksServerTransport {
 			return NewLogicalNetworksServerTransport(&s.srv.LogicalNetworksServer)
@@ -121,6 +161,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewMarketplaceGalleryImagesServerTransport(&s.srv.MarketplaceGalleryImagesServer)
 		})
 		resp, err = s.trMarketplaceGalleryImagesServer.Do(req)
+	case "NATGatewaysClient":
+		initServer(&s.trMu, &s.trNATGatewaysServer, func() *NATGatewaysServerTransport { return NewNATGatewaysServerTransport(&s.srv.NATGatewaysServer) })
+		resp, err = s.trNATGatewaysServer.Do(req)
 	case "NetworkInterfacesClient":
 		initServer(&s.trMu, &s.trNetworkInterfacesServer, func() *NetworkInterfacesServerTransport {
 			return NewNetworkInterfacesServerTransport(&s.srv.NetworkInterfacesServer)
@@ -131,11 +174,22 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewNetworkSecurityGroupsServerTransport(&s.srv.NetworkSecurityGroupsServer)
 		})
 		resp, err = s.trNetworkSecurityGroupsServer.Do(req)
+	case "OperationsClient":
+		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
+		resp, err = s.trOperationsServer.Do(req)
+	case "PublicIPAddressesClient":
+		initServer(&s.trMu, &s.trPublicIPAddressesServer, func() *PublicIPAddressesServerTransport {
+			return NewPublicIPAddressesServerTransport(&s.srv.PublicIPAddressesServer)
+		})
+		resp, err = s.trPublicIPAddressesServer.Do(req)
 	case "SecurityRulesClient":
 		initServer(&s.trMu, &s.trSecurityRulesServer, func() *SecurityRulesServerTransport {
 			return NewSecurityRulesServerTransport(&s.srv.SecurityRulesServer)
 		})
 		resp, err = s.trSecurityRulesServer.Do(req)
+	case "SnapshotsClient":
+		initServer(&s.trMu, &s.trSnapshotsServer, func() *SnapshotsServerTransport { return NewSnapshotsServerTransport(&s.srv.SnapshotsServer) })
+		resp, err = s.trSnapshotsServer.Do(req)
 	case "StorageContainersClient":
 		initServer(&s.trMu, &s.trStorageContainersServer, func() *StorageContainersServerTransport {
 			return NewStorageContainersServerTransport(&s.srv.StorageContainersServer)
@@ -151,6 +205,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewVirtualMachineInstancesServerTransport(&s.srv.VirtualMachineInstancesServer)
 		})
 		resp, err = s.trVirtualMachineInstancesServer.Do(req)
+	case "VirtualNetworkSubnetsClient":
+		initServer(&s.trMu, &s.trVirtualNetworkSubnetsServer, func() *VirtualNetworkSubnetsServerTransport {
+			return NewVirtualNetworkSubnetsServerTransport(&s.srv.VirtualNetworkSubnetsServer)
+		})
+		resp, err = s.trVirtualNetworkSubnetsServer.Do(req)
+	case "VirtualNetworksClient":
+		initServer(&s.trMu, &s.trVirtualNetworksServer, func() *VirtualNetworksServerTransport {
+			return NewVirtualNetworksServerTransport(&s.srv.VirtualNetworksServer)
+		})
+		resp, err = s.trVirtualNetworksServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

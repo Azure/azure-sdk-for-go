@@ -29,6 +29,10 @@ type NetworkInterfacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *armazurestackhcivm.NetworkInterfacesClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhcivm.NetworkInterfacesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NetworkInterfacesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, networkInterfaceName string, properties armazurestackhcivm.NetworkInterfacesUpdateRequest, options *armazurestackhcivm.NetworkInterfacesClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.NetworkInterfacesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NetworkInterfacesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *armazurestackhcivm.NetworkInterfacesClientGetOptions) (resp azfake.Responder[armazurestackhcivm.NetworkInterfacesClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type NetworkInterfacesServer struct {
 	// NewListByResourceGroupPager is the fake for method NetworkInterfacesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armazurestackhcivm.NetworkInterfacesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armazurestackhcivm.NetworkInterfacesClientListByResourceGroupResponse])
-
-	// BeginUpdate is the fake for method NetworkInterfacesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, networkInterfaceName string, properties armazurestackhcivm.NetworkInterfacesUpdateRequest, options *armazurestackhcivm.NetworkInterfacesClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhcivm.NetworkInterfacesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewNetworkInterfacesServerTransport creates a new instance of NetworkInterfacesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewNetworkInterfacesServerTransport(srv *NetworkInterfacesServer) *NetworkI
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armazurestackhcivm.NetworkInterfacesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armazurestackhcivm.NetworkInterfacesClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armazurestackhcivm.NetworkInterfacesClientUpdateResponse]](),
 		newListAllPager:             newTracker[azfake.PagerResponder[armazurestackhcivm.NetworkInterfacesClientListAllResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armazurestackhcivm.NetworkInterfacesClientListByResourceGroupResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armazurestackhcivm.NetworkInterfacesClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type NetworkInterfacesServerTransport struct {
 	srv                         *NetworkInterfacesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armazurestackhcivm.NetworkInterfacesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armazurestackhcivm.NetworkInterfacesClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armazurestackhcivm.NetworkInterfacesClientUpdateResponse]]
 	newListAllPager             *tracker[azfake.PagerResponder[armazurestackhcivm.NetworkInterfacesClientListAllResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armazurestackhcivm.NetworkInterfacesClientListByResourceGroupResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armazurestackhcivm.NetworkInterfacesClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkInterfacesServerTransport.
@@ -96,14 +96,14 @@ func (n *NetworkInterfacesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
 			case "NetworkInterfacesClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
+			case "NetworkInterfacesClient.BeginUpdate":
+				res.resp, res.err = n.dispatchBeginUpdate(req)
 			case "NetworkInterfacesClient.Get":
 				res.resp, res.err = n.dispatchGet(req)
 			case "NetworkInterfacesClient.NewListAllPager":
 				res.resp, res.err = n.dispatchNewListAllPager(req)
 			case "NetworkInterfacesClient.NewListByResourceGroupPager":
 				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
-			case "NetworkInterfacesClient.BeginUpdate":
-				res.resp, res.err = n.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -126,7 +126,7 @@ func (n *NetworkInterfacesServerTransport) dispatchBeginCreateOrUpdate(req *http
 	}
 	beginCreateOrUpdate := n.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -174,7 +174,7 @@ func (n *NetworkInterfacesServerTransport) dispatchBeginDelete(req *http.Request
 	}
 	beginDelete := n.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -212,116 +212,13 @@ func (n *NetworkInterfacesServerTransport) dispatchBeginDelete(req *http.Request
 	return resp, nil
 }
 
-func (n *NetworkInterfacesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if n.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkInterface, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (n *NetworkInterfacesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListAllPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
-	}
-	newListAllPager := n.newListAllPager.get(req)
-	if newListAllPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := n.srv.NewListAllPager(nil)
-		newListAllPager = &resp
-		n.newListAllPager.add(req, newListAllPager)
-		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.NetworkInterfacesClientListAllResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAllPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListAllPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAllPager) {
-		n.newListAllPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (n *NetworkInterfacesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.NetworkInterfacesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		n.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (n *NetworkInterfacesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if n.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := n.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces/(?P<networkInterfaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -360,6 +257,109 @@ func (n *NetworkInterfacesServerTransport) dispatchBeginUpdate(req *http.Request
 		n.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (n *NetworkInterfacesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces/(?P<networkInterfaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	networkInterfaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("networkInterfaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, networkInterfaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkInterface, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NetworkInterfacesServerTransport) dispatchNewListAllPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListAllPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAllPager not implemented")}
+	}
+	newListAllPager := n.newListAllPager.get(req)
+	if newListAllPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := n.srv.NewListAllPager(nil)
+		newListAllPager = &resp
+		n.newListAllPager.add(req, newListAllPager)
+		server.PagerResponderInjectNextLinks(newListAllPager, req, func(page *armazurestackhcivm.NetworkInterfacesClientListAllResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAllPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListAllPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAllPager) {
+		n.newListAllPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (n *NetworkInterfacesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/networkInterfaces`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armazurestackhcivm.NetworkInterfacesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		n.newListByResourceGroupPager.remove(req)
+	}
 	return resp, nil
 }
 

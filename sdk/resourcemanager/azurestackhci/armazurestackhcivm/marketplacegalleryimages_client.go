@@ -19,7 +19,7 @@ import (
 // MarketplaceGalleryImagesClient contains the methods for the MarketplaceGalleryImages group.
 // Don't use this type directly, use NewMarketplaceGalleryImagesClient() instead.
 //
-// Generated from API version 2025-06-01-preview
+// Generated from API version 2026-07-01-preview
 type MarketplaceGalleryImagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type MarketplaceGalleryImagesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMarketplaceGalleryImagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MarketplaceGalleryImagesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *MarketplaceGalleryImagesClient) BeginCreateOrUpdate(ctx context.Co
 	}
 }
 
-// CreateOrUpdate - The operation to create or update a marketplace gallery image. Please note some properties can be set
+// createOrUpdate - The operation to create or update a marketplace gallery image. Please note some properties can be set
 // only during marketplace gallery image creation.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MarketplaceGalleryImagesClient) createOrUpdate(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, resource MarketplaceGalleryImage, options *MarketplaceGalleryImagesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -85,17 +88,16 @@ func (client *MarketplaceGalleryImagesClient) createOrUpdate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MarketplaceGalleryImagesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, resource MarketplaceGalleryImage, _ *MarketplaceGalleryImagesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,7 +113,7 @@ func (client *MarketplaceGalleryImagesClient) createOrUpdateCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -144,7 +146,7 @@ func (client *MarketplaceGalleryImagesClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// Delete - The operation to delete a marketplace gallery image.
+// deleteOperation - The operation to delete a marketplace gallery image.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MarketplaceGalleryImagesClient) deleteOperation(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, options *MarketplaceGalleryImagesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,17 +163,16 @@ func (client *MarketplaceGalleryImagesClient) deleteOperation(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MarketplaceGalleryImagesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, _ *MarketplaceGalleryImagesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -187,185 +188,9 @@ func (client *MarketplaceGalleryImagesClient) deleteCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Gets a marketplace gallery image
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - marketplaceGalleryImageName - Name of the marketplace gallery image
-//   - options - MarketplaceGalleryImagesClientGetOptions contains the optional parameters for the MarketplaceGalleryImagesClient.Get
-//     method.
-func (client *MarketplaceGalleryImagesClient) Get(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, options *MarketplaceGalleryImagesClientGetOptions) (MarketplaceGalleryImagesClientGetResponse, error) {
-	var err error
-	const operationName = "MarketplaceGalleryImagesClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, marketplaceGalleryImageName, options)
-	if err != nil {
-		return MarketplaceGalleryImagesClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return MarketplaceGalleryImagesClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MarketplaceGalleryImagesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *MarketplaceGalleryImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, _ *MarketplaceGalleryImagesClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if marketplaceGalleryImageName == "" {
-		return nil, errors.New("parameter marketplaceGalleryImageName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{marketplaceGalleryImageName}", url.PathEscape(marketplaceGalleryImageName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *MarketplaceGalleryImagesClient) getHandleResponse(resp *http.Response) (MarketplaceGalleryImagesClientGetResponse, error) {
-	result := MarketplaceGalleryImagesClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceGalleryImage); err != nil {
-		return MarketplaceGalleryImagesClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Lists all of the marketplace gallery images in the specified subscription. Use the nextLink property
-// in the response to get the next page of marketplace gallery images.
-//   - options - MarketplaceGalleryImagesClientListAllOptions contains the optional parameters for the MarketplaceGalleryImagesClient.NewListAllPager
-//     method.
-func (client *MarketplaceGalleryImagesClient) NewListAllPager(options *MarketplaceGalleryImagesClientListAllOptions) *runtime.Pager[MarketplaceGalleryImagesClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[MarketplaceGalleryImagesClientListAllResponse]{
-		More: func(page MarketplaceGalleryImagesClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *MarketplaceGalleryImagesClientListAllResponse) (MarketplaceGalleryImagesClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MarketplaceGalleryImagesClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listAllCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return MarketplaceGalleryImagesClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *MarketplaceGalleryImagesClient) listAllCreateRequest(ctx context.Context, _ *MarketplaceGalleryImagesClientListAllOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *MarketplaceGalleryImagesClient) listAllHandleResponse(resp *http.Response) (MarketplaceGalleryImagesClientListAllResponse, error) {
-	result := MarketplaceGalleryImagesClientListAllResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceGalleryImageListResult); err != nil {
-		return MarketplaceGalleryImagesClientListAllResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByResourceGroupPager - Lists all of the marketplace gallery images in the specified resource group. Use the nextLink
-// property in the response to get the next page of marketplace gallery images.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - MarketplaceGalleryImagesClientListByResourceGroupOptions contains the optional parameters for the MarketplaceGalleryImagesClient.NewListByResourceGroupPager
-//     method.
-func (client *MarketplaceGalleryImagesClient) NewListByResourceGroupPager(resourceGroupName string, options *MarketplaceGalleryImagesClientListByResourceGroupOptions) *runtime.Pager[MarketplaceGalleryImagesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[MarketplaceGalleryImagesClientListByResourceGroupResponse]{
-		More: func(page MarketplaceGalleryImagesClientListByResourceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *MarketplaceGalleryImagesClientListByResourceGroupResponse) (MarketplaceGalleryImagesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MarketplaceGalleryImagesClient.NewListByResourceGroupPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
-			if err != nil {
-				return MarketplaceGalleryImagesClientListByResourceGroupResponse{}, err
-			}
-			return client.listByResourceGroupHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *MarketplaceGalleryImagesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *MarketplaceGalleryImagesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *MarketplaceGalleryImagesClient) listByResourceGroupHandleResponse(resp *http.Response) (MarketplaceGalleryImagesClientListByResourceGroupResponse, error) {
-	result := MarketplaceGalleryImagesClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceGalleryImageListResult); err != nil {
-		return MarketplaceGalleryImagesClientListByResourceGroupResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginUpdate - The operation to update a marketplace gallery image.
@@ -392,7 +217,7 @@ func (client *MarketplaceGalleryImagesClient) BeginUpdate(ctx context.Context, r
 	}
 }
 
-// Update - The operation to update a marketplace gallery image.
+// update - The operation to update a marketplace gallery image.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MarketplaceGalleryImagesClient) update(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, properties MarketplaceGalleryImageTagsUpdate, options *MarketplaceGalleryImagesClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -409,17 +234,16 @@ func (client *MarketplaceGalleryImagesClient) update(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *MarketplaceGalleryImagesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, properties MarketplaceGalleryImageTagsUpdate, _ *MarketplaceGalleryImagesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -435,7 +259,7 @@ func (client *MarketplaceGalleryImagesClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601Preview)
+	reqQP.Set("api-version", version20260701Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -443,4 +267,206 @@ func (client *MarketplaceGalleryImagesClient) updateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Gets a marketplace gallery image
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - marketplaceGalleryImageName - Name of the marketplace gallery image
+//   - options - MarketplaceGalleryImagesClientGetOptions contains the optional parameters for the MarketplaceGalleryImagesClient.Get
+//     method.
+func (client *MarketplaceGalleryImagesClient) Get(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, options *MarketplaceGalleryImagesClientGetOptions) (MarketplaceGalleryImagesClientGetResponse, error) {
+	var err error
+	const operationName = "MarketplaceGalleryImagesClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, marketplaceGalleryImageName, options)
+	if err != nil {
+		return MarketplaceGalleryImagesClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return MarketplaceGalleryImagesClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *MarketplaceGalleryImagesClient) getCreateRequest(ctx context.Context, resourceGroupName string, marketplaceGalleryImageName string, _ *MarketplaceGalleryImagesClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages/{marketplaceGalleryImageName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if marketplaceGalleryImageName == "" {
+		return nil, errors.New("parameter marketplaceGalleryImageName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{marketplaceGalleryImageName}", url.PathEscape(marketplaceGalleryImageName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *MarketplaceGalleryImagesClient) getHandleResponse(resp *http.Response, successCodes ...int) (MarketplaceGalleryImagesClientGetResponse, error) {
+	result := MarketplaceGalleryImagesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceGalleryImage); err != nil {
+		return MarketplaceGalleryImagesClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListAllPager - Lists all of the marketplace gallery images in the specified subscription. Use the nextLink property
+// in the response to get the next page of marketplace gallery images.
+//   - options - MarketplaceGalleryImagesClientListAllOptions contains the optional parameters for the MarketplaceGalleryImagesClient.NewListAllPager
+//     method.
+func (client *MarketplaceGalleryImagesClient) NewListAllPager(options *MarketplaceGalleryImagesClientListAllOptions) *runtime.Pager[MarketplaceGalleryImagesClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[MarketplaceGalleryImagesClientListAllResponse]{
+		More: func(page MarketplaceGalleryImagesClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *MarketplaceGalleryImagesClientListAllResponse) (MarketplaceGalleryImagesClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MarketplaceGalleryImagesClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return MarketplaceGalleryImagesClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MarketplaceGalleryImagesClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *MarketplaceGalleryImagesClient) listAllCreateRequest(ctx context.Context, nextLink string, _ *MarketplaceGalleryImagesClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *MarketplaceGalleryImagesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (MarketplaceGalleryImagesClientListAllResponse, error) {
+	result := MarketplaceGalleryImagesClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceGalleryImageListResult); err != nil {
+		return MarketplaceGalleryImagesClientListAllResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByResourceGroupPager - Lists all of the marketplace gallery images in the specified resource group. Use the nextLink
+// property in the response to get the next page of marketplace gallery images.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - MarketplaceGalleryImagesClientListByResourceGroupOptions contains the optional parameters for the MarketplaceGalleryImagesClient.NewListByResourceGroupPager
+//     method.
+func (client *MarketplaceGalleryImagesClient) NewListByResourceGroupPager(resourceGroupName string, options *MarketplaceGalleryImagesClientListByResourceGroupOptions) *runtime.Pager[MarketplaceGalleryImagesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[MarketplaceGalleryImagesClientListByResourceGroupResponse]{
+		More: func(page MarketplaceGalleryImagesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *MarketplaceGalleryImagesClientListByResourceGroupResponse) (MarketplaceGalleryImagesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "MarketplaceGalleryImagesClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return MarketplaceGalleryImagesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return MarketplaceGalleryImagesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client *MarketplaceGalleryImagesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *MarketplaceGalleryImagesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/marketplaceGalleryImages"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260701Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client *MarketplaceGalleryImagesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (MarketplaceGalleryImagesClientListByResourceGroupResponse, error) {
+	result := MarketplaceGalleryImagesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.MarketplaceGalleryImageListResult); err != nil {
+		return MarketplaceGalleryImagesClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
 }

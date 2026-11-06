@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_CreateOrUpdate.json
+// Generated from example definition: 2026-07-01-preview/NetworkInterfaces_CreateOrUpdate.json
 func ExampleNetworkInterfacesClient_BeginCreateOrUpdate_putNetworkInterface() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleNetworkInterfacesClient_BeginCreateOrUpdate_putNetworkInterface() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces__CreateOrUpdate_CreateFromLocal.json
+// Generated from example definition: 2026-07-01-preview/NetworkInterfaces__CreateOrUpdate_CreateFromLocal.json
 func ExampleNetworkInterfacesClient_BeginCreateOrUpdate_createNetworkInterfaceFromLocal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleNetworkInterfacesClient_BeginCreateOrUpdate_createNetworkInterfaceFr
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_Delete.json
+// Generated from example definition: 2026-07-01-preview/NetworkInterfaces_Delete.json
 func ExampleNetworkInterfacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -169,7 +169,60 @@ func ExampleNetworkInterfacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_Get.json
+// Generated from example definition: 2026-07-01-preview/NetworkInterfaces_Update.json
+func ExampleNetworkInterfacesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armazurestackhcivm.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkInterfacesClient().BeginUpdate(ctx, "test-rg", "test-nic", armazurestackhcivm.NetworkInterfacesUpdateRequest{
+		Tags: map[string]*string{
+			"additionalProperties": to.Ptr("sample"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armazurestackhcivm.NetworkInterfacesClientUpdateResponse{
+	// 	NetworkInterface: armazurestackhcivm.NetworkInterface{
+	// 		Name: to.Ptr("test-nic"),
+	// 		Type: to.Ptr("Microsoft.AzureStackHCI/networkInterfaces"),
+	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
+	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/networkInterfaces/test-nic"),
+	// 		Location: to.Ptr("West US2"),
+	// 		Properties: &armazurestackhcivm.NetworkInterfaceProperties{
+	// 			IPConfigurations: []*armazurestackhcivm.IPConfiguration{
+	// 				{
+	// 					Name: to.Ptr("ipconfig-sample"),
+	// 					Properties: &armazurestackhcivm.IPConfigurationProperties{
+	// 						Subnet: &armazurestackhcivm.LogicalNetworkArmReference{
+	// 							ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/logicalNetworks/test-lnet"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01-preview/NetworkInterfaces_Get.json
 func ExampleNetworkInterfacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +267,7 @@ func ExampleNetworkInterfacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_ListAll.json
+// Generated from example definition: 2026-07-01-preview/NetworkInterfaces_ListAll.json
 func ExampleNetworkInterfacesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +321,7 @@ func ExampleNetworkInterfacesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01-preview/NetworkInterfaces_ListByResourceGroup.json
 func ExampleNetworkInterfacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,57 +373,4 @@ func ExampleNetworkInterfacesClient_NewListByResourceGroupPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-06-01-preview/NetworkInterfaces_Update.json
-func ExampleNetworkInterfacesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armazurestackhcivm.NewClientFactory("fd3c3665-1729-4b7b-9a38-238e83b0f98b", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkInterfacesClient().BeginUpdate(ctx, "test-rg", "test-nic", armazurestackhcivm.NetworkInterfacesUpdateRequest{
-		Tags: map[string]*string{
-			"additionalProperties": to.Ptr("sample"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armazurestackhcivm.NetworkInterfacesClientUpdateResponse{
-	// 	NetworkInterface: armazurestackhcivm.NetworkInterface{
-	// 		Name: to.Ptr("test-nic"),
-	// 		Type: to.Ptr("Microsoft.AzureStackHCI/networkInterfaces"),
-	// 		ExtendedLocation: &armazurestackhcivm.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.ExtendedLocation/customLocations/dogfood-location"),
-	// 			Type: to.Ptr(armazurestackhcivm.ExtendedLocationTypesCustomLocation),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/networkInterfaces/test-nic"),
-	// 		Location: to.Ptr("West US2"),
-	// 		Properties: &armazurestackhcivm.NetworkInterfaceProperties{
-	// 			IPConfigurations: []*armazurestackhcivm.IPConfiguration{
-	// 				{
-	// 					Name: to.Ptr("ipconfig-sample"),
-	// 					Properties: &armazurestackhcivm.IPConfigurationProperties{
-	// 						Subnet: &armazurestackhcivm.LogicalNetworkArmReference{
-	// 							ID: to.Ptr("/subscriptions/a95612cb-f1fa-4daa-a4fd-272844fa512c/resourceGroups/dogfoodarc/providers/Microsoft.AzureStackHCI/logicalNetworks/test-lnet"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armazurestackhcivm.ProvisioningStateEnumAccepted),
-	// 		},
-	// 	},
-	// }
 }

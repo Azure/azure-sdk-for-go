@@ -14,7 +14,7 @@ It compares three point-read paths on the same VM, account, and container:
 
 | Folder | Purpose | Needed for a smoke test? |
 | --- | --- | --- |
-| [`bench/`](bench) | Workload spec, the Rust benchmark, source pinning and patching, builds, and the campaign runner | Yes |
+| [`bench/`](bench) | Workload spec, the Rust benchmark, the Go v2 adapter, source pinning and patching, builds, and the campaign runner | Yes |
 | [`instrumentation/`](instrumentation) | Optional FFI lifecycle counters, wire proofs, and their tests | No |
 | [`analysis/`](analysis) | Perf Self attribution, calibration, summaries, and provenance | No |
 | [`ops/`](ops) | VM plumbing: scratch disk, resume, inspection, export, and input bundling | No |
@@ -28,7 +28,14 @@ The folders exist for review only. [`ops/package_inputs.py`](ops/package_inputs.
 2. [`bench/run_campaign.sh`](bench/run_campaign.sh): the end-to-end order.
 3. [`bench/patch_native.py`](bench/patch_native.py): how the native driver is patched, including Tokio threads.
 4. [`bench/rust_main.rs`](bench/rust_main.rs): the Rust SDK and Rust driver legs.
-5. [`bench/run_leg.py`](bench/run_leg.py): how one leg is launched and sampled.
+5. [`bench/go-v2-adapter/`](bench/go-v2-adapter): the Go v2 leg. Start with `main.go` (the closed loop) and `sdk_v2.go` (the Go v2 client calls).
+6. [`bench/run_leg.py`](bench/run_leg.py): how one leg is launched and sampled.
+
+## Go v2 adapter
+
+[`bench/go-v2-adapter/`](bench/go-v2-adapter) is the exact Go source that `stage_sources.sh` staged on the VM as `src/adapter-base`. It was copied back unchanged and its archive hash matched the VM's. It derives from the `cosmos-cross-sdk-perf` skill's Go adapter, with `main.go`, `go.mod`, and `go.sum` changed and `sdk_v2.go` added.
+
+On the VM, [`bench/patch_go.py`](bench/patch_go.py) patches it, and [`bench/build_go.sh`](bench/build_go.sh) rewrites the `go.mod` `replace` lines to the patched Go v2 SDK and native driver before building with `-tags go_v2`. The VM paths in the checked-in `go.mod` are therefore placeholders, so this directory doesn't build on its own.
 
 ## Pinned inputs and workload
 

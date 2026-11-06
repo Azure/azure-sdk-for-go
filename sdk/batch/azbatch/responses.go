@@ -7,57 +7,7 @@ package azbatch
 import (
 	"io"
 	"time"
-
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
-
-// CancelCertificateDeletionResponse contains the response from method Client.CancelCertificateDeletion.
-type CancelCertificateDeletionResponse struct {
-	// The client-request-id provided by the client during the request. This will be returned only if the return-client-request-id
-	// parameter was set to true.
-	ClientRequestID *string
-
-	// The OData ID of the resource to which the request applied.
-	DataServiceID *string
-
-	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
-	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
-	// headers.
-	ETag *azcore.ETag
-
-	// The time at which the resource was last modified.
-	LastModified *time.Time
-
-	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
-	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
-	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
-	// request was made, and the region that Account resides in.
-	RequestID *string
-}
-
-// CreateCertificateResponse contains the response from method Client.CreateCertificate.
-type CreateCertificateResponse struct {
-	// The client-request-id provided by the client during the request. This will be returned only if the return-client-request-id
-	// parameter was set to true.
-	ClientRequestID *string
-
-	// The OData ID of the resource to which the request applied.
-	DataServiceID *string
-
-	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
-	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
-	// headers.
-	ETag *azcore.ETag
-
-	// The time at which the resource was last modified.
-	LastModified *time.Time
-
-	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
-	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
-	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
-	// request was made, and the region that Account resides in.
-	RequestID *string
-}
 
 // CreateJobResponse contains the response from method Client.CreateJob.
 type CreateJobResponse struct {
@@ -71,16 +21,16 @@ type CreateJobResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // CreateJobScheduleResponse contains the response from method Client.CreateJobSchedule.
@@ -95,16 +45,16 @@ type CreateJobScheduleResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // CreateNodeUserResponse contains the response from method Client.CreateNodeUser.
@@ -119,16 +69,16 @@ type CreateNodeUserResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // CreatePoolResponse contains the response from method Client.CreatePool.
@@ -143,22 +93,22 @@ type CreatePoolResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // CreateTaskCollectionResponse contains the response from method Client.CreateTaskCollection.
 type CreateTaskCollectionResponse struct {
-	// The result of adding a collection of Tasks to a Job.
-	AddTaskCollectionResult
+	// The result of creating a collection of Tasks to a Job.
+	CreateTaskCollectionResult
 
 	// The client-request-id provided by the client during the request. This will be returned only if the return-client-request-id
 	// parameter was set to true.
@@ -167,16 +117,16 @@ type CreateTaskCollectionResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // CreateTaskResponse contains the response from method Client.CreateTask.
@@ -191,16 +141,16 @@ type CreateTaskResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DeallocateNodeResponse contains the response from method Client.DeallocateNode.
@@ -215,37 +165,16 @@ type DeallocateNodeResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
-}
-
-// DeleteCertificateResponse contains the response from method Client.DeleteCertificate.
-type DeleteCertificateResponse struct {
-	// The client-request-id provided by the client during the request. This will be returned only if the return-client-request-id
-	// parameter was set to true.
-	ClientRequestID *string
-
-	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
-	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
-	// headers.
-	ETag *azcore.ETag
-
-	// The time at which the resource was last modified.
-	LastModified *time.Time
-
-	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
-	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
-	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
-	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DeleteJobResponse contains the response from method Client.DeleteJob.
@@ -258,7 +187,7 @@ type DeleteJobResponse struct {
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DeleteJobScheduleResponse contains the response from method Client.DeleteJobSchedule.
@@ -271,7 +200,7 @@ type DeleteJobScheduleResponse struct {
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DeleteNodeFileResponse contains the response from method Client.DeleteNodeFile.
@@ -284,7 +213,7 @@ type DeleteNodeFileResponse struct {
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DeleteNodeUserResponse contains the response from method Client.DeleteNodeUser.
@@ -297,7 +226,7 @@ type DeleteNodeUserResponse struct {
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DeletePoolResponse contains the response from method Client.DeletePool.
@@ -310,7 +239,7 @@ type DeletePoolResponse struct {
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DeleteTaskFileResponse contains the response from method Client.DeleteTaskFile.
@@ -323,7 +252,7 @@ type DeleteTaskFileResponse struct {
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DeleteTaskResponse contains the response from method Client.DeleteTask.
@@ -336,7 +265,7 @@ type DeleteTaskResponse struct {
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DisableJobResponse contains the response from method Client.DisableJob.
@@ -351,16 +280,16 @@ type DisableJobResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DisableJobScheduleResponse contains the response from method Client.DisableJobSchedule.
@@ -375,16 +304,16 @@ type DisableJobScheduleResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DisableNodeSchedulingResponse contains the response from method Client.DisableNodeScheduling.
@@ -399,16 +328,16 @@ type DisableNodeSchedulingResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // DisablePoolAutoScaleResponse contains the response from method Client.DisablePoolAutoScale.
@@ -423,16 +352,16 @@ type DisablePoolAutoScaleResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // EnableJobResponse contains the response from method Client.EnableJob.
@@ -447,16 +376,16 @@ type EnableJobResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // EnableJobScheduleResponse contains the response from method Client.EnableJobSchedule.
@@ -471,16 +400,16 @@ type EnableJobScheduleResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // EnableNodeSchedulingResponse contains the response from method Client.EnableNodeScheduling.
@@ -495,16 +424,16 @@ type EnableNodeSchedulingResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // EnablePoolAutoScaleResponse contains the response from method Client.EnablePoolAutoScale.
@@ -519,16 +448,16 @@ type EnablePoolAutoScaleResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // EvaluatePoolAutoScaleResponse contains the response from method Client.EvaluatePoolAutoScale.
@@ -546,16 +475,16 @@ type EvaluatePoolAutoScaleResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetApplicationResponse contains the response from method Client.GetApplication.
@@ -570,41 +499,16 @@ type GetApplicationResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
-}
-
-// GetCertificateResponse contains the response from method Client.GetCertificate.
-type GetCertificateResponse struct {
-	// A Certificate that can be installed on Compute Nodes and can be used to
-	// authenticate operations on the machine.
-	Certificate
-
-	// The client-request-id provided by the client during the request. This will be returned only if the return-client-request-id
-	// parameter was set to true.
-	ClientRequestID *string
-
-	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
-	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
-	// headers.
-	ETag *azcore.ETag
-
-	// The time at which the resource was last modified.
-	LastModified *time.Time
-
-	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
-	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
-	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
-	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetJobResponse contains the response from method Client.GetJob.
@@ -619,16 +523,16 @@ type GetJobResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetJobScheduleResponse contains the response from method Client.GetJobSchedule.
@@ -644,16 +548,16 @@ type GetJobScheduleResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetJobTaskCountsResponse contains the response from method Client.GetJobTaskCounts.
@@ -668,16 +572,16 @@ type GetJobTaskCountsResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetNodeExtensionResponse contains the response from method Client.GetNodeExtension.
@@ -692,16 +596,16 @@ type GetNodeExtensionResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetNodeFilePropertiesResponse contains the response from method Client.GetNodeFileProperties.
@@ -716,28 +620,28 @@ type GetNodeFilePropertiesResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// Whether the object represents a directory.
-	OCPBatchFileIsDirectory *bool
+	Ocpbatchfileisdirectory *bool
 
 	// The file mode attribute in octal format.
-	OCPBatchFileMode *string
+	Ocpbatchfilemode *string
 
 	// The URL of the file.
-	OCPBatchFileURL *string
+	Ocpbatchfileurl *string
 
 	// The file creation time.
-	OCPCreationTime *time.Time
+	Ocpcreationtime *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetNodeFileResponse contains the response from method Client.GetNodeFile.
@@ -758,28 +662,28 @@ type GetNodeFileResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// Whether the object represents a directory.
-	OCPBatchFileIsDirectory *bool
+	Ocpbatchfileisdirectory *bool
 
 	// The file mode attribute in octal format.
-	OCPBatchFileMode *string
+	Ocpbatchfilemode *string
 
 	// The URL of the file.
-	OCPBatchFileURL *string
+	Ocpbatchfileurl *string
 
 	// The file creation time.
-	OCPCreationTime *time.Time
+	Ocpcreationtime *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetNodeRemoteLoginSettingsResponse contains the response from method Client.GetNodeRemoteLoginSettings.
@@ -794,16 +698,16 @@ type GetNodeRemoteLoginSettingsResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetNodeResponse contains the response from method Client.GetNode.
@@ -818,16 +722,16 @@ type GetNodeResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetPoolResponse contains the response from method Client.GetPool.
@@ -842,16 +746,16 @@ type GetPoolResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetTaskFilePropertiesResponse contains the response from method Client.GetTaskFileProperties.
@@ -866,28 +770,28 @@ type GetTaskFilePropertiesResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// Whether the object represents a directory.
-	OCPBatchFileIsDirectory *bool
+	Ocpbatchfileisdirectory *bool
 
 	// The file mode attribute in octal format.
-	OCPBatchFileMode *string
+	Ocpbatchfilemode *string
 
 	// The URL of the file.
-	OCPBatchFileURL *string
+	Ocpbatchfileurl *string
 
 	// The file creation time.
-	OCPCreationTime *time.Time
+	Ocpcreationtime *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetTaskFileResponse contains the response from method Client.GetTaskFile.
@@ -908,28 +812,28 @@ type GetTaskFileResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// Whether the object represents a directory.
-	OCPBatchFileIsDirectory *bool
+	Ocpbatchfileisdirectory *bool
 
 	// The file mode attribute in octal format.
-	OCPBatchFileMode *string
+	Ocpbatchfilemode *string
 
 	// The URL of the file.
-	OCPBatchFileURL *string
+	Ocpbatchfileurl *string
 
 	// The file creation time.
-	OCPCreationTime *time.Time
+	Ocpcreationtime *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // GetTaskResponse contains the response from method Client.GetTask.
@@ -955,16 +859,16 @@ type GetTaskResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // JobScheduleExistsResponse contains the response from method Client.JobScheduleExists.
@@ -976,16 +880,16 @@ type JobScheduleExistsResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListApplicationsResponse contains the response from method Client.NewListApplicationsPager.
@@ -1000,40 +904,16 @@ type ListApplicationsResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
-}
-
-// ListCertificatesResponse contains the response from method Client.NewListCertificatesPager.
-type ListCertificatesResponse struct {
-	// The result of listing the Certificates in the Account.
-	CertificateListResult
-
-	// The client-request-id provided by the client during the request. This will be returned only if the return-client-request-id
-	// parameter was set to true.
-	ClientRequestID *string
-
-	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
-	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
-	// headers.
-	ETag *azcore.ETag
-
-	// The time at which the resource was last modified.
-	LastModified *time.Time
-
-	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
-	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
-	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
-	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListJobPreparationAndReleaseTaskStatusResponse contains the response from method Client.NewListJobPreparationAndReleaseTaskStatusPager.
@@ -1049,16 +929,16 @@ type ListJobPreparationAndReleaseTaskStatusResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListJobSchedulesResponse contains the response from method Client.NewListJobSchedulesPager.
@@ -1073,16 +953,16 @@ type ListJobSchedulesResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListJobsFromScheduleResponse contains the response from method Client.NewListJobsFromSchedulePager.
@@ -1097,16 +977,16 @@ type ListJobsFromScheduleResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListJobsResponse contains the response from method Client.NewListJobsPager.
@@ -1121,16 +1001,16 @@ type ListJobsResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListNodeExtensionsResponse contains the response from method Client.NewListNodeExtensionsPager.
@@ -1145,16 +1025,16 @@ type ListNodeExtensionsResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListNodeFilesResponse contains the response from method Client.NewListNodeFilesPager.
@@ -1170,16 +1050,16 @@ type ListNodeFilesResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListNodesResponse contains the response from method Client.NewListNodesPager.
@@ -1194,16 +1074,16 @@ type ListNodesResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListPoolNodeCountsResponse contains the response from method Client.NewListPoolNodeCountsPager.
@@ -1218,16 +1098,16 @@ type ListPoolNodeCountsResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListPoolsResponse contains the response from method Client.NewListPoolsPager.
@@ -1242,16 +1122,16 @@ type ListPoolsResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListSubTasksResponse contains the response from method Client.NewListSubTasksPager.
@@ -1266,16 +1146,16 @@ type ListSubTasksResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListSupportedImagesResponse contains the response from method Client.NewListSupportedImagesPager.
@@ -1290,16 +1170,16 @@ type ListSupportedImagesResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListTaskFilesResponse contains the response from method Client.NewListTaskFilesPager.
@@ -1315,16 +1195,16 @@ type ListTaskFilesResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ListTasksResponse contains the response from method Client.NewListTasksPager.
@@ -1339,16 +1219,16 @@ type ListTasksResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // PoolExistsResponse contains the response from method Client.PoolExists.
@@ -1360,16 +1240,16 @@ type PoolExistsResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ReactivateTaskResponse contains the response from method Client.ReactivateTask.
@@ -1384,16 +1264,16 @@ type ReactivateTaskResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // RebootNodeResponse contains the response from method Client.RebootNode.
@@ -1408,16 +1288,16 @@ type RebootNodeResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ReimageNodeResponse contains the response from method Client.ReimageNode.
@@ -1432,16 +1312,16 @@ type ReimageNodeResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // RemoveNodesResponse contains the response from method Client.RemoveNodes.
@@ -1456,16 +1336,16 @@ type RemoveNodesResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ReplaceJobResponse contains the response from method Client.ReplaceJob.
@@ -1480,16 +1360,16 @@ type ReplaceJobResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ReplaceJobScheduleResponse contains the response from method Client.ReplaceJobSchedule.
@@ -1504,16 +1384,16 @@ type ReplaceJobScheduleResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ReplaceNodeUserResponse contains the response from method Client.ReplaceNodeUser.
@@ -1528,16 +1408,16 @@ type ReplaceNodeUserResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ReplacePoolPropertiesResponse contains the response from method Client.ReplacePoolProperties.
@@ -1552,16 +1432,16 @@ type ReplacePoolPropertiesResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ReplaceTaskResponse contains the response from method Client.ReplaceTask.
@@ -1576,16 +1456,16 @@ type ReplaceTaskResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // ResizePoolResponse contains the response from method Client.ResizePool.
@@ -1600,16 +1480,16 @@ type ResizePoolResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // StartNodeResponse contains the response from method Client.StartNode.
@@ -1624,16 +1504,16 @@ type StartNodeResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // StopPoolResizeResponse contains the response from method Client.StopPoolResize.
@@ -1648,16 +1528,16 @@ type StopPoolResizeResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // TerminateJobResponse contains the response from method Client.TerminateJob.
@@ -1672,16 +1552,16 @@ type TerminateJobResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // TerminateJobScheduleResponse contains the response from method Client.TerminateJobSchedule.
@@ -1696,16 +1576,16 @@ type TerminateJobScheduleResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // TerminateTaskResponse contains the response from method Client.TerminateTask.
@@ -1720,16 +1600,16 @@ type TerminateTaskResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // UpdateJobResponse contains the response from method Client.UpdateJob.
@@ -1744,16 +1624,16 @@ type UpdateJobResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // UpdateJobScheduleResponse contains the response from method Client.UpdateJobSchedule.
@@ -1768,16 +1648,16 @@ type UpdateJobScheduleResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // UpdatePoolResponse contains the response from method Client.UpdatePool.
@@ -1792,16 +1672,16 @@ type UpdatePoolResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }
 
 // UploadNodeLogsResponse contains the response from method Client.UploadNodeLogs.
@@ -1816,38 +1696,14 @@ type UploadNodeLogsResponse struct {
 	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
 	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
 	// headers.
-	ETag *azcore.ETag
+	Etag *string
 
 	// The time at which the resource was last modified.
-	LastModified *time.Time
+	Lastmodified *time.Time
 
 	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
 	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
 	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
 	// request was made, and the region that Account resides in.
-	RequestID *string
-}
-
-// listPoolUsageMetricsResponse contains the response from method Client.NewlistPoolUsageMetricsPager.
-type listPoolUsageMetricsResponse struct {
-	// The result of a listing the usage metrics for an Account.
-	listPoolUsageMetricsResult
-
-	// The client-request-id provided by the client during the request. This will be returned only if the return-client-request-id
-	// parameter was set to true.
-	ClientRequestID *string
-
-	// The ETag HTTP response header. This is an opaque string. You can use it to detect whether the resource has changed between
-	// requests. In particular, you can pass the ETag to one of the If-Modified-Since, If-Unmodified-Since, If-Match or If-None-Match
-	// headers.
-	ETag *azcore.ETag
-
-	// The time at which the resource was last modified.
-	LastModified *time.Time
-
-	// A unique identifier for the request that was made to the Batch service. If a request is consistently failing and you have
-	// verified that the request is properly formulated, you may use this value to report the error to Microsoft. In your report,
-	// include the value of this request ID, the approximate time that the request was made, the Batch Account against which the
-	// request was made, and the region that Account resides in.
-	RequestID *string
+	Requestid *string
 }

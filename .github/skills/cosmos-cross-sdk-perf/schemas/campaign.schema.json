@@ -1,0 +1,75 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Cosmos cross-SDK performance campaign",
+  "type": "object",
+  "required": ["campaignId", "azure", "sources", "workload", "execution", "profiling"],
+  "properties": {
+    "campaignId": {"type": "string", "minLength": 1},
+    "azure": {
+      "type": "object",
+      "required": [
+        "subscriptionId",
+        "resourceGroup",
+        "provisionCosmosAccount",
+        "database",
+        "container",
+        "vmName",
+        "cleanup"
+      ]
+    },
+    "sources": {
+      "type": "object",
+      "required": [
+        "goV1Version",
+        "goV2Commit",
+        "nativeDriverSourceCommit",
+        "nativeDriverDistributionCommit",
+        "rustCommit",
+        "flameGraphRepository",
+        "flameGraphCommit"
+      ]
+    },
+    "workload": {
+      "type": "object",
+      "required": [
+        "partitionKeyPath",
+        "seedCount",
+        "documentBytes",
+        "operation",
+        "workers",
+        "warmupSeconds",
+        "measurementSeconds",
+        "closedLoop",
+        "keySequence",
+        "rawResponseMode",
+        "validationOutsideTimedPath",
+        "gatewayProtocol",
+        "binaryEncoding",
+        "authentication"
+      ]
+    },
+    "execution": {
+      "type": "object",
+      "required": [
+        "cleanRepeats",
+        "order",
+        "runClasses",
+        "authoritativeClass",
+        "stopAfterPilot"
+      ]
+    },
+    "profiling": {
+      "type": "object",
+      "required": [
+        "perfFrequencyHz",
+        "calibrationModes",
+        "selectedCallGraph",
+        "capacityCores",
+        "accountingTolerancePercent",
+        "maxLostEventPercent",
+        "minResolvedSamplePercent",
+        "minCallchainSamplePercent"
+      ]
+    }
+  }
+}

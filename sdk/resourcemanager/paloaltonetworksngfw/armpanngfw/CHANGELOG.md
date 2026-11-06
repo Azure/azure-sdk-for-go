@@ -1,5 +1,35 @@
 # Release History
 
+## 2.1.0-beta.1 (2026-08-21)
+### Features Added
+
+- New enum type `CustomCaptureConfigurationsProtocol` with values `CustomCaptureConfigurationsProtocolTCP`, `CustomCaptureConfigurationsProtocolUDP`
+- New enum type `CustomCaptureConfigurationsStage` with values `CustomCaptureConfigurationsStageDrop`, `CustomCaptureConfigurationsStageFirewall`, `CustomCaptureConfigurationsStageReceive`, `CustomCaptureConfigurationsStageTransmit`
+- New enum type `CustomCaptureConfigurationsStatus` with values `CustomCaptureConfigurationsStatusFailed`, `CustomCaptureConfigurationsStatusInProgress`, `CustomCaptureConfigurationsStatusSuccess`
+- New function `*ClientFactory.NewCustomCaptureConfigurationsFirewallResourcesClient() *CustomCaptureConfigurationsFirewallResourcesClient`
+- New function `*ClientFactory.NewLogIngestionSettingsResourcesClient() *LogIngestionSettingsResourcesClient`
+- New function `NewCustomCaptureConfigurationsFirewallResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomCaptureConfigurationsFirewallResourcesClient, error)`
+- New function `*CustomCaptureConfigurationsFirewallResourcesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, firewallName string, resource CustomCaptureConfigurationsFirewallResource, options *CustomCaptureConfigurationsFirewallResourcesClientCreateOrUpdateOptions) (CustomCaptureConfigurationsFirewallResourcesClientCreateOrUpdateResponse, error)`
+- New function `*CustomCaptureConfigurationsFirewallResourcesClient.Delete(ctx context.Context, resourceGroupName string, firewallName string, options *CustomCaptureConfigurationsFirewallResourcesClientDeleteOptions) (CustomCaptureConfigurationsFirewallResourcesClientDeleteResponse, error)`
+- New function `*CustomCaptureConfigurationsFirewallResourcesClient.Get(ctx context.Context, resourceGroupName string, firewallName string, options *CustomCaptureConfigurationsFirewallResourcesClientGetOptions) (CustomCaptureConfigurationsFirewallResourcesClientGetResponse, error)`
+- New function `*CustomCaptureConfigurationsFirewallResourcesClient.NewListByFirewallPager(resourceGroupName string, firewallName string, options *CustomCaptureConfigurationsFirewallResourcesClientListByFirewallOptions) *runtime.Pager[CustomCaptureConfigurationsFirewallResourcesClientListByFirewallResponse]`
+- New function `NewLogIngestionSettingsResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogIngestionSettingsResourcesClient, error)`
+- New function `*LogIngestionSettingsResourcesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, firewallName string, resource LogIngestionSettingsResource, options *LogIngestionSettingsResourcesClientCreateOrUpdateOptions) (LogIngestionSettingsResourcesClientCreateOrUpdateResponse, error)`
+- New function `*LogIngestionSettingsResourcesClient.Delete(ctx context.Context, resourceGroupName string, firewallName string, options *LogIngestionSettingsResourcesClientDeleteOptions) (LogIngestionSettingsResourcesClientDeleteResponse, error)`
+- New function `*LogIngestionSettingsResourcesClient.Get(ctx context.Context, resourceGroupName string, firewallName string, options *LogIngestionSettingsResourcesClientGetOptions) (LogIngestionSettingsResourcesClientGetResponse, error)`
+- New function `*LogIngestionSettingsResourcesClient.NewListByFirewallPager(resourceGroupName string, firewallName string, options *LogIngestionSettingsResourcesClientListByFirewallOptions) *runtime.Pager[LogIngestionSettingsResourcesClientListByFirewallResponse]`
+- New struct `CustomCaptureConfigurationsFilter`
+- New struct `CustomCaptureConfigurationsFirewallResource`
+- New struct `CustomCaptureConfigurationsFirewallResourceListResult`
+- New struct `CustomCaptureConfigurationsProperties`
+- New struct `LogDestinationV2`
+- New struct `LogIngestionSettingsProperties`
+- New struct `LogIngestionSettingsResource`
+- New struct `LogIngestionSettingsResourceListResult`
+- New struct `MonitorLogV2`
+- New field `FirewallSKU` in struct `FirewallDeploymentProperties`
+
+
 ## 2.0.0 (2025-11-17)
 ### Breaking Changes
 

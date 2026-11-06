@@ -12,61 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-01/FileShares_CheckNameAvailability_MaximumSet_Gen.json
-func ExampleClient_CheckNameAvailability_fileSharesCheckNameAvailabilityMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armfileshares.NewClientFactory("0681745E-3F9F-4966-80E6-69624A3B29F2", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().CheckNameAvailability(ctx, "westus", armfileshares.CheckNameAvailabilityRequest{
-		Name: to.Ptr("fvykqbgmd"),
-		Type: to.Ptr("Microsoft.FileShares/fileShares"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armfileshares.ClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResponse: armfileshares.CheckNameAvailabilityResponse{
-	// 		NameAvailable: to.Ptr(true),
-	// 		Reason: to.Ptr(armfileshares.CheckNameAvailabilityReasonInvalid),
-	// 		Message: to.Ptr("ysdbdamxulhxnqihecifxjepymgw"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01/FileShares_CheckNameAvailability_MinimumSet_Gen.json
-func ExampleClient_CheckNameAvailability_fileSharesCheckNameAvailabilityMinimumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armfileshares.NewClientFactory("0681745E-3F9F-4966-80E6-69624A3B29F2", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClient().CheckNameAvailability(ctx, "westus", armfileshares.CheckNameAvailabilityRequest{}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armfileshares.ClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResponse: armfileshares.CheckNameAvailabilityResponse{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-01/FileShares_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShares_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,6 +29,7 @@ func ExampleClient_BeginCreateOrUpdate() {
 			MediaTier:                      to.Ptr(armfileshares.MediaTierSSD),
 			Redundancy:                     to.Ptr(armfileshares.RedundancyLocal),
 			Protocol:                       to.Ptr(armfileshares.ProtocolNFS),
+			ScaleMode:                      to.Ptr(armfileshares.ScaleModeScale),
 			ProvisionedStorageGiB:          to.Ptr[int32](8),
 			ProvisionedIOPerSec:            to.Ptr[int32](5),
 			ProvisionedThroughputMiBPerSec: to.Ptr[int32](22),
@@ -96,11 +43,27 @@ func ExampleClient_BeginCreateOrUpdate() {
 				},
 			},
 			PublicNetworkAccess: to.Ptr(armfileshares.PublicNetworkAccessEnabled),
+			Encryption: &armfileshares.FileShareEncryption{
+				InfrastructureEncryption: to.Ptr(armfileshares.InfrastructureEncryptionEnabled),
+				CustomerManagedKeyEncryption: &armfileshares.CustomerManagedKeyEncryption{
+					KeyEncryptionKeyIdentity: &armfileshares.KeyEncryptionKeyIdentity{
+						IdentityType:                   to.Ptr(armfileshares.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey"),
+				},
+			},
 		},
 		Tags: map[string]*string{
 			"key9647": to.Ptr("xwokdvyoae"),
 		},
 		Location: to.Ptr("westus"),
+		Identity: &armfileshares.ManagedServiceIdentity{
+			Type: to.Ptr(armfileshares.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armfileshares.UserAssignedIdentity{
+				"/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
+			},
+		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -168,6 +131,18 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 					},
 	// 				},
 	// 			},
+	// 			Encryption: &armfileshares.FileShareEncryption{
+	// 				InfrastructureEncryption: to.Ptr(armfileshares.InfrastructureEncryptionEnabled),
+	// 				CustomerManagedKeyEncryption: &armfileshares.CustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyIdentity: &armfileshares.KeyEncryptionKeyIdentity{
+	// 						IdentityType: to.Ptr(armfileshares.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+	// 					},
+	// 					KeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey"),
+	// 				},
+	// 				CurrentKeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey/0123456789abcdef0123456789abcdef"),
+	// 				LastKeyRotationTimestamp: to.Ptr(time.Date(2026, time.September, 1, 12, 0, 0, 0, time.UTC)),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key9647": to.Ptr("xwokdvyoae"),
@@ -184,11 +159,22 @@ func ExampleClient_BeginCreateOrUpdate() {
 	// 			LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 	// 		},
+	// 		Identity: &armfileshares.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armfileshares.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 			UserAssignedIdentities: map[string]*armfileshares.UserAssignedIdentity{
+	// 				"/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armfileshares.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("33333333-3333-3333-3333-333333333333"),
+	// 					ClientID: to.Ptr("44444444-4444-4444-4444-444444444444"),
+	// 				},
+	// 			},
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-06-01/FileShares_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShares_Delete_MaximumSet_Gen.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,8 +195,8 @@ func ExampleClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/FileShares_Get_MaximumSet_Gen.json
-func ExampleClient_Get() {
+// Generated from example definition: 2026-09-01/FileShares_Update_MaximumSet_Gen.json
+func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -220,14 +206,53 @@ func ExampleClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().Get(ctx, "rgfileshares", "fileshare", nil)
+	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "rgfileshares", "fileshare", armfileshares.FileShareUpdate{
+		Tags: map[string]*string{
+			"key173": to.Ptr("uyf"),
+		},
+		Properties: &armfileshares.FileShareUpdateProperties{
+			ProvisionedStorageGiB:          to.Ptr[int32](7),
+			ProvisionedIOPerSec:            to.Ptr[int32](1),
+			ProvisionedThroughputMiBPerSec: to.Ptr[int32](29),
+			NfsProtocolProperties: &armfileshares.NfsProtocolProperties{
+				RootSquash:                  to.Ptr(armfileshares.ShareRootSquashNoRootSquash),
+				EncryptionInTransitRequired: to.Ptr(armfileshares.EncryptionInTransitRequiredEnabled),
+			},
+			PublicAccessProperties: &armfileshares.PublicAccessProperties{
+				AllowedSubnets: []*string{
+					to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+				},
+			},
+			PublicNetworkAccess: to.Ptr(armfileshares.PublicNetworkAccessEnabled),
+			Encryption: &armfileshares.FileShareEncryption{
+				InfrastructureEncryption: to.Ptr(armfileshares.InfrastructureEncryptionEnabled),
+				CustomerManagedKeyEncryption: &armfileshares.CustomerManagedKeyEncryption{
+					KeyEncryptionKeyIdentity: &armfileshares.KeyEncryptionKeyIdentity{
+						IdentityType:                   to.Ptr(armfileshares.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+					},
+					KeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey"),
+				},
+			},
+		},
+		Identity: &armfileshares.ManagedServiceIdentity{
+			Type: to.Ptr(armfileshares.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+			UserAssignedIdentities: map[string]*armfileshares.UserAssignedIdentity{
+				"/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": {},
+			},
+		},
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armfileshares.ClientGetResponse{
+	// res = armfileshares.ClientUpdateResponse{
 	// 	FileShare: armfileshares.FileShare{
 	// 		Properties: &armfileshares.FileShareProperties{
 	// 			MountName: to.Ptr("fileshare"),
@@ -283,6 +308,18 @@ func ExampleClient_Get() {
 	// 					},
 	// 				},
 	// 			},
+	// 			Encryption: &armfileshares.FileShareEncryption{
+	// 				InfrastructureEncryption: to.Ptr(armfileshares.InfrastructureEncryptionEnabled),
+	// 				CustomerManagedKeyEncryption: &armfileshares.CustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyIdentity: &armfileshares.KeyEncryptionKeyIdentity{
+	// 						IdentityType: to.Ptr(armfileshares.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+	// 					},
+	// 					KeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey"),
+	// 				},
+	// 				CurrentKeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey/0123456789abcdef0123456789abcdef"),
+	// 				LastKeyRotationTimestamp: to.Ptr(time.Date(2026, time.September, 1, 12, 0, 0, 0, time.UTC)),
+	// 			},
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"key9647": to.Ptr("xwokdvyoae"),
@@ -299,11 +336,252 @@ func ExampleClient_Get() {
 	// 			LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
 	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 	// 		},
+	// 		Identity: &armfileshares.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armfileshares.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 			UserAssignedIdentities: map[string]*armfileshares.UserAssignedIdentity{
+	// 				"/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armfileshares.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("33333333-3333-3333-3333-333333333333"),
+	// 					ClientID: to.Ptr("44444444-4444-4444-4444-444444444444"),
+	// 				},
+	// 			},
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-06-01/FileShares_ListByParent_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShares_CheckNameAvailability_MaximumSet_Gen.json
+func ExampleClient_CheckNameAvailability_fileSharesCheckNameAvailabilityMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfileshares.NewClientFactory("0681745E-3F9F-4966-80E6-69624A3B29F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().CheckNameAvailability(ctx, "westus", armfileshares.CheckNameAvailabilityRequest{
+		Name: to.Ptr("fvykqbgmd"),
+		Type: to.Ptr("Microsoft.FileShares/fileShares"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armfileshares.ClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResponse: armfileshares.CheckNameAvailabilityResponse{
+	// 		NameAvailable: to.Ptr(true),
+	// 		Reason: to.Ptr(armfileshares.CheckNameAvailabilityReasonInvalid),
+	// 		Message: to.Ptr("ysdbdamxulhxnqihecifxjepymgw"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/FileShares_CheckNameAvailability_MinimumSet_Gen.json
+func ExampleClient_CheckNameAvailability_fileSharesCheckNameAvailabilityMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfileshares.NewClientFactory("0681745E-3F9F-4966-80E6-69624A3B29F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().CheckNameAvailability(ctx, "westus", armfileshares.CheckNameAvailabilityRequest{}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armfileshares.ClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResponse: armfileshares.CheckNameAvailabilityResponse{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/FileShares_Get_MaximumSet_Gen.json
+func ExampleClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfileshares.NewClientFactory("0681745E-3F9F-4966-80E6-69624A3B29F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().Get(ctx, "rgfileshares", "fileshare", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armfileshares.ClientGetResponse{
+	// 	FileShare: armfileshares.FileShare{
+	// 		Properties: &armfileshares.FileShareProperties{
+	// 			MountName: to.Ptr("fileshare"),
+	// 			HostName: to.Ptr("venxryqlzdhnb"),
+	// 			MediaTier: to.Ptr(armfileshares.MediaTierSSD),
+	// 			Redundancy: to.Ptr(armfileshares.RedundancyLocal),
+	// 			Protocol: to.Ptr(armfileshares.ProtocolNFS),
+	// 			ScaleMode: to.Ptr(armfileshares.ScaleModeScale),
+	// 			ProvisionedStorageGiB: to.Ptr[int32](20),
+	// 			ProvisionedStorageNextAllowedDowngrade: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 954000000, time.UTC)),
+	// 			ProvisionedIOPerSec: to.Ptr[int32](9),
+	// 			ProvisionedIOPerSecNextAllowedDowngrade: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 954000000, time.UTC)),
+	// 			ProvisionedThroughputMiBPerSec: to.Ptr[int32](5),
+	// 			ProvisionedThroughputNextAllowedDowngrade: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 954000000, time.UTC)),
+	// 			IncludedBurstIOPerSec: to.Ptr[int32](24523),
+	// 			MaxBurstIOPerSecCredits: to.Ptr[int64](0),
+	// 			NfsProtocolProperties: &armfileshares.NfsProtocolProperties{
+	// 				RootSquash: to.Ptr(armfileshares.ShareRootSquashNoRootSquash),
+	// 				EncryptionInTransitRequired: to.Ptr(armfileshares.EncryptionInTransitRequiredEnabled),
+	// 			},
+	// 			PublicAccessProperties: &armfileshares.PublicAccessProperties{
+	// 				AllowedSubnets: []*string{
+	// 					to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armfileshares.FileShareProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armfileshares.PublicNetworkAccessEnabled),
+	// 			PrivateEndpointConnections: []*armfileshares.PrivateEndpointConnection{
+	// 				{
+	// 					Properties: &armfileshares.PrivateEndpointConnectionProperties{
+	// 						GroupIDs: []*string{
+	// 							to.Ptr("ndoii"),
+	// 						},
+	// 						PrivateEndpoint: &armfileshares.PrivateEndpoint{
+	// 							ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.Network/privateEndpoints/testresourcename"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armfileshares.PrivateLinkServiceConnectionState{
+	// 							Status: to.Ptr(armfileshares.PrivateEndpointServiceConnectionStatusPending),
+	// 							Description: to.Ptr("a"),
+	// 							ActionsRequired: to.Ptr("pvlmopquhexpdjpcaruvj"),
+	// 						},
+	// 						ProvisioningState: to.Ptr(armfileshares.PrivateEndpointConnectionProvisioningStateSucceeded),
+	// 					},
+	// 					ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.FileShares/fileShares/testresourcename/privateEndpointConnections/privateEndpointConnectionName"),
+	// 					Name: to.Ptr("kjavgkroj"),
+	// 					Type: to.Ptr("Microsoft.FileShares/fileShares/privateEndpointConnections"),
+	// 					SystemData: &armfileshares.SystemData{
+	// 						CreatedBy: to.Ptr("moat"),
+	// 						CreatedByType: to.Ptr(armfileshares.CreatedByTypeUser),
+	// 						CreatedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
+	// 						LastModifiedBy: to.Ptr("dxukcadzapywjcgnxsqchaa"),
+	// 						LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
+	// 						LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
+	// 					},
+	// 				},
+	// 			},
+	// 			Encryption: &armfileshares.FileShareEncryption{
+	// 				InfrastructureEncryption: to.Ptr(armfileshares.InfrastructureEncryptionEnabled),
+	// 				CustomerManagedKeyEncryption: &armfileshares.CustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyIdentity: &armfileshares.KeyEncryptionKeyIdentity{
+	// 						IdentityType: to.Ptr(armfileshares.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+	// 						UserAssignedIdentityResourceID: to.Ptr("/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+	// 					},
+	// 					KeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey"),
+	// 				},
+	// 				CurrentKeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey/0123456789abcdef0123456789abcdef"),
+	// 				LastKeyRotationTimestamp: to.Ptr(time.Date(2026, time.September, 1, 12, 0, 0, 0, time.UTC)),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key9647": to.Ptr("xwokdvyoae"),
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		ID: to.Ptr("/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.FileShares/fileShares/fileshare"),
+	// 		Name: to.Ptr("fileshare"),
+	// 		Type: to.Ptr("Microsoft.FileShares/fileShares"),
+	// 		Identity: &armfileshares.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armfileshares.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 			UserAssignedIdentities: map[string]*armfileshares.UserAssignedIdentity{
+	// 				"/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armfileshares.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("33333333-3333-3333-3333-333333333333"),
+	// 					ClientID: to.Ptr("44444444-4444-4444-4444-444444444444"),
+	// 				},
+	// 			},
+	// 		},
+	// 		SystemData: &armfileshares.SystemData{
+	// 			CreatedBy: to.Ptr("moat"),
+	// 			CreatedByType: to.Ptr(armfileshares.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("dxukcadzapywjcgnxsqchaa"),
+	// 			LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/FileShares_GetRedundancyConversionStatus_MaximumSet_Gen.json
+func ExampleClient_GetRedundancyConversionStatus_fileSharesGetRedundancyConversionStatusMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfileshares.NewClientFactory("0681745E-3F9F-4966-80E6-69624A3B29F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().GetRedundancyConversionStatus(ctx, "rgfileshares", "fileshare", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armfileshares.ClientGetRedundancyConversionStatusResponse{
+	// 	RedundancyConversionStatusResponse: armfileshares.RedundancyConversionStatusResponse{
+	// 		Properties: &armfileshares.RedundancyConversionStatusOutput{
+	// 			TargetRedundancy: to.Ptr(armfileshares.RedundancyZone),
+	// 			ConversionStatus: to.Ptr(armfileshares.RedundancyConversionStatusFailed),
+	// 			ConversionFailedReason: to.Ptr("QuotaExceeded"),
+	// 			ConversionFailedDetailedReason: to.Ptr("The redundancy conversion failed because the regional zone-redundant capacity quota was exceeded."),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/FileShares_GetRedundancyConversionStatus_MinimumSet_Gen.json
+func ExampleClient_GetRedundancyConversionStatus_fileSharesGetRedundancyConversionStatusMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfileshares.NewClientFactory("0681745E-3F9F-4966-80E6-69624A3B29F2", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClient().GetRedundancyConversionStatus(ctx, "rgfileshares", "fileshare", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armfileshares.ClientGetRedundancyConversionStatusResponse{
+	// 	RedundancyConversionStatusResponse: armfileshares.RedundancyConversionStatusResponse{
+	// 		Properties: &armfileshares.RedundancyConversionStatusOutput{
+	// 			TargetRedundancy: to.Ptr(armfileshares.RedundancyZone),
+	// 			ConversionStatus: to.Ptr(armfileshares.RedundancyConversionStatusInProgress),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/FileShares_ListByParent_MaximumSet_Gen.json
 func ExampleClient_NewListByParentPager_fileSharesListByParentMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -383,6 +661,18 @@ func ExampleClient_NewListByParentPager_fileSharesListByParentMaximumSet() {
 		// 							},
 		// 						},
 		// 					},
+		// 					Encryption: &armfileshares.FileShareEncryption{
+		// 						InfrastructureEncryption: to.Ptr(armfileshares.InfrastructureEncryptionEnabled),
+		// 						CustomerManagedKeyEncryption: &armfileshares.CustomerManagedKeyEncryption{
+		// 							KeyEncryptionKeyIdentity: &armfileshares.KeyEncryptionKeyIdentity{
+		// 								IdentityType: to.Ptr(armfileshares.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+		// 								UserAssignedIdentityResourceID: to.Ptr("/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+		// 							},
+		// 							KeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey"),
+		// 						},
+		// 						CurrentKeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey/0123456789abcdef0123456789abcdef"),
+		// 						LastKeyRotationTimestamp: to.Ptr(time.Date(2026, time.September, 1, 12, 0, 0, 0, time.UTC)),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key9647": to.Ptr("xwokdvyoae"),
@@ -399,6 +689,17 @@ func ExampleClient_NewListByParentPager_fileSharesListByParentMaximumSet() {
 		// 					LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 		// 				},
+		// 				Identity: &armfileshares.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armfileshares.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+		// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 					TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 					UserAssignedIdentities: map[string]*armfileshares.UserAssignedIdentity{
+		// 						"/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armfileshares.UserAssignedIdentity{
+		// 							PrincipalID: to.Ptr("33333333-3333-3333-3333-333333333333"),
+		// 							ClientID: to.Ptr("44444444-4444-4444-4444-444444444444"),
+		// 						},
+		// 					},
+		// 				},
 		// 			},
 		// 		},
 		// 		NextLink: to.Ptr("https://microsoft.com/a"),
@@ -407,7 +708,7 @@ func ExampleClient_NewListByParentPager_fileSharesListByParentMaximumSet() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/FileShares_ListByParent_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShares_ListByParent_MinimumSet_Gen.json
 func ExampleClient_NewListByParentPager_fileSharesListByParentMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -438,7 +739,7 @@ func ExampleClient_NewListByParentPager_fileSharesListByParentMinimumSet() {
 	}
 }
 
-// Generated from example definition: 2026-06-01/FileShares_ListBySubscription_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShares_ListBySubscription_MaximumSet_Gen.json
 func ExampleClient_NewListBySubscriptionPager_fileSharesListBySubscriptionMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -518,6 +819,18 @@ func ExampleClient_NewListBySubscriptionPager_fileSharesListBySubscriptionMaximu
 		// 							},
 		// 						},
 		// 					},
+		// 					Encryption: &armfileshares.FileShareEncryption{
+		// 						InfrastructureEncryption: to.Ptr(armfileshares.InfrastructureEncryptionEnabled),
+		// 						CustomerManagedKeyEncryption: &armfileshares.CustomerManagedKeyEncryption{
+		// 							KeyEncryptionKeyIdentity: &armfileshares.KeyEncryptionKeyIdentity{
+		// 								IdentityType: to.Ptr(armfileshares.KeyEncryptionKeyIdentityTypeUserAssignedIdentity),
+		// 								UserAssignedIdentityResourceID: to.Ptr("/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity"),
+		// 							},
+		// 							KeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey"),
+		// 						},
+		// 						CurrentKeyEncryptionKeyURL: to.Ptr("https://myvault.vault.azure.net/keys/myfilesharekey/0123456789abcdef0123456789abcdef"),
+		// 						LastKeyRotationTimestamp: to.Ptr(time.Date(2026, time.September, 1, 12, 0, 0, 0, time.UTC)),
+		// 					},
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"key9647": to.Ptr("xwokdvyoae"),
@@ -534,6 +847,17 @@ func ExampleClient_NewListBySubscriptionPager_fileSharesListBySubscriptionMaximu
 		// 					LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
 		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
 		// 				},
+		// 				Identity: &armfileshares.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armfileshares.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+		// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+		// 					TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 					UserAssignedIdentities: map[string]*armfileshares.UserAssignedIdentity{
+		// 						"/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity": &armfileshares.UserAssignedIdentity{
+		// 							PrincipalID: to.Ptr("33333333-3333-3333-3333-333333333333"),
+		// 							ClientID: to.Ptr("44444444-4444-4444-4444-444444444444"),
+		// 						},
+		// 					},
+		// 				},
 		// 			},
 		// 		},
 		// 		NextLink: to.Ptr("https://microsoft.com/a"),
@@ -542,7 +866,7 @@ func ExampleClient_NewListBySubscriptionPager_fileSharesListBySubscriptionMaximu
 	}
 }
 
-// Generated from example definition: 2026-06-01/FileShares_ListBySubscription_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-01/FileShares_ListBySubscription_MinimumSet_Gen.json
 func ExampleClient_NewListBySubscriptionPager_fileSharesListBySubscriptionMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -573,8 +897,8 @@ func ExampleClient_NewListBySubscriptionPager_fileSharesListBySubscriptionMinimu
 	}
 }
 
-// Generated from example definition: 2026-06-01/FileShares_Update_MaximumSet_Gen.json
-func ExampleClient_BeginUpdate() {
+// Generated from example definition: 2026-09-01/FileShares_StartRedundancyConversion_MaximumSet_Gen.json
+func ExampleClient_StartRedundancyConversion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -584,108 +908,12 @@ func ExampleClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewClient().BeginUpdate(ctx, "rgfileshares", "fileshare", armfileshares.FileShareUpdate{
-		Tags: map[string]*string{
-			"key173": to.Ptr("uyf"),
-		},
-		Properties: &armfileshares.FileShareUpdateProperties{
-			ProvisionedStorageGiB:          to.Ptr[int32](7),
-			ProvisionedIOPerSec:            to.Ptr[int32](1),
-			ProvisionedThroughputMiBPerSec: to.Ptr[int32](29),
-			NfsProtocolProperties: &armfileshares.NfsProtocolProperties{
-				RootSquash:                  to.Ptr(armfileshares.ShareRootSquashNoRootSquash),
-				EncryptionInTransitRequired: to.Ptr(armfileshares.EncryptionInTransitRequiredEnabled),
-			},
-			PublicAccessProperties: &armfileshares.PublicAccessProperties{
-				AllowedSubnets: []*string{
-					to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-				},
-			},
-			PublicNetworkAccess: to.Ptr(armfileshares.PublicNetworkAccessEnabled),
+	_, err = clientFactory.NewClient().StartRedundancyConversion(ctx, "rgfileshares", "fileshare", armfileshares.StartRedundancyConversionRequest{
+		Properties: &armfileshares.StartRedundancyConversionInput{
+			TargetRedundancy: to.Ptr(armfileshares.RedundancyZone),
 		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armfileshares.ClientUpdateResponse{
-	// 	FileShare: armfileshares.FileShare{
-	// 		Properties: &armfileshares.FileShareProperties{
-	// 			MountName: to.Ptr("fileshare"),
-	// 			HostName: to.Ptr("venxryqlzdhnb"),
-	// 			MediaTier: to.Ptr(armfileshares.MediaTierSSD),
-	// 			Redundancy: to.Ptr(armfileshares.RedundancyLocal),
-	// 			Protocol: to.Ptr(armfileshares.ProtocolNFS),
-	// 			ProvisionedStorageGiB: to.Ptr[int32](20),
-	// 			ProvisionedStorageNextAllowedDowngrade: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 954000000, time.UTC)),
-	// 			ProvisionedIOPerSec: to.Ptr[int32](9),
-	// 			ProvisionedIOPerSecNextAllowedDowngrade: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 954000000, time.UTC)),
-	// 			ProvisionedThroughputMiBPerSec: to.Ptr[int32](5),
-	// 			ProvisionedThroughputNextAllowedDowngrade: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 954000000, time.UTC)),
-	// 			IncludedBurstIOPerSec: to.Ptr[int32](24523),
-	// 			MaxBurstIOPerSecCredits: to.Ptr[int64](0),
-	// 			NfsProtocolProperties: &armfileshares.NfsProtocolProperties{
-	// 				RootSquash: to.Ptr(armfileshares.ShareRootSquashNoRootSquash),
-	// 				EncryptionInTransitRequired: to.Ptr(armfileshares.EncryptionInTransitRequiredEnabled),
-	// 			},
-	// 			PublicAccessProperties: &armfileshares.PublicAccessProperties{
-	// 				AllowedSubnets: []*string{
-	// 					to.Ptr("/subscriptions/9760acf5-4638-11e7-9bdb-020073ca7778/resourceGroups/myRP/providers/Microsoft.Network/virtualNetworks/testvnet3/subnets/testsubnet3"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armfileshares.FileShareProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armfileshares.PublicNetworkAccessEnabled),
-	// 			PrivateEndpointConnections: []*armfileshares.PrivateEndpointConnection{
-	// 				{
-	// 					Properties: &armfileshares.PrivateEndpointConnectionProperties{
-	// 						GroupIDs: []*string{
-	// 							to.Ptr("ndoii"),
-	// 						},
-	// 						PrivateEndpoint: &armfileshares.PrivateEndpoint{
-	// 							ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.Network/privateEndpoints/testresourcename"),
-	// 						},
-	// 						PrivateLinkServiceConnectionState: &armfileshares.PrivateLinkServiceConnectionState{
-	// 							Status: to.Ptr(armfileshares.PrivateEndpointServiceConnectionStatusPending),
-	// 							Description: to.Ptr("a"),
-	// 							ActionsRequired: to.Ptr("pvlmopquhexpdjpcaruvj"),
-	// 						},
-	// 						ProvisioningState: to.Ptr(armfileshares.PrivateEndpointConnectionProvisioningStateSucceeded),
-	// 					},
-	// 					ID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/examples-rg/providers/Microsoft.FileShares/fileShares/testresourcename/privateEndpointConnections/privateEndpointConnectionName"),
-	// 					Name: to.Ptr("kjavgkroj"),
-	// 					Type: to.Ptr("Microsoft.FileShares/fileShares/privateEndpointConnections"),
-	// 					SystemData: &armfileshares.SystemData{
-	// 						CreatedBy: to.Ptr("moat"),
-	// 						CreatedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 						CreatedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
-	// 						LastModifiedBy: to.Ptr("dxukcadzapywjcgnxsqchaa"),
-	// 						LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 						LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key9647": to.Ptr("xwokdvyoae"),
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		ID: to.Ptr("/subscriptions/0590b445-524e-4caa-9870-2e2461d23434/resourceGroups/fiddler-mfs-rg/providers/Microsoft.FileShares/fileShares/fileshare"),
-	// 		Name: to.Ptr("fileshare"),
-	// 		Type: to.Ptr("Microsoft.FileShares/fileShares"),
-	// 		SystemData: &armfileshares.SystemData{
-	// 			CreatedBy: to.Ptr("moat"),
-	// 			CreatedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("dxukcadzapywjcgnxsqchaa"),
-	// 			LastModifiedByType: to.Ptr(armfileshares.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.July, 23, 12, 37, 53, 955000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

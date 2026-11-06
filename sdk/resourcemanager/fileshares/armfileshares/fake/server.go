@@ -21,10 +21,6 @@ import (
 
 // Server is a fake server for instances of the armfileshares.Client type.
 type Server struct {
-	// CheckNameAvailability is the fake for method Client.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, location string, body armfileshares.CheckNameAvailabilityRequest, options *armfileshares.ClientCheckNameAvailabilityOptions) (resp azfake.Responder[armfileshares.ClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method Client.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, resource armfileshares.FileShare, options *armfileshares.ClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armfileshares.ClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -33,9 +29,21 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, resourceName string, options *armfileshares.ClientBeginDeleteOptions) (resp azfake.PollerResponder[armfileshares.ClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method Client.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, properties armfileshares.FileShareUpdate, options *armfileshares.ClientBeginUpdateOptions) (resp azfake.PollerResponder[armfileshares.ClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method Client.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, location string, body armfileshares.CheckNameAvailabilityRequest, options *armfileshares.ClientCheckNameAvailabilityOptions) (resp azfake.Responder[armfileshares.ClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method Client.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, options *armfileshares.ClientGetOptions) (resp azfake.Responder[armfileshares.ClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetRedundancyConversionStatus is the fake for method Client.GetRedundancyConversionStatus
+	// HTTP status codes to indicate success: http.StatusOK
+	GetRedundancyConversionStatus func(ctx context.Context, resourceGroupName string, resourceName string, options *armfileshares.ClientGetRedundancyConversionStatusOptions) (resp azfake.Responder[armfileshares.ClientGetRedundancyConversionStatusResponse], errResp azfake.ErrorResponder)
 
 	// NewListByParentPager is the fake for method Client.NewListByParentPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -45,9 +53,9 @@ type Server struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armfileshares.ClientListBySubscriptionOptions) (resp azfake.PagerResponder[armfileshares.ClientListBySubscriptionResponse])
 
-	// BeginUpdate is the fake for method Client.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, properties armfileshares.FileShareUpdate, options *armfileshares.ClientBeginUpdateOptions) (resp azfake.PollerResponder[armfileshares.ClientUpdateResponse], errResp azfake.ErrorResponder)
+	// StartRedundancyConversion is the fake for method Client.StartRedundancyConversion
+	// HTTP status codes to indicate success: http.StatusNoContent
+	StartRedundancyConversion func(ctx context.Context, resourceGroupName string, resourceName string, body armfileshares.StartRedundancyConversionRequest, options *armfileshares.ClientStartRedundancyConversionOptions) (resp azfake.Responder[armfileshares.ClientStartRedundancyConversionResponse], errResp azfake.ErrorResponder)
 }
 
 // NewServerTransport creates a new instance of ServerTransport with the provided implementation.
@@ -58,9 +66,9 @@ func NewServerTransport(srv *Server) *ServerTransport {
 		srv:                        srv,
 		beginCreateOrUpdate:        newTracker[azfake.PollerResponder[armfileshares.ClientCreateOrUpdateResponse]](),
 		beginDelete:                newTracker[azfake.PollerResponder[armfileshares.ClientDeleteResponse]](),
+		beginUpdate:                newTracker[azfake.PollerResponder[armfileshares.ClientUpdateResponse]](),
 		newListByParentPager:       newTracker[azfake.PagerResponder[armfileshares.ClientListByParentResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armfileshares.ClientListBySubscriptionResponse]](),
-		beginUpdate:                newTracker[azfake.PollerResponder[armfileshares.ClientUpdateResponse]](),
 	}
 }
 
@@ -70,9 +78,9 @@ type ServerTransport struct {
 	srv                        *Server
 	beginCreateOrUpdate        *tracker[azfake.PollerResponder[armfileshares.ClientCreateOrUpdateResponse]]
 	beginDelete                *tracker[azfake.PollerResponder[armfileshares.ClientDeleteResponse]]
+	beginUpdate                *tracker[azfake.PollerResponder[armfileshares.ClientUpdateResponse]]
 	newListByParentPager       *tracker[azfake.PagerResponder[armfileshares.ClientListByParentResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armfileshares.ClientListBySubscriptionResponse]]
-	beginUpdate                *tracker[azfake.PollerResponder[armfileshares.ClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
@@ -96,20 +104,24 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 		}
 		if !intercepted {
 			switch method {
-			case "Client.CheckNameAvailability":
-				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "Client.BeginCreateOrUpdate":
 				res.resp, res.err = s.dispatchBeginCreateOrUpdate(req)
 			case "Client.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
+			case "Client.BeginUpdate":
+				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "Client.CheckNameAvailability":
+				res.resp, res.err = s.dispatchCheckNameAvailability(req)
 			case "Client.Get":
 				res.resp, res.err = s.dispatchGet(req)
+			case "Client.GetRedundancyConversionStatus":
+				res.resp, res.err = s.dispatchGetRedundancyConversionStatus(req)
 			case "Client.NewListByParentPager":
 				res.resp, res.err = s.dispatchNewListByParentPager(req)
 			case "Client.NewListBySubscriptionPager":
 				res.resp, res.err = s.dispatchNewListBySubscriptionPager(req)
-			case "Client.BeginUpdate":
-				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "Client.StartRedundancyConversion":
+				res.resp, res.err = s.dispatchStartRedundancyConversion(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -124,39 +136,6 @@ func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (s *ServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if s.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armfileshares.CheckNameAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), locationParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (s *ServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -251,6 +230,87 @@ func (s *ServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response
 	return resp, nil
 }
 
+func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if s.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := s.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armfileshares.FileShareUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		s.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		s.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		s.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armfileshares.CheckNameAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.CheckNameAvailability(req.Context(), locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if s.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -278,6 +338,39 @@ func (s *ServerTransport) dispatchGet(req *http.Request) (*http.Response, error)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).FileShare, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *ServerTransport) dispatchGetRedundancyConversionStatus(req *http.Request) (*http.Response, error) {
+	if s.srv.GetRedundancyConversionStatus == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetRedundancyConversionStatus not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getRedundancyConversionStatus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.GetRedundancyConversionStatus(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RedundancyConversionStatusResponse, req)
 	if err != nil {
 		return nil, err
 	}
@@ -354,51 +447,40 @@ func (s *ServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) 
 	return resp, nil
 }
 
-func (s *ServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if s.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+func (s *ServerTransport) dispatchStartRedundancyConversion(req *http.Request) (*http.Response, error) {
+	if s.srv.StartRedundancyConversion == nil {
+		return nil, &nonRetriableError{errors.New("fake for method StartRedundancyConversion not implemented")}
 	}
-	beginUpdate := s.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armfileshares.FileShareUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := s.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		s.beginUpdate.add(req, beginUpdate)
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.FileShares/fileShares/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startRedundancyConversion`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
+	body, err := server.UnmarshalRequestAsJSON[armfileshares.StartRedundancyConversionRequest](req)
 	if err != nil {
 		return nil, err
 	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		s.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
 	}
-	if !server.PollerResponderMore(beginUpdate) {
-		s.beginUpdate.remove(req)
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
 	}
-
+	respr, errRespr := s.srv.StartRedundancyConversion(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

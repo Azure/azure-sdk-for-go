@@ -947,7 +947,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirGetPropertiesByFileID() {
 	_require.NoError(err)
 	_require.Nil(pathProps.FileName)
 
-	dirIDClient := shareClient.NewDirectoryClientByFileID(*pathProps.ID)
+	dirIDClient := dirClientByFileID(d.T(), shareClient, *pathProps.ID)
 	_require.Equal(*pathProps.ID, fileIDFromURL(d.T(), dirIDClient.URL()))
 
 	resp, err := dirIDClient.GetProperties(context.Background(), nil)
@@ -972,7 +972,7 @@ func (d *DirectoryRecordedTestsSuite) TestDirGetPropertiesByFileIDError() {
 	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(d.T().Name()), svcClient)
 	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
 
-	_, err = shareClient.NewDirectoryClientByFileID("11111111111111111111").GetProperties(context.Background(), nil)
+	_, err = dirClientByFileID(d.T(), shareClient, "11111111111111111111").GetProperties(context.Background(), nil)
 	_require.Error(err)
 }
 
@@ -1024,8 +1024,25 @@ func newFakeShareClient(t *testing.T, transport policy.Transporter) *share.Clien
 	return shareClient
 }
 
+func dirClientByFileID(t testing.TB, shareClient *share.Client, fileID string) *directory.Client {
+	t.Helper()
+	dirClient, err := shareClient.NewDirectoryClientByFileID(fileID)
+	require.NoError(t, err)
+	return dirClient
+}
+
+// An empty file ID would address the root directory of the share, so it is rejected without a
+// client that could send a request, for example a SetMetadata to the share root.
+func TestNewDirectoryClientByFileIDEmpty(t *testing.T) {
+	transport := &fileIDTransport{}
+	dirClient, err := newFakeShareClient(t, transport).NewDirectoryClientByFileID("")
+	require.ErrorContains(t, err, "fileID must not be empty")
+	require.Nil(t, dirClient)
+	require.Empty(t, transport.requests)
+}
+
 func TestNewDirectoryClientByFileIDURL(t *testing.T) {
-	dirClient := newFakeShareClient(t, &fileIDTransport{}).NewDirectoryClientByFileID(fakeFileID)
+	dirClient := dirClientByFileID(t, newFakeShareClient(t, &fileIDTransport{}), fakeFileID)
 
 	require.Equal(t, fakeFileIDURL, dirClient.URL())
 
@@ -1057,7 +1074,7 @@ func TestDirectoryClientByFileIDGetProperties(t *testing.T) {
 		"X-Ms-File-Parent-Id": []string{fakeParentID},
 		"X-Ms-File-Name":      []string{"directory"},
 	}}
-	dirClient := newFakeShareClient(t, transport).NewDirectoryClientByFileID(fakeFileID)
+	dirClient := dirClientByFileID(t, newFakeShareClient(t, transport), fakeFileID)
 
 	resp, err := dirClient.GetProperties(context.Background(), nil)
 	_require.NoError(err)
@@ -1077,7 +1094,7 @@ func TestDirectoryClientByFileIDGetPropertiesError(t *testing.T) {
 		status: http.StatusNotFound,
 		header: http.Header{"X-Ms-Error-Code": []string{string(fileerror.ResourceNotFound)}},
 	}
-	dirClient := newFakeShareClient(t, transport).NewDirectoryClientByFileID("11111111111111111111")
+	dirClient := dirClientByFileID(t, newFakeShareClient(t, transport), "11111111111111111111")
 
 	_, err := dirClient.GetProperties(context.Background(), nil)
 	require.Error(t, err)
@@ -1087,7 +1104,7 @@ func TestDirectoryClientByFileIDGetPropertiesError(t *testing.T) {
 func TestDirectoryClientByFileIDUnsupportedOperations(t *testing.T) {
 	ctx := context.Background()
 	transport := &fileIDTransport{}
-	dirClient := newFakeShareClient(t, transport).NewDirectoryClientByFileID(fakeFileID)
+	dirClient := dirClientByFileID(t, newFakeShareClient(t, transport), fakeFileID)
 
 	operations := map[string]func() error{
 		"Create":        func() error { _, err := dirClient.Create(ctx, nil); return err },
@@ -1120,7 +1137,7 @@ func TestDirectoryClientByFileIDNavigation(t *testing.T) {
 	// the path of a directory addressed by its file ID is not known, so clients navigated to from it are unusable
 	ctx := context.Background()
 	transport := &fileIDTransport{}
-	dirClient := newFakeShareClient(t, transport).NewDirectoryClientByFileID(fakeFileID)
+	dirClient := dirClientByFileID(t, newFakeShareClient(t, transport), fakeFileID)
 
 	_, err := dirClient.NewFileClient("file").GetProperties(ctx, nil)
 	require.ErrorIs(t, err, fileerror.FileIDNotSupported)

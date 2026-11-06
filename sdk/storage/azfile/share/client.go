@@ -5,6 +5,7 @@ package share
 
 import (
 	"context"
+	"errors"
 	"net/url"
 	"strings"
 	"time"
@@ -151,32 +152,46 @@ func (s *Client) NewRootDirectoryClient() *directory.Client {
 // e.g. https://<account>.file.core.windows.net/<share>?fileid=<fileID>. The new file.Client uses the same request
 // policy pipeline as the Client, and keeps the share snapshot of the Client, if any.
 //   - fileID - the file ID of the file, e.g. the ID returned by file.Client.GetProperties or a change feed event.
-//     fileID must not be empty, as the returned file.Client would then address the share rather than a file.
+//     An empty fileID returns an error, as the file.Client would otherwise address the share rather than a file.
 //
 // The file.Client only supports GetProperties and GetFileLinks. All other operations return an error wrapping
 // fileerror.FileIDNotSupported without sending a request.
-func (s *Client) NewFileClientByFileID(fileID string) *file.Client {
-	p, _ := sas.ParseURL(s.URL())
-	p.DirectoryOrFilePath = ""
-	p.FileID = fileID
-	fileURL := p.String()
-	return (*file.Client)(base.NewFileClient(fileURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions()))
+func (s *Client) NewFileClientByFileID(fileID string) (*file.Client, error) {
+	fileURL, err := s.fileIDURL(fileID)
+	if err != nil {
+		return nil, err
+	}
+	return (*file.Client)(base.NewFileClient(fileURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions())), nil
 }
 
 // NewDirectoryClientByFileID creates a new directory.Client that addresses a directory by its file ID rather than by
 // its path, e.g. https://<account>.file.core.windows.net/<share>?fileid=<fileID>. The new directory.Client uses the
 // same request policy pipeline as the Client, and keeps the share snapshot of the Client, if any.
 //   - fileID - the file ID of the directory, e.g. the ID returned by directory.Client.GetProperties.
-//     fileID must not be empty, as the returned directory.Client would then address the root directory of the share.
+//     An empty fileID returns an error, as the directory.Client would otherwise address the root directory of the share.
 //
 // The directory.Client only supports GetProperties. All other operations return an error wrapping
 // fileerror.FileIDNotSupported without sending a request.
-func (s *Client) NewDirectoryClientByFileID(fileID string) *directory.Client {
-	p, _ := sas.ParseURL(s.URL())
+func (s *Client) NewDirectoryClientByFileID(fileID string) (*directory.Client, error) {
+	dirURL, err := s.fileIDURL(fileID)
+	if err != nil {
+		return nil, err
+	}
+	return (*directory.Client)(base.NewDirectoryClient(dirURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions())), nil
+}
+
+// fileIDURL returns the URL that addresses fileID in the share, keeping the share snapshot and SAS of the Client.
+func (s *Client) fileIDURL(fileID string) (string, error) {
+	if fileID == "" {
+		return "", errors.New("fileID must not be empty")
+	}
+	p, err := sas.ParseURL(s.URL())
+	if err != nil {
+		return "", err
+	}
 	p.DirectoryOrFilePath = ""
 	p.FileID = fileID
-	dirURL := p.String()
-	return (*directory.Client)(base.NewDirectoryClient(dirURL, s.generated().InternalClient().WithClientName(exported.ModuleName), s.sharedKey(), s.getClientOptions()))
+	return p.String(), nil
 }
 
 // WithSnapshot creates a new Client object identical to the source but with the specified share snapshot timestamp.

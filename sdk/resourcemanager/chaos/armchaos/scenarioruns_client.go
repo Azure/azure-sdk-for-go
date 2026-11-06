@@ -20,7 +20,7 @@ import (
 // ScenarioRunsClient contains the methods for the ScenarioRuns group.
 // Don't use this type directly, use NewScenarioRunsClient() instead.
 //
-// Generated from API version 2026-08-01-preview
+// Generated from API version 2026-11-01
 type ScenarioRunsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -71,7 +71,7 @@ func (client *ScenarioRunsClient) BeginCancel(ctx context.Context, resourceGroup
 	}
 }
 
-// Cancel - Cancel the currently running scenario execution.
+// cancel - Cancel the currently running scenario execution.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScenarioRunsClient) cancel(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, runID string, options *ScenarioRunsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -93,7 +93,7 @@ func (client *ScenarioRunsClient) cancel(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *ScenarioRunsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, runID string, _ *ScenarioRunsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}/runs/{runId}/cancel"
 	if client.subscriptionID == "" {
@@ -121,7 +121,7 @@ func (client *ScenarioRunsClient) cancelCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -183,7 +183,7 @@ func (client *ScenarioRunsClient) getCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -275,7 +275,7 @@ func (client *ScenarioRunsClient) listAllCreateRequest(ctx context.Context, reso
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260801Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

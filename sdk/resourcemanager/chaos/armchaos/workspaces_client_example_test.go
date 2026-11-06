@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-08-01-preview/Workspaces_CreateOrUpdate.json
-func ExampleWorkspacesClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2026-11-01/Workspaces_CreateOrUpdate.json
+func ExampleWorkspacesClient_BeginCreateOrUpdate_createUpdateAWorkspaceInAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -89,7 +89,255 @@ func ExampleWorkspacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/Workspaces_Delete.json
+// Generated from example definition: 2026-11-01/Workspaces_CreateOrUpdate_CreateOnly.json
+func ExampleWorkspacesClient_BeginCreateOrUpdate_createAWorkspaceOnlyWhenAbsentOrReturn412WhenItAlreadyExists() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginCreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", armchaos.Workspace{
+		Location: to.Ptr("westus2"),
+		Properties: &armchaos.WorkspaceProperties{
+			Scopes: []*string{
+				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+			},
+		},
+	}, &armchaos.WorkspacesClientBeginCreateOrUpdateOptions{
+		IfNoneMatch: to.Ptr("*")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_CreateOrUpdate_EmptyEncryption.json
+func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAMicrosoftManagedWorkspaceWithEmptyEncryptionSettings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginCreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", armchaos.Workspace{
+		Location: to.Ptr("westus2"),
+		Properties: &armchaos.WorkspaceProperties{
+			Scopes: []*string{
+				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+			},
+			Encryption: &armchaos.WorkspaceEncryption{},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientCreateOrUpdateResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
+	// 			Encryption: &armchaos.WorkspaceEncryption{
+	// 				Status: &armchaos.WorkspaceEncryptionStatus{
+	// 					State: to.Ptr(armchaos.WorkspaceEncryptionStateNotConfigured),
+	// 				},
+	// 				CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+	// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_CreateOrUpdate_OmitEncryption.json
+func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAMicrosoftManagedWorkspaceWithoutEncryptionSettings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginCreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", armchaos.Workspace{
+		Location: to.Ptr("westus2"),
+		Properties: &armchaos.WorkspaceProperties{
+			Scopes: []*string{
+				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientCreateOrUpdateResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
+	// 			Encryption: &armchaos.WorkspaceEncryption{
+	// 				Status: &armchaos.WorkspaceEncryptionStatus{
+	// 					State: to.Ptr(armchaos.WorkspaceEncryptionStateNotConfigured),
+	// 				},
+	// 				CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+	// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_CreateOrUpdate_UpdateOnly.json
+func ExampleWorkspacesClient_BeginCreateOrUpdate_updateAWorkspaceOnlyWhenPresentOrReturn412WhenItDoesNotExist() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginCreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", armchaos.Workspace{
+		Location: to.Ptr("westus2"),
+		Properties: &armchaos.WorkspaceProperties{
+			Scopes: []*string{
+				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+			},
+		},
+	}, &armchaos.WorkspacesClientBeginCreateOrUpdateOptions{
+		IfMatch: to.Ptr("*")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientCreateOrUpdateResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_CreateOrUpdate_WithCustomerKey.json
+func ExampleWorkspacesClient_BeginCreateOrUpdate_createOrUpdateAWorkspaceWithACustomerManagedKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginCreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", armchaos.Workspace{
+		Location: to.Ptr("westus2"),
+		Properties: &armchaos.WorkspaceProperties{
+			Scopes: []*string{
+				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+			},
+			Encryption: &armchaos.WorkspaceEncryption{
+				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryption{
+					KeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/workspace-key"),
+					KeyVaultResourceID:  to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/customer-keys/providers/Microsoft.KeyVault/vaults/contoso-vault"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientCreateOrUpdateResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 			Encryption: &armchaos.WorkspaceEncryption{
+	// 				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/workspace-key"),
+	// 					KeyVaultResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/customer-keys/providers/Microsoft.KeyVault/vaults/contoso-vault"),
+	// 				},
+	// 				CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+	// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				},
+	// 				Status: &armchaos.WorkspaceEncryptionStatus{
+	// 					State: to.Ptr(armchaos.WorkspaceEncryptionStateApplied),
+	// 					ObservedProtection: to.Ptr(armchaos.WorkspaceEncryptionProtectionCustomerManaged),
+	// 					ObservedKeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/workspace-key/0123456789abcdef0123456789abcdef"),
+	// 					LastCheckedAt: to.Ptr(time.Date(2026, time.November, 1, 12, 0, 0, 0, time.UTC)),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_Delete.json
 func ExampleWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +358,7 @@ func ExampleWorkspacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/Workspaces_Discover.json
+// Generated from example definition: 2026-11-01/Workspaces_Discover.json
 func ExampleWorkspacesClient_BeginDiscover() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,13 +373,54 @@ func ExampleWorkspacesClient_BeginDiscover() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientDiscoverResponse{
+	// 	WorkspaceDiscovery: armchaos.WorkspaceDiscovery{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/discoveries/00000000-0000-0000-0000-000000000002"),
+	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000002"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces/discoveries"),
+	// 		Properties: &armchaos.WorkspaceDiscoveryProperties{
+	// 			Status: to.Ptr(armchaos.WorkspaceDiscoveryStatusSucceeded),
+	// 			StartTime: to.Ptr(time.Date(2026, time.November, 1, 10, 0, 0, 0, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2026, time.November, 1, 10, 1, 0, 0, time.UTC)),
+	// 			WorkspaceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 			ResourceSnapshotID: to.Ptr("11111111-1111-4111-8111-111111111111"),
+	// 			Completeness: to.Ptr(armchaos.WorkspaceDiscoveryCompletenessEstablished),
+	// 			CoverageSummary: &armchaos.WorkspaceDiscoveryCoverageSummary{
+	// 				Scopes: &armchaos.WorkspaceDiscoveryScopeCoverageSummary{
+	// 					TotalCount: to.Ptr[int64](1),
+	// 					KnownExpectedSetCount: to.Ptr[int64](1),
+	// 					UnknownExpectedSetCount: to.Ptr[int64](0),
+	// 					EstablishedCount: to.Ptr[int64](1),
+	// 					BaselineUnknownCount: to.Ptr[int64](0),
+	// 					VerificationIncompleteCount: to.Ptr[int64](0),
+	// 					KnownPartialCount: to.Ptr[int64](0),
+	// 				},
+	// 				Resources: &armchaos.WorkspaceDiscoveryResourceCoverageSummary{
+	// 					ExpectedCount: to.Ptr[int64](2),
+	// 					ClassifiedCount: to.Ptr[int64](2),
+	// 					UnclassifiedCount: to.Ptr[int64](0),
+	// 					CoveredCount: to.Ptr[int64](2),
+	// 				},
+	// 			},
+	// 			Warnings: []armchaos.WorkspaceDiscoveryWarningClassification{
+	// 			},
+	// 			WarningsTotalCount: to.Ptr[int64](0),
+	// 			WarningsTruncated: to.Ptr(false),
+	// 			Errors: []*armchaos.OperationError{
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/Workspaces_Evaluate.json
+// Generated from example definition: 2026-11-01/Workspaces_Evaluate.json
 func ExampleWorkspacesClient_BeginEvaluate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,199 +435,48 @@ func ExampleWorkspacesClient_BeginEvaluate() {
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
+	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/Workspaces_Get.json
-func ExampleWorkspacesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "exampleRG", "exampleWorkspace", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armchaos.WorkspacesClientGetResponse{
-	// 	Workspace: armchaos.Workspace{
-	// 		Name: to.Ptr("exampleWorkspace"),
-	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
-	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
-	// 		Identity: &armchaos.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
-	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
+	// res = armchaos.WorkspacesClientEvaluateResponse{
+	// 	WorkspaceEvaluation: armchaos.WorkspaceEvaluation{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/evaluations/00000000-0000-0000-0000-000000000003"),
+	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000003"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces/evaluations"),
+	// 		Properties: &armchaos.WorkspaceEvaluationProperties{
+	// 			Status: to.Ptr(armchaos.WorkspaceEvaluationStatusSucceeded),
+	// 			StartTime: to.Ptr(time.Date(2026, time.November, 1, 10, 2, 0, 0, time.UTC)),
+	// 			EndTime: to.Ptr(time.Date(2026, time.November, 1, 10, 3, 0, 0, time.UTC)),
+	// 			WorkspaceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 			ResourceSnapshotID: to.Ptr("11111111-1111-4111-8111-111111111111"),
+	// 			DiscoveryResultID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/discoveries/00000000-0000-0000-0000-000000000002"),
+	// 			NumTemplatesToEvaluate: to.Ptr[int32](2),
+	// 			NumTemplatesEvaluatedSucceeded: to.Ptr[int32](2),
+	// 			NumTemplatesEvaluatedFailed: to.Ptr[int32](0),
+	// 			NumTemplatesEvaluatedCancelled: to.Ptr[int32](0),
+	// 			Results: []*armchaos.TemplateEvaluationResultItem{
+	// 				{
+	// 					TemplateID: to.Ptr("/providers/Microsoft.Chaos/scenarioTemplates/CpuPressure/versions/1.0"),
+	// 					TemplateName: to.Ptr("CpuPressure"),
+	// 					EvaluationResult: to.Ptr(armchaos.RecommendationStatusNotApplicable),
+	// 				},
+	// 				{
+	// 					TemplateID: to.Ptr("/providers/Microsoft.Chaos/scenarioTemplates/DnsOutage/versions/1.0"),
+	// 					TemplateName: to.Ptr("DnsOutage"),
+	// 					EvaluationResult: to.Ptr(armchaos.RecommendationStatusRecommended),
 	// 				},
 	// 			},
-	// 			TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
-	// 			"department": to.Ptr("engineering"),
-	// 			"project": to.Ptr("chaos-testing"),
-	// 		},
-	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armchaos.WorkspaceProperties{
-	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
-	// 			Scopes: []*string{
-	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
-	// 			},
-	// 		},
-	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			CreatedBy: to.Ptr("User"),
-	// 			CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("User"),
-	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/Workspaces_List.json
-func ExampleWorkspacesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkspacesClient().NewListPager("exampleRG", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armchaos.WorkspacesClientListResponse{
-		// 	WorkspaceListResult: armchaos.WorkspaceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces?continuationToken=&api-version=2026-08-01-preview"),
-		// 		Value: []*armchaos.Workspace{
-		// 			{
-		// 				Name: to.Ptr("exampleWorkspace"),
-		// 				Type: to.Ptr("Microsoft.Chaos/workspaces"),
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
-		// 				Identity: &armchaos.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
-		// 					UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
-		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
-		// 						},
-		// 					},
-		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 					"department": to.Ptr("engineering"),
-		// 					"project": to.Ptr("chaos-testing"),
-		// 				},
-		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armchaos.WorkspaceProperties{
-		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
-		// 					Scopes: []*string{
-		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
-		// 					},
-		// 				},
-		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("User"),
-		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("User"),
-		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/Workspaces_ListAll.json
-func ExampleWorkspacesClient_NewListAllPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkspacesClient().NewListAllPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armchaos.WorkspacesClientListAllResponse{
-		// 	WorkspaceListResult: armchaos.WorkspaceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/workspaces?continuationToken=&api-version=2026-08-01-preview"),
-		// 		Value: []*armchaos.Workspace{
-		// 			{
-		// 				Name: to.Ptr("exampleWorkspace"),
-		// 				Type: to.Ptr("Microsoft.Chaos/workspaces"),
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
-		// 				Identity: &armchaos.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
-		// 					UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
-		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
-		// 						},
-		// 					},
-		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 					"department": to.Ptr("engineering"),
-		// 					"project": to.Ptr("chaos-testing"),
-		// 				},
-		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armchaos.WorkspaceProperties{
-		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
-		// 					Scopes: []*string{
-		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
-		// 					},
-		// 				},
-		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("User"),
-		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("User"),
-		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/Workspaces_Update.json
-func ExampleWorkspacesClient_BeginUpdate() {
+// Generated from example definition: 2026-11-01/Workspaces_Update.json
+func ExampleWorkspacesClient_BeginUpdate_updateAWorkspaceInAResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -406,4 +544,681 @@ func ExampleWorkspacesClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_Update_ChangeKeyVault.json
+func ExampleWorkspacesClient_BeginUpdate_updateAWorkspaceWithAValidatedKeyAndResourceIdInAnotherVault() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginUpdate(ctx, "exampleRG", "exampleWorkspace", armchaos.WorkspaceUpdate{
+		Properties: &armchaos.WorkspaceUpdateProperties{
+			Encryption: &armchaos.WorkspaceEncryptionPatchMergePatchUpdateOrCreate{
+				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryptionPatchMergePatchUpdateOrCreate{
+					KeyEncryptionKeyURL: to.Ptr("https://contoso-vault-b.vault.azure.net/keys/Workspace-Key-Next"),
+					KeyVaultResourceID:  to.Ptr("/subscriptions/22222222-2222-2222-2222-222222222222/resourceGroups/customer-keys/providers/Microsoft.KeyVault/vaults/contoso-vault-b"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientUpdateResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 			Encryption: &armchaos.WorkspaceEncryption{
+	// 				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyURL: to.Ptr("https://contoso-vault-b.vault.azure.net/keys/Workspace-Key-Next"),
+	// 					KeyVaultResourceID: to.Ptr("/subscriptions/22222222-2222-2222-2222-222222222222/resourceGroups/customer-keys/providers/Microsoft.KeyVault/vaults/contoso-vault-b"),
+	// 				},
+	// 				Status: &armchaos.WorkspaceEncryptionStatus{
+	// 					State: to.Ptr(armchaos.WorkspaceEncryptionStateApplied),
+	// 					ObservedProtection: to.Ptr(armchaos.WorkspaceEncryptionProtectionCustomerManaged),
+	// 					ObservedKeyEncryptionKeyURL: to.Ptr("https://contoso-vault-b.vault.azure.net/keys/Workspace-Key-Next/0123456789abcdef0123456789abcdef"),
+	// 					LastCheckedAt: to.Ptr(time.Date(2026, time.November, 1, 12, 0, 0, 0, time.UTC)),
+	// 				},
+	// 				CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+	// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_Update_EmptyCustomerKeyPatch.json
+func ExampleWorkspacesClient_BeginUpdate_updateAWorkspaceWithAnEmptyCmkPatchAndRetainItsExistingKeyUrl() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginUpdate(ctx, "exampleRG", "exampleWorkspace", armchaos.WorkspaceUpdate{
+		Properties: &armchaos.WorkspaceUpdateProperties{
+			Encryption: &armchaos.WorkspaceEncryptionPatchMergePatchUpdateOrCreate{
+				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryptionPatchMergePatchUpdateOrCreate{},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientUpdateResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 			Encryption: &armchaos.WorkspaceEncryption{
+	// 				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/workspace-key"),
+	// 					KeyVaultResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/customer-keys/providers/Microsoft.KeyVault/vaults/contoso-vault"),
+	// 				},
+	// 				Status: &armchaos.WorkspaceEncryptionStatus{
+	// 					State: to.Ptr(armchaos.WorkspaceEncryptionStateApplied),
+	// 					ObservedProtection: to.Ptr(armchaos.WorkspaceEncryptionProtectionCustomerManaged),
+	// 					ObservedKeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/workspace-key/0123456789abcdef0123456789abcdef"),
+	// 					LastCheckedAt: to.Ptr(time.Date(2026, time.November, 1, 12, 0, 0, 0, time.UTC)),
+	// 				},
+	// 				CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+	// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_Update_OmitEncryption.json
+func ExampleWorkspacesClient_BeginUpdate_updateWorkspaceTagsWithoutChangingCustomerManagedEncryption() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginUpdate(ctx, "exampleRG", "exampleWorkspace", armchaos.WorkspaceUpdate{
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientUpdateResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 			Encryption: &armchaos.WorkspaceEncryption{
+	// 				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/workspace-key"),
+	// 					KeyVaultResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/customer-keys/providers/Microsoft.KeyVault/vaults/contoso-vault"),
+	// 				},
+	// 				Status: &armchaos.WorkspaceEncryptionStatus{
+	// 					State: to.Ptr(armchaos.WorkspaceEncryptionStateApplied),
+	// 					ObservedProtection: to.Ptr(armchaos.WorkspaceEncryptionProtectionCustomerManaged),
+	// 					ObservedKeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/workspace-key/0123456789abcdef0123456789abcdef"),
+	// 					LastCheckedAt: to.Ptr(time.Date(2026, time.November, 1, 12, 0, 0, 0, time.UTC)),
+	// 				},
+	// 				CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+	// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_Update_ReplaceCustomerKey.json
+func ExampleWorkspacesClient_BeginUpdate_updateOnlyTheCustomerKeyUriOfAnEncryptedWorkspace() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginUpdate(ctx, "exampleRG", "exampleWorkspace", armchaos.WorkspaceUpdate{
+		Properties: &armchaos.WorkspaceUpdateProperties{
+			Encryption: &armchaos.WorkspaceEncryptionPatchMergePatchUpdateOrCreate{
+				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryptionPatchMergePatchUpdateOrCreate{
+					KeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/replacement-key"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientUpdateResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 			Encryption: &armchaos.WorkspaceEncryption{
+	// 				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/replacement-key"),
+	// 					KeyVaultResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/customer-keys/providers/Microsoft.KeyVault/vaults/contoso-vault"),
+	// 				},
+	// 				Status: &armchaos.WorkspaceEncryptionStatus{
+	// 					State: to.Ptr(armchaos.WorkspaceEncryptionStateApplied),
+	// 					ObservedProtection: to.Ptr(armchaos.WorkspaceEncryptionProtectionCustomerManaged),
+	// 					ObservedKeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/replacement-key/0123456789abcdef0123456789abcdef"),
+	// 					LastCheckedAt: to.Ptr(time.Date(2026, time.November, 1, 12, 0, 0, 0, time.UTC)),
+	// 				},
+	// 				CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+	// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_Get.json
+func ExampleWorkspacesClient_Get_getAWorkspaceInAResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "exampleRG", "exampleWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientGetResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Identity: &armchaos.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
+	// 				},
+	// 			},
+	// 			TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 			"department": to.Ptr("engineering"),
+	// 			"project": to.Ptr("chaos-testing"),
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
+	// 			},
+	// 		},
+	// 		SystemData: &armchaos.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("User"),
+	// 			CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("User"),
+	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_Get_EncryptionFailed.json
+func ExampleWorkspacesClient_Get_getAWorkspaceAfterACustomerKeyReplacementFails() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "exampleRG", "exampleWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientGetResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateFailed),
+	// 			Encryption: &armchaos.WorkspaceEncryption{
+	// 				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/replacement-key"),
+	// 					KeyVaultResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/customer-keys/providers/Microsoft.KeyVault/vaults/contoso-vault"),
+	// 				},
+	// 				CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+	// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				},
+	// 				Status: &armchaos.WorkspaceEncryptionStatus{
+	// 					State: to.Ptr(armchaos.WorkspaceEncryptionStateFailed),
+	// 					ObservedProtection: to.Ptr(armchaos.WorkspaceEncryptionProtectionCustomerManaged),
+	// 					ObservedKeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/workspace-key/0123456789abcdef0123456789abcdef"),
+	// 					LastCheckedAt: to.Ptr(time.Date(2026, time.November, 1, 12, 0, 0, 0, time.UTC)),
+	// 					Error: &armchaos.ErrorDetail{
+	// 						Code: to.Ptr("CustomerKeyAccessFailed"),
+	// 						Message: to.Ptr("Azure Storage could not use the requested key. Check key availability, service application access, and Key Vault network rules. Restore access, then retry the Workspace update."),
+	// 						Target: to.Ptr("properties.encryption.customerManagedKeyEncryption.keyEncryptionKeyUrl"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_Get_EncryptionNotConfigured.json
+func ExampleWorkspacesClient_Get_getAWorkspaceServiceApplicationBeforeCustomerKeyEnrollment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "exampleRG", "exampleWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientGetResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 			Encryption: &armchaos.WorkspaceEncryption{
+	// 				CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+	// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				},
+	// 				Status: &armchaos.WorkspaceEncryptionStatus{
+	// 					State: to.Ptr(armchaos.WorkspaceEncryptionStateNotConfigured),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_Get_EncryptionPending.json
+func ExampleWorkspacesClient_Get_getACmkCreatedWorkspaceWhileItsCustomerKeyIsBeingReplaced() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "exampleRG", "exampleWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientGetResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
+	// 			Encryption: &armchaos.WorkspaceEncryption{
+	// 				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/workspace-key"),
+	// 					KeyVaultResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/customer-keys/providers/Microsoft.KeyVault/vaults/contoso-vault"),
+	// 				},
+	// 				Status: &armchaos.WorkspaceEncryptionStatus{
+	// 					State: to.Ptr(armchaos.WorkspaceEncryptionStatePending),
+	// 					ObservedProtection: to.Ptr(armchaos.WorkspaceEncryptionProtectionCustomerManaged),
+	// 					ObservedKeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/previous-key/0123456789abcdef0123456789abcdef"),
+	// 					LastCheckedAt: to.Ptr(time.Date(2026, time.November, 1, 11, 0, 0, 0, time.UTC)),
+	// 				},
+	// 				CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+	// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_Get_EncryptionUnknown.json
+func ExampleWorkspacesClient_Get_getAWorkspaceWhenActiveEncryptionProtectionIsUnknown() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "exampleRG", "exampleWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientGetResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
+	// 			Encryption: &armchaos.WorkspaceEncryption{
+	// 				CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryption{
+	// 					KeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/replacement-key"),
+	// 					KeyVaultResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/customer-keys/providers/Microsoft.KeyVault/vaults/contoso-vault"),
+	// 				},
+	// 				CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+	// 					ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+	// 				},
+	// 				Status: &armchaos.WorkspaceEncryptionStatus{
+	// 					State: to.Ptr(armchaos.WorkspaceEncryptionStateUnknown),
+	// 					LastCheckedAt: to.Ptr(time.Date(2026, time.November, 1, 12, 0, 0, 0, time.UTC)),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_ListAll.json
+func ExampleWorkspacesClient_NewListAllPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkspacesClient().NewListAllPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armchaos.WorkspacesClientListAllResponse{
+		// 	WorkspaceListResult: armchaos.WorkspaceListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/workspaces?continuationToken=&api-version=2026-11-01"),
+		// 		Value: []*armchaos.Workspace{
+		// 			{
+		// 				Name: to.Ptr("exampleWorkspace"),
+		// 				Type: to.Ptr("Microsoft.Chaos/workspaces"),
+		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+		// 				Identity: &armchaos.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
+		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
+		// 						},
+		// 					},
+		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 					"department": to.Ptr("engineering"),
+		// 					"project": to.Ptr("chaos-testing"),
+		// 				},
+		// 				Location: to.Ptr("westus2"),
+		// 				Properties: &armchaos.WorkspaceProperties{
+		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
+		// 					Scopes: []*string{
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
+		// 					},
+		// 				},
+		// 				SystemData: &armchaos.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("User"),
+		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("User"),
+		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_List.json
+func ExampleWorkspacesClient_NewListPager_listAllWorkspacesInAResourceGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkspacesClient().NewListPager("exampleRG", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armchaos.WorkspacesClientListResponse{
+		// 	WorkspaceListResult: armchaos.WorkspaceListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces?continuationToken=&api-version=2026-11-01"),
+		// 		Value: []*armchaos.Workspace{
+		// 			{
+		// 				Name: to.Ptr("exampleWorkspace"),
+		// 				Type: to.Ptr("Microsoft.Chaos/workspaces"),
+		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+		// 				Identity: &armchaos.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
+		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
+		// 						},
+		// 					},
+		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 					"department": to.Ptr("engineering"),
+		// 					"project": to.Ptr("chaos-testing"),
+		// 				},
+		// 				Location: to.Ptr("westus2"),
+		// 				Properties: &armchaos.WorkspaceProperties{
+		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
+		// 					Scopes: []*string{
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
+		// 					},
+		// 				},
+		// 				SystemData: &armchaos.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("User"),
+		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("User"),
+		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-11-01/Workspaces_List_EncryptionPending.json
+func ExampleWorkspacesClient_NewListPager_listCmkCreatedWorkspacesWithCustomerKeyReplacementPending() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkspacesClient().NewListPager("exampleRG", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armchaos.WorkspacesClientListResponse{
+		// 	WorkspaceListResult: armchaos.WorkspaceListResult{
+		// 		Value: []*armchaos.Workspace{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+		// 				Name: to.Ptr("exampleWorkspace"),
+		// 				Type: to.Ptr("Microsoft.Chaos/workspaces"),
+		// 				Location: to.Ptr("westus2"),
+		// 				Properties: &armchaos.WorkspaceProperties{
+		// 					Scopes: []*string{
+		// 						to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
+		// 					Encryption: &armchaos.WorkspaceEncryption{
+		// 						CustomerManagedKeyEncryption: &armchaos.WorkspaceCustomerManagedKeyEncryption{
+		// 							KeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/workspace-key"),
+		// 							KeyVaultResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/customer-keys/providers/Microsoft.KeyVault/vaults/contoso-vault"),
+		// 						},
+		// 						Status: &armchaos.WorkspaceEncryptionStatus{
+		// 							State: to.Ptr(armchaos.WorkspaceEncryptionStatePending),
+		// 							ObservedProtection: to.Ptr(armchaos.WorkspaceEncryptionProtectionCustomerManaged),
+		// 							ObservedKeyEncryptionKeyURL: to.Ptr("https://contoso-vault.vault.azure.net/keys/previous-key/0123456789abcdef0123456789abcdef"),
+		// 							LastCheckedAt: to.Ptr(time.Date(2026, time.November, 1, 11, 0, 0, 0, time.UTC)),
+		// 						},
+		// 						CustomerManagedKeyOnboarding: &armchaos.WorkspaceCustomerManagedKeyOnboarding{
+		// 							ApplicationID: to.Ptr("00000000-0000-0000-0000-000000000001"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

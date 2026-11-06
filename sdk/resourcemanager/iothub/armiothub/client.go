@@ -19,7 +19,7 @@ import (
 // Client contains the methods for the service.
 // Don't use this type directly, use NewClient() instead.
 //
-// Generated from API version 2026-10-01-preview
+// Generated from API version 2026-11-01
 type Client struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,7 +67,7 @@ func (client *Client) BeginManualFailover(ctx context.Context, iotHubName string
 	}
 }
 
-// ManualFailover - Manually initiate a failover for the IoT Hub to its secondary region
+// manualFailover - Manually initiate a failover for the IoT Hub to its secondary region
 //
 // Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see https://aka.ms/manualfailover
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -91,7 +91,7 @@ func (client *Client) manualFailover(ctx context.Context, iotHubName string, res
 	return httpResp, nil
 }
 
-// manualFailoverCreateRequest creates the ManualFailover request.
+// manualFailoverCreateRequest creates the manualFailover request.
 func (client *Client) manualFailoverCreateRequest(ctx context.Context, iotHubName string, resourceGroupName string, failoverInput FailoverInput, _ *ClientBeginManualFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{iotHubName}/failover"
 	if client.subscriptionID == "" {
@@ -111,7 +111,7 @@ func (client *Client) manualFailoverCreateRequest(ctx context.Context, iotHubNam
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, failoverInput); err != nil {

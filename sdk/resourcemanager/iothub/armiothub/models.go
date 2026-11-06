@@ -250,15 +250,6 @@ type DeviceRegistryLinkingProperties struct {
 	State *DeviceRegistryLinkingState
 }
 
-// EncryptionPropertiesDescription - The encryption properties for the IoT hub.
-type EncryptionPropertiesDescription struct {
-	// The source of the key.
-	KeySource *string
-
-	// The properties of the KeyVault key.
-	KeyVaultProperties []*KeyVaultKeyProperties
-}
-
 // EndpointHealthData - The health data for an endpoint
 type EndpointHealthData struct {
 	// Id of the endpoint
@@ -425,7 +416,7 @@ type FallbackRouteProperties struct {
 	IsEnabled *bool
 
 	// REQUIRED; The source to which the routing rule is to be applied to. For example, DeviceMessages
-	Source *RoutingSource
+	Source *FallbackRouteSource
 
 	// The condition which is evaluated in order to apply the fallback route. If the condition is not provided it will evaluate
 	// to true by default. For grammar, See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
@@ -550,15 +541,6 @@ type JobResponseListResult struct {
 	NextLink *string
 }
 
-// KeyVaultKeyProperties - The properties of the KeyVault key.
-type KeyVaultKeyProperties struct {
-	// Managed identity properties of KeyVault Key.
-	Identity *ManagedIdentity
-
-	// The identifier of the key.
-	KeyIdentifier *string
-}
-
 // LocationDescription - Public representation of one of the locations where a resource is provisioned.
 type LocationDescription struct {
 	// The name of the Azure region
@@ -592,12 +574,6 @@ type MessagingEndpointProperties struct {
 
 	// The period of time for which a message is available to consume before it is expired by the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-file-upload.
 	TTLAsIso8601 *string
-}
-
-// MqttV5Settings - Settings for an Event Grid-backed MQTT v5 IoT hub.
-type MqttV5Settings struct {
-	// The customer-defined groups of topic templates that devices publish to.
-	TopicGroups []*TopicGroup
 }
 
 // Name of Iot Hub type
@@ -750,12 +726,6 @@ type Properties struct {
 	// IoT hub comments.
 	Comments *string
 
-	// The connection profile that the IoT hub uses for device connections. Defaults to 'Classic'.
-	ConnectionProfile *ConnectionProfile
-
-	// The device streams properties of iothub.
-	DeviceStreams *PropertiesDeviceStreams
-
 	// If true, all device(including Edge devices but excluding modules) scoped SAS keys cannot be used for authentication.
 	DisableDeviceSAS *bool
 
@@ -771,9 +741,6 @@ type Properties struct {
 	// If True, file upload notifications are enabled.
 	EnableFileUploadNotifications *bool
 
-	// The encryption properties for the IoT hub.
-	Encryption *EncryptionPropertiesDescription
-
 	// The Event Hub-compatible endpoint properties. The only possible keys to this dictionary is events. This key has to be present
 	// in the dictionary while making create or update calls for the IoT hub.
 	EventHubEndpoints map[string]*EventHubProperties
@@ -784,19 +751,12 @@ type Properties struct {
 	// The IP filter rules.
 	IPFilterRules []*IPFilterRule
 
-	// This property specifies the IP Version the hub is currently utilizing.
-	IPVersion *IPVersion
-
 	// The messaging endpoint properties for the file upload notification queue.
 	MessagingEndpoints map[string]*MessagingEndpointProperties
 
 	// Specifies the minimum TLS version to support for this hub. Can be set to "1.2" to have clients that use a TLS version below
 	// 1.2 to be rejected.
 	MinTLSVersion *string
-
-	// The custom topic configuration for an Event Grid-backed MQTT v5 IoT hub. This property is valid only when connectionProfile
-	// is 'MqttV5'.
-	MqttV5Settings *MqttV5Settings
 
 	// Network Rule Set Properties of IotHub
 	NetworkRuleSets *NetworkRuleSetProperties
@@ -809,9 +769,6 @@ type Properties struct {
 
 	// If true, egress from IotHub will be restricted to only the allowed FQDNs that are configured via allowedFqdnList.
 	RestrictOutboundNetworkAccess *bool
-
-	// This property store root certificate related information
-	RootCertificate *RootCertificateProperties
 
 	// The routing related properties of the IoT hub. See: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-messaging
 	Routing *RoutingProperties
@@ -846,12 +803,6 @@ type Properties struct {
 	State *string
 }
 
-// PropertiesDeviceStreams - The device streams properties of iothub.
-type PropertiesDeviceStreams struct {
-	// List of Device Streams Endpoints.
-	StreamingEndpoints []*string
-}
-
 // QuotaMetricInfo - Quota metrics properties.
 type QuotaMetricInfo struct {
 	// READ-ONLY; The current value for the quota metric.
@@ -883,15 +834,6 @@ type RegistryStatistics struct {
 
 	// READ-ONLY; The total count of devices in the identity registry.
 	TotalDeviceCount *int64
-}
-
-// RootCertificateProperties - This property store root certificate related information
-type RootCertificateProperties struct {
-	// This property when set to true, hub will use G2 cert; while it's set to false, hub uses Baltimore Cert.
-	EnableRootCertificateV2 *bool
-
-	// READ-ONLY; the last update time to root certificate flag.
-	LastUpdatedTimeUTC *time.Time
 }
 
 // RouteCompilationError - Compilation error when evaluating route
@@ -943,9 +885,6 @@ type RouteProperties struct {
 	// The condition that is evaluated to apply the routing rule. If no condition is provided, it evaluates to true by default.
 	// For grammar, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-query-language
 	Condition *string
-
-	// The data schema reference that is used to interpret the message body.
-	DataSchema *string
 }
 
 // RoutingCosmosDBSQLAPIProperties - The properties related to a cosmos DB sql container endpoint.
@@ -969,9 +908,6 @@ type RoutingCosmosDBSQLAPIProperties struct {
 
 	// Managed identity properties of routing cosmos DB container endpoint.
 	Identity *ManagedIdentity
-
-	// The format of the message payload delivered to this endpoint.
-	MessagePayloadFormat *MessagePayloadFormat
 
 	// The name of the partition key associated with this cosmos DB sql container if one exists. This is an optional parameter.
 	PartitionKeyName *string
@@ -1047,9 +983,6 @@ type RoutingEventHubProperties struct {
 	// Managed identity properties of routing event hub endpoint.
 	Identity *ManagedIdentity
 
-	// The format of the message payload delivered to this endpoint.
-	MessagePayloadFormat *MessagePayloadFormat
-
 	// The name of the resource group of the event hub endpoint.
 	ResourceGroup *string
 
@@ -1078,9 +1011,6 @@ type RoutingEventStreamProperties struct {
 
 	// Managed identity properties of routing event stream endpoint.
 	Identity *ManagedIdentity
-
-	// The format of the message payload delivered to this endpoint.
-	MessagePayloadFormat *MessagePayloadFormat
 
 	// The unique GUID of the custom source for the event stream.
 	SourceID *string
@@ -1150,9 +1080,6 @@ type RoutingServiceBusQueueEndpointProperties struct {
 	// Managed identity properties of routing service bus queue endpoint.
 	Identity *ManagedIdentity
 
-	// The format of the message payload delivered to this endpoint.
-	MessagePayloadFormat *MessagePayloadFormat
-
 	// The name of the resource group of the service bus queue endpoint.
 	ResourceGroup *string
 
@@ -1184,9 +1111,6 @@ type RoutingServiceBusTopicEndpointProperties struct {
 
 	// Managed identity properties of routing service bus topic endpoint.
 	Identity *ManagedIdentity
-
-	// The format of the message payload delivered to this endpoint.
-	MessagePayloadFormat *MessagePayloadFormat
 
 	// The name of the resource group of the service bus topic endpoint.
 	ResourceGroup *string
@@ -1234,9 +1158,6 @@ type RoutingStorageContainerProperties struct {
 	// Maximum number of bytes for each blob written to storage. Value should be between 10485760(10MB) and 524288000(500MB).
 	// Default value is 314572800(300MB).
 	MaxChunkSizeInBytes *int32
-
-	// The format of the message payload delivered to this endpoint.
-	MessagePayloadFormat *MessagePayloadFormat
 
 	// The name of the resource group of the storage account.
 	ResourceGroup *string
@@ -1407,15 +1328,6 @@ type TestRouteResult struct {
 type TestRouteResultDetails struct {
 	// JSON-serialized list of route compilation errors
 	CompilationErrors []*RouteCompilationError
-}
-
-// TopicGroup - A named set of topic templates for an Event Grid-backed MQTT v5 IoT hub.
-type TopicGroup struct {
-	// The customer-supplied identifier used to reconcile the topic group during updates.
-	TopicGroupID *string
-
-	// The topic templates in this group.
-	TopicTemplates []*string
 }
 
 // UserSubscriptionQuota - User subscription quota response

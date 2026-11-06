@@ -21,14 +21,6 @@ import (
 
 // ResourceServer is a fake server for instances of the armiothub.ResourceClient type.
 type ResourceServer struct {
-	// CheckNameAvailability is the fake for method ResourceClient.CheckNameAvailability
-	// HTTP status codes to indicate success: http.StatusOK
-	CheckNameAvailability func(ctx context.Context, operationInputs armiothub.OperationInputs, options *armiothub.ResourceClientCheckNameAvailabilityOptions) (resp azfake.Responder[armiothub.ResourceClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
-
-	// CreateEventHubConsumerGroup is the fake for method ResourceClient.CreateEventHubConsumerGroup
-	// HTTP status codes to indicate success: http.StatusOK
-	CreateEventHubConsumerGroup func(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, consumerGroupBody armiothub.EventHubConsumerGroupBodyDescription, options *armiothub.ResourceClientCreateEventHubConsumerGroupOptions) (resp azfake.Responder[armiothub.ResourceClientCreateEventHubConsumerGroupResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method ResourceClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, resourceName string, iotHubDescription armiothub.Description, options *armiothub.ResourceClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armiothub.ResourceClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -36,6 +28,18 @@ type ResourceServer struct {
 	// BeginDelete is the fake for method ResourceClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, resourceName string, options *armiothub.ResourceClientBeginDeleteOptions) (resp azfake.PollerResponder[armiothub.ResourceClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method ResourceClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK
+	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, iotHubTags armiothub.TagsResource, options *armiothub.ResourceClientBeginUpdateOptions) (resp azfake.PollerResponder[armiothub.ResourceClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// CheckNameAvailability is the fake for method ResourceClient.CheckNameAvailability
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckNameAvailability func(ctx context.Context, operationInputs armiothub.OperationInputs, options *armiothub.ResourceClientCheckNameAvailabilityOptions) (resp azfake.Responder[armiothub.ResourceClientCheckNameAvailabilityResponse], errResp azfake.ErrorResponder)
+
+	// CreateEventHubConsumerGroup is the fake for method ResourceClient.CreateEventHubConsumerGroup
+	// HTTP status codes to indicate success: http.StatusOK
+	CreateEventHubConsumerGroup func(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, consumerGroupBody armiothub.EventHubConsumerGroupBodyDescription, options *armiothub.ResourceClientCreateEventHubConsumerGroupOptions) (resp azfake.Responder[armiothub.ResourceClientCreateEventHubConsumerGroupResponse], errResp azfake.ErrorResponder)
 
 	// DeleteEventHubConsumerGroup is the fake for method ResourceClient.DeleteEventHubConsumerGroup
 	// HTTP status codes to indicate success: http.StatusOK
@@ -49,10 +53,6 @@ type ResourceServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, options *armiothub.ResourceClientGetOptions) (resp azfake.Responder[armiothub.ResourceClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewGetEndpointHealthPager is the fake for method ResourceClient.NewGetEndpointHealthPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetEndpointHealthPager func(resourceGroupName string, iotHubName string, options *armiothub.ResourceClientGetEndpointHealthOptions) (resp azfake.PagerResponder[armiothub.ResourceClientGetEndpointHealthResponse])
-
 	// GetEventHubConsumerGroup is the fake for method ResourceClient.GetEventHubConsumerGroup
 	// HTTP status codes to indicate success: http.StatusOK
 	GetEventHubConsumerGroup func(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, options *armiothub.ResourceClientGetEventHubConsumerGroupOptions) (resp azfake.Responder[armiothub.ResourceClientGetEventHubConsumerGroupResponse], errResp azfake.ErrorResponder)
@@ -65,21 +65,25 @@ type ResourceServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetKeysForKeyName func(ctx context.Context, resourceGroupName string, resourceName string, keyName string, options *armiothub.ResourceClientGetKeysForKeyNameOptions) (resp azfake.Responder[armiothub.ResourceClientGetKeysForKeyNameResponse], errResp azfake.ErrorResponder)
 
-	// NewGetQuotaMetricsPager is the fake for method ResourceClient.NewGetQuotaMetricsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetQuotaMetricsPager func(resourceGroupName string, resourceName string, options *armiothub.ResourceClientGetQuotaMetricsOptions) (resp azfake.PagerResponder[armiothub.ResourceClientGetQuotaMetricsResponse])
-
 	// GetStats is the fake for method ResourceClient.GetStats
 	// HTTP status codes to indicate success: http.StatusOK
 	GetStats func(ctx context.Context, resourceGroupName string, resourceName string, options *armiothub.ResourceClientGetStatsOptions) (resp azfake.Responder[armiothub.ResourceClientGetStatsResponse], errResp azfake.ErrorResponder)
 
-	// NewGetValidSKUsPager is the fake for method ResourceClient.NewGetValidSKUsPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewGetValidSKUsPager func(resourceGroupName string, resourceName string, options *armiothub.ResourceClientGetValidSKUsOptions) (resp azfake.PagerResponder[armiothub.ResourceClientGetValidSKUsResponse])
-
 	// ImportDevices is the fake for method ResourceClient.ImportDevices
 	// HTTP status codes to indicate success: http.StatusOK
 	ImportDevices func(ctx context.Context, resourceGroupName string, resourceName string, importDevicesParameters armiothub.ImportDevicesRequest, options *armiothub.ResourceClientImportDevicesOptions) (resp azfake.Responder[armiothub.ResourceClientImportDevicesResponse], errResp azfake.ErrorResponder)
+
+	// NewGetEndpointHealthPager is the fake for method ResourceClient.NewGetEndpointHealthPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetEndpointHealthPager func(resourceGroupName string, iotHubName string, options *armiothub.ResourceClientGetEndpointHealthOptions) (resp azfake.PagerResponder[armiothub.ResourceClientGetEndpointHealthResponse])
+
+	// NewGetQuotaMetricsPager is the fake for method ResourceClient.NewGetQuotaMetricsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetQuotaMetricsPager func(resourceGroupName string, resourceName string, options *armiothub.ResourceClientGetQuotaMetricsOptions) (resp azfake.PagerResponder[armiothub.ResourceClientGetQuotaMetricsResponse])
+
+	// NewGetValidSKUsPager is the fake for method ResourceClient.NewGetValidSKUsPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewGetValidSKUsPager func(resourceGroupName string, resourceName string, options *armiothub.ResourceClientGetValidSKUsOptions) (resp azfake.PagerResponder[armiothub.ResourceClientGetValidSKUsResponse])
 
 	// NewListByResourceGroupPager is the fake for method ResourceClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -108,10 +112,6 @@ type ResourceServer struct {
 	// TestRoute is the fake for method ResourceClient.TestRoute
 	// HTTP status codes to indicate success: http.StatusOK
 	TestRoute func(ctx context.Context, iotHubName string, resourceGroupName string, input armiothub.TestRouteInput, options *armiothub.ResourceClientTestRouteOptions) (resp azfake.Responder[armiothub.ResourceClientTestRouteResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdate is the fake for method ResourceClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK
-	BeginUpdate func(ctx context.Context, resourceGroupName string, resourceName string, iotHubTags armiothub.TagsResource, options *armiothub.ResourceClientBeginUpdateOptions) (resp azfake.PollerResponder[armiothub.ResourceClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewResourceServerTransport creates a new instance of ResourceServerTransport with the provided implementation.
@@ -122,6 +122,7 @@ func NewResourceServerTransport(srv *ResourceServer) *ResourceServerTransport {
 		srv:                                srv,
 		beginCreateOrUpdate:                newTracker[azfake.PollerResponder[armiothub.ResourceClientCreateOrUpdateResponse]](),
 		beginDelete:                        newTracker[azfake.PollerResponder[armiothub.ResourceClientDeleteResponse]](),
+		beginUpdate:                        newTracker[azfake.PollerResponder[armiothub.ResourceClientUpdateResponse]](),
 		newGetEndpointHealthPager:          newTracker[azfake.PagerResponder[armiothub.ResourceClientGetEndpointHealthResponse]](),
 		newGetQuotaMetricsPager:            newTracker[azfake.PagerResponder[armiothub.ResourceClientGetQuotaMetricsResponse]](),
 		newGetValidSKUsPager:               newTracker[azfake.PagerResponder[armiothub.ResourceClientGetValidSKUsResponse]](),
@@ -130,7 +131,6 @@ func NewResourceServerTransport(srv *ResourceServer) *ResourceServerTransport {
 		newListEventHubConsumerGroupsPager: newTracker[azfake.PagerResponder[armiothub.ResourceClientListEventHubConsumerGroupsResponse]](),
 		newListJobsPager:                   newTracker[azfake.PagerResponder[armiothub.ResourceClientListJobsResponse]](),
 		newListKeysPager:                   newTracker[azfake.PagerResponder[armiothub.ResourceClientListKeysResponse]](),
-		beginUpdate:                        newTracker[azfake.PollerResponder[armiothub.ResourceClientUpdateResponse]](),
 	}
 }
 
@@ -140,6 +140,7 @@ type ResourceServerTransport struct {
 	srv                                *ResourceServer
 	beginCreateOrUpdate                *tracker[azfake.PollerResponder[armiothub.ResourceClientCreateOrUpdateResponse]]
 	beginDelete                        *tracker[azfake.PollerResponder[armiothub.ResourceClientDeleteResponse]]
+	beginUpdate                        *tracker[azfake.PollerResponder[armiothub.ResourceClientUpdateResponse]]
 	newGetEndpointHealthPager          *tracker[azfake.PagerResponder[armiothub.ResourceClientGetEndpointHealthResponse]]
 	newGetQuotaMetricsPager            *tracker[azfake.PagerResponder[armiothub.ResourceClientGetQuotaMetricsResponse]]
 	newGetValidSKUsPager               *tracker[azfake.PagerResponder[armiothub.ResourceClientGetValidSKUsResponse]]
@@ -148,7 +149,6 @@ type ResourceServerTransport struct {
 	newListEventHubConsumerGroupsPager *tracker[azfake.PagerResponder[armiothub.ResourceClientListEventHubConsumerGroupsResponse]]
 	newListJobsPager                   *tracker[azfake.PagerResponder[armiothub.ResourceClientListJobsResponse]]
 	newListKeysPager                   *tracker[azfake.PagerResponder[armiothub.ResourceClientListKeysResponse]]
-	beginUpdate                        *tracker[azfake.PollerResponder[armiothub.ResourceClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ResourceServerTransport.
@@ -172,36 +172,38 @@ func (r *ResourceServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
-			case "ResourceClient.CheckNameAvailability":
-				res.resp, res.err = r.dispatchCheckNameAvailability(req)
-			case "ResourceClient.CreateEventHubConsumerGroup":
-				res.resp, res.err = r.dispatchCreateEventHubConsumerGroup(req)
 			case "ResourceClient.BeginCreateOrUpdate":
 				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
 			case "ResourceClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "ResourceClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
+			case "ResourceClient.CheckNameAvailability":
+				res.resp, res.err = r.dispatchCheckNameAvailability(req)
+			case "ResourceClient.CreateEventHubConsumerGroup":
+				res.resp, res.err = r.dispatchCreateEventHubConsumerGroup(req)
 			case "ResourceClient.DeleteEventHubConsumerGroup":
 				res.resp, res.err = r.dispatchDeleteEventHubConsumerGroup(req)
 			case "ResourceClient.ExportDevices":
 				res.resp, res.err = r.dispatchExportDevices(req)
 			case "ResourceClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
-			case "ResourceClient.NewGetEndpointHealthPager":
-				res.resp, res.err = r.dispatchNewGetEndpointHealthPager(req)
 			case "ResourceClient.GetEventHubConsumerGroup":
 				res.resp, res.err = r.dispatchGetEventHubConsumerGroup(req)
 			case "ResourceClient.GetJob":
 				res.resp, res.err = r.dispatchGetJob(req)
 			case "ResourceClient.GetKeysForKeyName":
 				res.resp, res.err = r.dispatchGetKeysForKeyName(req)
-			case "ResourceClient.NewGetQuotaMetricsPager":
-				res.resp, res.err = r.dispatchNewGetQuotaMetricsPager(req)
 			case "ResourceClient.GetStats":
 				res.resp, res.err = r.dispatchGetStats(req)
-			case "ResourceClient.NewGetValidSKUsPager":
-				res.resp, res.err = r.dispatchNewGetValidSKUsPager(req)
 			case "ResourceClient.ImportDevices":
 				res.resp, res.err = r.dispatchImportDevices(req)
+			case "ResourceClient.NewGetEndpointHealthPager":
+				res.resp, res.err = r.dispatchNewGetEndpointHealthPager(req)
+			case "ResourceClient.NewGetQuotaMetricsPager":
+				res.resp, res.err = r.dispatchNewGetQuotaMetricsPager(req)
+			case "ResourceClient.NewGetValidSKUsPager":
+				res.resp, res.err = r.dispatchNewGetValidSKUsPager(req)
 			case "ResourceClient.NewListByResourceGroupPager":
 				res.resp, res.err = r.dispatchNewListByResourceGroupPager(req)
 			case "ResourceClient.NewListBySubscriptionPager":
@@ -216,8 +218,6 @@ func (r *ResourceServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = r.dispatchTestAllRoutes(req)
 			case "ResourceClient.TestRoute":
 				res.resp, res.err = r.dispatchTestRoute(req)
-			case "ResourceClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -232,80 +232,6 @@ func (r *ResourceServerTransport) dispatchToMethodFake(req *http.Request, method
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (r *ResourceServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if r.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armiothub.OperationInputs](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.CheckNameAvailability(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NameAvailabilityInfo, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *ResourceServerTransport) dispatchCreateEventHubConsumerGroup(req *http.Request) (*http.Response, error) {
-	if r.srv.CreateEventHubConsumerGroup == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CreateEventHubConsumerGroup not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventHubEndpoints/(?P<eventHubEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ConsumerGroups/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armiothub.EventHubConsumerGroupBodyDescription](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	eventHubEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventHubEndpointName")])
-	if err != nil {
-		return nil, err
-	}
-	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.CreateEventHubConsumerGroup(req.Context(), resourceGroupNameParam, resourceNameParam, eventHubEndpointNameParam, nameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EventHubConsumerGroupInfo, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (r *ResourceServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -404,6 +330,128 @@ func (r *ResourceServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 		r.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *ResourceServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := r.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armiothub.TagsResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		r.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		r.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *ResourceServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if r.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armiothub.OperationInputs](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.CheckNameAvailability(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NameAvailabilityInfo, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *ResourceServerTransport) dispatchCreateEventHubConsumerGroup(req *http.Request) (*http.Response, error) {
+	if r.srv.CreateEventHubConsumerGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CreateEventHubConsumerGroup not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/eventHubEndpoints/(?P<eventHubEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ConsumerGroups/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armiothub.EventHubConsumerGroupBodyDescription](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	eventHubEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("eventHubEndpointName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.CreateEventHubConsumerGroup(req.Context(), resourceGroupNameParam, resourceNameParam, eventHubEndpointNameParam, nameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).EventHubConsumerGroupInfo, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -514,47 +562,6 @@ func (r *ResourceServerTransport) dispatchGet(req *http.Request) (*http.Response
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Description, req)
 	if err != nil {
 		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *ResourceServerTransport) dispatchNewGetEndpointHealthPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewGetEndpointHealthPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewGetEndpointHealthPager not implemented")}
-	}
-	newGetEndpointHealthPager := r.newGetEndpointHealthPager.get(req)
-	if newGetEndpointHealthPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<iotHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routingEndpointsHealth`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		iotHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("iotHubName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewGetEndpointHealthPager(resourceGroupNameParam, iotHubNameParam, nil)
-		newGetEndpointHealthPager = &resp
-		r.newGetEndpointHealthPager.add(req, newGetEndpointHealthPager)
-		server.PagerResponderInjectNextLinks(newGetEndpointHealthPager, req, func(page *armiothub.ResourceClientGetEndpointHealthResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newGetEndpointHealthPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newGetEndpointHealthPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newGetEndpointHealthPager) {
-		r.newGetEndpointHealthPager.remove(req)
 	}
 	return resp, nil
 }
@@ -674,6 +681,117 @@ func (r *ResourceServerTransport) dispatchGetKeysForKeyName(req *http.Request) (
 	return resp, nil
 }
 
+func (r *ResourceServerTransport) dispatchGetStats(req *http.Request) (*http.Response, error) {
+	if r.srv.GetStats == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetStats not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/IotHubStats`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.GetStats(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegistryStatistics, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *ResourceServerTransport) dispatchImportDevices(req *http.Request) (*http.Response, error) {
+	if r.srv.ImportDevices == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ImportDevices not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/importDevices`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armiothub.ImportDevicesRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.ImportDevices(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).JobResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *ResourceServerTransport) dispatchNewGetEndpointHealthPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewGetEndpointHealthPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewGetEndpointHealthPager not implemented")}
+	}
+	newGetEndpointHealthPager := r.newGetEndpointHealthPager.get(req)
+	if newGetEndpointHealthPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<iotHubName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/routingEndpointsHealth`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		iotHubNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("iotHubName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewGetEndpointHealthPager(resourceGroupNameParam, iotHubNameParam, nil)
+		newGetEndpointHealthPager = &resp
+		r.newGetEndpointHealthPager.add(req, newGetEndpointHealthPager)
+		server.PagerResponderInjectNextLinks(newGetEndpointHealthPager, req, func(page *armiothub.ResourceClientGetEndpointHealthResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newGetEndpointHealthPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newGetEndpointHealthPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newGetEndpointHealthPager) {
+		r.newGetEndpointHealthPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (r *ResourceServerTransport) dispatchNewGetQuotaMetricsPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewGetQuotaMetricsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewGetQuotaMetricsPager not implemented")}
@@ -715,39 +833,6 @@ func (r *ResourceServerTransport) dispatchNewGetQuotaMetricsPager(req *http.Requ
 	return resp, nil
 }
 
-func (r *ResourceServerTransport) dispatchGetStats(req *http.Request) (*http.Response, error) {
-	if r.srv.GetStats == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetStats not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/IotHubStats`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.GetStats(req.Context(), resourceGroupNameParam, resourceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegistryStatistics, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (r *ResourceServerTransport) dispatchNewGetValidSKUsPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewGetValidSKUsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewGetValidSKUsPager not implemented")}
@@ -785,43 +870,6 @@ func (r *ResourceServerTransport) dispatchNewGetValidSKUsPager(req *http.Request
 	}
 	if !server.PagerResponderMore(newGetValidSKUsPager) {
 		r.newGetValidSKUsPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (r *ResourceServerTransport) dispatchImportDevices(req *http.Request) (*http.Response, error) {
-	if r.srv.ImportDevices == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ImportDevices not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/importDevices`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armiothub.ImportDevicesRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.ImportDevices(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).JobResponse, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }
@@ -1094,54 +1142,6 @@ func (r *ResourceServerTransport) dispatchTestRoute(req *http.Request) (*http.Re
 	if err != nil {
 		return nil, err
 	}
-	return resp, nil
-}
-
-func (r *ResourceServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if r.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := r.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Devices/IotHubs/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armiothub.TagsResource](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := r.srv.BeginUpdate(req.Context(), resourceGroupNameParam, resourceNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		r.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		r.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

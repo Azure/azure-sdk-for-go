@@ -238,12 +238,6 @@ type ComputeClientBeginDeleteOptions struct {
 	ResumeToken string
 }
 
-// ComputeClientBeginResizeOptions contains the optional parameters for the ComputeClient.BeginResize method.
-type ComputeClientBeginResizeOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
 // ComputeClientBeginRestartOptions contains the optional parameters for the ComputeClient.BeginRestart method.
 type ComputeClientBeginRestartOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -268,12 +262,6 @@ type ComputeClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
-// ComputeClientGetAllowedResizeSizesOptions contains the optional parameters for the ComputeClient.GetAllowedResizeSizes
-// method.
-type ComputeClientGetAllowedResizeSizesOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ComputeClientGetOptions contains the optional parameters for the ComputeClient.Get method.
 type ComputeClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -293,176 +281,6 @@ type ComputeClientListNodesOptions struct {
 type ComputeClientListOptions struct {
 	// Continuation token for pagination.
 	Skip *string
-}
-
-// ComputeClientUpdateCustomServicesOptions contains the optional parameters for the ComputeClient.UpdateCustomServices method.
-type ComputeClientUpdateCustomServicesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComputeClientUpdateDataMountsOptions contains the optional parameters for the ComputeClient.UpdateDataMounts method.
-type ComputeClientUpdateDataMountsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComputeClientUpdateIdleShutdownSettingOptions contains the optional parameters for the ComputeClient.UpdateIdleShutdownSetting
-// method.
-type ComputeClientUpdateIdleShutdownSettingOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionClientBeginCreateOrUpdateDeploymentOptions contains the optional parameters for the ConnectionClient.BeginCreateOrUpdateDeployment
-// method.
-type ConnectionClientBeginCreateOrUpdateDeploymentOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ConnectionClientBeginDeleteDeploymentOptions contains the optional parameters for the ConnectionClient.BeginDeleteDeployment
-// method.
-type ConnectionClientBeginDeleteDeploymentOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ConnectionClientGetAllModelsOptions contains the optional parameters for the ConnectionClient.GetAllModels method.
-type ConnectionClientGetAllModelsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionClientGetDeploymentOptions contains the optional parameters for the ConnectionClient.GetDeployment method.
-type ConnectionClientGetDeploymentOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionClientGetModelsOptions contains the optional parameters for the ConnectionClient.NewGetModelsPager method.
-type ConnectionClientGetModelsOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-}
-
-// ConnectionClientListDeploymentsOptions contains the optional parameters for the ConnectionClient.NewListDeploymentsPager
-// method.
-type ConnectionClientListDeploymentsOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-}
-
-// ConnectionRaiBlocklistClientBeginCreateOptions contains the optional parameters for the ConnectionRaiBlocklistClient.BeginCreate
-// method.
-type ConnectionRaiBlocklistClientBeginCreateOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ConnectionRaiBlocklistClientBeginDeleteOptions contains the optional parameters for the ConnectionRaiBlocklistClient.BeginDelete
-// method.
-type ConnectionRaiBlocklistClientBeginDeleteOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ConnectionRaiBlocklistClientGetOptions contains the optional parameters for the ConnectionRaiBlocklistClient.Get method.
-type ConnectionRaiBlocklistClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionRaiBlocklistItemClientBeginAddBulkOptions contains the optional parameters for the ConnectionRaiBlocklistItemClient.BeginAddBulk
-// method.
-type ConnectionRaiBlocklistItemClientBeginAddBulkOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ConnectionRaiBlocklistItemClientBeginCreateOptions contains the optional parameters for the ConnectionRaiBlocklistItemClient.BeginCreate
-// method.
-type ConnectionRaiBlocklistItemClientBeginCreateOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ConnectionRaiBlocklistItemClientBeginDeleteBulkOptions contains the optional parameters for the ConnectionRaiBlocklistItemClient.BeginDeleteBulk
-// method.
-type ConnectionRaiBlocklistItemClientBeginDeleteBulkOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ConnectionRaiBlocklistItemClientBeginDeleteOptions contains the optional parameters for the ConnectionRaiBlocklistItemClient.BeginDelete
-// method.
-type ConnectionRaiBlocklistItemClientBeginDeleteOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ConnectionRaiBlocklistItemClientGetOptions contains the optional parameters for the ConnectionRaiBlocklistItemClient.Get
-// method.
-type ConnectionRaiBlocklistItemClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ConnectionRaiBlocklistItemsClientListOptions contains the optional parameters for the ConnectionRaiBlocklistItemsClient.NewListPager
-// method.
-type ConnectionRaiBlocklistItemsClientListOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-}
-
-// ConnectionRaiBlocklistsClientListOptions contains the optional parameters for the ConnectionRaiBlocklistsClient.NewListPager
-// method.
-type ConnectionRaiBlocklistsClientListOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-}
-
-// ConnectionRaiPoliciesClientListOptions contains the optional parameters for the ConnectionRaiPoliciesClient.NewListPager
-// method.
-type ConnectionRaiPoliciesClientListOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-}
-
-// ConnectionRaiPolicyClientBeginCreateOptions contains the optional parameters for the ConnectionRaiPolicyClient.BeginCreate
-// method.
-type ConnectionRaiPolicyClientBeginCreateOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ConnectionRaiPolicyClientBeginDeleteOptions contains the optional parameters for the ConnectionRaiPolicyClient.BeginDelete
-// method.
-type ConnectionRaiPolicyClientBeginDeleteOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ConnectionRaiPolicyClientGetOptions contains the optional parameters for the ConnectionRaiPolicyClient.Get method.
-type ConnectionRaiPolicyClientGetOptions struct {
-	// placeholder for future optional parameters
 }
 
 // DataContainersClientCreateOrUpdateOptions contains the optional parameters for the DataContainersClient.CreateOrUpdate
@@ -575,84 +393,6 @@ type DatastoresClientListOptions struct {
 type DatastoresClientListSecretsOptions struct {
 	// Secret expiry information.
 	Body *SecretExpiry
-}
-
-// EndpointClientBeginCreateOrUpdateOptions contains the optional parameters for the EndpointClient.BeginCreateOrUpdate method.
-type EndpointClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// EndpointClientGetModelsOptions contains the optional parameters for the EndpointClient.NewGetModelsPager method.
-type EndpointClientGetModelsOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EndpointClientGetOptions contains the optional parameters for the EndpointClient.Get method.
-type EndpointClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EndpointClientListKeysOptions contains the optional parameters for the EndpointClient.ListKeys method.
-type EndpointClientListKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EndpointClientListOptions contains the optional parameters for the EndpointClient.NewListPager method.
-type EndpointClientListOptions struct {
-	// Endpoint type filter
-	EndpointType *EndpointType
-
-	// Whether the endpoint resource will be expand to include deployment information, e.g. $expand=deployments
-	Expand                     *string
-	IncludeConnections         *bool
-	IncludeOnlineEndpoints     *bool
-	IncludeServerlessEndpoints *bool
-
-	// Continuation token for pagination.
-	Skip *string
-}
-
-// EndpointClientRegenerateKeysOptions contains the optional parameters for the EndpointClient.RegenerateKeys method.
-type EndpointClientRegenerateKeysOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EndpointDeploymentClientBeginCreateOrUpdateOptions contains the optional parameters for the EndpointDeploymentClient.BeginCreateOrUpdate
-// method.
-type EndpointDeploymentClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// EndpointDeploymentClientBeginDeleteOptions contains the optional parameters for the EndpointDeploymentClient.BeginDelete
-// method.
-type EndpointDeploymentClientBeginDeleteOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// EndpointDeploymentClientGetInWorkspaceOptions contains the optional parameters for the EndpointDeploymentClient.NewGetInWorkspacePager
-// method.
-type EndpointDeploymentClientGetInWorkspaceOptions struct {
-	// Endpoint type filter
-	EndpointType *EndpointType
-
-	// Continuation token for pagination.
-	Skip *string
-}
-
-// EndpointDeploymentClientGetOptions contains the optional parameters for the EndpointDeploymentClient.Get method.
-type EndpointDeploymentClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// EndpointDeploymentClientListOptions contains the optional parameters for the EndpointDeploymentClient.NewListPager method.
-type EndpointDeploymentClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // EnvironmentContainersClientCreateOrUpdateOptions contains the optional parameters for the EnvironmentContainersClient.CreateOrUpdate
@@ -947,173 +687,6 @@ type FeaturestoreEntityVersionsClientListOptions struct {
 	VersionName *string
 }
 
-// InferenceEndpointsClientBeginCreateOrUpdateOptions contains the optional parameters for the InferenceEndpointsClient.BeginCreateOrUpdate
-// method.
-type InferenceEndpointsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// InferenceEndpointsClientBeginDeleteOptions contains the optional parameters for the InferenceEndpointsClient.BeginDelete
-// method.
-type InferenceEndpointsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// InferenceEndpointsClientBeginUpdateOptions contains the optional parameters for the InferenceEndpointsClient.BeginUpdate
-// method.
-type InferenceEndpointsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// InferenceEndpointsClientGetOptions contains the optional parameters for the InferenceEndpointsClient.Get method.
-type InferenceEndpointsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// InferenceEndpointsClientListOptions contains the optional parameters for the InferenceEndpointsClient.NewListPager method.
-type InferenceEndpointsClientListOptions struct {
-	// Number of InferenceEndpoint to be retrieved in a page of results.
-	Count *int32
-
-	// The option to order the response.
-	OrderBy *OrderString
-
-	// A set of properties with which to filter the returned models. It is a comma separated string of properties key and/or properties
-	// key=value Example: propKey1,propKey2,propKey3=value3 .
-	Properties *string
-
-	// Continuation token for pagination.
-	Skip *string
-
-	// A set of tags with which to filter the returned models. It is a comma separated string of tags key or tags key=value. Example:
-	// tagKey1,tagKey2,tagKey3=value3 .
-	Tags *string
-}
-
-// InferenceGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the InferenceGroupsClient.BeginCreateOrUpdate
-// method.
-type InferenceGroupsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// InferenceGroupsClientBeginDeleteOptions contains the optional parameters for the InferenceGroupsClient.BeginDelete method.
-type InferenceGroupsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions contains the optional parameters for the InferenceGroupsClient.BeginModifyDeltaModelsAsync
-// method.
-type InferenceGroupsClientBeginModifyDeltaModelsAsyncOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// InferenceGroupsClientBeginUpdateOptions contains the optional parameters for the InferenceGroupsClient.BeginUpdate method.
-type InferenceGroupsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// InferenceGroupsClientGetDeltaModelsStatusAsyncOptions contains the optional parameters for the InferenceGroupsClient.GetDeltaModelsStatusAsync
-// method.
-type InferenceGroupsClientGetDeltaModelsStatusAsyncOptions struct {
-	// placeholder for future optional parameters
-}
-
-// InferenceGroupsClientGetOptions contains the optional parameters for the InferenceGroupsClient.Get method.
-type InferenceGroupsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// InferenceGroupsClientGetStatusOptions contains the optional parameters for the InferenceGroupsClient.GetStatus method.
-type InferenceGroupsClientGetStatusOptions struct {
-	// placeholder for future optional parameters
-}
-
-// InferenceGroupsClientListDeltaModelsAsyncOptions contains the optional parameters for the InferenceGroupsClient.NewListDeltaModelsAsyncPager
-// method.
-type InferenceGroupsClientListDeltaModelsAsyncOptions struct {
-	// placeholder for future optional parameters
-}
-
-// InferenceGroupsClientListOptions contains the optional parameters for the InferenceGroupsClient.NewListPager method.
-type InferenceGroupsClientListOptions struct {
-	// Number of InferenceGroup to be retrieved in a page of results.
-	Count *int32
-
-	// The option to order the response.
-	OrderBy *OrderString
-
-	// A set of properties with which to filter the returned models. It is a comma separated string of properties key and/or properties
-	// key=value Example: propKey1,propKey2,propKey3=value3 .
-	Properties *string
-
-	// Continuation token for pagination.
-	Skip *string
-
-	// A set of tags with which to filter the returned models. It is a comma separated string of tags key or tags key=value. Example:
-	// tagKey1,tagKey2,tagKey3=value3 .
-	Tags *string
-}
-
-// InferenceGroupsClientListSKUsOptions contains the optional parameters for the InferenceGroupsClient.NewListSKUsPager method.
-type InferenceGroupsClientListSKUsOptions struct {
-	// Number of Skus to be retrieved in a page of results.
-	Count *int32
-
-	// Continuation token for pagination.
-	Skip *string
-}
-
-// InferencePoolsClientBeginCreateOrUpdateOptions contains the optional parameters for the InferencePoolsClient.BeginCreateOrUpdate
-// method.
-type InferencePoolsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// InferencePoolsClientBeginDeleteOptions contains the optional parameters for the InferencePoolsClient.BeginDelete method.
-type InferencePoolsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// InferencePoolsClientBeginUpdateOptions contains the optional parameters for the InferencePoolsClient.BeginUpdate method.
-type InferencePoolsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// InferencePoolsClientGetOptions contains the optional parameters for the InferencePoolsClient.Get method.
-type InferencePoolsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// InferencePoolsClientListOptions contains the optional parameters for the InferencePoolsClient.NewListPager method.
-type InferencePoolsClientListOptions struct {
-	// Number of inferencePools to be retrieved in a page of results.
-	Count *int32
-
-	// The option to order the response.
-	OrderBy *OrderString
-
-	// A set of properties with which to filter the returned models. It is a comma separated string of properties key and/or properties
-	// key=value Example: propKey1,propKey2,propKey3=value3 .
-	Properties *string
-
-	// Continuation token for pagination.
-	Skip *string
-
-	// A set of tags with which to filter the returned models. It is a comma separated string of tags key or tags key=value. Example:
-	// tagKey1,tagKey2,tagKey3=value3 .
-	Tags *string
-}
-
 // JobsClientBeginCancelOptions contains the optional parameters for the JobsClient.BeginCancel method.
 type JobsClientBeginCancelOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -1162,31 +735,6 @@ type ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions struct {
 
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
-}
-
-// ManagedNetworkSettingsClientBeginPatchOptions contains the optional parameters for the ManagedNetworkSettingsClient.BeginPatch
-// method.
-type ManagedNetworkSettingsClientBeginPatchOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ManagedNetworkSettingsClientBeginPutOptions contains the optional parameters for the ManagedNetworkSettingsClient.BeginPut
-// method.
-type ManagedNetworkSettingsClientBeginPutOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ManagedNetworkSettingsClientGetOptions contains the optional parameters for the ManagedNetworkSettingsClient.Get method.
-type ManagedNetworkSettingsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedNetworkSettingsClientListOptions contains the optional parameters for the ManagedNetworkSettingsClient.NewListPager
-// method.
-type ManagedNetworkSettingsClientListOptions struct {
-	// placeholder for future optional parameters
 }
 
 // ManagedNetworkSettingsRuleClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedNetworkSettingsRuleClient.BeginCreateOrUpdate
@@ -1448,52 +996,6 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// OutboundRuleClientBeginCreateOrUpdateOptions contains the optional parameters for the OutboundRuleClient.BeginCreateOrUpdate
-// method.
-type OutboundRuleClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// OutboundRuleClientBeginDeleteOptions contains the optional parameters for the OutboundRuleClient.BeginDelete method.
-type OutboundRuleClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// OutboundRuleClientGetOptions contains the optional parameters for the OutboundRuleClient.Get method.
-type OutboundRuleClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OutboundRuleClientListOptions contains the optional parameters for the OutboundRuleClient.NewListPager method.
-type OutboundRuleClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// OutboundRulesClientBeginPostOptions contains the optional parameters for the OutboundRulesClient.BeginPost method.
-type OutboundRulesClientBeginPostOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PTUQuotaClientGetAvailableOptions contains the optional parameters for the PTUQuotaClient.GetAvailable method.
-type PTUQuotaClientGetAvailableOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PTUQuotaClientListAvailableOptions contains the optional parameters for the PTUQuotaClient.NewListAvailablePager method.
-type PTUQuotaClientListAvailableOptions struct {
-	// Continuation token for pagination.
-	Skip *string
-}
-
-// PTUQuotaClientListOptions contains the optional parameters for the PTUQuotaClient.NewListPager method.
-type PTUQuotaClientListOptions struct {
-	// Continuation token for pagination.
-	Skip *string
-}
-
 // PrivateEndpointConnectionsClientCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.CreateOrUpdate
 // method.
 type PrivateEndpointConnectionsClientCreateOrUpdateOptions struct {
@@ -1531,35 +1033,6 @@ type QuotasClientListOptions struct {
 
 // QuotasClientUpdateOptions contains the optional parameters for the QuotasClient.Update method.
 type QuotasClientUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RaiPoliciesClientListOptions contains the optional parameters for the RaiPoliciesClient.NewListPager method.
-type RaiPoliciesClientListOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-}
-
-// RaiPolicyClientBeginCreateOptions contains the optional parameters for the RaiPolicyClient.BeginCreate method.
-type RaiPolicyClientBeginCreateOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// RaiPolicyClientBeginDeleteOptions contains the optional parameters for the RaiPolicyClient.BeginDelete method.
-type RaiPolicyClientBeginDeleteOptions struct {
-	// Api version used by proxy call
-	ProxyAPIVersion *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// RaiPolicyClientGetOptions contains the optional parameters for the RaiPolicyClient.Get method.
-type RaiPolicyClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -2036,16 +1509,6 @@ type UsagesClientListOptions struct {
 // VirtualMachineSizesClientListOptions contains the optional parameters for the VirtualMachineSizesClient.List method.
 type VirtualMachineSizesClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// WorkspaceConnectionsClientBeginTestConnectionOptions contains the optional parameters for the WorkspaceConnectionsClient.BeginTestConnection
-// method.
-type WorkspaceConnectionsClientBeginTestConnectionOptions struct {
-	// Workspace Connection object
-	Body *WorkspaceConnectionPropertiesV2BasicResource
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
 }
 
 // WorkspaceConnectionsClientCreateOptions contains the optional parameters for the WorkspaceConnectionsClient.Create method.

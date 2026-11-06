@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/DataReference/getBlobReferenceSAS.json
+// Generated from example definition: 2026-07-01/DataReference/getBlobReferenceSAS.json
 func ExampleRegistryDataReferencesClient_GetBlobReferenceSAS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

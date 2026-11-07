@@ -44,11 +44,11 @@ func NewUsersClient(subscriptionID string, credential azcore.TokenCredential, op
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Creates a new user or updates an existing user on a mongo cluster.
+// BeginCreateOrUpdate - Creates a new user or updates an existing user on a DocumentDB cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
-//   - userName - The name of the mongo cluster user.
+//   - mongoClusterName - The name of the DocumentDB cluster.
+//   - userName - The name of the DocumentDB cluster user.
 //   - resource - Resource create parameters.
 //   - options - UsersClientBeginCreateOrUpdateOptions contains the optional parameters for the UsersClient.BeginCreateOrUpdate
 //     method.
@@ -70,7 +70,7 @@ func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 	}
 }
 
-// CreateOrUpdate - Creates a new user or updates an existing user on a mongo cluster.
+// createOrUpdate - Creates a new user or updates an existing user on a DocumentDB cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UsersClient) createOrUpdate(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, resource User, options *UsersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -92,7 +92,7 @@ func (client *UsersClient) createOrUpdate(ctx context.Context, resourceGroupName
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, resource User, _ *UsersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users/{userName}"
 	if client.subscriptionID == "" {
@@ -126,11 +126,11 @@ func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// BeginDelete - Deletes a mongo cluster user.
+// BeginDelete - Deletes a DocumentDB cluster user.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
-//   - userName - The name of the mongo cluster user.
+//   - mongoClusterName - The name of the DocumentDB cluster.
+//   - userName - The name of the DocumentDB cluster user.
 //   - options - UsersClientBeginDeleteOptions contains the optional parameters for the UsersClient.BeginDelete method.
 func (client *UsersClient) BeginDelete(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, options *UsersClientBeginDeleteOptions) (*runtime.Poller[UsersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -149,7 +149,7 @@ func (client *UsersClient) BeginDelete(ctx context.Context, resourceGroupName st
 	}
 }
 
-// Delete - Deletes a mongo cluster user.
+// deleteOperation - Deletes a DocumentDB cluster user.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UsersClient) deleteOperation(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, options *UsersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *UsersClient) deleteOperation(ctx context.Context, resourceGroupNam
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *UsersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, _ *UsersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users/{userName}"
 	if client.subscriptionID == "" {
@@ -200,11 +200,11 @@ func (client *UsersClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
-// Get - Gets the defintion of a Mongo cluster user.
+// Get - Gets the defintion of a DocumentDB cluster user.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
-//   - userName - The name of the mongo cluster user.
+//   - mongoClusterName - The name of the DocumentDB cluster.
+//   - userName - The name of the DocumentDB cluster user.
 //   - options - UsersClientGetOptions contains the optional parameters for the UsersClient.Get method.
 func (client *UsersClient) Get(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, options *UsersClientGetOptions) (UsersClientGetResponse, error) {
 	var err error
@@ -265,9 +265,9 @@ func (client *UsersClient) getHandleResponse(resp *http.Response, successCodes .
 	return result, nil
 }
 
-// NewListByMongoClusterPager - List all the users on a mongo cluster.
+// NewListByMongoClusterPager - List all the users on a DocumentDB cluster.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
+//   - mongoClusterName - The name of the DocumentDB cluster.
 //   - options - UsersClientListByMongoClusterOptions contains the optional parameters for the UsersClient.NewListByMongoClusterPager
 //     method.
 func (client *UsersClient) NewListByMongoClusterPager(resourceGroupName string, mongoClusterName string, options *UsersClientListByMongoClusterOptions) *runtime.Pager[UsersClientListByMongoClusterResponse] {

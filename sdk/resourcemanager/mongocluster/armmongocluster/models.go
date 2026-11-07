@@ -15,7 +15,7 @@ type AdministratorProperties struct {
 	UserName *string
 }
 
-// AuthConfigProperties - The authentication configuration for the Mongo cluster.
+// AuthConfigProperties - The authentication configuration for the DocumentDB cluster.
 type AuthConfigProperties struct {
 	// Allowed authentication modes for data access on the cluster.
 	AllowedModes []*AuthenticationMode
@@ -56,7 +56,7 @@ type ComputeProperties struct {
 	Tier *string
 }
 
-// ConnectionString - Connection string for the mongo cluster
+// ConnectionString - Connection string for the DocumentDB cluster
 type ConnectionString struct {
 	// READ-ONLY; Value of the connection string
 	ConnectionString *string
@@ -92,7 +92,7 @@ type DatabaseRole struct {
 	Role *UserRole
 }
 
-// EncryptionProperties - The encryption configuration for the mongo cluster.
+// EncryptionProperties - The encryption configuration for the DocumentDB cluster.
 type EncryptionProperties struct {
 	// Customer managed key encryption settings.
 	CustomerManagedKeyEncryption *CustomerManagedKeyEncryptionProperties
@@ -121,7 +121,7 @@ type EntraIdentityProviderProperties struct {
 	PrincipalType *EntraPrincipalType
 }
 
-// FirewallRule - Represents a mongo cluster firewall rule.
+// FirewallRule - Represents a DocumentDB cluster firewall rule.
 type FirewallRule struct {
 	// The resource-specific properties for this resource.
 	Properties *FirewallRuleProperties
@@ -148,12 +148,12 @@ type FirewallRuleListResult struct {
 	NextLink *string
 }
 
-// FirewallRuleProperties - The properties of a mongo cluster firewall rule.
+// FirewallRuleProperties - The properties of a DocumentDB cluster firewall rule.
 type FirewallRuleProperties struct {
-	// REQUIRED; The end IP address of the mongo cluster firewall rule. Must be IPv4 format.
+	// REQUIRED; The end IP address of the DocumentDB cluster firewall rule. Must be IPv4 format.
 	EndIPAddress *string
 
-	// REQUIRED; The start IP address of the mongo cluster firewall rule. Must be IPv4 format.
+	// REQUIRED; The start IP address of the DocumentDB cluster firewall rule. Must be IPv4 format.
 	StartIPAddress *string
 
 	// READ-ONLY; The provisioning state of the firewall rule.
@@ -184,9 +184,9 @@ type KeyEncryptionKeyIdentity struct {
 	UserAssignedIdentityResourceID *string
 }
 
-// ListConnectionStringsResult - The connection strings for the given mongo cluster.
+// ListConnectionStringsResult - The connection strings for the given DocumentDB cluster.
 type ListConnectionStringsResult struct {
-	// READ-ONLY; An array that contains the connection strings for a mongo cluster.
+	// READ-ONLY; An array that contains the connection strings for a DocumentDB cluster.
 	ConnectionStrings []*ConnectionString
 }
 
@@ -215,7 +215,7 @@ type ManagedServiceIdentity struct {
 	TenantID *string
 }
 
-// MongoCluster - Represents a mongo cluster resource.
+// MongoCluster - Represents a DocumentDB cluster resource.
 type MongoCluster struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
@@ -421,57 +421,58 @@ type PromoteReplicaRequest struct {
 	Mode *PromoteMode
 }
 
-// Properties - The properties of a mongo cluster.
+// Properties - The properties of a DocumentDB cluster.
 type Properties struct {
-	// The local administrator properties for the mongo cluster.
+	// The local administrator properties for the DocumentDB cluster.
 	Administrator *AdministratorProperties
 
 	// The authentication configuration for the cluster.
 	AuthConfig *AuthConfigProperties
 
-	// The backup properties of the mongo cluster.
+	// The backup properties of the DocumentDB cluster.
 	Backup *BackupProperties
 
-	// The compute properties of the mongo cluster.
+	// The compute properties of the DocumentDB cluster.
 	Compute *ComputeProperties
 
-	// The mode to create a mongo cluster.
+	// The mode to create a DocumentDB cluster.
 	CreateMode *CreateMode
 
-	// The Data API properties of the mongo cluster.
+	// The Data API properties of the DocumentDB cluster.
 	DataAPI *DataAPIProperties
 
 	// The encryption configuration for the cluster. Depends on identity being configured.
 	Encryption *EncryptionProperties
 
-	// The high availability properties of the mongo cluster.
+	// The high availability properties of the DocumentDB cluster.
 	HighAvailability *HighAvailabilityProperties
 
-	// The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows Azure Cosmos DB service to bypass network restrictions.
+	// The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows the Azure Cosmos DB service to bypass network
+	// restrictions.
 	NetworkBypassMode *NetworkBypassMode
 
 	// List of private endpoint connections.
 	PreviewFeatures []*PreviewFeature
 
-	// Whether or not public endpoint access is allowed for this mongo cluster.
+	// Whether or not public endpoint access is allowed for this DocumentDB cluster.
 	PublicNetworkAccess *PublicNetworkAccess
 
-	// The parameters to create a replica mongo cluster.
+	// The parameters to create a replica DocumentDB cluster.
 	ReplicaParameters *ReplicaParameters
 
-	// The parameters to create a point-in-time restore mongo cluster.
+	// The parameters to create a point-in-time restore DocumentDB cluster.
 	RestoreParameters *RestoreParameters
 
 	// The Mongo DB server version. Defaults to the latest available version if not specified.
 	ServerVersion *string
 
-	// The sharding properties of the mongo cluster.
+	// The sharding properties of the DocumentDB cluster.
 	Sharding *ShardingProperties
 
-	// The storage properties of the mongo cluster.
+	// The storage properties of the DocumentDB cluster.
 	Storage *StorageProperties
 
-	// READ-ONLY; The status of the mongo cluster.
+	// READ-ONLY; The status of the DocumentDB cluster.
 	ClusterStatus *Status
 
 	// READ-ONLY; The default mongo connection string for the cluster.
@@ -483,14 +484,14 @@ type Properties struct {
 	// READ-ONLY; List of private endpoint connections.
 	PrivateEndpointConnections []*PrivateEndpointConnection
 
-	// READ-ONLY; The provisioning state of the mongo cluster.
+	// READ-ONLY; The provisioning state of the DocumentDB cluster.
 	ProvisioningState *ProvisioningState
 
-	// READ-ONLY; The replication properties for the mongo cluster
+	// READ-ONLY; The replication properties for the DocumentDB cluster
 	Replica *ReplicationProperties
 }
 
-// Replica - Represents a mongo cluster replica.
+// Replica - Represents a DocumentDB cluster replica.
 type Replica struct {
 	// The resource-specific properties for this resource.
 	Properties *Properties
@@ -526,7 +527,7 @@ type ReplicaParameters struct {
 	SourceResourceID *string
 }
 
-// ReplicationProperties - Replica properties of the mongo cluster.
+// ReplicationProperties - Replica properties of the DocumentDB cluster.
 type ReplicationProperties struct {
 	// READ-ONLY; The replication link state of the replica cluster.
 	ReplicationState *ReplicationState
@@ -540,7 +541,7 @@ type ReplicationProperties struct {
 
 // RestoreParameters - Parameters used for restore operations
 type RestoreParameters struct {
-	// UTC point in time to restore a mongo cluster
+	// UTC point in time to restore a DocumentDB cluster
 	PointInTimeUTC *time.Time
 
 	// Resource ID to locate the source cluster to restore
@@ -599,47 +600,48 @@ type Update struct {
 
 // UpdateProperties - The updatable properties of the MongoCluster.
 type UpdateProperties struct {
-	// The local administrator properties for the mongo cluster.
+	// The local administrator properties for the DocumentDB cluster.
 	Administrator *AdministratorProperties
 
 	// The authentication configuration for the cluster.
 	AuthConfig *AuthConfigProperties
 
-	// The backup properties of the mongo cluster.
+	// The backup properties of the DocumentDB cluster.
 	Backup *BackupProperties
 
-	// The compute properties of the mongo cluster.
+	// The compute properties of the DocumentDB cluster.
 	Compute *ComputeProperties
 
-	// The Data API properties of the mongo cluster.
+	// The Data API properties of the DocumentDB cluster.
 	DataAPI *DataAPIProperties
 
 	// The encryption configuration for the cluster. Depends on identity being configured.
 	Encryption *EncryptionProperties
 
-	// The high availability properties of the mongo cluster.
+	// The high availability properties of the DocumentDB cluster.
 	HighAvailability *HighAvailabilityProperties
 
-	// The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows Azure Cosmos DB service to bypass network restrictions.
+	// The network bypass mode for the cluster. Setting to 'AzureCosmosDB' allows the Azure Cosmos DB service to bypass network
+	// restrictions.
 	NetworkBypassMode *NetworkBypassMode
 
 	// List of private endpoint connections.
 	PreviewFeatures []*PreviewFeature
 
-	// Whether or not public endpoint access is allowed for this mongo cluster.
+	// Whether or not public endpoint access is allowed for this DocumentDB cluster.
 	PublicNetworkAccess *PublicNetworkAccess
 
 	// The Mongo DB server version. Defaults to the latest available version if not specified.
 	ServerVersion *string
 
-	// The sharding properties of the mongo cluster.
+	// The sharding properties of the DocumentDB cluster.
 	Sharding *ShardingProperties
 
-	// The storage properties of the mongo cluster.
+	// The storage properties of the DocumentDB cluster.
 	Storage *StorageProperties
 }
 
-// User - Represents a Mongo cluster user.
+// User - Represents a DocumentDB cluster user.
 type User struct {
 	// The resource-specific properties for this resource.
 	Properties *UserProperties

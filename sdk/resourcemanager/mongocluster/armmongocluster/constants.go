@@ -23,7 +23,7 @@ func PossibleActionTypeValues() []ActionType {
 	}
 }
 
-// AuthenticationMode - The authentication modes supporting on the Mongo cluster.
+// AuthenticationMode - The authentication modes supporting on the DocumentDB cluster.
 type AuthenticationMode string
 
 const (
@@ -60,15 +60,15 @@ func PossibleCheckNameAvailabilityReasonValues() []CheckNameAvailabilityReason {
 	}
 }
 
-// CreateMode - The mode that the Mongo Cluster is created with.
+// CreateMode - The mode that the DocumentDB cluster is created with.
 type CreateMode string
 
 const (
-	// CreateModeDefault - Create a new mongo cluster.
+	// CreateModeDefault - Create a new DocumentDB cluster.
 	CreateModeDefault CreateMode = "Default"
 	// CreateModeGeoReplica - Create a replica cluster in distinct geographic region from the source cluster.
 	CreateModeGeoReplica CreateMode = "GeoReplica"
-	// CreateModePointInTimeRestore - Create a mongo cluster from a restore point-in-time.
+	// CreateModePointInTimeRestore - Create a DocumentDB cluster from a restore point-in-time.
 	CreateModePointInTimeRestore CreateMode = "PointInTimeRestore"
 	// CreateModeReplica - Create a replica cluster in the same geographic region as the source cluster.
 	CreateModeReplica CreateMode = "Replica"
@@ -222,11 +222,11 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 	}
 }
 
-// NetworkBypassMode - The network bypass mode for the Mongo cluster.
+// NetworkBypassMode - The network bypass mode for the DocumentDB cluster.
 type NetworkBypassMode string
 
 const (
-	// NetworkBypassModeAzureCosmosDB - Allows Azure Cosmos DB service to bypass network restrictions.
+	// NetworkBypassModeAzureCosmosDB - Allows the Azure Cosmos DB service to bypass network restrictions.
 	NetworkBypassModeAzureCosmosDB NetworkBypassMode = "AzureCosmosDB"
 	// NetworkBypassModeNone - No network bypass is enabled.
 	NetworkBypassModeNone NetworkBypassMode = "None"
@@ -262,7 +262,7 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
-// PreviewFeature - Preview features that can be enabled on a mongo cluster.
+// PreviewFeature - Preview features that can be enabled on a DocumentDB cluster.
 type PreviewFeature string
 
 const (
@@ -389,14 +389,14 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 	}
 }
 
-// PublicNetworkAccess - Whether or not public endpoint access is allowed for this Mongo cluster. Value is optional and default
-// value is 'Enabled'
+// PublicNetworkAccess - Whether or not public endpoint access is allowed for this DocumentDB cluster. Value is optional and
+// default value is 'Enabled'
 type PublicNetworkAccess string
 
 const (
 	// PublicNetworkAccessDisabled - If set, the private endpoints are the exclusive access method.
 	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
-	// PublicNetworkAccessEnabled - If set, mongo cluster can be accessed through private and public methods.
+	// PublicNetworkAccessEnabled - If set, DocumentDB cluster can be accessed through private and public methods.
 	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
 )
 
@@ -408,7 +408,7 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 	}
 }
 
-// ReplicationRole - Replication role of the mongo cluster.
+// ReplicationRole - Replication role of the DocumentDB cluster.
 type ReplicationRole string
 
 const (
@@ -460,23 +460,23 @@ func PossibleReplicationStateValues() []ReplicationState {
 	}
 }
 
-// Status - The status of the Mongo cluster resource.
+// Status - The status of the DocumentDB cluster resource.
 type Status string
 
 const (
-	// StatusDropping - The mongo cluster resource is being dropped.
+	// StatusDropping - The DocumentDB cluster resource is being dropped.
 	StatusDropping Status = "Dropping"
-	// StatusProvisioning - The mongo cluster resource is being provisioned.
+	// StatusProvisioning - The DocumentDB cluster resource is being provisioned.
 	StatusProvisioning Status = "Provisioning"
-	// StatusReady - The mongo cluster resource is ready for use.
+	// StatusReady - The DocumentDB cluster resource is ready for use.
 	StatusReady Status = "Ready"
-	// StatusStarting - The mongo cluster resource is being started.
+	// StatusStarting - The DocumentDB cluster resource is being started.
 	StatusStarting Status = "Starting"
-	// StatusStopped - The mongo cluster resource is stopped.
+	// StatusStopped - The DocumentDB cluster resource is stopped.
 	StatusStopped Status = "Stopped"
-	// StatusStopping - The mongo cluster resource is being stopped.
+	// StatusStopping - The DocumentDB cluster resource is being stopped.
 	StatusStopping Status = "Stopping"
-	// StatusUpdating - The mongo cluster resource is being updated.
+	// StatusUpdating - The DocumentDB cluster resource is being updated.
 	StatusUpdating Status = "Updating"
 )
 
@@ -493,13 +493,13 @@ func PossibleStatusValues() []Status {
 	}
 }
 
-// StorageType - The type of storage that a mongo cluster can be provisioned with.
+// StorageType - The type of storage that a DocumentDB cluster can be provisioned with.
 type StorageType string
 
 const (
-	// StorageTypePremiumSSD - Premium SSD for high performance workloads.
+	// StorageTypePremiumSSD - Premium SSD storage. Premium SSD v2 is recommended for better performance.
 	StorageTypePremiumSSD StorageType = "PremiumSSD"
-	// StorageTypePremiumSSDv2 - Premium SSD v2 for very IO-intensive workloads. This is a preview option and has additional limitations.
+	// StorageTypePremiumSSDv2 - Premium SSD v2 storage. Recommended for better performance.
 	StorageTypePremiumSSDv2 StorageType = "PremiumSSDv2"
 )
 

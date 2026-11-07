@@ -44,9 +44,9 @@ func NewReplicasClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
-// NewListByParentPager - List all the replicas for the mongo cluster.
+// NewListByParentPager - List all the replicas for the DocumentDB cluster.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
+//   - mongoClusterName - The name of the DocumentDB cluster.
 //   - options - ReplicasClientListByParentOptions contains the optional parameters for the ReplicasClient.NewListByParentPager
 //     method.
 func (client *ReplicasClient) NewListByParentPager(resourceGroupName string, mongoClusterName string, options *ReplicasClientListByParentOptions) *runtime.Pager[ReplicasClientListByParentResponse] {

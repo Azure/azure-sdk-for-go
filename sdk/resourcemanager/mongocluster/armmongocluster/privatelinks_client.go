@@ -46,7 +46,7 @@ func NewPrivateLinksClient(subscriptionID string, credential azcore.TokenCredent
 
 // NewListByMongoClusterPager - list private links on the given resource
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
+//   - mongoClusterName - The name of the DocumentDB cluster.
 //   - options - PrivateLinksClientListByMongoClusterOptions contains the optional parameters for the PrivateLinksClient.NewListByMongoClusterPager
 //     method.
 func (client *PrivateLinksClient) NewListByMongoClusterPager(resourceGroupName string, mongoClusterName string, options *PrivateLinksClientListByMongoClusterOptions) *runtime.Pager[PrivateLinksClientListByMongoClusterResponse] {

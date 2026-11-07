@@ -142,7 +142,7 @@ func (c *Client) AddSetting(ctx context.Context, key string, value *string, opti
 
 	return AddSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: SyncToken(*resp.SyncToken),
+		SyncToken: syncTokenFromGenerated(resp.SyncToken),
 	}, nil
 }
 
@@ -165,7 +165,7 @@ func (c *Client) DeleteSetting(ctx context.Context, key string, options *DeleteS
 
 	return DeleteSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: SyncToken(*resp.SyncToken),
+		SyncToken: syncTokenFromGenerated(resp.SyncToken),
 	}, nil
 }
 
@@ -188,7 +188,7 @@ func (c *Client) GetSetting(ctx context.Context, key string, options *GetSetting
 
 	return GetSettingResponse{
 		Setting:      settingFromGenerated(resp.KeyValue),
-		SyncToken:    SyncToken(*resp.SyncToken),
+		SyncToken:    syncTokenFromGenerated(resp.SyncToken),
 		LastModified: resp.LastModified,
 	}, nil
 }
@@ -211,7 +211,7 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
-				SyncToken: SyncToken(*resp.SyncToken),
+				SyncToken: syncTokenFromGenerated(resp.SyncToken),
 			}, nil
 		}
 	} else {
@@ -220,7 +220,7 @@ func (c *Client) SetReadOnly(ctx context.Context, key string, isReadOnly bool, o
 		if err == nil {
 			return SetReadOnlyResponse{
 				Setting:   settingFromGenerated(resp.KeyValue),
-				SyncToken: SyncToken(*resp.SyncToken),
+				SyncToken: syncTokenFromGenerated(resp.SyncToken),
 			}, nil
 		}
 	}
@@ -252,7 +252,7 @@ func (c *Client) SetSetting(ctx context.Context, key string, value *string, opti
 
 	return SetSettingResponse{
 		Setting:   settingFromGenerated(resp.KeyValue),
-		SyncToken: SyncToken(*resp.SyncToken),
+		SyncToken: syncTokenFromGenerated(resp.SyncToken),
 	}, nil
 }
 
@@ -277,7 +277,7 @@ func (c *Client) NewListRevisionsPager(selector SettingSelector, options *ListRe
 
 			return ListRevisionsPageResponse{
 				Settings:  css,
-				SyncToken: SyncToken(*page.SyncToken),
+				SyncToken: syncTokenFromGenerated(page.SyncToken),
 			}, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
@@ -307,7 +307,7 @@ func (c *Client) NewListSettingsPager(selector SettingSelector, options *ListSet
 			return ListSettingsPageResponse{
 				Settings:  css,
 				ETag:      (*azcore.ETag)(page.ETag),
-				SyncToken: SyncToken(*page.SyncToken),
+				SyncToken: syncTokenFromGenerated(page.SyncToken),
 			}, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
@@ -331,13 +331,10 @@ func (c *Client) NewCheckSettingsPager(selector SettingSelector, options *CheckS
 				return CheckSettingsPageResponse{}, err
 			}
 
-			resp := CheckSettingsPageResponse{
-				ETag: (*azcore.ETag)(page.ETag),
-			}
-			if page.SyncToken != nil {
-				resp.SyncToken = SyncToken(*page.SyncToken)
-			}
-			return resp, nil
+			return CheckSettingsPageResponse{
+				ETag:      (*azcore.ETag)(page.ETag),
+				SyncToken: syncTokenFromGenerated(page.SyncToken),
+			}, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
 	})
@@ -401,7 +398,7 @@ func (c *Client) NewListSnapshotsPager(options *ListSnapshotsOptions) *runtime.P
 
 			return ListSnapshotsResponse{
 				Snapshots: snapshots,
-				SyncToken: SyncToken(*page.SyncToken),
+				SyncToken: syncTokenFromGenerated(page.SyncToken),
 			}, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
@@ -447,7 +444,7 @@ func (c *Client) NewListSettingsForSnapshotPager(snapshotName string, options *L
 
 			return ListSettingsForSnapshotResponse{
 				Settings:  settings,
-				SyncToken: SyncToken(*page.SyncToken),
+				SyncToken: syncTokenFromGenerated(page.SyncToken),
 			}, nil
 		},
 		Tracer: c.appConfigClient.Tracer(),
@@ -552,7 +549,7 @@ func (c *Client) GetSnapshot(ctx context.Context, snapshotName string, options *
 			Size:            getResp.Size,
 			Status:          getResp.Status,
 		},
-		SyncToken: SyncToken(*getResp.SyncToken),
+		SyncToken: syncTokenFromGenerated(getResp.SyncToken),
 		Link:      getResp.Link,
 	}
 
@@ -648,7 +645,7 @@ func (c *Client) updateSnapshotStatus(ctx context.Context, snapshotName string, 
 			Size:            updateResp.Size,
 			Status:          updateResp.Status,
 		},
-		SyncToken: SyncToken(*updateResp.SyncToken),
+		SyncToken: syncTokenFromGenerated(updateResp.SyncToken),
 		Link:      updateResp.Link,
 	}
 

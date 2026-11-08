@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"hash/fnv"
 	"os"
+	"reflect"
 	"regexp"
 	"sync"
 	"testing"
@@ -235,20 +236,23 @@ type serdeModel interface {
 }
 
 func testSerde[T serdeModel](t *testing.T, model T) {
+	t.Helper()
 	data, err := model.MarshalJSON()
 	require.NoError(t, err)
-	err = model.UnmarshalJSON(data)
+	// A failed unmarshal can partially modify its target, including truncating slices.
+	fresh := reflect.New(reflect.TypeOf(model).Elem()).Interface().(T)
+	err = fresh.UnmarshalJSON(data)
 	require.NoError(t, err)
 
 	// testing unmarshal error scenarios
-	err = model.UnmarshalJSON(nil)
+	err = fresh.UnmarshalJSON(nil)
 	require.Error(t, err)
 
 	m := regexp.MustCompile(":.*$")
 	modifiedData := m.ReplaceAllString(string(data), `:["test", "test1", "test2"]}`)
 	if modifiedData != "{}" {
 		data3 := []byte(modifiedData)
-		err = model.UnmarshalJSON(data3)
+		err = fresh.UnmarshalJSON(data3)
 		require.Error(t, err)
 	}
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (2026-09-22)
+## 2.1.0-beta.1 (2026-11-09)
 ### Features Added
 
 - New enum type `TransferProvisioningState` with values `TransferProvisioningStateCanceled`, `TransferProvisioningStateFailed`, `TransferProvisioningStateSucceeded`

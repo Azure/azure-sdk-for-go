@@ -30,6 +30,9 @@ type GroupQuotaSubscriptionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGroupQuotaSubscriptionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GroupQuotaSubscriptionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *GroupQuotaSubscriptionsClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Adds a subscription to GroupQuotas. The subscriptions will be validated based on the additionalAttributes
+// createOrUpdate - Adds a subscription to GroupQuotas. The subscriptions will be validated based on the additionalAttributes
 // defined in the GroupQuota. The additionalAttributes works as filter for the subscriptions, which can be included in the
 // GroupQuotas. The request's TenantId is validated against the subscription's TenantId.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -85,16 +88,17 @@ func (client *GroupQuotaSubscriptionsClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *GroupQuotaSubscriptionsClient) createOrUpdateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, _ *GroupQuotaSubscriptionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/subscriptions/{subscriptionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if managementGroupID == "" {
@@ -140,7 +144,8 @@ func (client *GroupQuotaSubscriptionsClient) BeginDelete(ctx context.Context, ma
 	}
 }
 
-// Delete - Removes the subscription from GroupQuotas. The request's TenantId is validated against the subscription's TenantId.
+// deleteOperation - Removes the subscription from GroupQuotas. The request's TenantId is validated against the subscription's
+// TenantId.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GroupQuotaSubscriptionsClient) deleteOperation(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotaSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -157,16 +162,17 @@ func (client *GroupQuotaSubscriptionsClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GroupQuotaSubscriptionsClient) deleteCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, _ *GroupQuotaSubscriptionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/subscriptions/{subscriptionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if managementGroupID == "" {
@@ -184,6 +190,81 @@ func (client *GroupQuotaSubscriptionsClient) deleteCreateRequest(ctx context.Con
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates the GroupQuotas with the subscription to add to the subscriptions list. The subscriptions will be
+// validated if additionalAttributes are defined in the GroupQuota. The request's TenantId is validated against the subscription's
+// TenantId.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - managementGroupID - Management Group Id.
+//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+//   - options - GroupQuotaSubscriptionsClientBeginUpdateOptions contains the optional parameters for the GroupQuotaSubscriptionsClient.BeginUpdate
+//     method.
+func (client *GroupQuotaSubscriptionsClient) BeginUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotaSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[GroupQuotaSubscriptionsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, managementGroupID, groupQuotaName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GroupQuotaSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GroupQuotaSubscriptionsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates the GroupQuotas with the subscription to add to the subscriptions list. The subscriptions will be validated
+// if additionalAttributes are defined in the GroupQuota. The request's TenantId is validated against the subscription's TenantId.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GroupQuotaSubscriptionsClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotaSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GroupQuotaSubscriptionsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, managementGroupID, groupQuotaName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *GroupQuotaSubscriptionsClient) updateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, _ *GroupQuotaSubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/subscriptions/{subscriptionId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if managementGroupID == "" {
+		return nil, errors.New("parameter managementGroupID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+	if groupQuotaName == "" {
+		return nil, errors.New("parameter groupQuotaName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -208,14 +289,15 @@ func (client *GroupQuotaSubscriptionsClient) Get(ctx context.Context, management
 	if err != nil {
 		return GroupQuotaSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
 func (client *GroupQuotaSubscriptionsClient) getCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, _ *GroupQuotaSubscriptionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/subscriptions/{subscriptionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if managementGroupID == "" {
@@ -320,78 +402,4 @@ func (client *GroupQuotaSubscriptionsClient) listHandleResponse(resp *http.Respo
 		return GroupQuotaSubscriptionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates the GroupQuotas with the subscription to add to the subscriptions list. The subscriptions will be
-// validated if additionalAttributes are defined in the GroupQuota. The request's TenantId is validated against the subscription's
-// TenantId.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - managementGroupID - Management Group Id.
-//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-//   - options - GroupQuotaSubscriptionsClientBeginUpdateOptions contains the optional parameters for the GroupQuotaSubscriptionsClient.BeginUpdate
-//     method.
-func (client *GroupQuotaSubscriptionsClient) BeginUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotaSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[GroupQuotaSubscriptionsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, managementGroupID, groupQuotaName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GroupQuotaSubscriptionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GroupQuotaSubscriptionsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates the GroupQuotas with the subscription to add to the subscriptions list. The subscriptions will be validated
-// if additionalAttributes are defined in the GroupQuota. The request's TenantId is validated against the subscription's TenantId.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GroupQuotaSubscriptionsClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotaSubscriptionsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GroupQuotaSubscriptionsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, managementGroupID, groupQuotaName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *GroupQuotaSubscriptionsClient) updateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, _ *GroupQuotaSubscriptionsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/subscriptions/{subscriptionId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if groupQuotaName == "" {
-		return nil, errors.New("parameter groupQuotaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

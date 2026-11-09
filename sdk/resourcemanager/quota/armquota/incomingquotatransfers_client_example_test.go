@@ -104,55 +104,6 @@ func ExampleIncomingQuotaTransfersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/IncomingQuotaTransfers/IncomingQuotaTransfers_List.json
-func ExampleIncomingQuotaTransfersClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewIncomingQuotaTransfersClient("aaaaaaaa-bbbb-cccc-dddd-000000000002").NewListPager("Microsoft.Compute", "eastus", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armquota.IncomingQuotaTransfersClientListResponse{
-		// 	IncomingQuotaTransferListResult: armquota.IncomingQuotaTransferListResult{
-		// 		Value: []*armquota.IncomingQuotaTransfer{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-000000000002/providers/Microsoft.Compute/locations/eastus/providers/Microsoft.Quota/incomingQuotaTransfers/12345678-1234-1234-1234-1234567890ab"),
-		// 				Name: to.Ptr("12345678-1234-1234-1234-1234567890ab"),
-		// 				Type: to.Ptr("Microsoft.Quota/incomingQuotaTransfers"),
-		// 				Etag: to.Ptr("r-abc1"),
-		// 				Properties: &armquota.IncomingQuotaTransferProperties{
-		// 					ProvisioningState: to.Ptr(armquota.TransferProvisioningStateSucceeded),
-		// 					TransferStatus: to.Ptr(armquota.TransferStatusPending),
-		// 					TransferID: to.Ptr("12345678-1234-1234-1234-1234567890ab"),
-		// 					TransferRef: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-000000000001/providers/Microsoft.Compute/locations/eastus/providers/Microsoft.Quota/quotaTransfers/compute-stdDv5-uplift-101"),
-		// 					SourceSubscriptionID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-000000000001"),
-		// 					SourceTenantID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-000000000098"),
-		// 					BillingAccountID: to.Ptr("1234567890"),
-		// 					ResourceName: to.Ptr("standardDv5Family"),
-		// 					Amount: to.Ptr[int64](50),
-		// 					SourceEtag: to.Ptr("abc123"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-09-01-preview/IncomingQuotaTransfers/IncomingQuotaTransfers_ListBySubscription.json
 func ExampleIncomingQuotaTransfersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -216,6 +167,55 @@ func ExampleIncomingQuotaTransfersClient_NewListBySubscriptionPager() {
 		// 						Actor: to.Ptr("recipient-admin@contoso.com"),
 		// 						OccurredAt: to.Ptr(time.Date(2026, time.November, 18, 11, 14, 21, 0, time.UTC)),
 		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-09-01-preview/IncomingQuotaTransfers/IncomingQuotaTransfers_List.json
+func ExampleIncomingQuotaTransfersClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewIncomingQuotaTransfersClient("aaaaaaaa-bbbb-cccc-dddd-000000000002").NewListPager("Microsoft.Compute", "eastus", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armquota.IncomingQuotaTransfersClientListResponse{
+		// 	IncomingQuotaTransferListResult: armquota.IncomingQuotaTransferListResult{
+		// 		Value: []*armquota.IncomingQuotaTransfer{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-000000000002/providers/Microsoft.Compute/locations/eastus/providers/Microsoft.Quota/incomingQuotaTransfers/12345678-1234-1234-1234-1234567890ab"),
+		// 				Name: to.Ptr("12345678-1234-1234-1234-1234567890ab"),
+		// 				Type: to.Ptr("Microsoft.Quota/incomingQuotaTransfers"),
+		// 				Etag: to.Ptr("r-abc1"),
+		// 				Properties: &armquota.IncomingQuotaTransferProperties{
+		// 					ProvisioningState: to.Ptr(armquota.TransferProvisioningStateSucceeded),
+		// 					TransferStatus: to.Ptr(armquota.TransferStatusPending),
+		// 					TransferID: to.Ptr("12345678-1234-1234-1234-1234567890ab"),
+		// 					TransferRef: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-000000000001/providers/Microsoft.Compute/locations/eastus/providers/Microsoft.Quota/quotaTransfers/compute-stdDv5-uplift-101"),
+		// 					SourceSubscriptionID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-000000000001"),
+		// 					SourceTenantID: to.Ptr("aaaaaaaa-bbbb-cccc-dddd-000000000098"),
+		// 					BillingAccountID: to.Ptr("1234567890"),
+		// 					ResourceName: to.Ptr("standardDv5Family"),
+		// 					Amount: to.Ptr[int64](50),
+		// 					SourceEtag: to.Ptr("abc123"),
 		// 				},
 		// 			},
 		// 		},

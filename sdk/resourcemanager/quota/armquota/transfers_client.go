@@ -31,6 +31,9 @@ type TransfersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTransfersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TransfersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -40,6 +43,95 @@ func NewTransfersClient(subscriptionID string, credential azcore.TokenCredential
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginCreateOrUpdate - Submit a quota transfer. Idempotent on the URI: a retry with the same body returns the
+// cached outcome and the same `transferId`; a retry with a different financial body
+// returns 409 BodyMismatch.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - targetProvider - The ARM provider namespace whose quota is being transferred (for example,
+//     `Microsoft.Compute`).
+//   - region - The Azure region the quota transfer applies to. A transfer URI is region-singular.
+//   - transferName - The donor-chosen name segment of the quota transfer. Used as the idempotency key
+//     for retries on the donor side.
+//   - resource - Resource create parameters.
+//   - options - TransfersClientBeginCreateOrUpdateOptions contains the optional parameters for the TransfersClient.BeginCreateOrUpdate
+//     method.
+func (client *TransfersClient) BeginCreateOrUpdate(ctx context.Context, targetProvider string, region string, transferName string, resource Transfer, options *TransfersClientBeginCreateOrUpdateOptions) (*runtime.Poller[TransfersClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, targetProvider, region, transferName, resource, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TransfersClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaOriginalURI,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TransfersClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Submit a quota transfer. Idempotent on the URI: a retry with the same body returns the
+// cached outcome and the same `transferId`; a retry with a different financial body
+// returns 409 BodyMismatch.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TransfersClient) createOrUpdate(ctx context.Context, targetProvider string, region string, transferName string, resource Transfer, options *TransfersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TransfersClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, targetProvider, region, transferName, resource, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *TransfersClient) createOrUpdateCreateRequest(ctx context.Context, targetProvider string, region string, transferName string, resource Transfer, _ *TransfersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if targetProvider == "" {
+		return nil, errors.New("parameter targetProvider cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{targetProvider}", url.PathEscape(targetProvider))
+	if region == "" {
+		return nil, errors.New("parameter region cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{region}", url.PathEscape(region))
+	if transferName == "" {
+		return nil, errors.New("parameter transferName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{transferName}", url.PathEscape(transferName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, resource); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // Cancel - Cancel a Pending quota transfer. Synchronous. Transitions the transfer to Cancelled
@@ -65,14 +157,15 @@ func (client *TransfersClient) Cancel(ctx context.Context, targetProvider string
 	if err != nil {
 		return TransfersClientCancelResponse{}, err
 	}
-	return client.cancelHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.cancelHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // cancelCreateRequest creates the Cancel request.
 func (client *TransfersClient) cancelCreateRequest(ctx context.Context, targetProvider string, region string, transferName string, options *TransfersClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if targetProvider == "" {
@@ -123,94 +216,6 @@ func (client *TransfersClient) cancelHandleResponse(resp *http.Response, success
 	return result, nil
 }
 
-// BeginCreateOrUpdate - Submit a quota transfer. Idempotent on the URI: a retry with the same body returns the
-// cached outcome and the same `transferId`; a retry with a different financial body
-// returns 409 BodyMismatch.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - targetProvider - The ARM provider namespace whose quota is being transferred (for example,
-//     `Microsoft.Compute`).
-//   - region - The Azure region the quota transfer applies to. A transfer URI is region-singular.
-//   - transferName - The donor-chosen name segment of the quota transfer. Used as the idempotency key
-//     for retries on the donor side.
-//   - resource - Resource create parameters.
-//   - options - TransfersClientBeginCreateOrUpdateOptions contains the optional parameters for the TransfersClient.BeginCreateOrUpdate
-//     method.
-func (client *TransfersClient) BeginCreateOrUpdate(ctx context.Context, targetProvider string, region string, transferName string, resource Transfer, options *TransfersClientBeginCreateOrUpdateOptions) (*runtime.Poller[TransfersClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, targetProvider, region, transferName, resource, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TransfersClientCreateOrUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaOriginalURI,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TransfersClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Submit a quota transfer. Idempotent on the URI: a retry with the same body returns the
-// cached outcome and the same `transferId`; a retry with a different financial body
-// returns 409 BodyMismatch.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TransfersClient) createOrUpdate(ctx context.Context, targetProvider string, region string, transferName string, resource Transfer, options *TransfersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TransfersClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, targetProvider, region, transferName, resource, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *TransfersClient) createOrUpdateCreateRequest(ctx context.Context, targetProvider string, region string, transferName string, resource Transfer, _ *TransfersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if targetProvider == "" {
-		return nil, errors.New("parameter targetProvider cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{targetProvider}", url.PathEscape(targetProvider))
-	if region == "" {
-		return nil, errors.New("parameter region cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{region}", url.PathEscape(region))
-	if transferName == "" {
-		return nil, errors.New("parameter transferName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{transferName}", url.PathEscape(transferName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, resource); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
 // Delete - Delete a quota transfer record. Quota is not moved by delete; only the resource entry
 // is removed.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -235,7 +240,8 @@ func (client *TransfersClient) Delete(ctx context.Context, targetProvider string
 		return TransfersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return TransfersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TransfersClientDeleteResponse{}, err
 	}
 	return TransfersClientDeleteResponse{}, nil
 }
@@ -244,7 +250,7 @@ func (client *TransfersClient) Delete(ctx context.Context, targetProvider string
 func (client *TransfersClient) deleteCreateRequest(ctx context.Context, targetProvider string, region string, transferName string, _ *TransfersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if targetProvider == "" {
@@ -291,14 +297,15 @@ func (client *TransfersClient) Get(ctx context.Context, targetProvider string, r
 	if err != nil {
 		return TransfersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
 func (client *TransfersClient) getCreateRequest(ctx context.Context, targetProvider string, region string, transferName string, _ *TransfersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers/{transferName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if targetProvider == "" {
@@ -374,7 +381,7 @@ func (client *TransfersClient) listCreateRequest(ctx context.Context, targetProv
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/quotaTransfers"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if targetProvider == "" {

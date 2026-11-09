@@ -57,7 +57,8 @@ func (client *RequestStatusClient) Get(ctx context.Context, id string, scope str
 	if err != nil {
 		return RequestStatusClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

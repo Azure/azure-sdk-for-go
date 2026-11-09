@@ -29,6 +29,10 @@ type GroupQuotaSubscriptionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, managementGroupID string, groupQuotaName string, options *armquota.GroupQuotaSubscriptionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armquota.GroupQuotaSubscriptionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method GroupQuotaSubscriptionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, managementGroupID string, groupQuotaName string, options *armquota.GroupQuotaSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armquota.GroupQuotaSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method GroupQuotaSubscriptionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, managementGroupID string, groupQuotaName string, options *armquota.GroupQuotaSubscriptionsClientGetOptions) (resp azfake.Responder[armquota.GroupQuotaSubscriptionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type GroupQuotaSubscriptionsServer struct {
 	// NewListPager is the fake for method GroupQuotaSubscriptionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(managementGroupID string, groupQuotaName string, options *armquota.GroupQuotaSubscriptionsClientListOptions) (resp azfake.PagerResponder[armquota.GroupQuotaSubscriptionsClientListResponse])
-
-	// BeginUpdate is the fake for method GroupQuotaSubscriptionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, managementGroupID string, groupQuotaName string, options *armquota.GroupQuotaSubscriptionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armquota.GroupQuotaSubscriptionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewGroupQuotaSubscriptionsServerTransport creates a new instance of GroupQuotaSubscriptionsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewGroupQuotaSubscriptionsServerTransport(srv *GroupQuotaSubscriptionsServe
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armquota.GroupQuotaSubscriptionsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armquota.GroupQuotaSubscriptionsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armquota.GroupQuotaSubscriptionsClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armquota.GroupQuotaSubscriptionsClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armquota.GroupQuotaSubscriptionsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type GroupQuotaSubscriptionsServerTransport struct {
 	srv                 *GroupQuotaSubscriptionsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armquota.GroupQuotaSubscriptionsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armquota.GroupQuotaSubscriptionsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armquota.GroupQuotaSubscriptionsClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armquota.GroupQuotaSubscriptionsClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armquota.GroupQuotaSubscriptionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for GroupQuotaSubscriptionsServerTransport.
@@ -70,7 +70,7 @@ func (g *GroupQuotaSubscriptionsServerTransport) Do(req *http.Request) (*http.Re
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return g.dispatchToMethodFake(req, method)
@@ -90,12 +90,12 @@ func (g *GroupQuotaSubscriptionsServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = g.dispatchBeginCreateOrUpdate(req)
 			case "GroupQuotaSubscriptionsClient.BeginDelete":
 				res.resp, res.err = g.dispatchBeginDelete(req)
+			case "GroupQuotaSubscriptionsClient.BeginUpdate":
+				res.resp, res.err = g.dispatchBeginUpdate(req)
 			case "GroupQuotaSubscriptionsClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
 			case "GroupQuotaSubscriptionsClient.NewListPager":
 				res.resp, res.err = g.dispatchNewListPager(req)
-			case "GroupQuotaSubscriptionsClient.BeginUpdate":
-				res.resp, res.err = g.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (g *GroupQuotaSubscriptionsServerTransport) dispatchBeginCreateOrUpdate(req
 	}
 	beginCreateOrUpdate := g.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -162,7 +162,7 @@ func (g *GroupQuotaSubscriptionsServerTransport) dispatchBeginDelete(req *http.R
 	}
 	beginDelete := g.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -200,87 +200,13 @@ func (g *GroupQuotaSubscriptionsServerTransport) dispatchBeginDelete(req *http.R
 	return resp, nil
 }
 
-func (g *GroupQuotaSubscriptionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if g.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
-	if err != nil {
-		return nil, err
-	}
-	groupQuotaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupQuotaName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.Get(req.Context(), managementGroupIDParam, groupQuotaNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GroupQuotaSubscriptionID, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (g *GroupQuotaSubscriptionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if g.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := g.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
-		if err != nil {
-			return nil, err
-		}
-		groupQuotaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupQuotaName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := g.srv.NewListPager(managementGroupIDParam, groupQuotaNameParam, nil)
-		newListPager = &resp
-		g.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armquota.GroupQuotaSubscriptionsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		g.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		g.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (g *GroupQuotaSubscriptionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if g.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := g.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -315,6 +241,80 @@ func (g *GroupQuotaSubscriptionsServerTransport) dispatchBeginUpdate(req *http.R
 		g.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (g *GroupQuotaSubscriptionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if g.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+	if err != nil {
+		return nil, err
+	}
+	groupQuotaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupQuotaName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.Get(req.Context(), managementGroupIDParam, groupQuotaNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GroupQuotaSubscriptionID, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (g *GroupQuotaSubscriptionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if g.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := g.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/groupQuotas/(?P<groupQuotaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subscriptions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		managementGroupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("managementGroupId")])
+		if err != nil {
+			return nil, err
+		}
+		groupQuotaNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupQuotaName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := g.srv.NewListPager(managementGroupIDParam, groupQuotaNameParam, nil)
+		newListPager = &resp
+		g.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armquota.GroupQuotaSubscriptionsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		g.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		g.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

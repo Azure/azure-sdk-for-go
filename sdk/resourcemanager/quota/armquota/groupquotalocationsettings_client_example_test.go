@@ -93,38 +93,6 @@ func ExampleGroupQuotaLocationSettingsClient_BeginCreateOrUpdate_groupQuotaLocat
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/GroupQuotasEnforcement/GetGroupQuotaEnforcement.json
-func ExampleGroupQuotaLocationSettingsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGroupQuotaLocationSettingsClient().Get(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "eastus", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armquota.GroupQuotaLocationSettingsClientGetResponse{
-	// 	GroupQuotasEnforcementStatus: armquota.GroupQuotasEnforcementStatus{
-	// 		Name: to.Ptr("eastus"),
-	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/locationSettings"),
-	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/locationSettings/eastus"),
-	// 		Properties: &armquota.GroupQuotasEnforcementStatusProperties{
-	// 			EnforcedGroupName: to.Ptr("GroupQuota1"),
-	// 			EnforcementEnabled: to.Ptr(armquota.EnforcementStateEnabled),
-	// 			ProvisioningState: to.Ptr(armquota.RequestStateSucceeded),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-09-01-preview/GroupQuotasEnforcement/PatchGroupQuotaEnforcement.json
 func ExampleGroupQuotaLocationSettingsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -158,6 +126,38 @@ func ExampleGroupQuotaLocationSettingsClient_BeginUpdate() {
 	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/locationSettings/eastus"),
 	// 		Properties: &armquota.GroupQuotasEnforcementStatusProperties{
 	// 			EnforcedGroupName: to.Ptr("groupquota1-eastus"),
+	// 			EnforcementEnabled: to.Ptr(armquota.EnforcementStateEnabled),
+	// 			ProvisioningState: to.Ptr(armquota.RequestStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01-preview/GroupQuotasEnforcement/GetGroupQuotaEnforcement.json
+func ExampleGroupQuotaLocationSettingsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGroupQuotaLocationSettingsClient().Get(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "eastus", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armquota.GroupQuotaLocationSettingsClientGetResponse{
+	// 	GroupQuotasEnforcementStatus: armquota.GroupQuotasEnforcementStatus{
+	// 		Name: to.Ptr("eastus"),
+	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/locationSettings"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/locationSettings/eastus"),
+	// 		Properties: &armquota.GroupQuotasEnforcementStatusProperties{
+	// 			EnforcedGroupName: to.Ptr("GroupQuota1"),
 	// 			EnforcementEnabled: to.Ptr(armquota.EnforcementStateEnabled),
 	// 			ProvisioningState: to.Ptr(armquota.RequestStateSucceeded),
 	// 		},

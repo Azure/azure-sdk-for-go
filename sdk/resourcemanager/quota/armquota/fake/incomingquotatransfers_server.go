@@ -31,13 +31,13 @@ type IncomingQuotaTransfersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, targetProvider string, region string, transferID string, options *armquota.IncomingQuotaTransfersClientGetOptions) (resp azfake.Responder[armquota.IncomingQuotaTransfersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method IncomingQuotaTransfersClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(targetProvider string, region string, options *armquota.IncomingQuotaTransfersClientListOptions) (resp azfake.PagerResponder[armquota.IncomingQuotaTransfersClientListResponse])
-
 	// NewListBySubscriptionPager is the fake for method IncomingQuotaTransfersClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armquota.IncomingQuotaTransfersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armquota.IncomingQuotaTransfersClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method IncomingQuotaTransfersClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(targetProvider string, region string, options *armquota.IncomingQuotaTransfersClientListOptions) (resp azfake.PagerResponder[armquota.IncomingQuotaTransfersClientListResponse])
 
 	// Reject is the fake for method IncomingQuotaTransfersClient.Reject
 	// HTTP status codes to indicate success: http.StatusOK
@@ -51,8 +51,8 @@ func NewIncomingQuotaTransfersServerTransport(srv *IncomingQuotaTransfersServer)
 	return &IncomingQuotaTransfersServerTransport{
 		srv:                        srv,
 		beginApprove:               newTracker[azfake.PollerResponder[armquota.IncomingQuotaTransfersClientApproveResponse]](),
-		newListPager:               newTracker[azfake.PagerResponder[armquota.IncomingQuotaTransfersClientListResponse]](),
 		newListBySubscriptionPager: newTracker[azfake.PagerResponder[armquota.IncomingQuotaTransfersClientListBySubscriptionResponse]](),
+		newListPager:               newTracker[azfake.PagerResponder[armquota.IncomingQuotaTransfersClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ func NewIncomingQuotaTransfersServerTransport(srv *IncomingQuotaTransfersServer)
 type IncomingQuotaTransfersServerTransport struct {
 	srv                        *IncomingQuotaTransfersServer
 	beginApprove               *tracker[azfake.PollerResponder[armquota.IncomingQuotaTransfersClientApproveResponse]]
-	newListPager               *tracker[azfake.PagerResponder[armquota.IncomingQuotaTransfersClientListResponse]]
 	newListBySubscriptionPager *tracker[azfake.PagerResponder[armquota.IncomingQuotaTransfersClientListBySubscriptionResponse]]
+	newListPager               *tracker[azfake.PagerResponder[armquota.IncomingQuotaTransfersClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for IncomingQuotaTransfersServerTransport.
@@ -70,7 +70,7 @@ func (i *IncomingQuotaTransfersServerTransport) Do(req *http.Request) (*http.Res
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return i.dispatchToMethodFake(req, method)
@@ -90,10 +90,10 @@ func (i *IncomingQuotaTransfersServerTransport) dispatchToMethodFake(req *http.R
 				res.resp, res.err = i.dispatchBeginApprove(req)
 			case "IncomingQuotaTransfersClient.Get":
 				res.resp, res.err = i.dispatchGet(req)
-			case "IncomingQuotaTransfersClient.NewListPager":
-				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IncomingQuotaTransfersClient.NewListBySubscriptionPager":
 				res.resp, res.err = i.dispatchNewListBySubscriptionPager(req)
+			case "IncomingQuotaTransfersClient.NewListPager":
+				res.resp, res.err = i.dispatchNewListPager(req)
 			case "IncomingQuotaTransfersClient.Reject":
 				res.resp, res.err = i.dispatchReject(req)
 			default:
@@ -118,7 +118,7 @@ func (i *IncomingQuotaTransfersServerTransport) dispatchBeginApprove(req *http.R
 	}
 	beginApprove := i.beginApprove.get(req)
 	if beginApprove == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<targetProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<region>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/incomingQuotaTransfers/(?P<transferId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/approve`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<targetProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locations/(?P<region>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/incomingQuotaTransfers/(?P<transferId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/approve`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -181,7 +181,7 @@ func (i *IncomingQuotaTransfersServerTransport) dispatchGet(req *http.Request) (
 	if i.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<targetProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<region>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/incomingQuotaTransfers/(?P<transferId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<targetProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locations/(?P<region>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/incomingQuotaTransfers/(?P<transferId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -214,13 +214,46 @@ func (i *IncomingQuotaTransfersServerTransport) dispatchGet(req *http.Request) (
 	return resp, nil
 }
 
+func (i *IncomingQuotaTransfersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if i.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := i.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/incomingQuotaTransfers`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := i.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		i.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armquota.IncomingQuotaTransfersClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		i.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		i.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (i *IncomingQuotaTransfersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if i.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := i.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<targetProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<region>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/incomingQuotaTransfers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<targetProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locations/(?P<region>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/incomingQuotaTransfers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -255,44 +288,11 @@ func (i *IncomingQuotaTransfersServerTransport) dispatchNewListPager(req *http.R
 	return resp, nil
 }
 
-func (i *IncomingQuotaTransfersServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if i.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := i.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/incomingQuotaTransfers`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := i.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		i.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armquota.IncomingQuotaTransfersClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		i.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		i.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (i *IncomingQuotaTransfersServerTransport) dispatchReject(req *http.Request) (*http.Response, error) {
 	if i.srv.Reject == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Reject not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<targetProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<region>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/incomingQuotaTransfers/(?P<transferId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reject`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<targetProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locations/(?P<region>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/incomingQuotaTransfers/(?P<transferId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reject`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

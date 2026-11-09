@@ -31,6 +31,9 @@ type IncomingQuotaTransfersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIncomingQuotaTransfersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IncomingQuotaTransfersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -71,7 +74,7 @@ func (client *IncomingQuotaTransfersClient) BeginApprove(ctx context.Context, ta
 	}
 }
 
-// Approve - Approve a Pending incoming quota transfer. Long-running. The `If-Match` header value
+// approve - Approve a Pending incoming quota transfer. Long-running. The `If-Match` header value
 // must equal `properties.sourceEtag` returned on a prior GET; a stale value yields
 // 412 SourceResourceModified.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -90,16 +93,17 @@ func (client *IncomingQuotaTransfersClient) approve(ctx context.Context, targetP
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// approveCreateRequest creates the Approve request.
+// approveCreateRequest creates the approve request.
 func (client *IncomingQuotaTransfersClient) approveCreateRequest(ctx context.Context, targetProvider string, region string, transferID string, ifMatch string, options *IncomingQuotaTransfersClientBeginApproveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/incomingQuotaTransfers/{transferId}/approve"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if targetProvider == "" {
@@ -161,14 +165,15 @@ func (client *IncomingQuotaTransfersClient) Get(ctx context.Context, targetProvi
 	if err != nil {
 		return IncomingQuotaTransfersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
 func (client *IncomingQuotaTransfersClient) getCreateRequest(ctx context.Context, targetProvider string, region string, transferID string, _ *IncomingQuotaTransfersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/incomingQuotaTransfers/{transferId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if targetProvider == "" {
@@ -202,6 +207,74 @@ func (client *IncomingQuotaTransfersClient) getHandleResponse(resp *http.Respons
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.IncomingQuotaTransfer); err != nil {
 		return IncomingQuotaTransfersClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListBySubscriptionPager - List incoming quota transfers across every targetProvider and region for the
+// subscription.
+//   - options - IncomingQuotaTransfersClientListBySubscriptionOptions contains the optional parameters for the IncomingQuotaTransfersClient.NewListBySubscriptionPager
+//     method.
+func (client *IncomingQuotaTransfersClient) NewListBySubscriptionPager(options *IncomingQuotaTransfersClientListBySubscriptionOptions) *runtime.Pager[IncomingQuotaTransfersClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[IncomingQuotaTransfersClientListBySubscriptionResponse]{
+		More: func(page IncomingQuotaTransfersClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *IncomingQuotaTransfersClientListBySubscriptionResponse) (IncomingQuotaTransfersClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IncomingQuotaTransfersClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return IncomingQuotaTransfersClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IncomingQuotaTransfersClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listBySubscriptionCreateRequest creates the ListBySubscription request.
+func (client *IncomingQuotaTransfersClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *IncomingQuotaTransfersClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Quota/incomingQuotaTransfers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listBySubscriptionHandleResponse handles the ListBySubscription response.
+func (client *IncomingQuotaTransfersClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (IncomingQuotaTransfersClientListBySubscriptionResponse, error) {
+	result := IncomingQuotaTransfersClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IncomingQuotaTransferListResult); err != nil {
+		return IncomingQuotaTransfersClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
@@ -245,7 +318,7 @@ func (client *IncomingQuotaTransfersClient) listCreateRequest(ctx context.Contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/incomingQuotaTransfers"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if targetProvider == "" {
@@ -284,74 +357,6 @@ func (client *IncomingQuotaTransfersClient) listHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// NewListBySubscriptionPager - List incoming quota transfers across every targetProvider and region for the
-// subscription.
-//   - options - IncomingQuotaTransfersClientListBySubscriptionOptions contains the optional parameters for the IncomingQuotaTransfersClient.NewListBySubscriptionPager
-//     method.
-func (client *IncomingQuotaTransfersClient) NewListBySubscriptionPager(options *IncomingQuotaTransfersClientListBySubscriptionOptions) *runtime.Pager[IncomingQuotaTransfersClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[IncomingQuotaTransfersClientListBySubscriptionResponse]{
-		More: func(page IncomingQuotaTransfersClientListBySubscriptionResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *IncomingQuotaTransfersClientListBySubscriptionResponse) (IncomingQuotaTransfersClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IncomingQuotaTransfersClient.NewListBySubscriptionPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return IncomingQuotaTransfersClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return IncomingQuotaTransfersClientListBySubscriptionResponse{}, err
-			}
-			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *IncomingQuotaTransfersClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *IncomingQuotaTransfersClientListBySubscriptionOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Quota/incomingQuotaTransfers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260901Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *IncomingQuotaTransfersClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (IncomingQuotaTransfersClientListBySubscriptionResponse, error) {
-	result := IncomingQuotaTransfersClientListBySubscriptionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IncomingQuotaTransferListResult); err != nil {
-		return IncomingQuotaTransfersClientListBySubscriptionResponse{}, err
-	}
-	return result, nil
-}
-
 // Reject - Reject a Pending incoming quota transfer. Synchronous. The `If-Match` header value
 // must equal `properties.sourceEtag` returned on a prior GET.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -377,14 +382,15 @@ func (client *IncomingQuotaTransfersClient) Reject(ctx context.Context, targetPr
 	if err != nil {
 		return IncomingQuotaTransfersClientRejectResponse{}, err
 	}
-	return client.rejectHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.rejectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // rejectCreateRequest creates the Reject request.
 func (client *IncomingQuotaTransfersClient) rejectCreateRequest(ctx context.Context, targetProvider string, region string, transferID string, ifMatch string, options *IncomingQuotaTransfersClientRejectOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/{targetProvider}/locations/{region}/providers/Microsoft.Quota/incomingQuotaTransfers/{transferId}/reject"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if targetProvider == "" {

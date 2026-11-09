@@ -66,7 +66,7 @@ func (client *GroupQuotasClient) BeginCreateOrUpdate(ctx context.Context, manage
 	}
 }
 
-// CreateOrUpdate - Creates a new GroupQuota for the name passed. A RequestId will be returned by the Service. The status
+// createOrUpdate - Creates a new GroupQuota for the name passed. A RequestId will be returned by the Service. The status
 // can be polled periodically. The status Async polling is using standards defined at - https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
 // Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in retry-after header.
 // Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to Get URI and full details can
@@ -87,12 +87,13 @@ func (client *GroupQuotasClient) createOrUpdate(ctx context.Context, managementG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *GroupQuotasClient) createOrUpdateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotaPutRequestBody GroupQuotasEntity, _ *GroupQuotasClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}"
 	if managementGroupID == "" {
@@ -140,7 +141,8 @@ func (client *GroupQuotasClient) BeginDelete(ctx context.Context, managementGrou
 	}
 }
 
-// Delete - Deletes the GroupQuotas for the name passed. All the remaining shareQuota in the GroupQuotas will be lost.
+// deleteOperation - Deletes the GroupQuotas for the name passed. All the remaining shareQuota in the GroupQuotas will be
+// lost.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GroupQuotasClient) deleteOperation(ctx context.Context, managementGroupID string, groupQuotaName string, options *GroupQuotasClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -157,12 +159,13 @@ func (client *GroupQuotasClient) deleteOperation(ctx context.Context, management
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GroupQuotasClient) deleteCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, _ *GroupQuotasClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}"
 	if managementGroupID == "" {
@@ -180,6 +183,90 @@ func (client *GroupQuotasClient) deleteCreateRequest(ctx context.Context, manage
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates the GroupQuotas for the name passed. A GroupQuotas RequestId will be returned by the Service. The
+// status can be polled periodically. The status Async polling is using standards defined at - https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
+// Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in retry-after header.
+// Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to Get URI and full details can
+// be checked.
+// Any change in the filters will be applicable to the future quota assignments, existing quota allocated to subscriptions
+// from the GroupQuotas remains unchanged.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - managementGroupID - The management group ID.
+//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+//   - groupQuotasPatchRequestBody - The GroupQuotas Patch Request.
+//   - options - GroupQuotasClientBeginUpdateOptions contains the optional parameters for the GroupQuotasClient.BeginUpdate method.
+func (client *GroupQuotasClient) BeginUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotasPatchRequestBody GroupQuotasEntityPatch, options *GroupQuotasClientBeginUpdateOptions) (*runtime.Poller[GroupQuotasClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, managementGroupID, groupQuotaName, groupQuotasPatchRequestBody, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GroupQuotasClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GroupQuotasClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates the GroupQuotas for the name passed. A GroupQuotas RequestId will be returned by the Service. The status
+// can be polled periodically. The status Async polling is using standards defined at - https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
+// Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in retry-after header.
+// Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to Get URI and full details can
+// be checked.
+// Any change in the filters will be applicable to the future quota assignments, existing quota allocated to subscriptions
+// from the GroupQuotas remains unchanged.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GroupQuotasClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotasPatchRequestBody GroupQuotasEntityPatch, options *GroupQuotasClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GroupQuotasClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, managementGroupID, groupQuotaName, groupQuotasPatchRequestBody, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *GroupQuotasClient) updateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotasPatchRequestBody GroupQuotasEntityPatch, _ *GroupQuotasClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}"
+	if managementGroupID == "" {
+		return nil, errors.New("parameter managementGroupID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+	if groupQuotaName == "" {
+		return nil, errors.New("parameter groupQuotaName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, groupQuotasPatchRequestBody); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -203,7 +290,8 @@ func (client *GroupQuotasClient) Get(ctx context.Context, managementGroupID stri
 	if err != nil {
 		return GroupQuotasClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -306,87 +394,4 @@ func (client *GroupQuotasClient) listHandleResponse(resp *http.Response, success
 		return GroupQuotasClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates the GroupQuotas for the name passed. A GroupQuotas RequestId will be returned by the Service. The
-// status can be polled periodically. The status Async polling is using standards defined at - https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-// Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in retry-after header.
-// Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to Get URI and full details can
-// be checked.
-// Any change in the filters will be applicable to the future quota assignments, existing quota allocated to subscriptions
-// from the GroupQuotas remains unchanged.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - managementGroupID - The management group ID.
-//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-//   - groupQuotasPatchRequestBody - The GroupQuotas Patch Request.
-//   - options - GroupQuotasClientBeginUpdateOptions contains the optional parameters for the GroupQuotasClient.BeginUpdate method.
-func (client *GroupQuotasClient) BeginUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotasPatchRequestBody GroupQuotasEntityPatch, options *GroupQuotasClientBeginUpdateOptions) (*runtime.Poller[GroupQuotasClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, managementGroupID, groupQuotaName, groupQuotasPatchRequestBody, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GroupQuotasClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GroupQuotasClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates the GroupQuotas for the name passed. A GroupQuotas RequestId will be returned by the Service. The status
-// can be polled periodically. The status Async polling is using standards defined at - https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/async-api-reference.md#asynchronous-operations.
-// Use the OperationsStatus URI provided in Azure-AsyncOperation header, the duration will be specified in retry-after header.
-// Once the operation gets to terminal state - Succeeded | Failed, then the URI will change to Get URI and full details can
-// be checked.
-// Any change in the filters will be applicable to the future quota assignments, existing quota allocated to subscriptions
-// from the GroupQuotas remains unchanged.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GroupQuotasClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotasPatchRequestBody GroupQuotasEntityPatch, options *GroupQuotasClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GroupQuotasClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, managementGroupID, groupQuotaName, groupQuotasPatchRequestBody, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *GroupQuotasClient) updateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, groupQuotasPatchRequestBody GroupQuotasEntityPatch, _ *GroupQuotasClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if groupQuotaName == "" {
-		return nil, errors.New("parameter groupQuotaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, groupQuotasPatchRequestBody); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

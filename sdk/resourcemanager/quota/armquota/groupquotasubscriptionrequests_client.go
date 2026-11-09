@@ -61,7 +61,8 @@ func (client *GroupQuotaSubscriptionRequestsClient) Get(ctx context.Context, man
 	if err != nil {
 		return GroupQuotaSubscriptionRequestsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

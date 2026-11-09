@@ -61,7 +61,8 @@ func (client *GroupQuotaLimitsClient) List(ctx context.Context, managementGroupI
 	if err != nil {
 		return GroupQuotaLimitsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

@@ -23,13 +23,13 @@ import (
 
 // TransfersServer is a fake server for instances of the armquota.TransfersClient type.
 type TransfersServer struct {
-	// Cancel is the fake for method TransfersClient.Cancel
-	// HTTP status codes to indicate success: http.StatusOK
-	Cancel func(ctx context.Context, targetProvider string, region string, transferName string, options *armquota.TransfersClientCancelOptions) (resp azfake.Responder[armquota.TransfersClientCancelResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method TransfersClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, targetProvider string, region string, transferName string, resource armquota.Transfer, options *armquota.TransfersClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armquota.TransfersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Cancel is the fake for method TransfersClient.Cancel
+	// HTTP status codes to indicate success: http.StatusOK
+	Cancel func(ctx context.Context, targetProvider string, region string, transferName string, options *armquota.TransfersClientCancelOptions) (resp azfake.Responder[armquota.TransfersClientCancelResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method TransfersClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -68,7 +68,7 @@ func (t *TransfersServerTransport) Do(req *http.Request) (*http.Response, error)
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return t.dispatchToMethodFake(req, method)
@@ -84,10 +84,10 @@ func (t *TransfersServerTransport) dispatchToMethodFake(req *http.Request, metho
 		}
 		if !intercepted {
 			switch method {
-			case "TransfersClient.Cancel":
-				res.resp, res.err = t.dispatchCancel(req)
 			case "TransfersClient.BeginCreateOrUpdate":
 				res.resp, res.err = t.dispatchBeginCreateOrUpdate(req)
+			case "TransfersClient.Cancel":
+				res.resp, res.err = t.dispatchCancel(req)
 			case "TransfersClient.Delete":
 				res.resp, res.err = t.dispatchDelete(req)
 			case "TransfersClient.Get":
@@ -110,11 +110,63 @@ func (t *TransfersServerTransport) dispatchToMethodFake(req *http.Request, metho
 	}
 }
 
+func (t *TransfersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+	if t.srv.BeginCreateOrUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
+	}
+	beginCreateOrUpdate := t.beginCreateOrUpdate.get(req)
+	if beginCreateOrUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<targetProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locations/(?P<region>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/quotaTransfers/(?P<transferName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armquota.Transfer](req)
+		if err != nil {
+			return nil, err
+		}
+		targetProviderParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetProvider")])
+		if err != nil {
+			return nil, err
+		}
+		regionParam, err := url.PathUnescape(matches[regex.SubexpIndex("region")])
+		if err != nil {
+			return nil, err
+		}
+		transferNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("transferName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := t.srv.BeginCreateOrUpdate(req.Context(), targetProviderParam, regionParam, transferNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdate = &respr
+		t.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		t.beginCreateOrUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdate) {
+		t.beginCreateOrUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (t *TransfersServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
 	if t.srv.Cancel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<targetProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<region>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/quotaTransfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancel`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<targetProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locations/(?P<region>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/quotaTransfers/(?P<transferName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -164,63 +216,11 @@ func (t *TransfersServerTransport) dispatchCancel(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
-func (t *TransfersServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
-	if t.srv.BeginCreateOrUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
-	}
-	beginCreateOrUpdate := t.beginCreateOrUpdate.get(req)
-	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<targetProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<region>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/quotaTransfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armquota.Transfer](req)
-		if err != nil {
-			return nil, err
-		}
-		targetProviderParam, err := url.PathUnescape(matches[regex.SubexpIndex("targetProvider")])
-		if err != nil {
-			return nil, err
-		}
-		regionParam, err := url.PathUnescape(matches[regex.SubexpIndex("region")])
-		if err != nil {
-			return nil, err
-		}
-		transferNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("transferName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := t.srv.BeginCreateOrUpdate(req.Context(), targetProviderParam, regionParam, transferNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginCreateOrUpdate = &respr
-		t.beginCreateOrUpdate.add(req, beginCreateOrUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginCreateOrUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		t.beginCreateOrUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginCreateOrUpdate) {
-		t.beginCreateOrUpdate.remove(req)
-	}
-
-	return resp, nil
-}
-
 func (t *TransfersServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if t.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<targetProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<region>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/quotaTransfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<targetProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locations/(?P<region>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/quotaTransfers/(?P<transferName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -257,7 +257,7 @@ func (t *TransfersServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if t.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<targetProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<region>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/quotaTransfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<targetProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locations/(?P<region>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/quotaTransfers/(?P<transferName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -296,7 +296,7 @@ func (t *TransfersServerTransport) dispatchNewListPager(req *http.Request) (*htt
 	}
 	newListPager := t.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/(?P<targetProvider>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/locations/(?P<region>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Quota/quotaTransfers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/(?P<targetProvider>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/locations/(?P<region>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Quota/quotaTransfers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

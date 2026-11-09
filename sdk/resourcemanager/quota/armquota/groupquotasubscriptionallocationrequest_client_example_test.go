@@ -12,6 +12,82 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-09-01-preview/SubscriptionQuotaAllocationRequests/PatchSubscriptionQuotaAllocationRequest-Compute.json
+func ExampleGroupQuotaSubscriptionAllocationRequestClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armquota.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient("00000000-0000-0000-0000-000000000000").BeginUpdate(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "westus", armquota.SubscriptionQuotaAllocationsList{
+		Properties: &armquota.SubscriptionQuotaAllocationsListProperties{
+			Value: []*armquota.SubscriptionQuotaAllocations{
+				{
+					Properties: &armquota.SubscriptionQuotaAllocationsProperties{
+						Limit:        to.Ptr[int64](110),
+						ResourceName: to.Ptr("standardddv4family"),
+					},
+				},
+				{
+					Properties: &armquota.SubscriptionQuotaAllocationsProperties{
+						Limit:        to.Ptr[int64](110),
+						ResourceName: to.Ptr("standardav2family"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armquota.GroupQuotaSubscriptionAllocationRequestClientUpdateResponse{
+	// 	SubscriptionQuotaAllocationsList: armquota.SubscriptionQuotaAllocationsList{
+	// 		Name: to.Ptr("westus"),
+	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/quotaAllocations"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/quotaAllocations/westus"),
+	// 		Properties: &armquota.SubscriptionQuotaAllocationsListProperties{
+	// 			NextLink: to.Ptr("https://yourLinkHere.com"),
+	// 			ProvisioningState: to.Ptr(armquota.RequestStateSucceeded),
+	// 			Value: []*armquota.SubscriptionQuotaAllocations{
+	// 				{
+	// 					Properties: &armquota.SubscriptionQuotaAllocationsProperties{
+	// 						Name: &armquota.SubscriptionQuotaDetailsName{
+	// 							LocalizedValue: to.Ptr("standard DDv4 Family vCPUs"),
+	// 							Value: to.Ptr("standardddv4family"),
+	// 						},
+	// 						Limit: to.Ptr[int64](25),
+	// 						ResourceName: to.Ptr("standardddv4family"),
+	// 						ShareableQuota: to.Ptr[int64](15),
+	// 					},
+	// 				},
+	// 				{
+	// 					Properties: &armquota.SubscriptionQuotaAllocationsProperties{
+	// 						Name: &armquota.SubscriptionQuotaDetailsName{
+	// 							LocalizedValue: to.Ptr("standard Av2 Family vCPUs"),
+	// 							Value: to.Ptr("standardav2family"),
+	// 						},
+	// 						Limit: to.Ptr[int64](30),
+	// 						ResourceName: to.Ptr("standardav2family"),
+	// 						ShareableQuota: to.Ptr[int64](0),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-09-01-preview/SubscriptionQuotaAllocationRequests/SubscriptionQuotaAllocationRequests_Get-Compute.json
 func ExampleGroupQuotaSubscriptionAllocationRequestClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -104,80 +180,4 @@ func ExampleGroupQuotaSubscriptionAllocationRequestClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-09-01-preview/SubscriptionQuotaAllocationRequests/PatchSubscriptionQuotaAllocationRequest-Compute.json
-func ExampleGroupQuotaSubscriptionAllocationRequestClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armquota.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewGroupQuotaSubscriptionAllocationRequestClient("00000000-0000-0000-0000-000000000000").BeginUpdate(ctx, "E7EC67B3-7657-4966-BFFC-41EFD36BAA09", "groupquota1", "Microsoft.Compute", "westus", armquota.SubscriptionQuotaAllocationsList{
-		Properties: &armquota.SubscriptionQuotaAllocationsListProperties{
-			Value: []*armquota.SubscriptionQuotaAllocations{
-				{
-					Properties: &armquota.SubscriptionQuotaAllocationsProperties{
-						Limit:        to.Ptr[int64](110),
-						ResourceName: to.Ptr("standardddv4family"),
-					},
-				},
-				{
-					Properties: &armquota.SubscriptionQuotaAllocationsProperties{
-						Limit:        to.Ptr[int64](110),
-						ResourceName: to.Ptr("standardav2family"),
-					},
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armquota.GroupQuotaSubscriptionAllocationRequestClientUpdateResponse{
-	// 	SubscriptionQuotaAllocationsList: armquota.SubscriptionQuotaAllocationsList{
-	// 		Name: to.Ptr("westus"),
-	// 		Type: to.Ptr("Microsoft.Quota/groupQuotas/quotaAllocations"),
-	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/E7EC67B3-7657-4966-BFFC-41EFD36BAA09/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Quota/groupQuotas/groupquota1/resourceProviders/Microsoft.Compute/quotaAllocations/westus"),
-	// 		Properties: &armquota.SubscriptionQuotaAllocationsListProperties{
-	// 			NextLink: to.Ptr("https://yourLinkHere.com"),
-	// 			ProvisioningState: to.Ptr(armquota.RequestStateSucceeded),
-	// 			Value: []*armquota.SubscriptionQuotaAllocations{
-	// 				{
-	// 					Properties: &armquota.SubscriptionQuotaAllocationsProperties{
-	// 						Name: &armquota.SubscriptionQuotaDetailsName{
-	// 							LocalizedValue: to.Ptr("standard DDv4 Family vCPUs"),
-	// 							Value: to.Ptr("standardddv4family"),
-	// 						},
-	// 						Limit: to.Ptr[int64](25),
-	// 						ResourceName: to.Ptr("standardddv4family"),
-	// 						ShareableQuota: to.Ptr[int64](15),
-	// 					},
-	// 				},
-	// 				{
-	// 					Properties: &armquota.SubscriptionQuotaAllocationsProperties{
-	// 						Name: &armquota.SubscriptionQuotaDetailsName{
-	// 							LocalizedValue: to.Ptr("standard Av2 Family vCPUs"),
-	// 							Value: to.Ptr("standardav2family"),
-	// 						},
-	// 						Limit: to.Ptr[int64](30),
-	// 						ResourceName: to.Ptr("standardav2family"),
-	// 						ShareableQuota: to.Ptr[int64](0),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

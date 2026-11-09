@@ -75,7 +75,7 @@ func (client *GroupQuotaLocationSettingsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource
+// createOrUpdate - Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource
 // provider will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The subscriptions
 // cannot request quota at subscription level since it is now part of an enforced group.
 // The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then submit a
@@ -102,12 +102,13 @@ func (client *GroupQuotaLocationSettingsClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *GroupQuotaLocationSettingsClient) createOrUpdateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, locationSettings GroupQuotasEnforcementStatus, _ *GroupQuotaLocationSettingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/locationSettings/{location}"
 	if managementGroupID == "" {
@@ -127,6 +128,110 @@ func (client *GroupQuotaLocationSettingsClient) createOrUpdateCreateRequest(ctx 
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, locationSettings); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
+// will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The subscriptions
+// cannot request quota at subscription level since it is now part of an enforced group.
+// The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then submit a
+// groupQuotaLimit request for the specific resource - provider/location/resource.
+// Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota Enforcement
+// -
+//
+//  1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
+//  2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
+//
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - managementGroupID - The management group ID.
+//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+//   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
+//     provider supports this API.
+//   - location - The name of the Azure region.
+//   - locationSettings - The GroupQuota body details for creation or update of a GroupQuota entity.
+//   - options - GroupQuotaLocationSettingsClientBeginUpdateOptions contains the optional parameters for the GroupQuotaLocationSettingsClient.BeginUpdate
+//     method.
+func (client *GroupQuotaLocationSettingsClient) BeginUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, locationSettings GroupQuotasEnforcementStatus, options *GroupQuotaLocationSettingsClientBeginUpdateOptions) (*runtime.Poller[GroupQuotaLocationSettingsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, managementGroupID, groupQuotaName, resourceProviderName, location, locationSettings, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GroupQuotaLocationSettingsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GroupQuotaLocationSettingsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
+// will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The subscriptions
+// cannot request quota at subscription level since it is now part of an enforced group.
+// The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then submit a
+// groupQuotaLimit request for the specific resource - provider/location/resource.
+// Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota Enforcement
+// -
+//
+//  1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
+//  2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
+//
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *GroupQuotaLocationSettingsClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, locationSettings GroupQuotasEnforcementStatus, options *GroupQuotaLocationSettingsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "GroupQuotaLocationSettingsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, location, locationSettings, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *GroupQuotaLocationSettingsClient) updateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, locationSettings GroupQuotasEnforcementStatus, _ *GroupQuotaLocationSettingsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/locationSettings/{location}"
+	if managementGroupID == "" {
+		return nil, errors.New("parameter managementGroupID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+	if groupQuotaName == "" {
+		return nil, errors.New("parameter groupQuotaName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
+	if resourceProviderName == "" {
+		return nil, errors.New("parameter resourceProviderName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
+	if location == "" {
+		return nil, errors.New("parameter location cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -165,7 +270,8 @@ func (client *GroupQuotaLocationSettingsClient) Get(ctx context.Context, managem
 	if err != nil {
 		return GroupQuotaLocationSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -208,107 +314,4 @@ func (client *GroupQuotaLocationSettingsClient) getHandleResponse(resp *http.Res
 		return GroupQuotaLocationSettingsClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
-// will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The subscriptions
-// cannot request quota at subscription level since it is now part of an enforced group.
-// The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then submit a
-// groupQuotaLimit request for the specific resource - provider/location/resource.
-// Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota Enforcement
-// -
-//
-//  1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
-//  2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
-//
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - managementGroupID - The management group ID.
-//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-//   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
-//     provider supports this API.
-//   - location - The name of the Azure region.
-//   - locationSettings - The GroupQuota body details for creation or update of a GroupQuota entity.
-//   - options - GroupQuotaLocationSettingsClientBeginUpdateOptions contains the optional parameters for the GroupQuotaLocationSettingsClient.BeginUpdate
-//     method.
-func (client *GroupQuotaLocationSettingsClient) BeginUpdate(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, locationSettings GroupQuotasEnforcementStatus, options *GroupQuotaLocationSettingsClientBeginUpdateOptions) (*runtime.Poller[GroupQuotaLocationSettingsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, managementGroupID, groupQuotaName, resourceProviderName, location, locationSettings, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[GroupQuotaLocationSettingsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[GroupQuotaLocationSettingsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Enables the GroupQuotas enforcement for the resource provider and the location specified. The resource provider
-// will start using the group quotas as the overall quota for the subscriptions included in the GroupQuota. The subscriptions
-// cannot request quota at subscription level since it is now part of an enforced group.
-// The subscriptions share the GroupQuotaLimits assigned to the GroupQuota. If the GroupQuotaLimits is used, then submit a
-// groupQuotaLimit request for the specific resource - provider/location/resource.
-// Once the GroupQuota Enforcement is enabled then, it cannot be deleted or reverted back. To disable GroupQuota Enforcement
-// -
-//
-//  1. Remove all the subscriptions from the groupQuota using the delete API for Subscriptions (Check the example - GroupQuotaSubscriptions_Delete).
-//  2. Ten delete the GroupQuota (Check the example - GroupQuotas_Delete).
-//
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *GroupQuotaLocationSettingsClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, locationSettings GroupQuotasEnforcementStatus, options *GroupQuotaLocationSettingsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "GroupQuotaLocationSettingsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, location, locationSettings, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *GroupQuotaLocationSettingsClient) updateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, locationSettings GroupQuotasEnforcementStatus, _ *GroupQuotaLocationSettingsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/locationSettings/{location}"
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if groupQuotaName == "" {
-		return nil, errors.New("parameter groupQuotaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
-	if resourceProviderName == "" {
-		return nil, errors.New("parameter resourceProviderName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
-	if location == "" {
-		return nil, errors.New("parameter location cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{location}", url.PathEscape(location))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, locationSettings); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

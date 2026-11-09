@@ -1,6 +1,6 @@
 # Release History
 
-## 0.3.0 (2026-09-02)
+## 0.3.0 (2026-11-09)
 ### Breaking Changes
 
 - Type of `SKU.Name` has been changed from `*string` to `*SKUName`

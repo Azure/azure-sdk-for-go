@@ -87,7 +87,8 @@ func (client *ArcDeploymentsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -136,7 +137,7 @@ func (client *ArcDeploymentsClient) createOrUpdateCreateRequest(ctx context.Cont
 //     method.
 func (client *ArcDeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ArcDeploymentsClientBeginDeleteOptions) (*runtime.Poller[ArcDeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, deploymentName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -151,9 +152,9 @@ func (client *ArcDeploymentsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// delete - Deletes the specified Arc deployment associated with the Cognitive Services account.
+// deleteOperation - Deletes the specified Arc deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ArcDeploymentsClient) delete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ArcDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ArcDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ArcDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ArcDeploymentsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -168,7 +169,8 @@ func (client *ArcDeploymentsClient) delete(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -245,7 +247,8 @@ func (client *ArcDeploymentsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -305,7 +308,8 @@ func (client *ArcDeploymentsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ArcDeploymentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

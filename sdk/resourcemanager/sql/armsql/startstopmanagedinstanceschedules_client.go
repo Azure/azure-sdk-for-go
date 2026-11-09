@@ -66,7 +66,8 @@ func (client *StartStopManagedInstanceSchedulesClient) CreateOrUpdate(ctx contex
 	if err != nil {
 		return StartStopManagedInstanceSchedulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *StartStopManagedInstanceSchedulesClient) Delete(ctx context.Contex
 		return StartStopManagedInstanceSchedulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return StartStopManagedInstanceSchedulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StartStopManagedInstanceSchedulesClientDeleteResponse{}, err
 	}
 	return StartStopManagedInstanceSchedulesClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *StartStopManagedInstanceSchedulesClient) Get(ctx context.Context, 
 	if err != nil {
 		return StartStopManagedInstanceSchedulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -49,24 +49,24 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClientBeginBMSPrepareDataMoveOptions contains the optional parameters for the Client.BeginBMSPrepareDataMove
 //     method.
-func (client *Client) BeginBMSPrepareDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, options *ClientBeginBMSPrepareDataMoveOptions) (*runtime.Poller[ClientBMSPrepareDataMoveResponse], error) {
+func (client *Client) BeginBMSPrepareDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, options *ClientBeginBMSPrepareDataMoveOptions) (*runtime.Poller[ClientBmsPrepareDataMoveResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.bmsPrepareDataMove(ctx, vaultName, resourceGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientBMSPrepareDataMoveResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientBmsPrepareDataMoveResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientBMSPrepareDataMoveResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientBmsPrepareDataMoveResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// BMSPrepareDataMove - Prepares source vault for Data Move operation
+// bmsPrepareDataMove - Prepares source vault for Data Move operation
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) bmsPrepareDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, options *ClientBeginBMSPrepareDataMoveOptions) (*http.Response, error) {
 	var err error
@@ -83,12 +83,13 @@ func (client *Client) bmsPrepareDataMove(ctx context.Context, vaultName string, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// bmsPrepareDataMoveCreateRequest creates the BMSPrepareDataMove request.
+// bmsPrepareDataMoveCreateRequest creates the bmsPrepareDataMove request.
 func (client *Client) bmsPrepareDataMoveCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, _ *ClientBeginBMSPrepareDataMoveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/prepareDataMove"
 	if client.subscriptionID == "" {
@@ -122,24 +123,24 @@ func (client *Client) bmsPrepareDataMoveCreateRequest(ctx context.Context, vault
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClientBeginBMSTriggerDataMoveOptions contains the optional parameters for the Client.BeginBMSTriggerDataMove
 //     method.
-func (client *Client) BeginBMSTriggerDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, options *ClientBeginBMSTriggerDataMoveOptions) (*runtime.Poller[ClientBMSTriggerDataMoveResponse], error) {
+func (client *Client) BeginBMSTriggerDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, options *ClientBeginBMSTriggerDataMoveOptions) (*runtime.Poller[ClientBmsTriggerDataMoveResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.bmsTriggerDataMove(ctx, vaultName, resourceGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientBMSTriggerDataMoveResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientBmsTriggerDataMoveResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientBMSTriggerDataMoveResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientBmsTriggerDataMoveResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
 }
 
-// BMSTriggerDataMove - Triggers Data Move Operation on target vault
+// bmsTriggerDataMove - Triggers Data Move Operation on target vault
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) bmsTriggerDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, options *ClientBeginBMSTriggerDataMoveOptions) (*http.Response, error) {
 	var err error
@@ -156,12 +157,13 @@ func (client *Client) bmsTriggerDataMove(ctx context.Context, vaultName string, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// bmsTriggerDataMoveCreateRequest creates the BMSTriggerDataMove request.
+// bmsTriggerDataMoveCreateRequest creates the bmsTriggerDataMove request.
 func (client *Client) bmsTriggerDataMoveCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, _ *ClientBeginBMSTriggerDataMoveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/triggerDataMove"
 	if client.subscriptionID == "" {
@@ -190,69 +192,6 @@ func (client *Client) bmsTriggerDataMoveCreateRequest(ctx context.Context, vault
 	return req, nil
 }
 
-// GetOperationStatus - Fetches Operation Result for Prepare Data Move
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - ClientGetOperationStatusOptions contains the optional parameters for the Client.GetOperationStatus method.
-func (client *Client) GetOperationStatus(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *ClientGetOperationStatusOptions) (ClientGetOperationStatusResponse, error) {
-	var err error
-	const operationName = "Client.GetOperationStatus"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getOperationStatusCreateRequest(ctx, vaultName, resourceGroupName, operationID, options)
-	if err != nil {
-		return ClientGetOperationStatusResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClientGetOperationStatusResponse{}, err
-	}
-	return client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
-}
-
-// getOperationStatusCreateRequest creates the GetOperationStatus request.
-func (client *Client) getOperationStatusCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, operationID string, _ *ClientGetOperationStatusOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/operationStatus/{operationId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if vaultName == "" {
-		return nil, errors.New("parameter vaultName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if operationID == "" {
-		return nil, errors.New("parameter operationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getOperationStatusHandleResponse handles the GetOperationStatus response.
-func (client *Client) getOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (ClientGetOperationStatusResponse, error) {
-	result := ClientGetOperationStatusResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
-		return ClientGetOperationStatusResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginMoveRecoveryPoint - Move recovery point from one datastore to another store.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -274,7 +213,7 @@ func (client *Client) BeginMoveRecoveryPoint(ctx context.Context, vaultName stri
 	}
 }
 
-// MoveRecoveryPoint - Move recovery point from one datastore to another store.
+// moveRecoveryPoint - Move recovery point from one datastore to another store.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) moveRecoveryPoint(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters MoveRPAcrossTiersRequest, options *ClientBeginMoveRecoveryPointOptions) (*http.Response, error) {
 	var err error
@@ -291,12 +230,13 @@ func (client *Client) moveRecoveryPoint(ctx context.Context, vaultName string, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// moveRecoveryPointCreateRequest creates the MoveRecoveryPoint request.
+// moveRecoveryPointCreateRequest creates the moveRecoveryPoint request.
 func (client *Client) moveRecoveryPointCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters MoveRPAcrossTiersRequest, _ *ClientBeginMoveRecoveryPointOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/move"
 	if client.subscriptionID == "" {
@@ -339,4 +279,68 @@ func (client *Client) moveRecoveryPointCreateRequest(ctx context.Context, vaultN
 		return nil, err
 	}
 	return req, nil
+}
+
+// GetOperationStatus - Fetches Operation Result for Prepare Data Move
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - ClientGetOperationStatusOptions contains the optional parameters for the Client.GetOperationStatus method.
+func (client *Client) GetOperationStatus(ctx context.Context, vaultName string, resourceGroupName string, operationID string, options *ClientGetOperationStatusOptions) (ClientGetOperationStatusResponse, error) {
+	var err error
+	const operationName = "Client.GetOperationStatus"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getOperationStatusCreateRequest(ctx, vaultName, resourceGroupName, operationID, options)
+	if err != nil {
+		return ClientGetOperationStatusResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClientGetOperationStatusResponse{}, err
+	}
+	resp, err := client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getOperationStatusCreateRequest creates the GetOperationStatus request.
+func (client *Client) getOperationStatusCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, operationID string, _ *ClientGetOperationStatusOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupstorageconfig/vaultstorageconfig/operationStatus/{operationId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if vaultName == "" {
+		return nil, errors.New("parameter vaultName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vaultName}", url.PathEscape(vaultName))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if operationID == "" {
+		return nil, errors.New("parameter operationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{operationId}", url.PathEscape(operationID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getOperationStatusHandleResponse handles the GetOperationStatus response.
+func (client *Client) getOperationStatusHandleResponse(resp *http.Response, successCodes ...int) (ClientGetOperationStatusResponse, error) {
+	result := ClientGetOperationStatusResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatus); err != nil {
+		return ClientGetOperationStatusResponse{}, err
+	}
+	return result, nil
 }

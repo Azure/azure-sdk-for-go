@@ -66,7 +66,7 @@ func (client *OperationResultsClient) BeginGet(ctx context.Context, operationRes
 	}
 }
 
-// Get - Get the operation result for a long running operation.
+// get - Get the operation result for a long running operation.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OperationResultsClient) get(ctx context.Context, operationResultID string, options *OperationResultsClientBeginGetOptions) (*http.Response, error) {
 	var err error
@@ -83,12 +83,13 @@ func (client *OperationResultsClient) get(ctx context.Context, operationResultID
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// getCreateRequest creates the Get request.
+// getCreateRequest creates the get request.
 func (client *OperationResultsClient) getCreateRequest(ctx context.Context, operationResultID string, _ *OperationResultsClientBeginGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BotService/operationresults/{operationResultId}"
 	if client.subscriptionID == "" {

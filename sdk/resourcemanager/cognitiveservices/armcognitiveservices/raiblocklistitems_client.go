@@ -66,7 +66,8 @@ func (client *RaiBlocklistItemsClient) BatchAdd(ctx context.Context, resourceGro
 	if err != nil {
 		return RaiBlocklistItemsClientBatchAddResponse{}, err
 	}
-	return client.batchAddHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.batchAddHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // batchAddCreateRequest creates the BatchAdd request.
@@ -138,7 +139,8 @@ func (client *RaiBlocklistItemsClient) BatchDelete(ctx context.Context, resource
 		return RaiBlocklistItemsClientBatchDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RaiBlocklistItemsClientBatchDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RaiBlocklistItemsClientBatchDeleteResponse{}, err
 	}
 	return RaiBlocklistItemsClientBatchDeleteResponse{}, nil
 }
@@ -186,7 +188,7 @@ func (client *RaiBlocklistItemsClient) batchDeleteCreateRequest(ctx context.Cont
 //     method.
 func (client *RaiBlocklistItemsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, options *RaiBlocklistItemsClientBeginDeleteOptions) (*runtime.Poller[RaiBlocklistItemsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, raiBlocklistName, raiBlocklistItemName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -201,9 +203,9 @@ func (client *RaiBlocklistItemsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// delete - Deletes the specified blocklist Item associated with the custom blocklist.
+// deleteOperation - Deletes the specified blocklist Item associated with the custom blocklist.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiBlocklistItemsClient) delete(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, options *RaiBlocklistItemsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RaiBlocklistItemsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiBlocklistName string, raiBlocklistItemName string, options *RaiBlocklistItemsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiBlocklistItemsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -218,7 +220,8 @@ func (client *RaiBlocklistItemsClient) delete(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -279,7 +282,8 @@ func (client *RaiBlocklistItemsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return RaiBlocklistItemsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -353,7 +357,8 @@ func (client *RaiBlocklistItemsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return RaiBlocklistItemsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

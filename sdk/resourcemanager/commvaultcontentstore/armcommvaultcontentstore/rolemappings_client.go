@@ -65,7 +65,8 @@ func (client *RoleMappingsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return RoleMappingsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -130,7 +131,8 @@ func (client *RoleMappingsClient) Delete(ctx context.Context, resourceGroupName 
 		return RoleMappingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return RoleMappingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RoleMappingsClientDeleteResponse{}, err
 	}
 	return RoleMappingsClientDeleteResponse{}, nil
 }
@@ -179,7 +181,8 @@ func (client *RoleMappingsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return RoleMappingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

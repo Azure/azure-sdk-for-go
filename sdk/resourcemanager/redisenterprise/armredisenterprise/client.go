@@ -86,7 +86,8 @@ func (client *Client) create(ctx context.Context, resourceGroupName string, clus
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -162,7 +163,8 @@ func (client *Client) deleteOperation(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -234,7 +236,8 @@ func (client *Client) update(ctx context.Context, resourceGroupName string, clus
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -289,7 +292,8 @@ func (client *Client) Get(ctx context.Context, resourceGroupName string, cluster
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -350,7 +354,8 @@ func (client *Client) ListSKUsForScaling(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ClientListSKUsForScalingResponse{}, err
 	}
-	return client.listSKUsForScalingHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSKUsForScalingHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSKUsForScalingCreateRequest creates the ListSKUsForScaling request.

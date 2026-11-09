@@ -66,7 +66,8 @@ func (client *PrefixesClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PrefixesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *PrefixesClient) Delete(ctx context.Context, resourceGroupName stri
 		return PrefixesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PrefixesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PrefixesClientDeleteResponse{}, err
 	}
 	return PrefixesClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *PrefixesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return PrefixesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

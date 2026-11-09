@@ -69,7 +69,8 @@ func (client *FileSharesClient) Create(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return FileSharesClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -145,7 +146,8 @@ func (client *FileSharesClient) Delete(ctx context.Context, resourceGroupName st
 		return FileSharesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return FileSharesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FileSharesClientDeleteResponse{}, err
 	}
 	return FileSharesClientDeleteResponse{}, nil
 }
@@ -208,7 +210,8 @@ func (client *FileSharesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return FileSharesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -283,7 +286,8 @@ func (client *FileSharesClient) Lease(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FileSharesClientLeaseResponse{}, err
 	}
-	return client.leaseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.leaseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // leaseCreateRequest creates the Lease request.
@@ -451,7 +455,8 @@ func (client *FileSharesClient) Restore(ctx context.Context, resourceGroupName s
 		return FileSharesClientRestoreResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return FileSharesClientRestoreResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FileSharesClientRestoreResponse{}, err
 	}
 	return FileSharesClientRestoreResponse{}, nil
 }
@@ -514,7 +519,8 @@ func (client *FileSharesClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return FileSharesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

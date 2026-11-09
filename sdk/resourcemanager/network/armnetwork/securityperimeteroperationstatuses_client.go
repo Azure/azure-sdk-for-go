@@ -64,7 +64,8 @@ func (client *SecurityPerimeterOperationStatusesClient) Get(ctx context.Context,
 	if err != nil {
 		return SecurityPerimeterOperationStatusesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

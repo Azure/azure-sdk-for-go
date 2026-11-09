@@ -68,7 +68,8 @@ func (client *SubscriptionsClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return SubscriptionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -143,7 +144,8 @@ func (client *SubscriptionsClient) Delete(ctx context.Context, resourceGroupName
 		return SubscriptionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SubscriptionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SubscriptionsClientDeleteResponse{}, err
 	}
 	return SubscriptionsClientDeleteResponse{}, nil
 }
@@ -202,7 +204,8 @@ func (client *SubscriptionsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return SubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

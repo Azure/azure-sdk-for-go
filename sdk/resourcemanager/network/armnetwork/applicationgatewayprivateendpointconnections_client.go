@@ -54,7 +54,7 @@ func NewApplicationGatewayPrivateEndpointConnectionsClient(subscriptionID string
 //     ApplicationGatewayPrivateEndpointConnectionsClient.BeginDelete method.
 func (client *ApplicationGatewayPrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[ApplicationGatewayPrivateEndpointConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, applicationGatewayName, connectionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, applicationGatewayName, connectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -69,9 +69,9 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) BeginDelete(ct
 	}
 }
 
-// delete - Deletes the specified private endpoint connection on application gateway.
+// deleteOperation - Deletes the specified private endpoint connection on application gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ApplicationGatewayPrivateEndpointConnectionsClient) delete(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ApplicationGatewayPrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, applicationGatewayName string, connectionName string, options *ApplicationGatewayPrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ApplicationGatewayPrivateEndpointConnectionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -86,7 +86,8 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) delete(ctx con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -162,7 +163,8 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) update(ctx con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -222,7 +224,8 @@ func (client *ApplicationGatewayPrivateEndpointConnectionsClient) Get(ctx contex
 	if err != nil {
 		return ApplicationGatewayPrivateEndpointConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

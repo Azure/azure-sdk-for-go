@@ -68,7 +68,7 @@ func (client *OrganizationsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create a OrganizationResource
+// createOrUpdate - Create a OrganizationResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OrganizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, organizationname string, resource OrganizationResource, options *OrganizationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *OrganizationsClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *OrganizationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, organizationname string, resource OrganizationResource, _ *OrganizationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Pinecone.VectorDb/organizations/{organizationname}"
 	if client.subscriptionID == "" {
@@ -143,7 +144,7 @@ func (client *OrganizationsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete a OrganizationResource
+// deleteOperation - Delete a OrganizationResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OrganizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, organizationname string, options *OrganizationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,12 +161,13 @@ func (client *OrganizationsClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OrganizationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, organizationname string, _ *OrganizationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Pinecone.VectorDb/organizations/{organizationname}"
 	if client.subscriptionID == "" {
@@ -209,7 +211,8 @@ func (client *OrganizationsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return OrganizationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -409,7 +412,8 @@ func (client *OrganizationsClient) Update(ctx context.Context, resourceGroupName
 	if err != nil {
 		return OrganizationsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

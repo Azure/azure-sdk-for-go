@@ -70,7 +70,7 @@ func (client *MetricsConfigurationsClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Create new or update the existing metrics configuration of the provided cluster.
+// createOrUpdate - Create new or update the existing metrics configuration of the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MetricsConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationParameters ClusterMetricsConfiguration, options *MetricsConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *MetricsConfigurationsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MetricsConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationParameters ClusterMetricsConfiguration, options *MetricsConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}"
 	if client.subscriptionID == "" {
@@ -156,7 +157,7 @@ func (client *MetricsConfigurationsClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Delete the metrics configuration of the provided cluster.
+// deleteOperation - Delete the metrics configuration of the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MetricsConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, options *MetricsConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,12 +174,13 @@ func (client *MetricsConfigurationsClient) deleteOperation(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MetricsConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, options *MetricsConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}"
 	if client.subscriptionID == "" {
@@ -213,6 +215,96 @@ func (client *MetricsConfigurationsClient) deleteCreateRequest(ctx context.Conte
 	return req, nil
 }
 
+// BeginUpdate - Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
+// Properties and tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - metricsConfigurationName - The name of the metrics configuration for the cluster.
+//   - metricsConfigurationUpdateParameters - The request body.
+//   - options - MetricsConfigurationsClientBeginUpdateOptions contains the optional parameters for the MetricsConfigurationsClient.BeginUpdate
+//     method.
+func (client *MetricsConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationUpdateParameters ClusterMetricsConfigurationPatchParameters, options *MetricsConfigurationsClientBeginUpdateOptions) (*runtime.Poller[MetricsConfigurationsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MetricsConfigurationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MetricsConfigurationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch properties of metrics configuration for the provided cluster, or update the tags associated with it. Properties
+// and tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MetricsConfigurationsClient) update(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationUpdateParameters ClusterMetricsConfigurationPatchParameters, options *MetricsConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MetricsConfigurationsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *MetricsConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationUpdateParameters ClusterMetricsConfigurationPatchParameters, options *MetricsConfigurationsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if metricsConfigurationName == "" {
+		return nil, errors.New("parameter metricsConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{metricsConfigurationName}", url.PathEscape(metricsConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, metricsConfigurationUpdateParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get metrics configuration of the provided cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -234,7 +326,8 @@ func (client *MetricsConfigurationsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return MetricsConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -360,93 +453,4 @@ func (client *MetricsConfigurationsClient) listByClusterHandleResponse(resp *htt
 		return MetricsConfigurationsClientListByClusterResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Patch properties of metrics configuration for the provided cluster, or update the tags associated with it.
-// Properties and tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - metricsConfigurationName - The name of the metrics configuration for the cluster.
-//   - metricsConfigurationUpdateParameters - The request body.
-//   - options - MetricsConfigurationsClientBeginUpdateOptions contains the optional parameters for the MetricsConfigurationsClient.BeginUpdate
-//     method.
-func (client *MetricsConfigurationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationUpdateParameters ClusterMetricsConfigurationPatchParameters, options *MetricsConfigurationsClientBeginUpdateOptions) (*runtime.Poller[MetricsConfigurationsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MetricsConfigurationsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MetricsConfigurationsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch properties of metrics configuration for the provided cluster, or update the tags associated with it. Properties
-// and tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MetricsConfigurationsClient) update(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationUpdateParameters ClusterMetricsConfigurationPatchParameters, options *MetricsConfigurationsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MetricsConfigurationsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, clusterName, metricsConfigurationName, metricsConfigurationUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *MetricsConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, metricsConfigurationName string, metricsConfigurationUpdateParameters ClusterMetricsConfigurationPatchParameters, options *MetricsConfigurationsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/clusters/{clusterName}/metricsConfigurations/{metricsConfigurationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if metricsConfigurationName == "" {
-		return nil, errors.New("parameter metricsConfigurationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{metricsConfigurationName}", url.PathEscape(metricsConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, metricsConfigurationUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

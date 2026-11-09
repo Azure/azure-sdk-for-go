@@ -65,7 +65,8 @@ func (client *ExtensionMetadataClient) Get(ctx context.Context, location string,
 	if err != nil {
 		return ExtensionMetadataClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

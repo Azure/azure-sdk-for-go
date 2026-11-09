@@ -58,7 +58,8 @@ func (client *ViewsClient) CreateOrUpdate(ctx context.Context, viewName string, 
 	if err != nil {
 		return ViewsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -117,7 +118,8 @@ func (client *ViewsClient) CreateOrUpdateByScope(ctx context.Context, scope stri
 	if err != nil {
 		return ViewsClientCreateOrUpdateByScopeResponse{}, err
 	}
-	return client.createOrUpdateByScopeHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateByScopeHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateByScopeCreateRequest creates the CreateOrUpdateByScope request.
@@ -177,7 +179,8 @@ func (client *ViewsClient) Delete(ctx context.Context, viewName string, options 
 		return ViewsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ViewsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ViewsClientDeleteResponse{}, err
 	}
 	return ViewsClientDeleteResponse{}, nil
 }
@@ -219,7 +222,8 @@ func (client *ViewsClient) DeleteByScope(ctx context.Context, scope string, view
 		return ViewsClientDeleteByScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ViewsClientDeleteByScopeResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ViewsClientDeleteByScopeResponse{}, err
 	}
 	return ViewsClientDeleteByScopeResponse{}, nil
 }
@@ -263,7 +267,8 @@ func (client *ViewsClient) Get(ctx context.Context, viewName string, options *Vi
 	if err != nil {
 		return ViewsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -315,7 +320,8 @@ func (client *ViewsClient) GetByScope(ctx context.Context, scope string, viewNam
 	if err != nil {
 		return ViewsClientGetByScopeResponse{}, err
 	}
-	return client.getByScopeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByScopeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByScopeCreateRequest creates the GetByScope request.
@@ -348,68 +354,6 @@ func (client *ViewsClient) getByScopeHandleResponse(resp *http.Response, success
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.View); err != nil {
 		return ViewsClientGetByScopeResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Lists all views by tenant and object.
-//   - options - ViewsClientListOptions contains the optional parameters for the ViewsClient.NewListPager method.
-func (client *ViewsClient) NewListPager(options *ViewsClientListOptions) *runtime.Pager[ViewsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ViewsClientListResponse]{
-		More: func(page ViewsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ViewsClientListResponse) (ViewsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ViewsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ViewsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ViewsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ViewsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ViewsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.CostManagement/views"
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ViewsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ViewsClientListResponse, error) {
-	result := ViewsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ViewListResult); err != nil {
-		return ViewsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -477,6 +421,68 @@ func (client *ViewsClient) listByScopeHandleResponse(resp *http.Response, succes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ViewListResult); err != nil {
 		return ViewsClientListByScopeResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists all views by tenant and object.
+//   - options - ViewsClientListOptions contains the optional parameters for the ViewsClient.NewListPager method.
+func (client *ViewsClient) NewListPager(options *ViewsClientListOptions) *runtime.Pager[ViewsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ViewsClientListResponse]{
+		More: func(page ViewsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ViewsClientListResponse) (ViewsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ViewsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ViewsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ViewsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ViewsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ViewsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.CostManagement/views"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ViewsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ViewsClientListResponse, error) {
+	result := ViewsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ViewListResult); err != nil {
+		return ViewsClientListResponse{}, err
 	}
 	return result, nil
 }

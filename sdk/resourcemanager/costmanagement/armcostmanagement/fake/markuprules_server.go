@@ -60,7 +60,7 @@ func (m *MarkupRulesServerTransport) Do(req *http.Request) (*http.Response, erro
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return m.dispatchToMethodFake(req, method)
@@ -104,7 +104,7 @@ func (m *MarkupRulesServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	if m.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/markupRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/markupRules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -145,7 +145,7 @@ func (m *MarkupRulesServerTransport) dispatchDelete(req *http.Request) (*http.Re
 	if m.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/markupRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/markupRules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -182,7 +182,7 @@ func (m *MarkupRulesServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/markupRules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/markupRules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -221,7 +221,7 @@ func (m *MarkupRulesServerTransport) dispatchNewListPager(req *http.Request) (*h
 	}
 	newListPager := m.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/billingProfiles/(?P<billingProfileId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/markupRules`
+		const regexStr = `/providers/Microsoft\.Billing/billingAccounts/(?P<billingAccountId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/billingProfiles/(?P<billingProfileId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.CostManagement/markupRules`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {

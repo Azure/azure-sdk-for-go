@@ -1,6 +1,6 @@
 # Release History
 
-## 3.1.0 (2026-08-21)
+## 3.1.0 (2026-11-09)
 ### Features Added
 
 - New value `ScopeManagementGroup` added to enum type `Scope`

@@ -65,7 +65,8 @@ func (client *QueryClient) Usage(ctx context.Context, scope string, parameters Q
 	if err != nil {
 		return QueryClientUsageResponse{}, err
 	}
-	return client.usageHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.usageHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // usageCreateRequest creates the Usage request.
@@ -125,7 +126,8 @@ func (client *QueryClient) UsageByExternalCloudProviderType(ctx context.Context,
 	if err != nil {
 		return QueryClientUsageByExternalCloudProviderTypeResponse{}, err
 	}
-	return client.usageByExternalCloudProviderTypeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.usageByExternalCloudProviderTypeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // usageByExternalCloudProviderTypeCreateRequest creates the UsageByExternalCloudProviderType request.

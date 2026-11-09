@@ -58,7 +58,8 @@ func (client *CostAllocationRulesClient) CheckNameAvailability(ctx context.Conte
 	if err != nil {
 		return CostAllocationRulesClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -118,7 +119,8 @@ func (client *CostAllocationRulesClient) CreateOrUpdate(ctx context.Context, bil
 	if err != nil {
 		return CostAllocationRulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -181,7 +183,8 @@ func (client *CostAllocationRulesClient) Delete(ctx context.Context, billingAcco
 		return CostAllocationRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return CostAllocationRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CostAllocationRulesClientDeleteResponse{}, err
 	}
 	return CostAllocationRulesClientDeleteResponse{}, nil
 }
@@ -227,7 +230,8 @@ func (client *CostAllocationRulesClient) Get(ctx context.Context, billingAccount
 	if err != nil {
 		return CostAllocationRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

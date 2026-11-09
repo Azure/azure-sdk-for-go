@@ -60,7 +60,8 @@ func (client *MarkupRulesClient) CreateOrUpdate(ctx context.Context, billingAcco
 	if err != nil {
 		return MarkupRulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -126,7 +127,8 @@ func (client *MarkupRulesClient) Delete(ctx context.Context, billingAccountID st
 		return MarkupRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return MarkupRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return MarkupRulesClientDeleteResponse{}, err
 	}
 	return MarkupRulesClientDeleteResponse{}, nil
 }
@@ -176,7 +178,8 @@ func (client *MarkupRulesClient) Get(ctx context.Context, billingAccountID strin
 	if err != nil {
 		return MarkupRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -57,7 +57,8 @@ func (client *ScheduledActionsClient) CheckNameAvailability(ctx context.Context,
 	if err != nil {
 		return ScheduledActionsClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -119,7 +120,8 @@ func (client *ScheduledActionsClient) CheckNameAvailabilityByScope(ctx context.C
 	if err != nil {
 		return ScheduledActionsClientCheckNameAvailabilityByScopeResponse{}, err
 	}
-	return client.checkNameAvailabilityByScopeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityByScopeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityByScopeCreateRequest creates the CheckNameAvailabilityByScope request.
@@ -176,7 +178,8 @@ func (client *ScheduledActionsClient) CreateOrUpdate(ctx context.Context, name s
 	if err != nil {
 		return ScheduledActionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -237,7 +240,8 @@ func (client *ScheduledActionsClient) CreateOrUpdateByScope(ctx context.Context,
 	if err != nil {
 		return ScheduledActionsClientCreateOrUpdateByScopeResponse{}, err
 	}
-	return client.createOrUpdateByScopeHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateByScopeHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateByScopeCreateRequest creates the CreateOrUpdateByScope request.
@@ -300,7 +304,8 @@ func (client *ScheduledActionsClient) Delete(ctx context.Context, name string, o
 		return ScheduledActionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ScheduledActionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ScheduledActionsClientDeleteResponse{}, err
 	}
 	return ScheduledActionsClientDeleteResponse{}, nil
 }
@@ -343,7 +348,8 @@ func (client *ScheduledActionsClient) DeleteByScope(ctx context.Context, scope s
 		return ScheduledActionsClientDeleteByScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ScheduledActionsClientDeleteByScopeResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ScheduledActionsClientDeleteByScopeResponse{}, err
 	}
 	return ScheduledActionsClientDeleteByScopeResponse{}, nil
 }
@@ -387,7 +393,8 @@ func (client *ScheduledActionsClient) Get(ctx context.Context, name string, opti
 	if err != nil {
 		return ScheduledActionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -440,7 +447,8 @@ func (client *ScheduledActionsClient) GetByScope(ctx context.Context, scope stri
 	if err != nil {
 		return ScheduledActionsClientGetByScopeResponse{}, err
 	}
-	return client.getByScopeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByScopeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByScopeCreateRequest creates the GetByScope request.
@@ -473,72 +481,6 @@ func (client *ScheduledActionsClient) getByScopeHandleResponse(resp *http.Respon
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduledAction); err != nil {
 		return ScheduledActionsClientGetByScopeResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - List all private scheduled actions.
-//   - options - ScheduledActionsClientListOptions contains the optional parameters for the ScheduledActionsClient.NewListPager
-//     method.
-func (client *ScheduledActionsClient) NewListPager(options *ScheduledActionsClientListOptions) *runtime.Pager[ScheduledActionsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ScheduledActionsClientListResponse]{
-		More: func(page ScheduledActionsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ScheduledActionsClientListResponse) (ScheduledActionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScheduledActionsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return ScheduledActionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return ScheduledActionsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ScheduledActionsClient) listCreateRequest(ctx context.Context, nextLink string, options *ScheduledActionsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/providers/Microsoft.CostManagement/scheduledActions"
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		reqQP.Set("api-version", version20260601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ScheduledActionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ScheduledActionsClientListResponse, error) {
-	result := ScheduledActionsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduledActionListResult); err != nil {
-		return ScheduledActionsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -614,6 +556,72 @@ func (client *ScheduledActionsClient) listByScopeHandleResponse(resp *http.Respo
 	return result, nil
 }
 
+// NewListPager - List all private scheduled actions.
+//   - options - ScheduledActionsClientListOptions contains the optional parameters for the ScheduledActionsClient.NewListPager
+//     method.
+func (client *ScheduledActionsClient) NewListPager(options *ScheduledActionsClientListOptions) *runtime.Pager[ScheduledActionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ScheduledActionsClientListResponse]{
+		More: func(page ScheduledActionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ScheduledActionsClientListResponse) (ScheduledActionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScheduledActionsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ScheduledActionsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ScheduledActionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ScheduledActionsClient) listCreateRequest(ctx context.Context, nextLink string, options *ScheduledActionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.CostManagement/scheduledActions"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ScheduledActionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ScheduledActionsClientListResponse, error) {
+	result := ScheduledActionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ScheduledActionListResult); err != nil {
+		return ScheduledActionsClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // Run - Processes a private scheduled action.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - name - Scheduled action name.
@@ -633,7 +641,8 @@ func (client *ScheduledActionsClient) Run(ctx context.Context, name string, opti
 		return ScheduledActionsClientRunResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ScheduledActionsClientRunResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ScheduledActionsClientRunResponse{}, err
 	}
 	return ScheduledActionsClientRunResponse{}, nil
 }
@@ -676,7 +685,8 @@ func (client *ScheduledActionsClient) RunByScope(ctx context.Context, scope stri
 		return ScheduledActionsClientRunByScopeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ScheduledActionsClientRunByScopeResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ScheduledActionsClientRunByScopeResponse{}, err
 	}
 	return ScheduledActionsClientRunByScopeResponse{}, nil
 }

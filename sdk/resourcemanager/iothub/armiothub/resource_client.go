@@ -92,7 +92,8 @@ func (client *ResourceClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -173,7 +174,8 @@ func (client *ResourceClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -249,7 +251,8 @@ func (client *ResourceClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -305,7 +308,8 @@ func (client *ResourceClient) CheckNameAvailability(ctx context.Context, operati
 	if err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -367,7 +371,8 @@ func (client *ResourceClient) CreateEventHubConsumerGroup(ctx context.Context, r
 	if err != nil {
 		return ResourceClientCreateEventHubConsumerGroupResponse{}, err
 	}
-	return client.createEventHubConsumerGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createEventHubConsumerGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createEventHubConsumerGroupCreateRequest creates the CreateEventHubConsumerGroup request.
@@ -445,7 +450,8 @@ func (client *ResourceClient) DeleteEventHubConsumerGroup(ctx context.Context, r
 		return ResourceClientDeleteEventHubConsumerGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ResourceClientDeleteEventHubConsumerGroupResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ResourceClientDeleteEventHubConsumerGroupResponse{}, err
 	}
 	return ResourceClientDeleteEventHubConsumerGroupResponse{}, nil
 }
@@ -507,7 +513,8 @@ func (client *ResourceClient) ExportDevices(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ResourceClientExportDevicesResponse{}, err
 	}
-	return client.exportDevicesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.exportDevicesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // exportDevicesCreateRequest creates the ExportDevices request.
@@ -573,7 +580,8 @@ func (client *ResourceClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ResourceClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -638,7 +646,8 @@ func (client *ResourceClient) GetEventHubConsumerGroup(ctx context.Context, reso
 	if err != nil {
 		return ResourceClientGetEventHubConsumerGroupResponse{}, err
 	}
-	return client.getEventHubConsumerGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getEventHubConsumerGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getEventHubConsumerGroupCreateRequest creates the GetEventHubConsumerGroup request.
@@ -709,7 +718,8 @@ func (client *ResourceClient) GetJob(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ResourceClientGetJobResponse{}, err
 	}
-	return client.getJobHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getJobHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getJobCreateRequest creates the GetJob request.
@@ -777,7 +787,8 @@ func (client *ResourceClient) GetKeysForKeyName(ctx context.Context, resourceGro
 	if err != nil {
 		return ResourceClientGetKeysForKeyNameResponse{}, err
 	}
-	return client.getKeysForKeyNameHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getKeysForKeyNameHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getKeysForKeyNameCreateRequest creates the GetKeysForKeyName request.
@@ -842,7 +853,8 @@ func (client *ResourceClient) GetStats(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ResourceClientGetStatsResponse{}, err
 	}
-	return client.getStatsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getStatsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getStatsCreateRequest creates the GetStats request.
@@ -906,7 +918,8 @@ func (client *ResourceClient) ImportDevices(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ResourceClientImportDevicesResponse{}, err
 	}
-	return client.importDevicesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.importDevicesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // importDevicesCreateRequest creates the ImportDevices request.
@@ -1591,7 +1604,8 @@ func (client *ResourceClient) TestAllRoutes(ctx context.Context, iotHubName stri
 	if err != nil {
 		return ResourceClientTestAllRoutesResponse{}, err
 	}
-	return client.testAllRoutesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.testAllRoutesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // testAllRoutesCreateRequest creates the TestAllRoutes request.
@@ -1656,7 +1670,8 @@ func (client *ResourceClient) TestRoute(ctx context.Context, iotHubName string, 
 	if err != nil {
 		return ResourceClientTestRouteResponse{}, err
 	}
-	return client.testRouteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.testRouteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // testRouteCreateRequest creates the TestRoute request.

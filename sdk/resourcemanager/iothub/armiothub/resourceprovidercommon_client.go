@@ -64,7 +64,8 @@ func (client *ResourceProviderCommonClient) GetSubscriptionQuota(ctx context.Con
 	if err != nil {
 		return ResourceProviderCommonClientGetSubscriptionQuotaResponse{}, err
 	}
-	return client.getSubscriptionQuotaHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSubscriptionQuotaHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSubscriptionQuotaCreateRequest creates the GetSubscriptionQuota request.

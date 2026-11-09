@@ -63,7 +63,8 @@ func (client *SchemaClient) Get(ctx context.Context, resourceGroupName string, w
 	if err != nil {
 		return SchemaClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

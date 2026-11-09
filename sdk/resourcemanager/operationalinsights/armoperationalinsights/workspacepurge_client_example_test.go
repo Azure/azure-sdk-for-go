@@ -13,6 +13,33 @@ import (
 	"time"
 )
 
+// Generated from example definition: 2026-03-01/WorkspacesPurgeLakeData.json
+func ExampleWorkspacePurgeClient_BeginPurgeLakeData() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacePurgeClient().BeginPurgeLakeData(ctx, "OIAutoRest5123", "aztest5048", armoperationalinsights.WorkspacePurgeLakeDataBody{
+		Table: to.Ptr("AuxiliaryLogs_CL"),
+		TimeRange: &armoperationalinsights.WorkspacePurgeLakeDataTimeRange{
+			StartTime: to.Ptr(time.Date(2026, time.March, 1, 0, 0, 0, 0, time.UTC)),
+			EndTime:   to.Ptr(time.Date(2026, time.March, 2, 0, 0, 0, 0, time.UTC)),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-03-01/WorkspacesPurgeLakeDataOperation.json
 func ExampleWorkspacePurgeClient_GetPurgeStatus_workspacePurgeLakeDataOperation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -112,32 +139,5 @@ func ExampleWorkspacePurgeClient_Purge_workspacePurgeResourceId() {
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-03-01/WorkspacesPurgeLakeData.json
-func ExampleWorkspacePurgeClient_BeginPurgeLakeData() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoperationalinsights.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkspacePurgeClient().BeginPurgeLakeData(ctx, "OIAutoRest5123", "aztest5048", armoperationalinsights.WorkspacePurgeLakeDataBody{
-		Table: to.Ptr("AuxiliaryLogs_CL"),
-		TimeRange: &armoperationalinsights.WorkspacePurgeLakeDataTimeRange{
-			StartTime: to.Ptr(time.Date(2026, time.March, 1, 0, 0, 0, 0, time.UTC)),
-			EndTime:   to.Ptr(time.Date(2026, time.March, 2, 0, 0, 0, 0, time.UTC)),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }

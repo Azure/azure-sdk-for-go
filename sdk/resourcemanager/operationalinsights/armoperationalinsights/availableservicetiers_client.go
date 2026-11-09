@@ -64,7 +64,8 @@ func (client *AvailableServiceTiersClient) ListByWorkspace(ctx context.Context, 
 	if err != nil {
 		return AvailableServiceTiersClientListByWorkspaceResponse{}, err
 	}
-	return client.listByWorkspaceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByWorkspaceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.

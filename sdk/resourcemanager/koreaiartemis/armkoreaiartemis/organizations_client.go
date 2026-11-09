@@ -85,7 +85,8 @@ func (client *OrganizationsClient) create(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -164,7 +165,8 @@ func (client *OrganizationsClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -235,7 +237,8 @@ func (client *OrganizationsClient) update(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -289,7 +292,8 @@ func (client *OrganizationsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return OrganizationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -353,7 +357,8 @@ func (client *OrganizationsClient) ListWorkspaces(ctx context.Context, resourceG
 	if err != nil {
 		return OrganizationsClientListWorkspacesResponse{}, err
 	}
-	return client.listWorkspacesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listWorkspacesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listWorkspacesCreateRequest creates the ListWorkspaces request.

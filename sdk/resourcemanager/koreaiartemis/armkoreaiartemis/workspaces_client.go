@@ -86,7 +86,8 @@ func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -165,7 +166,8 @@ func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -245,7 +247,8 @@ func (client *WorkspacesClient) linkSaaS(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -303,7 +306,8 @@ func (client *WorkspacesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WorkspacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -368,7 +372,8 @@ func (client *WorkspacesClient) GetDetails(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return WorkspacesClientGetDetailsResponse{}, err
 	}
-	return client.getDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDetailsCreateRequest creates the GetDetails request.
@@ -434,7 +439,8 @@ func (client *WorkspacesClient) ListLinkedSaaS(ctx context.Context, resourceGrou
 	if err != nil {
 		return WorkspacesClientListLinkedSaaSResponse{}, err
 	}
-	return client.listLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listLinkedSaaSCreateRequest creates the ListLinkedSaaS request.

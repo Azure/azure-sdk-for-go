@@ -29,6 +29,10 @@ type VirtualEndpointsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, serverName string, virtualEndpointName string, options *armpostgresqlflexibleservers.VirtualEndpointsClientBeginDeleteOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method VirtualEndpointsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, virtualEndpointName string, parameters armpostgresqlflexibleservers.VirtualEndpointResourceForPatch, options *armpostgresqlflexibleservers.VirtualEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method VirtualEndpointsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, serverName string, virtualEndpointName string, options *armpostgresqlflexibleservers.VirtualEndpointsClientGetOptions) (resp azfake.Responder[armpostgresqlflexibleservers.VirtualEndpointsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type VirtualEndpointsServer struct {
 	// NewListByServerPager is the fake for method VirtualEndpointsClient.NewListByServerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByServerPager func(resourceGroupName string, serverName string, options *armpostgresqlflexibleservers.VirtualEndpointsClientListByServerOptions) (resp azfake.PagerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientListByServerResponse])
-
-	// BeginUpdate is the fake for method VirtualEndpointsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, serverName string, virtualEndpointName string, parameters armpostgresqlflexibleservers.VirtualEndpointResourceForPatch, options *armpostgresqlflexibleservers.VirtualEndpointsClientBeginUpdateOptions) (resp azfake.PollerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewVirtualEndpointsServerTransport creates a new instance of VirtualEndpointsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewVirtualEndpointsServerTransport(srv *VirtualEndpointsServer) *VirtualEnd
 		srv:                  srv,
 		beginCreate:          newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientCreateResponse]](),
 		beginDelete:          newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientDeleteResponse]](),
-		newListByServerPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientListByServerResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientUpdateResponse]](),
+		newListByServerPager: newTracker[azfake.PagerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientListByServerResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type VirtualEndpointsServerTransport struct {
 	srv                  *VirtualEndpointsServer
 	beginCreate          *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientCreateResponse]]
 	beginDelete          *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientDeleteResponse]]
-	newListByServerPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientListByServerResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientUpdateResponse]]
+	newListByServerPager *tracker[azfake.PagerResponder[armpostgresqlflexibleservers.VirtualEndpointsClientListByServerResponse]]
 }
 
 // Do implements the policy.Transporter interface for VirtualEndpointsServerTransport.
@@ -90,12 +90,12 @@ func (v *VirtualEndpointsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = v.dispatchBeginCreate(req)
 			case "VirtualEndpointsClient.BeginDelete":
 				res.resp, res.err = v.dispatchBeginDelete(req)
+			case "VirtualEndpointsClient.BeginUpdate":
+				res.resp, res.err = v.dispatchBeginUpdate(req)
 			case "VirtualEndpointsClient.Get":
 				res.resp, res.err = v.dispatchGet(req)
 			case "VirtualEndpointsClient.NewListByServerPager":
 				res.resp, res.err = v.dispatchNewListByServerPager(req)
-			case "VirtualEndpointsClient.BeginUpdate":
-				res.resp, res.err = v.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (v *VirtualEndpointsServerTransport) dispatchBeginDelete(req *http.Request)
 	return resp, nil
 }
 
+func (v *VirtualEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if v.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := v.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualendpoints/(?P<virtualEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.VirtualEndpointResourceForPatch](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
+		if err != nil {
+			return nil, err
+		}
+		virtualEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualEndpointName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, virtualEndpointNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		v.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		v.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		v.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (v *VirtualEndpointsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (v *VirtualEndpointsServerTransport) dispatchNewListByServerPager(req *http
 	if !server.PagerResponderMore(newListByServerPager) {
 		v.newListByServerPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (v *VirtualEndpointsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if v.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := v.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DBforPostgreSQL/flexibleServers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualendpoints/(?P<virtualEndpointName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armpostgresqlflexibleservers.VirtualEndpointResourceForPatch](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		serverNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("serverName")])
-		if err != nil {
-			return nil, err
-		}
-		virtualEndpointNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("virtualEndpointName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := v.srv.BeginUpdate(req.Context(), resourceGroupNameParam, serverNameParam, virtualEndpointNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		v.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		v.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		v.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

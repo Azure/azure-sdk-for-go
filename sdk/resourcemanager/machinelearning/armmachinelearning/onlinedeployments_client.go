@@ -93,7 +93,8 @@ func (client *OnlineDeploymentsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -148,7 +149,7 @@ func (client *OnlineDeploymentsClient) createOrUpdateCreateRequest(ctx context.C
 //     method.
 func (client *OnlineDeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, options *OnlineDeploymentsClientBeginDeleteOptions) (*runtime.Poller[OnlineDeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, endpointName, deploymentName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, endpointName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -163,11 +164,11 @@ func (client *OnlineDeploymentsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// delete - Delete Inference Endpoint Deployment (asynchronous).
+// deleteOperation - Delete Inference Endpoint Deployment (asynchronous).
 //
 // Delete Inference Endpoint Deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *OnlineDeploymentsClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, options *OnlineDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *OnlineDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, options *OnlineDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OnlineDeploymentsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -182,7 +183,8 @@ func (client *OnlineDeploymentsClient) delete(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -267,7 +269,8 @@ func (client *OnlineDeploymentsClient) update(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -333,7 +336,8 @@ func (client *OnlineDeploymentsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return OnlineDeploymentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -407,7 +411,8 @@ func (client *OnlineDeploymentsClient) GetLogs(ctx context.Context, resourceGrou
 	if err != nil {
 		return OnlineDeploymentsClientGetLogsResponse{}, err
 	}
-	return client.getLogsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLogsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLogsCreateRequest creates the GetLogs request.

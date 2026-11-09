@@ -91,7 +91,8 @@ func (client *RegistryModelContainersClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,7 @@ func (client *RegistryModelContainersClient) createOrUpdateCreateRequest(ctx con
 //     method.
 func (client *RegistryModelContainersClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, modelName string, options *RegistryModelContainersClientBeginDeleteOptions) (*runtime.Poller[RegistryModelContainersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, registryName, modelName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, modelName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +157,11 @@ func (client *RegistryModelContainersClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// delete - Delete container.
+// deleteOperation - Delete container.
 //
 // Delete container.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RegistryModelContainersClient) delete(ctx context.Context, resourceGroupName string, registryName string, modelName string, options *RegistryModelContainersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RegistryModelContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, modelName string, options *RegistryModelContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistryModelContainersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +176,8 @@ func (client *RegistryModelContainersClient) delete(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -232,7 +234,8 @@ func (client *RegistryModelContainersClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return RegistryModelContainersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

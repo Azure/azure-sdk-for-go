@@ -92,7 +92,8 @@ func (client *FeaturesetContainersClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -142,7 +143,7 @@ func (client *FeaturesetContainersClient) createOrUpdateCreateRequest(ctx contex
 //     method.
 func (client *FeaturesetContainersClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *FeaturesetContainersClientBeginDeleteOptions) (*runtime.Poller[FeaturesetContainersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, name, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, name, options)
 		if err != nil {
 			return nil, err
 		}
@@ -157,11 +158,11 @@ func (client *FeaturesetContainersClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// delete - Delete container.
+// deleteOperation - Delete container.
 //
 // Delete container.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FeaturesetContainersClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *FeaturesetContainersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *FeaturesetContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *FeaturesetContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FeaturesetContainersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -176,7 +177,8 @@ func (client *FeaturesetContainersClient) delete(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -233,7 +235,8 @@ func (client *FeaturesetContainersClient) GetEntity(ctx context.Context, resourc
 	if err != nil {
 		return FeaturesetContainersClientGetEntityResponse{}, err
 	}
-	return client.getEntityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getEntityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getEntityCreateRequest creates the GetEntity request.

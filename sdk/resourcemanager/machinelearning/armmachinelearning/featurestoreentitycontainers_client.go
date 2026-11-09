@@ -92,7 +92,8 @@ func (client *FeaturestoreEntityContainersClient) createOrUpdate(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -142,7 +143,7 @@ func (client *FeaturestoreEntityContainersClient) createOrUpdateCreateRequest(ct
 //     method.
 func (client *FeaturestoreEntityContainersClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *FeaturestoreEntityContainersClientBeginDeleteOptions) (*runtime.Poller[FeaturestoreEntityContainersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, name, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, name, options)
 		if err != nil {
 			return nil, err
 		}
@@ -157,11 +158,11 @@ func (client *FeaturestoreEntityContainersClient) BeginDelete(ctx context.Contex
 	}
 }
 
-// delete - Delete container.
+// deleteOperation - Delete container.
 //
 // Delete container.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FeaturestoreEntityContainersClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *FeaturestoreEntityContainersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *FeaturestoreEntityContainersClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *FeaturestoreEntityContainersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FeaturestoreEntityContainersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -176,7 +177,8 @@ func (client *FeaturestoreEntityContainersClient) delete(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -233,7 +235,8 @@ func (client *FeaturestoreEntityContainersClient) GetEntity(ctx context.Context,
 	if err != nil {
 		return FeaturestoreEntityContainersClientGetEntityResponse{}, err
 	}
-	return client.getEntityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getEntityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getEntityCreateRequest creates the GetEntity request.

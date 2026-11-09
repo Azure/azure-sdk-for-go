@@ -93,7 +93,8 @@ func (client *RegistryComponentVersionsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -148,7 +149,7 @@ func (client *RegistryComponentVersionsClient) createOrUpdateCreateRequest(ctx c
 //     method.
 func (client *RegistryComponentVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, componentName string, version string, options *RegistryComponentVersionsClientBeginDeleteOptions) (*runtime.Poller[RegistryComponentVersionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, registryName, componentName, version, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, componentName, version, options)
 		if err != nil {
 			return nil, err
 		}
@@ -163,11 +164,11 @@ func (client *RegistryComponentVersionsClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// delete - Delete version.
+// deleteOperation - Delete version.
 //
 // Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RegistryComponentVersionsClient) delete(ctx context.Context, resourceGroupName string, registryName string, componentName string, version string, options *RegistryComponentVersionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RegistryComponentVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, componentName string, version string, options *RegistryComponentVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistryComponentVersionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -182,7 +183,8 @@ func (client *RegistryComponentVersionsClient) delete(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -244,7 +246,8 @@ func (client *RegistryComponentVersionsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return RegistryComponentVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

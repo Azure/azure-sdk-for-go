@@ -90,7 +90,8 @@ func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -134,7 +135,7 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 //   - options - WorkspacesClientBeginDeleteOptions contains the optional parameters for the WorkspacesClient.BeginDelete method.
 func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*runtime.Poller[WorkspacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,11 +150,11 @@ func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// delete - Deletes a machine learning workspace.
+// deleteOperation - Deletes a machine learning workspace.
 //
 // Deletes a machine learning workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkspacesClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WorkspacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -168,7 +169,8 @@ func (client *WorkspacesClient) delete(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -245,7 +247,8 @@ func (client *WorkspacesClient) diagnose(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -327,7 +330,8 @@ func (client *WorkspacesClient) prepareNotebook(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -406,7 +410,8 @@ func (client *WorkspacesClient) resyncKeys(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -480,7 +485,8 @@ func (client *WorkspacesClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -536,7 +542,8 @@ func (client *WorkspacesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WorkspacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -600,7 +607,8 @@ func (client *WorkspacesClient) ListKeys(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WorkspacesClientListKeysResponse{}, err
 	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -663,7 +671,8 @@ func (client *WorkspacesClient) ListNotebookAccessToken(ctx context.Context, res
 	if err != nil {
 		return WorkspacesClientListNotebookAccessTokenResponse{}, err
 	}
-	return client.listNotebookAccessTokenHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listNotebookAccessTokenHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listNotebookAccessTokenCreateRequest creates the ListNotebookAccessToken request.
@@ -726,7 +735,8 @@ func (client *WorkspacesClient) ListNotebookKeys(ctx context.Context, resourceGr
 	if err != nil {
 		return WorkspacesClientListNotebookKeysResponse{}, err
 	}
-	return client.listNotebookKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listNotebookKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listNotebookKeysCreateRequest creates the ListNotebookKeys request.
@@ -790,7 +800,8 @@ func (client *WorkspacesClient) ListOutboundNetworkDependenciesEndpoints(ctx con
 	if err != nil {
 		return WorkspacesClientListOutboundNetworkDependenciesEndpointsResponse{}, err
 	}
-	return client.listOutboundNetworkDependenciesEndpointsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listOutboundNetworkDependenciesEndpointsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listOutboundNetworkDependenciesEndpointsCreateRequest creates the ListOutboundNetworkDependenciesEndpoints request.
@@ -853,7 +864,8 @@ func (client *WorkspacesClient) ListStorageAccountKeys(ctx context.Context, reso
 	if err != nil {
 		return WorkspacesClientListStorageAccountKeysResponse{}, err
 	}
-	return client.listStorageAccountKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listStorageAccountKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listStorageAccountKeysCreateRequest creates the ListStorageAccountKeys request.

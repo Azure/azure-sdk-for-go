@@ -93,7 +93,8 @@ func (client *RegistryModelVersionsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -148,7 +149,7 @@ func (client *RegistryModelVersionsClient) createOrUpdateCreateRequest(ctx conte
 //     method.
 func (client *RegistryModelVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, modelName string, version string, options *RegistryModelVersionsClientBeginDeleteOptions) (*runtime.Poller[RegistryModelVersionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, registryName, modelName, version, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, modelName, version, options)
 		if err != nil {
 			return nil, err
 		}
@@ -163,11 +164,11 @@ func (client *RegistryModelVersionsClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// delete - Delete version.
+// deleteOperation - Delete version.
 //
 // Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RegistryModelVersionsClient) delete(ctx context.Context, resourceGroupName string, registryName string, modelName string, version string, options *RegistryModelVersionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RegistryModelVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, modelName string, version string, options *RegistryModelVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistryModelVersionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -182,7 +183,8 @@ func (client *RegistryModelVersionsClient) delete(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -245,7 +247,8 @@ func (client *RegistryModelVersionsClient) CreateOrGetStartPendingUpload(ctx con
 	if err != nil {
 		return RegistryModelVersionsClientCreateOrGetStartPendingUploadResponse{}, err
 	}
-	return client.createOrGetStartPendingUploadHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrGetStartPendingUploadHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrGetStartPendingUploadCreateRequest creates the CreateOrGetStartPendingUpload request.
@@ -322,7 +325,8 @@ func (client *RegistryModelVersionsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return RegistryModelVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

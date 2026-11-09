@@ -93,7 +93,8 @@ func (client *BatchDeploymentsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -148,7 +149,7 @@ func (client *BatchDeploymentsClient) createOrUpdateCreateRequest(ctx context.Co
 //     method.
 func (client *BatchDeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, options *BatchDeploymentsClientBeginDeleteOptions) (*runtime.Poller[BatchDeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, endpointName, deploymentName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, endpointName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -163,11 +164,11 @@ func (client *BatchDeploymentsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// delete - Delete Batch Inference deployment (asynchronous).
+// deleteOperation - Delete Batch Inference deployment (asynchronous).
 //
 // Delete Batch Inference deployment (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *BatchDeploymentsClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, options *BatchDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *BatchDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, options *BatchDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BatchDeploymentsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -182,7 +183,8 @@ func (client *BatchDeploymentsClient) delete(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -267,7 +269,8 @@ func (client *BatchDeploymentsClient) update(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -333,7 +336,8 @@ func (client *BatchDeploymentsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return BatchDeploymentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

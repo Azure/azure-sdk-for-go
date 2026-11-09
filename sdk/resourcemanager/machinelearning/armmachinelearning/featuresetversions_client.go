@@ -92,7 +92,8 @@ func (client *FeaturesetVersionsClient) backfill(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -183,7 +184,8 @@ func (client *FeaturesetVersionsClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -238,7 +240,7 @@ func (client *FeaturesetVersionsClient) createOrUpdateCreateRequest(ctx context.
 //     method.
 func (client *FeaturesetVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, options *FeaturesetVersionsClientBeginDeleteOptions) (*runtime.Poller[FeaturesetVersionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, name, version, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, name, version, options)
 		if err != nil {
 			return nil, err
 		}
@@ -253,11 +255,11 @@ func (client *FeaturesetVersionsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Delete version.
+// deleteOperation - Delete version.
 //
 // Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FeaturesetVersionsClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, options *FeaturesetVersionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *FeaturesetVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, options *FeaturesetVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FeaturesetVersionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -272,7 +274,8 @@ func (client *FeaturesetVersionsClient) delete(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -333,7 +336,8 @@ func (client *FeaturesetVersionsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return FeaturesetVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

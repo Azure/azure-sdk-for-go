@@ -69,7 +69,8 @@ func (client *DatastoresClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return DatastoresClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -144,7 +145,8 @@ func (client *DatastoresClient) Delete(ctx context.Context, resourceGroupName st
 		return DatastoresClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DatastoresClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DatastoresClientDeleteResponse{}, err
 	}
 	return DatastoresClientDeleteResponse{}, nil
 }
@@ -200,7 +202,8 @@ func (client *DatastoresClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return DatastoresClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -267,7 +270,8 @@ func (client *DatastoresClient) ListSecrets(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return DatastoresClientListSecretsResponse{}, err
 	}
-	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSecretsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.

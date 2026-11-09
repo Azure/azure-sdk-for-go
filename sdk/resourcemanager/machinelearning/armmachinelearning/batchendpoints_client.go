@@ -92,7 +92,8 @@ func (client *BatchEndpointsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -142,7 +143,7 @@ func (client *BatchEndpointsClient) createOrUpdateCreateRequest(ctx context.Cont
 //     method.
 func (client *BatchEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, options *BatchEndpointsClientBeginDeleteOptions) (*runtime.Poller[BatchEndpointsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, endpointName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, endpointName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -157,11 +158,11 @@ func (client *BatchEndpointsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// delete - Delete Batch Inference Endpoint (asynchronous).
+// deleteOperation - Delete Batch Inference Endpoint (asynchronous).
 //
 // Delete Batch Inference Endpoint (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *BatchEndpointsClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, options *BatchEndpointsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *BatchEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, options *BatchEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "BatchEndpointsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -176,7 +177,8 @@ func (client *BatchEndpointsClient) delete(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -256,7 +258,8 @@ func (client *BatchEndpointsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -317,7 +320,8 @@ func (client *BatchEndpointsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return BatchEndpointsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -384,7 +388,8 @@ func (client *BatchEndpointsClient) ListKeys(ctx context.Context, resourceGroupN
 	if err != nil {
 		return BatchEndpointsClientListKeysResponse{}, err
 	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysCreateRequest creates the ListKeys request.

@@ -92,7 +92,8 @@ func (client *OnlineEndpointsClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -142,7 +143,7 @@ func (client *OnlineEndpointsClient) createOrUpdateCreateRequest(ctx context.Con
 //     method.
 func (client *OnlineEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, options *OnlineEndpointsClientBeginDeleteOptions) (*runtime.Poller[OnlineEndpointsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, endpointName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, endpointName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -157,11 +158,11 @@ func (client *OnlineEndpointsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// delete - Delete Online Endpoint (asynchronous).
+// deleteOperation - Delete Online Endpoint (asynchronous).
 //
 // Delete Online Endpoint (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *OnlineEndpointsClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, options *OnlineEndpointsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *OnlineEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, options *OnlineEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "OnlineEndpointsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -176,7 +177,8 @@ func (client *OnlineEndpointsClient) delete(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -256,7 +258,8 @@ func (client *OnlineEndpointsClient) regenerateKeys(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -340,7 +343,8 @@ func (client *OnlineEndpointsClient) update(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -401,7 +405,8 @@ func (client *OnlineEndpointsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return OnlineEndpointsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -469,7 +474,8 @@ func (client *OnlineEndpointsClient) GetToken(ctx context.Context, resourceGroup
 	if err != nil {
 		return OnlineEndpointsClientGetTokenResponse{}, err
 	}
-	return client.getTokenHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTokenHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTokenCreateRequest creates the GetToken request.
@@ -537,7 +543,8 @@ func (client *OnlineEndpointsClient) ListKeys(ctx context.Context, resourceGroup
 	if err != nil {
 		return OnlineEndpointsClientListKeysResponse{}, err
 	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysCreateRequest creates the ListKeys request.

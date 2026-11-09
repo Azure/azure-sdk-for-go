@@ -91,7 +91,8 @@ func (client *MarketplaceSubscriptionsClient) createOrUpdate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,7 @@ func (client *MarketplaceSubscriptionsClient) createOrUpdateCreateRequest(ctx co
 //     method.
 func (client *MarketplaceSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *MarketplaceSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[MarketplaceSubscriptionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, name, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, name, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +157,11 @@ func (client *MarketplaceSubscriptionsClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// delete - Delete Marketplace Subscription (asynchronous).
+// deleteOperation - Delete Marketplace Subscription (asynchronous).
 //
 // Delete Marketplace Subscription (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *MarketplaceSubscriptionsClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *MarketplaceSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *MarketplaceSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *MarketplaceSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "MarketplaceSubscriptionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +176,8 @@ func (client *MarketplaceSubscriptionsClient) delete(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -232,7 +234,8 @@ func (client *MarketplaceSubscriptionsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return MarketplaceSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

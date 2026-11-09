@@ -69,7 +69,8 @@ func (client *WorkspaceConnectionsClient) Create(ctx context.Context, resourceGr
 	if err != nil {
 		return WorkspaceConnectionsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -142,7 +143,8 @@ func (client *WorkspaceConnectionsClient) Delete(ctx context.Context, resourceGr
 		return WorkspaceConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WorkspaceConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WorkspaceConnectionsClientDeleteResponse{}, err
 	}
 	return WorkspaceConnectionsClientDeleteResponse{}, nil
 }
@@ -199,7 +201,8 @@ func (client *WorkspaceConnectionsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return WorkspaceConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -267,7 +270,8 @@ func (client *WorkspaceConnectionsClient) ListSecrets(ctx context.Context, resou
 	if err != nil {
 		return WorkspaceConnectionsClientListSecretsResponse{}, err
 	}
-	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSecretsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSecretsCreateRequest creates the ListSecrets request.
@@ -424,7 +428,8 @@ func (client *WorkspaceConnectionsClient) Update(ctx context.Context, resourceGr
 	if err != nil {
 		return WorkspaceConnectionsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

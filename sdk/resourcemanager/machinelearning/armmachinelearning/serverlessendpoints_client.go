@@ -91,7 +91,8 @@ func (client *ServerlessEndpointsClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,7 @@ func (client *ServerlessEndpointsClient) createOrUpdateCreateRequest(ctx context
 //     method.
 func (client *ServerlessEndpointsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ServerlessEndpointsClientBeginDeleteOptions) (*runtime.Poller[ServerlessEndpointsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, name, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, name, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +157,11 @@ func (client *ServerlessEndpointsClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// delete - Delete Serverless Endpoint (asynchronous).
+// deleteOperation - Delete Serverless Endpoint (asynchronous).
 //
 // Delete Serverless Endpoint (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ServerlessEndpointsClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ServerlessEndpointsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ServerlessEndpointsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *ServerlessEndpointsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServerlessEndpointsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +176,8 @@ func (client *ServerlessEndpointsClient) delete(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -255,7 +257,8 @@ func (client *ServerlessEndpointsClient) regenerateKeys(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -340,7 +343,8 @@ func (client *ServerlessEndpointsClient) update(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -401,7 +405,8 @@ func (client *ServerlessEndpointsClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ServerlessEndpointsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -469,7 +474,8 @@ func (client *ServerlessEndpointsClient) ListKeys(ctx context.Context, resourceG
 	if err != nil {
 		return ServerlessEndpointsClientListKeysResponse{}, err
 	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysCreateRequest creates the ListKeys request.

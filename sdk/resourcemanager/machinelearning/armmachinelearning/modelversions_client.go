@@ -92,7 +92,8 @@ func (client *ModelVersionsClient) publish(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -159,7 +160,8 @@ func (client *ModelVersionsClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return ModelVersionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -236,7 +238,8 @@ func (client *ModelVersionsClient) Delete(ctx context.Context, resourceGroupName
 		return ModelVersionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ModelVersionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ModelVersionsClientDeleteResponse{}, err
 	}
 	return ModelVersionsClientDeleteResponse{}, nil
 }
@@ -297,7 +300,8 @@ func (client *ModelVersionsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ModelVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

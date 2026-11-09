@@ -92,7 +92,8 @@ func (client *ComponentVersionsClient) publish(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -159,7 +160,8 @@ func (client *ComponentVersionsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return ComponentVersionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -237,7 +239,8 @@ func (client *ComponentVersionsClient) Delete(ctx context.Context, resourceGroup
 		return ComponentVersionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ComponentVersionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ComponentVersionsClientDeleteResponse{}, err
 	}
 	return ComponentVersionsClientDeleteResponse{}, nil
 }
@@ -298,7 +301,8 @@ func (client *ComponentVersionsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ComponentVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

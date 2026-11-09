@@ -92,7 +92,8 @@ func (client *CodeVersionsClient) publish(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -159,7 +160,8 @@ func (client *CodeVersionsClient) CreateOrGetStartPendingUpload(ctx context.Cont
 	if err != nil {
 		return CodeVersionsClientCreateOrGetStartPendingUploadResponse{}, err
 	}
-	return client.createOrGetStartPendingUploadHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrGetStartPendingUploadHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrGetStartPendingUploadCreateRequest creates the CreateOrGetStartPendingUpload request.
@@ -237,7 +239,8 @@ func (client *CodeVersionsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return CodeVersionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -314,7 +317,8 @@ func (client *CodeVersionsClient) Delete(ctx context.Context, resourceGroupName 
 		return CodeVersionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return CodeVersionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CodeVersionsClientDeleteResponse{}, err
 	}
 	return CodeVersionsClientDeleteResponse{}, nil
 }
@@ -375,7 +379,8 @@ func (client *CodeVersionsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return CodeVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

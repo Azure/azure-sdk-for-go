@@ -89,7 +89,8 @@ func (client *ComputeClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -138,7 +139,7 @@ func (client *ComputeClient) createOrUpdateCreateRequest(ctx context.Context, re
 //   - options - ComputeClientBeginDeleteOptions contains the optional parameters for the ComputeClient.BeginDelete method.
 func (client *ComputeClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeClientBeginDeleteOptions) (*runtime.Poller[ComputeClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, computeName, underlyingResourceAction, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, computeName, underlyingResourceAction, options)
 		if err != nil {
 			return nil, err
 		}
@@ -153,9 +154,9 @@ func (client *ComputeClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// delete - Deletes specified Machine Learning compute.
+// deleteOperation - Deletes specified Machine Learning compute.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ComputeClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ComputeClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction UnderlyingResourceAction, options *ComputeClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ComputeClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -170,7 +171,8 @@ func (client *ComputeClient) delete(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -245,7 +247,8 @@ func (client *ComputeClient) restart(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -319,7 +322,8 @@ func (client *ComputeClient) start(ctx context.Context, resourceGroupName string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -393,7 +397,8 @@ func (client *ComputeClient) stop(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -470,7 +475,8 @@ func (client *ComputeClient) update(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -530,7 +536,8 @@ func (client *ComputeClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return ComputeClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -595,7 +602,8 @@ func (client *ComputeClient) ListKeys(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ComputeClientListKeysResponse{}, err
 	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysCreateRequest creates the ListKeys request.

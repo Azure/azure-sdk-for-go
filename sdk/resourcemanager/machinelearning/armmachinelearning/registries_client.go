@@ -89,7 +89,8 @@ func (client *RegistriesClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -133,7 +134,7 @@ func (client *RegistriesClient) createOrUpdateCreateRequest(ctx context.Context,
 //   - options - RegistriesClientBeginDeleteOptions contains the optional parameters for the RegistriesClient.BeginDelete method.
 func (client *RegistriesClient) BeginDelete(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesClientBeginDeleteOptions) (*runtime.Poller[RegistriesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, registryName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, registryName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -148,11 +149,11 @@ func (client *RegistriesClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// delete - Delete registry
+// deleteOperation - Delete registry
 //
 // Delete registry
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RegistriesClient) delete(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RegistriesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, options *RegistriesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RegistriesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -167,7 +168,8 @@ func (client *RegistriesClient) delete(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -242,7 +244,8 @@ func (client *RegistriesClient) removeRegions(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -298,7 +301,8 @@ func (client *RegistriesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return RegistriesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -503,7 +507,8 @@ func (client *RegistriesClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RegistriesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

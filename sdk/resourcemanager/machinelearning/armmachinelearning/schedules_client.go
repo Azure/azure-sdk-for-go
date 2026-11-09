@@ -91,7 +91,8 @@ func (client *SchedulesClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -140,7 +141,7 @@ func (client *SchedulesClient) createOrUpdateCreateRequest(ctx context.Context, 
 //   - options - SchedulesClientBeginDeleteOptions contains the optional parameters for the SchedulesClient.BeginDelete method.
 func (client *SchedulesClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *SchedulesClientBeginDeleteOptions) (*runtime.Poller[SchedulesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, name, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, name, options)
 		if err != nil {
 			return nil, err
 		}
@@ -155,11 +156,11 @@ func (client *SchedulesClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// delete - Delete schedule.
+// deleteOperation - Delete schedule.
 //
 // Delete schedule.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SchedulesClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *SchedulesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SchedulesClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *SchedulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SchedulesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -174,7 +175,8 @@ func (client *SchedulesClient) delete(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -230,7 +232,8 @@ func (client *SchedulesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return SchedulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -88,7 +88,8 @@ func (client *JobsClient) cancel(ctx context.Context, resourceGroupName string, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -132,7 +133,7 @@ func (client *JobsClient) cancelCreateRequest(ctx context.Context, resourceGroup
 //   - options - JobsClientBeginDeleteOptions contains the optional parameters for the JobsClient.BeginDelete method.
 func (client *JobsClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *JobsClientBeginDeleteOptions) (*runtime.Poller[JobsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, id, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, id, options)
 		if err != nil {
 			return nil, err
 		}
@@ -147,11 +148,11 @@ func (client *JobsClient) BeginDelete(ctx context.Context, resourceGroupName str
 	}
 }
 
-// delete - Deletes a Job (asynchronous).
+// deleteOperation - Deletes a Job (asynchronous).
 //
 // Deletes a Job (asynchronous).
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *JobsClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *JobsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *JobsClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, id string, options *JobsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "JobsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -166,7 +167,8 @@ func (client *JobsClient) delete(ctx context.Context, resourceGroupName string, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -225,7 +227,8 @@ func (client *JobsClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return JobsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -296,7 +299,8 @@ func (client *JobsClient) Get(ctx context.Context, resourceGroupName string, wor
 	if err != nil {
 		return JobsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

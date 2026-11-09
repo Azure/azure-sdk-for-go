@@ -69,7 +69,8 @@ func (client *ModelContainersClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return ModelContainersClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -141,7 +142,8 @@ func (client *ModelContainersClient) Delete(ctx context.Context, resourceGroupNa
 		return ModelContainersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ModelContainersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ModelContainersClientDeleteResponse{}, err
 	}
 	return ModelContainersClientDeleteResponse{}, nil
 }
@@ -197,7 +199,8 @@ func (client *ModelContainersClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ModelContainersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

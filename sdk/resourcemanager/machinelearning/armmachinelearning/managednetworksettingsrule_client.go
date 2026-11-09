@@ -90,7 +90,8 @@ func (client *ManagedNetworkSettingsRuleClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -140,7 +141,7 @@ func (client *ManagedNetworkSettingsRuleClient) createOrUpdateCreateRequest(ctx 
 //     method.
 func (client *ManagedNetworkSettingsRuleClient) BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *ManagedNetworkSettingsRuleClientBeginDeleteOptions) (*runtime.Poller[ManagedNetworkSettingsRuleClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, workspaceName, ruleName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, workspaceName, ruleName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -155,11 +156,11 @@ func (client *ManagedNetworkSettingsRuleClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// delete - Deletes an outbound rule from the managed network of a machine learning workspace.
+// deleteOperation - Deletes an outbound rule from the managed network of a machine learning workspace.
 //
 // Deletes an outbound rule from the managed network of a machine learning workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedNetworkSettingsRuleClient) delete(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *ManagedNetworkSettingsRuleClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ManagedNetworkSettingsRuleClient) deleteOperation(ctx context.Context, resourceGroupName string, workspaceName string, ruleName string, options *ManagedNetworkSettingsRuleClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedNetworkSettingsRuleClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -174,7 +175,8 @@ func (client *ManagedNetworkSettingsRuleClient) delete(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -231,7 +233,8 @@ func (client *ManagedNetworkSettingsRuleClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return ManagedNetworkSettingsRuleClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

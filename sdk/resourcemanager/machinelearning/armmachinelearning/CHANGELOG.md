@@ -1,6 +1,6 @@
 # Release History
 
-## 5.0.0 (2026-10-09)
+## 5.0.0 (2026-11-09)
 ### Breaking Changes
 
 - Function `*PrivateEndpointConnectionsClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, body PrivateEndpointConnection, options *PrivateEndpointConnectionsClientCreateOrUpdateOptions)`

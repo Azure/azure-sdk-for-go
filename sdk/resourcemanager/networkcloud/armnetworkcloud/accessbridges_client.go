@@ -69,7 +69,7 @@ func (client *AccessBridgesClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create a new access bridge or update the properties of the existing access bridge.
+// createOrUpdate - Create a new access bridge or update the properties of the existing access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessBridgesClient) createOrUpdate(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridge AccessBridge, options *AccessBridgesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *AccessBridgesClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AccessBridgesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridge AccessBridge, _ *AccessBridgesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *AccessBridgesClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete the specified access bridge.
+// deleteOperation - Delete the specified access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessBridgesClient) deleteOperation(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, options *AccessBridgesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *AccessBridgesClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AccessBridgesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, options *AccessBridgesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}"
 	if client.subscriptionID == "" {
@@ -197,6 +199,91 @@ func (client *AccessBridgesClient) deleteCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
+// BeginUpdate - Update properties of the provided access bridge, or update tags associated with the access bridge. Properties
+// and tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accessBridgeName - The name of the access bridge.
+//   - accessBridgeUpdateParameters - The request body.
+//   - options - AccessBridgesClientBeginUpdateOptions contains the optional parameters for the AccessBridgesClient.BeginUpdate
+//     method.
+func (client *AccessBridgesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridgeUpdateParameters AccessBridgePatchParameters, options *AccessBridgesClientBeginUpdateOptions) (*runtime.Poller[AccessBridgesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, accessBridgeName, accessBridgeUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessBridgesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessBridgesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update properties of the provided access bridge, or update tags associated with the access bridge. Properties
+// and tag updates can be done independently.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccessBridgesClient) update(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridgeUpdateParameters AccessBridgePatchParameters, options *AccessBridgesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccessBridgesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, accessBridgeName, accessBridgeUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AccessBridgesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridgeUpdateParameters AccessBridgePatchParameters, options *AccessBridgesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accessBridgeName == "" {
+		return nil, errors.New("parameter accessBridgeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accessBridgeName}", url.PathEscape(string(accessBridgeName)))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, accessBridgeUpdateParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get the properties of the provided access bridge.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -216,7 +303,8 @@ func (client *AccessBridgesClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AccessBridgesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -406,88 +494,4 @@ func (client *AccessBridgesClient) listBySubscriptionHandleResponse(resp *http.R
 		return AccessBridgesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update properties of the provided access bridge, or update tags associated with the access bridge. Properties
-// and tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accessBridgeName - The name of the access bridge.
-//   - accessBridgeUpdateParameters - The request body.
-//   - options - AccessBridgesClientBeginUpdateOptions contains the optional parameters for the AccessBridgesClient.BeginUpdate
-//     method.
-func (client *AccessBridgesClient) BeginUpdate(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridgeUpdateParameters AccessBridgePatchParameters, options *AccessBridgesClientBeginUpdateOptions) (*runtime.Poller[AccessBridgesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, accessBridgeName, accessBridgeUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessBridgesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessBridgesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update properties of the provided access bridge, or update tags associated with the access bridge. Properties
-// and tag updates can be done independently.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccessBridgesClient) update(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridgeUpdateParameters AccessBridgePatchParameters, options *AccessBridgesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AccessBridgesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, accessBridgeName, accessBridgeUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AccessBridgesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accessBridgeName AccessBridgeAllowedName, accessBridgeUpdateParameters AccessBridgePatchParameters, options *AccessBridgesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/accessBridges/{accessBridgeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accessBridgeName == "" {
-		return nil, errors.New("parameter accessBridgeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accessBridgeName}", url.PathEscape(string(accessBridgeName)))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, accessBridgeUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

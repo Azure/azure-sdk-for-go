@@ -87,7 +87,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBCollection(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -172,7 +173,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoDBDatabase(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -250,7 +252,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoRoleDefinition(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -328,7 +331,8 @@ func (client *MongoDBResourcesClient) createUpdateMongoUserDefinition(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -409,7 +413,8 @@ func (client *MongoDBResourcesClient) deleteMongoDBCollection(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -488,7 +493,8 @@ func (client *MongoDBResourcesClient) deleteMongoDBDatabase(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -561,7 +567,8 @@ func (client *MongoDBResourcesClient) deleteMongoRoleDefinition(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -634,7 +641,8 @@ func (client *MongoDBResourcesClient) deleteMongoUserDefinition(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -710,7 +718,8 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToAutoscale(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -792,7 +801,8 @@ func (client *MongoDBResourcesClient) migrateMongoDBCollectionToManualThroughput
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -872,7 +882,8 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToAutoscale(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -948,7 +959,8 @@ func (client *MongoDBResourcesClient) migrateMongoDBDatabaseToManualThroughput(c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1026,7 +1038,8 @@ func (client *MongoDBResourcesClient) retrieveContinuousBackupInformation(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1112,7 +1125,8 @@ func (client *MongoDBResourcesClient) updateMongoDBCollectionThroughput(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1197,7 +1211,8 @@ func (client *MongoDBResourcesClient) updateMongoDBDatabaseThroughput(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1258,7 +1273,8 @@ func (client *MongoDBResourcesClient) GetMongoDBCollection(ctx context.Context, 
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBCollectionResponse{}, err
 	}
-	return client.getMongoDBCollectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMongoDBCollectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMongoDBCollectionCreateRequest creates the GetMongoDBCollection request.
@@ -1330,7 +1346,8 @@ func (client *MongoDBResourcesClient) GetMongoDBCollectionThroughput(ctx context
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBCollectionThroughputResponse{}, err
 	}
-	return client.getMongoDBCollectionThroughputHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMongoDBCollectionThroughputHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMongoDBCollectionThroughputCreateRequest creates the GetMongoDBCollectionThroughput request.
@@ -1400,7 +1417,8 @@ func (client *MongoDBResourcesClient) GetMongoDBDatabase(ctx context.Context, re
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBDatabaseResponse{}, err
 	}
-	return client.getMongoDBDatabaseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMongoDBDatabaseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMongoDBDatabaseCreateRequest creates the GetMongoDBDatabase request.
@@ -1467,7 +1485,8 @@ func (client *MongoDBResourcesClient) GetMongoDBDatabaseThroughput(ctx context.C
 	if err != nil {
 		return MongoDBResourcesClientGetMongoDBDatabaseThroughputResponse{}, err
 	}
-	return client.getMongoDBDatabaseThroughputHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMongoDBDatabaseThroughputHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMongoDBDatabaseThroughputCreateRequest creates the GetMongoDBDatabaseThroughput request.
@@ -1531,7 +1550,8 @@ func (client *MongoDBResourcesClient) GetMongoRoleDefinition(ctx context.Context
 	if err != nil {
 		return MongoDBResourcesClientGetMongoRoleDefinitionResponse{}, err
 	}
-	return client.getMongoRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMongoRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMongoRoleDefinitionCreateRequest creates the GetMongoRoleDefinition request.
@@ -1595,7 +1615,8 @@ func (client *MongoDBResourcesClient) GetMongoUserDefinition(ctx context.Context
 	if err != nil {
 		return MongoDBResourcesClientGetMongoUserDefinitionResponse{}, err
 	}
-	return client.getMongoUserDefinitionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMongoUserDefinitionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMongoUserDefinitionCreateRequest creates the GetMongoUserDefinition request.

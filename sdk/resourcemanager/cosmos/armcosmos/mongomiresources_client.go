@@ -86,7 +86,8 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignment(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -167,7 +168,8 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinition(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -247,7 +249,8 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleAssignment(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -322,7 +325,8 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleDefinition(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -378,7 +382,8 @@ func (client *MongoMIResourcesClient) GetMongoMIRoleAssignment(ctx context.Conte
 	if err != nil {
 		return MongoMIResourcesClientGetMongoMIRoleAssignmentResponse{}, err
 	}
-	return client.getMongoMIRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMongoMIRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMongoMIRoleAssignmentCreateRequest creates the GetMongoMIRoleAssignment request.
@@ -445,7 +450,8 @@ func (client *MongoMIResourcesClient) GetMongoMIRoleDefinition(ctx context.Conte
 	if err != nil {
 		return MongoMIResourcesClientGetMongoMIRoleDefinitionResponse{}, err
 	}
-	return client.getMongoMIRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMongoMIRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMongoMIRoleDefinitionCreateRequest creates the GetMongoMIRoleDefinition request.

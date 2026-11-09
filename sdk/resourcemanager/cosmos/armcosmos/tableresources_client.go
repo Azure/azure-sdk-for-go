@@ -86,7 +86,8 @@ func (client *TableResourcesClient) createUpdateTable(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -167,7 +168,8 @@ func (client *TableResourcesClient) createUpdateTableRoleAssignment(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -248,7 +250,8 @@ func (client *TableResourcesClient) createUpdateTableRoleDefinition(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -328,7 +331,8 @@ func (client *TableResourcesClient) deleteTable(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -403,7 +407,8 @@ func (client *TableResourcesClient) deleteTableRoleAssignment(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -478,7 +483,8 @@ func (client *TableResourcesClient) deleteTableRoleDefinition(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -553,7 +559,8 @@ func (client *TableResourcesClient) migrateTableToAutoscale(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -629,7 +636,8 @@ func (client *TableResourcesClient) migrateTableToManualThroughput(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -706,7 +714,8 @@ func (client *TableResourcesClient) retrieveContinuousBackupInformation(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -787,7 +796,8 @@ func (client *TableResourcesClient) updateTableThroughput(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -846,7 +856,8 @@ func (client *TableResourcesClient) GetTable(ctx context.Context, resourceGroupN
 	if err != nil {
 		return TableResourcesClientGetTableResponse{}, err
 	}
-	return client.getTableHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTableHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTableCreateRequest creates the GetTable request.
@@ -912,7 +923,8 @@ func (client *TableResourcesClient) GetTableRoleAssignment(ctx context.Context, 
 	if err != nil {
 		return TableResourcesClientGetTableRoleAssignmentResponse{}, err
 	}
-	return client.getTableRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTableRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTableRoleAssignmentCreateRequest creates the GetTableRoleAssignment request.
@@ -978,7 +990,8 @@ func (client *TableResourcesClient) GetTableRoleDefinition(ctx context.Context, 
 	if err != nil {
 		return TableResourcesClientGetTableRoleDefinitionResponse{}, err
 	}
-	return client.getTableRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTableRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTableRoleDefinitionCreateRequest creates the GetTableRoleDefinition request.
@@ -1045,7 +1058,8 @@ func (client *TableResourcesClient) GetTableThroughput(ctx context.Context, reso
 	if err != nil {
 		return TableResourcesClientGetTableThroughputResponse{}, err
 	}
-	return client.getTableThroughputHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTableThroughputHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTableThroughputCreateRequest creates the GetTableThroughput request.

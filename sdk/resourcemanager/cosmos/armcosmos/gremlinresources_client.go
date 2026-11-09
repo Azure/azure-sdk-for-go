@@ -86,7 +86,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinDatabase(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -168,7 +169,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinGraph(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -253,7 +255,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleAssignment(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -334,7 +337,8 @@ func (client *GremlinResourcesClient) createUpdateGremlinRoleDefinition(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -414,7 +418,8 @@ func (client *GremlinResourcesClient) deleteGremlinDatabase(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -490,7 +495,8 @@ func (client *GremlinResourcesClient) deleteGremlinGraph(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -569,7 +575,8 @@ func (client *GremlinResourcesClient) deleteGremlinRoleAssignment(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -644,7 +651,8 @@ func (client *GremlinResourcesClient) deleteGremlinRoleDefinition(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -719,7 +727,8 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToAutoscale(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -795,7 +804,8 @@ func (client *GremlinResourcesClient) migrateGremlinDatabaseToManualThroughput(c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -872,7 +882,8 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToAutoscale(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -953,7 +964,8 @@ func (client *GremlinResourcesClient) migrateGremlinGraphToManualThroughput(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1035,7 +1047,8 @@ func (client *GremlinResourcesClient) retrieveContinuousBackupInformation(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1120,7 +1133,8 @@ func (client *GremlinResourcesClient) updateGremlinDatabaseThroughput(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1202,7 +1216,8 @@ func (client *GremlinResourcesClient) updateGremlinGraphThroughput(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1266,7 +1281,8 @@ func (client *GremlinResourcesClient) GetGremlinDatabase(ctx context.Context, re
 	if err != nil {
 		return GremlinResourcesClientGetGremlinDatabaseResponse{}, err
 	}
-	return client.getGremlinDatabaseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getGremlinDatabaseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getGremlinDatabaseCreateRequest creates the GetGremlinDatabase request.
@@ -1333,7 +1349,8 @@ func (client *GremlinResourcesClient) GetGremlinDatabaseThroughput(ctx context.C
 	if err != nil {
 		return GremlinResourcesClientGetGremlinDatabaseThroughputResponse{}, err
 	}
-	return client.getGremlinDatabaseThroughputHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getGremlinDatabaseThroughputHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getGremlinDatabaseThroughputCreateRequest creates the GetGremlinDatabaseThroughput request.
@@ -1400,7 +1417,8 @@ func (client *GremlinResourcesClient) GetGremlinGraph(ctx context.Context, resou
 	if err != nil {
 		return GremlinResourcesClientGetGremlinGraphResponse{}, err
 	}
-	return client.getGremlinGraphHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getGremlinGraphHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getGremlinGraphCreateRequest creates the GetGremlinGraph request.
@@ -1472,7 +1490,8 @@ func (client *GremlinResourcesClient) GetGremlinGraphThroughput(ctx context.Cont
 	if err != nil {
 		return GremlinResourcesClientGetGremlinGraphThroughputResponse{}, err
 	}
-	return client.getGremlinGraphThroughputHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getGremlinGraphThroughputHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getGremlinGraphThroughputCreateRequest creates the GetGremlinGraphThroughput request.
@@ -1543,7 +1562,8 @@ func (client *GremlinResourcesClient) GetGremlinRoleAssignment(ctx context.Conte
 	if err != nil {
 		return GremlinResourcesClientGetGremlinRoleAssignmentResponse{}, err
 	}
-	return client.getGremlinRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getGremlinRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getGremlinRoleAssignmentCreateRequest creates the GetGremlinRoleAssignment request.
@@ -1610,7 +1630,8 @@ func (client *GremlinResourcesClient) GetGremlinRoleDefinition(ctx context.Conte
 	if err != nil {
 		return GremlinResourcesClientGetGremlinRoleDefinitionResponse{}, err
 	}
-	return client.getGremlinRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getGremlinRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getGremlinRoleDefinitionCreateRequest creates the GetGremlinRoleDefinition request.

@@ -65,7 +65,8 @@ func (client *RestorableDatabaseAccountsClient) GetByLocation(ctx context.Contex
 	if err != nil {
 		return RestorableDatabaseAccountsClientGetByLocationResponse{}, err
 	}
-	return client.getByLocationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByLocationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByLocationCreateRequest creates the GetByLocation request.

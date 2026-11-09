@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0 (2026-11-03)
+## 4.1.0 (2026-11-09)
 ### Features Added
 
 - New struct `ThroughputBucketResource`

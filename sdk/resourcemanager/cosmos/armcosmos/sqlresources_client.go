@@ -89,7 +89,8 @@ func (client *SQLResourcesClient) createUpdateClientEncryptionKey(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -175,7 +176,8 @@ func (client *SQLResourcesClient) createUpdateSQLContainer(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -260,7 +262,8 @@ func (client *SQLResourcesClient) createUpdateSQLDatabase(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -338,7 +341,8 @@ func (client *SQLResourcesClient) createUpdateSQLRoleAssignment(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -416,7 +420,8 @@ func (client *SQLResourcesClient) createUpdateSQLRoleDefinition(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -499,7 +504,8 @@ func (client *SQLResourcesClient) createUpdateSQLStoredProcedure(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -590,7 +596,8 @@ func (client *SQLResourcesClient) createUpdateSQLTrigger(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -681,7 +688,8 @@ func (client *SQLResourcesClient) createUpdateSQLUserDefinedFunction(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -770,7 +778,8 @@ func (client *SQLResourcesClient) deleteSQLContainer(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -849,7 +858,8 @@ func (client *SQLResourcesClient) deleteSQLDatabase(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -922,7 +932,8 @@ func (client *SQLResourcesClient) deleteSQLRoleAssignment(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -995,7 +1006,8 @@ func (client *SQLResourcesClient) deleteSQLRoleDefinition(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1072,7 +1084,8 @@ func (client *SQLResourcesClient) deleteSQLStoredProcedure(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1157,7 +1170,8 @@ func (client *SQLResourcesClient) deleteSQLTrigger(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1242,7 +1256,8 @@ func (client *SQLResourcesClient) deleteSQLUserDefinedFunction(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1326,7 +1341,8 @@ func (client *SQLResourcesClient) migrateSQLContainerToAutoscale(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1407,7 +1423,8 @@ func (client *SQLResourcesClient) migrateSQLContainerToManualThroughput(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1487,7 +1504,8 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToAutoscale(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1563,7 +1581,8 @@ func (client *SQLResourcesClient) migrateSQLDatabaseToManualThroughput(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1641,7 +1660,8 @@ func (client *SQLResourcesClient) retrieveContinuousBackupInformation(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1727,7 +1747,8 @@ func (client *SQLResourcesClient) updateSQLContainerThroughput(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1812,7 +1833,8 @@ func (client *SQLResourcesClient) updateSQLDatabaseThroughput(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1873,7 +1895,8 @@ func (client *SQLResourcesClient) GetClientEncryptionKey(ctx context.Context, re
 	if err != nil {
 		return SQLResourcesClientGetClientEncryptionKeyResponse{}, err
 	}
-	return client.getClientEncryptionKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getClientEncryptionKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getClientEncryptionKeyCreateRequest creates the GetClientEncryptionKey request.
@@ -1944,7 +1967,8 @@ func (client *SQLResourcesClient) GetSQLContainer(ctx context.Context, resourceG
 	if err != nil {
 		return SQLResourcesClientGetSQLContainerResponse{}, err
 	}
-	return client.getSQLContainerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSQLContainerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSQLContainerCreateRequest creates the GetSQLContainer request.
@@ -2015,7 +2039,8 @@ func (client *SQLResourcesClient) GetSQLContainerThroughput(ctx context.Context,
 	if err != nil {
 		return SQLResourcesClientGetSQLContainerThroughputResponse{}, err
 	}
-	return client.getSQLContainerThroughputHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSQLContainerThroughputHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSQLContainerThroughputCreateRequest creates the GetSQLContainerThroughput request.
@@ -2085,7 +2110,8 @@ func (client *SQLResourcesClient) GetSQLDatabase(ctx context.Context, resourceGr
 	if err != nil {
 		return SQLResourcesClientGetSQLDatabaseResponse{}, err
 	}
-	return client.getSQLDatabaseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSQLDatabaseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSQLDatabaseCreateRequest creates the GetSQLDatabase request.
@@ -2152,7 +2178,8 @@ func (client *SQLResourcesClient) GetSQLDatabaseThroughput(ctx context.Context, 
 	if err != nil {
 		return SQLResourcesClientGetSQLDatabaseThroughputResponse{}, err
 	}
-	return client.getSQLDatabaseThroughputHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSQLDatabaseThroughputHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSQLDatabaseThroughputCreateRequest creates the GetSQLDatabaseThroughput request.
@@ -2216,7 +2243,8 @@ func (client *SQLResourcesClient) GetSQLRoleAssignment(ctx context.Context, role
 	if err != nil {
 		return SQLResourcesClientGetSQLRoleAssignmentResponse{}, err
 	}
-	return client.getSQLRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSQLRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSQLRoleAssignmentCreateRequest creates the GetSQLRoleAssignment request.
@@ -2280,7 +2308,8 @@ func (client *SQLResourcesClient) GetSQLRoleDefinition(ctx context.Context, role
 	if err != nil {
 		return SQLResourcesClientGetSQLRoleDefinitionResponse{}, err
 	}
-	return client.getSQLRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSQLRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSQLRoleDefinitionCreateRequest creates the GetSQLRoleDefinition request.
@@ -2348,7 +2377,8 @@ func (client *SQLResourcesClient) GetSQLStoredProcedure(ctx context.Context, res
 	if err != nil {
 		return SQLResourcesClientGetSQLStoredProcedureResponse{}, err
 	}
-	return client.getSQLStoredProcedureHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSQLStoredProcedureHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSQLStoredProcedureCreateRequest creates the GetSQLStoredProcedure request.
@@ -2424,7 +2454,8 @@ func (client *SQLResourcesClient) GetSQLTrigger(ctx context.Context, resourceGro
 	if err != nil {
 		return SQLResourcesClientGetSQLTriggerResponse{}, err
 	}
-	return client.getSQLTriggerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSQLTriggerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSQLTriggerCreateRequest creates the GetSQLTrigger request.
@@ -2500,7 +2531,8 @@ func (client *SQLResourcesClient) GetSQLUserDefinedFunction(ctx context.Context,
 	if err != nil {
 		return SQLResourcesClientGetSQLUserDefinedFunctionResponse{}, err
 	}
-	return client.getSQLUserDefinedFunctionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSQLUserDefinedFunctionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSQLUserDefinedFunctionCreateRequest creates the GetSQLUserDefinedFunction request.

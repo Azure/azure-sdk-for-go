@@ -87,7 +87,8 @@ func (client *DatabaseAccountsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -162,7 +163,8 @@ func (client *DatabaseAccountsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -237,7 +239,8 @@ func (client *DatabaseAccountsClient) failoverPriorityChange(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -312,7 +315,8 @@ func (client *DatabaseAccountsClient) offlineRegion(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -387,7 +391,8 @@ func (client *DatabaseAccountsClient) onlineRegion(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -462,7 +467,8 @@ func (client *DatabaseAccountsClient) regenerateKey(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -537,7 +543,8 @@ func (client *DatabaseAccountsClient) update(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -592,7 +599,8 @@ func (client *DatabaseAccountsClient) CheckNameExists(ctx context.Context, accou
 		return DatabaseAccountsClientCheckNameExistsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNotFound) {
-		return DatabaseAccountsClientCheckNameExistsResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DatabaseAccountsClientCheckNameExistsResponse{}, err
 	}
 	return DatabaseAccountsClientCheckNameExistsResponse{Success: httpResp.StatusCode >= 200 && httpResp.StatusCode < 300}, nil
 }
@@ -633,7 +641,8 @@ func (client *DatabaseAccountsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return DatabaseAccountsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -694,7 +703,8 @@ func (client *DatabaseAccountsClient) GetReadOnlyKeys(ctx context.Context, resou
 	if err != nil {
 		return DatabaseAccountsClientGetReadOnlyKeysResponse{}, err
 	}
-	return client.getReadOnlyKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getReadOnlyKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getReadOnlyKeysCreateRequest creates the GetReadOnlyKeys request.
@@ -755,7 +765,8 @@ func (client *DatabaseAccountsClient) ListConnectionStrings(ctx context.Context,
 	if err != nil {
 		return DatabaseAccountsClientListConnectionStringsResponse{}, err
 	}
-	return client.listConnectionStringsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listConnectionStringsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listConnectionStringsCreateRequest creates the ListConnectionStrings request.
@@ -816,7 +827,8 @@ func (client *DatabaseAccountsClient) ListKeys(ctx context.Context, resourceGrou
 	if err != nil {
 		return DatabaseAccountsClientListKeysResponse{}, err
 	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -877,7 +889,8 @@ func (client *DatabaseAccountsClient) ListReadOnlyKeys(ctx context.Context, reso
 	if err != nil {
 		return DatabaseAccountsClientListReadOnlyKeysResponse{}, err
 	}
-	return client.listReadOnlyKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listReadOnlyKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listReadOnlyKeysCreateRequest creates the ListReadOnlyKeys request.

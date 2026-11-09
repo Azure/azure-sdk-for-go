@@ -86,7 +86,8 @@ func (client *NotebookWorkspacesClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -166,7 +167,8 @@ func (client *NotebookWorkspacesClient) deleteOperation(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -241,7 +243,8 @@ func (client *NotebookWorkspacesClient) regenerateAuthToken(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -316,7 +319,8 @@ func (client *NotebookWorkspacesClient) start(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -370,7 +374,8 @@ func (client *NotebookWorkspacesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return NotebookWorkspacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -436,7 +441,8 @@ func (client *NotebookWorkspacesClient) ListConnectionInfo(ctx context.Context, 
 	if err != nil {
 		return NotebookWorkspacesClientListConnectionInfoResponse{}, err
 	}
-	return client.listConnectionInfoHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listConnectionInfoHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listConnectionInfoCreateRequest creates the ListConnectionInfo request.

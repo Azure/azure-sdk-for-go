@@ -86,7 +86,8 @@ func (client *CassandraResourcesClient) createUpdateCassandraKeyspace(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -167,7 +168,8 @@ func (client *CassandraResourcesClient) createUpdateCassandraRoleAssignment(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -248,7 +250,8 @@ func (client *CassandraResourcesClient) createUpdateCassandraRoleDefinition(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -330,7 +333,8 @@ func (client *CassandraResourcesClient) createUpdateCassandraTable(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -414,7 +418,8 @@ func (client *CassandraResourcesClient) deleteCassandraKeyspace(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -489,7 +494,8 @@ func (client *CassandraResourcesClient) deleteCassandraRoleAssignment(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -564,7 +570,8 @@ func (client *CassandraResourcesClient) deleteCassandraRoleDefinition(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -640,7 +647,8 @@ func (client *CassandraResourcesClient) deleteCassandraTable(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -719,7 +727,8 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToAutoscale(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -796,7 +805,8 @@ func (client *CassandraResourcesClient) migrateCassandraKeyspaceToManualThroughp
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -873,7 +883,8 @@ func (client *CassandraResourcesClient) migrateCassandraTableToAutoscale(ctx con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -954,7 +965,8 @@ func (client *CassandraResourcesClient) migrateCassandraTableToManualThroughput(
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1035,7 +1047,8 @@ func (client *CassandraResourcesClient) updateCassandraKeyspaceThroughput(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1117,7 +1130,8 @@ func (client *CassandraResourcesClient) updateCassandraTableThroughput(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1182,7 +1196,8 @@ func (client *CassandraResourcesClient) GetCassandraKeyspace(ctx context.Context
 	if err != nil {
 		return CassandraResourcesClientGetCassandraKeyspaceResponse{}, err
 	}
-	return client.getCassandraKeyspaceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCassandraKeyspaceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCassandraKeyspaceCreateRequest creates the GetCassandraKeyspace request.
@@ -1249,7 +1264,8 @@ func (client *CassandraResourcesClient) GetCassandraKeyspaceThroughput(ctx conte
 	if err != nil {
 		return CassandraResourcesClientGetCassandraKeyspaceThroughputResponse{}, err
 	}
-	return client.getCassandraKeyspaceThroughputHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCassandraKeyspaceThroughputHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCassandraKeyspaceThroughputCreateRequest creates the GetCassandraKeyspaceThroughput request.
@@ -1316,7 +1332,8 @@ func (client *CassandraResourcesClient) GetCassandraRoleAssignment(ctx context.C
 	if err != nil {
 		return CassandraResourcesClientGetCassandraRoleAssignmentResponse{}, err
 	}
-	return client.getCassandraRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCassandraRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCassandraRoleAssignmentCreateRequest creates the GetCassandraRoleAssignment request.
@@ -1383,7 +1400,8 @@ func (client *CassandraResourcesClient) GetCassandraRoleDefinition(ctx context.C
 	if err != nil {
 		return CassandraResourcesClientGetCassandraRoleDefinitionResponse{}, err
 	}
-	return client.getCassandraRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCassandraRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCassandraRoleDefinitionCreateRequest creates the GetCassandraRoleDefinition request.
@@ -1450,7 +1468,8 @@ func (client *CassandraResourcesClient) GetCassandraTable(ctx context.Context, r
 	if err != nil {
 		return CassandraResourcesClientGetCassandraTableResponse{}, err
 	}
-	return client.getCassandraTableHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCassandraTableHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCassandraTableCreateRequest creates the GetCassandraTable request.
@@ -1522,7 +1541,8 @@ func (client *CassandraResourcesClient) GetCassandraTableThroughput(ctx context.
 	if err != nil {
 		return CassandraResourcesClientGetCassandraTableThroughputResponse{}, err
 	}
-	return client.getCassandraTableThroughputHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCassandraTableThroughputHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCassandraTableThroughputCreateRequest creates the GetCassandraTableThroughput request.

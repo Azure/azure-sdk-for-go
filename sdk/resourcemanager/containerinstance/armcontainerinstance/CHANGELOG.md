@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.2 (2026-09-08)
+## 3.0.0-beta.2 (2026-11-09)
 ### Features Added
 
 - New enum type `AiAgentsGroupProvisioningState` with values `AiAgentsGroupProvisioningStateAccepted`, `AiAgentsGroupProvisioningStateCanceled`, `AiAgentsGroupProvisioningStateDeleting`, `AiAgentsGroupProvisioningStateFailed`, `AiAgentsGroupProvisioningStateSucceeded`, `AiAgentsGroupProvisioningStateUpdating`

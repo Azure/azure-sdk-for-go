@@ -68,7 +68,7 @@ func (client *ManagedVirtualNodePoolsClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Create or update a managed virtual node pool.
+// createOrUpdate - Create or update a managed virtual node pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedVirtualNodePoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, resource ManagedVirtualNodePool, options *ManagedVirtualNodePoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *ManagedVirtualNodePoolsClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedVirtualNodePoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, resource ManagedVirtualNodePool, _ *ManagedVirtualNodePoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/managedVirtualNodePools/{managedVirtualNodePoolName}"
 	if client.subscriptionID == "" {
@@ -143,7 +144,7 @@ func (client *ManagedVirtualNodePoolsClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Delete a managed virtual node pool.
+// deleteOperation - Delete a managed virtual node pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedVirtualNodePoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, options *ManagedVirtualNodePoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,12 +161,13 @@ func (client *ManagedVirtualNodePoolsClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedVirtualNodePoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, _ *ManagedVirtualNodePoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/managedVirtualNodePools/{managedVirtualNodePoolName}"
 	if client.subscriptionID == "" {
@@ -190,6 +192,83 @@ func (client *ManagedVirtualNodePoolsClient) deleteCreateRequest(ctx context.Con
 	return req, nil
 }
 
+// BeginUpdate - Update a managed virtual node pool. Only tags and a limited set of properties can be updated.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - managedVirtualNodePoolName - The name of the managed virtual node pool.
+//   - properties - The managed virtual node pool patch object.
+//   - options - ManagedVirtualNodePoolsClientBeginUpdateOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.BeginUpdate
+//     method.
+func (client *ManagedVirtualNodePoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, properties ManagedVirtualNodePoolUpdate, options *ManagedVirtualNodePoolsClientBeginUpdateOptions) (*runtime.Poller[ManagedVirtualNodePoolsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, managedVirtualNodePoolName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedVirtualNodePoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedVirtualNodePoolsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a managed virtual node pool. Only tags and a limited set of properties can be updated.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ManagedVirtualNodePoolsClient) update(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, properties ManagedVirtualNodePoolUpdate, options *ManagedVirtualNodePoolsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ManagedVirtualNodePoolsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedVirtualNodePoolName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ManagedVirtualNodePoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, properties ManagedVirtualNodePoolUpdate, _ *ManagedVirtualNodePoolsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/managedVirtualNodePools/{managedVirtualNodePoolName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if managedVirtualNodePoolName == "" {
+		return nil, errors.New("parameter managedVirtualNodePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedVirtualNodePoolName}", url.PathEscape(managedVirtualNodePoolName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get the properties of the specified managed virtual node pool.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -210,7 +289,8 @@ func (client *ManagedVirtualNodePoolsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return ManagedVirtualNodePoolsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -388,80 +468,4 @@ func (client *ManagedVirtualNodePoolsClient) listBySubscriptionHandleResponse(re
 		return ManagedVirtualNodePoolsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a managed virtual node pool. Only tags and a limited set of properties can be updated.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - managedVirtualNodePoolName - The name of the managed virtual node pool.
-//   - properties - The managed virtual node pool patch object.
-//   - options - ManagedVirtualNodePoolsClientBeginUpdateOptions contains the optional parameters for the ManagedVirtualNodePoolsClient.BeginUpdate
-//     method.
-func (client *ManagedVirtualNodePoolsClient) BeginUpdate(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, properties ManagedVirtualNodePoolUpdate, options *ManagedVirtualNodePoolsClientBeginUpdateOptions) (*runtime.Poller[ManagedVirtualNodePoolsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, managedVirtualNodePoolName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ManagedVirtualNodePoolsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ManagedVirtualNodePoolsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a managed virtual node pool. Only tags and a limited set of properties can be updated.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedVirtualNodePoolsClient) update(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, properties ManagedVirtualNodePoolUpdate, options *ManagedVirtualNodePoolsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ManagedVirtualNodePoolsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, managedVirtualNodePoolName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ManagedVirtualNodePoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, properties ManagedVirtualNodePoolUpdate, _ *ManagedVirtualNodePoolsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/managedVirtualNodePools/{managedVirtualNodePoolName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if managedVirtualNodePoolName == "" {
-		return nil, errors.New("parameter managedVirtualNodePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedVirtualNodePoolName}", url.PathEscape(managedVirtualNodePoolName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -67,7 +67,8 @@ func (client *ContainersClient) Attach(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ContainersClientAttachResponse{}, err
 	}
-	return client.attachHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.attachHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // attachCreateRequest creates the Attach request.
@@ -136,7 +137,8 @@ func (client *ContainersClient) ExecuteCommand(ctx context.Context, resourceGrou
 	if err != nil {
 		return ContainersClientExecuteCommandResponse{}, err
 	}
-	return client.executeCommandHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executeCommandHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executeCommandCreateRequest creates the ExecuteCommand request.
@@ -207,7 +209,8 @@ func (client *ContainersClient) ListLogs(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ContainersClientListLogsResponse{}, err
 	}
-	return client.listLogsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listLogsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listLogsCreateRequest creates the ListLogs request.

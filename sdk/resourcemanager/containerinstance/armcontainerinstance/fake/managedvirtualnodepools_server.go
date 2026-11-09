@@ -29,6 +29,10 @@ type ManagedVirtualNodePoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, options *armcontainerinstance.ManagedVirtualNodePoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ManagedVirtualNodePoolsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, properties armcontainerinstance.ManagedVirtualNodePoolUpdate, options *armcontainerinstance.ManagedVirtualNodePoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ManagedVirtualNodePoolsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, options *armcontainerinstance.ManagedVirtualNodePoolsClientGetOptions) (resp azfake.Responder[armcontainerinstance.ManagedVirtualNodePoolsClientGetResponse], errResp azfake.ErrorResponder)
@@ -40,10 +44,6 @@ type ManagedVirtualNodePoolsServer struct {
 	// NewListBySubscriptionPager is the fake for method ManagedVirtualNodePoolsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armcontainerinstance.ManagedVirtualNodePoolsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method ManagedVirtualNodePoolsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, properties armcontainerinstance.ManagedVirtualNodePoolUpdate, options *armcontainerinstance.ManagedVirtualNodePoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewManagedVirtualNodePoolsServerTransport creates a new instance of ManagedVirtualNodePoolsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewManagedVirtualNodePoolsServerTransport(srv *ManagedVirtualNodePoolsServe
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientUpdateResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type ManagedVirtualNodePoolsServerTransport struct {
 	srv                         *ManagedVirtualNodePoolsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcontainerinstance.ManagedVirtualNodePoolsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedVirtualNodePoolsServerTransport.
@@ -76,7 +76,7 @@ func (m *ManagedVirtualNodePoolsServerTransport) Do(req *http.Request) (*http.Re
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return m.dispatchToMethodFake(req, method)
@@ -96,14 +96,14 @@ func (m *ManagedVirtualNodePoolsServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "ManagedVirtualNodePoolsClient.BeginDelete":
 				res.resp, res.err = m.dispatchBeginDelete(req)
+			case "ManagedVirtualNodePoolsClient.BeginUpdate":
+				res.resp, res.err = m.dispatchBeginUpdate(req)
 			case "ManagedVirtualNodePoolsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "ManagedVirtualNodePoolsClient.NewListByResourceGroupPager":
 				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
 			case "ManagedVirtualNodePoolsClient.NewListBySubscriptionPager":
 				res.resp, res.err = m.dispatchNewListBySubscriptionPager(req)
-			case "ManagedVirtualNodePoolsClient.BeginUpdate":
-				res.resp, res.err = m.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,54 @@ func (m *ManagedVirtualNodePoolsServerTransport) dispatchBeginDelete(req *http.R
 	return resp, nil
 }
 
+func (m *ManagedVirtualNodePoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := m.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/managedVirtualNodePools/(?P<managedVirtualNodePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerinstance.ManagedVirtualNodePoolUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		managedVirtualNodePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedVirtualNodePoolName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, managedVirtualNodePoolNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		m.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		m.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		m.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (m *ManagedVirtualNodePoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -312,54 +360,6 @@ func (m *ManagedVirtualNodePoolsServerTransport) dispatchNewListBySubscriptionPa
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		m.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *ManagedVirtualNodePoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := m.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/managedVirtualNodePools/(?P<managedVirtualNodePoolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerinstance.ManagedVirtualNodePoolUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		managedVirtualNodePoolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedVirtualNodePoolName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginUpdate(req.Context(), resourceGroupNameParam, managedVirtualNodePoolNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		m.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		m.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		m.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

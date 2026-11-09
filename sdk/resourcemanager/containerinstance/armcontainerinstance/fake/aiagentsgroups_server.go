@@ -21,10 +21,6 @@ import (
 
 // AiAgentsGroupsServer is a fake server for instances of the armcontainerinstance.AiAgentsGroupsClient type.
 type AiAgentsGroupsServer struct {
-	// Connect is the fake for method AiAgentsGroupsClient.Connect
-	// HTTP status codes to indicate success: http.StatusOK
-	Connect func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *armcontainerinstance.AiAgentsGroupsClientConnectOptions) (resp azfake.Responder[armcontainerinstance.AiAgentsGroupsClientConnectResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateOrUpdate is the fake for method AiAgentsGroupsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource armcontainerinstance.AiAgentsGroup, options *armcontainerinstance.AiAgentsGroupsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -32,6 +28,14 @@ type AiAgentsGroupsServer struct {
 	// BeginDelete is the fake for method AiAgentsGroupsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *armcontainerinstance.AiAgentsGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginUpdate is the fake for method AiAgentsGroupsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties armcontainerinstance.AiAgentsGroupTagsUpdate, options *armcontainerinstance.AiAgentsGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Connect is the fake for method AiAgentsGroupsClient.Connect
+	// HTTP status codes to indicate success: http.StatusOK
+	Connect func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *armcontainerinstance.AiAgentsGroupsClientConnectOptions) (resp azfake.Responder[armcontainerinstance.AiAgentsGroupsClientConnectResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method AiAgentsGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -44,10 +48,6 @@ type AiAgentsGroupsServer struct {
 	// NewListBySubscriptionPager is the fake for method AiAgentsGroupsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armcontainerinstance.AiAgentsGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcontainerinstance.AiAgentsGroupsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method AiAgentsGroupsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties armcontainerinstance.AiAgentsGroupTagsUpdate, options *armcontainerinstance.AiAgentsGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewAiAgentsGroupsServerTransport creates a new instance of AiAgentsGroupsServerTransport with the provided implementation.
@@ -58,9 +58,9 @@ func NewAiAgentsGroupsServerTransport(srv *AiAgentsGroupsServer) *AiAgentsGroups
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcontainerinstance.AiAgentsGroupsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcontainerinstance.AiAgentsGroupsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientUpdateResponse]](),
 	}
 }
 
@@ -70,9 +70,9 @@ type AiAgentsGroupsServerTransport struct {
 	srv                         *AiAgentsGroupsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcontainerinstance.AiAgentsGroupsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcontainerinstance.AiAgentsGroupsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for AiAgentsGroupsServerTransport.
@@ -80,7 +80,7 @@ func (a *AiAgentsGroupsServerTransport) Do(req *http.Request) (*http.Response, e
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return a.dispatchToMethodFake(req, method)
@@ -96,20 +96,20 @@ func (a *AiAgentsGroupsServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
-			case "AiAgentsGroupsClient.Connect":
-				res.resp, res.err = a.dispatchConnect(req)
 			case "AiAgentsGroupsClient.BeginCreateOrUpdate":
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AiAgentsGroupsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "AiAgentsGroupsClient.BeginUpdate":
+				res.resp, res.err = a.dispatchBeginUpdate(req)
+			case "AiAgentsGroupsClient.Connect":
+				res.resp, res.err = a.dispatchConnect(req)
 			case "AiAgentsGroupsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
 			case "AiAgentsGroupsClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
 			case "AiAgentsGroupsClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "AiAgentsGroupsClient.BeginUpdate":
-				res.resp, res.err = a.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -124,39 +124,6 @@ func (a *AiAgentsGroupsServerTransport) dispatchToMethodFake(req *http.Request, 
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (a *AiAgentsGroupsServerTransport) dispatchConnect(req *http.Request) (*http.Response, error) {
-	if a.srv.Connect == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Connect not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/aiAgentsGroups/(?P<aiAgentsGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connect`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	aiAgentsGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("aiAgentsGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Connect(req.Context(), resourceGroupNameParam, aiAgentsGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AiAgentsGroupAccessToken, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (a *AiAgentsGroupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -248,6 +215,87 @@ func (a *AiAgentsGroupsServerTransport) dispatchBeginDelete(req *http.Request) (
 		a.beginDelete.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *AiAgentsGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if a.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := a.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/aiAgentsGroups/(?P<aiAgentsGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcontainerinstance.AiAgentsGroupTagsUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		aiAgentsGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("aiAgentsGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, aiAgentsGroupNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		a.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		a.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		a.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (a *AiAgentsGroupsServerTransport) dispatchConnect(req *http.Request) (*http.Response, error) {
+	if a.srv.Connect == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Connect not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/aiAgentsGroups/(?P<aiAgentsGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/connect`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	aiAgentsGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("aiAgentsGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Connect(req.Context(), resourceGroupNameParam, aiAgentsGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AiAgentsGroupAccessToken, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 
@@ -351,54 +399,6 @@ func (a *AiAgentsGroupsServerTransport) dispatchNewListBySubscriptionPager(req *
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		a.newListBySubscriptionPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (a *AiAgentsGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if a.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := a.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerInstance/aiAgentsGroups/(?P<aiAgentsGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerinstance.AiAgentsGroupTagsUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		aiAgentsGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("aiAgentsGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := a.srv.BeginUpdate(req.Context(), resourceGroupNameParam, aiAgentsGroupNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		a.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		a.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		a.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -88,6 +88,57 @@ func ExampleManagedVirtualNodePoolsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-09-01-preview/ManagedVirtualNodePool_Patch.json
+func ExampleManagedVirtualNodePoolsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerinstance.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewManagedVirtualNodePoolsClient().BeginUpdate(ctx, "demo", "demo-pool", armcontainerinstance.ManagedVirtualNodePoolUpdate{
+		Tags: map[string]*string{
+			"env": to.Ptr("prod"),
+		},
+		Properties: &armcontainerinstance.ManagedVirtualNodePoolPatchProperties{
+			MinNodes: to.Ptr[int32](2),
+			MaxNodes: to.Ptr[int32](10),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerinstance.ManagedVirtualNodePoolsClientUpdateResponse{
+	// 	ManagedVirtualNodePool: armcontainerinstance.ManagedVirtualNodePool{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/demo/providers/Microsoft.ContainerInstance/managedVirtualNodePools/demo-pool"),
+	// 		Name: to.Ptr("demo-pool"),
+	// 		Type: to.Ptr("Microsoft.ContainerInstance/managedVirtualNodePools"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"env": to.Ptr("prod"),
+	// 		},
+	// 		Properties: &armcontainerinstance.ManagedVirtualNodePoolProperties{
+	// 			ProvisioningState: to.Ptr(armcontainerinstance.ManagedVirtualNodePoolProvisioningStateSucceeded),
+	// 			AksClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/demo/providers/Microsoft.ContainerService/managedClusters/demo-aks"),
+	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/demo/providers/Microsoft.ManagedIdentity/userAssignedIdentities/demo-mi"),
+	// 			AiAgentGroupResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/demo/providers/Microsoft.ContainerInstance/aiAgentsGroups/demo-aag"),
+	// 			MinNodes: to.Ptr[int32](2),
+	// 			MaxNodes: to.Ptr[int32](10),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-09-01-preview/ManagedVirtualNodePool_Get.json
 func ExampleManagedVirtualNodePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -226,55 +277,4 @@ func ExampleManagedVirtualNodePoolsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-09-01-preview/ManagedVirtualNodePool_Patch.json
-func ExampleManagedVirtualNodePoolsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerinstance.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewManagedVirtualNodePoolsClient().BeginUpdate(ctx, "demo", "demo-pool", armcontainerinstance.ManagedVirtualNodePoolUpdate{
-		Tags: map[string]*string{
-			"env": to.Ptr("prod"),
-		},
-		Properties: &armcontainerinstance.ManagedVirtualNodePoolPatchProperties{
-			MinNodes: to.Ptr[int32](2),
-			MaxNodes: to.Ptr[int32](10),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerinstance.ManagedVirtualNodePoolsClientUpdateResponse{
-	// 	ManagedVirtualNodePool: armcontainerinstance.ManagedVirtualNodePool{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/demo/providers/Microsoft.ContainerInstance/managedVirtualNodePools/demo-pool"),
-	// 		Name: to.Ptr("demo-pool"),
-	// 		Type: to.Ptr("Microsoft.ContainerInstance/managedVirtualNodePools"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Tags: map[string]*string{
-	// 			"env": to.Ptr("prod"),
-	// 		},
-	// 		Properties: &armcontainerinstance.ManagedVirtualNodePoolProperties{
-	// 			ProvisioningState: to.Ptr(armcontainerinstance.ManagedVirtualNodePoolProvisioningStateSucceeded),
-	// 			AksClusterResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/demo/providers/Microsoft.ContainerService/managedClusters/demo-aks"),
-	// 			ManagedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/demo/providers/Microsoft.ManagedIdentity/userAssignedIdentities/demo-mi"),
-	// 			AiAgentGroupResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/demo/providers/Microsoft.ContainerInstance/aiAgentsGroups/demo-aag"),
-	// 			MinNodes: to.Ptr[int32](2),
-	// 			MaxNodes: to.Ptr[int32](10),
-	// 		},
-	// 	},
-	// }
 }

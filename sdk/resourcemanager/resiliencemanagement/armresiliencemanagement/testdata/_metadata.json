@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.AzureResilienceManagement": "2026-11-30-preview"
   },
-  "emitterVersion": "0.17.6"
+  "emitterVersion": "0.18.0"
 }

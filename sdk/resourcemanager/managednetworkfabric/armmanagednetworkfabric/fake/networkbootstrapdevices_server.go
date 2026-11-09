@@ -106,7 +106,7 @@ func (n *NetworkBootstrapDevicesServerTransport) Do(req *http.Request) (*http.Re
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return n.dispatchToMethodFake(req, method)

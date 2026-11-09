@@ -86,7 +86,8 @@ func (client *ManagedInstanceEncryptionProtectorsClient) createOrUpdate(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -166,7 +167,8 @@ func (client *ManagedInstanceEncryptionProtectorsClient) revalidate(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -221,7 +223,8 @@ func (client *ManagedInstanceEncryptionProtectorsClient) Get(ctx context.Context
 	if err != nil {
 		return ManagedInstanceEncryptionProtectorsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -88,7 +88,8 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -173,7 +174,8 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -237,7 +239,8 @@ func (client *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesCl
 	if err != nil {
 		return ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

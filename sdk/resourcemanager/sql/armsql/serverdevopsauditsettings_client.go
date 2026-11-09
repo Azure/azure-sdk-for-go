@@ -86,7 +86,8 @@ func (client *ServerDevOpsAuditSettingsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -145,7 +146,8 @@ func (client *ServerDevOpsAuditSettingsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ServerDevOpsAuditSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

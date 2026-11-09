@@ -87,7 +87,8 @@ func (client *LongTermRetentionBackupsClient) changeAccessTier(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -173,7 +174,8 @@ func (client *LongTermRetentionBackupsClient) changeAccessTierByResourceGroup(ct
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -263,7 +265,8 @@ func (client *LongTermRetentionBackupsClient) copyOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -350,7 +353,8 @@ func (client *LongTermRetentionBackupsClient) copyByResourceGroup(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -439,7 +443,8 @@ func (client *LongTermRetentionBackupsClient) deleteOperation(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -520,7 +525,8 @@ func (client *LongTermRetentionBackupsClient) deleteByResourceGroup(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -604,7 +610,8 @@ func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutability(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -686,7 +693,8 @@ func (client *LongTermRetentionBackupsClient) lockTimeBasedImmutabilityByResourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -771,7 +779,8 @@ func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutability(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -853,7 +862,8 @@ func (client *LongTermRetentionBackupsClient) removeLegalHoldImmutabilityByResou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -938,7 +948,8 @@ func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutability(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1020,7 +1031,8 @@ func (client *LongTermRetentionBackupsClient) removeTimeBasedImmutabilityByResou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1105,7 +1117,8 @@ func (client *LongTermRetentionBackupsClient) setLegalHoldImmutability(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1187,7 +1200,8 @@ func (client *LongTermRetentionBackupsClient) setLegalHoldImmutabilityByResource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1273,7 +1287,8 @@ func (client *LongTermRetentionBackupsClient) update(ctx context.Context, locati
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1360,7 +1375,8 @@ func (client *LongTermRetentionBackupsClient) updateByResourceGroup(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1429,7 +1445,8 @@ func (client *LongTermRetentionBackupsClient) Get(ctx context.Context, locationN
 	if err != nil {
 		return LongTermRetentionBackupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -1501,7 +1518,8 @@ func (client *LongTermRetentionBackupsClient) GetByResourceGroup(ctx context.Con
 	if err != nil {
 		return LongTermRetentionBackupsClientGetByResourceGroupResponse{}, err
 	}
-	return client.getByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByResourceGroupCreateRequest creates the GetByResourceGroup request.

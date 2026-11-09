@@ -87,7 +87,8 @@ func (client *SyncGroupsClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -171,7 +172,8 @@ func (client *SyncGroupsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -251,7 +253,8 @@ func (client *SyncGroupsClient) refreshHubSchema(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -331,7 +334,8 @@ func (client *SyncGroupsClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -396,7 +400,8 @@ func (client *SyncGroupsClient) CancelSync(ctx context.Context, resourceGroupNam
 		return SyncGroupsClientCancelSyncResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return SyncGroupsClientCancelSyncResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SyncGroupsClientCancelSyncResponse{}, err
 	}
 	return SyncGroupsClientCancelSyncResponse{}, nil
 }
@@ -455,7 +460,8 @@ func (client *SyncGroupsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SyncGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -862,7 +868,8 @@ func (client *SyncGroupsClient) TriggerSync(ctx context.Context, resourceGroupNa
 		return SyncGroupsClientTriggerSyncResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return SyncGroupsClientTriggerSyncResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SyncGroupsClientTriggerSyncResponse{}, err
 	}
 	return SyncGroupsClientTriggerSyncResponse{}, nil
 }

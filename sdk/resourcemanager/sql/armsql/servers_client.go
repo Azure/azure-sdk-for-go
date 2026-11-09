@@ -85,7 +85,8 @@ func (client *ServersClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -159,7 +160,8 @@ func (client *ServersClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -230,7 +232,8 @@ func (client *ServersClient) importDatabase(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -305,7 +308,8 @@ func (client *ServersClient) refreshStatus(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -376,7 +380,8 @@ func (client *ServersClient) update(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -430,7 +435,8 @@ func (client *ServersClient) CheckNameAvailability(ctx context.Context, paramete
 	if err != nil {
 		return ServersClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -486,7 +492,8 @@ func (client *ServersClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return ServersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

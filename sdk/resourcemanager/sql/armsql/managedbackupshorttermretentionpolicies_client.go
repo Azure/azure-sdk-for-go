@@ -87,7 +87,8 @@ func (client *ManagedBackupShortTermRetentionPoliciesClient) createOrUpdate(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -173,7 +174,8 @@ func (client *ManagedBackupShortTermRetentionPoliciesClient) update(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -238,7 +240,8 @@ func (client *ManagedBackupShortTermRetentionPoliciesClient) Get(ctx context.Con
 	if err != nil {
 		return ManagedBackupShortTermRetentionPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

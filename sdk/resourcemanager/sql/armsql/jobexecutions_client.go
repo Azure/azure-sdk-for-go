@@ -88,7 +88,8 @@ func (client *JobExecutionsClient) create(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -170,7 +171,8 @@ func (client *JobExecutionsClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -236,7 +238,8 @@ func (client *JobExecutionsClient) Cancel(ctx context.Context, resourceGroupName
 		return JobExecutionsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return JobExecutionsClientCancelResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JobExecutionsClientCancelResponse{}, err
 	}
 	return JobExecutionsClientCancelResponse{}, nil
 }
@@ -300,7 +303,8 @@ func (client *JobExecutionsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return JobExecutionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -87,7 +87,8 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) createOrUpdate(ctx
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -172,7 +173,8 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) deleteOperation(ct
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -233,7 +235,8 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) Get(ctx context.Co
 	if err != nil {
 		return ManagedInstanceLongTermRetentionPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

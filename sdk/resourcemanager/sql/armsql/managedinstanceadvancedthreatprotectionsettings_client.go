@@ -87,7 +87,8 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) createOrUpd
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -147,7 +148,8 @@ func (client *ManagedInstanceAdvancedThreatProtectionSettingsClient) Get(ctx con
 	if err != nil {
 		return ManagedInstanceAdvancedThreatProtectionSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

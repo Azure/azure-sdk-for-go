@@ -86,7 +86,8 @@ func (client *DatabaseExtensionsClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -150,7 +151,8 @@ func (client *DatabaseExtensionsClient) Get(ctx context.Context, resourceGroupNa
 		return DatabaseExtensionsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return DatabaseExtensionsClientGetResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DatabaseExtensionsClientGetResponse{}, err
 	}
 	return DatabaseExtensionsClientGetResponse{}, nil
 }

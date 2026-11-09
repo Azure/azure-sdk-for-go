@@ -87,7 +87,8 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteOperation(ctx
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -168,7 +169,8 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) deleteByResourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -256,7 +258,8 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) lockTimeBasedImmuta
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -345,7 +348,8 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) removeLegalHoldImmu
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -434,7 +438,8 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) removeTimeBasedImmu
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -523,7 +528,8 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) setLegalHoldImmutab
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -588,7 +594,8 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) Get(ctx context.Con
 	if err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -660,7 +667,8 @@ func (client *LongTermRetentionManagedInstanceBackupsClient) GetByResourceGroup(
 	if err != nil {
 		return LongTermRetentionManagedInstanceBackupsClientGetByResourceGroupResponse{}, err
 	}
-	return client.getByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByResourceGroupCreateRequest creates the GetByResourceGroup request.

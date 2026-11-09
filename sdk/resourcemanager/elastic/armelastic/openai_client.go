@@ -63,7 +63,8 @@ func (client *OpenAIClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return OpenAIClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -134,7 +135,8 @@ func (client *OpenAIClient) Delete(ctx context.Context, resourceGroupName string
 		return OpenAIClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return OpenAIClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return OpenAIClientDeleteResponse{}, err
 	}
 	return OpenAIClientDeleteResponse{}, nil
 }
@@ -188,7 +190,8 @@ func (client *OpenAIClient) Get(ctx context.Context, resourceGroupName string, m
 	if err != nil {
 		return OpenAIClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -254,7 +257,8 @@ func (client *OpenAIClient) GetStatus(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return OpenAIClientGetStatusResponse{}, err
 	}
-	return client.getStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getStatusCreateRequest creates the GetStatus request.

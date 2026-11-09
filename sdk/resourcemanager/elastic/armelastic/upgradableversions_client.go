@@ -64,7 +64,8 @@ func (client *UpgradableVersionsClient) Details(ctx context.Context, resourceGro
 	if err != nil {
 		return UpgradableVersionsClientDetailsResponse{}, err
 	}
-	return client.detailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.detailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // detailsCreateRequest creates the Details request.

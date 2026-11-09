@@ -154,11 +154,34 @@ func (l *countingBatchDeleteLinks) Get(ctx context.Context) (*internal.LinksWith
 
 func (l *countingBatchDeleteLinks) Retry(ctx context.Context, eventName azlog.Event, operation string, fn internal.RetryWithLinksFn, options exported.RetryOptions) error {
 	l.retryCalls++
-	links, err := l.Get(ctx)
-	if err != nil {
-		return err
-	}
-	return fn(ctx, links, &utils.RetryFnArgs{})
+	options.MaxRetries = 1
+	options.RetryDelay = time.Nanosecond
+	options.MaxRetryDelay = time.Nanosecond
+	return utils.Retry(ctx, eventName, operation, func(ctx context.Context, args *utils.RetryFnArgs) error {
+		links, err := l.Get(ctx)
+		if err != nil {
+			return err
+		}
+		return fn(ctx, links, args)
+	}, func(err error) bool {
+		return internal.GetRecoveryKind(err) == internal.RecoveryKindFatal
+	}, options)
+}
+
+func TestBatchDeleteLinksRetryRetriesRecoverableCallbackErrors(t *testing.T) {
+	_, _, links := newBatchDeleteReceiver()
+	callbackCalls := 0
+	wantErr := &amqp.LinkError{}
+
+	err := links.Retry(context.Background(), EventReceiver, "test-retry", func(ctx context.Context, readyLinks *internal.LinksWithID, args *utils.RetryFnArgs) error {
+		callbackCalls++
+		return wantErr
+	}, exported.RetryOptions{})
+
+	require.ErrorIs(t, err, wantErr)
+	require.Equal(t, 2, callbackCalls)
+	require.Equal(t, 2, links.getCalls)
+	require.Equal(t, 1, links.retryCalls)
 }
 
 func newBatchDeleteReceiver(responses ...int32) (*Receiver, *batchDeleteRPCLink, *countingBatchDeleteLinks) {

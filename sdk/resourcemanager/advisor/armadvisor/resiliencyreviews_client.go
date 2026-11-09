@@ -65,7 +65,8 @@ func (client *ResiliencyReviewsClient) Get(ctx context.Context, reviewID string,
 	if err != nil {
 		return ResiliencyReviewsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

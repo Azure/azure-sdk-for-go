@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.2 (2026-10-12)
+## 2.0.0-beta.2 (2026-11-09)
 ### Breaking Changes
 
 - `ReviewStatusTriaged` from enum `ReviewStatus` has been removed
@@ -11,7 +11,6 @@
 - Enum `State` has been removed
 - Function `*ClientFactory.NewTriageRecommendationsClient` has been removed
 - Function `*ClientFactory.NewTriageResourcesClient` has been removed
-- Function `PossibleReasonValues` has been removed
 - Function `*RecommendationsClient.Patch` has been removed
 - Function `NewTriageRecommendationsClient` has been removed
 - Function `*TriageRecommendationsClient.ApproveTriageRecommendation` has been removed

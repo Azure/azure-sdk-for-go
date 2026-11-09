@@ -67,7 +67,8 @@ func (client *ConfigurationsClient) CreateInResourceGroup(ctx context.Context, c
 	if err != nil {
 		return ConfigurationsClientCreateInResourceGroupResponse{}, err
 	}
-	return client.createInResourceGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createInResourceGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createInResourceGroupCreateRequest creates the CreateInResourceGroup request.
@@ -134,7 +135,8 @@ func (client *ConfigurationsClient) CreateInSubscription(ctx context.Context, co
 	if err != nil {
 		return ConfigurationsClientCreateInSubscriptionResponse{}, err
 	}
-	return client.createInSubscriptionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createInSubscriptionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createInSubscriptionCreateRequest creates the CreateInSubscription request.

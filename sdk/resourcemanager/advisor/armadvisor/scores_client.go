@@ -62,7 +62,8 @@ func (client *ScoresClient) Get(ctx context.Context, name string, options *Score
 	if err != nil {
 		return ScoresClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

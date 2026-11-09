@@ -67,7 +67,8 @@ func (client *RecommendationsClient) Generate(ctx context.Context, options *Reco
 	if err != nil {
 		return RecommendationsClientGenerateResponse{}, err
 	}
-	return client.generateHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.generateHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // generateCreateRequest creates the Generate request.
@@ -126,7 +127,8 @@ func (client *RecommendationsClient) Get(ctx context.Context, resourceURI string
 	if err != nil {
 		return RecommendationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -183,7 +185,8 @@ func (client *RecommendationsClient) GetByServiceGroup(ctx context.Context, serv
 	if err != nil {
 		return RecommendationsClientGetByServiceGroupResponse{}, err
 	}
-	return client.getByServiceGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByServiceGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByServiceGroupCreateRequest creates the GetByServiceGroup request.
@@ -243,7 +246,8 @@ func (client *RecommendationsClient) GetGenerateStatus(ctx context.Context, oper
 	if err != nil {
 		return RecommendationsClientGetGenerateStatusResponse{}, err
 	}
-	return client.getGenerateStatusHandleResponse(httpResp, http.StatusAccepted, http.StatusNoContent)
+	resp, err := client.getGenerateStatusHandleResponse(httpResp, http.StatusAccepted, http.StatusNoContent)
+	return resp, err
 }
 
 // getGenerateStatusCreateRequest creates the GetGenerateStatus request.
@@ -540,7 +544,8 @@ func (client *RecommendationsClient) Update(ctx context.Context, recommendationI
 	if err != nil {
 		return RecommendationsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -602,7 +607,8 @@ func (client *RecommendationsClient) UpdateByServiceGroup(ctx context.Context, s
 	if err != nil {
 		return RecommendationsClientUpdateByServiceGroupResponse{}, err
 	}
-	return client.updateByServiceGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateByServiceGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateByServiceGroupCreateRequest creates the UpdateByServiceGroup request.

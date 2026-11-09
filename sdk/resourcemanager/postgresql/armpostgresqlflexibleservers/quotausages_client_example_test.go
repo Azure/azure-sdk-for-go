@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01-preview/QuotaUsagesForFlexibleServers.json
+// Generated from example definition: 2026-10-01/QuotaUsagesForFlexibleServers.json
 func ExampleQuotaUsagesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

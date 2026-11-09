@@ -51,7 +51,7 @@ func ExampleClient_BeginCreateOrUpdateAtManagementGroup() {
 			},
 			ExtensionConfigs: map[string]*armdeploymentstacks.DeploymentExtensionConfig{
 				"contoso": {
-					AdditionalProperties: &map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
+					AdditionalProperties: map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
 						"configOne": {
 							Value: "config1Value",
 						},
@@ -157,7 +157,7 @@ func ExampleClient_BeginCreateOrUpdateAtResourceGroup() {
 			},
 			ExtensionConfigs: map[string]*armdeploymentstacks.DeploymentExtensionConfig{
 				"contoso": {
-					AdditionalProperties: &map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
+					AdditionalProperties: map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
 						"configOne": {
 							Value: "config1Value",
 						},
@@ -263,7 +263,7 @@ func ExampleClient_BeginCreateOrUpdateAtSubscription() {
 			},
 			ExtensionConfigs: map[string]*armdeploymentstacks.DeploymentExtensionConfig{
 				"contoso": {
-					AdditionalProperties: &map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
+					AdditionalProperties: map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
 						"configOne": {
 							Value: "config1Value",
 						},
@@ -910,7 +910,7 @@ func ExampleClient_GetAtManagementGroup() {
 	// 					Version: to.Ptr("2.0.0"),
 	// 					ConfigID: to.Ptr("ExtensionGeneratedConfigIdHereWithAnyFormat"),
 	// 					Config: &armdeploymentstacks.DeploymentExtensionConfig{
-	// 						AdditionalProperties: &map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
+	// 						AdditionalProperties: map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
 	// 						"configOne": &armdeploymentstacks.DeploymentExtensionConfigItem{
 	// 							Value: "config1Value",
 	// 						},
@@ -1021,7 +1021,7 @@ func ExampleClient_GetAtResourceGroup() {
 	// 					Version: to.Ptr("2.0.0"),
 	// 					ConfigID: to.Ptr("ExtensionGeneratedConfigIdHereWithAnyFormat"),
 	// 					Config: &armdeploymentstacks.DeploymentExtensionConfig{
-	// 						AdditionalProperties: &map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
+	// 						AdditionalProperties: map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
 	// 						"configOne": &armdeploymentstacks.DeploymentExtensionConfigItem{
 	// 							Value: "config1Value",
 	// 						},
@@ -1132,7 +1132,7 @@ func ExampleClient_GetAtSubscription() {
 	// 					Version: to.Ptr("2.0.0"),
 	// 					ConfigID: to.Ptr("ExtensionGeneratedConfigIdHereWithAnyFormat"),
 	// 					Config: &armdeploymentstacks.DeploymentExtensionConfig{
-	// 						AdditionalProperties: &map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
+	// 						AdditionalProperties: map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
 	// 						"configOne": &armdeploymentstacks.DeploymentExtensionConfigItem{
 	// 							Value: "config1Value",
 	// 						},

@@ -43,7 +43,7 @@ func ExampleWhatIfResultsAtManagementGroupClient_BeginCreateOrUpdate() {
 			},
 			ExtensionConfigs: map[string]*armdeploymentstacks.DeploymentExtensionConfig{
 				"contoso": {
-					AdditionalProperties: &map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
+					AdditionalProperties: map[string]*armdeploymentstacks.DeploymentExtensionConfigItem{
 						"configOne": {
 							Value: "config1Value",
 						},

@@ -103,7 +103,8 @@ func (client *UpdateInstancesClient) create(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -147,7 +148,7 @@ func (client *UpdateInstancesClient) createCreateRequest(ctx context.Context, re
 //     method.
 func (client *UpdateInstancesClient) BeginDelete(ctx context.Context, resourceGroupName string, updateInstanceName string, options *UpdateInstancesClientBeginDeleteOptions) (*runtime.Poller[UpdateInstancesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, updateInstanceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, updateInstanceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -162,9 +163,9 @@ func (client *UpdateInstancesClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// delete - Deletes an update instance.
+// deleteOperation - Deletes an update instance.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *UpdateInstancesClient) delete(ctx context.Context, resourceGroupName string, updateInstanceName string, options *UpdateInstancesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *UpdateInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, updateInstanceName string, options *UpdateInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "UpdateInstancesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -179,7 +180,8 @@ func (client *UpdateInstancesClient) delete(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -251,7 +253,8 @@ func (client *UpdateInstancesClient) update(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -305,7 +308,8 @@ func (client *UpdateInstancesClient) CheckNameAvailability(ctx context.Context, 
 	if err != nil {
 		return UpdateInstancesClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -362,7 +366,8 @@ func (client *UpdateInstancesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return UpdateInstancesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -584,7 +589,8 @@ func (client *UpdateInstancesClient) linkInitiate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -661,7 +667,8 @@ func (client *UpdateInstancesClient) linkNotify(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -738,7 +745,8 @@ func (client *UpdateInstancesClient) linkUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -795,7 +803,8 @@ func (client *UpdateInstancesClient) linkPreflight(ctx context.Context, resource
 	if err != nil {
 		return updateInstancesClientLinkPreflightResponse{}, err
 	}
-	return client.linkPreflightHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.linkPreflightHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // linkPreflightCreateRequest creates the linkPreflight request.

@@ -143,7 +143,7 @@ func (d *DatabasesServerTransport) dispatchAddPrincipals(req *http.Request) (*ht
 	if d.srv.AddPrincipals == nil {
 		return nil, &nonRetriableError{errors.New("fake for method AddPrincipals not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/addPrincipals`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/addPrincipals`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -184,7 +184,7 @@ func (d *DatabasesServerTransport) dispatchCheckNameAvailability(req *http.Reque
 	if d.srv.CheckNameAvailability == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkNameAvailability`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -223,7 +223,7 @@ func (d *DatabasesServerTransport) dispatchBeginCreateOrUpdate(req *http.Request
 	}
 	beginCreateOrUpdate := d.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -287,7 +287,7 @@ func (d *DatabasesServerTransport) dispatchBeginDelete(req *http.Request) (*http
 	}
 	beginDelete := d.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -333,7 +333,7 @@ func (d *DatabasesServerTransport) dispatchGet(req *http.Request) (*http.Respons
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -372,7 +372,7 @@ func (d *DatabasesServerTransport) dispatchNewListByClusterPager(req *http.Reque
 	}
 	newListByClusterPager := d.newListByClusterPager.get(req)
 	if newListByClusterPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -432,7 +432,7 @@ func (d *DatabasesServerTransport) dispatchNewListPrincipalsPager(req *http.Requ
 	}
 	newListPrincipalsPager := d.newListPrincipalsPager.get(req)
 	if newListPrincipalsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listPrincipals`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listPrincipals`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -475,7 +475,7 @@ func (d *DatabasesServerTransport) dispatchRemovePrincipals(req *http.Request) (
 	if d.srv.RemovePrincipals == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RemovePrincipals not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/removePrincipals`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/removePrincipals`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -518,7 +518,7 @@ func (d *DatabasesServerTransport) dispatchBeginUpdate(req *http.Request) (*http
 	}
 	beginUpdate := d.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Kusto/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {

@@ -30,6 +30,9 @@ type InstanceHistoriesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewInstanceHistoriesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InstanceHistoriesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *InstanceHistoriesClient) Get(ctx context.Context, resourceGroupNam
 func (client *InstanceHistoriesClient) getCreateRequest(ctx context.Context, resourceGroupName string, targetName string, solutionName string, instanceName string, instanceHistoryName string, _ *InstanceHistoriesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/instances/{instanceName}/histories/{instanceHistoryName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -156,7 +159,7 @@ func (client *InstanceHistoriesClient) listByInstanceCreateRequest(ctx context.C
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/targets/{targetName}/solutions/{solutionName}/instances/{instanceName}/histories"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {

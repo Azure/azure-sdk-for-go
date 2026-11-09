@@ -110,7 +110,7 @@ func (v *VNetPeeringServerTransport) dispatchBeginCreateOrUpdate(req *http.Reque
 	}
 	beginCreateOrUpdate := v.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Databricks/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkPeerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Databricks/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkPeerings/(?P<peeringName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -162,7 +162,7 @@ func (v *VNetPeeringServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	}
 	beginDelete := v.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Databricks/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkPeerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Databricks/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkPeerings/(?P<peeringName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -208,7 +208,7 @@ func (v *VNetPeeringServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Databricks/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkPeerings/(?P<peeringName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Databricks/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkPeerings/(?P<peeringName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -247,7 +247,7 @@ func (v *VNetPeeringServerTransport) dispatchNewListByWorkspacePager(req *http.R
 	}
 	newListByWorkspacePager := v.newListByWorkspacePager.get(req)
 	if newListByWorkspacePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Databricks/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/virtualNetworkPeerings`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Databricks/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkPeerings`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

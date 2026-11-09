@@ -122,7 +122,7 @@ func (w *WatcherServerTransport) dispatchCreateOrUpdate(req *http.Request) (*htt
 	if w.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/watchers/(?P<watcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/watchers/(?P<watcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -163,7 +163,7 @@ func (w *WatcherServerTransport) dispatchDelete(req *http.Request) (*http.Respon
 	if w.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/watchers/(?P<watcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/watchers/(?P<watcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -200,7 +200,7 @@ func (w *WatcherServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if w.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/watchers/(?P<watcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/watchers/(?P<watcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -239,7 +239,7 @@ func (w *WatcherServerTransport) dispatchNewListByAutomationAccountPager(req *ht
 	}
 	newListByAutomationAccountPager := w.newListByAutomationAccountPager.get(req)
 	if newListByAutomationAccountPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/watchers`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/watchers`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -286,7 +286,7 @@ func (w *WatcherServerTransport) dispatchStart(req *http.Request) (*http.Respons
 	if w.srv.Start == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Start not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/watchers/(?P<watcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/watchers/(?P<watcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -323,7 +323,7 @@ func (w *WatcherServerTransport) dispatchStop(req *http.Request) (*http.Response
 	if w.srv.Stop == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Stop not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/watchers/(?P<watcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/watchers/(?P<watcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stop`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -360,7 +360,7 @@ func (w *WatcherServerTransport) dispatchUpdate(req *http.Request) (*http.Respon
 	if w.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/watchers/(?P<watcherName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/watchers/(?P<watcherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

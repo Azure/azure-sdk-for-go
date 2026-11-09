@@ -38,25 +38,6 @@ func (qb queryBuilder) isIDPartitionKeyQuery(items []ItemIdentity, pkDef Partiti
 	return true
 }
 
-// isSingleLogicalPartitionQuery returns true when all items share the same
-// logical partition key value. The check compares JSON-serialised PK strings.
-func (qb queryBuilder) isSingleLogicalPartitionQuery(items []ItemIdentity) bool {
-	if len(items) <= 1 {
-		return false
-	}
-	first, err := items[0].PartitionKey.toJsonString()
-	if err != nil {
-		return false
-	}
-	for i := 1; i < len(items); i++ {
-		s, err := items[i].PartitionKey.toJsonString()
-		if err != nil || s != first {
-			return false
-		}
-	}
-	return true
-}
-
 // buildIDInQuery builds: SELECT * FROM c WHERE c.id IN (@param_id0, @param_id1, …)
 func (qb queryBuilder) buildIDInQuery(items []ItemIdentity) (string, []QueryParameter) {
 	params := make([]QueryParameter, 0, len(items))
@@ -73,7 +54,7 @@ func (qb queryBuilder) buildIDInQuery(items []ItemIdentity) (string, []QueryPara
 // buildPKAndIDInQuery builds:
 //
 //	SELECT * FROM c WHERE <pkExpr> = @pk AND c.id IN (@id0, @id1, …)
-func (qb queryBuilder) buildPKAndIDInQuery(items []ItemIdentity, pkDef PartitionKeyDefinition) (string, []QueryParameter) {
+func (qb queryBuilder) buildPKAndIDInQuery(items []ItemIdentity, partitionKey PartitionKey, pkDef PartitionKeyDefinition) (string, []QueryParameter) {
 	params := make([]QueryParameter, 0, len(items)+len(pkDef.Paths))
 
 	// Build PK equality conditions (one per path for hierarchical PKs)
@@ -83,8 +64,8 @@ func (qb queryBuilder) buildPKAndIDInQuery(items []ItemIdentity, pkDef Partition
 		paramName := fmt.Sprintf("@pk%d", pathIdx)
 
 		var pkVal interface{}
-		if pathIdx < len(items[0].PartitionKey.values) {
-			pkVal = items[0].PartitionKey.values[pathIdx]
+		if pathIdx < len(partitionKey.values) {
+			pkVal = partitionKey.values[pathIdx]
 		}
 
 		if pkVal == nil {
@@ -153,8 +134,10 @@ func (qb queryBuilder) buildParameterizedQueryForItems(items []ItemIdentity, pkD
 	if qb.isIDPartitionKeyQuery(items, pkDef) {
 		return qb.buildIDInQuery(items)
 	}
-	if qb.isSingleLogicalPartitionQuery(items) {
-		return qb.buildPKAndIDInQuery(items, pkDef)
+	if len(items) > 1 {
+		if partitionKey := sharedPartitionKey(items); partitionKey != nil {
+			return qb.buildPKAndIDInQuery(items, *partitionKey, pkDef)
+		}
 	}
 	return qb.buildOrOfConjunctionsQuery(items, pkDef)
 }

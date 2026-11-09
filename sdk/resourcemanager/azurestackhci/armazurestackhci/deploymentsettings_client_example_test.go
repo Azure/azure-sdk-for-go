@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-30/PutDeploymentSettings.json
+// Generated from example definition: 2026-10-01/PutDeploymentSettings.json
 func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -538,7 +538,7 @@ func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSetting
 	// }
 }
 
-// Generated from example definition: 2026-04-30/PutDeploymentSettingsWithADLess.json
+// Generated from example definition: 2026-10-01/PutDeploymentSettingsWithADLess.json
 func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSettingsWithoutActiveDirectoryIntegration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1067,7 +1067,7 @@ func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSetting
 	// }
 }
 
-// Generated from example definition: 2026-04-30/PutDeploymentSettings_StorageS2D.json
+// Generated from example definition: 2026-10-01/PutDeploymentSettings_StorageS2D.json
 func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSettingsWithS2DStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1451,7 +1451,7 @@ func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSetting
 	// }
 }
 
-// Generated from example definition: 2026-04-30/PutDeploymentSettings_StorageSAN.json
+// Generated from example definition: 2026-10-01/PutDeploymentSettings_StorageSAN.json
 func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSettingsWithSanStorage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1871,7 +1871,7 @@ func ExampleDeploymentSettingsClient_BeginCreateOrUpdate_createDeploymentSetting
 	// }
 }
 
-// Generated from example definition: 2026-04-30/DeleteDeploymentSettings.json
+// Generated from example definition: 2026-10-01/DeleteDeploymentSettings.json
 func ExampleDeploymentSettingsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1892,7 +1892,7 @@ func ExampleDeploymentSettingsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-30/GetDeploymentSettings.json
+// Generated from example definition: 2026-10-01/GetDeploymentSettings.json
 func ExampleDeploymentSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2123,6 +2123,16 @@ func ExampleDeploymentSettingsClient_Get() {
 	// 							FullStepIndex: to.Ptr("0"),
 	// 							StartTimeUTC: to.Ptr("2023-06-09T00:08:19"),
 	// 							Status: to.Ptr("Error"),
+	// 							PercentComplete: to.Ptr[int32](75),
+	// 							AdditionalData: []*armazurestackhci.Metadata{
+	// 								{
+	// 									Key: to.Ptr("currentPhase"),
+	// 									Value: to.Ptr("CloudDeployment"),
+	// 								},
+	// 							},
+	// 							RecommendedSteps: []*string{
+	// 								to.Ptr("Review the failed nested deployment step and retry the deployment."),
+	// 							},
 	// 							Steps: []*armazurestackhci.DeploymentStep{
 	// 								{
 	// 									Name: to.Ptr("Before Cloud Deployment"),
@@ -2195,7 +2205,7 @@ func ExampleDeploymentSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-30/ListDeploymentSettingsByCluster.json
+// Generated from example definition: 2026-10-01/ListDeploymentSettingsByCluster.json
 func ExampleDeploymentSettingsClient_NewListByClustersPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

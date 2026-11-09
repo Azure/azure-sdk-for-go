@@ -30,6 +30,9 @@ type APIKeysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAPIKeysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIKeysClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -69,7 +72,7 @@ func (client *APIKeysClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 func (client *APIKeysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, apiKeyName string, body DeploymentAPIKeyRequest, _ *APIKeysClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/apiKeys/{apiKeyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -141,7 +144,7 @@ func (client *APIKeysClient) Delete(ctx context.Context, resourceGroupName strin
 func (client *APIKeysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, apiKeyName string, _ *APIKeysClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/apiKeys/{apiKeyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -193,7 +196,7 @@ func (client *APIKeysClient) Get(ctx context.Context, resourceGroupName string, 
 func (client *APIKeysClient) getCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, apiKeyName string, _ *APIKeysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/apiKeys/{apiKeyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -268,7 +271,7 @@ func (client *APIKeysClient) listCreateRequest(ctx context.Context, resourceGrou
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/apiKeys"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {

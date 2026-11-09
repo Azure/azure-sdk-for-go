@@ -94,7 +94,7 @@ func (r *RPServiceServerTransport) dispatchQueryRules(req *http.Request) (*http.
 	if r.srv.QueryRules == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryRules not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryRules`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queryRules`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -127,7 +127,7 @@ func (r *RPServiceServerTransport) dispatchQueryUserRules(req *http.Request) (*h
 	if r.srv.QueryUserRules == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryUserRules not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryUserRules`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queryUserRules`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -166,7 +166,7 @@ func (r *RPServiceServerTransport) dispatchSetCollectionRules(req *http.Request)
 	if r.srv.SetCollectionRules == nil {
 		return nil, &nonRetriableError{errors.New("fake for method SetCollectionRules not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/setRules`
+	const regexStr = `/providers/Microsoft\.Marketplace/privateStores/(?P<privateStoreId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/setRules`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {

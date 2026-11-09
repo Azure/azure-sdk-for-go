@@ -19,7 +19,7 @@ import (
 // WCFRelaysClient contains the methods for the WCFRelays group.
 // Don't use this type directly, use NewWCFRelaysClient() instead.
 //
-// Generated from API version 2024-01-01
+// Generated from API version 2026-01-01
 type WCFRelaysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type WCFRelaysClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewWCFRelaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WCFRelaysClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *WCFRelaysClient) CreateOrUpdate(ctx context.Context, resourceGroup
 func (client *WCFRelaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, parameters WcfRelay, _ *WCFRelaysClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -90,7 +93,7 @@ func (client *WCFRelaysClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -142,7 +145,7 @@ func (client *WCFRelaysClient) CreateOrUpdateAuthorizationRule(ctx context.Conte
 func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters AuthorizationRule, _ *WCFRelaysClientCreateOrUpdateAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -166,7 +169,7 @@ func (client *WCFRelaysClient) createOrUpdateAuthorizationRuleCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -218,7 +221,7 @@ func (client *WCFRelaysClient) Delete(ctx context.Context, resourceGroupName str
 func (client *WCFRelaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, _ *WCFRelaysClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -238,7 +241,7 @@ func (client *WCFRelaysClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -275,7 +278,7 @@ func (client *WCFRelaysClient) DeleteAuthorizationRule(ctx context.Context, reso
 func (client *WCFRelaysClient) deleteAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, _ *WCFRelaysClientDeleteAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -299,7 +302,7 @@ func (client *WCFRelaysClient) deleteAuthorizationRuleCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -331,7 +334,7 @@ func (client *WCFRelaysClient) Get(ctx context.Context, resourceGroupName string
 func (client *WCFRelaysClient) getCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, _ *WCFRelaysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -351,7 +354,7 @@ func (client *WCFRelaysClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -398,7 +401,7 @@ func (client *WCFRelaysClient) GetAuthorizationRule(ctx context.Context, resourc
 func (client *WCFRelaysClient) getAuthorizationRuleCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, _ *WCFRelaysClientGetAuthorizationRuleOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -422,7 +425,7 @@ func (client *WCFRelaysClient) getAuthorizationRuleCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -479,7 +482,7 @@ func (client *WCFRelaysClient) listAuthorizationRulesCreateRequest(ctx context.C
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -503,7 +506,7 @@ func (client *WCFRelaysClient) listAuthorizationRulesCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20240101)
+		reqQP.Set("api-version", version20260101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -560,7 +563,7 @@ func (client *WCFRelaysClient) listByNamespaceCreateRequest(ctx context.Context,
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -580,7 +583,7 @@ func (client *WCFRelaysClient) listByNamespaceCreateRequest(ctx context.Context,
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20240101)
+		reqQP.Set("api-version", version20260101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -627,7 +630,7 @@ func (client *WCFRelaysClient) ListKeys(ctx context.Context, resourceGroupName s
 func (client *WCFRelaysClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, _ *WCFRelaysClientListKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}/listKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -651,7 +654,7 @@ func (client *WCFRelaysClient) listKeysCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -699,7 +702,7 @@ func (client *WCFRelaysClient) RegenerateKeys(ctx context.Context, resourceGroup
 func (client *WCFRelaysClient) regenerateKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, relayName string, authorizationRuleName string, parameters RegenerateAccessKeyParameters, _ *WCFRelaysClientRegenerateKeysOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/wcfRelays/{relayName}/authorizationRules/{authorizationRuleName}/regenerateKeys"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -723,7 +726,7 @@ func (client *WCFRelaysClient) regenerateKeysCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240101)
+	reqQP.Set("api-version", version20260101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

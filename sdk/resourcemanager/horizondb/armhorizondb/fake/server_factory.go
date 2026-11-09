@@ -15,17 +15,62 @@ import (
 
 // ServerFactory is a fake server for instances of the armhorizondb.ClientFactory type.
 type ServerFactory struct {
+	// AuthenticationsServer contains the fakes for client AuthenticationsClient
+	AuthenticationsServer AuthenticationsServer
+
+	// CapabilitiesServer contains the fakes for client CapabilitiesClient
+	CapabilitiesServer CapabilitiesServer
+
+	// ChangeDataCaptureCapabilitiesServer contains the fakes for client ChangeDataCaptureCapabilitiesClient
+	ChangeDataCaptureCapabilitiesServer ChangeDataCaptureCapabilitiesServer
+
+	// ChangeDataCaptureConfigurationsServer contains the fakes for client ChangeDataCaptureConfigurationsClient
+	ChangeDataCaptureConfigurationsServer ChangeDataCaptureConfigurationsServer
+
+	// ChangeDataCaptureDestinationsServer contains the fakes for client ChangeDataCaptureDestinationsClient
+	ChangeDataCaptureDestinationsServer ChangeDataCaptureDestinationsServer
+
 	// ClustersServer contains the fakes for client ClustersClient
 	ClustersServer ClustersServer
 
+	// DefaultParameterGroupsServer contains the fakes for client DefaultParameterGroupsClient
+	DefaultParameterGroupsServer DefaultParameterGroupsServer
+
+	// EndpointsServer contains the fakes for client EndpointsClient
+	EndpointsServer EndpointsServer
+
 	// FirewallRulesServer contains the fakes for client FirewallRulesClient
 	FirewallRulesServer FirewallRulesServer
+
+	// IdentityAssignmentsServer contains the fakes for client IdentityAssignmentsClient
+	IdentityAssignmentsServer IdentityAssignmentsServer
+
+	// LogCaptureConfigurationsServer contains the fakes for client LogCaptureConfigurationsClient
+	LogCaptureConfigurationsServer LogCaptureConfigurationsServer
+
+	// LogFilesServer contains the fakes for client LogFilesClient
+	LogFilesServer LogFilesServer
+
+	// MaintenanceEventsServer contains the fakes for client MaintenanceEventsClient
+	MaintenanceEventsServer MaintenanceEventsServer
+
+	// MicrosoftEntraAdministratorsServer contains the fakes for client MicrosoftEntraAdministratorsClient
+	MicrosoftEntraAdministratorsServer MicrosoftEntraAdministratorsServer
+
+	// MicrosoftEntraAuthenticationsServer contains the fakes for client MicrosoftEntraAuthenticationsClient
+	MicrosoftEntraAuthenticationsServer MicrosoftEntraAuthenticationsServer
+
+	// NodesServer contains the fakes for client NodesClient
+	NodesServer NodesServer
 
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
 	// ParameterGroupsServer contains the fakes for client ParameterGroupsClient
 	ParameterGroupsServer ParameterGroupsServer
+
+	// PasswordAuthenticationsServer contains the fakes for client PasswordAuthenticationsClient
+	PasswordAuthenticationsServer PasswordAuthenticationsServer
 
 	// PoolsServer contains the fakes for client PoolsClient
 	PoolsServer PoolsServer
@@ -35,9 +80,6 @@ type ServerFactory struct {
 
 	// PrivateLinkResourcesServer contains the fakes for client PrivateLinkResourcesClient
 	PrivateLinkResourcesServer PrivateLinkResourcesServer
-
-	// ReplicasServer contains the fakes for client ReplicasClient
-	ReplicasServer ReplicasServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -52,16 +94,30 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armhorizondb.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                *ServerFactory
-	trMu                               sync.Mutex
-	trClustersServer                   *ClustersServerTransport
-	trFirewallRulesServer              *FirewallRulesServerTransport
-	trOperationsServer                 *OperationsServerTransport
-	trParameterGroupsServer            *ParameterGroupsServerTransport
-	trPoolsServer                      *PoolsServerTransport
-	trPrivateEndpointConnectionsServer *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer       *PrivateLinkResourcesServerTransport
-	trReplicasServer                   *ReplicasServerTransport
+	srv                                     *ServerFactory
+	trMu                                    sync.Mutex
+	trAuthenticationsServer                 *AuthenticationsServerTransport
+	trCapabilitiesServer                    *CapabilitiesServerTransport
+	trChangeDataCaptureCapabilitiesServer   *ChangeDataCaptureCapabilitiesServerTransport
+	trChangeDataCaptureConfigurationsServer *ChangeDataCaptureConfigurationsServerTransport
+	trChangeDataCaptureDestinationsServer   *ChangeDataCaptureDestinationsServerTransport
+	trClustersServer                        *ClustersServerTransport
+	trDefaultParameterGroupsServer          *DefaultParameterGroupsServerTransport
+	trEndpointsServer                       *EndpointsServerTransport
+	trFirewallRulesServer                   *FirewallRulesServerTransport
+	trIdentityAssignmentsServer             *IdentityAssignmentsServerTransport
+	trLogCaptureConfigurationsServer        *LogCaptureConfigurationsServerTransport
+	trLogFilesServer                        *LogFilesServerTransport
+	trMaintenanceEventsServer               *MaintenanceEventsServerTransport
+	trMicrosoftEntraAdministratorsServer    *MicrosoftEntraAdministratorsServerTransport
+	trMicrosoftEntraAuthenticationsServer   *MicrosoftEntraAuthenticationsServerTransport
+	trNodesServer                           *NodesServerTransport
+	trOperationsServer                      *OperationsServerTransport
+	trParameterGroupsServer                 *ParameterGroupsServerTransport
+	trPasswordAuthenticationsServer         *PasswordAuthenticationsServerTransport
+	trPoolsServer                           *PoolsServerTransport
+	trPrivateEndpointConnectionsServer      *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer            *PrivateLinkResourcesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -77,14 +133,76 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AuthenticationsClient":
+		initServer(&s.trMu, &s.trAuthenticationsServer, func() *AuthenticationsServerTransport {
+			return NewAuthenticationsServerTransport(&s.srv.AuthenticationsServer)
+		})
+		resp, err = s.trAuthenticationsServer.Do(req)
+	case "CapabilitiesClient":
+		initServer(&s.trMu, &s.trCapabilitiesServer, func() *CapabilitiesServerTransport { return NewCapabilitiesServerTransport(&s.srv.CapabilitiesServer) })
+		resp, err = s.trCapabilitiesServer.Do(req)
+	case "ChangeDataCaptureCapabilitiesClient":
+		initServer(&s.trMu, &s.trChangeDataCaptureCapabilitiesServer, func() *ChangeDataCaptureCapabilitiesServerTransport {
+			return NewChangeDataCaptureCapabilitiesServerTransport(&s.srv.ChangeDataCaptureCapabilitiesServer)
+		})
+		resp, err = s.trChangeDataCaptureCapabilitiesServer.Do(req)
+	case "ChangeDataCaptureConfigurationsClient":
+		initServer(&s.trMu, &s.trChangeDataCaptureConfigurationsServer, func() *ChangeDataCaptureConfigurationsServerTransport {
+			return NewChangeDataCaptureConfigurationsServerTransport(&s.srv.ChangeDataCaptureConfigurationsServer)
+		})
+		resp, err = s.trChangeDataCaptureConfigurationsServer.Do(req)
+	case "ChangeDataCaptureDestinationsClient":
+		initServer(&s.trMu, &s.trChangeDataCaptureDestinationsServer, func() *ChangeDataCaptureDestinationsServerTransport {
+			return NewChangeDataCaptureDestinationsServerTransport(&s.srv.ChangeDataCaptureDestinationsServer)
+		})
+		resp, err = s.trChangeDataCaptureDestinationsServer.Do(req)
 	case "ClustersClient":
 		initServer(&s.trMu, &s.trClustersServer, func() *ClustersServerTransport { return NewClustersServerTransport(&s.srv.ClustersServer) })
 		resp, err = s.trClustersServer.Do(req)
+	case "DefaultParameterGroupsClient":
+		initServer(&s.trMu, &s.trDefaultParameterGroupsServer, func() *DefaultParameterGroupsServerTransport {
+			return NewDefaultParameterGroupsServerTransport(&s.srv.DefaultParameterGroupsServer)
+		})
+		resp, err = s.trDefaultParameterGroupsServer.Do(req)
+	case "EndpointsClient":
+		initServer(&s.trMu, &s.trEndpointsServer, func() *EndpointsServerTransport { return NewEndpointsServerTransport(&s.srv.EndpointsServer) })
+		resp, err = s.trEndpointsServer.Do(req)
 	case "FirewallRulesClient":
 		initServer(&s.trMu, &s.trFirewallRulesServer, func() *FirewallRulesServerTransport {
 			return NewFirewallRulesServerTransport(&s.srv.FirewallRulesServer)
 		})
 		resp, err = s.trFirewallRulesServer.Do(req)
+	case "IdentityAssignmentsClient":
+		initServer(&s.trMu, &s.trIdentityAssignmentsServer, func() *IdentityAssignmentsServerTransport {
+			return NewIdentityAssignmentsServerTransport(&s.srv.IdentityAssignmentsServer)
+		})
+		resp, err = s.trIdentityAssignmentsServer.Do(req)
+	case "LogCaptureConfigurationsClient":
+		initServer(&s.trMu, &s.trLogCaptureConfigurationsServer, func() *LogCaptureConfigurationsServerTransport {
+			return NewLogCaptureConfigurationsServerTransport(&s.srv.LogCaptureConfigurationsServer)
+		})
+		resp, err = s.trLogCaptureConfigurationsServer.Do(req)
+	case "LogFilesClient":
+		initServer(&s.trMu, &s.trLogFilesServer, func() *LogFilesServerTransport { return NewLogFilesServerTransport(&s.srv.LogFilesServer) })
+		resp, err = s.trLogFilesServer.Do(req)
+	case "MaintenanceEventsClient":
+		initServer(&s.trMu, &s.trMaintenanceEventsServer, func() *MaintenanceEventsServerTransport {
+			return NewMaintenanceEventsServerTransport(&s.srv.MaintenanceEventsServer)
+		})
+		resp, err = s.trMaintenanceEventsServer.Do(req)
+	case "MicrosoftEntraAdministratorsClient":
+		initServer(&s.trMu, &s.trMicrosoftEntraAdministratorsServer, func() *MicrosoftEntraAdministratorsServerTransport {
+			return NewMicrosoftEntraAdministratorsServerTransport(&s.srv.MicrosoftEntraAdministratorsServer)
+		})
+		resp, err = s.trMicrosoftEntraAdministratorsServer.Do(req)
+	case "MicrosoftEntraAuthenticationsClient":
+		initServer(&s.trMu, &s.trMicrosoftEntraAuthenticationsServer, func() *MicrosoftEntraAuthenticationsServerTransport {
+			return NewMicrosoftEntraAuthenticationsServerTransport(&s.srv.MicrosoftEntraAuthenticationsServer)
+		})
+		resp, err = s.trMicrosoftEntraAuthenticationsServer.Do(req)
+	case "NodesClient":
+		initServer(&s.trMu, &s.trNodesServer, func() *NodesServerTransport { return NewNodesServerTransport(&s.srv.NodesServer) })
+		resp, err = s.trNodesServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
@@ -93,6 +211,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewParameterGroupsServerTransport(&s.srv.ParameterGroupsServer)
 		})
 		resp, err = s.trParameterGroupsServer.Do(req)
+	case "PasswordAuthenticationsClient":
+		initServer(&s.trMu, &s.trPasswordAuthenticationsServer, func() *PasswordAuthenticationsServerTransport {
+			return NewPasswordAuthenticationsServerTransport(&s.srv.PasswordAuthenticationsServer)
+		})
+		resp, err = s.trPasswordAuthenticationsServer.Do(req)
 	case "PoolsClient":
 		initServer(&s.trMu, &s.trPoolsServer, func() *PoolsServerTransport { return NewPoolsServerTransport(&s.srv.PoolsServer) })
 		resp, err = s.trPoolsServer.Do(req)
@@ -106,9 +229,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewPrivateLinkResourcesServerTransport(&s.srv.PrivateLinkResourcesServer)
 		})
 		resp, err = s.trPrivateLinkResourcesServer.Do(req)
-	case "ReplicasClient":
-		initServer(&s.trMu, &s.trReplicasServer, func() *ReplicasServerTransport { return NewReplicasServerTransport(&s.srv.ReplicasServer) })
-		resp, err = s.trReplicasServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

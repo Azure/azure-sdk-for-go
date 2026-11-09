@@ -19,7 +19,7 @@ import (
 // TokensClient contains the methods for the Tokens group.
 // Don't use this type directly, use NewTokensClient() instead.
 //
-// Generated from API version 2026-03-01-preview
+// Generated from API version 2026-09-01-preview
 type TokensClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type TokensClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTokensClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TokensClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +94,7 @@ func (client *TokensClient) create(ctx context.Context, resourceGroupName string
 func (client *TokensClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenCreateParameters Token, _ *TokensClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tokens/{tokenName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,7 +114,7 @@ func (client *TokensClient) createCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -170,7 +173,7 @@ func (client *TokensClient) deleteOperation(ctx context.Context, resourceGroupNa
 func (client *TokensClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, tokenName string, _ *TokensClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tokens/{tokenName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -190,7 +193,7 @@ func (client *TokensClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -222,7 +225,7 @@ func (client *TokensClient) Get(ctx context.Context, resourceGroupName string, r
 func (client *TokensClient) getCreateRequest(ctx context.Context, resourceGroupName string, registryName string, tokenName string, _ *TokensClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tokens/{tokenName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -242,7 +245,7 @@ func (client *TokensClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -297,7 +300,7 @@ func (client *TokensClient) listCreateRequest(ctx context.Context, resourceGroup
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tokens"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -317,7 +320,7 @@ func (client *TokensClient) listCreateRequest(ctx context.Context, resourceGroup
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260301Preview)
+		reqQP.Set("api-version", version20260901Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -386,7 +389,7 @@ func (client *TokensClient) update(ctx context.Context, resourceGroupName string
 func (client *TokensClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, tokenName string, tokenUpdateParameters TokenUpdateParameters, _ *TokensClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/tokens/{tokenName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -406,7 +409,7 @@ func (client *TokensClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
+	reqQP.Set("api-version", version20260901Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

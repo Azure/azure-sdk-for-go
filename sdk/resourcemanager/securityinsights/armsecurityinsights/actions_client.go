@@ -19,7 +19,7 @@ import (
 // ActionsClient contains the methods for the Actions group.
 // Don't use this type directly, use NewActionsClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type ActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ActionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewActionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ActionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *ActionsClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, action ActionRequest, _ *ActionsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -94,7 +97,7 @@ func (client *ActionsClient) createOrUpdateCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -147,7 +150,7 @@ func (client *ActionsClient) Delete(ctx context.Context, resourceGroupName strin
 func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, _ *ActionsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -171,7 +174,7 @@ func (client *ActionsClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -204,7 +207,7 @@ func (client *ActionsClient) Get(ctx context.Context, resourceGroupName string, 
 func (client *ActionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, ruleID string, actionID string, _ *ActionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions/{actionId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -228,7 +231,7 @@ func (client *ActionsClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -285,7 +288,7 @@ func (client *ActionsClient) listByAlertRuleCreateRequest(ctx context.Context, r
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/providers/Microsoft.SecurityInsights/alertRules/{ruleId}/actions"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -309,7 +312,7 @@ func (client *ActionsClient) listByAlertRuleCreateRequest(ctx context.Context, r
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250701Preview)
+		reqQP.Set("api-version", version20251001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

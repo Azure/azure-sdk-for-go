@@ -20,7 +20,7 @@ import (
 // IpamPoolsClient contains the methods for the IpamPools group.
 // Don't use this type directly, use NewIpamPoolsClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-03-01
 type IpamPoolsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type IpamPoolsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewIpamPoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IpamPoolsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *IpamPoolsClient) BeginCreate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Create - Creates/Updates the Pool resource.
+// create - Creates/Updates the Pool resource.
 //
 // Creates/Updates the Pool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -92,11 +95,11 @@ func (client *IpamPoolsClient) create(ctx context.Context, resourceGroupName str
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *IpamPoolsClient) createCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, body IpamPool, options *IpamPoolsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -116,7 +119,7 @@ func (client *IpamPoolsClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -139,7 +142,7 @@ func (client *IpamPoolsClient) createCreateRequest(ctx context.Context, resource
 //   - options - IpamPoolsClientBeginDeleteOptions contains the optional parameters for the IpamPoolsClient.BeginDelete method.
 func (client *IpamPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*runtime.Poller[IpamPoolsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, poolName, options)
+		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, poolName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -154,11 +157,11 @@ func (client *IpamPoolsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Delete the Pool resource.
+// delete - Delete the Pool resource.
 //
 // Delete the Pool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *IpamPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *IpamPoolsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IpamPoolsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -178,11 +181,11 @@ func (client *IpamPoolsClient) deleteOperation(ctx context.Context, resourceGrou
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *IpamPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -202,7 +205,7 @@ func (client *IpamPoolsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.IfMatch != nil {
 		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
@@ -239,7 +242,7 @@ func (client *IpamPoolsClient) Get(ctx context.Context, resourceGroupName string
 func (client *IpamPoolsClient) getCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, _ *IpamPoolsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -259,7 +262,7 @@ func (client *IpamPoolsClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -306,7 +309,7 @@ func (client *IpamPoolsClient) GetPoolUsage(ctx context.Context, resourceGroupNa
 func (client *IpamPoolsClient) getPoolUsageCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, _ *IpamPoolsClientGetPoolUsageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}/getPoolUsage"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -326,7 +329,7 @@ func (client *IpamPoolsClient) getPoolUsageCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -340,99 +343,6 @@ func (client *IpamPoolsClient) getPoolUsageHandleResponse(resp *http.Response, s
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PoolUsage); err != nil {
 		return IpamPoolsClientGetPoolUsageResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets list of Pool resources at Network Manager level.
-//
-// Gets list of Pool resources at Network Manager level.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - networkManagerName - The name of the network manager.
-//   - options - IpamPoolsClientListOptions contains the optional parameters for the IpamPoolsClient.NewListPager method.
-func (client *IpamPoolsClient) NewListPager(resourceGroupName string, networkManagerName string, options *IpamPoolsClientListOptions) *runtime.Pager[IpamPoolsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[IpamPoolsClientListResponse]{
-		More: func(page IpamPoolsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *IpamPoolsClientListResponse) (IpamPoolsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IpamPoolsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, resourceGroupName, networkManagerName, nextLink, options)
-			if err != nil {
-				return IpamPoolsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return IpamPoolsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *IpamPoolsClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, nextLink string, options *IpamPoolsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if networkManagerName == "" {
-			return nil, errors.New("parameter networkManagerName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
-		if options != nil && options.Skip != nil {
-			reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
-		}
-		if options != nil && options.SkipToken != nil {
-			reqQP.Set("skipToken", *options.SkipToken)
-		}
-		if options != nil && options.SortKey != nil {
-			reqQP.Set("sortKey", *options.SortKey)
-		}
-		if options != nil && options.SortValue != nil {
-			reqQP.Set("sortValue", *options.SortValue)
-		}
-		if options != nil && options.Top != nil {
-			reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *IpamPoolsClient) listHandleResponse(resp *http.Response, successCodes ...int) (IpamPoolsClientListResponse, error) {
-	result := IpamPoolsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IpamPoolList); err != nil {
-		return IpamPoolsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -478,7 +388,7 @@ func (client *IpamPoolsClient) listAssociatedResourcesCreateRequest(ctx context.
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}/listAssociatedResources"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -502,7 +412,7 @@ func (client *IpamPoolsClient) listAssociatedResourcesCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -517,6 +427,99 @@ func (client *IpamPoolsClient) listAssociatedResourcesHandleResponse(resp *http.
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PoolAssociationList); err != nil {
 		return IpamPoolsClientListAssociatedResourcesResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets list of Pool resources at Network Manager level.
+//
+// Gets list of Pool resources at Network Manager level.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - networkManagerName - The name of the network manager.
+//   - options - IpamPoolsClientListOptions contains the optional parameters for the IpamPoolsClient.NewListPager method.
+func (client *IpamPoolsClient) NewListPager(resourceGroupName string, networkManagerName string, options *IpamPoolsClientListOptions) *runtime.Pager[IpamPoolsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[IpamPoolsClientListResponse]{
+		More: func(page IpamPoolsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *IpamPoolsClientListResponse) (IpamPoolsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "IpamPoolsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, networkManagerName, nextLink, options)
+			if err != nil {
+				return IpamPoolsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return IpamPoolsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *IpamPoolsClient) listCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, nextLink string, options *IpamPoolsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if networkManagerName == "" {
+			return nil, errors.New("parameter networkManagerName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{networkManagerName}", url.PathEscape(networkManagerName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260301)
+		if options != nil && options.Skip != nil {
+			reqQP.Set("skip", strconv.FormatInt(int64(*options.Skip), 10))
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("skipToken", *options.SkipToken)
+		}
+		if options != nil && options.SortKey != nil {
+			reqQP.Set("sortKey", *options.SortKey)
+		}
+		if options != nil && options.SortValue != nil {
+			reqQP.Set("sortValue", *options.SortValue)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *IpamPoolsClient) listHandleResponse(resp *http.Response, successCodes ...int) (IpamPoolsClientListResponse, error) {
+	result := IpamPoolsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IpamPoolList); err != nil {
+		return IpamPoolsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -551,7 +554,7 @@ func (client *IpamPoolsClient) Update(ctx context.Context, resourceGroupName str
 func (client *IpamPoolsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, body IpamPoolUpdate, options *IpamPoolsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkManagers/{networkManagerName}/ipamPools/{poolName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -571,7 +574,7 @@ func (client *IpamPoolsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {

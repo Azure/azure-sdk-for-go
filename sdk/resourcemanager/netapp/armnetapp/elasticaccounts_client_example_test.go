@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/ElasticAccounts_CreateOrUpdate.json
+// Generated from example definition: 2026-08-15-preview/ElasticAccounts_CreateOrUpdate.json
 func ExampleElasticAccountsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleElasticAccountsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ElasticAccounts_Delete.json
+// Generated from example definition: 2026-08-15-preview/ElasticAccounts_Delete.json
 func ExampleElasticAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -90,7 +90,59 @@ func ExampleElasticAccountsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ElasticAccounts_Get.json
+// Generated from example definition: 2026-08-15-preview/ElasticAccounts_Update.json
+func ExampleElasticAccountsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewElasticAccountsClient().BeginUpdate(ctx, "myRG", "account1", armnetapp.ElasticAccountUpdate{
+		Tags: map[string]*string{
+			"Tag1": to.Ptr("Value1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.ElasticAccountsClientUpdateResponse{
+	// 	ElasticAccount: armnetapp.ElasticAccount{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1"),
+	// 		Name: to.Ptr("account1"),
+	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetapp.ElasticAccountProperties{
+	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
+	// 			Encryption: &armnetapp.ElasticEncryption{
+	// 				KeySource: to.Ptr(armnetapp.KeySource("NetApp")),
+	// 				KeyVaultProperties: &armnetapp.ElasticKeyVaultProperties{
+	// 					KeyVaultURI: to.Ptr("https://myVault.vault.azure.net/"),
+	// 					KeyName: to.Ptr("string"),
+	// 					KeyVaultResourceID: to.Ptr("/subscriptions/a1b2c3d4-e5f6-7890-1234-567890abcdef/resourceGroups/my-keyvault-rg/providers/Microsoft.KeyVault/vaults/my-prod-keyvault"),
+	// 					Status: to.Ptr(armnetapp.ElasticKeyVaultStatusCreated),
+	// 				},
+	// 				Identity: &armnetapp.ElasticEncryptionIdentity{
+	// 					PrincipalID: to.Ptr("70ab1774-1488-4f9c-a283-2db682f91b98"),
+	// 					UserAssignedIdentity: to.Ptr("/subscriptions/ccdce6ae-b7b3-4a53-b9c5-48e2caa01800/resourcegroups/snaebjor-rotterdam-westcentralus/providers/Microsoft.ManagedIdentity/userAssignedIdentities/snaebjor-wcu-identity"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-15-preview/ElasticAccounts_Get.json
 func ExampleElasticAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +189,7 @@ func ExampleElasticAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ElasticAccounts_ListByResourceGroup.json
+// Generated from example definition: 2026-08-15-preview/ElasticAccounts_ListByResourceGroup.json
 func ExampleElasticAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +245,7 @@ func ExampleElasticAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ElasticAccounts_ListBySubscription.json
+// Generated from example definition: 2026-08-15-preview/ElasticAccounts_ListBySubscription.json
 func ExampleElasticAccountsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,56 +299,4 @@ func ExampleElasticAccountsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-05-15-preview/ElasticAccounts_Update.json
-func ExampleElasticAccountsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewElasticAccountsClient().BeginUpdate(ctx, "myRG", "account1", armnetapp.ElasticAccountUpdate{
-		Tags: map[string]*string{
-			"Tag1": to.Ptr("Value1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ElasticAccountsClientUpdateResponse{
-	// 	ElasticAccount: armnetapp.ElasticAccount{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1"),
-	// 		Name: to.Ptr("account1"),
-	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armnetapp.ElasticAccountProperties{
-	// 			ProvisioningState: to.Ptr(armnetapp.ProvisioningStateSucceeded),
-	// 			Encryption: &armnetapp.ElasticEncryption{
-	// 				KeySource: to.Ptr(armnetapp.KeySource("NetApp")),
-	// 				KeyVaultProperties: &armnetapp.ElasticKeyVaultProperties{
-	// 					KeyVaultURI: to.Ptr("https://myVault.vault.azure.net/"),
-	// 					KeyName: to.Ptr("string"),
-	// 					KeyVaultResourceID: to.Ptr("/subscriptions/a1b2c3d4-e5f6-7890-1234-567890abcdef/resourceGroups/my-keyvault-rg/providers/Microsoft.KeyVault/vaults/my-prod-keyvault"),
-	// 					Status: to.Ptr(armnetapp.ElasticKeyVaultStatusCreated),
-	// 				},
-	// 				Identity: &armnetapp.ElasticEncryptionIdentity{
-	// 					PrincipalID: to.Ptr("70ab1774-1488-4f9c-a283-2db682f91b98"),
-	// 					UserAssignedIdentity: to.Ptr("/subscriptions/ccdce6ae-b7b3-4a53-b9c5-48e2caa01800/resourcegroups/snaebjor-rotterdam-westcentralus/providers/Microsoft.ManagedIdentity/userAssignedIdentities/snaebjor-wcu-identity"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

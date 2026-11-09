@@ -95,7 +95,7 @@ func (c *CollectionPartitionServerTransport) dispatchNewListMetricsPager(req *ht
 	}
 	newListMetricsPager := c.newListMetricsPager.get(req)
 	if newListMetricsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseRid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionRid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/partitions/metrics`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseRid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionRid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/partitions/metrics`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -145,7 +145,7 @@ func (c *CollectionPartitionServerTransport) dispatchNewListUsagesPager(req *htt
 	}
 	newListUsagesPager := c.newListUsagesPager.get(req)
 	if newListUsagesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/databases/(?P<databaseRid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/collections/(?P<collectionRid>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/partitions/usages`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DocumentDB/databaseAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/databases/(?P<databaseRid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/collections/(?P<collectionRid>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/partitions/usages`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

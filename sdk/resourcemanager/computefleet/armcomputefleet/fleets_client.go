@@ -19,7 +19,7 @@ import (
 // FleetsClient contains the methods for the Fleets group.
 // Don't use this type directly, use NewFleetsClient() instead.
 //
-// Generated from API version 2026-06-01-preview
+// Generated from API version 2026-08-01
 type FleetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type FleetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewFleetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*FleetsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -92,7 +95,7 @@ func (client *FleetsClient) createOrUpdate(ctx context.Context, resourceGroupNam
 func (client *FleetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, resource Fleet, _ *FleetsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -108,7 +111,7 @@ func (client *FleetsClient) createOrUpdateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -166,7 +169,7 @@ func (client *FleetsClient) deleteOperation(ctx context.Context, resourceGroupNa
 func (client *FleetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, _ *FleetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -182,7 +185,7 @@ func (client *FleetsClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -213,7 +216,7 @@ func (client *FleetsClient) Get(ctx context.Context, resourceGroupName string, f
 func (client *FleetsClient) getCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, _ *FleetsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -229,7 +232,7 @@ func (client *FleetsClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -284,7 +287,7 @@ func (client *FleetsClient) listByResourceGroupCreateRequest(ctx context.Context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -300,7 +303,7 @@ func (client *FleetsClient) listByResourceGroupCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601Preview)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -355,7 +358,7 @@ func (client *FleetsClient) listBySubscriptionCreateRequest(ctx context.Context,
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureFleet/fleets"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -367,7 +370,7 @@ func (client *FleetsClient) listBySubscriptionCreateRequest(ctx context.Context,
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601Preview)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -424,7 +427,7 @@ func (client *FleetsClient) listVirtualMachineScaleSetsCreateRequest(ctx context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{name}/virtualMachineScaleSets"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -444,7 +447,7 @@ func (client *FleetsClient) listVirtualMachineScaleSetsCreateRequest(ctx context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260601Preview)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -501,7 +504,7 @@ func (client *FleetsClient) listVirtualMachinesCreateRequest(ctx context.Context
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{name}/virtualMachines"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -527,7 +530,7 @@ func (client *FleetsClient) listVirtualMachinesCreateRequest(ctx context.Context
 		if options != nil && options.Skiptoken != nil {
 			reqQP.Set("$skiptoken", *options.Skiptoken)
 		}
-		reqQP.Set("api-version", version20260601Preview)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -595,7 +598,7 @@ func (client *FleetsClient) update(ctx context.Context, resourceGroupName string
 func (client *FleetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, properties FleetUpdate, _ *FleetsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureFleet/fleets/{fleetName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -611,7 +614,7 @@ func (client *FleetsClient) updateCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601Preview)
+	reqQP.Set("api-version", version20260801)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

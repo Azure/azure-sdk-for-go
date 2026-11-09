@@ -30,6 +30,9 @@ type MaccsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMaccsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaccsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -92,7 +95,7 @@ func (client *MaccsClient) cancel(ctx context.Context, resourceGroupName string,
 func (client *MaccsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, maccName string, _ *MaccsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -167,7 +170,7 @@ func (client *MaccsClient) chargeShortfall(ctx context.Context, resourceGroupNam
 func (client *MaccsClient) chargeShortfallCreateRequest(ctx context.Context, resourceGroupName string, maccName string, body ChargeShortfallRequest, _ *MaccsClientBeginChargeShortfallOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}/chargeShortfall"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -242,7 +245,7 @@ func (client *MaccsClient) create(ctx context.Context, resourceGroupName string,
 func (client *MaccsClient) createCreateRequest(ctx context.Context, resourceGroupName string, maccName string, body Macc, _ *MaccsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -317,7 +320,7 @@ func (client *MaccsClient) deleteOperation(ctx context.Context, resourceGroupNam
 func (client *MaccsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, maccName string, _ *MaccsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -364,7 +367,7 @@ func (client *MaccsClient) Get(ctx context.Context, resourceGroupName string, ma
 func (client *MaccsClient) getCreateRequest(ctx context.Context, resourceGroupName string, maccName string, _ *MaccsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -435,7 +438,7 @@ func (client *MaccsClient) listByResourceGroupCreateRequest(ctx context.Context,
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -506,7 +509,7 @@ func (client *MaccsClient) listBySubscriptionCreateRequest(ctx context.Context, 
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.BillingBenefits/maccs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -587,7 +590,7 @@ func (client *MaccsClient) update(ctx context.Context, resourceGroupName string,
 func (client *MaccsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, maccName string, body MaccPatchRequest, _ *MaccsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -664,7 +667,7 @@ func (client *MaccsClient) writeOff(ctx context.Context, resourceGroupName strin
 func (client *MaccsClient) writeOffCreateRequest(ctx context.Context, resourceGroupName string, maccName string, _ *MaccsClientBeginWriteOffOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}/writeOff"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

@@ -269,6 +269,30 @@ type DNSPrivateZonesClientListByLocationResponse struct {
 	DNSPrivateZoneListResult
 }
 
+// DatabaseEditionsClientGetResponse contains the response from method DatabaseEditionsClient.Get.
+type DatabaseEditionsClientGetResponse struct {
+	// DatabaseEdition resource definition
+	DatabaseEdition
+}
+
+// DatabaseEditionsClientListByLocationResponse contains the response from method DatabaseEditionsClient.NewListByLocationPager.
+type DatabaseEditionsClientListByLocationResponse struct {
+	// The response of a DatabaseEdition list operation.
+	DatabaseEditionListResult
+}
+
+// DatabaseSystemShapeResourcesClientGetResponse contains the response from method DatabaseSystemShapeResourcesClient.Get.
+type DatabaseSystemShapeResourcesClientGetResponse struct {
+	// DatabaseSystemShape resource definition
+	DatabaseSystemShape
+}
+
+// DatabaseSystemShapeResourcesClientListByLocationResponse contains the response from method DatabaseSystemShapeResourcesClient.NewListByLocationPager.
+type DatabaseSystemShapeResourcesClientListByLocationResponse struct {
+	// The response of a DatabaseSystemShape list operation.
+	DatabaseSystemShapeListResult
+}
+
 // DbNodesClientActionResponse contains the response from method DbNodesClient.BeginAction.
 type DbNodesClientActionResponse struct {
 	// The DbNode resource belonging to vmCluster
@@ -486,6 +510,124 @@ type GiVersionsClientGetResponse struct {
 type GiVersionsClientListByLocationResponse struct {
 	// The response of a GiVersion list operation.
 	GiVersionListResult
+}
+
+// GoldenGateConnectionsClientAssignDeploymentResponse contains the response from method GoldenGateConnectionsClient.BeginAssignDeployment.
+type GoldenGateConnectionsClientAssignDeploymentResponse struct {
+	// Assigned Deployment resource belonging to GoldenGate Connection.
+	AssignedDeployment
+}
+
+// GoldenGateConnectionsClientCreateOrUpdateResponse contains the response from method GoldenGateConnectionsClient.BeginCreateOrUpdate.
+type GoldenGateConnectionsClientCreateOrUpdateResponse struct {
+	// GoldenGate Connection resource model.
+	GoldenGateConnection
+}
+
+// GoldenGateConnectionsClientDeleteResponse contains the response from method GoldenGateConnectionsClient.BeginDelete.
+type GoldenGateConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GoldenGateConnectionsClientGetAssignedDeploymentResponse contains the response from method GoldenGateConnectionsClient.GetAssignedDeployment.
+type GoldenGateConnectionsClientGetAssignedDeploymentResponse struct {
+	// Assigned Deployment resource belonging to GoldenGate Connection.
+	AssignedDeployment
+}
+
+// GoldenGateConnectionsClientGetResponse contains the response from method GoldenGateConnectionsClient.Get.
+type GoldenGateConnectionsClientGetResponse struct {
+	// GoldenGate Connection resource model.
+	GoldenGateConnection
+}
+
+// GoldenGateConnectionsClientListAssignedDeploymentsByParentResponse contains the response from method GoldenGateConnectionsClient.NewListAssignedDeploymentsByParentPager.
+type GoldenGateConnectionsClientListAssignedDeploymentsByParentResponse struct {
+	// The response of a AssignedDeployment list operation.
+	AssignedDeploymentListResult
+}
+
+// GoldenGateConnectionsClientListByResourceGroupResponse contains the response from method GoldenGateConnectionsClient.NewListByResourceGroupPager.
+type GoldenGateConnectionsClientListByResourceGroupResponse struct {
+	// The response of a GoldenGateConnection list operation.
+	GoldenGateConnectionListResult
+}
+
+// GoldenGateConnectionsClientListBySubscriptionResponse contains the response from method GoldenGateConnectionsClient.NewListBySubscriptionPager.
+type GoldenGateConnectionsClientListBySubscriptionResponse struct {
+	// The response of a GoldenGateConnection list operation.
+	GoldenGateConnectionListResult
+}
+
+// GoldenGateConnectionsClientUnassignDeploymentResponse contains the response from method GoldenGateConnectionsClient.BeginUnassignDeployment.
+type GoldenGateConnectionsClientUnassignDeploymentResponse struct {
+	// Assigned Deployment resource belonging to GoldenGate Connection.
+	AssignedDeployment
+}
+
+// GoldenGateConnectionsClientUpdateResponse contains the response from method GoldenGateConnectionsClient.BeginUpdate.
+type GoldenGateConnectionsClientUpdateResponse struct {
+	// GoldenGate Connection resource model.
+	GoldenGateConnection
+}
+
+// GoldenGateDeploymentsClientAssignConnectionResponse contains the response from method GoldenGateDeploymentsClient.BeginAssignConnection.
+type GoldenGateDeploymentsClientAssignConnectionResponse struct {
+	// Assigned Connection resource belonging to GoldenGate Deployment.
+	AssignedConnection
+}
+
+// GoldenGateDeploymentsClientCreateOrUpdateResponse contains the response from method GoldenGateDeploymentsClient.BeginCreateOrUpdate.
+type GoldenGateDeploymentsClientCreateOrUpdateResponse struct {
+	// GoldenGate Deployment resource definition.
+	GoldenGateDeployment
+}
+
+// GoldenGateDeploymentsClientDeleteResponse contains the response from method GoldenGateDeploymentsClient.BeginDelete.
+type GoldenGateDeploymentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// GoldenGateDeploymentsClientGetAssignedConnectionResponse contains the response from method GoldenGateDeploymentsClient.GetAssignedConnection.
+type GoldenGateDeploymentsClientGetAssignedConnectionResponse struct {
+	// Assigned Connection resource belonging to GoldenGate Deployment.
+	AssignedConnection
+}
+
+// GoldenGateDeploymentsClientGetResponse contains the response from method GoldenGateDeploymentsClient.Get.
+type GoldenGateDeploymentsClientGetResponse struct {
+	// GoldenGate Deployment resource definition.
+	GoldenGateDeployment
+}
+
+// GoldenGateDeploymentsClientListAssignedConnectionsByParentResponse contains the response from method GoldenGateDeploymentsClient.NewListAssignedConnectionsByParentPager.
+type GoldenGateDeploymentsClientListAssignedConnectionsByParentResponse struct {
+	// The response of a AssignedConnection list operation.
+	AssignedConnectionListResult
+}
+
+// GoldenGateDeploymentsClientListByResourceGroupResponse contains the response from method GoldenGateDeploymentsClient.NewListByResourceGroupPager.
+type GoldenGateDeploymentsClientListByResourceGroupResponse struct {
+	// The response of a GoldenGateDeployment list operation.
+	GoldenGateDeploymentListResult
+}
+
+// GoldenGateDeploymentsClientListBySubscriptionResponse contains the response from method GoldenGateDeploymentsClient.NewListBySubscriptionPager.
+type GoldenGateDeploymentsClientListBySubscriptionResponse struct {
+	// The response of a GoldenGateDeployment list operation.
+	GoldenGateDeploymentListResult
+}
+
+// GoldenGateDeploymentsClientUnassignConnectionResponse contains the response from method GoldenGateDeploymentsClient.BeginUnassignConnection.
+type GoldenGateDeploymentsClientUnassignConnectionResponse struct {
+	// Assigned Connection resource belonging to GoldenGate Deployment.
+	AssignedConnection
+}
+
+// GoldenGateDeploymentsClientUpdateResponse contains the response from method GoldenGateDeploymentsClient.BeginUpdate.
+type GoldenGateDeploymentsClientUpdateResponse struct {
+	// GoldenGate Deployment resource definition.
+	GoldenGateDeployment
 }
 
 // NetworkAnchorsClientCreateOrUpdateResponse contains the response from method NetworkAnchorsClient.BeginCreateOrUpdate.

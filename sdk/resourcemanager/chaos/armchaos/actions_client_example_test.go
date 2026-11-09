@@ -7,11 +7,11 @@ package armchaos_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Actions_Get.json
+// Generated from example definition: 2026-08-01-preview/Actions_Get.json
 func ExampleActionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleActionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Actions_List.json
+// Generated from example definition: 2026-08-01-preview/Actions_List.json
 func ExampleActionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleActionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armchaos.ActionsClientListResponse{
 		// 	ActionListResult: armchaos.ActionListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/actions?continuationToken=&api-version=2026-05-01-preview"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/locations/westus2/actions?continuationToken=&api-version=2026-08-01-preview"),
 		// 		Value: []*armchaos.Action{
 		// 			{
 		// 				Name: to.Ptr("microsoft-compute-shutdown"),

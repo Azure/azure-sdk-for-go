@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -21,6 +21,10 @@ import (
 
 // AFDProfilesServer is a fake server for instances of the armcdn.AFDProfilesClient type.
 type AFDProfilesServer struct {
+	// BeginUpgrade is the fake for method AFDProfilesClient.BeginUpgrade
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpgrade func(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters armcdn.ProfileUpgradeParameters, options *armcdn.AFDProfilesClientBeginUpgradeOptions) (resp azfake.PollerResponder[armcdn.AFDProfilesClientUpgradeResponse], errResp azfake.ErrorResponder)
+
 	// CheckEndpointNameAvailability is the fake for method AFDProfilesClient.CheckEndpointNameAvailability
 	// HTTP status codes to indicate success: http.StatusOK
 	CheckEndpointNameAvailability func(ctx context.Context, resourceGroupName string, profileName string, checkEndpointNameAvailabilityInput armcdn.CheckEndpointNameAvailabilityInput, options *armcdn.AFDProfilesClientCheckEndpointNameAvailabilityOptions) (resp azfake.Responder[armcdn.AFDProfilesClientCheckEndpointNameAvailabilityResponse], errResp azfake.ErrorResponder)
@@ -33,10 +37,6 @@ type AFDProfilesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListResourceUsagePager func(resourceGroupName string, profileName string, options *armcdn.AFDProfilesClientListResourceUsageOptions) (resp azfake.PagerResponder[armcdn.AFDProfilesClientListResourceUsageResponse])
 
-	// BeginUpgrade is the fake for method AFDProfilesClient.BeginUpgrade
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpgrade func(ctx context.Context, resourceGroupName string, profileName string, profileUpgradeParameters armcdn.ProfileUpgradeParameters, options *armcdn.AFDProfilesClientBeginUpgradeOptions) (resp azfake.PollerResponder[armcdn.AFDProfilesClientUpgradeResponse], errResp azfake.ErrorResponder)
-
 	// ValidateSecret is the fake for method AFDProfilesClient.ValidateSecret
 	// HTTP status codes to indicate success: http.StatusOK
 	ValidateSecret func(ctx context.Context, resourceGroupName string, profileName string, validateSecretInput armcdn.ValidateSecretInput, options *armcdn.AFDProfilesClientValidateSecretOptions) (resp azfake.Responder[armcdn.AFDProfilesClientValidateSecretResponse], errResp azfake.ErrorResponder)
@@ -48,8 +48,8 @@ type AFDProfilesServer struct {
 func NewAFDProfilesServerTransport(srv *AFDProfilesServer) *AFDProfilesServerTransport {
 	return &AFDProfilesServerTransport{
 		srv:                       srv,
-		newListResourceUsagePager: newTracker[azfake.PagerResponder[armcdn.AFDProfilesClientListResourceUsageResponse]](),
 		beginUpgrade:              newTracker[azfake.PollerResponder[armcdn.AFDProfilesClientUpgradeResponse]](),
+		newListResourceUsagePager: newTracker[azfake.PagerResponder[armcdn.AFDProfilesClientListResourceUsageResponse]](),
 	}
 }
 
@@ -57,8 +57,8 @@ func NewAFDProfilesServerTransport(srv *AFDProfilesServer) *AFDProfilesServerTra
 // Don't use this type directly, use NewAFDProfilesServerTransport instead.
 type AFDProfilesServerTransport struct {
 	srv                       *AFDProfilesServer
-	newListResourceUsagePager *tracker[azfake.PagerResponder[armcdn.AFDProfilesClientListResourceUsageResponse]]
 	beginUpgrade              *tracker[azfake.PollerResponder[armcdn.AFDProfilesClientUpgradeResponse]]
+	newListResourceUsagePager *tracker[azfake.PagerResponder[armcdn.AFDProfilesClientListResourceUsageResponse]]
 }
 
 // Do implements the policy.Transporter interface for AFDProfilesServerTransport.
@@ -82,14 +82,14 @@ func (a *AFDProfilesServerTransport) dispatchToMethodFake(req *http.Request, met
 		}
 		if !intercepted {
 			switch method {
+			case "AFDProfilesClient.BeginUpgrade":
+				res.resp, res.err = a.dispatchBeginUpgrade(req)
 			case "AFDProfilesClient.CheckEndpointNameAvailability":
 				res.resp, res.err = a.dispatchCheckEndpointNameAvailability(req)
 			case "AFDProfilesClient.CheckHostNameAvailability":
 				res.resp, res.err = a.dispatchCheckHostNameAvailability(req)
 			case "AFDProfilesClient.NewListResourceUsagePager":
 				res.resp, res.err = a.dispatchNewListResourceUsagePager(req)
-			case "AFDProfilesClient.BeginUpgrade":
-				res.resp, res.err = a.dispatchBeginUpgrade(req)
 			case "AFDProfilesClient.ValidateSecret":
 				res.resp, res.err = a.dispatchValidateSecret(req)
 			default:
@@ -108,128 +108,13 @@ func (a *AFDProfilesServerTransport) dispatchToMethodFake(req *http.Request, met
 	}
 }
 
-func (a *AFDProfilesServerTransport) dispatchCheckEndpointNameAvailability(req *http.Request) (*http.Response, error) {
-	if a.srv.CheckEndpointNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckEndpointNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkEndpointNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcdn.CheckEndpointNameAvailabilityInput](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.CheckEndpointNameAvailability(req.Context(), resourceGroupNameParam, profileNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckEndpointNameAvailabilityOutput, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AFDProfilesServerTransport) dispatchCheckHostNameAvailability(req *http.Request) (*http.Response, error) {
-	if a.srv.CheckHostNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckHostNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkHostNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armcdn.CheckHostNameAvailabilityInput](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.CheckHostNameAvailability(req.Context(), resourceGroupNameParam, profileNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityOutput, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *AFDProfilesServerTransport) dispatchNewListResourceUsagePager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListResourceUsagePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListResourceUsagePager not implemented")}
-	}
-	newListResourceUsagePager := a.newListResourceUsagePager.get(req)
-	if newListResourceUsagePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usages`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListResourceUsagePager(resourceGroupNameParam, profileNameParam, nil)
-		newListResourceUsagePager = &resp
-		a.newListResourceUsagePager.add(req, newListResourceUsagePager)
-		server.PagerResponderInjectNextLinks(newListResourceUsagePager, req, func(page *armcdn.AFDProfilesClientListResourceUsageResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListResourceUsagePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListResourceUsagePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListResourceUsagePager) {
-		a.newListResourceUsagePager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *AFDProfilesServerTransport) dispatchBeginUpgrade(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginUpgrade == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpgrade not implemented")}
 	}
 	beginUpgrade := a.beginUpgrade.get(req)
 	if beginUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upgrade`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -271,11 +156,126 @@ func (a *AFDProfilesServerTransport) dispatchBeginUpgrade(req *http.Request) (*h
 	return resp, nil
 }
 
+func (a *AFDProfilesServerTransport) dispatchCheckEndpointNameAvailability(req *http.Request) (*http.Response, error) {
+	if a.srv.CheckEndpointNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckEndpointNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkEndpointNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcdn.CheckEndpointNameAvailabilityInput](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CheckEndpointNameAvailability(req.Context(), resourceGroupNameParam, profileNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckEndpointNameAvailabilityOutput, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AFDProfilesServerTransport) dispatchCheckHostNameAvailability(req *http.Request) (*http.Response, error) {
+	if a.srv.CheckHostNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckHostNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkHostNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armcdn.CheckHostNameAvailabilityInput](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.CheckHostNameAvailability(req.Context(), resourceGroupNameParam, profileNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckNameAvailabilityOutput, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AFDProfilesServerTransport) dispatchNewListResourceUsagePager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListResourceUsagePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListResourceUsagePager not implemented")}
+	}
+	newListResourceUsagePager := a.newListResourceUsagePager.get(req)
+	if newListResourceUsagePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usages`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListResourceUsagePager(resourceGroupNameParam, profileNameParam, nil)
+		newListResourceUsagePager = &resp
+		a.newListResourceUsagePager.add(req, newListResourceUsagePager)
+		server.PagerResponderInjectNextLinks(newListResourceUsagePager, req, func(page *armcdn.AFDProfilesClientListResourceUsageResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListResourceUsagePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListResourceUsagePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListResourceUsagePager) {
+		a.newListResourceUsagePager.remove(req)
+	}
+	return resp, nil
+}
+
 func (a *AFDProfilesServerTransport) dispatchValidateSecret(req *http.Request) (*http.Response, error) {
 	if a.srv.ValidateSecret == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ValidateSecret not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validateSecret`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validateSecret`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

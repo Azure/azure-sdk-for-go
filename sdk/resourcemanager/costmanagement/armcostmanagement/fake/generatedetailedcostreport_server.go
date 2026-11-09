@@ -13,7 +13,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/costmanagement/armcostmanagement/v3"
 	"net/http"
-	"net/url"
 	"regexp"
 	"slices"
 )
@@ -87,7 +86,7 @@ func (g *GenerateDetailedCostReportServerTransport) dispatchBeginCreateOperation
 	}
 	beginCreateOperation := g.beginCreateOperation.get(req)
 	if beginCreateOperation == nil {
-		const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/generateDetailedCostReport`
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/generateDetailedCostReport`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -97,10 +96,7 @@ func (g *GenerateDetailedCostReportServerTransport) dispatchBeginCreateOperation
 		if err != nil {
 			return nil, err
 		}
-		scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-		if err != nil {
-			return nil, err
-		}
+		scopeParam := matches[regex.SubexpIndex("scope")]
 		respr, errRespr := g.srv.BeginCreateOperation(req.Context(), scopeParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr

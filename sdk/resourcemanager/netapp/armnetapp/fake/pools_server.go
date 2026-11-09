@@ -29,6 +29,10 @@ type PoolsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *armnetapp.PoolsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.PoolsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method PoolsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, body armnetapp.CapacityPoolPatch, options *armnetapp.PoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.PoolsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method PoolsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, accountName string, poolName string, options *armnetapp.PoolsClientGetOptions) (resp azfake.Responder[armnetapp.PoolsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type PoolsServer struct {
 	// NewListPager is the fake for method PoolsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, accountName string, options *armnetapp.PoolsClientListOptions) (resp azfake.PagerResponder[armnetapp.PoolsClientListResponse])
-
-	// BeginUpdate is the fake for method PoolsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, body armnetapp.CapacityPoolPatch, options *armnetapp.PoolsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.PoolsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewPoolsServerTransport creates a new instance of PoolsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewPoolsServerTransport(srv *PoolsServer) *PoolsServerTransport {
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armnetapp.PoolsClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armnetapp.PoolsClientDeleteResponse]](),
-		newListPager:        newTracker[azfake.PagerResponder[armnetapp.PoolsClientListResponse]](),
 		beginUpdate:         newTracker[azfake.PollerResponder[armnetapp.PoolsClientUpdateResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armnetapp.PoolsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type PoolsServerTransport struct {
 	srv                 *PoolsServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armnetapp.PoolsClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armnetapp.PoolsClientDeleteResponse]]
-	newListPager        *tracker[azfake.PagerResponder[armnetapp.PoolsClientListResponse]]
 	beginUpdate         *tracker[azfake.PollerResponder[armnetapp.PoolsClientUpdateResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armnetapp.PoolsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for PoolsServerTransport.
@@ -90,12 +90,12 @@ func (p *PoolsServerTransport) dispatchToMethodFake(req *http.Request, method st
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
 			case "PoolsClient.BeginDelete":
 				res.resp, res.err = p.dispatchBeginDelete(req)
+			case "PoolsClient.BeginUpdate":
+				res.resp, res.err = p.dispatchBeginUpdate(req)
 			case "PoolsClient.Get":
 				res.resp, res.err = p.dispatchGet(req)
 			case "PoolsClient.NewListPager":
 				res.resp, res.err = p.dispatchNewListPager(req)
-			case "PoolsClient.BeginUpdate":
-				res.resp, res.err = p.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (p *PoolsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*
 	}
 	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -170,7 +170,7 @@ func (p *PoolsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -212,91 +212,13 @@ func (p *PoolsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (p *PoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CapacityPool, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *PoolsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := p.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListPager(resourceGroupNameParam, accountNameParam, nil)
-		newListPager = &resp
-		p.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.PoolsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		p.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := p.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/capacityPools/(?P<poolName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -339,6 +261,84 @@ func (p *PoolsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Res
 		p.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (p *PoolsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CapacityPool, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PoolsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := p.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListPager(resourceGroupNameParam, accountNameParam, nil)
+		newListPager = &resp
+		p.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.PoolsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		p.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

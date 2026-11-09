@@ -188,7 +188,7 @@ func (c *ComputeServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) 
 	}
 	beginCreateOrUpdate := c.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -240,7 +240,7 @@ func (c *ComputeServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	}
 	beginDelete := c.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -287,7 +287,7 @@ func (c *ComputeServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -324,7 +324,7 @@ func (c *ComputeServerTransport) dispatchGetAllowedResizeSizes(req *http.Request
 	if c.srv.GetAllowedResizeSizes == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAllowedResizeSizes not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getAllowedVmSizesForResize`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getAllowedVmSizesForResize`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -363,7 +363,7 @@ func (c *ComputeServerTransport) dispatchNewListPager(req *http.Request) (*http.
 	}
 	newListPager := c.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -410,7 +410,7 @@ func (c *ComputeServerTransport) dispatchListKeys(req *http.Request) (*http.Resp
 	if c.srv.ListKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listKeys`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listKeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -449,7 +449,7 @@ func (c *ComputeServerTransport) dispatchNewListNodesPager(req *http.Request) (*
 	}
 	newListNodesPager := c.newListNodesPager.get(req)
 	if newListNodesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listNodes`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listNodes`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -494,7 +494,7 @@ func (c *ComputeServerTransport) dispatchBeginResize(req *http.Request) (*http.R
 	}
 	beginResize := c.beginResize.get(req)
 	if beginResize == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resize`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resize`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -546,7 +546,7 @@ func (c *ComputeServerTransport) dispatchBeginRestart(req *http.Request) (*http.
 	}
 	beginRestart := c.beginRestart.get(req)
 	if beginRestart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restart`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restart`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -594,7 +594,7 @@ func (c *ComputeServerTransport) dispatchBeginStart(req *http.Request) (*http.Re
 	}
 	beginStart := c.beginStart.get(req)
 	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/start`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/start`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -642,7 +642,7 @@ func (c *ComputeServerTransport) dispatchBeginStop(req *http.Request) (*http.Res
 	}
 	beginStop := c.beginStop.get(req)
 	if beginStop == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stop`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stop`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -690,7 +690,7 @@ func (c *ComputeServerTransport) dispatchBeginUpdate(req *http.Request) (*http.R
 	}
 	beginUpdate := c.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -740,7 +740,7 @@ func (c *ComputeServerTransport) dispatchUpdateCustomServices(req *http.Request)
 	if c.srv.UpdateCustomServices == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateCustomServices not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/customServices`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customServices`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -781,7 +781,7 @@ func (c *ComputeServerTransport) dispatchUpdateDataMounts(req *http.Request) (*h
 	if c.srv.UpdateDataMounts == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateDataMounts not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateDataMounts`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateDataMounts`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -822,7 +822,7 @@ func (c *ComputeServerTransport) dispatchUpdateIdleShutdownSetting(req *http.Req
 	if c.srv.UpdateIdleShutdownSetting == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateIdleShutdownSetting not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/computes/(?P<computeName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateIdleShutdownSetting`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateIdleShutdownSetting`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

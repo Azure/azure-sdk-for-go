@@ -93,7 +93,7 @@ func (e *ExposureControlServerTransport) dispatchGetFeatureValue(req *http.Reque
 	if e.srv.GetFeatureValue == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetFeatureValue not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataFactory/locations/(?P<locationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFeatureValue`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/locations/(?P<locationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getFeatureValue`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -126,7 +126,7 @@ func (e *ExposureControlServerTransport) dispatchGetFeatureValueByFactory(req *h
 	if e.srv.GetFeatureValueByFactory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetFeatureValueByFactory not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFeatureValue`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getFeatureValue`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -163,7 +163,7 @@ func (e *ExposureControlServerTransport) dispatchQueryFeatureValuesByFactory(req
 	if e.srv.QueryFeatureValuesByFactory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method QueryFeatureValuesByFactory not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryFeaturesValue`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DataFactory/factories/(?P<factoryName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queryFeaturesValue`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

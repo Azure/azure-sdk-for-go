@@ -19,7 +19,7 @@ import (
 // ProviderMonitorSettingsClient contains the methods for the ProviderMonitorSettings group.
 // Don't use this type directly, use NewProviderMonitorSettingsClient() instead.
 //
-// Generated from API version 2024-09-01
+// Generated from API version 2025-10-01
 type ProviderMonitorSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ProviderMonitorSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewProviderMonitorSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProviderMonitorSettingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -91,7 +94,7 @@ func (client *ProviderMonitorSettingsClient) create(ctx context.Context, resourc
 func (client *ProviderMonitorSettingsClient) createCreateRequest(ctx context.Context, resourceGroupName string, providerMonitorSettingName string, properties ProviderMonitorSetting, _ *ProviderMonitorSettingsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings/{providerMonitorSettingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,7 +110,7 @@ func (client *ProviderMonitorSettingsClient) createCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -147,7 +150,7 @@ func (client *ProviderMonitorSettingsClient) Delete(ctx context.Context, resourc
 func (client *ProviderMonitorSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, providerMonitorSettingName string, _ *ProviderMonitorSettingsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings/{providerMonitorSettingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -163,7 +166,7 @@ func (client *ProviderMonitorSettingsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -195,7 +198,7 @@ func (client *ProviderMonitorSettingsClient) Get(ctx context.Context, resourceGr
 func (client *ProviderMonitorSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, providerMonitorSettingName string, _ *ProviderMonitorSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings/{providerMonitorSettingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -211,7 +214,7 @@ func (client *ProviderMonitorSettingsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -266,7 +269,7 @@ func (client *ProviderMonitorSettingsClient) listByResourceGroupCreateRequest(ct
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -282,7 +285,7 @@ func (client *ProviderMonitorSettingsClient) listByResourceGroupCreateRequest(ct
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20240901)
+		reqQP.Set("api-version", version20251001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -337,7 +340,7 @@ func (client *ProviderMonitorSettingsClient) listBySubscriptionCreateRequest(ctx
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerMonitorSettings"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -349,7 +352,7 @@ func (client *ProviderMonitorSettingsClient) listBySubscriptionCreateRequest(ctx
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20240901)
+		reqQP.Set("api-version", version20251001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -396,7 +399,7 @@ func (client *ProviderMonitorSettingsClient) Update(ctx context.Context, resourc
 func (client *ProviderMonitorSettingsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, providerMonitorSettingName string, _ *ProviderMonitorSettingsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProviderHub/providerMonitorSettings/{providerMonitorSettingName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -412,7 +415,7 @@ func (client *ProviderMonitorSettingsClient) updateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
+	reqQP.Set("api-version", version20251001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

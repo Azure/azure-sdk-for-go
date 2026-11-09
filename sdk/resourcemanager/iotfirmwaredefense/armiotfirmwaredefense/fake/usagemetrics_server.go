@@ -92,7 +92,7 @@ func (u *UsageMetricsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if u.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usageMetrics/(?P<name>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usageMetrics/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -131,7 +131,7 @@ func (u *UsageMetricsServerTransport) dispatchNewListByWorkspacePager(req *http.
 	}
 	newListByWorkspacePager := u.newListByWorkspacePager.get(req)
 	if newListByWorkspacePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/usageMetrics`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.IoTFirmwareDefense/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/usageMetrics`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

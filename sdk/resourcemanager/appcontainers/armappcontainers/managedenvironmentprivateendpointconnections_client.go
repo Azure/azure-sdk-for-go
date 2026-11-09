@@ -20,7 +20,7 @@ import (
 // group.
 // Don't use this type directly, use NewManagedEnvironmentPrivateEndpointConnectionsClient() instead.
 //
-// Generated from API version 2025-10-02-preview
+// Generated from API version 2026-07-01
 type ManagedEnvironmentPrivateEndpointConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type ManagedEnvironmentPrivateEndpointConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedEnvironmentPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedEnvironmentPrivateEndpointConnectionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -97,7 +100,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) createOrUpdate
 func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, privateEndpointConnectionName string, privateEndpointConnectionEnvelope PrivateEndpointConnection, _ *ManagedEnvironmentPrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -117,7 +120,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) createOrUpdate
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -181,7 +184,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) deleteOperatio
 func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, privateEndpointConnectionName string, _ *ManagedEnvironmentPrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -201,7 +204,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) deleteCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -236,7 +239,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) Get(ctx contex
 func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, privateEndpointConnectionName string, _ *ManagedEnvironmentPrivateEndpointConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -256,7 +259,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) getCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251002Preview)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -314,7 +317,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) listCreateRequ
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/privateEndpointConnections"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -334,7 +337,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) listCreateRequ
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251002Preview)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

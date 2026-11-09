@@ -19,7 +19,7 @@ import (
 // HubVirtualNetworkConnectionsClient contains the methods for the HubVirtualNetworkConnections group.
 // Don't use this type directly, use NewHubVirtualNetworkConnectionsClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-03-01
 type HubVirtualNetworkConnectionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type HubVirtualNetworkConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewHubVirtualNetworkConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*HubVirtualNetworkConnectionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *HubVirtualNetworkConnectionsClient) BeginCreateOrUpdate(ctx contex
 	}
 }
 
-// CreateOrUpdate - Creates a hub virtual network connection if it doesn't exist else updates the existing one.
+// createOrUpdate - Creates a hub virtual network connection if it doesn't exist else updates the existing one.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *HubVirtualNetworkConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, options *HubVirtualNetworkConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -88,11 +91,11 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdate(ctx context.Con
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *HubVirtualNetworkConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, hubVirtualNetworkConnectionParameters HubVirtualNetworkConnection, _ *HubVirtualNetworkConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -112,7 +115,7 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -130,7 +133,7 @@ func (client *HubVirtualNetworkConnectionsClient) createOrUpdateCreateRequest(ct
 //     method.
 func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsClientBeginDeleteOptions) (*runtime.Poller[HubVirtualNetworkConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, connectionName, options)
+		resp, err := client.delete(ctx, resourceGroupName, virtualHubName, connectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -145,9 +148,9 @@ func (client *HubVirtualNetworkConnectionsClient) BeginDelete(ctx context.Contex
 	}
 }
 
-// Delete - Deletes a HubVirtualNetworkConnection.
+// delete - Deletes a HubVirtualNetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *HubVirtualNetworkConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *HubVirtualNetworkConnectionsClient) delete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *HubVirtualNetworkConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "HubVirtualNetworkConnectionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -167,11 +170,11 @@ func (client *HubVirtualNetworkConnectionsClient) deleteOperation(ctx context.Co
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *HubVirtualNetworkConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, _ *HubVirtualNetworkConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -191,7 +194,7 @@ func (client *HubVirtualNetworkConnectionsClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -223,7 +226,7 @@ func (client *HubVirtualNetworkConnectionsClient) Get(ctx context.Context, resou
 func (client *HubVirtualNetworkConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, _ *HubVirtualNetworkConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections/{connectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -243,7 +246,7 @@ func (client *HubVirtualNetworkConnectionsClient) getCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260301)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -299,7 +302,7 @@ func (client *HubVirtualNetworkConnectionsClient) listCreateRequest(ctx context.
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/hubVirtualNetworkConnections"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -319,7 +322,7 @@ func (client *HubVirtualNetworkConnectionsClient) listCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260301)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

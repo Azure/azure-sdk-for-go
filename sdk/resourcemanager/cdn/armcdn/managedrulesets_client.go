@@ -19,7 +19,7 @@ import (
 // ManagedRuleSetsClient contains the methods for the ManagedRuleSets group.
 // Don't use this type directly, use NewManagedRuleSetsClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-10-01
 type ManagedRuleSetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ManagedRuleSetsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedRuleSetsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedRuleSetsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -77,7 +80,7 @@ func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, next
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Cdn/cdnWebApplicationFirewallManagedRuleSets"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -89,7 +92,7 @@ func (client *ManagedRuleSetsClient) listCreateRequest(ctx context.Context, next
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

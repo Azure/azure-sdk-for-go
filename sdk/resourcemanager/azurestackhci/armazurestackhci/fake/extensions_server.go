@@ -29,14 +29,6 @@ type ExtensionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, extensionName string, options *armazurestackhci.ExtensionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhci.ExtensionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ExtensionsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, extensionName string, options *armazurestackhci.ExtensionsClientGetOptions) (resp azfake.Responder[armazurestackhci.ExtensionsClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListByArcSettingPager is the fake for method ExtensionsClient.NewListByArcSettingPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByArcSettingPager func(resourceGroupName string, clusterName string, arcSettingName string, options *armazurestackhci.ExtensionsClientListByArcSettingOptions) (resp azfake.PagerResponder[armazurestackhci.ExtensionsClientListByArcSettingResponse])
-
 	// BeginUpdate is the fake for method ExtensionsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, extensionName string, extension armazurestackhci.ExtensionPatch, options *armazurestackhci.ExtensionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armazurestackhci.ExtensionsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -44,6 +36,14 @@ type ExtensionsServer struct {
 	// BeginUpgrade is the fake for method ExtensionsClient.BeginUpgrade
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginUpgrade func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, extensionName string, extensionUpgradeParameters armazurestackhci.ExtensionUpgradeParameters, options *armazurestackhci.ExtensionsClientBeginUpgradeOptions) (resp azfake.PollerResponder[armazurestackhci.ExtensionsClientUpgradeResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ExtensionsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, extensionName string, options *armazurestackhci.ExtensionsClientGetOptions) (resp azfake.Responder[armazurestackhci.ExtensionsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByArcSettingPager is the fake for method ExtensionsClient.NewListByArcSettingPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByArcSettingPager func(resourceGroupName string, clusterName string, arcSettingName string, options *armazurestackhci.ExtensionsClientListByArcSettingOptions) (resp azfake.PagerResponder[armazurestackhci.ExtensionsClientListByArcSettingResponse])
 }
 
 // NewExtensionsServerTransport creates a new instance of ExtensionsServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewExtensionsServerTransport(srv *ExtensionsServer) *ExtensionsServerTransp
 		srv:                      srv,
 		beginCreate:              newTracker[azfake.PollerResponder[armazurestackhci.ExtensionsClientCreateResponse]](),
 		beginDelete:              newTracker[azfake.PollerResponder[armazurestackhci.ExtensionsClientDeleteResponse]](),
-		newListByArcSettingPager: newTracker[azfake.PagerResponder[armazurestackhci.ExtensionsClientListByArcSettingResponse]](),
 		beginUpdate:              newTracker[azfake.PollerResponder[armazurestackhci.ExtensionsClientUpdateResponse]](),
 		beginUpgrade:             newTracker[azfake.PollerResponder[armazurestackhci.ExtensionsClientUpgradeResponse]](),
+		newListByArcSettingPager: newTracker[azfake.PagerResponder[armazurestackhci.ExtensionsClientListByArcSettingResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type ExtensionsServerTransport struct {
 	srv                      *ExtensionsServer
 	beginCreate              *tracker[azfake.PollerResponder[armazurestackhci.ExtensionsClientCreateResponse]]
 	beginDelete              *tracker[azfake.PollerResponder[armazurestackhci.ExtensionsClientDeleteResponse]]
-	newListByArcSettingPager *tracker[azfake.PagerResponder[armazurestackhci.ExtensionsClientListByArcSettingResponse]]
 	beginUpdate              *tracker[azfake.PollerResponder[armazurestackhci.ExtensionsClientUpdateResponse]]
 	beginUpgrade             *tracker[azfake.PollerResponder[armazurestackhci.ExtensionsClientUpgradeResponse]]
+	newListByArcSettingPager *tracker[azfake.PagerResponder[armazurestackhci.ExtensionsClientListByArcSettingResponse]]
 }
 
 // Do implements the policy.Transporter interface for ExtensionsServerTransport.
@@ -96,14 +96,14 @@ func (e *ExtensionsServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = e.dispatchBeginCreate(req)
 			case "ExtensionsClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
-			case "ExtensionsClient.Get":
-				res.resp, res.err = e.dispatchGet(req)
-			case "ExtensionsClient.NewListByArcSettingPager":
-				res.resp, res.err = e.dispatchNewListByArcSettingPager(req)
 			case "ExtensionsClient.BeginUpdate":
 				res.resp, res.err = e.dispatchBeginUpdate(req)
 			case "ExtensionsClient.BeginUpgrade":
 				res.resp, res.err = e.dispatchBeginUpgrade(req)
+			case "ExtensionsClient.Get":
+				res.resp, res.err = e.dispatchGet(req)
+			case "ExtensionsClient.NewListByArcSettingPager":
+				res.resp, res.err = e.dispatchNewListByArcSettingPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -126,7 +126,7 @@ func (e *ExtensionsServerTransport) dispatchBeginCreate(req *http.Request) (*htt
 	}
 	beginCreate := e.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<extensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensions/(?P<extensionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -182,7 +182,7 @@ func (e *ExtensionsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<extensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensions/(?P<extensionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -228,99 +228,13 @@ func (e *ExtensionsServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (e *ExtensionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<extensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
-	if err != nil {
-		return nil, err
-	}
-	extensionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("extensionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, clusterNameParam, arcSettingNameParam, extensionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Extension, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (e *ExtensionsServerTransport) dispatchNewListByArcSettingPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListByArcSettingPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByArcSettingPager not implemented")}
-	}
-	newListByArcSettingPager := e.newListByArcSettingPager.get(req)
-	if newListByArcSettingPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewListByArcSettingPager(resourceGroupNameParam, clusterNameParam, arcSettingNameParam, nil)
-		newListByArcSettingPager = &resp
-		e.newListByArcSettingPager.add(req, newListByArcSettingPager)
-		server.PagerResponderInjectNextLinks(newListByArcSettingPager, req, func(page *armazurestackhci.ExtensionsClientListByArcSettingResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByArcSettingPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListByArcSettingPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByArcSettingPager) {
-		e.newListByArcSettingPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (e *ExtensionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := e.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<extensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensions/(?P<extensionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -376,7 +290,7 @@ func (e *ExtensionsServerTransport) dispatchBeginUpgrade(req *http.Request) (*ht
 	}
 	beginUpgrade := e.beginUpgrade.get(req)
 	if beginUpgrade == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/extensions/(?P<extensionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/upgrade`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensions/(?P<extensionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/upgrade`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -423,6 +337,92 @@ func (e *ExtensionsServerTransport) dispatchBeginUpgrade(req *http.Request) (*ht
 		e.beginUpgrade.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (e *ExtensionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if e.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensions/(?P<extensionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
+	if err != nil {
+		return nil, err
+	}
+	extensionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("extensionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, clusterNameParam, arcSettingNameParam, extensionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Extension, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *ExtensionsServerTransport) dispatchNewListByArcSettingPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListByArcSettingPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByArcSettingPager not implemented")}
+	}
+	newListByArcSettingPager := e.newListByArcSettingPager.get(req)
+	if newListByArcSettingPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/extensions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListByArcSettingPager(resourceGroupNameParam, clusterNameParam, arcSettingNameParam, nil)
+		newListByArcSettingPager = &resp
+		e.newListByArcSettingPager.add(req, newListByArcSettingPager)
+		server.PagerResponderInjectNextLinks(newListByArcSettingPager, req, func(page *armazurestackhci.ExtensionsClientListByArcSettingResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByArcSettingPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListByArcSettingPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByArcSettingPager) {
+		e.newListByArcSettingPager.remove(req)
+	}
 	return resp, nil
 }
 

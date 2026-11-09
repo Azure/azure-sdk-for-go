@@ -21,6 +21,10 @@ import (
 
 // ManagedEnvironmentsServer is a fake server for instances of the armappcontainers.ManagedEnvironmentsClient type.
 type ManagedEnvironmentsServer struct {
+	// CheckMigrationEligibility is the fake for method ManagedEnvironmentsClient.CheckMigrationEligibility
+	// HTTP status codes to indicate success: http.StatusOK
+	CheckMigrationEligibility func(ctx context.Context, resourceGroupName string, environmentName string, body armappcontainers.CheckMigrationEligibilityRequest, options *armappcontainers.ManagedEnvironmentsClientCheckMigrationEligibilityOptions) (resp azfake.Responder[armappcontainers.ManagedEnvironmentsClientCheckMigrationEligibilityResponse], errResp azfake.ErrorResponder)
+
 	// BeginCreateOrUpdate is the fake for method ManagedEnvironmentsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, environmentName string, environmentEnvelope armappcontainers.ManagedEnvironment, options *armappcontainers.ManagedEnvironmentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armappcontainers.ManagedEnvironmentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
@@ -102,6 +106,8 @@ func (m *ManagedEnvironmentsServerTransport) dispatchToMethodFake(req *http.Requ
 		}
 		if !intercepted {
 			switch method {
+			case "ManagedEnvironmentsClient.CheckMigrationEligibility":
+				res.resp, res.err = m.dispatchCheckMigrationEligibility(req)
 			case "ManagedEnvironmentsClient.BeginCreateOrUpdate":
 				res.resp, res.err = m.dispatchBeginCreateOrUpdate(req)
 			case "ManagedEnvironmentsClient.BeginDelete":
@@ -134,13 +140,50 @@ func (m *ManagedEnvironmentsServerTransport) dispatchToMethodFake(req *http.Requ
 	}
 }
 
+func (m *ManagedEnvironmentsServerTransport) dispatchCheckMigrationEligibility(req *http.Request) (*http.Response, error) {
+	if m.srv.CheckMigrationEligibility == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckMigrationEligibility not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkMigrationEligibility`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armappcontainers.CheckMigrationEligibilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	environmentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("environmentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.CheckMigrationEligibility(req.Context(), resourceGroupNameParam, environmentNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckMigrationEligibilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (m *ManagedEnvironmentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if m.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
 	beginCreateOrUpdate := m.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -188,7 +231,7 @@ func (m *ManagedEnvironmentsServerTransport) dispatchBeginDelete(req *http.Reque
 	}
 	beginDelete := m.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -230,7 +273,7 @@ func (m *ManagedEnvironmentsServerTransport) dispatchGet(req *http.Request) (*ht
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -263,7 +306,7 @@ func (m *ManagedEnvironmentsServerTransport) dispatchGetAuthToken(req *http.Requ
 	if m.srv.GetAuthToken == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetAuthToken not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getAuthtoken`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getAuthtoken`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -298,7 +341,7 @@ func (m *ManagedEnvironmentsServerTransport) dispatchNewListByResourceGroupPager
 	}
 	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -335,7 +378,7 @@ func (m *ManagedEnvironmentsServerTransport) dispatchNewListBySubscriptionPager(
 	}
 	newListBySubscriptionPager := m.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -368,7 +411,7 @@ func (m *ManagedEnvironmentsServerTransport) dispatchNewListWorkloadProfileState
 	}
 	newListWorkloadProfileStatesPager := m.newListWorkloadProfileStatesPager.get(req)
 	if newListWorkloadProfileStatesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/workloadProfileStates`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workloadProfileStates`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -409,7 +452,7 @@ func (m *ManagedEnvironmentsServerTransport) dispatchBeginUpdate(req *http.Reque
 	}
 	beginUpdate := m.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.App/managedEnvironments/(?P<environmentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

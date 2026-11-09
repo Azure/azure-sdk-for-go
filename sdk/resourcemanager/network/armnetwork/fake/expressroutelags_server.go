@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -41,21 +41,21 @@ type ExpressRouteLagsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	LinksGet func(ctx context.Context, resourceGroupName string, expressRouteLagName string, linkName string, options *armnetwork.ExpressRouteLagsClientLinksGetOptions) (resp azfake.Responder[armnetwork.ExpressRouteLagsClientLinksGetResponse], errResp azfake.ErrorResponder)
 
+	// MembersGet is the fake for method ExpressRouteLagsClient.MembersGet
+	// HTTP status codes to indicate success: http.StatusOK
+	MembersGet func(ctx context.Context, resourceGroupName string, expressRouteLagName string, linkName string, memberName string, options *armnetwork.ExpressRouteLagsClientMembersGetOptions) (resp azfake.Responder[armnetwork.ExpressRouteLagsClientMembersGetResponse], errResp azfake.ErrorResponder)
+
 	// NewLinksListPager is the fake for method ExpressRouteLagsClient.NewLinksListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewLinksListPager func(resourceGroupName string, expressRouteLagName string, options *armnetwork.ExpressRouteLagsClientLinksListOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteLagsClientLinksListResponse])
-
-	// NewListPager is the fake for method ExpressRouteLagsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armnetwork.ExpressRouteLagsClientListOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteLagsClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method ExpressRouteLagsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armnetwork.ExpressRouteLagsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteLagsClientListByResourceGroupResponse])
 
-	// MembersGet is the fake for method ExpressRouteLagsClient.MembersGet
+	// NewListPager is the fake for method ExpressRouteLagsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	MembersGet func(ctx context.Context, resourceGroupName string, expressRouteLagName string, linkName string, memberName string, options *armnetwork.ExpressRouteLagsClientMembersGetOptions) (resp azfake.Responder[armnetwork.ExpressRouteLagsClientMembersGetResponse], errResp azfake.ErrorResponder)
+	NewListPager func(options *armnetwork.ExpressRouteLagsClientListOptions) (resp azfake.PagerResponder[armnetwork.ExpressRouteLagsClientListResponse])
 
 	// NewMembersListPager is the fake for method ExpressRouteLagsClient.NewMembersListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -75,8 +75,8 @@ func NewExpressRouteLagsServerTransport(srv *ExpressRouteLagsServer) *ExpressRou
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetwork.ExpressRouteLagsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetwork.ExpressRouteLagsClientDeleteResponse]](),
 		newLinksListPager:           newTracker[azfake.PagerResponder[armnetwork.ExpressRouteLagsClientLinksListResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ExpressRouteLagsClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetwork.ExpressRouteLagsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armnetwork.ExpressRouteLagsClientListResponse]](),
 		newMembersListPager:         newTracker[azfake.PagerResponder[armnetwork.ExpressRouteLagsClientMembersListResponse]](),
 	}
 }
@@ -88,8 +88,8 @@ type ExpressRouteLagsServerTransport struct {
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetwork.ExpressRouteLagsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetwork.ExpressRouteLagsClientDeleteResponse]]
 	newLinksListPager           *tracker[azfake.PagerResponder[armnetwork.ExpressRouteLagsClientLinksListResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armnetwork.ExpressRouteLagsClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetwork.ExpressRouteLagsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armnetwork.ExpressRouteLagsClientListResponse]]
 	newMembersListPager         *tracker[azfake.PagerResponder[armnetwork.ExpressRouteLagsClientMembersListResponse]]
 }
 
@@ -124,14 +124,14 @@ func (e *ExpressRouteLagsServerTransport) dispatchToMethodFake(req *http.Request
 				res.resp, res.err = e.dispatchGet(req)
 			case "ExpressRouteLagsClient.LinksGet":
 				res.resp, res.err = e.dispatchLinksGet(req)
-			case "ExpressRouteLagsClient.NewLinksListPager":
-				res.resp, res.err = e.dispatchNewLinksListPager(req)
-			case "ExpressRouteLagsClient.NewListPager":
-				res.resp, res.err = e.dispatchNewListPager(req)
-			case "ExpressRouteLagsClient.NewListByResourceGroupPager":
-				res.resp, res.err = e.dispatchNewListByResourceGroupPager(req)
 			case "ExpressRouteLagsClient.MembersGet":
 				res.resp, res.err = e.dispatchMembersGet(req)
+			case "ExpressRouteLagsClient.NewLinksListPager":
+				res.resp, res.err = e.dispatchNewLinksListPager(req)
+			case "ExpressRouteLagsClient.NewListByResourceGroupPager":
+				res.resp, res.err = e.dispatchNewListByResourceGroupPager(req)
+			case "ExpressRouteLagsClient.NewListPager":
+				res.resp, res.err = e.dispatchNewListPager(req)
 			case "ExpressRouteLagsClient.NewMembersListPager":
 				res.resp, res.err = e.dispatchNewMembersListPager(req)
 			case "ExpressRouteLagsClient.Update":
@@ -158,7 +158,7 @@ func (e *ExpressRouteLagsServerTransport) dispatchBeginCreateOrUpdate(req *http.
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -206,7 +206,7 @@ func (e *ExpressRouteLagsServerTransport) dispatchBeginDelete(req *http.Request)
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -248,7 +248,7 @@ func (e *ExpressRouteLagsServerTransport) dispatchGenerateLoa(req *http.Request)
 	if e.srv.GenerateLoa == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GenerateLoa not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generateLoa`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generateLoa`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -285,7 +285,7 @@ func (e *ExpressRouteLagsServerTransport) dispatchGet(req *http.Request) (*http.
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -318,7 +318,7 @@ func (e *ExpressRouteLagsServerTransport) dispatchLinksGet(req *http.Request) (*
 	if e.srv.LinksGet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method LinksGet not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/links/(?P<linkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/links/(?P<linkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -351,122 +351,11 @@ func (e *ExpressRouteLagsServerTransport) dispatchLinksGet(req *http.Request) (*
 	return resp, nil
 }
 
-func (e *ExpressRouteLagsServerTransport) dispatchNewLinksListPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewLinksListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewLinksListPager not implemented")}
-	}
-	newLinksListPager := e.newLinksListPager.get(req)
-	if newLinksListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/links`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		expressRouteLagNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("expressRouteLagName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewLinksListPager(resourceGroupNameParam, expressRouteLagNameParam, nil)
-		newLinksListPager = &resp
-		e.newLinksListPager.add(req, newLinksListPager)
-		server.PagerResponderInjectNextLinks(newLinksListPager, req, func(page *armnetwork.ExpressRouteLagsClientLinksListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newLinksListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newLinksListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newLinksListPager) {
-		e.newLinksListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (e *ExpressRouteLagsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := e.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteLags`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := e.srv.NewListPager(nil)
-		newListPager = &resp
-		e.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRouteLagsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		e.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (e *ExpressRouteLagsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if e.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := e.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteLags`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := e.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		e.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.ExpressRouteLagsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		e.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		e.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (e *ExpressRouteLagsServerTransport) dispatchMembersGet(req *http.Request) (*http.Response, error) {
 	if e.srv.MembersGet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method MembersGet not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/links/(?P<linkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/members/(?P<memberName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/links/(?P<linkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/members/(?P<memberName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -503,13 +392,124 @@ func (e *ExpressRouteLagsServerTransport) dispatchMembersGet(req *http.Request) 
 	return resp, nil
 }
 
+func (e *ExpressRouteLagsServerTransport) dispatchNewLinksListPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewLinksListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewLinksListPager not implemented")}
+	}
+	newLinksListPager := e.newLinksListPager.get(req)
+	if newLinksListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/links`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		expressRouteLagNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("expressRouteLagName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewLinksListPager(resourceGroupNameParam, expressRouteLagNameParam, nil)
+		newLinksListPager = &resp
+		e.newLinksListPager.add(req, newLinksListPager)
+		server.PagerResponderInjectNextLinks(newLinksListPager, req, func(page *armnetwork.ExpressRouteLagsClientLinksListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newLinksListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newLinksListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newLinksListPager) {
+		e.newLinksListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (e *ExpressRouteLagsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := e.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteLags`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := e.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		e.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetwork.ExpressRouteLagsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		e.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (e *ExpressRouteLagsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if e.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := e.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteLags`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := e.srv.NewListPager(nil)
+		newListPager = &resp
+		e.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetwork.ExpressRouteLagsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		e.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		e.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (e *ExpressRouteLagsServerTransport) dispatchNewMembersListPager(req *http.Request) (*http.Response, error) {
 	if e.srv.NewMembersListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewMembersListPager not implemented")}
 	}
 	newMembersListPager := e.newMembersListPager.get(req)
 	if newMembersListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/links/(?P<linkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/members`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/links/(?P<linkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/members`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -552,7 +552,7 @@ func (e *ExpressRouteLagsServerTransport) dispatchUpdate(req *http.Request) (*ht
 	if e.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteLags/(?P<expressRouteLagName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

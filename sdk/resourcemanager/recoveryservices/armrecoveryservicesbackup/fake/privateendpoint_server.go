@@ -81,7 +81,7 @@ func (p *PrivateEndpointServerTransport) dispatchGetOperationStatus(req *http.Re
 	if p.srv.GetOperationStatus == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetOperationStatus not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/operationsStatus/(?P<operationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/operationsStatus/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {

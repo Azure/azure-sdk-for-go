@@ -106,7 +106,7 @@ func (c *ConfigurationsServerTransport) dispatchCreateInResourceGroup(req *http.
 	if c.srv.CreateInResourceGroup == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateInResourceGroup not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroup>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Advisor/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroup>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/configurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -149,7 +149,7 @@ func (c *ConfigurationsServerTransport) dispatchCreateInSubscription(req *http.R
 	if c.srv.CreateInSubscription == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateInSubscription not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Advisor/configurations/(?P<configurationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/configurations/(?P<configurationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -190,7 +190,7 @@ func (c *ConfigurationsServerTransport) dispatchNewListByResourceGroupPager(req 
 	}
 	newListByResourceGroupPager := c.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroup>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Advisor/configurations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroup>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/configurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -227,7 +227,7 @@ func (c *ConfigurationsServerTransport) dispatchNewListBySubscriptionPager(req *
 	}
 	newListBySubscriptionPager := c.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Advisor/configurations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Advisor/configurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

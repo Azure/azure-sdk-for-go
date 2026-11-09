@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/ReplicasListByServer.json
+// Generated from example definition: 2026-10-01/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,6 +50,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 					AvailabilityZone: to.Ptr("2"),
 		// 					Backup: &armpostgresqlflexibleservers.Backup{
 		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						ImmutableBackup: to.Ptr(armpostgresqlflexibleservers.ImmutableBackupEnabled),
 		// 						EarliestRestoreDate: to.Ptr(time.Date(2025, time.June, 1, 18, 35, 22, 123456000, time.UTC)),
 		// 						GeoRedundantBackup: to.Ptr(armpostgresqlflexibleservers.GeographicallyRedundantBackupDisabled),
 		// 					},
@@ -85,7 +86,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 						StorageSizeGB: to.Ptr[int32](512),
 		// 						Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 		// 					},
-		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
+		// 					Version: to.Ptr("17"),
 		// 				},
 		// 				SKU: &armpostgresqlflexibleservers.SKU{
 		// 					Name: to.Ptr("Standard_D4ds_v5"),

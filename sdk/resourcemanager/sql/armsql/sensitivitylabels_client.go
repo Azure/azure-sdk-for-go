@@ -20,7 +20,7 @@ import (
 // SensitivityLabelsClient contains the methods for the SensitivityLabels group.
 // Don't use this type directly, use NewSensitivityLabelsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2026-08-01-preview
 type SensitivityLabelsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type SensitivityLabelsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSensitivityLabelsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SensitivityLabelsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -74,7 +77,7 @@ func (client *SensitivityLabelsClient) CreateOrUpdate(ctx context.Context, resou
 func (client *SensitivityLabelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, parameters SensitivityLabel, _ *SensitivityLabelsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -107,7 +110,7 @@ func (client *SensitivityLabelsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -163,7 +166,7 @@ func (client *SensitivityLabelsClient) Delete(ctx context.Context, resourceGroup
 func (client *SensitivityLabelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, _ *SensitivityLabelsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -196,7 +199,7 @@ func (client *SensitivityLabelsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -235,7 +238,7 @@ func (client *SensitivityLabelsClient) DisableRecommendation(ctx context.Context
 func (client *SensitivityLabelsClient) disableRecommendationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, _ *SensitivityLabelsClientDisableRecommendationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/disable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -268,7 +271,7 @@ func (client *SensitivityLabelsClient) disableRecommendationCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -308,7 +311,7 @@ func (client *SensitivityLabelsClient) EnableRecommendation(ctx context.Context,
 func (client *SensitivityLabelsClient) enableRecommendationCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, _ *SensitivityLabelsClientEnableRecommendationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}/enable"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -341,7 +344,7 @@ func (client *SensitivityLabelsClient) enableRecommendationCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -377,7 +380,7 @@ func (client *SensitivityLabelsClient) Get(ctx context.Context, resourceGroupNam
 func (client *SensitivityLabelsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, schemaName string, tableName string, columnName string, sensitivityLabelSource SensitivityLabelSource, _ *SensitivityLabelsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/schemas/{schemaName}/tables/{tableName}/columns/{columnName}/sensitivityLabels/{sensitivityLabelSource}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -413,7 +416,7 @@ func (client *SensitivityLabelsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -470,7 +473,7 @@ func (client *SensitivityLabelsClient) listByDatabaseCreateRequest(ctx context.C
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/sensitivityLabels"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -497,7 +500,7 @@ func (client *SensitivityLabelsClient) listByDatabaseCreateRequest(ctx context.C
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -555,7 +558,7 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx co
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/currentSensitivityLabels"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -588,7 +591,7 @@ func (client *SensitivityLabelsClient) listCurrentByDatabaseCreateRequest(ctx co
 		if options != nil && options.SkipToken != nil {
 			reqQP.Set("$skipToken", *options.SkipToken)
 		}
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -646,7 +649,7 @@ func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ct
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/recommendedSensitivityLabels"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -676,7 +679,7 @@ func (client *SensitivityLabelsClient) listRecommendedByDatabaseCreateRequest(ct
 		if options != nil && options.SkipToken != nil {
 			reqQP.Set("$skipToken", *options.SkipToken)
 		}
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		if options != nil && options.IncludeDisabledRecommendations != nil {
 			reqQP.Set("includeDisabledRecommendations", strconv.FormatBool(*options.IncludeDisabledRecommendations))
 		}
@@ -729,7 +732,7 @@ func (client *SensitivityLabelsClient) Update(ctx context.Context, resourceGroup
 func (client *SensitivityLabelsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, databaseName string, parameters SensitivityLabelUpdateList, _ *SensitivityLabelsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/databases/{databaseName}/currentSensitivityLabels"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -749,7 +752,7 @@ func (client *SensitivityLabelsClient) updateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {

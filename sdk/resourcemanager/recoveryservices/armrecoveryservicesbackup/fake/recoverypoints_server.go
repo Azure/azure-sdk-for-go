@@ -17,6 +17,7 @@ import (
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // RecoveryPointsServer is a fake server for instances of the armrecoveryservicesbackup.RecoveryPointsClient type.
@@ -24,6 +25,14 @@ type RecoveryPointsServer struct {
 	// Get is the fake for method RecoveryPointsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, options *armrecoveryservicesbackup.RecoveryPointsClientGetOptions) (resp azfake.Responder[armrecoveryservicesbackup.RecoveryPointsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// BeginGetRPExtendedInfo is the fake for method RecoveryPointsClient.BeginGetRPExtendedInfo
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginGetRPExtendedInfo func(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, parameters armrecoveryservicesbackup.GetRPExtendedInfoRequestResource, options *armrecoveryservicesbackup.RecoveryPointsClientBeginGetRPExtendedInfoOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoResponse], errResp azfake.ErrorResponder)
+
+	// GetRPExtendedInfoOperationResult is the fake for method RecoveryPointsClient.GetRPExtendedInfoOperationResult
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	GetRPExtendedInfoOperationResult func(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, operationID string, options *armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoOperationResultOptions) (resp azfake.Responder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoOperationResultResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method RecoveryPointsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -35,16 +44,18 @@ type RecoveryPointsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewRecoveryPointsServerTransport(srv *RecoveryPointsServer) *RecoveryPointsServerTransport {
 	return &RecoveryPointsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armrecoveryservicesbackup.RecoveryPointsClientListResponse]](),
+		srv:                    srv,
+		beginGetRPExtendedInfo: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoResponse]](),
+		newListPager:           newTracker[azfake.PagerResponder[armrecoveryservicesbackup.RecoveryPointsClientListResponse]](),
 	}
 }
 
 // RecoveryPointsServerTransport connects instances of armrecoveryservicesbackup.RecoveryPointsClient to instances of RecoveryPointsServer.
 // Don't use this type directly, use NewRecoveryPointsServerTransport instead.
 type RecoveryPointsServerTransport struct {
-	srv          *RecoveryPointsServer
-	newListPager *tracker[azfake.PagerResponder[armrecoveryservicesbackup.RecoveryPointsClientListResponse]]
+	srv                    *RecoveryPointsServer
+	beginGetRPExtendedInfo *tracker[azfake.PollerResponder[armrecoveryservicesbackup.RecoveryPointsClientGetRPExtendedInfoResponse]]
+	newListPager           *tracker[azfake.PagerResponder[armrecoveryservicesbackup.RecoveryPointsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for RecoveryPointsServerTransport.
@@ -70,6 +81,10 @@ func (r *RecoveryPointsServerTransport) dispatchToMethodFake(req *http.Request, 
 			switch method {
 			case "RecoveryPointsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
+			case "RecoveryPointsClient.BeginGetRPExtendedInfo":
+				res.resp, res.err = r.dispatchBeginGetRPExtendedInfo(req)
+			case "RecoveryPointsClient.GetRPExtendedInfoOperationResult":
+				res.resp, res.err = r.dispatchGetRPExtendedInfoOperationResult(req)
 			case "RecoveryPointsClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
 			default:
@@ -92,7 +107,7 @@ func (r *RecoveryPointsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionContainers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectedItems/(?P<protectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryPoints/(?P<recoveryPointId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionContainers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems/(?P<protectedItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recoveryPoints/(?P<recoveryPointId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 8 {
@@ -137,13 +152,115 @@ func (r *RecoveryPointsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	return resp, nil
 }
 
+func (r *RecoveryPointsServerTransport) dispatchBeginGetRPExtendedInfo(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginGetRPExtendedInfo == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginGetRPExtendedInfo not implemented")}
+	}
+	beginGetRPExtendedInfo := r.beginGetRPExtendedInfo.get(req)
+	if beginGetRPExtendedInfo == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getRPExtendedInfo`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armrecoveryservicesbackup.GetRPExtendedInfoRequestResource](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+		if err != nil {
+			return nil, err
+		}
+		fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginGetRPExtendedInfo(req.Context(), resourceGroupNameParam, vaultNameParam, fabricNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginGetRPExtendedInfo = &respr
+		r.beginGetRPExtendedInfo.add(req, beginGetRPExtendedInfo)
+	}
+
+	resp, err := server.PollerResponderNext(beginGetRPExtendedInfo, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		r.beginGetRPExtendedInfo.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginGetRPExtendedInfo) {
+		r.beginGetRPExtendedInfo.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (r *RecoveryPointsServerTransport) dispatchGetRPExtendedInfoOperationResult(req *http.Request) (*http.Response, error) {
+	if r.srv.GetRPExtendedInfoOperationResult == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetRPExtendedInfoOperationResult not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getRPExtendedInfoOperationResult/(?P<operationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	vaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("vaultName")])
+	if err != nil {
+		return nil, err
+	}
+	fabricNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("fabricName")])
+	if err != nil {
+		return nil, err
+	}
+	operationIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("operationId")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.GetRPExtendedInfoOperationResult(req.Context(), resourceGroupNameParam, vaultNameParam, fabricNameParam, operationIDParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RPExtendedInfoResourceList, req)
+	if err != nil {
+		return nil, err
+	}
+	if val := server.GetResponse(respr).AzureAsyncOperation; val != nil {
+		resp.Header.Set("Azure-Asyncoperation", *val)
+	}
+	if val := server.GetResponse(respr).Location; val != nil {
+		resp.Header.Set("Location", *val)
+	}
+	if val := server.GetResponse(respr).RetryAfter; val != nil {
+		resp.Header.Set("Retry-After", strconv.FormatInt(int64(*val), 10))
+	}
+	return resp, nil
+}
+
 func (r *RecoveryPointsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := r.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectionContainers/(?P<containerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/protectedItems/(?P<protectedItemName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/recoveryPoints`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<vaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectionContainers/(?P<containerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/protectedItems/(?P<protectedItemName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/recoveryPoints`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {

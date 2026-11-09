@@ -19,7 +19,7 @@ import (
 // MaintenanceEventsClient - Maintenance event operations for PostgreSQL flexible servers.
 // Don't use this type directly, use NewMaintenanceEventsClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-10-01
 type MaintenanceEventsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type MaintenanceEventsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMaintenanceEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceEventsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,7 +68,7 @@ func (client *MaintenanceEventsClient) BeginApplyNow(ctx context.Context, resour
 	}
 }
 
-// ApplyNow - Applies the maintenance event immediately.
+// applyNow - Applies the maintenance event immediately.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MaintenanceEventsClient) applyNow(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, options *MaintenanceEventsClientBeginApplyNowOptions) (*http.Response, error) {
 	var err error
@@ -87,11 +90,11 @@ func (client *MaintenanceEventsClient) applyNow(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// applyNowCreateRequest creates the ApplyNow request.
+// applyNowCreateRequest creates the applyNow request.
 func (client *MaintenanceEventsClient) applyNowCreateRequest(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, _ *MaintenanceEventsClientBeginApplyNowOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/maintenanceEvents/{maintenanceEventId}/applyNow"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -111,9 +114,90 @@ func (client *MaintenanceEventsClient) applyNowCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginReschedule - Reschedules a maintenance event to a new date and time.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - maintenanceEventID - The name of the MaintenanceEventResource
+//   - body - The content of the action request
+//   - options - MaintenanceEventsClientBeginRescheduleOptions contains the optional parameters for the MaintenanceEventsClient.BeginReschedule
+//     method.
+func (client *MaintenanceEventsClient) BeginReschedule(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, body MaintenanceEventRescheduleRequest, options *MaintenanceEventsClientBeginRescheduleOptions) (*runtime.Poller[MaintenanceEventsClientRescheduleResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reschedule(ctx, resourceGroupName, serverName, maintenanceEventID, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MaintenanceEventsClientRescheduleResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MaintenanceEventsClientRescheduleResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reschedule - Reschedules a maintenance event to a new date and time.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MaintenanceEventsClient) reschedule(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, body MaintenanceEventRescheduleRequest, options *MaintenanceEventsClientBeginRescheduleOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MaintenanceEventsClient.BeginReschedule"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.rescheduleCreateRequest(ctx, resourceGroupName, serverName, maintenanceEventID, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// rescheduleCreateRequest creates the reschedule request.
+func (client *MaintenanceEventsClient) rescheduleCreateRequest(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, body MaintenanceEventRescheduleRequest, _ *MaintenanceEventsClientBeginRescheduleOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/maintenanceEvents/{maintenanceEventId}/reschedule"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if maintenanceEventID == "" {
+		return nil, errors.New("parameter maintenanceEventID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{maintenanceEventId}", url.PathEscape(maintenanceEventID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -144,7 +228,7 @@ func (client *MaintenanceEventsClient) Get(ctx context.Context, resourceGroupNam
 func (client *MaintenanceEventsClient) getCreateRequest(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, _ *MaintenanceEventsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/maintenanceEvents/{maintenanceEventId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -164,7 +248,7 @@ func (client *MaintenanceEventsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -220,7 +304,7 @@ func (client *MaintenanceEventsClient) listCreateRequest(ctx context.Context, re
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/maintenanceEvents"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -240,7 +324,7 @@ func (client *MaintenanceEventsClient) listCreateRequest(ctx context.Context, re
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401Preview)
+		reqQP.Set("api-version", version20261001)
 		if options != nil && options.MaintenanceStatus != nil {
 			reqQP.Set("maintenanceStatus", string(*options.MaintenanceStatus))
 		}
@@ -260,85 +344,4 @@ func (client *MaintenanceEventsClient) listHandleResponse(resp *http.Response, s
 		return MaintenanceEventsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginReschedule - Reschedules a maintenance event to a new date and time.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - maintenanceEventID - The name of the MaintenanceEventResource
-//   - body - The content of the action request
-//   - options - MaintenanceEventsClientBeginRescheduleOptions contains the optional parameters for the MaintenanceEventsClient.BeginReschedule
-//     method.
-func (client *MaintenanceEventsClient) BeginReschedule(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, body MaintenanceEventRescheduleRequest, options *MaintenanceEventsClientBeginRescheduleOptions) (*runtime.Poller[MaintenanceEventsClientRescheduleResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reschedule(ctx, resourceGroupName, serverName, maintenanceEventID, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MaintenanceEventsClientRescheduleResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MaintenanceEventsClientRescheduleResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Reschedule - Reschedules a maintenance event to a new date and time.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MaintenanceEventsClient) reschedule(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, body MaintenanceEventRescheduleRequest, options *MaintenanceEventsClientBeginRescheduleOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MaintenanceEventsClient.BeginReschedule"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.rescheduleCreateRequest(ctx, resourceGroupName, serverName, maintenanceEventID, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// rescheduleCreateRequest creates the Reschedule request.
-func (client *MaintenanceEventsClient) rescheduleCreateRequest(ctx context.Context, resourceGroupName string, serverName string, maintenanceEventID string, body MaintenanceEventRescheduleRequest, _ *MaintenanceEventsClientBeginRescheduleOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforPostgreSQL/flexibleServers/{serverName}/maintenanceEvents/{maintenanceEventId}/reschedule"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if maintenanceEventID == "" {
-		return nil, errors.New("parameter maintenanceEventID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{maintenanceEventId}", url.PathEscape(maintenanceEventID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -87,7 +87,7 @@ func (p *PrivateLinkResourcesServerTransport) dispatchNewAutomationPager(req *ht
 	}
 	newAutomationPager := p.newAutomationPager.get(req)
 	if newAutomationPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateLinkResources`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Automation/automationAccounts/(?P<automationAccountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateLinkResources`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

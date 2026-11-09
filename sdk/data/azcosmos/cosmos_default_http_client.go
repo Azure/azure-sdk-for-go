@@ -8,8 +8,6 @@ import (
 	"net"
 	"net/http"
 	"time"
-
-	"golang.org/x/net/http2"
 )
 
 const (
@@ -73,6 +71,7 @@ func newDefaultCosmosHTTPClient() *http.Client {
 		ForceAttemptHTTP2:     true,
 		MaxIdleConns:          1000,
 		MaxIdleConnsPerHost:   100,
+		MaxConnsPerHost:       1000,
 		IdleConnTimeout:       90 * time.Second,
 		TLSHandshakeTimeout:   10 * time.Second,
 		ExpectContinueTimeout: 1 * time.Second,
@@ -80,10 +79,10 @@ func newDefaultCosmosHTTPClient() *http.Client {
 			MinVersion:    tls.VersionTLS12,
 			Renegotiation: tls.RenegotiateFreelyAsClient,
 		},
-	}
-	if http2Transport, err := http2.ConfigureTransports(transport); err == nil {
-		http2Transport.ReadIdleTimeout = 2 * time.Second
-		http2Transport.PingTimeout = 1 * time.Second
+		HTTP2: &http.HTTP2Config{
+			SendPingTimeout: 2 * time.Second,
+			PingTimeout:     1 * time.Second,
+		},
 	}
 	return &http.Client{
 		Transport: transport,

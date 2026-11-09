@@ -30,6 +30,9 @@ type ContainerGroupsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewContainerGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ContainerGroupsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -95,7 +98,7 @@ func (client *ContainerGroupsClient) createOrUpdate(ctx context.Context, resourc
 func (client *ContainerGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, containerGroup ContainerGroup, _ *ContainerGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -176,7 +179,7 @@ func (client *ContainerGroupsClient) deleteOperation(ctx context.Context, resour
 func (client *ContainerGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -228,7 +231,7 @@ func (client *ContainerGroupsClient) Get(ctx context.Context, resourceGroupName 
 func (client *ContainerGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -292,7 +295,7 @@ func (client *ContainerGroupsClient) GetOutboundNetworkDependenciesEndpoints(ctx
 func (client *ContainerGroupsClient) getOutboundNetworkDependenciesEndpointsCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientGetOutboundNetworkDependenciesEndpointsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/outboundNetworkDependenciesEndpoints"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -365,7 +368,7 @@ func (client *ContainerGroupsClient) listCreateRequest(ctx context.Context, next
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ContainerInstance/containerGroups"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -437,7 +440,7 @@ func (client *ContainerGroupsClient) listByResourceGroupCreateRequest(ctx contex
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -525,7 +528,7 @@ func (client *ContainerGroupsClient) restart(ctx context.Context, resourceGroupN
 func (client *ContainerGroupsClient) restartCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientBeginRestartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/restart"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -599,7 +602,7 @@ func (client *ContainerGroupsClient) start(ctx context.Context, resourceGroupNam
 func (client *ContainerGroupsClient) startCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientBeginStartOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/start"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -651,7 +654,7 @@ func (client *ContainerGroupsClient) Stop(ctx context.Context, resourceGroupName
 func (client *ContainerGroupsClient) stopCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, _ *ContainerGroupsClientStopOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}/stop"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -701,7 +704,7 @@ func (client *ContainerGroupsClient) Update(ctx context.Context, resourceGroupNa
 func (client *ContainerGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, containerGroupName string, resource Resource, _ *ContainerGroupsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/containerGroups/{containerGroupName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

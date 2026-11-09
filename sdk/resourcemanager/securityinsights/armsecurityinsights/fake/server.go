@@ -87,7 +87,7 @@ func (s *ServerTransport) dispatchListGeodataByIP(req *http.Request) (*http.Resp
 	if s.srv.ListGeodataByIP == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListGeodataByIP not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/enrichment/(?P<enrichmentType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listGeodataByIp`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SecurityInsights/enrichment/(?P<enrichmentType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listGeodataByIp`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -134,7 +134,7 @@ func (s *ServerTransport) dispatchListWhoisByDomain(req *http.Request) (*http.Re
 	if s.srv.ListWhoisByDomain == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListWhoisByDomain not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.SecurityInsights/enrichment/(?P<enrichmentType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listWhoisByDomain`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.OperationalInsights/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.SecurityInsights/enrichment/(?P<enrichmentType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listWhoisByDomain`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

@@ -30,6 +30,9 @@ type CreationSupportedClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCreationSupportedClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CreationSupportedClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *CreationSupportedClient) Get(ctx context.Context, dynatraceEnviron
 func (client *CreationSupportedClient) getCreateRequest(ctx context.Context, dynatraceEnvironmentID string, _ *CreationSupportedClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Dynatrace.Observability/subscriptionStatuses/{dynatraceEnvironmentId}/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if dynatraceEnvironmentID == "" {
@@ -125,7 +128,7 @@ func (client *CreationSupportedClient) List(ctx context.Context, dynatraceEnviro
 func (client *CreationSupportedClient) listCreateRequest(ctx context.Context, dynatraceEnvironmentID string, _ *CreationSupportedClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Dynatrace.Observability/subscriptionStatuses/{dynatraceEnvironmentId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if dynatraceEnvironmentID == "" {

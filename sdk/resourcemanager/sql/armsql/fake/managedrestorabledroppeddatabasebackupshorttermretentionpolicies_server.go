@@ -110,7 +110,7 @@ func (m *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServerT
 	}
 	beginCreateOrUpdate := m.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorableDroppedDatabases/(?P<restorableDroppedDatabaseId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupShortTermRetentionPolicies/(?P<policyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restorableDroppedDatabases/(?P<restorableDroppedDatabaseId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupShortTermRetentionPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -170,7 +170,7 @@ func (m *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServerT
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorableDroppedDatabases/(?P<restorableDroppedDatabaseId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupShortTermRetentionPolicies/(?P<policyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restorableDroppedDatabases/(?P<restorableDroppedDatabaseId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupShortTermRetentionPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -219,7 +219,7 @@ func (m *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServerT
 	}
 	newListByRestorableDroppedDatabasePager := m.newListByRestorableDroppedDatabasePager.get(req)
 	if newListByRestorableDroppedDatabasePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorableDroppedDatabases/(?P<restorableDroppedDatabaseId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupShortTermRetentionPolicies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restorableDroppedDatabases/(?P<restorableDroppedDatabaseId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupShortTermRetentionPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -264,7 +264,7 @@ func (m *ManagedRestorableDroppedDatabaseBackupShortTermRetentionPoliciesServerT
 	}
 	beginUpdate := m.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restorableDroppedDatabases/(?P<restorableDroppedDatabaseId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/backupShortTermRetentionPolicies/(?P<policyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/managedInstances/(?P<managedInstanceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restorableDroppedDatabases/(?P<restorableDroppedDatabaseId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/backupShortTermRetentionPolicies/(?P<policyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {

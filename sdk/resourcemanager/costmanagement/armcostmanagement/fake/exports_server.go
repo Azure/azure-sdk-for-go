@@ -112,7 +112,7 @@ func (e *ExportsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*htt
 	if e.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -122,10 +122,7 @@ func (e *ExportsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*htt
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	exportNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exportName")])
 	if err != nil {
 		return nil, err
@@ -149,16 +146,13 @@ func (e *ExportsServerTransport) dispatchDelete(req *http.Request) (*http.Respon
 	if e.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	exportNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exportName")])
 	if err != nil {
 		return nil, err
@@ -182,7 +176,7 @@ func (e *ExportsServerTransport) dispatchExecute(req *http.Request) (*http.Respo
 	if e.srv.Execute == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Execute not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/run`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/run`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -192,10 +186,7 @@ func (e *ExportsServerTransport) dispatchExecute(req *http.Request) (*http.Respo
 	if err != nil {
 		return nil, err
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	exportNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exportName")])
 	if err != nil {
 		return nil, err
@@ -225,17 +216,14 @@ func (e *ExportsServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if e.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	exportNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exportName")])
 	if err != nil {
 		return nil, err
@@ -266,16 +254,13 @@ func (e *ExportsServerTransport) dispatchGetExecutionHistory(req *http.Request) 
 	if e.srv.GetExecutionHistory == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetExecutionHistory not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/runHistory`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/exports/(?P<exportName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runHistory`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	exportNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("exportName")])
 	if err != nil {
 		return nil, err
@@ -299,17 +284,14 @@ func (e *ExportsServerTransport) dispatchList(req *http.Request) (*http.Response
 	if e.srv.List == nil {
 		return nil, &nonRetriableError{errors.New("fake for method List not implemented")}
 	}
-	const regexStr = `/(?P<scope>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.CostManagement/exports`
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.CostManagement/exports`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
 	qp := req.URL.Query()
-	scopeParam, err := url.PathUnescape(matches[regex.SubexpIndex("scope")])
-	if err != nil {
-		return nil, err
-	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
 	expandParam := getOptional(qp.Get("$expand"))
 	var options *armcostmanagement.ExportsClientListOptions
 	if expandParam != nil {

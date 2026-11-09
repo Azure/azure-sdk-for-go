@@ -1,5 +1,355 @@
 # Release History
 
+## 0.3.0 (2026-10-15)
+### Breaking Changes
+
+- Type of `Cluster.Identity` has been changed from `*ManagedServiceIdentity` to `*ClusterManagedServiceIdentity`
+- Type of `ClusterForPatchUpdate.Identity` has been changed from `*ManagedServiceIdentity` to `*ClusterManagedServiceIdentity`
+- Type of `ClusterProperties.State` has been changed from `*State` to `*ClusterState`
+- Type of `PoolProperties.State` has been changed from `*State` to `*PoolState`
+- Enum `ComputeModelType` has been removed
+- Enum `CreateModeCluster` has been removed
+- Enum `CreateModePool` has been removed
+- Enum `ManagedServiceIdentityType` has been removed
+- Enum `ReplicaRole` has been removed
+- Enum `State` has been removed
+- Enum `ZonePlacementPolicy` has been removed
+- Function `NewAdministratorsClient` has been removed
+- Function `*AdministratorsClient.BeginCreateOrUpdate` has been removed
+- Function `*AdministratorsClient.BeginDelete` has been removed
+- Function `*AdministratorsClient.Get` has been removed
+- Function `*AdministratorsClient.NewListPager` has been removed
+- Function `*ClientFactory.NewAdministratorsClient` has been removed
+- Function `*ClientFactory.NewReplicasClient` has been removed
+- Function `*ClustersClient.BeginCreateOrUpdate` has been removed
+- Function `*ClustersClient.BeginRestart` has been removed
+- Function `*ClustersClient.BeginStart` has been removed
+- Function `*ClustersClient.BeginStop` has been removed
+- Function `*FirewallRulesClient.BeginCreateOrUpdate` has been removed
+- Function `*ParameterGroupsClient.BeginCreateOrUpdate` has been removed
+- Function `*ParameterGroupsClient.NewListVersionsPager` has been removed
+- Function `*PrivateEndpointConnectionsClient.UpdateStatus` has been removed
+- Function `NewReplicasClient` has been removed
+- Function `*ReplicasClient.BeginCreateOrUpdate` has been removed
+- Function `*ReplicasClient.BeginDelete` has been removed
+- Function `*ReplicasClient.Get` has been removed
+- Function `*ReplicasClient.NewListPager` has been removed
+- Function `*ReplicasClient.BeginUpdate` has been removed
+- Struct `Administrator` has been removed
+- Struct `AdministratorAdd` has been removed
+- Struct `AdministratorListResult` has been removed
+- Struct `AdministratorProperties` has been removed
+- Struct `AdministratorPropertiesForAdd` has been removed
+- Struct `ClusterAuthConfig` has been removed
+- Struct `ClusterMirroring` has been removed
+- Struct `ClusterParameterGroupConnectionProperties` has been removed
+- Struct `ComputeModel` has been removed
+- Struct `ManagedServiceIdentity` has been removed
+- Struct `ParameterGroupConnectionPropertiesListResult` has been removed
+- Struct `Replica` has been removed
+- Struct `ReplicaForPatchUpdate` has been removed
+- Struct `ReplicaListResult` has been removed
+- Struct `ReplicaProperties` has been removed
+- Struct `ReplicaPropertiesForPatchUpdate` has been removed
+- Field `AdministratorLogin`, `AdministratorLoginPassword`, `AuthConfig`, `ComputeModel`, `CreateMode`, `FullyQualifiedDomainName`, `Mirroring`, `ParameterGroup`, `PoolName`, `ProcessorType`, `ReadonlyEndpoint`, `ReplicaCount`, `SourceClusterResourceID`, `VCores`, `Version`, `ZonePlacementPolicy` of struct `ClusterProperties` has been removed
+- Field `AdministratorLoginPassword`, `AuthConfig`, `ComputeModel`, `Mirroring`, `ParameterGroup`, `VCores` of struct `ClusterPropertiesForPatchUpdate` has been removed
+- Field `PublicNetworkAccess` of struct `Network` has been removed
+- Field `ID`, `Name`, `Type` of struct `ParameterGroupConnectionProperties` has been removed
+- Field `ApplyImmediately`, `PgVersion`, `Version` of struct `ParameterGroupProperties` has been removed
+- Field `ApplyImmediately` of struct `ParameterGroupPropertiesForPatchUpdate` has been removed
+- Field `ParameterGroupConnectionPropertiesListResult` of struct `ParameterGroupsClientListConnectionsResponse` has been removed
+- Field `CreateMode`, `Location`, `ReplicaCount`, `Version` of struct `PoolProperties` has been removed
+
+### Features Added
+
+- New enum type `AiModelManagementStatus` with values `AiModelManagementStatusDisabled`, `AiModelManagementStatusEnabled`
+- New enum type `AuthenticationName` with values `AuthenticationNameMicrosoftEntra`, `AuthenticationNamePasswordMethod`
+- New enum type `ChangeDataCaptureDesiredState` with values `ChangeDataCaptureDesiredStateDisabled`, `ChangeDataCaptureDesiredStateEnabled`
+- New enum type `ChangeDataCaptureDestinationEffectiveState` with values `ChangeDataCaptureDestinationEffectiveStateDegraded`, `ChangeDataCaptureDestinationEffectiveStateDisabled`, `ChangeDataCaptureDestinationEffectiveStateDisabling`, `ChangeDataCaptureDestinationEffectiveStateEnabled`, `ChangeDataCaptureDestinationEffectiveStateEnabling`, `ChangeDataCaptureDestinationEffectiveStateFailed`, `ChangeDataCaptureDestinationEffectiveStateWaitingForIdentity`
+- New enum type `ChangeDataCaptureDestinationType` with values `ChangeDataCaptureDestinationTypeFabric`
+- New enum type `ChangeDataCaptureEffectiveState` with values `ChangeDataCaptureEffectiveStateDegraded`, `ChangeDataCaptureEffectiveStateDisabled`, `ChangeDataCaptureEffectiveStateDisabling`, `ChangeDataCaptureEffectiveStateEnabled`, `ChangeDataCaptureEffectiveStateEnabling`, `ChangeDataCaptureEffectiveStateFailed`
+- New enum type `ChangeDataCaptureEngineConfigurationState` with values `ChangeDataCaptureEngineConfigurationStateFailed`, `ChangeDataCaptureEngineConfigurationStateNotReady`, `ChangeDataCaptureEngineConfigurationStateReady`, `ChangeDataCaptureEngineConfigurationStateReconciling`
+- New enum type `ChangeDataCaptureExtensionState` with values `ChangeDataCaptureExtensionStateFailed`, `ChangeDataCaptureExtensionStateInstalling`, `ChangeDataCaptureExtensionStateNotInstalled`, `ChangeDataCaptureExtensionStateReady`, `ChangeDataCaptureExtensionStateRemoving`, `ChangeDataCaptureExtensionStateUpgrading`
+- New enum type `ChangeDataCaptureIdentityActivationState` with values `ChangeDataCaptureIdentityActivationStateActivating`, `ChangeDataCaptureIdentityActivationStateActive`, `ChangeDataCaptureIdentityActivationStateDeactivating`, `ChangeDataCaptureIdentityActivationStateFailed`, `ChangeDataCaptureIdentityActivationStateInactive`
+- New enum type `ChangeDataCaptureIdentityAssignmentState` with values `ChangeDataCaptureIdentityAssignmentStateAssigned`, `ChangeDataCaptureIdentityAssignmentStateAssigning`, `ChangeDataCaptureIdentityAssignmentStateFailed`, `ChangeDataCaptureIdentityAssignmentStateRemoving`
+- New enum type `ChangeDataCaptureIdentityValidationState` with values `ChangeDataCaptureIdentityValidationStateFailed`, `ChangeDataCaptureIdentityValidationStateNotStarted`, `ChangeDataCaptureIdentityValidationStateRunning`, `ChangeDataCaptureIdentityValidationStateSucceeded`
+- New enum type `ChangeDataCaptureProtocol` with values `ChangeDataCaptureProtocolNative`
+- New enum type `ChangeDataCaptureReadWriteEndpointState` with values `ChangeDataCaptureReadWriteEndpointStateReady`, `ChangeDataCaptureReadWriteEndpointStateUnavailable`
+- New enum type `ChangeDataCaptureReplicationArchitecture` with values `ChangeDataCaptureReplicationArchitectureComputeBased`, `ChangeDataCaptureReplicationArchitectureHybrid`, `ChangeDataCaptureReplicationArchitectureStorageBased`
+- New enum type `ChangeDataCaptureReplicationState` with values `ChangeDataCaptureReplicationStateConnecting`, `ChangeDataCaptureReplicationStateDegraded`, `ChangeDataCaptureReplicationStateFailed`, `ChangeDataCaptureReplicationStateNotApplicable`, `ChangeDataCaptureReplicationStateNotConnected`, `ChangeDataCaptureReplicationStatePaused`, `ChangeDataCaptureReplicationStateReconnecting`, `ChangeDataCaptureReplicationStateReplicating`, `ChangeDataCaptureReplicationStateStopping`
+- New enum type `ChangeDataCaptureTopologyBindingState` with values `ChangeDataCaptureTopologyBindingStateActive`, `ChangeDataCaptureTopologyBindingStateConflict`, `ChangeDataCaptureTopologyBindingStateRebindRequired`, `ChangeDataCaptureTopologyBindingStateReconciling`, `ChangeDataCaptureTopologyBindingStateSuperseded`
+- New enum type `ChangeDataCaptureUsageProfile` with values `ChangeDataCaptureUsageProfileMirroring`
+- New enum type `ClusterCreateMode` with values `ClusterCreateModeCreate`, `ClusterCreateModePointInTimeRestore`
+- New enum type `ClusterDataEncryptionType` with values `ClusterDataEncryptionTypeAzureKeyVault`, `ClusterDataEncryptionTypeSystemManaged`
+- New enum type `ClusterEncryptionKeyStatus` with values `ClusterEncryptionKeyStatusInvalid`, `ClusterEncryptionKeyStatusValid`
+- New enum type `ClusterIdentityType` with values `ClusterIdentityTypeNone`, `ClusterIdentityTypeUserAssigned`
+- New enum type `ClusterState` with values `ClusterStateDeleting`, `ClusterStateInaccessible`, `ClusterStateProvisioning`, `ClusterStateReady`, `ClusterStateUpdating`
+- New enum type `ComputeProcessorType` with values `ComputeProcessorTypeAMD`, `ComputeProcessorTypeIntel`
+- New enum type `EndpointRole` with values `EndpointRoleReadOnly`, `EndpointRoleReadWrite`
+- New enum type `EndpointScope` with values `EndpointScopeCluster`, `EndpointScopePool`
+- New enum type `GeoRedundancyState` with values `GeoRedundancyStateDisabled`, `GeoRedundancyStateEnabled`
+- New enum type `LogCaptureState` with values `LogCaptureStateDisabled`, `LogCaptureStateEnabled`
+- New enum type `LogFileType` with values `LogFileTypePostgreSQLServer`
+- New enum type `MaintenanceEventStatus` with values `MaintenanceEventStatusCanceled`, `MaintenanceEventStatusComplete`, `MaintenanceEventStatusInProgress`, `MaintenanceEventStatusPlanned`, `MaintenanceEventStatusRescheduled`
+- New enum type `MaintenanceType` with values `MaintenanceTypePlannedMaintenance`
+- New enum type `MicrosoftEntraAuthenticationName` with values `MicrosoftEntraAuthenticationNameMicrosoftEntra`
+- New enum type `NodeRole` with values `NodeRoleReadOnly`, `NodeRoleReadWrite`, `NodeRoleUnassigned`
+- New enum type `ParameterApplyMethod` with values `ParameterApplyMethodImmediate`, `ParameterApplyMethodPendingReboot`
+- New enum type `ParameterGroupSyncStatus` with values `ParameterGroupSyncStatusApplying`, `ParameterGroupSyncStatusFailedToApply`, `ParameterGroupSyncStatusInSync`, `ParameterGroupSyncStatusPendingReboot`
+- New enum type `ParameterValueSource` with values `ParameterValueSourceSystemDefault`, `ParameterValueSourceUserOverride`
+- New enum type `PasswordAuthenticationName` with values `PasswordAuthenticationNamePasswordMethod`
+- New enum type `PoolComputeModelType` with values `PoolComputeModelTypeProvisioned`
+- New enum type `PoolHighAvailabilityMode` with values `PoolHighAvailabilityModeAnyZone`, `PoolHighAvailabilityModeDisabled`, `PoolHighAvailabilityModeZoneRedundant`
+- New enum type `PoolState` with values `PoolStateDeleting`, `PoolStateInaccessible`, `PoolStateProvisioning`, `PoolStateReady`, `PoolStateRestarting`, `PoolStateStarting`, `PoolStateStopped`, `PoolStateStopping`, `PoolStateUpdating`
+- New enum type `PostgreSQLCapabilityVersion` with values `PostgreSQLCapabilityVersionV17`, `PostgreSQLCapabilityVersionV18`
+- New enum type `PostgreSQLVersion` with values `PostgreSQLVersionV17`, `PostgreSQLVersionV18`
+- New enum type `ScheduledMaintenanceManagementType` with values `ScheduledMaintenanceManagementTypeSystem`
+- New function `NewAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AuthenticationsClient, error)`
+- New function `*AuthenticationsClient.NewListPager(resourceGroupName string, clusterName string, options *AuthenticationsClientListOptions) *runtime.Pager[AuthenticationsClientListResponse]`
+- New function `NewCapabilitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CapabilitiesClient, error)`
+- New function `*CapabilitiesClient.Get(ctx context.Context, location string, options *CapabilitiesClientGetOptions) (CapabilitiesClientGetResponse, error)`
+- New function `*CapabilitiesClient.NewListPager(location string, options *CapabilitiesClientListOptions) *runtime.Pager[CapabilitiesClientListResponse]`
+- New function `NewChangeDataCaptureCapabilitiesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ChangeDataCaptureCapabilitiesClient, error)`
+- New function `*ChangeDataCaptureCapabilitiesClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, resource ChangeDataCaptureCapability, options *ChangeDataCaptureCapabilitiesClientBeginCreateOrReplaceOptions) (*runtime.Poller[ChangeDataCaptureCapabilitiesClientCreateOrReplaceResponse], error)`
+- New function `*ChangeDataCaptureCapabilitiesClient.BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, options *ChangeDataCaptureCapabilitiesClientBeginDeleteOptions) (*runtime.Poller[ChangeDataCaptureCapabilitiesClientDeleteResponse], error)`
+- New function `*ChangeDataCaptureCapabilitiesClient.Get(ctx context.Context, resourceGroupName string, clusterName string, options *ChangeDataCaptureCapabilitiesClientGetOptions) (ChangeDataCaptureCapabilitiesClientGetResponse, error)`
+- New function `*ChangeDataCaptureCapabilitiesClient.NewListPager(resourceGroupName string, clusterName string, options *ChangeDataCaptureCapabilitiesClientListOptions) *runtime.Pager[ChangeDataCaptureCapabilitiesClientListResponse]`
+- New function `*ChangeDataCaptureCapabilitiesClient.BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, properties ChangeDataCaptureCapabilityForPatchUpdate, options *ChangeDataCaptureCapabilitiesClientBeginUpdateOptions) (*runtime.Poller[ChangeDataCaptureCapabilitiesClientUpdateResponse], error)`
+- New function `NewChangeDataCaptureConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ChangeDataCaptureConfigurationsClient, error)`
+- New function `*ChangeDataCaptureConfigurationsClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, resource ChangeDataCaptureConfiguration, options *ChangeDataCaptureConfigurationsClientBeginCreateOrReplaceOptions) (*runtime.Poller[ChangeDataCaptureConfigurationsClientCreateOrReplaceResponse], error)`
+- New function `*ChangeDataCaptureConfigurationsClient.BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, options *ChangeDataCaptureConfigurationsClientBeginDeleteOptions) (*runtime.Poller[ChangeDataCaptureConfigurationsClientDeleteResponse], error)`
+- New function `*ChangeDataCaptureConfigurationsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, options *ChangeDataCaptureConfigurationsClientGetOptions) (ChangeDataCaptureConfigurationsClientGetResponse, error)`
+- New function `*ChangeDataCaptureConfigurationsClient.NewListPager(resourceGroupName string, clusterName string, options *ChangeDataCaptureConfigurationsClientListOptions) *runtime.Pager[ChangeDataCaptureConfigurationsClientListResponse]`
+- New function `*ChangeDataCaptureConfigurationsClient.BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, configurationName string, properties ChangeDataCaptureConfigurationForPatchUpdate, options *ChangeDataCaptureConfigurationsClientBeginUpdateOptions) (*runtime.Poller[ChangeDataCaptureConfigurationsClientUpdateResponse], error)`
+- New function `*ChangeDataCaptureDestinationDetails.GetChangeDataCaptureDestinationDetails() *ChangeDataCaptureDestinationDetails`
+- New function `NewChangeDataCaptureDestinationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ChangeDataCaptureDestinationsClient, error)`
+- New function `*ChangeDataCaptureDestinationsClient.BeginActivateIdentity(ctx context.Context, resourceGroupName string, ifMatch string, clusterName string, destinationName string, body ActivateChangeDataCaptureIdentityRequest, options *ChangeDataCaptureDestinationsClientBeginActivateIdentityOptions) (*runtime.Poller[ChangeDataCaptureDestinationsClientActivateIdentityResponse], error)`
+- New function `*ChangeDataCaptureDestinationsClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, destinationName string, resource ChangeDataCaptureDestination, options *ChangeDataCaptureDestinationsClientBeginCreateOrReplaceOptions) (*runtime.Poller[ChangeDataCaptureDestinationsClientCreateOrReplaceResponse], error)`
+- New function `*ChangeDataCaptureDestinationsClient.BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, destinationName string, options *ChangeDataCaptureDestinationsClientBeginDeleteOptions) (*runtime.Poller[ChangeDataCaptureDestinationsClientDeleteResponse], error)`
+- New function `*ChangeDataCaptureDestinationsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, destinationName string, options *ChangeDataCaptureDestinationsClientGetOptions) (ChangeDataCaptureDestinationsClientGetResponse, error)`
+- New function `*ChangeDataCaptureDestinationsClient.NewListPager(resourceGroupName string, clusterName string, options *ChangeDataCaptureDestinationsClientListOptions) *runtime.Pager[ChangeDataCaptureDestinationsClientListResponse]`
+- New function `*ChangeDataCaptureDestinationsClient.BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, destinationName string, properties ChangeDataCaptureDestinationForPatchUpdate, options *ChangeDataCaptureDestinationsClientBeginUpdateOptions) (*runtime.Poller[ChangeDataCaptureDestinationsClientUpdateResponse], error)`
+- New function `*ClientFactory.NewAuthenticationsClient() *AuthenticationsClient`
+- New function `*ClientFactory.NewCapabilitiesClient() *CapabilitiesClient`
+- New function `*ClientFactory.NewChangeDataCaptureCapabilitiesClient() *ChangeDataCaptureCapabilitiesClient`
+- New function `*ClientFactory.NewChangeDataCaptureConfigurationsClient() *ChangeDataCaptureConfigurationsClient`
+- New function `*ClientFactory.NewChangeDataCaptureDestinationsClient() *ChangeDataCaptureDestinationsClient`
+- New function `*ClientFactory.NewDefaultParameterGroupsClient() *DefaultParameterGroupsClient`
+- New function `*ClientFactory.NewEndpointsClient() *EndpointsClient`
+- New function `*ClientFactory.NewIdentityAssignmentsClient() *IdentityAssignmentsClient`
+- New function `*ClientFactory.NewLogCaptureConfigurationsClient() *LogCaptureConfigurationsClient`
+- New function `*ClientFactory.NewLogFilesClient() *LogFilesClient`
+- New function `*ClientFactory.NewMaintenanceEventsClient() *MaintenanceEventsClient`
+- New function `*ClientFactory.NewMicrosoftEntraAdministratorsClient() *MicrosoftEntraAdministratorsClient`
+- New function `*ClientFactory.NewMicrosoftEntraAuthenticationsClient() *MicrosoftEntraAuthenticationsClient`
+- New function `*ClientFactory.NewNodesClient() *NodesClient`
+- New function `*ClientFactory.NewPasswordAuthenticationsClient() *PasswordAuthenticationsClient`
+- New function `*ClustersClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, resource Cluster, options *ClustersClientBeginCreateOrReplaceOptions) (*runtime.Poller[ClustersClientCreateOrReplaceResponse], error)`
+- New function `*ClustersClient.BeginFailover(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginFailoverOptions) (*runtime.Poller[ClustersClientFailoverResponse], error)`
+- New function `*ComputeModelCapability.GetComputeModelCapability() *ComputeModelCapability`
+- New function `NewDefaultParameterGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DefaultParameterGroupsClient, error)`
+- New function `*DefaultParameterGroupsClient.Get(ctx context.Context, location string, name string, options *DefaultParameterGroupsClientGetOptions) (DefaultParameterGroupsClientGetResponse, error)`
+- New function `*DefaultParameterGroupsClient.NewListBySubscriptionAndRegionPager(location string, options *DefaultParameterGroupsClientListBySubscriptionAndRegionOptions) *runtime.Pager[DefaultParameterGroupsClientListBySubscriptionAndRegionResponse]`
+- New function `NewEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*EndpointsClient, error)`
+- New function `*EndpointsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, endpointName string, options *EndpointsClientGetOptions) (EndpointsClientGetResponse, error)`
+- New function `*EndpointsClient.NewListPager(resourceGroupName string, clusterName string, options *EndpointsClientListOptions) *runtime.Pager[EndpointsClientListResponse]`
+- New function `*FabricDestinationDetails.GetChangeDataCaptureDestinationDetails() *ChangeDataCaptureDestinationDetails`
+- New function `*FirewallRulesClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, resource FirewallRule, options *FirewallRulesClientBeginCreateOrReplaceOptions) (*runtime.Poller[FirewallRulesClientCreateOrReplaceResponse], error)`
+- New function `NewIdentityAssignmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*IdentityAssignmentsClient, error)`
+- New function `*IdentityAssignmentsClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, destinationName string, assignmentName string, resource IdentityAssignment, options *IdentityAssignmentsClientBeginCreateOrReplaceOptions) (*runtime.Poller[IdentityAssignmentsClientCreateOrReplaceResponse], error)`
+- New function `*IdentityAssignmentsClient.BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, destinationName string, assignmentName string, options *IdentityAssignmentsClientBeginDeleteOptions) (*runtime.Poller[IdentityAssignmentsClientDeleteResponse], error)`
+- New function `*IdentityAssignmentsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, destinationName string, assignmentName string, options *IdentityAssignmentsClientGetOptions) (IdentityAssignmentsClientGetResponse, error)`
+- New function `*IdentityAssignmentsClient.NewListPager(resourceGroupName string, clusterName string, destinationName string, options *IdentityAssignmentsClientListOptions) *runtime.Pager[IdentityAssignmentsClientListResponse]`
+- New function `NewLogCaptureConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogCaptureConfigurationsClient, error)`
+- New function `*LogCaptureConfigurationsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, logCaptureConfigurationName string, options *LogCaptureConfigurationsClientGetOptions) (LogCaptureConfigurationsClientGetResponse, error)`
+- New function `*LogCaptureConfigurationsClient.NewListPager(resourceGroupName string, clusterName string, options *LogCaptureConfigurationsClientListOptions) *runtime.Pager[LogCaptureConfigurationsClientListResponse]`
+- New function `*LogCaptureConfigurationsClient.BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, logCaptureConfigurationName string, properties LogCaptureConfigurationForPatchUpdate, options *LogCaptureConfigurationsClientBeginUpdateOptions) (*runtime.Poller[LogCaptureConfigurationsClientUpdateResponse], error)`
+- New function `NewLogFilesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*LogFilesClient, error)`
+- New function `*LogFilesClient.Get(ctx context.Context, resourceGroupName string, clusterName string, logFileName string, options *LogFilesClientGetOptions) (LogFilesClientGetResponse, error)`
+- New function `*LogFilesClient.ListDownloadUrls(ctx context.Context, resourceGroupName string, clusterName string, logFileName string, options *LogFilesClientListDownloadUrlsOptions) (LogFilesClientListDownloadUrlsResponse, error)`
+- New function `*LogFilesClient.NewListPager(resourceGroupName string, clusterName string, options *LogFilesClientListOptions) *runtime.Pager[LogFilesClientListResponse]`
+- New function `NewMaintenanceEventsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MaintenanceEventsClient, error)`
+- New function `*MaintenanceEventsClient.BeginApplyNow(ctx context.Context, resourceGroupName string, clusterName string, poolName string, maintenanceEventID string, options *MaintenanceEventsClientBeginApplyNowOptions) (*runtime.Poller[MaintenanceEventsClientApplyNowResponse], error)`
+- New function `*MaintenanceEventsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, poolName string, maintenanceEventID string, options *MaintenanceEventsClientGetOptions) (MaintenanceEventsClientGetResponse, error)`
+- New function `*MaintenanceEventsClient.NewListPager(resourceGroupName string, clusterName string, poolName string, options *MaintenanceEventsClientListOptions) *runtime.Pager[MaintenanceEventsClientListResponse]`
+- New function `*MaintenanceEventsClient.BeginReschedule(ctx context.Context, resourceGroupName string, clusterName string, poolName string, maintenanceEventID string, body MaintenanceEventRescheduleRequest, options *MaintenanceEventsClientBeginRescheduleOptions) (*runtime.Poller[MaintenanceEventsClientRescheduleResponse], error)`
+- New function `NewMicrosoftEntraAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MicrosoftEntraAdministratorsClient, error)`
+- New function `*MicrosoftEntraAdministratorsClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource MicrosoftEntraAdministratorAdd, options *MicrosoftEntraAdministratorsClientBeginCreateOrReplaceOptions) (*runtime.Poller[MicrosoftEntraAdministratorsClientCreateOrReplaceResponse], error)`
+- New function `*MicrosoftEntraAdministratorsClient.BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *MicrosoftEntraAdministratorsClientBeginDeleteOptions) (*runtime.Poller[MicrosoftEntraAdministratorsClientDeleteResponse], error)`
+- New function `*MicrosoftEntraAdministratorsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *MicrosoftEntraAdministratorsClientGetOptions) (MicrosoftEntraAdministratorsClientGetResponse, error)`
+- New function `*MicrosoftEntraAdministratorsClient.NewListPager(resourceGroupName string, clusterName string, options *MicrosoftEntraAdministratorsClientListOptions) *runtime.Pager[MicrosoftEntraAdministratorsClientListResponse]`
+- New function `NewMicrosoftEntraAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MicrosoftEntraAuthenticationsClient, error)`
+- New function `*MicrosoftEntraAuthenticationsClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, resource MicrosoftEntraAuthentication, options *MicrosoftEntraAuthenticationsClientBeginCreateOrReplaceOptions) (*runtime.Poller[MicrosoftEntraAuthenticationsClientCreateOrReplaceResponse], error)`
+- New function `*MicrosoftEntraAuthenticationsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, options *MicrosoftEntraAuthenticationsClientGetOptions) (MicrosoftEntraAuthenticationsClientGetResponse, error)`
+- New function `*MicrosoftEntraAuthenticationsClient.BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, properties MicrosoftEntraAuthenticationForPatchUpdate, options *MicrosoftEntraAuthenticationsClientBeginUpdateOptions) (*runtime.Poller[MicrosoftEntraAuthenticationsClientUpdateResponse], error)`
+- New function `*ParameterGroupsClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, parameterGroupName string, resource ParameterGroup, options *ParameterGroupsClientBeginCreateOrReplaceOptions) (*runtime.Poller[ParameterGroupsClientCreateOrReplaceResponse], error)`
+- New function `NewPasswordAuthenticationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PasswordAuthenticationsClient, error)`
+- New function `*PasswordAuthenticationsClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, resource PasswordAuthentication, options *PasswordAuthenticationsClientBeginCreateOrReplaceOptions) (*runtime.Poller[PasswordAuthenticationsClientCreateOrReplaceResponse], error)`
+- New function `*PasswordAuthenticationsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, options *PasswordAuthenticationsClientGetOptions) (PasswordAuthenticationsClientGetResponse, error)`
+- New function `*PasswordAuthenticationsClient.BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, properties PasswordAuthenticationForPatchUpdate, options *PasswordAuthenticationsClientBeginUpdateOptions) (*runtime.Poller[PasswordAuthenticationsClientUpdateResponse], error)`
+- New function `*PoolsClient.BeginCreateOrReplace(ctx context.Context, resourceGroupName string, clusterName string, poolName string, resource Pool, options *PoolsClientBeginCreateOrReplaceOptions) (*runtime.Poller[PoolsClientCreateOrReplaceResponse], error)`
+- New function `*PoolsClient.BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginDeleteOptions) (*runtime.Poller[PoolsClientDeleteResponse], error)`
+- New function `*PoolsClient.BeginRestart(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginRestartOptions) (*runtime.Poller[PoolsClientRestartResponse], error)`
+- New function `*PoolsClient.BeginStart(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginStartOptions) (*runtime.Poller[PoolsClientStartResponse], error)`
+- New function `*PoolsClient.BeginStop(ctx context.Context, resourceGroupName string, clusterName string, poolName string, options *PoolsClientBeginStopOptions) (*runtime.Poller[PoolsClientStopResponse], error)`
+- New function `*PoolsClient.BeginUpdate(ctx context.Context, resourceGroupName string, clusterName string, poolName string, properties PoolForPatchUpdate, options *PoolsClientBeginUpdateOptions) (*runtime.Poller[PoolsClientUpdateResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.BeginApproveOrReject(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, options *PrivateEndpointConnectionsClientBeginApproveOrRejectOptions) (*runtime.Poller[PrivateEndpointConnectionsClientApproveOrRejectResponse], error)`
+- New function `*ProvisionedComputeModelCapability.GetComputeModelCapability() *ComputeModelCapability`
+- New function `*ScheduledMaintenanceProperties.GetScheduledMaintenanceProperties() *ScheduledMaintenanceProperties`
+- New function `*SystemScheduledMaintenanceProperties.GetScheduledMaintenanceProperties() *ScheduledMaintenanceProperties`
+- New function `NewNodesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NodesClient, error)`
+- New function `*NodesClient.Get(ctx context.Context, resourceGroupName string, clusterName string, poolName string, nodeName string, options *NodesClientGetOptions) (NodesClientGetResponse, error)`
+- New function `*NodesClient.NewListPager(resourceGroupName string, clusterName string, poolName string, options *NodesClientListOptions) *runtime.Pager[NodesClientListResponse]`
+- New struct `ActivateChangeDataCaptureIdentityRequest`
+- New struct `ActivateChangeDataCaptureIdentityResult`
+- New struct `Authentication`
+- New struct `AuthenticationListResult`
+- New struct `AuthenticationProperties`
+- New struct `BackupProperties`
+- New struct `BackupPropertiesForPatchUpdate`
+- New struct `Capability`
+- New struct `CapabilityListResult`
+- New struct `CapabilityProperties`
+- New struct `ChangeDataCaptureCapability`
+- New struct `ChangeDataCaptureCapabilityForPatchUpdate`
+- New struct `ChangeDataCaptureCapabilityListResult`
+- New struct `ChangeDataCaptureCapabilityProperties`
+- New struct `ChangeDataCaptureCapabilityPropertiesForPatchUpdate`
+- New struct `ChangeDataCaptureConfiguration`
+- New struct `ChangeDataCaptureConfigurationForPatchUpdate`
+- New struct `ChangeDataCaptureConfigurationListResult`
+- New struct `ChangeDataCaptureConfigurationProperties`
+- New struct `ChangeDataCaptureConfigurationPropertiesForPatchUpdate`
+- New struct `ChangeDataCaptureDestination`
+- New struct `ChangeDataCaptureDestinationForPatchUpdate`
+- New struct `ChangeDataCaptureDestinationListResult`
+- New struct `ChangeDataCaptureDestinationProperties`
+- New struct `ChangeDataCaptureDestinationPropertiesForPatchUpdate`
+- New struct `ChangeDataCaptureExtensionStatus`
+- New struct `ChangeDataCaptureIdentityAssignmentProperties`
+- New struct `ChangeDataCapturePrerequisiteStatus`
+- New struct `ChangeDataCaptureReplicationStatus`
+- New struct `ChangeDataCaptureStatus`
+- New struct `ChangeDataCaptureTopologyBindingStatus`
+- New struct `ClusterCapability`
+- New struct `ClusterDataEncryption`
+- New struct `ClusterDataEncryptionForPatchUpdate`
+- New struct `ClusterFeatureCapability`
+- New struct `ClusterManagedServiceIdentity`
+- New struct `ComputeGenerationCapability`
+- New struct `ComputeProcessorCapability`
+- New struct `ComputeSizeCapability`
+- New struct `DefaultParameterGroup`
+- New struct `DefaultParameterGroupListResult`
+- New struct `DefaultParameterGroupProperties`
+- New struct `Endpoint`
+- New struct `EndpointListResult`
+- New struct `EndpointProperties`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `FabricDestinationDetails`
+- New struct `IdentityAssignment`
+- New struct `IdentityAssignmentListResult`
+- New struct `IdentityValidationStatus`
+- New struct `LogCaptureConfiguration`
+- New struct `LogCaptureConfigurationForPatchUpdate`
+- New struct `LogCaptureConfigurationListResult`
+- New struct `LogCaptureConfigurationProperties`
+- New struct `LogCaptureConfigurationPropertiesForPatchUpdate`
+- New struct `LogFile`
+- New struct `LogFileDownloadURL`
+- New struct `LogFileListResult`
+- New struct `LogFileProperties`
+- New struct `MaintenanceEvent`
+- New struct `MaintenanceEventActionResponse`
+- New struct `MaintenanceEventListResult`
+- New struct `MaintenanceEventProperties`
+- New struct `MaintenanceEventRescheduleRequest`
+- New struct `MicrosoftEntraAdministrator`
+- New struct `MicrosoftEntraAdministratorAdd`
+- New struct `MicrosoftEntraAdministratorListResult`
+- New struct `MicrosoftEntraAdministratorProperties`
+- New struct `MicrosoftEntraAdministratorPropertiesForAdd`
+- New struct `MicrosoftEntraAuthentication`
+- New struct `MicrosoftEntraAuthenticationForPatchUpdate`
+- New struct `MicrosoftEntraAuthenticationProperties`
+- New struct `MicrosoftEntraAuthenticationPropertiesForPatchUpdate`
+- New struct `NetworkForPatchUpdate`
+- New struct `Node`
+- New struct `NodeListResult`
+- New struct `NodeProperties`
+- New struct `PagedParameterGroupConnectionProperties`
+- New struct `PasswordAuthentication`
+- New struct `PasswordAuthenticationForPatchUpdate`
+- New struct `PasswordAuthenticationProperties`
+- New struct `PasswordAuthenticationPropertiesForPatchUpdate`
+- New struct `PoolCapability`
+- New struct `PoolComputeModel`
+- New struct `PoolComputeModelForPatchUpdate`
+- New struct `PoolFeatureCapability`
+- New struct `PoolForPatchUpdate`
+- New struct `PoolHighAvailability`
+- New struct `PoolHighAvailabilityPatch`
+- New struct `PoolParameterGroupReference`
+- New struct `PoolParameterGroupReferenceForPatchUpdate`
+- New struct `PoolPropertiesForPatchUpdate`
+- New struct `PostgreSQLVersionCapability`
+- New struct `ProvisionedComputeModelCapability`
+- New struct `ReadWritePoolProperties`
+- New struct `ScheduledMaintenancePropertiesForPatchUpdate`
+- New struct `SystemScheduledMaintenanceProperties`
+- New field `AiModelManagement`, `Backup`, `CreationMode`, `CreationSourceClusterLocation`, `CreationSourceClusterResourceID`, `DataEncryption`, `PostgreSQLVersion`, `ReadWritePool` in struct `ClusterProperties`
+- New field `AiModelManagement`, `Backup`, `DataEncryption`, `Network` in struct `ClusterPropertiesForPatchUpdate`
+- New field `PublicAccess` in struct `Network`
+- New field `PoolResourceID` in struct `ParameterGroupConnectionProperties`
+- New field `PostgreSQLVersion` in struct `ParameterGroupProperties`
+- New anonymous field `PagedParameterGroupConnectionProperties` in struct `ParameterGroupsClientListConnectionsResponse`
+- New field `DefaultValue`, `ValueSource` in struct `ParameterProperties`
+- New field `ComputeModel`, `HighAvailability`, `NodeCount`, `ParameterGroup`, `ScheduledMaintenance` in struct `PoolProperties`
+
+
+## 0.2.0 (2026-08-20)
+### Breaking Changes
+
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginUpdate` has been removed
+- Struct `OptionalPropertiesUpdateableProperties` has been removed
+- Struct `PrivateEndpointConnection` has been removed
+- Struct `PrivateEndpointConnectionUpdate` has been removed
+
+### Features Added
+
+- New value `StateSucceeded`, `StateUpgrading` added to enum type `State`
+- New enum type `AuthenticationState` with values `AuthenticationStateDisabled`, `AuthenticationStateEnabled`
+- New enum type `ComputeModelType` with values `ComputeModelTypeProvisioned`, `ComputeModelTypeServerless`
+- New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
+- New enum type `PrincipalTypes` with values `PrincipalTypesGroup`, `PrincipalTypesServicePrincipal`, `PrincipalTypesUnknown`, `PrincipalTypesUser`
+- New function `NewAdministratorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdministratorsClient, error)`
+- New function `*AdministratorsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, objectID string, resource AdministratorAdd, options *AdministratorsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AdministratorsClientCreateOrUpdateResponse], error)`
+- New function `*AdministratorsClient.BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *AdministratorsClientBeginDeleteOptions) (*runtime.Poller[AdministratorsClientDeleteResponse], error)`
+- New function `*AdministratorsClient.Get(ctx context.Context, resourceGroupName string, clusterName string, objectID string, options *AdministratorsClientGetOptions) (AdministratorsClientGetResponse, error)`
+- New function `*AdministratorsClient.NewListPager(resourceGroupName string, clusterName string, options *AdministratorsClientListOptions) *runtime.Pager[AdministratorsClientListResponse]`
+- New function `*ClientFactory.NewAdministratorsClient() *AdministratorsClient`
+- New function `*ClustersClient.BeginRestart(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginRestartOptions) (*runtime.Poller[ClustersClientRestartResponse], error)`
+- New function `*ClustersClient.BeginStart(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStartOptions) (*runtime.Poller[ClustersClientStartResponse], error)`
+- New function `*ClustersClient.BeginStop(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginStopOptions) (*runtime.Poller[ClustersClientStopResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.UpdateStatus(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, resource PrivateEndpointConnectionResource, options *PrivateEndpointConnectionsClientUpdateStatusOptions) (PrivateEndpointConnectionsClientUpdateStatusResponse, error)`
+- New struct `Administrator`
+- New struct `AdministratorAdd`
+- New struct `AdministratorListResult`
+- New struct `AdministratorProperties`
+- New struct `AdministratorPropertiesForAdd`
+- New struct `ClusterAuthConfig`
+- New struct `ClusterMirroring`
+- New struct `ComputeModel`
+- New struct `ManagedServiceIdentity`
+- New struct `UserAssignedIdentity`
+- New field `Identity` in struct `Cluster`
+- New field `Identity` in struct `ClusterForPatchUpdate`
+- New field `AuthConfig`, `ComputeModel`, `Mirroring` in struct `ClusterProperties`
+- New field `AuthConfig`, `ComputeModel`, `Mirroring` in struct `ClusterPropertiesForPatchUpdate`
+
+
 ## 0.1.0 (2026-03-30)
 ### Other Changes
 

@@ -53,41 +53,55 @@ func (client *TenantActivityLogsClient) NewListPager(options *TenantActivityLogs
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return TenantActivityLogsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TenantActivityLogsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *TenantActivityLogsClient) listCreateRequest(ctx context.Context, options *TenantActivityLogsClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Insights/eventtypes/management/values"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+func (client *TenantActivityLogsClient) listCreateRequest(ctx context.Context, nextLink string, options *TenantActivityLogsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Insights/eventtypes/management/values"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Select != nil {
+			reqQP.Set("$select", *options.Select)
+		}
+		reqQP.Set("api-version", version20150401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if options != nil && options.Select != nil {
-		reqQP.Set("$select", *options.Select)
-	}
-	reqQP.Set("api-version", version20150401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *TenantActivityLogsClient) listHandleResponse(resp *http.Response) (TenantActivityLogsClientListResponse, error) {
+func (client *TenantActivityLogsClient) listHandleResponse(resp *http.Response, successCodes ...int) (TenantActivityLogsClientListResponse, error) {
 	result := TenantActivityLogsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EventDataCollection); err != nil {
 		return TenantActivityLogsClientListResponse{}, err
 	}

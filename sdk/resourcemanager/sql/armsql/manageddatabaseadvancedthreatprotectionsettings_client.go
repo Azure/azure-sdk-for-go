@@ -20,7 +20,7 @@ import (
 // group.
 // Don't use this type directly, use NewManagedDatabaseAdvancedThreatProtectionSettingsClient() instead.
 //
-// Generated from API version 2025-02-01-preview
+// Generated from API version 2026-08-01-preview
 type ManagedDatabaseAdvancedThreatProtectionSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -31,6 +31,9 @@ type ManagedDatabaseAdvancedThreatProtectionSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedDatabaseAdvancedThreatProtectionSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedDatabaseAdvancedThreatProtectionSettingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -72,7 +75,7 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) CreateOrUpd
 func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, advancedThreatProtectionName AdvancedThreatProtectionName, parameters ManagedDatabaseAdvancedThreatProtection, _ *ManagedDatabaseAdvancedThreatProtectionSettingsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -96,7 +99,7 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) createOrUpd
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -147,7 +150,7 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) Get(ctx con
 func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, advancedThreatProtectionName AdvancedThreatProtectionName, _ *ManagedDatabaseAdvancedThreatProtectionSettingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/advancedThreatProtectionSettings/{advancedThreatProtectionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -171,7 +174,7 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) getCreateRe
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250201Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -228,7 +231,7 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) listByDatab
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/advancedThreatProtectionSettings"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -252,7 +255,7 @@ func (client *ManagedDatabaseAdvancedThreatProtectionSettingsClient) listByDatab
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250201Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

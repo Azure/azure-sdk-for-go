@@ -92,7 +92,7 @@ func (n *NetworkFabricSKUsServerTransport) dispatchGet(req *http.Request) (*http
 	if n.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabricSkus/(?P<networkFabricSkuName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabricSkus/(?P<networkFabricSkuName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -123,7 +123,7 @@ func (n *NetworkFabricSKUsServerTransport) dispatchNewListBySubscriptionPager(re
 	}
 	newListBySubscriptionPager := n.newListBySubscriptionPager.get(req)
 	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabricSkus`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedNetworkFabric/networkFabricSkus`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

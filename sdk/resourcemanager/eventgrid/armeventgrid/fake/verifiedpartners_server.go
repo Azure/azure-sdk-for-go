@@ -93,7 +93,7 @@ func (v *VerifiedPartnersServerTransport) dispatchGet(req *http.Request) (*http.
 	if v.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.EventGrid/verifiedPartners/(?P<verifiedPartnerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.EventGrid/verifiedPartners/(?P<verifiedPartnerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

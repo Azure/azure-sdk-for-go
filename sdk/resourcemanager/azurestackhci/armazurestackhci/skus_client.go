@@ -19,7 +19,7 @@ import (
 // SKUsClient contains the methods for the SKUs group.
 // Don't use this type directly, use NewSKUsClient() instead.
 //
-// Generated from API version 2026-04-30
+// Generated from API version 2026-10-01
 type SKUsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type SKUsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSKUsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SKUsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *SKUsClient) Get(ctx context.Context, resourceGroupName string, clu
 func (client *SKUsClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, publisherName string, offerName string, skuName string, options *SKUsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/publishers/{publisherName}/offers/{offerName}/skus/{skuName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,7 +104,7 @@ func (client *SKUsClient) getCreateRequest(ctx context.Context, resourceGroupNam
 	if options != nil && options.Expand != nil {
 		reqQP.Set("$expand", *options.Expand)
 	}
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -158,7 +161,7 @@ func (client *SKUsClient) listByOfferCreateRequest(ctx context.Context, resource
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/publishers/{publisherName}/offers/{offerName}/skus"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -189,7 +192,7 @@ func (client *SKUsClient) listByOfferCreateRequest(ctx context.Context, resource
 		if options != nil && options.Expand != nil {
 			reqQP.Set("$expand", *options.Expand)
 		}
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

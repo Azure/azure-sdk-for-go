@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_Create.json
+// Generated from example definition: 2026-11-01/HealthModels_Create.json
 func ExampleHealthModelsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleHealthModelsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_Delete.json
+// Generated from example definition: 2026-11-01/HealthModels_Delete.json
 func ExampleHealthModelsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,66 @@ func ExampleHealthModelsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_Get.json
+// Generated from example definition: 2026-11-01/HealthModels_Update.json
+func ExampleHealthModelsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewHealthModelsClient().BeginUpdate(ctx, "online-store-rg", "online-store", armcloudhealth.HealthModelUpdate{
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+			"team":        to.Ptr("online-store"),
+			"tier":        to.Ptr("gold"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcloudhealth.HealthModelsClientUpdateResponse{
+	// 	HealthModel: armcloudhealth.HealthModel{
+	// 		Properties: &armcloudhealth.HealthModelProperties{
+	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
+	// 		},
+	// 		Identity: &armcloudhealth.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 			"team": to.Ptr("online-store"),
+	// 			"tier": to.Ptr("gold"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store"),
+	// 		Name: to.Ptr("online-store"),
+	// 		Type: to.Ptr("Microsoft.CloudHealth/healthmodels"),
+	// 		SystemData: &armcloudhealth.SystemData{
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/HealthModels_Get.json
 func ExampleHealthModelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -143,7 +202,7 @@ func ExampleHealthModelsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_ListByResourceGroup.json
+// Generated from example definition: 2026-11-01/HealthModels_ListByResourceGroup.json
 func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +289,7 @@ func ExampleHealthModelsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/HealthModels_ListBySubscription.json
+// Generated from example definition: 2026-11-01/HealthModels_ListBySubscription.json
 func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,63 +374,4 @@ func ExampleHealthModelsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-05-01-preview/HealthModels_Update.json
-func ExampleHealthModelsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcloudhealth.NewClientFactory("abcdef12-3456-7890-abcd-ef1234567890", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewHealthModelsClient().BeginUpdate(ctx, "online-store-rg", "online-store", armcloudhealth.HealthModelUpdate{
-		Tags: map[string]*string{
-			"environment": to.Ptr("production"),
-			"team":        to.Ptr("online-store"),
-			"tier":        to.Ptr("gold"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcloudhealth.HealthModelsClientUpdateResponse{
-	// 	HealthModel: armcloudhealth.HealthModel{
-	// 		Properties: &armcloudhealth.HealthModelProperties{
-	// 			ProvisioningState: to.Ptr(armcloudhealth.HealthModelProvisioningStateSucceeded),
-	// 		},
-	// 		Identity: &armcloudhealth.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armcloudhealth.ManagedServiceIdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
-	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
-	// 			"team": to.Ptr("online-store"),
-	// 			"tier": to.Ptr("gold"),
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/abcdef12-3456-7890-abcd-ef1234567890/resourceGroups/online-store-rg/providers/Microsoft.CloudHealth/healthmodels/online-store"),
-	// 		Name: to.Ptr("online-store"),
-	// 		Type: to.Ptr("Microsoft.CloudHealth/healthmodels"),
-	// 		SystemData: &armcloudhealth.SystemData{
-	// 			CreatedBy: to.Ptr("admin@contoso.com"),
-	// 			CreatedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 8, 15, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armcloudhealth.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 9, 30, 0, 0, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

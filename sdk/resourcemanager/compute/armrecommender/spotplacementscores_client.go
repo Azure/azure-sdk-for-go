@@ -19,7 +19,7 @@ import (
 // SpotPlacementScoresClient contains the methods for the SpotPlacementScores group.
 // Don't use this type directly, use NewSpotPlacementScoresClient() instead.
 //
-// Generated from API version 2026-09-05-preview
+// Generated from API version 2026-10-05-preview
 type SpotPlacementScoresClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -81,7 +81,7 @@ func (client *SpotPlacementScoresClient) getCreateRequest(ctx context.Context, l
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260905Preview)
+	reqQP.Set("api-version", version20261005Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -93,7 +93,7 @@ func (client *SpotPlacementScoresClient) getHandleResponse(resp *http.Response, 
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ComputeDiagnosticBase); err != nil {
+	if err := runtime.UnmarshalAsJSON(resp, &result.SpotPlacementScoresBase); err != nil {
 		return SpotPlacementScoresClientGetResponse{}, err
 	}
 	return result, nil
@@ -138,7 +138,7 @@ func (client *SpotPlacementScoresClient) postCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260905Preview)
+	reqQP.Set("api-version", version20261005Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

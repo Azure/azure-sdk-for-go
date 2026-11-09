@@ -65,7 +65,8 @@ func (client *UpgradePreferencesOperationsClient) CreateOrUpdate(ctx context.Con
 	if err != nil {
 		return UpgradePreferencesOperationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -130,7 +131,8 @@ func (client *UpgradePreferencesOperationsClient) Get(ctx context.Context, resou
 	if err != nil {
 		return UpgradePreferencesOperationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -191,7 +193,8 @@ func (client *UpgradePreferencesOperationsClient) UpgradeNow(ctx context.Context
 	if err != nil {
 		return UpgradePreferencesOperationsClientUpgradeNowResponse{}, err
 	}
-	return client.upgradeNowHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.upgradeNowHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // upgradeNowCreateRequest creates the UpgradeNow request.

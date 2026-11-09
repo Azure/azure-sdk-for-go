@@ -65,7 +65,8 @@ func (client *FabricShortcutsClient) Approve(ctx context.Context, resourceGroupN
 	if err != nil {
 		return FabricShortcutsClientApproveResponse{}, err
 	}
-	return client.approveHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.approveHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // approveCreateRequest creates the Approve request.
@@ -137,7 +138,8 @@ func (client *FabricShortcutsClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return FabricShortcutsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -212,7 +214,8 @@ func (client *FabricShortcutsClient) Delete(ctx context.Context, resourceGroupNa
 		return FabricShortcutsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return FabricShortcutsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FabricShortcutsClientDeleteResponse{}, err
 	}
 	return FabricShortcutsClientDeleteResponse{}, nil
 }
@@ -271,7 +274,8 @@ func (client *FabricShortcutsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return FabricShortcutsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -423,7 +427,8 @@ func (client *FabricShortcutsClient) Reject(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return FabricShortcutsClientRejectResponse{}, err
 	}
-	return client.rejectHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.rejectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // rejectCreateRequest creates the Reject request.

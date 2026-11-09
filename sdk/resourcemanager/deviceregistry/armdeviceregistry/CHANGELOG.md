@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0 (2026-09-10)
+## 3.0.0 (2026-11-09)
 ### Breaking Changes
 
 - Type of `Namespace.Identity` has been changed from `*SystemAssignedServiceIdentity` to `*ManagedServiceIdentity`

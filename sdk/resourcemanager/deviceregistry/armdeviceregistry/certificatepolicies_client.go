@@ -70,7 +70,7 @@ func (client *CertificatePoliciesClient) BeginCreateOrReplace(ctx context.Contex
 	}
 }
 
-// CreateOrReplace - Create a CertificatePolicy
+// createOrReplace - Create a CertificatePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificatePoliciesClient) createOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, resource CertificatePolicy, options *CertificatePoliciesClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *CertificatePoliciesClient) createOrReplace(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrReplaceCreateRequest creates the CreateOrReplace request.
+// createOrReplaceCreateRequest creates the createOrReplace request.
 func (client *CertificatePoliciesClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, resource CertificatePolicy, _ *CertificatePoliciesClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/certificateAuthorities/{certificateAuthorityName}/certificatePolicies/{certificatePolicyName}"
 	if client.subscriptionID == "" {
@@ -155,7 +156,7 @@ func (client *CertificatePoliciesClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a CertificatePolicy
+// deleteOperation - Delete a CertificatePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificatePoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, options *CertificatePoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,12 +173,13 @@ func (client *CertificatePoliciesClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CertificatePoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, _ *CertificatePoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/certificateAuthorities/{certificateAuthorityName}/certificatePolicies/{certificatePolicyName}"
 	if client.subscriptionID == "" {
@@ -210,6 +212,93 @@ func (client *CertificatePoliciesClient) deleteCreateRequest(ctx context.Context
 	return req, nil
 }
 
+// BeginUpdate - Update a CertificatePolicy
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - namespaceName - The name of the namespace.
+//   - certificateAuthorityName - The name of the Certificate Authority resource.
+//   - certificatePolicyName - The name of the Certificate Policy resource.
+//   - properties - The resource properties to be updated.
+//   - options - CertificatePoliciesClientBeginUpdateOptions contains the optional parameters for the CertificatePoliciesClient.BeginUpdate
+//     method.
+func (client *CertificatePoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, properties CertificatePolicyUpdate, options *CertificatePoliciesClientBeginUpdateOptions) (*runtime.Poller[CertificatePoliciesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, namespaceName, certificateAuthorityName, certificatePolicyName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CertificatePoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CertificatePoliciesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a CertificatePolicy
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CertificatePoliciesClient) update(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, properties CertificatePolicyUpdate, options *CertificatePoliciesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CertificatePoliciesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, certificateAuthorityName, certificatePolicyName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *CertificatePoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, properties CertificatePolicyUpdate, _ *CertificatePoliciesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/certificateAuthorities/{certificateAuthorityName}/certificatePolicies/{certificatePolicyName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if certificateAuthorityName == "" {
+		return nil, errors.New("parameter certificateAuthorityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{certificateAuthorityName}", url.PathEscape(certificateAuthorityName))
+	if certificatePolicyName == "" {
+		return nil, errors.New("parameter certificatePolicyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{certificatePolicyName}", url.PathEscape(certificatePolicyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get a CertificatePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -231,7 +320,8 @@ func (client *CertificatePoliciesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return CertificatePoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -360,90 +450,4 @@ func (client *CertificatePoliciesClient) listByCertificateAuthorityHandleRespons
 		return CertificatePoliciesClientListByCertificateAuthorityResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a CertificatePolicy
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - namespaceName - The name of the namespace.
-//   - certificateAuthorityName - The name of the Certificate Authority resource.
-//   - certificatePolicyName - The name of the Certificate Policy resource.
-//   - properties - The resource properties to be updated.
-//   - options - CertificatePoliciesClientBeginUpdateOptions contains the optional parameters for the CertificatePoliciesClient.BeginUpdate
-//     method.
-func (client *CertificatePoliciesClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, properties CertificatePolicyUpdate, options *CertificatePoliciesClientBeginUpdateOptions) (*runtime.Poller[CertificatePoliciesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, namespaceName, certificateAuthorityName, certificatePolicyName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CertificatePoliciesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CertificatePoliciesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a CertificatePolicy
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CertificatePoliciesClient) update(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, properties CertificatePolicyUpdate, options *CertificatePoliciesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CertificatePoliciesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, certificateAuthorityName, certificatePolicyName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *CertificatePoliciesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, certificateAuthorityName string, certificatePolicyName string, properties CertificatePolicyUpdate, _ *CertificatePoliciesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/certificateAuthorities/{certificateAuthorityName}/certificatePolicies/{certificatePolicyName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if certificateAuthorityName == "" {
-		return nil, errors.New("parameter certificateAuthorityName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificateAuthorityName}", url.PathEscape(certificateAuthorityName))
-	if certificatePolicyName == "" {
-		return nil, errors.New("parameter certificatePolicyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{certificatePolicyName}", url.PathEscape(certificatePolicyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

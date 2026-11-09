@@ -230,6 +230,75 @@ func ExampleCertificateAuthoritiesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-11-01/RevokeAndRotate_CertificateAuthority.json
+func ExampleCertificateAuthoritiesClient_BeginRevokeAndRotate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCertificateAuthoritiesClient().BeginRevokeAndRotate(ctx, "rgdeviceregistry", "mynamespace", "myica", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-11-01/Update_CertificateAuthority.json
+func ExampleCertificateAuthoritiesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCertificateAuthoritiesClient().BeginUpdate(ctx, "rgdeviceregistry", "mynamespace", "myrootca", armdeviceregistry.CertificateAuthorityUpdate{
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceregistry.CertificateAuthoritiesClientUpdateResponse{
+	// 	CertificateAuthority: armdeviceregistry.CertificateAuthority{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgdeviceregistry/providers/Microsoft.DeviceRegistry/namespaces/mynamespace/certificateAuthorities/myrootca"),
+	// 		Name: to.Ptr("myrootca"),
+	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/certificateAuthorities"),
+	// 		Location: to.Ptr("East US 2"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Properties: &armdeviceregistry.RootCertificateAuthorityProperties{
+	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 			UUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			CertificateAuthorityType: to.Ptr(armdeviceregistry.CertificateAuthorityTypeRoot),
+	// 			KeyType: to.Ptr(armdeviceregistry.CertificateAuthorityKeyTypeECC),
+	// 			Subject: to.Ptr("CN=myrootca"),
+	// 			ValidityNotBefore: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 			ValidityNotAfter: to.Ptr(time.Date(2031, time.January, 1, 0, 0, 0, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-11-01/Get_CertificateAuthority_ICAExternalIssuer.json
 func ExampleCertificateAuthoritiesClient_Get_getAnExternalIntermediateCertificateAuthority() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -405,73 +474,4 @@ func ExampleCertificateAuthoritiesClient_NewListByNamespacePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-11-01/RevokeAndRotate_CertificateAuthority.json
-func ExampleCertificateAuthoritiesClient_BeginRevokeAndRotate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCertificateAuthoritiesClient().BeginRevokeAndRotate(ctx, "rgdeviceregistry", "mynamespace", "myica", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-11-01/Update_CertificateAuthority.json
-func ExampleCertificateAuthoritiesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCertificateAuthoritiesClient().BeginUpdate(ctx, "rgdeviceregistry", "mynamespace", "myrootca", armdeviceregistry.CertificateAuthorityUpdate{
-		Tags: map[string]*string{
-			"environment": to.Ptr("production"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistry.CertificateAuthoritiesClientUpdateResponse{
-	// 	CertificateAuthority: armdeviceregistry.CertificateAuthority{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgdeviceregistry/providers/Microsoft.DeviceRegistry/namespaces/mynamespace/certificateAuthorities/myrootca"),
-	// 		Name: to.Ptr("myrootca"),
-	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/certificateAuthorities"),
-	// 		Location: to.Ptr("East US 2"),
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
-	// 		},
-	// 		Properties: &armdeviceregistry.RootCertificateAuthorityProperties{
-	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-	// 			UUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			CertificateAuthorityType: to.Ptr(armdeviceregistry.CertificateAuthorityTypeRoot),
-	// 			KeyType: to.Ptr(armdeviceregistry.CertificateAuthorityKeyTypeECC),
-	// 			Subject: to.Ptr("CN=myrootca"),
-	// 			ValidityNotBefore: to.Ptr(time.Date(2026, time.January, 1, 0, 0, 0, 0, time.UTC)),
-	// 			ValidityNotAfter: to.Ptr(time.Date(2031, time.January, 1, 0, 0, 0, 0, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

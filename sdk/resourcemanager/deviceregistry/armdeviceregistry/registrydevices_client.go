@@ -69,7 +69,7 @@ func (client *RegistryDevicesClient) BeginCreateOrReplace(ctx context.Context, r
 	}
 }
 
-// CreateOrReplace - Create a RegistryDevice
+// createOrReplace - Create a RegistryDevice
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RegistryDevicesClient) createOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, resource RegistryDevice, options *RegistryDevicesClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *RegistryDevicesClient) createOrReplace(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrReplaceCreateRequest creates the CreateOrReplace request.
+// createOrReplaceCreateRequest creates the createOrReplace request.
 func (client *RegistryDevicesClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, resource RegistryDevice, _ *RegistryDevicesClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *RegistryDevicesClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete a RegistryDevice
+// deleteOperation - Delete a RegistryDevice
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RegistryDevicesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, options *RegistryDevicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *RegistryDevicesClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RegistryDevicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, _ *RegistryDevicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}"
 	if client.subscriptionID == "" {
@@ -200,6 +202,88 @@ func (client *RegistryDevicesClient) deleteCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
+// BeginUpdate - Update a RegistryDevice
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - namespaceName - The name of the namespace.
+//   - registryDeviceName - The name of the new device.
+//   - properties - The resource properties to be updated.
+//   - options - RegistryDevicesClientBeginUpdateOptions contains the optional parameters for the RegistryDevicesClient.BeginUpdate
+//     method.
+func (client *RegistryDevicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, properties RegistryDeviceUpdate, options *RegistryDevicesClientBeginUpdateOptions) (*runtime.Poller[RegistryDevicesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, namespaceName, registryDeviceName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegistryDevicesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RegistryDevicesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a RegistryDevice
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RegistryDevicesClient) update(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, properties RegistryDeviceUpdate, options *RegistryDevicesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RegistryDevicesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, registryDeviceName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *RegistryDevicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, properties RegistryDeviceUpdate, _ *RegistryDevicesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if registryDeviceName == "" {
+		return nil, errors.New("parameter registryDeviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{registryDeviceName}", url.PathEscape(registryDeviceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get a RegistryDevice
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -220,7 +304,8 @@ func (client *RegistryDevicesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return RegistryDevicesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -340,85 +425,4 @@ func (client *RegistryDevicesClient) listByNamespaceHandleResponse(resp *http.Re
 		return RegistryDevicesClientListByNamespaceResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a RegistryDevice
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - namespaceName - The name of the namespace.
-//   - registryDeviceName - The name of the new device.
-//   - properties - The resource properties to be updated.
-//   - options - RegistryDevicesClientBeginUpdateOptions contains the optional parameters for the RegistryDevicesClient.BeginUpdate
-//     method.
-func (client *RegistryDevicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, properties RegistryDeviceUpdate, options *RegistryDevicesClientBeginUpdateOptions) (*runtime.Poller[RegistryDevicesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, namespaceName, registryDeviceName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RegistryDevicesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RegistryDevicesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a RegistryDevice
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RegistryDevicesClient) update(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, properties RegistryDeviceUpdate, options *RegistryDevicesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RegistryDevicesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, registryDeviceName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *RegistryDevicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, registryDeviceName string, properties RegistryDeviceUpdate, _ *RegistryDevicesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/registryDevices/{registryDeviceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if registryDeviceName == "" {
-		return nil, errors.New("parameter registryDeviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{registryDeviceName}", url.PathEscape(registryDeviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

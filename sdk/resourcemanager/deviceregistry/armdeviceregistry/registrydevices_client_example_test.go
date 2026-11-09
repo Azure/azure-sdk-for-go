@@ -94,6 +94,65 @@ func ExampleRegistryDevicesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-11-01/Update_RegistryDevice.json
+func ExampleRegistryDevicesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRegistryDevicesClient().BeginUpdate(ctx, "myResourceGroup", "my-namespace-1", "adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab", armdeviceregistry.RegistryDeviceUpdate{
+		Properties: &armdeviceregistry.RegistryDeviceUpdateProperties{
+			EnablementState:  to.Ptr(armdeviceregistry.RegistryDeviceEnablementStateEnabled),
+			Manufacturer:     to.Ptr("Contoso"),
+			Model:            to.Ptr("SmartSensorV2"),
+			HardwareRevision: to.Ptr("1.0"),
+			SoftwareRevision: to.Ptr("6.1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceregistry.RegistryDevicesClientUpdateResponse{
+	// 	RegistryDevice: armdeviceregistry.RegistryDevice{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/my-namespace-1/registryDevices/adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab"),
+	// 		Name: to.Ptr("adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab"),
+	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/registryDevices"),
+	// 		Location: to.Ptr("North Europe"),
+	// 		Etag: to.Ptr("c80325f9-0000-0800-0000-66fcb0290001"),
+	// 		SystemData: &armdeviceregistry.SystemData{
+	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
+	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.October, 2, 20, 15, 21, 887464800, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
+	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 2, 20, 15, 21, 887464800, time.UTC)),
+	// 		},
+	// 		Properties: &armdeviceregistry.RegistryDeviceProperties{
+	// 			UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
+	// 			ExternalDeviceID: to.Ptr("adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab"),
+	// 			EnablementState: to.Ptr(armdeviceregistry.RegistryDeviceEnablementStateEnabled),
+	// 			Manufacturer: to.Ptr("Contoso"),
+	// 			Model: to.Ptr("SmartSensorV2"),
+	// 			HardwareRevision: to.Ptr("1.0"),
+	// 			SoftwareRevision: to.Ptr("6.1"),
+	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-11-01/Get_RegistryDevice.json
 func ExampleRegistryDevicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -195,63 +254,4 @@ func ExampleRegistryDevicesClient_NewListByNamespacePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-11-01/Update_RegistryDevice.json
-func ExampleRegistryDevicesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewRegistryDevicesClient().BeginUpdate(ctx, "myResourceGroup", "my-namespace-1", "adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab", armdeviceregistry.RegistryDeviceUpdate{
-		Properties: &armdeviceregistry.RegistryDeviceUpdateProperties{
-			EnablementState:  to.Ptr(armdeviceregistry.RegistryDeviceEnablementStateEnabled),
-			Manufacturer:     to.Ptr("Contoso"),
-			Model:            to.Ptr("SmartSensorV2"),
-			HardwareRevision: to.Ptr("1.0"),
-			SoftwareRevision: to.Ptr("6.1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistry.RegistryDevicesClientUpdateResponse{
-	// 	RegistryDevice: armdeviceregistry.RegistryDevice{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/my-namespace-1/registryDevices/adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab"),
-	// 		Name: to.Ptr("adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab"),
-	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/registryDevices"),
-	// 		Location: to.Ptr("North Europe"),
-	// 		Etag: to.Ptr("c80325f9-0000-0800-0000-66fcb0290001"),
-	// 		SystemData: &armdeviceregistry.SystemData{
-	// 			CreatedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
-	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.October, 2, 20, 15, 21, 887464800, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("00003442-0000-0000-0000-494059220000"),
-	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.October, 2, 20, 15, 21, 887464800, time.UTC)),
-	// 		},
-	// 		Properties: &armdeviceregistry.RegistryDeviceProperties{
-	// 			UUID: to.Ptr("1824a74f-21e1-4458-ae07-604d3a241d2e"),
-	// 			ExternalDeviceID: to.Ptr("adr-smart-device3-f191f536-f652-4eb4-b9a0-1a9d43300cab"),
-	// 			EnablementState: to.Ptr(armdeviceregistry.RegistryDeviceEnablementStateEnabled),
-	// 			Manufacturer: to.Ptr("Contoso"),
-	// 			Model: to.Ptr("SmartSensorV2"),
-	// 			HardwareRevision: to.Ptr("1.0"),
-	// 			SoftwareRevision: to.Ptr("6.1"),
-	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

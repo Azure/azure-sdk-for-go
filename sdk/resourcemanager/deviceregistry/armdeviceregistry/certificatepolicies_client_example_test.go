@@ -79,6 +79,57 @@ func ExampleCertificatePoliciesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-11-01/Update_CertificatePolicy.json
+func ExampleCertificatePoliciesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCertificatePoliciesClient().BeginUpdate(ctx, "rgdeviceregistry", "mynamespace", "myrootca", "mycertificatepolicy", armdeviceregistry.CertificatePolicyUpdate{
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+		},
+		Properties: &armdeviceregistry.CertificatePolicyUpdateProperties{
+			Certificate: &armdeviceregistry.OptionalPropertiesCertificatePolicyConfiguration{
+				ValidityPeriodInDays: to.Ptr[int32](60),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceregistry.CertificatePoliciesClientUpdateResponse{
+	// 	CertificatePolicy: armdeviceregistry.CertificatePolicy{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgdeviceregistry/providers/Microsoft.DeviceRegistry/namespaces/mynamespace/certificateAuthorities/myrootca/certificatePolicies/mycertificatepolicy"),
+	// 		Name: to.Ptr("mycertificatepolicy"),
+	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/certificateAuthorities/certificatePolicies"),
+	// 		Location: to.Ptr("East US 2"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Properties: &armdeviceregistry.CertificatePolicyProperties{
+	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 			UUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			Certificate: &armdeviceregistry.CertificatePolicyConfiguration{
+	// 				ValidityPeriodInDays: to.Ptr[int32](60),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-11-01/Get_CertificatePolicy.json
 func ExampleCertificatePoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -159,55 +210,4 @@ func ExampleCertificatePoliciesClient_NewListByCertificateAuthorityPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-11-01/Update_CertificatePolicy.json
-func ExampleCertificatePoliciesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCertificatePoliciesClient().BeginUpdate(ctx, "rgdeviceregistry", "mynamespace", "myrootca", "mycertificatepolicy", armdeviceregistry.CertificatePolicyUpdate{
-		Tags: map[string]*string{
-			"environment": to.Ptr("production"),
-		},
-		Properties: &armdeviceregistry.CertificatePolicyUpdateProperties{
-			Certificate: &armdeviceregistry.OptionalPropertiesCertificatePolicyConfiguration{
-				ValidityPeriodInDays: to.Ptr[int32](60),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistry.CertificatePoliciesClientUpdateResponse{
-	// 	CertificatePolicy: armdeviceregistry.CertificatePolicy{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgdeviceregistry/providers/Microsoft.DeviceRegistry/namespaces/mynamespace/certificateAuthorities/myrootca/certificatePolicies/mycertificatepolicy"),
-	// 		Name: to.Ptr("mycertificatepolicy"),
-	// 		Type: to.Ptr("Microsoft.DeviceRegistry/namespaces/certificateAuthorities/certificatePolicies"),
-	// 		Location: to.Ptr("East US 2"),
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
-	// 		},
-	// 		Properties: &armdeviceregistry.CertificatePolicyProperties{
-	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-	// 			UUID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			Certificate: &armdeviceregistry.CertificatePolicyConfiguration{
-	// 				ValidityPeriodInDays: to.Ptr[int32](60),
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

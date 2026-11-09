@@ -66,7 +66,8 @@ func (client *DppCrossTenantVaultMappingsClient) CreateOrUpdate(ctx context.Cont
 	if err != nil {
 		return DppCrossTenantVaultMappingsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *DppCrossTenantVaultMappingsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return DppCrossTenantVaultMappingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -280,7 +282,8 @@ func (client *DppCrossTenantVaultMappingsClient) Remove(ctx context.Context, res
 		return DppCrossTenantVaultMappingsClientRemoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return DppCrossTenantVaultMappingsClientRemoveResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DppCrossTenantVaultMappingsClientRemoveResponse{}, err
 	}
 	return DppCrossTenantVaultMappingsClientRemoveResponse{}, nil
 }

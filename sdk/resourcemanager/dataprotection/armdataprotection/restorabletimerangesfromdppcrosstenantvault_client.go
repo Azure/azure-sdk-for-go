@@ -68,7 +68,8 @@ func (client *RestorableTimeRangesFromDppCrossTenantVaultClient) Find(ctx contex
 	if err != nil {
 		return RestorableTimeRangesFromDppCrossTenantVaultClientFindResponse{}, err
 	}
-	return client.findHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.findHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // findCreateRequest creates the Find request.

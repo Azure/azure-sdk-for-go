@@ -64,7 +64,8 @@ func (client *ResourceGuardsClient) Delete(ctx context.Context, resourceGroupNam
 		return ResourceGuardsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ResourceGuardsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ResourceGuardsClientDeleteResponse{}, err
 	}
 	return ResourceGuardsClientDeleteResponse{}, nil
 }
@@ -113,7 +114,8 @@ func (client *ResourceGuardsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ResourceGuardsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -176,7 +178,8 @@ func (client *ResourceGuardsClient) GetDefaultBackupSecurityPINRequestsObject(ct
 	if err != nil {
 		return ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{}, err
 	}
-	return client.getDefaultBackupSecurityPINRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDefaultBackupSecurityPINRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDefaultBackupSecurityPINRequestsObjectCreateRequest creates the GetDefaultBackupSecurityPINRequestsObject request.
@@ -243,7 +246,8 @@ func (client *ResourceGuardsClient) GetDefaultDeleteProtectedItemRequestsObject(
 	if err != nil {
 		return ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{}, err
 	}
-	return client.getDefaultDeleteProtectedItemRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDefaultDeleteProtectedItemRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDefaultDeleteProtectedItemRequestsObjectCreateRequest creates the GetDefaultDeleteProtectedItemRequestsObject request.
@@ -310,7 +314,8 @@ func (client *ResourceGuardsClient) GetDefaultDeleteResourceGuardProxyRequestsOb
 	if err != nil {
 		return ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{}, err
 	}
-	return client.getDefaultDeleteResourceGuardProxyRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDefaultDeleteResourceGuardProxyRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDefaultDeleteResourceGuardProxyRequestsObjectCreateRequest creates the GetDefaultDeleteResourceGuardProxyRequestsObject request.
@@ -377,7 +382,8 @@ func (client *ResourceGuardsClient) GetDefaultDisableSoftDeleteRequestsObject(ct
 	if err != nil {
 		return ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{}, err
 	}
-	return client.getDefaultDisableSoftDeleteRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDefaultDisableSoftDeleteRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDefaultDisableSoftDeleteRequestsObjectCreateRequest creates the GetDefaultDisableSoftDeleteRequestsObject request.
@@ -444,7 +450,8 @@ func (client *ResourceGuardsClient) GetDefaultUpdateProtectedItemRequestsObject(
 	if err != nil {
 		return ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{}, err
 	}
-	return client.getDefaultUpdateProtectedItemRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDefaultUpdateProtectedItemRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDefaultUpdateProtectedItemRequestsObjectCreateRequest creates the GetDefaultUpdateProtectedItemRequestsObject request.
@@ -511,7 +518,8 @@ func (client *ResourceGuardsClient) GetDefaultUpdateProtectionPolicyRequestsObje
 	if err != nil {
 		return ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}, err
 	}
-	return client.getDefaultUpdateProtectionPolicyRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDefaultUpdateProtectionPolicyRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDefaultUpdateProtectionPolicyRequestsObjectCreateRequest creates the GetDefaultUpdateProtectionPolicyRequestsObject request.
@@ -1183,7 +1191,8 @@ func (client *ResourceGuardsClient) Patch(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ResourceGuardsClientPatchResponse{}, err
 	}
-	return client.patchHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.patchHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // patchCreateRequest creates the Patch request.
@@ -1248,7 +1257,8 @@ func (client *ResourceGuardsClient) Put(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ResourceGuardsClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.

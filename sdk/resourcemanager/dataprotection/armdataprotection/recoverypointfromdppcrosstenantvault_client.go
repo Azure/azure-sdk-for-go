@@ -67,7 +67,8 @@ func (client *RecoveryPointFromDppCrossTenantVaultClient) Get(ctx context.Contex
 	if err != nil {
 		return RecoveryPointFromDppCrossTenantVaultClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

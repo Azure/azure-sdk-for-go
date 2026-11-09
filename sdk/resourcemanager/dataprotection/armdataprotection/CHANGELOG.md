@@ -1,6 +1,6 @@
 # Release History
 
-## 4.3.0-beta.2 (2026-11-03)
+## 4.3.0-beta.2 (2026-11-09)
 ### Features Added
 
 - New enum type `VaultMappingState` with values `VaultMappingStateActive`, `VaultMappingStateInactive`

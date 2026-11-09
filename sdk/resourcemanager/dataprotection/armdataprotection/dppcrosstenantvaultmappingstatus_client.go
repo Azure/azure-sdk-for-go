@@ -64,7 +64,8 @@ func (client *DppCrossTenantVaultMappingStatusClient) Check(ctx context.Context,
 	if err != nil {
 		return DppCrossTenantVaultMappingStatusClientCheckResponse{}, err
 	}
-	return client.checkHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkCreateRequest creates the Check request.

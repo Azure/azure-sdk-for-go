@@ -67,7 +67,8 @@ func (client *PartnerConfigurationsClient) AuthorizePartner(ctx context.Context,
 	if err != nil {
 		return PartnerConfigurationsClientAuthorizePartnerResponse{}, err
 	}
-	return client.authorizePartnerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.authorizePartnerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // authorizePartnerCreateRequest creates the AuthorizePartner request.
@@ -152,7 +153,8 @@ func (client *PartnerConfigurationsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -192,7 +194,7 @@ func (client *PartnerConfigurationsClient) createOrUpdateCreateRequest(ctx conte
 //     method.
 func (client *PartnerConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, options *PartnerConfigurationsClientBeginDeleteOptions) (*runtime.Poller[PartnerConfigurationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -207,11 +209,11 @@ func (client *PartnerConfigurationsClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// delete - Delete a partner configuration.
+// deleteOperation - Delete a partner configuration.
 //
 // Delete existing partner configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PartnerConfigurationsClient) delete(ctx context.Context, resourceGroupName string, options *PartnerConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PartnerConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, options *PartnerConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PartnerConfigurationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -226,7 +228,8 @@ func (client *PartnerConfigurationsClient) delete(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -296,7 +299,8 @@ func (client *PartnerConfigurationsClient) update(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -348,7 +352,8 @@ func (client *PartnerConfigurationsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return PartnerConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -556,7 +561,8 @@ func (client *PartnerConfigurationsClient) UnauthorizePartner(ctx context.Contex
 	if err != nil {
 		return PartnerConfigurationsClientUnauthorizePartnerResponse{}, err
 	}
-	return client.unauthorizePartnerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.unauthorizePartnerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // unauthorizePartnerCreateRequest creates the UnauthorizePartner request.

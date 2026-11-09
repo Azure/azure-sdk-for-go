@@ -90,7 +90,8 @@ func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -134,7 +135,7 @@ func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, re
 //   - options - DomainsClientBeginDeleteOptions contains the optional parameters for the DomainsClient.BeginDelete method.
 func (client *DomainsClient) BeginDelete(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientBeginDeleteOptions) (*runtime.Poller[DomainsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, domainName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, domainName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,11 +150,11 @@ func (client *DomainsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// delete - Delete a domain.
+// deleteOperation - Delete a domain.
 //
 // Delete existing domain.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *DomainsClient) delete(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DomainsClient) deleteOperation(ctx context.Context, resourceGroupName string, domainName string, options *DomainsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -168,7 +169,8 @@ func (client *DomainsClient) delete(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -242,7 +244,8 @@ func (client *DomainsClient) update(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -298,7 +301,8 @@ func (client *DomainsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return DomainsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -361,7 +365,8 @@ func (client *DomainsClient) ListSharedAccessKeys(ctx context.Context, resourceG
 	if err != nil {
 		return DomainsClientListSharedAccessKeysResponse{}, err
 	}
-	return client.listSharedAccessKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSharedAccessKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSharedAccessKeysCreateRequest creates the ListSharedAccessKeys request.
@@ -579,7 +584,8 @@ func (client *DomainsClient) RegenerateKey(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return DomainsClientRegenerateKeyResponse{}, err
 	}
-	return client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.

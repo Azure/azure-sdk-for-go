@@ -58,7 +58,8 @@ func (client *TopicTypesClient) Get(ctx context.Context, topicTypeName string, o
 	if err != nil {
 		return TopicTypesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

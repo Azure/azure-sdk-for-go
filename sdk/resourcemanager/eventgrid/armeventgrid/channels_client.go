@@ -55,7 +55,7 @@ func NewChannelsClient(subscriptionID string, credential azcore.TokenCredential,
 //   - options - ChannelsClientBeginDeleteOptions contains the optional parameters for the ChannelsClient.BeginDelete method.
 func (client *ChannelsClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, channelName string, options *ChannelsClientBeginDeleteOptions) (*runtime.Poller[ChannelsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, partnerNamespaceName, channelName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, partnerNamespaceName, channelName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -70,11 +70,11 @@ func (client *ChannelsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Delete a channel.
+// deleteOperation - Delete a channel.
 //
 // Delete an existing channel.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ChannelsClient) delete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, channelName string, options *ChannelsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ChannelsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerNamespaceName string, channelName string, options *ChannelsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ChannelsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -89,7 +89,8 @@ func (client *ChannelsClient) delete(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -146,7 +147,8 @@ func (client *ChannelsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ChannelsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -217,7 +219,8 @@ func (client *ChannelsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ChannelsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -284,7 +287,8 @@ func (client *ChannelsClient) GetFullURL(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ChannelsClientGetFullURLResponse{}, err
 	}
-	return client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFullURLCreateRequest creates the GetFullURL request.
@@ -438,7 +442,8 @@ func (client *ChannelsClient) Update(ctx context.Context, resourceGroupName stri
 		return ChannelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ChannelsClientUpdateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ChannelsClientUpdateResponse{}, err
 	}
 	return ChannelsClientUpdateResponse{}, nil
 }

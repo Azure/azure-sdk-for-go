@@ -91,7 +91,8 @@ func (client *DomainEventSubscriptionsClient) createOrUpdate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,7 @@ func (client *DomainEventSubscriptionsClient) createOrUpdateCreateRequest(ctx co
 //     method.
 func (client *DomainEventSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, options *DomainEventSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[DomainEventSubscriptionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, domainName, eventSubscriptionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, domainName, eventSubscriptionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +157,11 @@ func (client *DomainEventSubscriptionsClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// delete - Delete an event subscription for a domain.
+// deleteOperation - Delete an event subscription for a domain.
 //
 // Delete an existing event subscription for a domain.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *DomainEventSubscriptionsClient) delete(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, options *DomainEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DomainEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, domainName string, eventSubscriptionName string, options *DomainEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainEventSubscriptionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +176,8 @@ func (client *DomainEventSubscriptionsClient) delete(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -255,7 +257,8 @@ func (client *DomainEventSubscriptionsClient) update(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -317,7 +320,8 @@ func (client *DomainEventSubscriptionsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return DomainEventSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -385,7 +389,8 @@ func (client *DomainEventSubscriptionsClient) GetDeliveryAttributes(ctx context.
 	if err != nil {
 		return DomainEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
-	return client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeliveryAttributesCreateRequest creates the GetDeliveryAttributes request.
@@ -453,7 +458,8 @@ func (client *DomainEventSubscriptionsClient) GetFullURL(ctx context.Context, re
 	if err != nil {
 		return DomainEventSubscriptionsClientGetFullURLResponse{}, err
 	}
-	return client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFullURLCreateRequest creates the GetFullURL request.

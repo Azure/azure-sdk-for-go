@@ -1,6 +1,6 @@
 # Release History
 
-## 2.4.0-beta.3 (2026-10-09)
+## 2.4.0-beta.3 (2026-11-09)
 ### Features Added
 
 - New value `TLSVersionOne3` added to enum type `TLSVersion`

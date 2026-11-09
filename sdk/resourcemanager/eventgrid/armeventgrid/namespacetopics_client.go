@@ -91,7 +91,8 @@ func (client *NamespaceTopicsClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,7 @@ func (client *NamespaceTopicsClient) createOrUpdateCreateRequest(ctx context.Con
 //     method.
 func (client *NamespaceTopicsClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, options *NamespaceTopicsClientBeginDeleteOptions) (*runtime.Poller[NamespaceTopicsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, namespaceName, topicName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, topicName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +157,11 @@ func (client *NamespaceTopicsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// delete - Delete a namespace topic.
+// deleteOperation - Delete a namespace topic.
 //
 // Delete existing namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *NamespaceTopicsClient) delete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, options *NamespaceTopicsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *NamespaceTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, options *NamespaceTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +176,8 @@ func (client *NamespaceTopicsClient) delete(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -255,7 +257,8 @@ func (client *NamespaceTopicsClient) regenerateKey(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -341,7 +344,8 @@ func (client *NamespaceTopicsClient) update(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -402,7 +406,8 @@ func (client *NamespaceTopicsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return NamespaceTopicsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -470,7 +475,8 @@ func (client *NamespaceTopicsClient) ListSharedAccessKeys(ctx context.Context, r
 	if err != nil {
 		return NamespaceTopicsClientListSharedAccessKeysResponse{}, err
 	}
-	return client.listSharedAccessKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSharedAccessKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSharedAccessKeysCreateRequest creates the ListSharedAccessKeys request.

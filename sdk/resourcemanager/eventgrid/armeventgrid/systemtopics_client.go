@@ -90,7 +90,8 @@ func (client *SystemTopicsClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -135,7 +136,7 @@ func (client *SystemTopicsClient) createOrUpdateCreateRequest(ctx context.Contex
 //     method.
 func (client *SystemTopicsClient) BeginDelete(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsClientBeginDeleteOptions) (*runtime.Poller[SystemTopicsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, systemTopicName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, systemTopicName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -150,11 +151,11 @@ func (client *SystemTopicsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// delete - Delete a system topic.
+// deleteOperation - Delete a system topic.
 //
 // Delete existing system topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SystemTopicsClient) delete(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SystemTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, systemTopicName string, options *SystemTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SystemTopicsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -169,7 +170,8 @@ func (client *SystemTopicsClient) delete(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -244,7 +246,8 @@ func (client *SystemTopicsClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -300,7 +303,8 @@ func (client *SystemTopicsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return SystemTopicsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -93,7 +93,8 @@ func (client *PartnerTopicEventSubscriptionsClient) createOrUpdate(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -143,7 +144,7 @@ func (client *PartnerTopicEventSubscriptionsClient) createOrUpdateCreateRequest(
 //     method.
 func (client *PartnerTopicEventSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerTopicName string, eventSubscriptionName string, options *PartnerTopicEventSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[PartnerTopicEventSubscriptionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, partnerTopicName, eventSubscriptionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, partnerTopicName, eventSubscriptionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -158,11 +159,11 @@ func (client *PartnerTopicEventSubscriptionsClient) BeginDelete(ctx context.Cont
 	}
 }
 
-// delete - Delete an event subscription of a partner topic.
+// deleteOperation - Delete an event subscription of a partner topic.
 //
 // Delete an existing event subscription of a partner topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PartnerTopicEventSubscriptionsClient) delete(ctx context.Context, resourceGroupName string, partnerTopicName string, eventSubscriptionName string, options *PartnerTopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PartnerTopicEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerTopicName string, eventSubscriptionName string, options *PartnerTopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PartnerTopicEventSubscriptionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -177,7 +178,8 @@ func (client *PartnerTopicEventSubscriptionsClient) delete(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -257,7 +259,8 @@ func (client *PartnerTopicEventSubscriptionsClient) update(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -319,7 +322,8 @@ func (client *PartnerTopicEventSubscriptionsClient) Get(ctx context.Context, res
 	if err != nil {
 		return PartnerTopicEventSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -387,7 +391,8 @@ func (client *PartnerTopicEventSubscriptionsClient) GetDeliveryAttributes(ctx co
 	if err != nil {
 		return PartnerTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
-	return client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeliveryAttributesCreateRequest creates the GetDeliveryAttributes request.
@@ -455,7 +460,8 @@ func (client *PartnerTopicEventSubscriptionsClient) GetFullURL(ctx context.Conte
 	if err != nil {
 		return PartnerTopicEventSubscriptionsClientGetFullURLResponse{}, err
 	}
-	return client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFullURLCreateRequest creates the GetFullURL request.

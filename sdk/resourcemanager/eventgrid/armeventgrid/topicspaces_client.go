@@ -91,7 +91,8 @@ func (client *TopicSpacesClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -140,7 +141,7 @@ func (client *TopicSpacesClient) createOrUpdateCreateRequest(ctx context.Context
 //   - options - TopicSpacesClientBeginDeleteOptions contains the optional parameters for the TopicSpacesClient.BeginDelete method.
 func (client *TopicSpacesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, topicSpaceName string, options *TopicSpacesClientBeginDeleteOptions) (*runtime.Poller[TopicSpacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, namespaceName, topicSpaceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, topicSpaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -155,11 +156,11 @@ func (client *TopicSpacesClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// delete - Delete a topic space.
+// deleteOperation - Delete a topic space.
 //
 // Delete an existing topic space.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *TopicSpacesClient) delete(ctx context.Context, resourceGroupName string, namespaceName string, topicSpaceName string, options *TopicSpacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *TopicSpacesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, topicSpaceName string, options *TopicSpacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TopicSpacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -174,7 +175,8 @@ func (client *TopicSpacesClient) delete(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -230,7 +232,8 @@ func (client *TopicSpacesClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return TopicSpacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

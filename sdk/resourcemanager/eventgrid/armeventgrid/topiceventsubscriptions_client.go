@@ -91,7 +91,8 @@ func (client *TopicEventSubscriptionsClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,7 @@ func (client *TopicEventSubscriptionsClient) createOrUpdateCreateRequest(ctx con
 //     method.
 func (client *TopicEventSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, options *TopicEventSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[TopicEventSubscriptionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, topicName, eventSubscriptionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, topicName, eventSubscriptionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +157,11 @@ func (client *TopicEventSubscriptionsClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// delete - Delete an event subscription for a topic.
+// deleteOperation - Delete an event subscription for a topic.
 //
 // Delete an existing event subscription for a topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *TopicEventSubscriptionsClient) delete(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, options *TopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *TopicEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, topicName string, eventSubscriptionName string, options *TopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TopicEventSubscriptionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +176,8 @@ func (client *TopicEventSubscriptionsClient) delete(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -255,7 +257,8 @@ func (client *TopicEventSubscriptionsClient) update(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -317,7 +320,8 @@ func (client *TopicEventSubscriptionsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return TopicEventSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -385,7 +389,8 @@ func (client *TopicEventSubscriptionsClient) GetDeliveryAttributes(ctx context.C
 	if err != nil {
 		return TopicEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
-	return client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeliveryAttributesCreateRequest creates the GetDeliveryAttributes request.
@@ -453,7 +458,8 @@ func (client *TopicEventSubscriptionsClient) GetFullURL(ctx context.Context, res
 	if err != nil {
 		return TopicEventSubscriptionsClientGetFullURLResponse{}, err
 	}
-	return client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFullURLCreateRequest creates the GetFullURL request.

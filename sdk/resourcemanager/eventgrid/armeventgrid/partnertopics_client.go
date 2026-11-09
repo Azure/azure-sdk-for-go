@@ -66,7 +66,8 @@ func (client *PartnerTopicsClient) Activate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return PartnerTopicsClientActivateResponse{}, err
 	}
-	return client.activateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.activateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // activateCreateRequest creates the Activate request.
@@ -117,7 +118,7 @@ func (client *PartnerTopicsClient) activateHandleResponse(resp *http.Response, s
 //     method.
 func (client *PartnerTopicsClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerTopicName string, options *PartnerTopicsClientBeginDeleteOptions) (*runtime.Poller[PartnerTopicsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, partnerTopicName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, partnerTopicName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -132,11 +133,11 @@ func (client *PartnerTopicsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// delete - Delete a partner topic.
+// deleteOperation - Delete a partner topic.
 //
 // Delete existing partner topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PartnerTopicsClient) delete(ctx context.Context, resourceGroupName string, partnerTopicName string, options *PartnerTopicsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PartnerTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerTopicName string, options *PartnerTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PartnerTopicsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -151,7 +152,8 @@ func (client *PartnerTopicsClient) delete(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -204,7 +206,8 @@ func (client *PartnerTopicsClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return PartnerTopicsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -271,7 +274,8 @@ func (client *PartnerTopicsClient) Deactivate(ctx context.Context, resourceGroup
 	if err != nil {
 		return PartnerTopicsClientDeactivateResponse{}, err
 	}
-	return client.deactivateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deactivateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deactivateCreateRequest creates the Deactivate request.
@@ -333,7 +337,8 @@ func (client *PartnerTopicsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return PartnerTopicsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -551,7 +556,8 @@ func (client *PartnerTopicsClient) Update(ctx context.Context, resourceGroupName
 	if err != nil {
 		return PartnerTopicsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

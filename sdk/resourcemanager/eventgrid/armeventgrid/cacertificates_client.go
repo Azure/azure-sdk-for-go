@@ -91,7 +91,8 @@ func (client *CaCertificatesClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,7 @@ func (client *CaCertificatesClient) createOrUpdateCreateRequest(ctx context.Cont
 //     method.
 func (client *CaCertificatesClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, caCertificateName string, options *CaCertificatesClientBeginDeleteOptions) (*runtime.Poller[CaCertificatesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, namespaceName, caCertificateName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, caCertificateName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +157,11 @@ func (client *CaCertificatesClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// delete - Delete a CA certificate.
+// deleteOperation - Delete a CA certificate.
 //
 // Delete an existing CA certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *CaCertificatesClient) delete(ctx context.Context, resourceGroupName string, namespaceName string, caCertificateName string, options *CaCertificatesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *CaCertificatesClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, caCertificateName string, options *CaCertificatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CaCertificatesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +176,8 @@ func (client *CaCertificatesClient) delete(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -231,7 +233,8 @@ func (client *CaCertificatesClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return CaCertificatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

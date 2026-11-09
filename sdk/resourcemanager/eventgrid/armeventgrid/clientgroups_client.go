@@ -91,7 +91,8 @@ func (client *ClientGroupsClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,7 @@ func (client *ClientGroupsClient) createOrUpdateCreateRequest(ctx context.Contex
 //     method.
 func (client *ClientGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, clientGroupName string, options *ClientGroupsClientBeginDeleteOptions) (*runtime.Poller[ClientGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, namespaceName, clientGroupName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, clientGroupName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +157,11 @@ func (client *ClientGroupsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// delete - Delete a client group.
+// deleteOperation - Delete a client group.
 //
 // Delete an existing client group.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ClientGroupsClient) delete(ctx context.Context, resourceGroupName string, namespaceName string, clientGroupName string, options *ClientGroupsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ClientGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, clientGroupName string, options *ClientGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ClientGroupsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +176,8 @@ func (client *ClientGroupsClient) delete(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -231,7 +233,8 @@ func (client *ClientGroupsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ClientGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

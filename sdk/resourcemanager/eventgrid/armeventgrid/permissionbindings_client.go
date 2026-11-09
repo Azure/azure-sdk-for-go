@@ -91,7 +91,8 @@ func (client *PermissionBindingsClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,7 @@ func (client *PermissionBindingsClient) createOrUpdateCreateRequest(ctx context.
 //     method.
 func (client *PermissionBindingsClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, permissionBindingName string, options *PermissionBindingsClientBeginDeleteOptions) (*runtime.Poller[PermissionBindingsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, namespaceName, permissionBindingName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, permissionBindingName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +157,11 @@ func (client *PermissionBindingsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Delete a permission binding.
+// deleteOperation - Delete a permission binding.
 //
 // Delete an existing permission binding.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PermissionBindingsClient) delete(ctx context.Context, resourceGroupName string, namespaceName string, permissionBindingName string, options *PermissionBindingsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PermissionBindingsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, permissionBindingName string, options *PermissionBindingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PermissionBindingsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +176,8 @@ func (client *PermissionBindingsClient) delete(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -231,7 +233,8 @@ func (client *PermissionBindingsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return PermissionBindingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

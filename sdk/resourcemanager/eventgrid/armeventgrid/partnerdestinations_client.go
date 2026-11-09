@@ -67,7 +67,8 @@ func (client *PartnerDestinationsClient) Activate(ctx context.Context, resourceG
 	if err != nil {
 		return PartnerDestinationsClientActivateResponse{}, err
 	}
-	return client.activateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.activateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // activateCreateRequest creates the Activate request.
@@ -153,7 +154,8 @@ func (client *PartnerDestinationsClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -198,7 +200,7 @@ func (client *PartnerDestinationsClient) createOrUpdateCreateRequest(ctx context
 //     method.
 func (client *PartnerDestinationsClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerDestinationName string, options *PartnerDestinationsClientBeginDeleteOptions) (*runtime.Poller[PartnerDestinationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, partnerDestinationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, partnerDestinationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -213,11 +215,11 @@ func (client *PartnerDestinationsClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// delete - Delete a partner destination.
+// deleteOperation - Delete a partner destination.
 //
 // Delete existing partner destination.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PartnerDestinationsClient) delete(ctx context.Context, resourceGroupName string, partnerDestinationName string, options *PartnerDestinationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PartnerDestinationsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerDestinationName string, options *PartnerDestinationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PartnerDestinationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -232,7 +234,8 @@ func (client *PartnerDestinationsClient) delete(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -308,7 +311,8 @@ func (client *PartnerDestinationsClient) update(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -364,7 +368,8 @@ func (client *PartnerDestinationsClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PartnerDestinationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

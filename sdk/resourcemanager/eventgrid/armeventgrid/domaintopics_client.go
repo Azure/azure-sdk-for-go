@@ -90,7 +90,8 @@ func (client *DomainTopicsClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -136,7 +137,7 @@ func (client *DomainTopicsClient) createOrUpdateCreateRequest(ctx context.Contex
 //     method.
 func (client *DomainTopicsClient) BeginDelete(ctx context.Context, resourceGroupName string, domainName string, domainTopicName string, options *DomainTopicsClientBeginDeleteOptions) (*runtime.Poller[DomainTopicsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, domainName, domainTopicName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, domainName, domainTopicName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -151,11 +152,11 @@ func (client *DomainTopicsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// delete - Delete a domain topic.
+// deleteOperation - Delete a domain topic.
 //
 // Delete existing domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *DomainTopicsClient) delete(ctx context.Context, resourceGroupName string, domainName string, domainTopicName string, options *DomainTopicsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DomainTopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, domainName string, domainTopicName string, options *DomainTopicsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainTopicsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -170,7 +171,8 @@ func (client *DomainTopicsClient) delete(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -226,7 +228,8 @@ func (client *DomainTopicsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return DomainTopicsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -90,7 +90,8 @@ func (client *PartnerNamespacesClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -135,7 +136,7 @@ func (client *PartnerNamespacesClient) createOrUpdateCreateRequest(ctx context.C
 //     method.
 func (client *PartnerNamespacesClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesClientBeginDeleteOptions) (*runtime.Poller[PartnerNamespacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, partnerNamespaceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, partnerNamespaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -150,11 +151,11 @@ func (client *PartnerNamespacesClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// delete - Delete a partner namespace.
+// deleteOperation - Delete a partner namespace.
 //
 // Delete existing partner namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PartnerNamespacesClient) delete(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PartnerNamespacesClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerNamespaceName string, options *PartnerNamespacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PartnerNamespacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -169,7 +170,8 @@ func (client *PartnerNamespacesClient) delete(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -244,7 +246,8 @@ func (client *PartnerNamespacesClient) update(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -300,7 +303,8 @@ func (client *PartnerNamespacesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PartnerNamespacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -363,7 +367,8 @@ func (client *PartnerNamespacesClient) ListSharedAccessKeys(ctx context.Context,
 	if err != nil {
 		return PartnerNamespacesClientListSharedAccessKeysResponse{}, err
 	}
-	return client.listSharedAccessKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSharedAccessKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSharedAccessKeysCreateRequest creates the ListSharedAccessKeys request.
@@ -582,7 +587,8 @@ func (client *PartnerNamespacesClient) RegenerateKey(ctx context.Context, resour
 	if err != nil {
 		return PartnerNamespacesClientRegenerateKeyResponse{}, err
 	}
-	return client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.

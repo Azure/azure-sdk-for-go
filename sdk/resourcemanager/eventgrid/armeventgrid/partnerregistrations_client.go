@@ -90,7 +90,8 @@ func (client *PartnerRegistrationsClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -135,7 +136,7 @@ func (client *PartnerRegistrationsClient) createOrUpdateCreateRequest(ctx contex
 //     method.
 func (client *PartnerRegistrationsClient) BeginDelete(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *PartnerRegistrationsClientBeginDeleteOptions) (*runtime.Poller[PartnerRegistrationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, partnerRegistrationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, partnerRegistrationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -150,11 +151,11 @@ func (client *PartnerRegistrationsClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// delete - Delete a partner registration.
+// deleteOperation - Delete a partner registration.
 //
 // Deletes a partner registration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PartnerRegistrationsClient) delete(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *PartnerRegistrationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PartnerRegistrationsClient) deleteOperation(ctx context.Context, resourceGroupName string, partnerRegistrationName string, options *PartnerRegistrationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PartnerRegistrationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -169,7 +170,8 @@ func (client *PartnerRegistrationsClient) delete(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -244,7 +246,8 @@ func (client *PartnerRegistrationsClient) update(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -301,7 +304,8 @@ func (client *PartnerRegistrationsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return PartnerRegistrationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -90,7 +90,8 @@ func (client *TopicsClient) createOrUpdate(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -134,7 +135,7 @@ func (client *TopicsClient) createOrUpdateCreateRequest(ctx context.Context, res
 //   - options - TopicsClientBeginDeleteOptions contains the optional parameters for the TopicsClient.BeginDelete method.
 func (client *TopicsClient) BeginDelete(ctx context.Context, resourceGroupName string, topicName string, options *TopicsClientBeginDeleteOptions) (*runtime.Poller[TopicsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, topicName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, topicName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,11 +150,11 @@ func (client *TopicsClient) BeginDelete(ctx context.Context, resourceGroupName s
 	}
 }
 
-// delete - Delete a topic.
+// deleteOperation - Delete a topic.
 //
 // Delete existing topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *TopicsClient) delete(ctx context.Context, resourceGroupName string, topicName string, options *TopicsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *TopicsClient) deleteOperation(ctx context.Context, resourceGroupName string, topicName string, options *TopicsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "TopicsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -168,7 +169,8 @@ func (client *TopicsClient) delete(ctx context.Context, resourceGroupName string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -243,7 +245,8 @@ func (client *TopicsClient) regenerateKey(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -322,7 +325,8 @@ func (client *TopicsClient) update(ctx context.Context, resourceGroupName string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -378,7 +382,8 @@ func (client *TopicsClient) Get(ctx context.Context, resourceGroupName string, t
 	if err != nil {
 		return TopicsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -441,7 +446,8 @@ func (client *TopicsClient) ListSharedAccessKeys(ctx context.Context, resourceGr
 	if err != nil {
 		return TopicsClientListSharedAccessKeysResponse{}, err
 	}
-	return client.listSharedAccessKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSharedAccessKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSharedAccessKeysCreateRequest creates the ListSharedAccessKeys request.

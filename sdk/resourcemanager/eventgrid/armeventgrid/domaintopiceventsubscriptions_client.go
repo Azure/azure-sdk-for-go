@@ -92,7 +92,8 @@ func (client *DomainTopicEventSubscriptionsClient) createOrUpdate(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -147,7 +148,7 @@ func (client *DomainTopicEventSubscriptionsClient) createOrUpdateCreateRequest(c
 //     method.
 func (client *DomainTopicEventSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, domainName string, topicName string, eventSubscriptionName string, options *DomainTopicEventSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[DomainTopicEventSubscriptionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, domainName, topicName, eventSubscriptionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, domainName, topicName, eventSubscriptionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -162,11 +163,11 @@ func (client *DomainTopicEventSubscriptionsClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// delete - Delete a nested event subscription for a domain topic.
+// deleteOperation - Delete a nested event subscription for a domain topic.
 //
 // Delete a nested existing event subscription for a domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *DomainTopicEventSubscriptionsClient) delete(ctx context.Context, resourceGroupName string, domainName string, topicName string, eventSubscriptionName string, options *DomainTopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DomainTopicEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, domainName string, topicName string, eventSubscriptionName string, options *DomainTopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DomainTopicEventSubscriptionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -181,7 +182,8 @@ func (client *DomainTopicEventSubscriptionsClient) delete(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -266,7 +268,8 @@ func (client *DomainTopicEventSubscriptionsClient) update(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -333,7 +336,8 @@ func (client *DomainTopicEventSubscriptionsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return DomainTopicEventSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -406,7 +410,8 @@ func (client *DomainTopicEventSubscriptionsClient) GetDeliveryAttributes(ctx con
 	if err != nil {
 		return DomainTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
-	return client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeliveryAttributesCreateRequest creates the GetDeliveryAttributes request.
@@ -479,7 +484,8 @@ func (client *DomainTopicEventSubscriptionsClient) GetFullURL(ctx context.Contex
 	if err != nil {
 		return DomainTopicEventSubscriptionsClientGetFullURLResponse{}, err
 	}
-	return client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFullURLCreateRequest creates the GetFullURL request.

@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.EventGrid": "2026-06-15-preview"
   },
-  "emitterVersion": "0.17.5"
+  "emitterVersion": "0.18.0"
 }

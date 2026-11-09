@@ -94,7 +94,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) createOrUpdate(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -149,7 +150,7 @@ func (client *NamespaceTopicEventSubscriptionsClient) createOrUpdateCreateReques
 //     method.
 func (client *NamespaceTopicEventSubscriptionsClient) BeginDelete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *NamespaceTopicEventSubscriptionsClientBeginDeleteOptions) (*runtime.Poller[NamespaceTopicEventSubscriptionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, namespaceName, topicName, eventSubscriptionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, namespaceName, topicName, eventSubscriptionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -164,11 +165,11 @@ func (client *NamespaceTopicEventSubscriptionsClient) BeginDelete(ctx context.Co
 	}
 }
 
-// delete - Delete an event subscription of a namespace topic.
+// deleteOperation - Delete an event subscription of a namespace topic.
 //
 // Delete an existing event subscription of a namespace topic.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *NamespaceTopicEventSubscriptionsClient) delete(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *NamespaceTopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *NamespaceTopicEventSubscriptionsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, eventSubscriptionName string, options *NamespaceTopicEventSubscriptionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NamespaceTopicEventSubscriptionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -183,7 +184,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) delete(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -269,7 +271,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) update(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -336,7 +339,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) Get(ctx context.Context, r
 	if err != nil {
 		return NamespaceTopicEventSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -409,7 +413,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) GetDeliveryAttributes(ctx 
 	if err != nil {
 		return NamespaceTopicEventSubscriptionsClientGetDeliveryAttributesResponse{}, err
 	}
-	return client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeliveryAttributesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeliveryAttributesCreateRequest creates the GetDeliveryAttributes request.
@@ -482,7 +487,8 @@ func (client *NamespaceTopicEventSubscriptionsClient) GetFullURL(ctx context.Con
 	if err != nil {
 		return NamespaceTopicEventSubscriptionsClientGetFullURLResponse{}, err
 	}
-	return client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFullURLHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFullURLCreateRequest creates the GetFullURL request.

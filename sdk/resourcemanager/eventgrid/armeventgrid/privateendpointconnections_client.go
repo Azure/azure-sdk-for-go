@@ -60,7 +60,7 @@ func NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcor
 //     method.
 func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, parentType, parentName, privateEndpointConnectionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, parentType, parentName, privateEndpointConnectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -75,11 +75,11 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// delete - Delete a specific private endpoint connection.
+// deleteOperation - Delete a specific private endpoint connection.
 //
 // Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *PrivateEndpointConnectionsClient) delete(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, parentType PrivateEndpointConnectionsParentType, parentName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "PrivateEndpointConnectionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -94,7 +94,8 @@ func (client *PrivateEndpointConnectionsClient) delete(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -182,7 +183,8 @@ func (client *PrivateEndpointConnectionsClient) update(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -252,7 +254,8 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

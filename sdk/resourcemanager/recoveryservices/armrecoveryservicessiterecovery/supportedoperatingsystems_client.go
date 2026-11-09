@@ -19,7 +19,7 @@ import (
 // SupportedOperatingSystemsClient contains the methods for the SupportedOperatingSystems group.
 // Don't use this type directly, use NewSupportedOperatingSystemsClient() instead.
 //
-// Generated from API version 2025-08-01
+// Generated from API version 2026-11-01
 type SupportedOperatingSystemsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type SupportedOperatingSystemsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewSupportedOperatingSystemsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SupportedOperatingSystemsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -70,7 +73,7 @@ func (client *SupportedOperatingSystemsClient) Get(ctx context.Context, resource
 func (client *SupportedOperatingSystemsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, options *SupportedOperatingSystemsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationSupportedOperatingSystems"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -86,7 +89,7 @@ func (client *SupportedOperatingSystemsClient) getCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250801)
+	reqQP.Set("api-version", version20261101)
 	if options != nil && options.InstanceType != nil {
 		reqQP.Set("instanceType", *options.InstanceType)
 	}

@@ -35,6 +35,73 @@ func (fakeTransport) Do(req *http.Request) (*http.Response, error) {
 	}, nil
 }
 
+func TestNewClient_AutoDetectAudience(t *testing.T) {
+	tests := []struct {
+		name     string
+		endpoint string
+		scope    string
+		cloud    cloud.Configuration
+	}{
+		{
+			name:     "AzurePublicAzConfig",
+			endpoint: "https://example.azconfig.io",
+			scope:    "https://azconfig.io/.default",
+		},
+		{
+			name:     "AzurePublicAppConfig",
+			endpoint: "https://example.appconfig.azure.com",
+			scope:    "https://appconfig.azure.com/.default",
+		},
+		{
+			name:     "AzureChina",
+			endpoint: "https://example.azconfig.azure.cn",
+			scope:    "https://azconfig.azure.cn/.default",
+		},
+		{
+			name:     "AzureGovernment",
+			endpoint: "https://example.appconfig.azure.us",
+			scope:    "https://appconfig.azure.us/.default",
+		},
+		{
+			name:     "CustomSovereignCloud",
+			endpoint: "https://example.appconfig.sovcloud-api.fr",
+			scope:    "https://appconfig.sovcloud-api.fr/.default",
+		},
+		{
+			name:     "CustomSovereignCloudWithRegion",
+			endpoint: "https://example.eastus.APPconfig.sovereign.cloud:8443",
+			scope:    "https://appconfig.sovereign.cloud/.default",
+		},
+		{
+			name:     "Staging",
+			endpoint: "https://example.appconfig-staging.azure.com",
+			scope:    "https://appconfig-staging.azure.com/.default",
+		},
+		{
+			name:     "HyphenatedMarker",
+			endpoint: "https://example.appconfig-test.azure.com",
+			scope:    "https://appconfig.azure.com/.default",
+		},
+		{
+			name:     "LookalikeMarker",
+			endpoint: "https://example.fooappconfig.azure.us",
+			scope:    "https://appconfig.azure.com/.default",
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			client, err := NewClient(tt.endpoint, tokenCredFunc(func(_ context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+				require.Equal(t, tt.scope, tro.Scopes[0])
+				return azcore.AccessToken{}, nil
+			}), &ClientOptions{ClientOptions: policy.ClientOptions{Cloud: tt.cloud, Transport: &fakeTransport{}}})
+			require.NoError(t, err)
+
+			_, _ = client.GetSetting(context.Background(), "fake-key", nil)
+		})
+	}
+}
+
 func TestNewClient_SovereignClouds(t *testing.T) {
 	azureBleu := cloud.Configuration{
 		Services: map[cloud.ServiceName]cloud.ServiceConfiguration{

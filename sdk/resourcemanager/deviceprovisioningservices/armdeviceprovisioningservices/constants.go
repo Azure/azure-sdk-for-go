@@ -5,7 +5,7 @@
 package armdeviceprovisioningservices
 
 const (
-	version20250201Preview string = "2025-02-01-preview"
+	version20261101 string = "2026-11-01"
 )
 
 // AccessRightsDescription - Rights that this key has.
@@ -152,6 +152,51 @@ const (
 func PossibleIotDpsSKUValues() []IotDpsSKU {
 	return []IotDpsSKU{
 		IotDpsSKUS1,
+	}
+}
+
+// IotHubAuthenticationType - IotHub MI authentication type: KeyBased, UserAssigned, SystemAssigned.
+type IotHubAuthenticationType string
+
+const (
+	// IotHubAuthenticationTypeKeyBased - Key Based authentication type.
+	IotHubAuthenticationTypeKeyBased IotHubAuthenticationType = "KeyBased"
+	// IotHubAuthenticationTypeSystemAssigned - System assigned authentication type.
+	IotHubAuthenticationTypeSystemAssigned IotHubAuthenticationType = "SystemAssigned"
+	// IotHubAuthenticationTypeUserAssigned - User assigned authentication type.
+	IotHubAuthenticationTypeUserAssigned IotHubAuthenticationType = "UserAssigned"
+)
+
+// PossibleIotHubAuthenticationTypeValues returns the possible values for the IotHubAuthenticationType const type.
+func PossibleIotHubAuthenticationTypeValues() []IotHubAuthenticationType {
+	return []IotHubAuthenticationType{
+		IotHubAuthenticationTypeKeyBased,
+		IotHubAuthenticationTypeSystemAssigned,
+		IotHubAuthenticationTypeUserAssigned,
+	}
+}
+
+// LinkingState - The state of ADR linking for a provisioning service.
+type LinkingState string
+
+const (
+	// LinkingStateInProgress - The linking process is in progress.
+	LinkingStateInProgress LinkingState = "InProgress"
+	// LinkingStateNotLinked - The provisioning service is not linked to a Device Registry namespace.
+	LinkingStateNotLinked LinkingState = "NotLinked"
+	// LinkingStateOrphaned - The linked Device Registry namespace no longer exists.
+	LinkingStateOrphaned LinkingState = "Orphaned"
+	// LinkingStateSucceeded - The linking process succeeded.
+	LinkingStateSucceeded LinkingState = "Succeeded"
+)
+
+// PossibleLinkingStateValues returns the possible values for the LinkingState const type.
+func PossibleLinkingStateValues() []LinkingState {
+	return []LinkingState{
+		LinkingStateInProgress,
+		LinkingStateNotLinked,
+		LinkingStateOrphaned,
+		LinkingStateSucceeded,
 	}
 }
 

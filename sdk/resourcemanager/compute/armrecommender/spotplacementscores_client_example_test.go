@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-05-preview/GetSpotPlacementScores.json
+// Generated from example definition: 2026-10-05-preview/GetSpotPlacementScores.json
 func ExampleSpotPlacementScoresClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,11 +31,11 @@ func ExampleSpotPlacementScoresClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armrecommender.SpotPlacementScoresClientGetResponse{
-	// 	ComputeDiagnosticBase: armrecommender.ComputeDiagnosticBase{
-	// 		Name: to.Ptr("spotPlacementScores"),
+	// 	SpotPlacementScoresBase: armrecommender.SpotPlacementScoresBase{
+	// 		Name: to.Ptr("spot"),
 	// 		Type: to.Ptr("Microsoft.Compute/placementScores"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/placementScores/spot?api-version=2025-06-05"),
-	// 		Properties: &armrecommender.DiagnosticProperties{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.Compute/locations/eastus/placementScores/spot"),
+	// 		Properties: &armrecommender.PlacementScoresProperties{
 	// 			SupportedResourceTypes: []*string{
 	// 				to.Ptr("Microsoft.Compute/virtualMachines"),
 	// 			},
@@ -44,8 +44,8 @@ func ExampleSpotPlacementScoresClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-05-preview/GenerateSpotPlacementScores.json
-func ExampleSpotPlacementScoresClient_Post() {
+// Generated from example definition: 2026-10-05-preview/GenerateSpotPlacementScores.json
+func ExampleSpotPlacementScoresClient_Post_returnsSpotVMPlacementScoresForGivenConfigurations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -90,44 +90,109 @@ func ExampleSpotPlacementScoresClient_Post() {
 	// 		PlacementScores: []*armrecommender.PlacementScore{
 	// 			{
 	// 				AvailabilityZone: to.Ptr("1"),
-	// 				IsQuotaAvailable: to.Ptr(true),
+	// 				PlacementPreference: to.Ptr[int32](10),
 	// 				Region: to.Ptr("eastus"),
-	// 				Score: to.Ptr("High"),
+	// 				Score: to.Ptr(armrecommender.PlacementScoreValueHigh),
 	// 				SKU: to.Ptr("Standard_D2_v2"),
 	// 			},
 	// 			{
 	// 				AvailabilityZone: to.Ptr("2"),
-	// 				IsQuotaAvailable: to.Ptr(true),
+	// 				PlacementPreference: to.Ptr[int32](9),
 	// 				Region: to.Ptr("eastus"),
-	// 				Score: to.Ptr("High"),
+	// 				Score: to.Ptr(armrecommender.PlacementScoreValueHigh),
 	// 				SKU: to.Ptr("Standard_D2_v2"),
 	// 			},
 	// 			{
 	// 				AvailabilityZone: to.Ptr("3"),
-	// 				IsQuotaAvailable: to.Ptr(true),
+	// 				PlacementPreference: to.Ptr[int32](8),
 	// 				Region: to.Ptr("eastus"),
-	// 				Score: to.Ptr("High"),
+	// 				Score: to.Ptr(armrecommender.PlacementScoreValueHigh),
 	// 				SKU: to.Ptr("Standard_D2_v2"),
 	// 			},
 	// 			{
 	// 				AvailabilityZone: to.Ptr("1"),
-	// 				IsQuotaAvailable: to.Ptr(true),
+	// 				PlacementPreference: to.Ptr[int32](0),
 	// 				Region: to.Ptr("eastus2"),
-	// 				Score: to.Ptr("DataNotFoundOrStale"),
+	// 				Score: to.Ptr(armrecommender.PlacementScoreValueDataNotFoundOrStale),
 	// 				SKU: to.Ptr("Standard_D2_v2"),
 	// 			},
 	// 			{
 	// 				AvailabilityZone: to.Ptr("2"),
-	// 				IsQuotaAvailable: to.Ptr(true),
+	// 				PlacementPreference: to.Ptr[int32](10),
 	// 				Region: to.Ptr("eastus2"),
-	// 				Score: to.Ptr("High"),
+	// 				Score: to.Ptr(armrecommender.PlacementScoreValueHigh),
 	// 				SKU: to.Ptr("Standard_D2_v2"),
 	// 			},
 	// 			{
 	// 				AvailabilityZone: to.Ptr("3"),
-	// 				IsQuotaAvailable: to.Ptr(true),
+	// 				PlacementPreference: to.Ptr[int32](9),
 	// 				Region: to.Ptr("eastus2"),
-	// 				Score: to.Ptr("High"),
+	// 				Score: to.Ptr(armrecommender.PlacementScoreValueHigh),
+	// 				SKU: to.Ptr("Standard_D2_v2"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-05-preview/GenerateSpotPlacementScoresWithoutDesiredLocation.json
+func ExampleSpotPlacementScoresClient_Post_returnsSpotVMPlacementScoresUsingTheRequestUriLocationAsTheDesiredLocationWhenDesiredLocationsIsNotSpecified() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecommender.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSpotPlacementScoresClient().Post(ctx, "eastus", armrecommender.SpotPlacementScoresInput{
+		AvailabilityZones: to.Ptr(true),
+		DesiredCount:      to.Ptr[int32](1),
+		DesiredSizes: []*armrecommender.ResourceSize{
+			{
+				SKU: to.Ptr("Standard_D2_v2"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecommender.SpotPlacementScoresClientPostResponse{
+	// 	SpotPlacementScoresResponse: armrecommender.SpotPlacementScoresResponse{
+	// 		AvailabilityZones: to.Ptr(true),
+	// 		DesiredCount: to.Ptr[int32](1),
+	// 		DesiredLocations: []*string{
+	// 			to.Ptr("eastus"),
+	// 		},
+	// 		DesiredSizes: []*armrecommender.ResourceSize{
+	// 			{
+	// 				SKU: to.Ptr("Standard_D2_v2"),
+	// 			},
+	// 		},
+	// 		PlacementScores: []*armrecommender.PlacementScore{
+	// 			{
+	// 				AvailabilityZone: to.Ptr("1"),
+	// 				PlacementPreference: to.Ptr[int32](10),
+	// 				Region: to.Ptr("eastus"),
+	// 				Score: to.Ptr(armrecommender.PlacementScoreValueHigh),
+	// 				SKU: to.Ptr("Standard_D2_v2"),
+	// 			},
+	// 			{
+	// 				AvailabilityZone: to.Ptr("2"),
+	// 				PlacementPreference: to.Ptr[int32](9),
+	// 				Region: to.Ptr("eastus"),
+	// 				Score: to.Ptr(armrecommender.PlacementScoreValueHigh),
+	// 				SKU: to.Ptr("Standard_D2_v2"),
+	// 			},
+	// 			{
+	// 				AvailabilityZone: to.Ptr("3"),
+	// 				PlacementPreference: to.Ptr[int32](8),
+	// 				Region: to.Ptr("eastus"),
+	// 				Score: to.Ptr(armrecommender.PlacementScoreValueHigh),
 	// 				SKU: to.Ptr("Standard_D2_v2"),
 	// 			},
 	// 		},

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/EnclaveEndpoints_CreateOrUpdate.json
+// Generated from example definition: 2026-04-01/EnclaveEndpoints_CreateOrUpdate.json
 func ExampleEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleEndpointsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveEndpoints_Delete.json
+// Generated from example definition: 2026-04-01/EnclaveEndpoints_Delete.json
 func ExampleEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveEndpoints_Get.json
+// Generated from example definition: 2026-04-01/EnclaveEndpoints_Get.json
 func ExampleEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveEndpoints_HandleApprovalCreation.json
+// Generated from example definition: 2026-04-01/EnclaveEndpoints_HandleApprovalCreation.json
 func ExampleEndpointsClient_BeginHandleApprovalCreation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleEndpointsClient_BeginHandleApprovalCreation() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveEndpoints_HandleApprovalDeletion.json
+// Generated from example definition: 2026-04-01/EnclaveEndpoints_HandleApprovalDeletion.json
 func ExampleEndpointsClient_BeginHandleApprovalDeletion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -224,7 +224,7 @@ func ExampleEndpointsClient_BeginHandleApprovalDeletion() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveEndpoints_ListByEnclaveResource.json
+// Generated from example definition: 2026-04-01/EnclaveEndpoints_ListByEnclaveResource.json
 func ExampleEndpointsClient_NewListByEnclaveResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -287,7 +287,7 @@ func ExampleEndpointsClient_NewListByEnclaveResourcePager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveEndpoints_ListBySubscription.json
+// Generated from example definition: 2026-04-01/EnclaveEndpoints_ListBySubscription.json
 func ExampleEndpointsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,7 +350,7 @@ func ExampleEndpointsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01-preview/EnclaveEndpoints_Update.json
+// Generated from example definition: 2026-04-01/EnclaveEndpoints_Update.json
 func ExampleEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

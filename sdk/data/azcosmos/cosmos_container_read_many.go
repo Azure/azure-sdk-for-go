@@ -19,6 +19,33 @@ import (
 const maxItemsPerQuery = 1000
 const maxPKRangeGoneRetries = 3
 
+func sharedPartitionKey(items []ItemIdentity) *PartitionKey {
+	if len(items) == 0 {
+		return nil
+	}
+
+	partitionKey := &items[0].PartitionKey
+	serializedPartitionKey, err := partitionKey.toJsonString()
+	if err != nil {
+		return nil
+	}
+	for i := 1; i < len(items); i++ {
+		serialized, err := items[i].PartitionKey.toJsonString()
+		if err != nil || serialized != serializedPartitionKey {
+			return nil
+		}
+	}
+	return partitionKey
+}
+
+func completeSharedPartitionKey(items []ItemIdentity, pkDef PartitionKeyDefinition) *PartitionKey {
+	partitionKey := sharedPartitionKey(items)
+	if partitionKey == nil || len(partitionKey.values) != len(pkDef.Paths) {
+		return nil
+	}
+	return partitionKey
+}
+
 // determineConcurrency returns either the provided positive max or NumCPU (>=1).
 func determineConcurrency(max *int32) int {
 	if max != nil && *max > 0 {
@@ -361,6 +388,8 @@ func (c *ContainerClient) executeReadManyWithQueries(
 			}
 			pkDef = containerResp.ContainerProperties.PartitionKeyDefinition
 		}
+
+		operationContext.headerOptionsOverride.partitionKey = completeSharedPartitionKey(items, pkDef)
 
 		pkRangeResp, err := c.getPartitionKeyRanges(ctx, nil)
 		if err != nil {

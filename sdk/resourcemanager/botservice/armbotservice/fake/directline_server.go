@@ -81,7 +81,7 @@ func (d *DirectLineServerTransport) dispatchRegenerateKeys(req *http.Request) (*
 	if d.srv.RegenerateKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method RegenerateKeys not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/channels/(?P<channelName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regeneratekeys`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.BotService/botServices/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/channels/(?P<channelName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regeneratekeys`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

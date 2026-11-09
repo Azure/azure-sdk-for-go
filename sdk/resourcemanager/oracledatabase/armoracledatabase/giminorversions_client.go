@@ -13,13 +13,14 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"net/http"
 	"net/url"
+	"strconv"
 	"strings"
 )
 
 // GiMinorVersionsClient contains the methods for the GiMinorVersions group.
 // Don't use this type directly, use NewGiMinorVersionsClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-06-01
 type GiMinorVersionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +31,9 @@ type GiMinorVersionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGiMinorVersionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GiMinorVersionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +72,7 @@ func (client *GiMinorVersionsClient) Get(ctx context.Context, location string, g
 func (client *GiMinorVersionsClient) getCreateRequest(ctx context.Context, location string, giversionname string, giMinorVersionName string, _ *GiMinorVersionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/giVersions/{giversionname}/giMinorVersions/{giMinorVersionName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -88,7 +92,7 @@ func (client *GiMinorVersionsClient) getCreateRequest(ctx context.Context, locat
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260601)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -144,7 +148,7 @@ func (client *GiMinorVersionsClient) listByParentCreateRequest(ctx context.Conte
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Oracle.Database/locations/{location}/giVersions/{giversionname}/giMinorVersions"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
@@ -164,9 +168,18 @@ func (client *GiMinorVersionsClient) listByParentCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260601)
+		if options != nil && options.IsGiVersionForProvisioning != nil {
+			reqQP.Set("isGiVersionForProvisioning", strconv.FormatBool(*options.IsGiVersionForProvisioning))
+		}
+		if options != nil && options.Shape != nil {
+			reqQP.Set("shape", *options.Shape)
+		}
 		if options != nil && options.ShapeFamily != nil {
 			reqQP.Set("shapeFamily", string(*options.ShapeFamily))
+		}
+		if options != nil && options.SortOrder != nil {
+			reqQP.Set("sortOrder", string(*options.SortOrder))
 		}
 		if options != nil && options.Zone != nil {
 			reqQP.Set("zone", *options.Zone)

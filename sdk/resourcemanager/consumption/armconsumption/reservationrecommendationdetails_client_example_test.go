@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/ReservationRecommendationDetailsByBillingAccount.json
+// Generated from example definition: 2026-06-01/ReservationRecommendationDetailsByBillingAccount.json
 func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendationsByBillingAccountLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,90 @@ func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendation
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ReservationRecommendationDetailsByBillingProfile.json
+// Generated from example definition: 2026-06-01/ReservationRecommendationDetailsByBillingAccountForManagementGroup.json
+func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendationDetailsByBillingAccountForManagementGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationRecommendationDetailsClient().Get(ctx, "providers/Microsoft.Billing/billingAccounts/00000000", armconsumption.ScopeManagementGroup, "westus", armconsumption.TermP3Y, armconsumption.LookBackPeriodLast30Days, "Standard_DS13_v2", &armconsumption.ReservationRecommendationDetailsClientGetOptions{
+		ManagementGroupID: to.Ptr("/providers/Microsoft.Management/managementGroups/00000000-0000-0000-0000-000000000000")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconsumption.ReservationRecommendationDetailsClientGetResponse{
+	// 	ReservationRecommendationDetailsModel: armconsumption.ReservationRecommendationDetailsModel{
+	// 		Name: to.Ptr("reservationRecommendationDetails"),
+	// 		Type: to.Ptr("Microsoft.Consumption/ReservationRecommendationDetails"),
+	// 		ID: to.Ptr("providers/Microsoft.Billing/billingAccounts/00000000/providers/microsoft.consumption/reservationrecommendationdetails"),
+	// 		Properties: &armconsumption.ReservationRecommendationDetailsProperties{
+	// 			Currency: to.Ptr("USD"),
+	// 			ManagementGroupID: to.Ptr("/providers/Microsoft.Management/managementGroups/00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			Resource: &armconsumption.ReservationRecommendationDetailsResourceProperties{
+	// 				AppliedScopes: []*string{
+	// 					to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				},
+	// 				OnDemandRate: to.Ptr[float32](0.519),
+	// 				Product: to.Ptr("Standard_DS13_v2"),
+	// 				Region: to.Ptr("westus"),
+	// 				ReservationRate: to.Ptr[float32](0.302549467275493),
+	// 				ResourceType: to.Ptr("virtualmachines"),
+	// 			},
+	// 			Savings: &armconsumption.ReservationRecommendationDetailsSavingsProperties{
+	// 				CalculatedSavings: []*armconsumption.ReservationRecommendationDetailsCalculatedSavingsProperties{
+	// 					{
+	// 						OnDemandCost: to.Ptr[float32](368.4813602070006),
+	// 						OverageCost: to.Ptr[float32](0),
+	// 						Quantity: to.Ptr[float32](2),
+	// 						ReservationCost: to.Ptr[float32](429.01514459665),
+	// 						Savings: to.Ptr[float32](-60.5337843896494),
+	// 						TotalReservationCost: to.Ptr[float32](429.01514459665),
+	// 					},
+	// 					{
+	// 						OnDemandCost: to.Ptr[float32](368.481360207),
+	// 						OverageCost: to.Ptr[float32](1.557),
+	// 						Quantity: to.Ptr[float32](1),
+	// 						ReservationCost: to.Ptr[float32](214.507572298325),
+	// 						Savings: to.Ptr[float32](152.416787908675),
+	// 						TotalReservationCost: to.Ptr[float32](216.064572298325),
+	// 					},
+	// 				},
+	// 				LookBackPeriod: to.Ptr[int32](30),
+	// 				RecommendedQuantity: to.Ptr[float32](1),
+	// 				ReservationOrderTerm: to.Ptr("P3Y"),
+	// 				SavingsType: to.Ptr("instance"),
+	// 				UnitOfMeasure: to.Ptr("hour"),
+	// 			},
+	// 			Scope: to.Ptr("ManagementGroup"),
+	// 			Usage: &armconsumption.ReservationRecommendationDetailsUsageProperties{
+	// 				FirstConsumptionDate: to.Ptr("2026-02-03T00:00:00"),
+	// 				LastConsumptionDate: to.Ptr("2026-03-03T13:00:00"),
+	// 				LookBackUnitType: to.Ptr("virtualMachine quantity"),
+	// 				UsageData: []*float32{
+	// 					to.Ptr[float32](1),
+	// 					to.Ptr[float32](1),
+	// 					to.Ptr[float32](1),
+	// 					to.Ptr[float32](1),
+	// 					to.Ptr[float32](1),
+	// 					to.Ptr[float32](1),
+	// 				},
+	// 				UsageGrain: to.Ptr("hourly"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01/ReservationRecommendationDetailsByBillingProfile.json
 func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendationsByBillingProfileModern() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +282,7 @@ func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendation
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ReservationRecommendationDetailsByResourceGroup.json
+// Generated from example definition: 2026-06-01/ReservationRecommendationDetailsByResourceGroup.json
 func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendationsByResourceGroupLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -281,7 +364,7 @@ func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendation
 	// }
 }
 
-// Generated from example definition: 2024-08-01/ReservationRecommendationDetailsBySubscription.json
+// Generated from example definition: 2026-06-01/ReservationRecommendationDetailsBySubscription.json
 func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendationsBySubscriptionLegacy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -355,6 +438,84 @@ func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendation
 	// 					to.Ptr[float32](1),
 	// 				},
 	// 				UsageGrain: to.Ptr("hourly"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01/ReservationRecommendationDetailsPrePurchasePlanBySubscription.json
+func ExampleReservationRecommendationDetailsClient_Get_reservationRecommendationDetailsPrePurchasePlanBySubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationRecommendationDetailsClient().Get(ctx, "subscriptions/00000000-0000-0000-0000-000000000000", armconsumption.ScopeSingle, "westus", armconsumption.TermP3Y, armconsumption.LookBackPeriodLast30Days, "Standard_DS13_v2", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armconsumption.ReservationRecommendationDetailsClientGetResponse{
+	// 	ReservationRecommendationDetailsModel: armconsumption.ReservationRecommendationDetailsModel{
+	// 		Name: to.Ptr("reservationRecommendationDetails"),
+	// 		Type: to.Ptr("Microsoft.Consumption/ReservationRecommendationDetails"),
+	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/providers/microsoft.consumption/reservationrecommendationdetails"),
+	// 		Properties: &armconsumption.ReservationRecommendationDetailsProperties{
+	// 			Currency: to.Ptr("USD"),
+	// 			Resource: &armconsumption.ReservationRecommendationDetailsResourceProperties{
+	// 				AppliedScopes: []*string{
+	// 					to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				},
+	// 				OnDemandRate: to.Ptr[float32](0.519),
+	// 				Product: to.Ptr("Standard_DS13_v2"),
+	// 				Region: to.Ptr("westus"),
+	// 				ReservationRate: to.Ptr[float32](0.302549467275493),
+	// 				ResourceType: to.Ptr("virtualmachines"),
+	// 			},
+	// 			Savings: &armconsumption.ReservationRecommendationDetailsSavingsProperties{
+	// 				CalculatedSavings: []*armconsumption.ReservationRecommendationDetailsCalculatedSavingsProperties{
+	// 					{
+	// 						OnDemandCost: to.Ptr[float32](368.4813602070006),
+	// 						OverageCost: to.Ptr[float32](0),
+	// 						Quantity: to.Ptr[float32](2),
+	// 						ReservationCost: to.Ptr[float32](429.01514459665),
+	// 						Savings: to.Ptr[float32](-60.5337843896494),
+	// 						TotalReservationCost: to.Ptr[float32](429.01514459665),
+	// 					},
+	// 					{
+	// 						OnDemandCost: to.Ptr[float32](368.481360207),
+	// 						OverageCost: to.Ptr[float32](1.557),
+	// 						Quantity: to.Ptr[float32](1),
+	// 						ReservationCost: to.Ptr[float32](214.507572298325),
+	// 						Savings: to.Ptr[float32](152.416787908675),
+	// 						TotalReservationCost: to.Ptr[float32](216.064572298325),
+	// 					},
+	// 				},
+	// 				LookBackPeriod: to.Ptr[int32](30),
+	// 				RecommendedQuantity: to.Ptr[float32](1),
+	// 				ReservationOrderTerm: to.Ptr("P3Y"),
+	// 				SavingsType: to.Ptr("instance"),
+	// 				UnitOfMeasure: to.Ptr("hour"),
+	// 			},
+	// 			Scope: to.Ptr("Single"),
+	// 			Usage: &armconsumption.ReservationRecommendationDetailsUsageProperties{
+	// 				FirstConsumptionDate: to.Ptr("2026-02-03T00:00:00"),
+	// 				LastConsumptionDate: to.Ptr("2026-03-03T13:00:00"),
+	// 				LookBackUnitType: to.Ptr("virtualMachine quantity"),
+	// 				UsageData: []*float32{
+	// 					to.Ptr[float32](340),
+	// 				},
+	// 				UsageGrain: to.Ptr("lookbackPeriod"),
+	// 			},
+	// 			ProjectedUsage: &armconsumption.ReservationRecommendationDetailsProjectedUsageProperties{
+	// 				TotalRetailUsageInCUs: to.Ptr[float32](350),
 	// 			},
 	// 		},
 	// 	},

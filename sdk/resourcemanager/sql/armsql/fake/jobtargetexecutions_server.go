@@ -102,7 +102,7 @@ func (j *JobTargetExecutionsServerTransport) dispatchGet(req *http.Request) (*ht
 	if j.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobAgents/(?P<jobAgentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobs/(?P<jobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executions/(?P<jobExecutionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/steps/(?P<stepName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/targets/(?P<targetId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobAgents/(?P<jobAgentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executions/(?P<jobExecutionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/steps/(?P<stepName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/targets/(?P<targetId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 9 {
@@ -157,7 +157,7 @@ func (j *JobTargetExecutionsServerTransport) dispatchNewListByJobExecutionPager(
 	}
 	newListByJobExecutionPager := j.newListByJobExecutionPager.get(req)
 	if newListByJobExecutionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobAgents/(?P<jobAgentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobs/(?P<jobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executions/(?P<jobExecutionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/targets`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobAgents/(?P<jobAgentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executions/(?P<jobExecutionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/targets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -263,7 +263,7 @@ func (j *JobTargetExecutionsServerTransport) dispatchNewListByStepPager(req *htt
 	}
 	newListByStepPager := j.newListByStepPager.get(req)
 	if newListByStepPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobAgents/(?P<jobAgentName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jobs/(?P<jobName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/executions/(?P<jobExecutionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/steps/(?P<stepName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/targets`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Sql/servers/(?P<serverName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobAgents/(?P<jobAgentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jobs/(?P<jobName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/executions/(?P<jobExecutionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/steps/(?P<stepName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/targets`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 8 {

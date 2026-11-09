@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15-preview/ElasticBackupPolicies_CreateOrUpdate.json
+// Generated from example definition: 2026-08-15-preview/ElasticBackupPolicies_CreateOrUpdate.json
 func ExampleElasticBackupPoliciesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -59,7 +59,7 @@ func ExampleElasticBackupPoliciesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15-preview/ElasticBackupPolicies_Delete.json
+// Generated from example definition: 2026-08-15-preview/ElasticBackupPolicies_Delete.json
 func ExampleElasticBackupPoliciesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,86 +80,7 @@ func ExampleElasticBackupPoliciesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-15-preview/ElasticBackupPolicies_Get.json
-func ExampleElasticBackupPoliciesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewElasticBackupPoliciesClient().Get(ctx, "myRG", "account1", "backupPolicyName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetapp.ElasticBackupPoliciesClientGetResponse{
-	// 	ElasticBackupPolicy: armnetapp.ElasticBackupPolicy{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticBackupPolicies/backupPolicyName"),
-	// 		Name: to.Ptr("account1/backupPolicyName"),
-	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupPolicies"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armnetapp.ElasticBackupPolicyProperties{
-	// 			DailyBackupsToKeep: to.Ptr[int32](10),
-	// 			WeeklyBackupsToKeep: to.Ptr[int32](10),
-	// 			MonthlyBackupsToKeep: to.Ptr[int32](10),
-	// 			AssignedVolumesCount: to.Ptr[int32](1),
-	// 			PolicyState: to.Ptr(armnetapp.ElasticBackupPolicyStateEnabled),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-15-preview/ElasticBackupPolicies_List.json
-func ExampleElasticBackupPoliciesClient_NewListByElasticAccountPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewElasticBackupPoliciesClient().NewListByElasticAccountPager("myRG", "account1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnetapp.ElasticBackupPoliciesClientListByElasticAccountResponse{
-		// 	ElasticBackupPolicyListResult: armnetapp.ElasticBackupPolicyListResult{
-		// 		Value: []*armnetapp.ElasticBackupPolicy{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticBackupPolicies/backupPolicyName"),
-		// 				Name: to.Ptr("account1/backupPolicy1"),
-		// 				Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupPolicies"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armnetapp.ElasticBackupPolicyProperties{
-		// 					DailyBackupsToKeep: to.Ptr[int32](10),
-		// 					WeeklyBackupsToKeep: to.Ptr[int32](10),
-		// 					MonthlyBackupsToKeep: to.Ptr[int32](10),
-		// 					AssignedVolumesCount: to.Ptr[int32](1),
-		// 					PolicyState: to.Ptr(armnetapp.ElasticBackupPolicyStateEnabled),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-15-preview/ElasticBackupPolicies_Update.json
+// Generated from example definition: 2026-08-15-preview/ElasticBackupPolicies_Update.json
 func ExampleElasticBackupPoliciesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,4 +125,83 @@ func ExampleElasticBackupPoliciesClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-08-15-preview/ElasticBackupPolicies_Get.json
+func ExampleElasticBackupPoliciesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewElasticBackupPoliciesClient().Get(ctx, "myRG", "account1", "backupPolicyName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetapp.ElasticBackupPoliciesClientGetResponse{
+	// 	ElasticBackupPolicy: armnetapp.ElasticBackupPolicy{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticBackupPolicies/backupPolicyName"),
+	// 		Name: to.Ptr("account1/backupPolicyName"),
+	// 		Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupPolicies"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armnetapp.ElasticBackupPolicyProperties{
+	// 			DailyBackupsToKeep: to.Ptr[int32](10),
+	// 			WeeklyBackupsToKeep: to.Ptr[int32](10),
+	// 			MonthlyBackupsToKeep: to.Ptr[int32](10),
+	// 			AssignedVolumesCount: to.Ptr[int32](1),
+	// 			PolicyState: to.Ptr(armnetapp.ElasticBackupPolicyStateEnabled),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-15-preview/ElasticBackupPolicies_List.json
+func ExampleElasticBackupPoliciesClient_NewListByElasticAccountPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetapp.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewElasticBackupPoliciesClient().NewListByElasticAccountPager("myRG", "account1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnetapp.ElasticBackupPoliciesClientListByElasticAccountResponse{
+		// 	ElasticBackupPolicyListResult: armnetapp.ElasticBackupPolicyListResult{
+		// 		Value: []*armnetapp.ElasticBackupPolicy{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.NetApp/elasticAccounts/account1/elasticBackupPolicies/backupPolicyName"),
+		// 				Name: to.Ptr("account1/backupPolicy1"),
+		// 				Type: to.Ptr("Microsoft.NetApp/elasticAccounts/elasticBackupPolicies"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armnetapp.ElasticBackupPolicyProperties{
+		// 					DailyBackupsToKeep: to.Ptr[int32](10),
+		// 					WeeklyBackupsToKeep: to.Ptr[int32](10),
+		// 					MonthlyBackupsToKeep: to.Ptr[int32](10),
+		// 					AssignedVolumesCount: to.Ptr[int32](1),
+		// 					PolicyState: to.Ptr(armnetapp.ElasticBackupPolicyStateEnabled),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -33,13 +33,13 @@ type ReplicationStorageClassificationMappingsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, storageClassificationName string, storageClassificationMappingName string, options *armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientGetOptions) (resp azfake.Responder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ReplicationStorageClassificationMappingsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, resourceName string, options *armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListOptions) (resp azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListResponse])
-
 	// NewListByReplicationStorageClassificationsPager is the fake for method ReplicationStorageClassificationMappingsClient.NewListByReplicationStorageClassificationsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByReplicationStorageClassificationsPager func(resourceGroupName string, resourceName string, fabricName string, storageClassificationName string, options *armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsOptions) (resp azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse])
+
+	// NewListPager is the fake for method ReplicationStorageClassificationMappingsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, resourceName string, options *armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListOptions) (resp azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListResponse])
 }
 
 // NewReplicationStorageClassificationMappingsServerTransport creates a new instance of ReplicationStorageClassificationMappingsServerTransport with the provided implementation.
@@ -47,11 +47,11 @@ type ReplicationStorageClassificationMappingsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewReplicationStorageClassificationMappingsServerTransport(srv *ReplicationStorageClassificationMappingsServer) *ReplicationStorageClassificationMappingsServerTransport {
 	return &ReplicationStorageClassificationMappingsServerTransport{
-		srv:          srv,
-		beginCreate:  newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientCreateResponse]](),
-		beginDelete:  newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientDeleteResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListResponse]](),
+		srv:         srv,
+		beginCreate: newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientCreateResponse]](),
+		beginDelete: newTracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientDeleteResponse]](),
 		newListByReplicationStorageClassificationsPager: newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ReplicationStorageClassificationMappingsServerTransport struct {
 	srv                                             *ReplicationStorageClassificationMappingsServer
 	beginCreate                                     *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientCreateResponse]]
 	beginDelete                                     *tracker[azfake.PollerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientDeleteResponse]]
-	newListPager                                    *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListResponse]]
 	newListByReplicationStorageClassificationsPager *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListByReplicationStorageClassificationsResponse]]
+	newListPager                                    *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ReplicationStorageClassificationMappingsServerTransport.
@@ -92,10 +92,10 @@ func (r *ReplicationStorageClassificationMappingsServerTransport) dispatchToMeth
 				res.resp, res.err = r.dispatchBeginDelete(req)
 			case "ReplicationStorageClassificationMappingsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
-			case "ReplicationStorageClassificationMappingsClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
 			case "ReplicationStorageClassificationMappingsClient.NewListByReplicationStorageClassificationsPager":
 				res.resp, res.err = r.dispatchNewListByReplicationStorageClassificationsPager(req)
+			case "ReplicationStorageClassificationMappingsClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (r *ReplicationStorageClassificationMappingsServerTransport) dispatchBeginC
 	}
 	beginCreate := r.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationStorageClassifications/(?P<storageClassificationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationStorageClassificationMappings/(?P<storageClassificationMappingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationStorageClassifications/(?P<storageClassificationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationStorageClassificationMappings/(?P<storageClassificationMappingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -178,7 +178,7 @@ func (r *ReplicationStorageClassificationMappingsServerTransport) dispatchBeginD
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationStorageClassifications/(?P<storageClassificationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationStorageClassificationMappings/(?P<storageClassificationMappingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationStorageClassifications/(?P<storageClassificationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationStorageClassificationMappings/(?P<storageClassificationMappingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 7 {
@@ -232,7 +232,7 @@ func (r *ReplicationStorageClassificationMappingsServerTransport) dispatchGet(re
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationStorageClassifications/(?P<storageClassificationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationStorageClassificationMappings/(?P<storageClassificationMappingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationStorageClassifications/(?P<storageClassificationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationStorageClassificationMappings/(?P<storageClassificationMappingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 7 {
@@ -273,54 +273,13 @@ func (r *ReplicationStorageClassificationMappingsServerTransport) dispatchGet(re
 	return resp, nil
 }
 
-func (r *ReplicationStorageClassificationMappingsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationStorageClassificationMappings`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewListPager(resourceGroupNameParam, resourceNameParam, nil)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *ReplicationStorageClassificationMappingsServerTransport) dispatchNewListByReplicationStorageClassificationsPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListByReplicationStorageClassificationsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByReplicationStorageClassificationsPager not implemented")}
 	}
 	newListByReplicationStorageClassificationsPager := r.newListByReplicationStorageClassificationsPager.get(req)
 	if newListByReplicationStorageClassificationsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationFabrics/(?P<fabricName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationStorageClassifications/(?P<storageClassificationName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/replicationStorageClassificationMappings`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationFabrics/(?P<fabricName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationStorageClassifications/(?P<storageClassificationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationStorageClassificationMappings`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -359,6 +318,47 @@ func (r *ReplicationStorageClassificationMappingsServerTransport) dispatchNewLis
 	}
 	if !server.PagerResponderMore(newListByReplicationStorageClassificationsPager) {
 		r.newListByReplicationStorageClassificationsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *ReplicationStorageClassificationMappingsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationStorageClassificationMappings`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListPager(resourceGroupNameParam, resourceNameParam, nil)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armrecoveryservicessiterecovery.ReplicationStorageClassificationMappingsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }

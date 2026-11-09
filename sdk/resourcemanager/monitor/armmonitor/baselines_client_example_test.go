@@ -86,8 +86,8 @@ func ExampleBaselinesClient_NewListPager() {
 		// 								},
 		// 							},
 		// 							Timestamps: []*time.Time{
-		// 								to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-12T11:00:00.000Z"); return t}()),
-		// 								to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-03-12T12:00:00.000Z"); return t}()),
+		// 								to.Ptr(time.Date(2019, time.March, 12, 11, 0, 0, 0, time.UTC)),
+		// 								to.Ptr(time.Date(2019, time.March, 12, 12, 0, 0, 0, time.UTC)),
 		// 							},
 		// 						},
 		// 					},

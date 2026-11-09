@@ -36,10 +36,6 @@ type Client struct {
 	creds        clientCreds
 	namespace    internal.NamespaceForAMQPLinks
 	retryOptions RetryOptions
-
-	// acceptNextTimeout controls how long the session accept can take before
-	// the server stops waiting.
-	acceptNextTimeout time.Duration
 }
 
 // ClientOptions contains options for the `NewClient` and `NewClientFromConnectionString`
@@ -343,12 +339,11 @@ func (client *Client) acceptNextSessionForEntity(ctx context.Context, entity ent
 	sessionReceiver, err := newSessionReceiver(
 		ctx,
 		newSessionReceiverArgs{
-			sessionID:         nil,
-			ns:                client.namespace,
-			entity:            entity,
-			cleanupOnClose:    cleanupOnClose,
-			retryOptions:      client.retryOptions,
-			acceptNextTimeout: client.acceptNextTimeout,
+			sessionID:      nil,
+			ns:             client.namespace,
+			entity:         entity,
+			cleanupOnClose: cleanupOnClose,
+			retryOptions:   client.retryOptions,
 		}, toReceiverOptions(options))
 
 	if err != nil {
@@ -438,8 +433,9 @@ func (client *Client) NewListSessionsForSubscriptionPager(topicName string, subs
 }
 
 func (client *Client) newListSessionsPager(e entity, updatedAfter *time.Time) *runtime.Pager[ListSessionsResponse] {
-	// The service switches between "active messages" mode and "updated since" mode by checking
-	// lastUpdatedTime != DateTime.MaxValue (exact equality). The .NET AMQP library encodes
+	// The service switches between default listing mode (active messages or stored session state)
+	// and updated-since mode by checking lastUpdatedTime != DateTime.MaxValue (exact equality).
+	// The .NET AMQP library encodes
 	// DateTime.MaxValue as 253402300800000 ms (10000-01-01T00:00:00Z) due to double→long rounding
 	// in TimeSpan.TotalMilliseconds, and its decoder clamps values beyond DateTime.MaxValue.Ticks
 	// back to DateTime.MaxValue. This matches Track 1 Java's SessionBrowser.MAXDATE =

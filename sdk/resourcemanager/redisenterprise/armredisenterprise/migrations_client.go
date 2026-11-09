@@ -86,7 +86,8 @@ func (client *MigrationsClient) start(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -161,7 +162,8 @@ func (client *MigrationsClient) undo(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -241,7 +243,8 @@ func (client *MigrationsClient) unlinkMigratedEndpoint(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -291,7 +294,8 @@ func (client *MigrationsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return MigrationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -430,7 +434,8 @@ func (client *MigrationsClient) Validate(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return MigrationsClientValidateResponse{}, err
 	}
-	return client.validateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCreateRequest creates the Validate request.

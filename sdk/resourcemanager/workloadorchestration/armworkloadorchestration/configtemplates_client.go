@@ -68,7 +68,7 @@ func (client *ConfigTemplatesClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create or update a Config Template Resource
+// createOrUpdate - Create or update a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConfigTemplatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, configTemplateName string, resource ConfigTemplate, options *ConfigTemplatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *ConfigTemplatesClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConfigTemplatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, resource ConfigTemplate, _ *ConfigTemplatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *ConfigTemplatesClient) BeginCreateVersion(ctx context.Context, res
 	}
 }
 
-// CreateVersion - Create or update a Config Template Version Resource with the specified UpdateType
+// createVersion - Create or update a Config Template Version Resource with the specified UpdateType
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConfigTemplatesClient) createVersion(ctx context.Context, resourceGroupName string, configTemplateName string, body ConfigTemplateVersionWithUpdateType, options *ConfigTemplatesClientBeginCreateVersionOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *ConfigTemplatesClient) createVersion(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createVersionCreateRequest creates the CreateVersion request.
+// createVersionCreateRequest creates the createVersion request.
 func (client *ConfigTemplatesClient) createVersionCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, body ConfigTemplateVersionWithUpdateType, _ *ConfigTemplatesClientBeginCreateVersionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/createVersion"
 	if client.subscriptionID == "" {
@@ -219,7 +221,7 @@ func (client *ConfigTemplatesClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete a Config Template Resource
+// deleteOperation - Delete a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConfigTemplatesClient) deleteOperation(ctx context.Context, resourceGroupName string, configTemplateName string, options *ConfigTemplatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -236,12 +238,13 @@ func (client *ConfigTemplatesClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConfigTemplatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, _ *ConfigTemplatesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}"
 	if client.subscriptionID == "" {
@@ -285,7 +288,8 @@ func (client *ConfigTemplatesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ConfigTemplatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -486,7 +490,8 @@ func (client *ConfigTemplatesClient) RemoveVersion(ctx context.Context, resource
 	if err != nil {
 		return ConfigTemplatesClientRemoveVersionResponse{}, err
 	}
-	return client.removeVersionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.removeVersionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // removeVersionCreateRequest creates the RemoveVersion request.
@@ -551,7 +556,8 @@ func (client *ConfigTemplatesClient) Update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ConfigTemplatesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

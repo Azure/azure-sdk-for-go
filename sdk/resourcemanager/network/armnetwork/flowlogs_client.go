@@ -86,7 +86,8 @@ func (client *FlowLogsClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -133,7 +134,7 @@ func (client *FlowLogsClient) createOrUpdateCreateRequest(ctx context.Context, r
 //   - options - FlowLogsClientBeginDeleteOptions contains the optional parameters for the FlowLogsClient.BeginDelete method.
 func (client *FlowLogsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, options *FlowLogsClientBeginDeleteOptions) (*runtime.Poller[FlowLogsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkWatcherName, flowLogName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkWatcherName, flowLogName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -148,9 +149,9 @@ func (client *FlowLogsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Deletes the specified flow log resource.
+// deleteOperation - Deletes the specified flow log resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FlowLogsClient) delete(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, options *FlowLogsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *FlowLogsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkWatcherName string, flowLogName string, options *FlowLogsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FlowLogsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -165,7 +166,8 @@ func (client *FlowLogsClient) delete(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -219,7 +221,8 @@ func (client *FlowLogsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return FlowLogsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -361,7 +364,8 @@ func (client *FlowLogsClient) UpdateTags(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return FlowLogsClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

@@ -85,7 +85,8 @@ func (client *CloudAccountsClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -128,7 +129,7 @@ func (client *CloudAccountsClient) createOrUpdateCreateRequest(ctx context.Conte
 //     method.
 func (client *CloudAccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudAccountName string, options *CloudAccountsClientBeginDeleteOptions) (*runtime.Poller[CloudAccountsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, cloudAccountName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudAccountName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *CloudAccountsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// delete - Delete a CloudAccount
+// deleteOperation - Delete a CloudAccount
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *CloudAccountsClient) delete(ctx context.Context, resourceGroupName string, cloudAccountName string, options *CloudAccountsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *CloudAccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, options *CloudAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "CloudAccountsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *CloudAccountsClient) delete(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -236,7 +238,8 @@ func (client *CloudAccountsClient) linkSaaS(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -312,7 +315,8 @@ func (client *CloudAccountsClient) update(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -366,7 +370,8 @@ func (client *CloudAccountsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return CloudAccountsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -427,7 +432,8 @@ func (client *CloudAccountsClient) LatestLinkedSaaS(ctx context.Context, resourc
 	if err != nil {
 		return CloudAccountsClientLatestLinkedSaaSResponse{}, err
 	}
-	return client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // latestLinkedSaaSCreateRequest creates the LatestLinkedSaaS request.

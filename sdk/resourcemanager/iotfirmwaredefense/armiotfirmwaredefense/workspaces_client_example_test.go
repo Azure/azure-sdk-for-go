@@ -12,6 +12,48 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-08-02/Workspaces_Delete_MaximumSet_Gen.json
+func ExampleWorkspacesClient_BeginDelete_workspacesDeleteMaximumSetGenGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginDelete(ctx, "rgiotfirmwaredefense", "exampleWorkspaceName", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-08-02/Workspaces_Delete_MinimumSet_Gen.json
+func ExampleWorkspacesClient_BeginDelete_workspacesDeleteMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkspacesClient().BeginDelete(ctx, "rgworkspaces", "default", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2025-08-02/Workspaces_Create_MaximumSet_Gen.json
 func ExampleWorkspacesClient_Create_workspacesCreateMaximumSetGenGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -102,48 +144,6 @@ func ExampleWorkspacesClient_Create_workspacesCreateMinimumSetGen() {
 	// 		Location: to.Ptr("East US"),
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-08-02/Workspaces_Delete_MaximumSet_Gen.json
-func ExampleWorkspacesClient_BeginDelete_workspacesDeleteMaximumSetGenGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkspacesClient().BeginDelete(ctx, "rgiotfirmwaredefense", "exampleWorkspaceName", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-08-02/Workspaces_Delete_MinimumSet_Gen.json
-func ExampleWorkspacesClient_BeginDelete_workspacesDeleteMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armiotfirmwaredefense.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkspacesClient().BeginDelete(ctx, "rgworkspaces", "default", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }
 
 // Generated from example definition: 2025-08-02/Workspaces_GenerateUploadUrl_MaximumSet_Gen.json

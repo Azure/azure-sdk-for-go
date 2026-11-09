@@ -87,7 +87,8 @@ func (client *AdministratorsMicrosoftEntraClient) createOrUpdate(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -166,7 +167,8 @@ func (client *AdministratorsMicrosoftEntraClient) deleteOperation(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -221,7 +223,8 @@ func (client *AdministratorsMicrosoftEntraClient) Get(ctx context.Context, resou
 	if err != nil {
 		return AdministratorsMicrosoftEntraClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

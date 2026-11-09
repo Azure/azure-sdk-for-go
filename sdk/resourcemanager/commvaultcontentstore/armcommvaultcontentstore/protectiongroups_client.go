@@ -65,7 +65,8 @@ func (client *ProtectionGroupsClient) Backup(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ProtectionGroupsClientBackupResponse{}, err
 	}
-	return client.backupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.backupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // backupCreateRequest creates the Backup request.
@@ -156,7 +157,8 @@ func (client *ProtectionGroupsClient) createOrupdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -204,7 +206,7 @@ func (client *ProtectionGroupsClient) createOrupdateCreateRequest(ctx context.Co
 //     method.
 func (client *ProtectionGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, options *ProtectionGroupsClientBeginDeleteOptions) (*runtime.Poller[ProtectionGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, cloudAccountName, protectionGroupName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, cloudAccountName, protectionGroupName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -219,9 +221,9 @@ func (client *ProtectionGroupsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// delete - Delete a ProtectionGroup
+// deleteOperation - Delete a ProtectionGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProtectionGroupsClient) delete(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, options *ProtectionGroupsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ProtectionGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudAccountName string, protectionGroupName string, options *ProtectionGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProtectionGroupsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -236,7 +238,8 @@ func (client *ProtectionGroupsClient) delete(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -312,7 +315,8 @@ func (client *ProtectionGroupsClient) stopBackup(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -370,7 +374,8 @@ func (client *ProtectionGroupsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ProtectionGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -514,7 +519,8 @@ func (client *ProtectionGroupsClient) Restore(ctx context.Context, resourceGroup
 	if err != nil {
 		return ProtectionGroupsClientRestoreResponse{}, err
 	}
-	return client.restoreHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.restoreHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // restoreCreateRequest creates the Restore request.
@@ -585,7 +591,8 @@ func (client *ProtectionGroupsClient) ResumeBackup(ctx context.Context, resource
 		return ProtectionGroupsClientResumeBackupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return ProtectionGroupsClientResumeBackupResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ProtectionGroupsClientResumeBackupResponse{}, err
 	}
 	return ProtectionGroupsClientResumeBackupResponse{}, nil
 }

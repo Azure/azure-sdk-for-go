@@ -70,7 +70,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) BeginCreateOrUpdat
 	}
 }
 
-// CreateOrUpdate - Sets a managed database's long term retention policy.
+// createOrUpdate - Sets a managed database's long term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstanceLongTermRetentionPoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName ManagedInstanceLongTermRetentionPolicyName, parameters ManagedInstanceLongTermRetentionPolicy, options *ManagedInstanceLongTermRetentionPoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) createOrUpdate(ctx
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedInstanceLongTermRetentionPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName ManagedInstanceLongTermRetentionPolicyName, parameters ManagedInstanceLongTermRetentionPolicy, _ *ManagedInstanceLongTermRetentionPoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}"
 	if client.subscriptionID == "" {
@@ -155,7 +156,7 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) BeginDelete(ctx co
 	}
 }
 
-// Delete - Deletes a managed database's long term retention policy.
+// deleteOperation - Deletes a managed database's long term retention policy.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstanceLongTermRetentionPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName ManagedInstanceLongTermRetentionPolicyName, options *ManagedInstanceLongTermRetentionPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,12 +173,13 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) deleteOperation(ct
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedInstanceLongTermRetentionPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, databaseName string, policyName ManagedInstanceLongTermRetentionPolicyName, _ *ManagedInstanceLongTermRetentionPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/databases/{databaseName}/backupLongTermRetentionPolicies/{policyName}"
 	if client.subscriptionID == "" {
@@ -233,7 +235,8 @@ func (client *ManagedInstanceLongTermRetentionPoliciesClient) Get(ctx context.Co
 	if err != nil {
 		return ManagedInstanceLongTermRetentionPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

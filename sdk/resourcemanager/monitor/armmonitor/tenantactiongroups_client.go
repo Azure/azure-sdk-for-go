@@ -60,7 +60,8 @@ func (client *TenantActionGroupsClient) CreateOrUpdate(ctx context.Context, mana
 	if err != nil {
 		return TenantActionGroupsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -124,7 +125,8 @@ func (client *TenantActionGroupsClient) Delete(ctx context.Context, managementGr
 		return TenantActionGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return TenantActionGroupsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TenantActionGroupsClientDeleteResponse{}, err
 	}
 	return TenantActionGroupsClientDeleteResponse{}, nil
 }
@@ -171,7 +173,8 @@ func (client *TenantActionGroupsClient) Get(ctx context.Context, managementGroup
 	if err != nil {
 		return TenantActionGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -301,7 +304,8 @@ func (client *TenantActionGroupsClient) Update(ctx context.Context, managementGr
 	if err != nil {
 		return TenantActionGroupsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

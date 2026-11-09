@@ -61,7 +61,8 @@ func (client *ForecastClient) ExternalCloudProviderUsage(ctx context.Context, ex
 	if err != nil {
 		return ForecastClientExternalCloudProviderUsageResponse{}, err
 	}
-	return client.externalCloudProviderUsageHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.externalCloudProviderUsageHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // externalCloudProviderUsageCreateRequest creates the ExternalCloudProviderUsage request.
@@ -132,7 +133,8 @@ func (client *ForecastClient) Usage(ctx context.Context, scope string, parameter
 	if err != nil {
 		return ForecastClientUsageResponse{}, err
 	}
-	return client.usageHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.usageHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // usageCreateRequest creates the Usage request.

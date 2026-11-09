@@ -63,7 +63,8 @@ func (client *OsImagesClient) Get(ctx context.Context, location string, osImageN
 	if err != nil {
 		return OsImagesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

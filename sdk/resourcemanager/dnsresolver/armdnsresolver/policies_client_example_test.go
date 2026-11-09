@@ -84,6 +84,56 @@ func ExamplePoliciesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2025-10-01-preview/DnsResolverPolicy_Patch.json
+func ExamplePoliciesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdnsresolver.NewClientFactory("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPoliciesClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", armdnsresolver.PolicyPatch{
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdnsresolver.PoliciesClientUpdateResponse{
+	// 	Policy: armdnsresolver.Policy{
+	// 		Name: to.Ptr("sampleDnsResolverPolicy"),
+	// 		Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
+	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armdnsresolver.PolicyProperties{
+	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
+	// 			ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
+	// 		},
+	// 		SystemData: &armdnsresolver.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.April, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.April, 2, 2, 3, 1, 197434600, time.UTC)),
+	// 			LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-10-01-preview/DnsResolverPolicy_Get.json
 func ExamplePoliciesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -124,78 +174,6 @@ func ExamplePoliciesClient_Get() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-10-01-preview/DnsResolverPolicy_ListBySubscription.json
-func ExamplePoliciesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdnsresolver.NewClientFactory("abdd4249-9f34-4cc6-8e42-c2e32110603e", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPoliciesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdnsresolver.PoliciesClientListResponse{
-		// 	PolicyListResult: armdnsresolver.PolicyListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/providers/Microsoft.Network/dnsResolverPolicies?$skipToken=skipToken&api-version=2025-10-01-preview"),
-		// 		Value: []*armdnsresolver.Policy{
-		// 			{
-		// 				Name: to.Ptr("sampleDnsResolverPolicy1"),
-		// 				Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy1"),
-		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armdnsresolver.PolicyProperties{
-		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("ad9c8da4-3bb2-4821-a878-c2cb07b01fb6"),
-		// 				},
-		// 				SystemData: &armdnsresolver.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.April, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.April, 2, 2, 3, 1, 197434600, time.UTC)),
-		// 					LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("sampleDnsResolverPolicy2"),
-		// 				Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy2"),
-		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armdnsresolver.PolicyProperties{
-		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
-		// 					ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
-		// 				},
-		// 				SystemData: &armdnsresolver.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.April, 1, 1, 1, 1, 107505600, time.UTC)),
-		// 					CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.April, 2, 2, 3, 1, 197434600, time.UTC)),
-		// 					LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-10-01-preview/DnsResolverPolicy_ListByResourceGroup.json
@@ -304,8 +282,8 @@ func ExamplePoliciesClient_NewListByVirtualNetworkPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01-preview/DnsResolverPolicy_Patch.json
-func ExamplePoliciesClient_BeginUpdate() {
+// Generated from example definition: 2025-10-01-preview/DnsResolverPolicy_ListBySubscription.json
+func ExamplePoliciesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -315,41 +293,63 @@ func ExamplePoliciesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPoliciesClient().BeginUpdate(ctx, "sampleResourceGroup", "sampleDnsResolverPolicy", armdnsresolver.PolicyPatch{
-		Tags: map[string]*string{
-			"key1": to.Ptr("value1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewPoliciesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdnsresolver.PoliciesClientListResponse{
+		// 	PolicyListResult: armdnsresolver.PolicyListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/providers/Microsoft.Network/dnsResolverPolicies?$skipToken=skipToken&api-version=2025-10-01-preview"),
+		// 		Value: []*armdnsresolver.Policy{
+		// 			{
+		// 				Name: to.Ptr("sampleDnsResolverPolicy1"),
+		// 				Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy1"),
+		// 				Location: to.Ptr("westus2"),
+		// 				Properties: &armdnsresolver.PolicyProperties{
+		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("ad9c8da4-3bb2-4821-a878-c2cb07b01fb6"),
+		// 				},
+		// 				SystemData: &armdnsresolver.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.April, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.April, 2, 2, 3, 1, 197434600, time.UTC)),
+		// 					LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("sampleDnsResolverPolicy2"),
+		// 				Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy2"),
+		// 				Location: to.Ptr("westus2"),
+		// 				Properties: &armdnsresolver.PolicyProperties{
+		// 					ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
+		// 					ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
+		// 				},
+		// 				SystemData: &armdnsresolver.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.April, 1, 1, 1, 1, 107505600, time.UTC)),
+		// 					CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.April, 2, 2, 3, 1, 197434600, time.UTC)),
+		// 					LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdnsresolver.PoliciesClientUpdateResponse{
-	// 	Policy: armdnsresolver.Policy{
-	// 		Name: to.Ptr("sampleDnsResolverPolicy"),
-	// 		Type: to.Ptr("Microsoft.Network/dnsResolverPolicies"),
-	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		ID: to.Ptr("/subscriptions/abdd4249-9f34-4cc6-8e42-c2e32110603e/resourceGroups/sampleResourceGroup/providers/Microsoft.Network/dnsResolverPolicies/sampleDnsResolverPolicy"),
-	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armdnsresolver.PolicyProperties{
-	// 			ProvisioningState: to.Ptr(armdnsresolver.ProvisioningStateSucceeded),
-	// 			ResourceGUID: to.Ptr("b6b2d964-8588-4e3a-a7fe-8a5b7fe8eca5"),
-	// 		},
-	// 		SystemData: &armdnsresolver.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.April, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.April, 2, 2, 3, 1, 197434600, time.UTC)),
-	// 			LastModifiedByType: to.Ptr(armdnsresolver.CreatedByTypeApplication),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 		},
-	// 	},
-	// }
 }

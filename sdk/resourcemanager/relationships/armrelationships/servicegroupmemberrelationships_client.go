@@ -62,7 +62,7 @@ func (client *ServiceGroupMemberRelationshipsClient) BeginCreateOrUpdate(ctx con
 	}
 }
 
-// CreateOrUpdate - Create a ServiceGroupMemberRelationship
+// createOrUpdate - Create a ServiceGroupMemberRelationship
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServiceGroupMemberRelationshipsClient) createOrUpdate(ctx context.Context, resourceURI string, name string, resource ServiceGroupMemberRelationship, options *ServiceGroupMemberRelationshipsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -79,12 +79,13 @@ func (client *ServiceGroupMemberRelationshipsClient) createOrUpdate(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ServiceGroupMemberRelationshipsClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, name string, resource ServiceGroupMemberRelationship, _ *ServiceGroupMemberRelationshipsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}"
 	if resourceURI == "" {
@@ -133,7 +134,7 @@ func (client *ServiceGroupMemberRelationshipsClient) BeginDelete(ctx context.Con
 	}
 }
 
-// Delete - Delete a ServiceGroupMemberRelationship
+// deleteOperation - Delete a ServiceGroupMemberRelationship
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServiceGroupMemberRelationshipsClient) deleteOperation(ctx context.Context, resourceURI string, name string, options *ServiceGroupMemberRelationshipsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -150,12 +151,13 @@ func (client *ServiceGroupMemberRelationshipsClient) deleteOperation(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ServiceGroupMemberRelationshipsClient) deleteCreateRequest(ctx context.Context, resourceURI string, name string, _ *ServiceGroupMemberRelationshipsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.Relationships/serviceGroupMember/{name}"
 	if resourceURI == "" {
@@ -196,7 +198,8 @@ func (client *ServiceGroupMemberRelationshipsClient) Get(ctx context.Context, re
 	if err != nil {
 		return ServiceGroupMemberRelationshipsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

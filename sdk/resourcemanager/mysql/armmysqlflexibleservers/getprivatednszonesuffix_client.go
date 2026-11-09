@@ -54,7 +54,8 @@ func (client *GetPrivateDNSZoneSuffixClient) Execute(ctx context.Context, option
 	if err != nil {
 		return GetPrivateDNSZoneSuffixClientExecuteResponse{}, err
 	}
-	return client.executeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executeCreateRequest creates the Execute request.

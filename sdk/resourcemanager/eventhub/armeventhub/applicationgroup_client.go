@@ -66,7 +66,8 @@ func (client *ApplicationGroupClient) CreateOrUpdateApplicationGroup(ctx context
 	if err != nil {
 		return ApplicationGroupClientCreateOrUpdateApplicationGroupResponse{}, err
 	}
-	return client.createOrUpdateApplicationGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateApplicationGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateApplicationGroupCreateRequest creates the CreateOrUpdateApplicationGroup request.
@@ -136,7 +137,8 @@ func (client *ApplicationGroupClient) Delete(ctx context.Context, resourceGroupN
 		return ApplicationGroupClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ApplicationGroupClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ApplicationGroupClientDeleteResponse{}, err
 	}
 	return ApplicationGroupClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *ApplicationGroupClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ApplicationGroupClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -67,7 +67,8 @@ func (client *ProtectedItemsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ProtectedItemsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -140,7 +141,8 @@ func (client *ProtectedItemsClient) GetRestorePoints(ctx context.Context, resour
 	if err != nil {
 		return ProtectedItemsClientGetRestorePointsResponse{}, err
 	}
-	return client.getRestorePointsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRestorePointsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRestorePointsCreateRequest creates the GetRestorePoints request.
@@ -295,7 +297,8 @@ func (client *ProtectedItemsClient) Restore(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ProtectedItemsClientRestoreResponse{}, err
 	}
-	return client.restoreHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.restoreHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // restoreCreateRequest creates the Restore request.

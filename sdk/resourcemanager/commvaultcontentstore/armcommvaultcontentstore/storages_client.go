@@ -86,7 +86,8 @@ func (client *StoragesClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -165,7 +166,8 @@ func (client *StoragesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -222,7 +224,8 @@ func (client *StoragesClient) DisableComplianceLock(ctx context.Context, resourc
 	if err != nil {
 		return StoragesClientDisableComplianceLockResponse{}, err
 	}
-	return client.disableComplianceLockHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.disableComplianceLockHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // disableComplianceLockCreateRequest creates the DisableComplianceLock request.
@@ -288,7 +291,8 @@ func (client *StoragesClient) EnableComplianceLock(ctx context.Context, resource
 	if err != nil {
 		return StoragesClientEnableComplianceLockResponse{}, err
 	}
-	return client.enableComplianceLockHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.enableComplianceLockHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // enableComplianceLockCreateRequest creates the EnableComplianceLock request.
@@ -353,7 +357,8 @@ func (client *StoragesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return StoragesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -496,7 +501,8 @@ func (client *StoragesClient) Refresh(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return StoragesClientRefreshResponse{}, err
 	}
-	return client.refreshHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.refreshHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // refreshCreateRequest creates the Refresh request.

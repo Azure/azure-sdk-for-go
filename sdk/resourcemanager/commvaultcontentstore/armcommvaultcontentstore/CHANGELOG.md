@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-11-05)
+## 2.0.0 (2026-11-09)
 ### Breaking Changes
 
 - Function `*CloudAccountsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccount, options *CloudAccountsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, options *CloudAccountsClientBeginUpdateOptions)`

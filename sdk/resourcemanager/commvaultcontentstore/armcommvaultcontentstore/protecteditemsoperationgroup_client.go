@@ -55,7 +55,8 @@ func (client *ProtectedItemsOperationGroupClient) CountByProtectionGroups(ctx co
 	if err != nil {
 		return ProtectedItemsOperationGroupClientCountByProtectionGroupsResponse{}, err
 	}
-	return client.countByProtectionGroupsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.countByProtectionGroupsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // countByProtectionGroupsCreateRequest creates the CountByProtectionGroups request.

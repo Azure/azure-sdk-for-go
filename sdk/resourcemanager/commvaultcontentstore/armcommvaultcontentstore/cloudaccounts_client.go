@@ -85,7 +85,8 @@ func (client *CloudAccountsClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -160,7 +161,8 @@ func (client *CloudAccountsClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -236,7 +238,8 @@ func (client *CloudAccountsClient) linkSaaS(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -312,7 +315,8 @@ func (client *CloudAccountsClient) update(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -366,7 +370,8 @@ func (client *CloudAccountsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return CloudAccountsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -427,7 +432,8 @@ func (client *CloudAccountsClient) LatestLinkedSaaS(ctx context.Context, resourc
 	if err != nil {
 		return CloudAccountsClientLatestLinkedSaaSResponse{}, err
 	}
-	return client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // latestLinkedSaaSCreateRequest creates the LatestLinkedSaaS request.

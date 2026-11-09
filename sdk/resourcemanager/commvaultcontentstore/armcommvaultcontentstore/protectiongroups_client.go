@@ -65,7 +65,8 @@ func (client *ProtectionGroupsClient) Backup(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ProtectionGroupsClientBackupResponse{}, err
 	}
-	return client.backupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.backupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // backupCreateRequest creates the Backup request.
@@ -156,7 +157,8 @@ func (client *ProtectionGroupsClient) createOrupdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -236,7 +238,8 @@ func (client *ProtectionGroupsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -312,7 +315,8 @@ func (client *ProtectionGroupsClient) stopBackup(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -370,7 +374,8 @@ func (client *ProtectionGroupsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ProtectionGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -514,7 +519,8 @@ func (client *ProtectionGroupsClient) Restore(ctx context.Context, resourceGroup
 	if err != nil {
 		return ProtectionGroupsClientRestoreResponse{}, err
 	}
-	return client.restoreHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.restoreHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // restoreCreateRequest creates the Restore request.
@@ -585,7 +591,8 @@ func (client *ProtectionGroupsClient) ResumeBackup(ctx context.Context, resource
 		return ProtectionGroupsClientResumeBackupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return ProtectionGroupsClientResumeBackupResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ProtectionGroupsClientResumeBackupResponse{}, err
 	}
 	return ProtectionGroupsClientResumeBackupResponse{}, nil
 }

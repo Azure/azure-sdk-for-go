@@ -86,7 +86,8 @@ func (client *FileShareSnapshotsClient) createOrUpdateFileShareSnapshot(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -165,7 +166,8 @@ func (client *FileShareSnapshotsClient) deleteFileShareSnapshot(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -241,7 +243,8 @@ func (client *FileShareSnapshotsClient) updateFileShareSnapshot(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -301,7 +304,8 @@ func (client *FileShareSnapshotsClient) GetFileShareSnapshot(ctx context.Context
 	if err != nil {
 		return FileShareSnapshotsClientGetFileShareSnapshotResponse{}, err
 	}
-	return client.getFileShareSnapshotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFileShareSnapshotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFileShareSnapshotCreateRequest creates the GetFileShareSnapshot request.

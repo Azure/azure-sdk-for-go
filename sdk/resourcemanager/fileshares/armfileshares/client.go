@@ -84,7 +84,8 @@ func (client *Client) createOrUpdate(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -158,7 +159,8 @@ func (client *Client) deleteOperation(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -228,7 +230,8 @@ func (client *Client) update(ctx context.Context, resourceGroupName string, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -282,7 +285,8 @@ func (client *Client) CheckNameAvailability(ctx context.Context, location string
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -342,7 +346,8 @@ func (client *Client) Get(ctx context.Context, resourceGroupName string, resourc
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -404,7 +409,8 @@ func (client *Client) GetRedundancyConversionStatus(ctx context.Context, resourc
 	if err != nil {
 		return ClientGetRedundancyConversionStatusResponse{}, err
 	}
-	return client.getRedundancyConversionStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRedundancyConversionStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRedundancyConversionStatusCreateRequest creates the GetRedundancyConversionStatus request.
@@ -604,7 +610,8 @@ func (client *Client) StartRedundancyConversion(ctx context.Context, resourceGro
 		return ClientStartRedundancyConversionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return ClientStartRedundancyConversionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ClientStartRedundancyConversionResponse{}, err
 	}
 	return ClientStartRedundancyConversionResponse{}, nil
 }

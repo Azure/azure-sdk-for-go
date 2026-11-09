@@ -7,11 +7,11 @@ package armchaos_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/DiscoveredResources_Get.json
+// Generated from example definition: 2026-08-01-preview/DiscoveredResources_Get.json
 func ExampleDiscoveredResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleDiscoveredResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/DiscoveredResources_ListByWorkspace.json
+// Generated from example definition: 2026-08-01-preview/DiscoveredResources_ListByWorkspace.json
 func ExampleDiscoveredResourcesClient_NewListByWorkspacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -19,7 +19,7 @@ import (
 // ManagedNetworkSettingsClient contains the methods for the ManagedNetworkSettings group.
 // Don't use this type directly, use NewManagedNetworkSettingsClient() instead.
 //
-// Generated from API version 2026-05-15-preview
+// Generated from API version 2026-09-15-preview
 type ManagedNetworkSettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ManagedNetworkSettingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewManagedNetworkSettingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedNetworkSettingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -52,7 +55,7 @@ func NewManagedNetworkSettingsClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *ManagedNetworkSettingsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkSettingsClientBeginDeleteOptions) (*runtime.Poller[ManagedNetworkSettingsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, managedNetworkName, options)
+		resp, err := client.delete(ctx, resourceGroupName, accountName, managedNetworkName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -67,11 +70,11 @@ func (client *ManagedNetworkSettingsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete API for managed network settings of a cognitive services account.
+// delete - Delete API for managed network settings of a cognitive services account.
 //
 // Delete API for managed network settings of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedNetworkSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkSettingsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ManagedNetworkSettingsClient) delete(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkSettingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedNetworkSettingsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -86,17 +89,16 @@ func (client *ManagedNetworkSettingsClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedNetworkSettingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, _ *ManagedNetworkSettingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -116,144 +118,9 @@ func (client *ManagedNetworkSettingsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Get API for managed network settings of a cognitive services account.
-//
-// Get API for managed network settings of a cognitive services account.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - managedNetworkName - Name of the managedNetwork associated with the cognitive services account. Only 'default' is supported.
-//   - options - ManagedNetworkSettingsClientGetOptions contains the optional parameters for the ManagedNetworkSettingsClient.Get
-//     method.
-func (client *ManagedNetworkSettingsClient) Get(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkSettingsClientGetOptions) (ManagedNetworkSettingsClientGetResponse, error) {
-	var err error
-	const operationName = "ManagedNetworkSettingsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, managedNetworkName, options)
-	if err != nil {
-		return ManagedNetworkSettingsClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ManagedNetworkSettingsClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ManagedNetworkSettingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *ManagedNetworkSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, _ *ManagedNetworkSettingsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if managedNetworkName == "" {
-		return nil, errors.New("parameter managedNetworkName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managedNetworkName}", url.PathEscape(managedNetworkName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *ManagedNetworkSettingsClient) getHandleResponse(resp *http.Response) (ManagedNetworkSettingsClientGetResponse, error) {
-	result := ManagedNetworkSettingsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedNetworkSettingsPropertiesBasicResource); err != nil {
-		return ManagedNetworkSettingsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - List API for managed network settings of a cognitive services account.
-//
-// List API for managed network settings of a cognitive services account.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of Cognitive Services account.
-//   - options - ManagedNetworkSettingsClientListOptions contains the optional parameters for the ManagedNetworkSettingsClient.NewListPager
-//     method.
-func (client *ManagedNetworkSettingsClient) NewListPager(resourceGroupName string, accountName string, options *ManagedNetworkSettingsClientListOptions) *runtime.Pager[ManagedNetworkSettingsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ManagedNetworkSettingsClientListResponse]{
-		More: func(page ManagedNetworkSettingsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ManagedNetworkSettingsClientListResponse) (ManagedNetworkSettingsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedNetworkSettingsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
-			if err != nil {
-				return ManagedNetworkSettingsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ManagedNetworkSettingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *ManagedNetworkSettingsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ManagedNetworkSettingsClient) listHandleResponse(resp *http.Response) (ManagedNetworkSettingsClientListResponse, error) {
-	result := ManagedNetworkSettingsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedNetworkListResult); err != nil {
-		return ManagedNetworkSettingsClientListResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginPatch - Patch API for managed network settings of a cognitive services account.
@@ -283,7 +150,7 @@ func (client *ManagedNetworkSettingsClient) BeginPatch(ctx context.Context, reso
 	}
 }
 
-// Patch - Patch API for managed network settings of a cognitive services account.
+// patch - Patch API for managed network settings of a cognitive services account.
 //
 // Patch API for managed network settings of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -302,17 +169,16 @@ func (client *ManagedNetworkSettingsClient) patch(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// patchCreateRequest creates the Patch request.
+// patchCreateRequest creates the patch request.
 func (client *ManagedNetworkSettingsClient) patchCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, _ *ManagedNetworkSettingsClientBeginPatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -332,7 +198,7 @@ func (client *ManagedNetworkSettingsClient) patchCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -369,7 +235,7 @@ func (client *ManagedNetworkSettingsClient) BeginPut(ctx context.Context, resour
 	}
 }
 
-// Put - PUT API for managed network settings of a cognitive services account.
+// put - PUT API for managed network settings of a cognitive services account.
 //
 // PUT API for managed network settings of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -388,17 +254,16 @@ func (client *ManagedNetworkSettingsClient) put(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// putCreateRequest creates the Put request.
+// putCreateRequest creates the put request.
 func (client *ManagedNetworkSettingsClient) putCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, body ManagedNetworkSettingsPropertiesBasicResource, _ *ManagedNetworkSettingsClientBeginPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -418,7 +283,7 @@ func (client *ManagedNetworkSettingsClient) putCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -426,4 +291,151 @@ func (client *ManagedNetworkSettingsClient) putCreateRequest(ctx context.Context
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Get API for managed network settings of a cognitive services account.
+//
+// Get API for managed network settings of a cognitive services account.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - managedNetworkName - Name of the managedNetwork associated with the cognitive services account. Only 'default' is supported.
+//   - options - ManagedNetworkSettingsClientGetOptions contains the optional parameters for the ManagedNetworkSettingsClient.Get
+//     method.
+func (client *ManagedNetworkSettingsClient) Get(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkSettingsClientGetOptions) (ManagedNetworkSettingsClientGetResponse, error) {
+	var err error
+	const operationName = "ManagedNetworkSettingsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, managedNetworkName, options)
+	if err != nil {
+		return ManagedNetworkSettingsClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ManagedNetworkSettingsClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *ManagedNetworkSettingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, _ *ManagedNetworkSettingsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks/{managedNetworkName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if managedNetworkName == "" {
+		return nil, errors.New("parameter managedNetworkName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managedNetworkName}", url.PathEscape(managedNetworkName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260915Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *ManagedNetworkSettingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ManagedNetworkSettingsClientGetResponse, error) {
+	result := ManagedNetworkSettingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedNetworkSettingsPropertiesBasicResource); err != nil {
+		return ManagedNetworkSettingsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - List API for managed network settings of a cognitive services account.
+//
+// List API for managed network settings of a cognitive services account.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of Cognitive Services account.
+//   - options - ManagedNetworkSettingsClientListOptions contains the optional parameters for the ManagedNetworkSettingsClient.NewListPager
+//     method.
+func (client *ManagedNetworkSettingsClient) NewListPager(resourceGroupName string, accountName string, options *ManagedNetworkSettingsClientListOptions) *runtime.Pager[ManagedNetworkSettingsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ManagedNetworkSettingsClientListResponse]{
+		More: func(page ManagedNetworkSettingsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ManagedNetworkSettingsClientListResponse) (ManagedNetworkSettingsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ManagedNetworkSettingsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
+			if err != nil {
+				return ManagedNetworkSettingsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ManagedNetworkSettingsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ManagedNetworkSettingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *ManagedNetworkSettingsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/managedNetworks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260915Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ManagedNetworkSettingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ManagedNetworkSettingsClientListResponse, error) {
+	result := ManagedNetworkSettingsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedNetworkListResult); err != nil {
+		return ManagedNetworkSettingsClientListResponse{}, err
+	}
+	return result, nil
 }

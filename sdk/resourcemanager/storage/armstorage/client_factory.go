@@ -48,6 +48,22 @@ func (c *ClientFactory) NewAdvancedPlatformMetricsClient() *AdvancedPlatformMetr
 	}
 }
 
+// NewBlobAccessPointConfigurationsClient creates a new instance of BlobAccessPointConfigurationsClient.
+func (c *ClientFactory) NewBlobAccessPointConfigurationsClient() *BlobAccessPointConfigurationsClient {
+	return &BlobAccessPointConfigurationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewBlobAccessPointConnectionTestsClient creates a new instance of BlobAccessPointConnectionTestsClient.
+func (c *ClientFactory) NewBlobAccessPointConnectionTestsClient() *BlobAccessPointConnectionTestsClient {
+	return &BlobAccessPointConnectionTestsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewBlobContainersClient creates a new instance of BlobContainersClient.
 func (c *ClientFactory) NewBlobContainersClient() *BlobContainersClient {
 	return &BlobContainersClient{
@@ -75,6 +91,22 @@ func (c *ClientFactory) NewBlobServicesClient() *BlobServicesClient {
 // NewConnectorsClient creates a new instance of ConnectorsClient.
 func (c *ClientFactory) NewConnectorsClient() *ConnectorsClient {
 	return &ConnectorsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewContextCacheContainersClient creates a new instance of ContextCacheContainersClient.
+func (c *ClientFactory) NewContextCacheContainersClient() *ContextCacheContainersClient {
+	return &ContextCacheContainersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewContextCachesClient creates a new instance of ContextCachesClient.
+func (c *ClientFactory) NewContextCachesClient() *ContextCachesClient {
+	return &ContextCachesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

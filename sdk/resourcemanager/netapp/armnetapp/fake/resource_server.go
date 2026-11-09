@@ -20,6 +20,10 @@ import (
 
 // ResourceServer is a fake server for instances of the armnetapp.ResourceClient type.
 type ResourceServer struct {
+	// BeginUpdateNetworkSiblingSet is the fake for method ResourceClient.BeginUpdateNetworkSiblingSet
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdateNetworkSiblingSet func(ctx context.Context, location string, body armnetapp.UpdateNetworkSiblingSetRequest, options *armnetapp.ResourceClientBeginUpdateNetworkSiblingSetOptions) (resp azfake.PollerResponder[armnetapp.ResourceClientUpdateNetworkSiblingSetResponse], errResp azfake.ErrorResponder)
+
 	// CheckFilePathAvailability is the fake for method ResourceClient.CheckFilePathAvailability
 	// HTTP status codes to indicate success: http.StatusOK
 	CheckFilePathAvailability func(ctx context.Context, location string, body armnetapp.FilePathAvailabilityRequest, options *armnetapp.ResourceClientCheckFilePathAvailabilityOptions) (resp azfake.Responder[armnetapp.ResourceClientCheckFilePathAvailabilityResponse], errResp azfake.ErrorResponder)
@@ -39,10 +43,6 @@ type ResourceServer struct {
 	// QueryRegionInfo is the fake for method ResourceClient.QueryRegionInfo
 	// HTTP status codes to indicate success: http.StatusOK
 	QueryRegionInfo func(ctx context.Context, location string, options *armnetapp.ResourceClientQueryRegionInfoOptions) (resp azfake.Responder[armnetapp.ResourceClientQueryRegionInfoResponse], errResp azfake.ErrorResponder)
-
-	// BeginUpdateNetworkSiblingSet is the fake for method ResourceClient.BeginUpdateNetworkSiblingSet
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdateNetworkSiblingSet func(ctx context.Context, location string, body armnetapp.UpdateNetworkSiblingSetRequest, options *armnetapp.ResourceClientBeginUpdateNetworkSiblingSetOptions) (resp azfake.PollerResponder[armnetapp.ResourceClientUpdateNetworkSiblingSetResponse], errResp azfake.ErrorResponder)
 }
 
 // NewResourceServerTransport creates a new instance of ResourceServerTransport with the provided implementation.
@@ -83,6 +83,8 @@ func (r *ResourceServerTransport) dispatchToMethodFake(req *http.Request, method
 		}
 		if !intercepted {
 			switch method {
+			case "ResourceClient.BeginUpdateNetworkSiblingSet":
+				res.resp, res.err = r.dispatchBeginUpdateNetworkSiblingSet(req)
 			case "ResourceClient.CheckFilePathAvailability":
 				res.resp, res.err = r.dispatchCheckFilePathAvailability(req)
 			case "ResourceClient.CheckNameAvailability":
@@ -93,8 +95,6 @@ func (r *ResourceServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = r.dispatchQueryNetworkSiblingSet(req)
 			case "ResourceClient.QueryRegionInfo":
 				res.resp, res.err = r.dispatchQueryRegionInfo(req)
-			case "ResourceClient.BeginUpdateNetworkSiblingSet":
-				res.resp, res.err = r.dispatchBeginUpdateNetworkSiblingSet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -111,174 +111,13 @@ func (r *ResourceServerTransport) dispatchToMethodFake(req *http.Request, method
 	}
 }
 
-func (r *ResourceServerTransport) dispatchCheckFilePathAvailability(req *http.Request) (*http.Response, error) {
-	if r.srv.CheckFilePathAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckFilePathAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkFilePathAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetapp.FilePathAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.CheckFilePathAvailability(req.Context(), locationParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *ResourceServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
-	if r.srv.CheckNameAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkNameAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetapp.ResourceNameAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.CheckNameAvailability(req.Context(), locationParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *ResourceServerTransport) dispatchCheckQuotaAvailability(req *http.Request) (*http.Response, error) {
-	if r.srv.CheckQuotaAvailability == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckQuotaAvailability not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/checkQuotaAvailability`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetapp.QuotaAvailabilityRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.CheckQuotaAvailability(req.Context(), locationParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAvailabilityResponse, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *ResourceServerTransport) dispatchQueryNetworkSiblingSet(req *http.Request) (*http.Response, error) {
-	if r.srv.QueryNetworkSiblingSet == nil {
-		return nil, &nonRetriableError{errors.New("fake for method QueryNetworkSiblingSet not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/queryNetworkSiblingSet`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armnetapp.QueryNetworkSiblingSetRequest](req)
-	if err != nil {
-		return nil, err
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.QueryNetworkSiblingSet(req.Context(), locationParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkSiblingSet, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *ResourceServerTransport) dispatchQueryRegionInfo(req *http.Request) (*http.Response, error) {
-	if r.srv.QueryRegionInfo == nil {
-		return nil, &nonRetriableError{errors.New("fake for method QueryRegionInfo not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/regionInfo`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.QueryRegionInfo(req.Context(), locationParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegionInfo, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (r *ResourceServerTransport) dispatchBeginUpdateNetworkSiblingSet(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginUpdateNetworkSiblingSet == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdateNetworkSiblingSet not implemented")}
 	}
 	beginUpdateNetworkSiblingSet := r.beginUpdateNetworkSiblingSet.get(req)
 	if beginUpdateNetworkSiblingSet == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.NetApp/locations/(?P<location>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/updateNetworkSiblingSet`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateNetworkSiblingSet`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -313,6 +152,167 @@ func (r *ResourceServerTransport) dispatchBeginUpdateNetworkSiblingSet(req *http
 		r.beginUpdateNetworkSiblingSet.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *ResourceServerTransport) dispatchCheckFilePathAvailability(req *http.Request) (*http.Response, error) {
+	if r.srv.CheckFilePathAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckFilePathAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkFilePathAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetapp.FilePathAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.CheckFilePathAvailability(req.Context(), locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAvailabilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *ResourceServerTransport) dispatchCheckNameAvailability(req *http.Request) (*http.Response, error) {
+	if r.srv.CheckNameAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckNameAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkNameAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetapp.ResourceNameAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.CheckNameAvailability(req.Context(), locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAvailabilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *ResourceServerTransport) dispatchCheckQuotaAvailability(req *http.Request) (*http.Response, error) {
+	if r.srv.CheckQuotaAvailability == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckQuotaAvailability not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/checkQuotaAvailability`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetapp.QuotaAvailabilityRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.CheckQuotaAvailability(req.Context(), locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CheckAvailabilityResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *ResourceServerTransport) dispatchQueryNetworkSiblingSet(req *http.Request) (*http.Response, error) {
+	if r.srv.QueryNetworkSiblingSet == nil {
+		return nil, &nonRetriableError{errors.New("fake for method QueryNetworkSiblingSet not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/queryNetworkSiblingSet`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armnetapp.QueryNetworkSiblingSetRequest](req)
+	if err != nil {
+		return nil, err
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.QueryNetworkSiblingSet(req.Context(), locationParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NetworkSiblingSet, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *ResourceServerTransport) dispatchQueryRegionInfo(req *http.Request) (*http.Response, error) {
+	if r.srv.QueryRegionInfo == nil {
+		return nil, &nonRetriableError{errors.New("fake for method QueryRegionInfo not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/regionInfo`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.QueryRegionInfo(req.Context(), locationParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RegionInfo, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

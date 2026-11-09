@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/networkcloud/armnetworkcloud/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Racks_Create.json
+// Generated from example definition: 2026-07-01/Racks_Create.json
 func ExampleRacksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleRacksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Racks_Delete.json
+// Generated from example definition: 2026-07-01/Racks_Delete.json
 func ExampleRacksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleRacksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Racks_Get.json
+// Generated from example definition: 2026-07-01/Racks_Get.json
 func ExampleRacksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleRacksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Racks_ListByResourceGroup.json
+// Generated from example definition: 2026-07-01/Racks_ListByResourceGroup.json
 func ExampleRacksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleRacksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Racks_ListBySubscription.json
+// Generated from example definition: 2026-07-01/Racks_ListBySubscription.json
 func ExampleRacksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -289,7 +289,7 @@ func ExampleRacksClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Racks_Patch.json
+// Generated from example definition: 2026-07-01/Racks_Patch.json
 func ExampleRacksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

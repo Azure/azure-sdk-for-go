@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cdn/armcdn/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,6 +29,10 @@ type RulesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, options *armcdn.RulesClientBeginDeleteOptions) (resp azfake.PollerResponder[armcdn.RulesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method RulesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, ruleUpdateProperties armcdn.RuleUpdateParameters, options *armcdn.RulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.RulesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method RulesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, options *armcdn.RulesClientGetOptions) (resp azfake.Responder[armcdn.RulesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type RulesServer struct {
 	// NewListByRuleSetPager is the fake for method RulesClient.NewListByRuleSetPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByRuleSetPager func(resourceGroupName string, profileName string, ruleSetName string, options *armcdn.RulesClientListByRuleSetOptions) (resp azfake.PagerResponder[armcdn.RulesClientListByRuleSetResponse])
-
-	// BeginUpdate is the fake for method RulesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, ruleSetName string, ruleName string, ruleUpdateProperties armcdn.RuleUpdateParameters, options *armcdn.RulesClientBeginUpdateOptions) (resp azfake.PollerResponder[armcdn.RulesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRulesServerTransport creates a new instance of RulesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewRulesServerTransport(srv *RulesServer) *RulesServerTransport {
 		srv:                   srv,
 		beginCreate:           newTracker[azfake.PollerResponder[armcdn.RulesClientCreateResponse]](),
 		beginDelete:           newTracker[azfake.PollerResponder[armcdn.RulesClientDeleteResponse]](),
-		newListByRuleSetPager: newTracker[azfake.PagerResponder[armcdn.RulesClientListByRuleSetResponse]](),
 		beginUpdate:           newTracker[azfake.PollerResponder[armcdn.RulesClientUpdateResponse]](),
+		newListByRuleSetPager: newTracker[azfake.PagerResponder[armcdn.RulesClientListByRuleSetResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type RulesServerTransport struct {
 	srv                   *RulesServer
 	beginCreate           *tracker[azfake.PollerResponder[armcdn.RulesClientCreateResponse]]
 	beginDelete           *tracker[azfake.PollerResponder[armcdn.RulesClientDeleteResponse]]
-	newListByRuleSetPager *tracker[azfake.PagerResponder[armcdn.RulesClientListByRuleSetResponse]]
 	beginUpdate           *tracker[azfake.PollerResponder[armcdn.RulesClientUpdateResponse]]
+	newListByRuleSetPager *tracker[azfake.PagerResponder[armcdn.RulesClientListByRuleSetResponse]]
 }
 
 // Do implements the policy.Transporter interface for RulesServerTransport.
@@ -90,12 +90,12 @@ func (r *RulesServerTransport) dispatchToMethodFake(req *http.Request, method st
 				res.resp, res.err = r.dispatchBeginCreate(req)
 			case "RulesClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "RulesClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "RulesClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RulesClient.NewListByRuleSetPager":
 				res.resp, res.err = r.dispatchNewListByRuleSetPager(req)
-			case "RulesClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (r *RulesServerTransport) dispatchBeginCreate(req *http.Request) (*http.Res
 	}
 	beginCreate := r.beginCreate.get(req)
 	if beginCreate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleSets/(?P<ruleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleSets/(?P<ruleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -174,7 +174,7 @@ func (r *RulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleSets/(?P<ruleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleSets/(?P<ruleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -220,99 +220,13 @@ func (r *RulesServerTransport) dispatchBeginDelete(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (r *RulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if r.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleSets/(?P<ruleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 6 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-	if err != nil {
-		return nil, err
-	}
-	ruleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleSetName")])
-	if err != nil {
-		return nil, err
-	}
-	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, profileNameParam, ruleSetNameParam, ruleNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Rule, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *RulesServerTransport) dispatchNewListByRuleSetPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListByRuleSetPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByRuleSetPager not implemented")}
-	}
-	newListByRuleSetPager := r.newListByRuleSetPager.get(req)
-	if newListByRuleSetPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleSets/(?P<ruleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rules`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-		if err != nil {
-			return nil, err
-		}
-		ruleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleSetName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewListByRuleSetPager(resourceGroupNameParam, profileNameParam, ruleSetNameParam, nil)
-		newListByRuleSetPager = &resp
-		r.newListByRuleSetPager.add(req, newListByRuleSetPager)
-		server.PagerResponderInjectNextLinks(newListByRuleSetPager, req, func(page *armcdn.RulesClientListByRuleSetResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByRuleSetPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListByRuleSetPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByRuleSetPager) {
-		r.newListByRuleSetPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *RulesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := r.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/ruleSets/(?P<ruleSetName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/rules/(?P<ruleName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleSets/(?P<ruleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 6 {
@@ -359,6 +273,92 @@ func (r *RulesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Res
 		r.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *RulesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if r.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleSets/(?P<ruleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rules/(?P<ruleName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 6 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleSetName")])
+	if err != nil {
+		return nil, err
+	}
+	ruleNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, profileNameParam, ruleSetNameParam, ruleNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Rule, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *RulesServerTransport) dispatchNewListByRuleSetPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListByRuleSetPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByRuleSetPager not implemented")}
+	}
+	newListByRuleSetPager := r.newListByRuleSetPager.get(req)
+	if newListByRuleSetPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cdn/profiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/ruleSets/(?P<ruleSetName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/rules`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+		if err != nil {
+			return nil, err
+		}
+		ruleSetNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("ruleSetName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListByRuleSetPager(resourceGroupNameParam, profileNameParam, ruleSetNameParam, nil)
+		newListByRuleSetPager = &resp
+		r.newListByRuleSetPager.add(req, newListByRuleSetPager)
+		server.PagerResponderInjectNextLinks(newListByRuleSetPager, req, func(page *armcdn.RulesClientListByRuleSetResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByRuleSetPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListByRuleSetPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByRuleSetPager) {
+		r.newListByRuleSetPager.remove(req)
+	}
 	return resp, nil
 }
 

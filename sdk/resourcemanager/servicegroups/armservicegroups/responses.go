@@ -10,12 +10,6 @@ type ClientGetResponse struct {
 	ServiceGroup
 }
 
-// ClientListAncestorsResponse contains the response from method Client.ListAncestors.
-type ClientListAncestorsResponse struct {
-	// Response holding an array of service groups and a nextLink that supports pagination
-	ServiceGroupCollectionResponse
-}
-
 // ManagementClientCreateOrUpdateServiceGroupResponse contains the response from method ManagementClient.BeginCreateOrUpdateServiceGroup.
 type ManagementClientCreateOrUpdateServiceGroupResponse struct {
 	// The serviceGroup details.
@@ -31,4 +25,10 @@ type ManagementClientDeleteServiceGroupResponse struct {
 type ManagementClientUpdateServiceGroupResponse struct {
 	// The serviceGroup details.
 	ServiceGroup
+}
+
+// OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
+type OperationsClientListResponse struct {
+	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
+	OperationListResult
 }

@@ -92,7 +92,7 @@ func (w *WorkspaceQuotasServerTransport) dispatchGet(req *http.Request) (*http.R
 	if w.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.LoadTestService/playwrightWorkspaces/(?P<playwrightWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotas/(?P<quotaName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.LoadTestService/playwrightWorkspaces/(?P<playwrightWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/quotas/(?P<quotaName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -137,7 +137,7 @@ func (w *WorkspaceQuotasServerTransport) dispatchNewListByPlaywrightWorkspacePag
 	}
 	newListByPlaywrightWorkspacePager := w.newListByPlaywrightWorkspacePager.get(req)
 	if newListByPlaywrightWorkspacePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.LoadTestService/playwrightWorkspaces/(?P<playwrightWorkspaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/quotas`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.LoadTestService/playwrightWorkspaces/(?P<playwrightWorkspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/quotas`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

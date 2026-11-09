@@ -110,7 +110,7 @@ func (r *RecipientTransfersServerTransport) dispatchAccept(req *http.Request) (*
 	if r.srv.Accept == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Accept not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/transfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/accept`
+	const regexStr = `/providers/Microsoft\.Billing/transfers/(?P<transferName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/accept`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -143,7 +143,7 @@ func (r *RecipientTransfersServerTransport) dispatchDecline(req *http.Request) (
 	if r.srv.Decline == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Decline not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/transfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/decline`
+	const regexStr = `/providers/Microsoft\.Billing/transfers/(?P<transferName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/decline`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -172,7 +172,7 @@ func (r *RecipientTransfersServerTransport) dispatchGet(req *http.Request) (*htt
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/transfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Billing/transfers/(?P<transferName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {
@@ -228,7 +228,7 @@ func (r *RecipientTransfersServerTransport) dispatchValidate(req *http.Request) 
 	if r.srv.Validate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Validate not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Billing/transfers/(?P<transferName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/validate`
+	const regexStr = `/providers/Microsoft\.Billing/transfers/(?P<transferName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/validate`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 2 {

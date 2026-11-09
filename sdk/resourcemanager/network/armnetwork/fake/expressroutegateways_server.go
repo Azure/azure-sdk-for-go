@@ -11,7 +11,7 @@ import (
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/network/armnetwork/v12"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,10 +29,6 @@ type ExpressRouteGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *armnetwork.ExpressRouteGatewaysClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method ExpressRouteGatewaysClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *armnetwork.ExpressRouteGatewaysClientGetOptions) (resp azfake.Responder[armnetwork.ExpressRouteGatewaysClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetFailoverAllTestsDetails is the fake for method ExpressRouteGatewaysClient.BeginGetFailoverAllTestsDetails
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetFailoverAllTestsDetails func(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *armnetwork.ExpressRouteGatewaysClientBeginGetFailoverAllTestsDetailsOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientGetFailoverAllTestsDetailsResponse], errResp azfake.ErrorResponder)
@@ -49,14 +45,6 @@ type ExpressRouteGatewaysServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetRoutesInformation func(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *armnetwork.ExpressRouteGatewaysClientBeginGetRoutesInformationOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientGetRoutesInformationResponse], errResp azfake.ErrorResponder)
 
-	// ListByResourceGroup is the fake for method ExpressRouteGatewaysClient.ListByResourceGroup
-	// HTTP status codes to indicate success: http.StatusOK
-	ListByResourceGroup func(ctx context.Context, resourceGroupName string, options *armnetwork.ExpressRouteGatewaysClientListByResourceGroupOptions) (resp azfake.Responder[armnetwork.ExpressRouteGatewaysClientListByResourceGroupResponse], errResp azfake.ErrorResponder)
-
-	// ListBySubscription is the fake for method ExpressRouteGatewaysClient.ListBySubscription
-	// HTTP status codes to indicate success: http.StatusOK
-	ListBySubscription func(ctx context.Context, options *armnetwork.ExpressRouteGatewaysClientListBySubscriptionOptions) (resp azfake.Responder[armnetwork.ExpressRouteGatewaysClientListBySubscriptionResponse], errResp azfake.ErrorResponder)
-
 	// BeginStartSiteFailoverTest is the fake for method ExpressRouteGatewaysClient.BeginStartSiteFailoverTest
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginStartSiteFailoverTest func(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, peeringLocation string, options *armnetwork.ExpressRouteGatewaysClientBeginStartSiteFailoverTestOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientStartSiteFailoverTestResponse], errResp azfake.ErrorResponder)
@@ -68,6 +56,18 @@ type ExpressRouteGatewaysServer struct {
 	// BeginUpdateTags is the fake for method ExpressRouteGatewaysClient.BeginUpdateTags
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdateTags func(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, expressRouteGatewayParameters armnetwork.TagsObject, options *armnetwork.ExpressRouteGatewaysClientBeginUpdateTagsOptions) (resp azfake.PollerResponder[armnetwork.ExpressRouteGatewaysClientUpdateTagsResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method ExpressRouteGatewaysClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *armnetwork.ExpressRouteGatewaysClientGetOptions) (resp azfake.Responder[armnetwork.ExpressRouteGatewaysClientGetResponse], errResp azfake.ErrorResponder)
+
+	// ListByResourceGroup is the fake for method ExpressRouteGatewaysClient.ListByResourceGroup
+	// HTTP status codes to indicate success: http.StatusOK
+	ListByResourceGroup func(ctx context.Context, resourceGroupName string, options *armnetwork.ExpressRouteGatewaysClientListByResourceGroupOptions) (resp azfake.Responder[armnetwork.ExpressRouteGatewaysClientListByResourceGroupResponse], errResp azfake.ErrorResponder)
+
+	// ListBySubscription is the fake for method ExpressRouteGatewaysClient.ListBySubscription
+	// HTTP status codes to indicate success: http.StatusOK
+	ListBySubscription func(ctx context.Context, options *armnetwork.ExpressRouteGatewaysClientListBySubscriptionOptions) (resp azfake.Responder[armnetwork.ExpressRouteGatewaysClientListBySubscriptionResponse], errResp azfake.ErrorResponder)
 }
 
 // NewExpressRouteGatewaysServerTransport creates a new instance of ExpressRouteGatewaysServerTransport with the provided implementation.
@@ -128,8 +128,6 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = e.dispatchBeginCreateOrUpdate(req)
 			case "ExpressRouteGatewaysClient.BeginDelete":
 				res.resp, res.err = e.dispatchBeginDelete(req)
-			case "ExpressRouteGatewaysClient.Get":
-				res.resp, res.err = e.dispatchGet(req)
 			case "ExpressRouteGatewaysClient.BeginGetFailoverAllTestsDetails":
 				res.resp, res.err = e.dispatchBeginGetFailoverAllTestsDetails(req)
 			case "ExpressRouteGatewaysClient.BeginGetFailoverSingleTestDetails":
@@ -138,16 +136,18 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = e.dispatchBeginGetResiliencyInformation(req)
 			case "ExpressRouteGatewaysClient.BeginGetRoutesInformation":
 				res.resp, res.err = e.dispatchBeginGetRoutesInformation(req)
-			case "ExpressRouteGatewaysClient.ListByResourceGroup":
-				res.resp, res.err = e.dispatchListByResourceGroup(req)
-			case "ExpressRouteGatewaysClient.ListBySubscription":
-				res.resp, res.err = e.dispatchListBySubscription(req)
 			case "ExpressRouteGatewaysClient.BeginStartSiteFailoverTest":
 				res.resp, res.err = e.dispatchBeginStartSiteFailoverTest(req)
 			case "ExpressRouteGatewaysClient.BeginStopSiteFailoverTest":
 				res.resp, res.err = e.dispatchBeginStopSiteFailoverTest(req)
 			case "ExpressRouteGatewaysClient.BeginUpdateTags":
 				res.resp, res.err = e.dispatchBeginUpdateTags(req)
+			case "ExpressRouteGatewaysClient.Get":
+				res.resp, res.err = e.dispatchGet(req)
+			case "ExpressRouteGatewaysClient.ListByResourceGroup":
+				res.resp, res.err = e.dispatchListByResourceGroup(req)
+			case "ExpressRouteGatewaysClient.ListBySubscription":
+				res.resp, res.err = e.dispatchListBySubscription(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -170,7 +170,7 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginCreateOrUpdate(req *h
 	}
 	beginCreateOrUpdate := e.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -218,7 +218,7 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginDelete(req *http.Requ
 	}
 	beginDelete := e.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -256,46 +256,13 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginDelete(req *http.Requ
 	return resp, nil
 }
 
-func (e *ExpressRouteGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if e.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	expressRouteGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("expressRouteGatewayName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, expressRouteGatewayNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteGateway, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (e *ExpressRouteGatewaysServerTransport) dispatchBeginGetFailoverAllTestsDetails(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginGetFailoverAllTestsDetails == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetFailoverAllTestsDetails not implemented")}
 	}
 	beginGetFailoverAllTestsDetails := e.beginGetFailoverAllTestsDetails.get(req)
 	if beginGetFailoverAllTestsDetails == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFailoverAllTestsDetails`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getFailoverAllTestsDetails`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -352,7 +319,7 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginGetFailoverSingleTest
 	}
 	beginGetFailoverSingleTestDetails := e.beginGetFailoverSingleTestDetails.get(req)
 	if beginGetFailoverSingleTestDetails == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getFailoverSingleTestDetails`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getFailoverSingleTestDetails`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -397,7 +364,7 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginGetResiliencyInformat
 	}
 	beginGetResiliencyInformation := e.beginGetResiliencyInformation.get(req)
 	if beginGetResiliencyInformation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getResiliencyInformation`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getResiliencyInformation`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -452,7 +419,7 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginGetRoutesInformation(
 	}
 	beginGetRoutesInformation := e.beginGetRoutesInformation.get(req)
 	if beginGetRoutesInformation == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/getRoutesInformation`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getRoutesInformation`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -501,67 +468,13 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginGetRoutesInformation(
 	return resp, nil
 }
 
-func (e *ExpressRouteGatewaysServerTransport) dispatchListByResourceGroup(req *http.Request) (*http.Response, error) {
-	if e.srv.ListByResourceGroup == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListByResourceGroup not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := e.srv.ListByResourceGroup(req.Context(), resourceGroupNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteGatewayList, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (e *ExpressRouteGatewaysServerTransport) dispatchListBySubscription(req *http.Request) (*http.Response, error) {
-	if e.srv.ListBySubscription == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListBySubscription not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	respr, errRespr := e.srv.ListBySubscription(req.Context(), nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteGatewayList, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (e *ExpressRouteGatewaysServerTransport) dispatchBeginStartSiteFailoverTest(req *http.Request) (*http.Response, error) {
 	if e.srv.BeginStartSiteFailoverTest == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginStartSiteFailoverTest not implemented")}
 	}
 	beginStartSiteFailoverTest := e.beginStartSiteFailoverTest.get(req)
 	if beginStartSiteFailoverTest == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startSiteFailoverTest`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startSiteFailoverTest`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -606,7 +519,7 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginStopSiteFailoverTest(
 	}
 	beginStopSiteFailoverTest := e.beginStopSiteFailoverTest.get(req)
 	if beginStopSiteFailoverTest == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/stopSiteFailoverTest`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stopSiteFailoverTest`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -654,7 +567,7 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginUpdateTags(req *http.
 	}
 	beginUpdateTags := e.beginUpdateTags.get(req)
 	if beginUpdateTags == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -693,6 +606,93 @@ func (e *ExpressRouteGatewaysServerTransport) dispatchBeginUpdateTags(req *http.
 		e.beginUpdateTags.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (e *ExpressRouteGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if e.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways/(?P<expressRouteGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	expressRouteGatewayNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("expressRouteGatewayName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.Get(req.Context(), resourceGroupNameParam, expressRouteGatewayNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteGateway, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *ExpressRouteGatewaysServerTransport) dispatchListByResourceGroup(req *http.Request) (*http.Response, error) {
+	if e.srv.ListByResourceGroup == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListByResourceGroup not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := e.srv.ListByResourceGroup(req.Context(), resourceGroupNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteGatewayList, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (e *ExpressRouteGatewaysServerTransport) dispatchListBySubscription(req *http.Request) (*http.Response, error) {
+	if e.srv.ListBySubscription == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListBySubscription not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/expressRouteGateways`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	respr, errRespr := e.srv.ListBySubscription(req.Context(), nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ExpressRouteGatewayList, req)
+	if err != nil {
+		return nil, err
+	}
 	return resp, nil
 }
 

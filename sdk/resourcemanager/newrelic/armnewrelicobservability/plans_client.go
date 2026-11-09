@@ -19,7 +19,7 @@ import (
 // PlansClient contains the methods for the Plans group.
 // Don't use this type directly, use NewPlansClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-06-01
 type PlansClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type PlansClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPlansClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PlansClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -76,7 +79,7 @@ func (client *PlansClient) listCreateRequest(ctx context.Context, nextLink strin
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/NewRelic.Observability/plans"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -91,7 +94,7 @@ func (client *PlansClient) listCreateRequest(ctx context.Context, nextLink strin
 		if options != nil && options.AccountID != nil {
 			reqQP.Set("accountId", *options.AccountID)
 		}
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260601)
 		if options != nil && options.OrganizationID != nil {
 			reqQP.Set("organizationId", *options.OrganizationID)
 		}

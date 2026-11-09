@@ -136,6 +136,9 @@ type AzureBackupDiscreteRecoveryPoint struct {
 
 	// READ-ONLY
 	ExpiryTime *time.Time
+
+	// READ-ONLY; Immutability properties of the recovery point.
+	ImmutabilityProperties *RecoveryPointImmutabilityProperties
 }
 
 // GetAzureBackupRecoveryPoint implements the AzureBackupRecoveryPointClassification interface for type AzureBackupDiscreteRecoveryPoint.
@@ -762,6 +765,9 @@ type BackupSchedule struct {
 
 // BackupVault - Backup Vault
 type BackupVault struct {
+	// Cost Management Settings of the vault
+	CostManagementSettings *CostManagementSettings
+
 	// Feature Settings
 	FeatureSettings *FeatureSettings
 
@@ -1050,6 +1056,12 @@ type CopyOption struct {
 // GetCopyOption implements the CopyOptionClassification interface for type CopyOption.
 func (c *CopyOption) GetCopyOption() *CopyOption { return c }
 
+// CostManagementSettings - Cost Management Settings of the vault
+type CostManagementSettings struct {
+	// Settings for granularity level
+	GranularityLevel *GranularityLevel
+}
+
 // CrossRegionRestoreDetails - Cross Region Restore details
 type CrossRegionRestoreDetails struct {
 	// REQUIRED
@@ -1316,6 +1328,9 @@ type DeletedBackupVault struct {
 	// READ-ONLY; Deletion info for the tracked resource (Backup Vault)
 	ResourceDeletionInfo *ResourceDeletionInfo
 
+	// Cost Management Settings of the vault
+	CostManagementSettings *CostManagementSettings
+
 	// Feature Settings
 	FeatureSettings *FeatureSettings
 
@@ -1572,6 +1587,40 @@ type FetchSecondaryRPsRequestParameters struct {
 	SourceRegion *string
 }
 
+// GenericBackupDatasourceParameters - Generic parameters to be used during configuration of backup
+type GenericBackupDatasourceParameters struct {
+	// CONSTANT; Type of the specific object - used for deserializing
+	// Field has constant value "GenericBackupDatasourceParameters", any specified value is ignored.
+	ObjectType *string
+
+	// REQUIRED; List of resource selectors to be backed up during configuration of backup
+	ResourceSelectors []*string
+}
+
+// GetBackupDatasourceParameters implements the BackupDatasourceParametersClassification interface for type GenericBackupDatasourceParameters.
+func (g *GenericBackupDatasourceParameters) GetBackupDatasourceParameters() *BackupDatasourceParameters {
+	return &BackupDatasourceParameters{
+		ObjectType: g.ObjectType,
+	}
+}
+
+// GenericRestoreDatasourceCriteria - Generic criteria to be used during restore
+type GenericRestoreDatasourceCriteria struct {
+	// CONSTANT; Type of the specific object - used for deserializing
+	// Field has constant value "GenericRestoreDatasourceCriteria", any specified value is ignored.
+	ObjectType *string
+
+	// REQUIRED; List of resource identifiers that need to be restored
+	ResourceSelectors *ResourceListSelectionCriteria
+}
+
+// GetItemLevelRestoreCriteria implements the ItemLevelRestoreCriteriaClassification interface for type GenericRestoreDatasourceCriteria.
+func (g *GenericRestoreDatasourceCriteria) GetItemLevelRestoreCriteria() *ItemLevelRestoreCriteria {
+	return &ItemLevelRestoreCriteria{
+		ObjectType: g.ObjectType,
+	}
+}
+
 type IdentityDetails struct {
 	// Specifies if the BI is protected by System Identity.
 	UseSystemAssignedIdentity *bool
@@ -1594,8 +1643,21 @@ func (i *ImmediateCopyOption) GetCopyOption() *CopyOption {
 	}
 }
 
+// ImmutabilityConfiguration - Immutability configuration containing type and duration.
+type ImmutabilityConfiguration struct {
+	// Duration in days for time-based immutability.
+	// Required when type is TimeBased. Must be null when type is AsPerPolicy.
+	DurationInDays *int32
+
+	// Type of immutability. Supported values: AsPerPolicy or TimeBased.
+	Type *ImmutabilityType
+}
+
 // ImmutabilitySettings - Immutability Settings at vault level
 type ImmutabilitySettings struct {
+	// Immutability configuration containing type and duration.
+	Configuration *ImmutabilityConfiguration
+
 	// Immutability state
 	State *ImmutabilityState
 }
@@ -2016,13 +2078,13 @@ type OperationResource struct {
 
 	// Required if status == failed or status == canceled. This is the OData v4 error format, used by the RPC and will go into
 	// the v2.2 Azure REST API guidelines.
-	// The full set of optional properties (e.g. inner errors / details) can be found in the "Error Response" section.
+	// The full set of optional properties (e.g. inner errors / details) can be found in the `Error Response` section.
 	Error *Error
 
 	// It should match what is used to GET the operation result
 	ID *string
 
-	// It must match the last segment of the "id" field, and will typically be a GUID / system generated value
+	// It must match the last segment of the `id` field, and will typically be a GUID / system generated value.
 	Name *string
 
 	// End time of the operation
@@ -2035,6 +2097,9 @@ type OperationResource struct {
 
 // PatchBackupVaultInput - Backup Vault Contract for Patch Backup Vault API.
 type PatchBackupVaultInput struct {
+	// Cost Management Settings of the vault
+	CostManagementSettings *CostManagementSettings
+
 	// Feature Settings
 	FeatureSettings *FeatureSettings
 
@@ -2087,6 +2152,23 @@ type PolicyParameters struct {
 	DataStoreParametersList []DataStoreParametersClassification
 }
 
+// PostgreSQLFlexibleServerBackupDatasourceParameters - Parameters to be used during configuration of backup of PostgreSQL
+// Flexible Servers
+type PostgreSQLFlexibleServerBackupDatasourceParameters struct {
+	// CONSTANT; Field has constant value "PostgreSqlFlexibleServerBackupDatasourceParameters", any specified value is ignored.
+	ObjectType *string
+
+	// Type of backup taken, Logical/Physical
+	BackupSolutionType *BackupSolutionType
+}
+
+// GetBackupDatasourceParameters implements the BackupDatasourceParametersClassification interface for type PostgreSQLFlexibleServerBackupDatasourceParameters.
+func (p *PostgreSQLFlexibleServerBackupDatasourceParameters) GetBackupDatasourceParameters() *BackupDatasourceParameters {
+	return &BackupDatasourceParameters{
+		ObjectType: p.ObjectType,
+	}
+}
+
 // ProtectionStatusDetails - Protection status details
 type ProtectionStatusDetails struct {
 	// Specifies the protection status error of the resource
@@ -2131,6 +2213,16 @@ type RecoveryPointDataStoreDetails struct {
 
 	// READ-ONLY
 	RehydrationStatus *RehydrationStatus
+}
+
+// RecoveryPointImmutabilityProperties - Immutability properties of a recovery point.
+type RecoveryPointImmutabilityProperties struct {
+	// REQUIRED; Whether the recovery point is currently within its immutability window.
+	IsImmutable *bool
+
+	// UTC time when the recovery point's immutability window expires.
+	// Null for AsPerPolicy vaults.
+	ExpiryTime *time.Time
 }
 
 // ResourceDeletionInfo - Deletion info for a tracked resource (Backup Vault)
@@ -2247,6 +2339,19 @@ type ResourceGuardResourceList struct {
 
 	// List of resources.
 	Value []*ResourceGuardResource
+}
+
+// ResourceListSelectionCriteria - Specifies the list of resources to be restored
+type ResourceListSelectionCriteria struct {
+	// REQUIRED; Type of the specific object - used for deserializing
+	ObjectType *string
+
+	// REQUIRED; List of resource identifiers to restore from
+	ResourceIdentifiers []*string
+
+	// This is a map of source resource names to target resources names to restore into. Any source name not included in the map
+	// will be restored with a default naming format
+	ResourceNameOverrides map[string]*string
 }
 
 // ResourceMoveDetails will be returned in response to GetResource call from ARM
@@ -2370,8 +2475,8 @@ type ScheduleBasedBackupCriteria struct {
 	// Field has constant value "ScheduleBasedBackupCriteria", any specified value is ignored.
 	ObjectType *string
 
-	// it contains absolute values like "AllBackup" / "FirstOfDay" / "FirstOfWeek" / "FirstOfMonth"
-	// and should be part of AbsoluteMarker enum
+	// It contains absolute marker values such as `AllBackup`, `FirstOfDay`, `FirstOfWeek`, and `FirstOfMonth`.
+	// These values should be part of the `AbsoluteMarker` enum.
 	AbsoluteCriteria []*AbsoluteMarker
 
 	// This is day of the month from 1 to 28 other wise last of month

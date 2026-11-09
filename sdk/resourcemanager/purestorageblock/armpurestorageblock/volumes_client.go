@@ -19,7 +19,7 @@ import (
 // VolumesClient contains the methods for the Volumes group.
 // Don't use this type directly, use NewVolumesClient() instead.
 //
-// Generated from API version 2026-01-01-preview
+// Generated from API version 2026-05-01-preview
 type VolumesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type VolumesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VolumesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -46,7 +49,8 @@ func NewVolumesClient(subscriptionID string, credential azcore.TokenCredential, 
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - volumeGroupName - Name of the volume group
-//   - volumeName - Name of the volume
+//   - volumeName - Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters may appear
+//     in list and get responses for system-generated volumes.
 //   - resource - Resource create parameters.
 //   - options - VolumesClientBeginCreateOptions contains the optional parameters for the VolumesClient.BeginCreate method.
 func (client *VolumesClient) BeginCreate(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, resource Volume, options *VolumesClientBeginCreateOptions) (*runtime.Poller[VolumesClientCreateResponse], error) {
@@ -92,7 +96,7 @@ func (client *VolumesClient) create(ctx context.Context, resourceGroupName strin
 func (client *VolumesClient) createCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, resource Volume, _ *VolumesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/volumes/{volumeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -116,7 +120,7 @@ func (client *VolumesClient) createCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -131,7 +135,8 @@ func (client *VolumesClient) createCreateRequest(ctx context.Context, resourceGr
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - volumeGroupName - Name of the volume group
-//   - volumeName - Name of the volume
+//   - volumeName - Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters may appear
+//     in list and get responses for system-generated volumes.
 //   - options - VolumesClientBeginDeleteOptions contains the optional parameters for the VolumesClient.BeginDelete method.
 func (client *VolumesClient) BeginDelete(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, options *VolumesClientBeginDeleteOptions) (*runtime.Poller[VolumesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
@@ -176,7 +181,7 @@ func (client *VolumesClient) deleteOperation(ctx context.Context, resourceGroupN
 func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, _ *VolumesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/volumes/{volumeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -200,7 +205,7 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -210,7 +215,8 @@ func (client *VolumesClient) deleteCreateRequest(ctx context.Context, resourceGr
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - volumeGroupName - Name of the volume group
-//   - volumeName - Name of the volume
+//   - volumeName - Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters may appear
+//     in list and get responses for system-generated volumes.
 //   - options - VolumesClientGetOptions contains the optional parameters for the VolumesClient.Get method.
 func (client *VolumesClient) Get(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, options *VolumesClientGetOptions) (VolumesClientGetResponse, error) {
 	var err error
@@ -233,7 +239,7 @@ func (client *VolumesClient) Get(ctx context.Context, resourceGroupName string, 
 func (client *VolumesClient) getCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, _ *VolumesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/volumes/{volumeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -257,7 +263,7 @@ func (client *VolumesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -314,7 +320,7 @@ func (client *VolumesClient) listByVolumeGroupCreateRequest(ctx context.Context,
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/volumes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -338,7 +344,7 @@ func (client *VolumesClient) listByVolumeGroupCreateRequest(ctx context.Context,
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101Preview)
+		reqQP.Set("api-version", version20260501Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -357,12 +363,99 @@ func (client *VolumesClient) listByVolumeGroupHandleResponse(resp *http.Response
 	return result, nil
 }
 
+// BeginOverwrite - Overwrites the content of a volume from another volume or a snapshot
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - volumeGroupName - Name of the volume group
+//   - volumeName - Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters may appear
+//     in list and get responses for system-generated volumes.
+//   - body - The content of the action request
+//   - options - VolumesClientBeginOverwriteOptions contains the optional parameters for the VolumesClient.BeginOverwrite method.
+func (client *VolumesClient) BeginOverwrite(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, body VolumeOverwriteRequest, options *VolumesClientBeginOverwriteOptions) (*runtime.Poller[VolumesClientOverwriteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.overwrite(ctx, resourceGroupName, storagePoolName, volumeGroupName, volumeName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VolumesClientOverwriteResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VolumesClientOverwriteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// Overwrite - Overwrites the content of a volume from another volume or a snapshot
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VolumesClient) overwrite(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, body VolumeOverwriteRequest, options *VolumesClientBeginOverwriteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VolumesClient.BeginOverwrite"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.overwriteCreateRequest(ctx, resourceGroupName, storagePoolName, volumeGroupName, volumeName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// overwriteCreateRequest creates the Overwrite request.
+func (client *VolumesClient) overwriteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, body VolumeOverwriteRequest, _ *VolumesClientBeginOverwriteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/volumes/{volumeName}/overwrite"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	if volumeGroupName == "" {
+		return nil, errors.New("parameter volumeGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
+	if volumeName == "" {
+		return nil, errors.New("parameter volumeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeName}", url.PathEscape(volumeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // BeginUpdate - Update a volume
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - storagePoolName - Name of the storage pool
 //   - volumeGroupName - Name of the volume group
-//   - volumeName - Name of the volume
+//   - volumeName - Name of the volume. Maximum length is 40 characters during creation; names up to 64 characters may appear
+//     in list and get responses for system-generated volumes.
 //   - properties - The resource properties to be updated.
 //   - options - VolumesClientBeginUpdateOptions contains the optional parameters for the VolumesClient.BeginUpdate method.
 func (client *VolumesClient) BeginUpdate(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, properties VolumeUpdate, options *VolumesClientBeginUpdateOptions) (*runtime.Poller[VolumesClientUpdateResponse], error) {
@@ -408,7 +501,7 @@ func (client *VolumesClient) update(ctx context.Context, resourceGroupName strin
 func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, volumeName string, properties VolumeUpdate, _ *VolumesClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/volumes/{volumeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -432,7 +525,7 @@ func (client *VolumesClient) updateCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101Preview)
+	reqQP.Set("api-version", version20260501Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

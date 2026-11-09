@@ -99,6 +99,11 @@ type JobDefinitionsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// JobDefinitionsClientReconcileJobOptions contains the optional parameters for the JobDefinitionsClient.ReconcileJob method.
+type JobDefinitionsClientReconcileJobOptions struct {
+	// placeholder for future optional parameters
+}
+
 // JobDefinitionsClientStartJobOptions contains the optional parameters for the JobDefinitionsClient.StartJob method.
 type JobDefinitionsClientStartJobOptions struct {
 	// placeholder for future optional parameters

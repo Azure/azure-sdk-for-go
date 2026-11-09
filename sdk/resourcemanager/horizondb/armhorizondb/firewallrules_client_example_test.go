@@ -12,8 +12,8 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-20-preview/FirewallRules_CreateOrUpdate.json
-func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
+// Generated from example definition: 2026-10-01-preview/FirewallRules_CreateOrReplace.json
+func ExampleFirewallRulesClient_BeginCreateOrReplace() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,11 +23,11 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFirewallRulesClient().BeginCreateOrUpdate(ctx, "exampleresourcegroup", "examplecluster", "examplepool", "examplefirewallrule", armhorizondb.FirewallRule{
+	poller, err := clientFactory.NewFirewallRulesClient().BeginCreateOrReplace(ctx, "example-resource-group", "example-cluster", "example-pool-01", "example-firewall-rule-01", armhorizondb.FirewallRule{
 		Properties: &armhorizondb.FirewallRuleProperties{
 			StartIPAddress: to.Ptr("10.0.0.1"),
-			EndIPAddress:   to.Ptr("10.0.0.10"),
-			Description:    to.Ptr("Allow access from corporate network"),
+			EndIPAddress:   to.Ptr("10.0.0.254"),
+			Description:    to.Ptr("Allow access from the corporate network"),
 		},
 	}, nil)
 	if err != nil {
@@ -40,22 +40,22 @@ func ExampleFirewallRulesClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armhorizondb.FirewallRulesClientCreateOrUpdateResponse{
+	// res = armhorizondb.FirewallRulesClientCreateOrReplaceResponse{
 	// 	FirewallRule: armhorizondb.FirewallRule{
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/pools/examplepool/firewallRules/examplefirewallrule"),
-	// 		Name: to.Ptr("examplefirewallrule"),
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/pools/example-pool-01/firewallRules/example-firewall-rule-01"),
+	// 		Name: to.Ptr("example-firewall-rule-01"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/pools/firewallRules"),
 	// 		Properties: &armhorizondb.FirewallRuleProperties{
 	// 			StartIPAddress: to.Ptr("10.0.0.1"),
-	// 			EndIPAddress: to.Ptr("10.0.0.10"),
-	// 			Description: to.Ptr("Allow access from corporate network"),
+	// 			EndIPAddress: to.Ptr("10.0.0.254"),
+	// 			Description: to.Ptr("Allow access from the corporate network"),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/FirewallRules_Delete.json
+// Generated from example definition: 2026-10-01-preview/FirewallRules_Delete.json
 func ExampleFirewallRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFirewallRulesClient().BeginDelete(ctx, "exampleresourcegroup", "examplecluster", "examplepool", "examplefirewallrule", nil)
+	poller, err := clientFactory.NewFirewallRulesClient().BeginDelete(ctx, "example-resource-group", "example-cluster", "example-pool-01", "example-firewall-rule-01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -76,7 +76,7 @@ func ExampleFirewallRulesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-20-preview/FirewallRules_Get.json
+// Generated from example definition: 2026-10-01-preview/FirewallRules_Get.json
 func ExampleFirewallRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleFirewallRulesClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewFirewallRulesClient().Get(ctx, "exampleresourcegroup", "examplecluster", "examplepool", "examplefirewallrule", nil)
+	res, err := clientFactory.NewFirewallRulesClient().Get(ctx, "example-resource-group", "example-cluster", "example-pool-01", "example-firewall-rule-01", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -96,20 +96,20 @@ func ExampleFirewallRulesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhorizondb.FirewallRulesClientGetResponse{
 	// 	FirewallRule: armhorizondb.FirewallRule{
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/pools/examplepool/firewallRules/examplefirewallrule"),
-	// 		Name: to.Ptr("examplefirewallrule"),
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/pools/example-pool-01/firewallRules/example-firewall-rule-01"),
+	// 		Name: to.Ptr("example-firewall-rule-01"),
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/pools/firewallRules"),
 	// 		Properties: &armhorizondb.FirewallRuleProperties{
 	// 			StartIPAddress: to.Ptr("10.0.0.1"),
-	// 			EndIPAddress: to.Ptr("10.0.0.10"),
-	// 			Description: to.Ptr("Allow access from corporate network"),
+	// 			EndIPAddress: to.Ptr("10.0.0.254"),
+	// 			Description: to.Ptr("Allow access from the corporate network"),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-01-20-preview/FirewallRules_List.json
+// Generated from example definition: 2026-10-01-preview/FirewallRules_List.json
 func ExampleFirewallRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,7 +120,7 @@ func ExampleFirewallRulesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFirewallRulesClient().NewListPager("exampleresourcegroup", "examplecluster", "examplepool", nil)
+	pager := clientFactory.NewFirewallRulesClient().NewListPager("example-resource-group", "example-cluster", "example-pool-01", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -135,24 +135,13 @@ func ExampleFirewallRulesClient_NewListPager() {
 		// 	FirewallRuleListResult: armhorizondb.FirewallRuleListResult{
 		// 		Value: []*armhorizondb.FirewallRule{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/pools/examplepool/firewallRules/allowCorporateNetwork"),
-		// 				Name: to.Ptr("allowCorporateNetwork"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/example-resource-group/providers/Microsoft.HorizonDb/clusters/example-cluster/pools/example-pool-01/firewallRules/example-firewall-rule-01"),
+		// 				Name: to.Ptr("example-firewall-rule-01"),
 		// 				Type: to.Ptr("Microsoft.HorizonDb/clusters/pools/firewallRules"),
 		// 				Properties: &armhorizondb.FirewallRuleProperties{
 		// 					StartIPAddress: to.Ptr("10.0.0.1"),
-		// 					EndIPAddress: to.Ptr("10.0.0.255"),
-		// 					Description: to.Ptr("Allow access from corporate network"),
-		// 					ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.HorizonDb/clusters/examplecluster/pools/examplepool/firewallRules/allowDeveloperAccess"),
-		// 				Name: to.Ptr("allowDeveloperAccess"),
-		// 				Type: to.Ptr("Microsoft.HorizonDb/clusters/pools/firewallRules"),
-		// 				Properties: &armhorizondb.FirewallRuleProperties{
-		// 					StartIPAddress: to.Ptr("192.168.1.10"),
-		// 					EndIPAddress: to.Ptr("192.168.1.10"),
-		// 					Description: to.Ptr("Allow developer access"),
+		// 					EndIPAddress: to.Ptr("10.0.0.254"),
+		// 					Description: to.Ptr("Allow access from the corporate network"),
 		// 					ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 		// 				},
 		// 			},

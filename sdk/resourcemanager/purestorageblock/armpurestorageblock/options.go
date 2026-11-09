@@ -97,6 +97,24 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
+// RecoverableVolumeGroupsClientBeginDeleteOptions contains the optional parameters for the RecoverableVolumeGroupsClient.BeginDelete
+// method.
+type RecoverableVolumeGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// RecoverableVolumeGroupsClientGetOptions contains the optional parameters for the RecoverableVolumeGroupsClient.Get method.
+type RecoverableVolumeGroupsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// RecoverableVolumeGroupsClientListByStoragePoolOptions contains the optional parameters for the RecoverableVolumeGroupsClient.NewListByStoragePoolPager
+// method.
+type RecoverableVolumeGroupsClientListByStoragePoolOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ReservationsClientBeginCreateOptions contains the optional parameters for the ReservationsClient.BeginCreate method.
 type ReservationsClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -105,6 +123,12 @@ type ReservationsClientBeginCreateOptions struct {
 
 // ReservationsClientBeginDeleteOptions contains the optional parameters for the ReservationsClient.BeginDelete method.
 type ReservationsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ReservationsClientBeginLinkSaaSOptions contains the optional parameters for the ReservationsClient.BeginLinkSaaS method.
+type ReservationsClientBeginLinkSaaSOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -138,6 +162,12 @@ type ReservationsClientGetResourceLimitsOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ReservationsClientLatestLinkedSaaSOptions contains the optional parameters for the ReservationsClient.LatestLinkedSaaS
+// method.
+type ReservationsClientLatestLinkedSaaSOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ReservationsClientListByResourceGroupOptions contains the optional parameters for the ReservationsClient.NewListByResourceGroupPager
 // method.
 type ReservationsClientListByResourceGroupOptions struct {
@@ -148,6 +178,13 @@ type ReservationsClientListByResourceGroupOptions struct {
 // method.
 type ReservationsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
+}
+
+// SaaSOperationGroupClientBeginActivateResourceOptions contains the optional parameters for the SaaSOperationGroupClient.BeginActivateResource
+// method.
+type SaaSOperationGroupClientBeginActivateResourceOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
 }
 
 // StoragePoolsClientBeginCreateOptions contains the optional parameters for the StoragePoolsClient.BeginCreate method.
@@ -196,6 +233,12 @@ type StoragePoolsClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
+// StoragePoolsClientConfigurePlatformConsoleAuthOptions contains the optional parameters for the StoragePoolsClient.ConfigurePlatformConsoleAuth
+// method.
+type StoragePoolsClientConfigurePlatformConsoleAuthOptions struct {
+	// placeholder for future optional parameters
+}
+
 // StoragePoolsClientGetAvsConnectionOptions contains the optional parameters for the StoragePoolsClient.GetAvsConnection
 // method.
 type StoragePoolsClientGetAvsConnectionOptions struct {
@@ -229,6 +272,53 @@ type StoragePoolsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// StoragePoolsClientListPlatformConsoleActivationCodeOptions contains the optional parameters for the StoragePoolsClient.ListPlatformConsoleActivationCode
+// method.
+type StoragePoolsClientListPlatformConsoleActivationCodeOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VolumeGroupSnapshotsClientBeginCreateOptions contains the optional parameters for the VolumeGroupSnapshotsClient.BeginCreate
+// method.
+type VolumeGroupSnapshotsClientBeginCreateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VolumeGroupSnapshotsClientBeginDeleteOptions contains the optional parameters for the VolumeGroupSnapshotsClient.BeginDelete
+// method.
+type VolumeGroupSnapshotsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VolumeGroupSnapshotsClientGetOptions contains the optional parameters for the VolumeGroupSnapshotsClient.Get method.
+type VolumeGroupSnapshotsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// VolumeGroupSnapshotsClientListByVolumeGroupOptions contains the optional parameters for the VolumeGroupSnapshotsClient.NewListByVolumeGroupPager
+// method.
+type VolumeGroupSnapshotsClientListByVolumeGroupOptions struct {
+	// OData filter expression (e.g. $filter=substringof('sna', name) and space/unique gt 1000)
+	Filter *string
+
+	// OData order-by expression (e.g. $orderby=name asc)
+	Orderby *string
+
+	// Number of results to skip (page offset)
+	Skip *int32
+
+	// Maximum number of results to return per page
+	Top *int32
+}
+
+// VolumeGroupSnapshotsClientListSnapshotsOptions contains the optional parameters for the VolumeGroupSnapshotsClient.ListSnapshots
+// method.
+type VolumeGroupSnapshotsClientListSnapshotsOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VolumeGroupsClientBeginCreateOptions contains the optional parameters for the VolumeGroupsClient.BeginCreate method.
 type VolumeGroupsClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -237,6 +327,12 @@ type VolumeGroupsClientBeginCreateOptions struct {
 
 // VolumeGroupsClientBeginDeleteOptions contains the optional parameters for the VolumeGroupsClient.BeginDelete method.
 type VolumeGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VolumeGroupsClientBeginOverwriteOptions contains the optional parameters for the VolumeGroupsClient.BeginOverwrite method.
+type VolumeGroupsClientBeginOverwriteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -277,6 +373,12 @@ type VolumesClientBeginCreateOptions struct {
 
 // VolumesClientBeginDeleteOptions contains the optional parameters for the VolumesClient.BeginDelete method.
 type VolumesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// VolumesClientBeginOverwriteOptions contains the optional parameters for the VolumesClient.BeginOverwrite method.
+type VolumesClientBeginOverwriteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

@@ -8,7 +8,8 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"os"
+	"runtime"
+	"sync"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -17,7 +18,8 @@ import (
 )
 
 type listTestOptions struct {
-	count int
+	count       int
+	parallelism int
 }
 
 var listTestOpts = listTestOptions{count: 100}
@@ -25,6 +27,7 @@ var listTestOpts = listTestOptions{count: 100}
 // listTestRegister is called once per process
 func listTestRegister() {
 	flag.IntVar(&listTestOpts.count, "num-blobs", 100, "Total number of blobs to create in the container and list during the test.")
+	flag.IntVar(&listTestOpts.parallelism, "num-blobs-parallelism", 0, "Number of parallel workers used to create blobs during list test setup (0=number of CPU cores).")
 }
 
 type listTestGlobal struct {
@@ -34,7 +37,10 @@ type listTestGlobal struct {
 }
 
 // NewListTest is called once per process
-func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.GlobalPerfTest, error) {
+func NewListTest(ctx context.Context, options perf.PerfTestOptions) (_ perf.GlobalPerfTest, retErr error) {
+	if err := validateListOptions(); err != nil {
+		return nil, err
+	}
 	l := &listTestGlobal{
 		PerfTestOptions: options,
 		// Suffix with a unique timestamp so concurrent runs and --no-cleanup
@@ -42,12 +48,7 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 		containerName: fmt.Sprintf("listcontainer-%d", time.Now().UnixNano()),
 		blobPrefix:    "listblob",
 	}
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := container.NewClientFromConnectionString(connStr, l.containerName, nil)
+	containerClient, err := containerClientFactory(l.containerName, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -55,28 +56,80 @@ func NewListTest(ctx context.Context, options perf.PerfTestOptions) (perf.Global
 	if err != nil {
 		return nil, err
 	}
+	// Registered only after Create succeeds so a Create failure does not issue
+	// a Delete against a container that was never created.
+	defer cleanupContainerOnError(&retErr, containerClient)
 
 	// Seed the container with the requested number of empty blobs. The earlier
 	// implementation hard-coded 100 here, which meant matrix entries asking
 	// for thousands of blobs silently listed at most 100.
-	emptyBody := NopCloser(bytes.NewReader(nil))
-	for i := 0; i < listTestOpts.count; i++ {
-		blobClient := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobPrefix, i))
-		if _, err = blobClient.Upload(ctx, emptyBody, nil); err != nil {
-			return nil, err
-		}
+	if err = l.seedBlobs(ctx, containerClient, listTestOpts.count, listTestOpts.parallelism); err != nil {
+		return nil, err
 	}
 
 	return l, nil
 }
 
-func (l *listTestGlobal) GlobalCleanup(ctx context.Context) error {
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
+// seedBlobs creates count empty blobs in the container using a pool of workers.
+// Uploading blobs one at a time is prohibitively slow for large blob counts
+// (e.g. 500k), so uploads are parallelized across parallelism workers. When
+// parallelism is <= 0 it defaults to the number of CPU cores on the machine.
+func (l *listTestGlobal) seedBlobs(ctx context.Context, containerClient *container.Client, count, parallelism int) error {
+	if count <= 0 {
+		return nil
+	}
+	if parallelism <= 0 {
+		parallelism = runtime.NumCPU()
+	}
+	if parallelism > count {
+		parallelism = count
 	}
 
-	containerClient, err := container.NewClientFromConnectionString(connStr, l.containerName, nil)
+	// Cancel outstanding uploads as soon as any worker reports an error.
+	ctx, cancel := context.WithCancel(ctx)
+	defer cancel()
+
+	indexes := make(chan int)
+	var wg sync.WaitGroup
+	var once sync.Once
+	var firstErr error
+
+	for w := 0; w < parallelism; w++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			for i := range indexes {
+				blobClient := containerClient.NewBlockBlobClient(fmt.Sprintf("%s%d", l.blobPrefix, i))
+				if _, err := blobClient.Upload(ctx, NopCloser(bytes.NewReader(nil)), nil); err != nil {
+					once.Do(func() {
+						firstErr = err
+						cancel()
+					})
+					return
+				}
+			}
+		}()
+	}
+
+feed:
+	for i := 0; i < count; i++ {
+		select {
+		case indexes <- i:
+		case <-ctx.Done():
+			break feed
+		}
+	}
+	close(indexes)
+	wg.Wait()
+
+	if firstErr != nil {
+		return firstErr
+	}
+	return ctx.Err()
+}
+
+func (l *listTestGlobal) GlobalCleanup(ctx context.Context) error {
+	containerClient, err := containerClientFactory(l.containerName, nil)
 	if err != nil {
 		return err
 	}
@@ -98,13 +151,7 @@ func (g *listTestGlobal) NewPerfTest(ctx context.Context, options *perf.PerfTest
 		PerfTestOptions: *options,
 	}
 
-	connStr, ok := os.LookupEnv("AZURE_STORAGE_CONNECTION_STRING")
-	if !ok {
-		return nil, fmt.Errorf("the environment variable 'AZURE_STORAGE_CONNECTION_STRING' could not be found")
-	}
-
-	containerClient, err := container.NewClientFromConnectionString(
-		connStr,
+	containerClient, err := containerClientFactory(
 		u.listTestGlobal.containerName,
 		&container.ClientOptions{
 			ClientOptions: azcore.ClientOptions{

@@ -110,7 +110,7 @@ func (s *JobDefinitionJobRunC2CScenarioSuite) TestStartC2CJobWithPrivateSource()
 	s.Require().NoError(err)
 	connResp, err := connClient.CreateOrUpdate(s.ctx, s.resourceGroupName, s.storageMoverName, s.connectionName, armstoragemover.Connection{
 		Properties: &armstoragemover.ConnectionProperties{
-			PrivateLinkServiceID: to.Ptr(scenarioPrivateLinkServiceID),
+			PrivateLinkServiceID: to.Ptr(s.privateLinkServiceID),
 			Description:          to.Ptr("Storage Mover Connection for C2C private-bucket test"),
 		},
 	}, nil)
@@ -136,7 +136,7 @@ func (s *JobDefinitionJobRunC2CScenarioSuite) TestStartC2CJobWithPrivateSource()
 	s.Require().NotEmpty(peConnectionName, "private endpoint connection for %q did not appear within 150s", peResourceID)
 
 	// --- Step 5: approve the PE-connection. ---
-	_, err = plsClient.UpdatePrivateEndpointConnection(s.ctx, scenarioPrivateLinkServiceRG, scenarioPrivateLinkServiceName, peConnectionName, armnetwork.PrivateEndpointConnection{
+	_, err = plsClient.UpdatePrivateEndpointConnection(s.ctx, scenarioPrivateLinkServiceRG, s.privateLinkServiceName, peConnectionName, armnetwork.PrivateEndpointConnection{
 		Name: to.Ptr(peConnectionName),
 		Properties: &armnetwork.PrivateEndpointConnectionProperties{
 			PrivateLinkServiceConnectionState: &armnetwork.PrivateLinkServiceConnectionState{
@@ -247,7 +247,7 @@ func (s *JobDefinitionJobRunC2CScenarioSuite) TestStartC2CJobWithPrivateSource()
 func (s *JobDefinitionJobRunC2CScenarioSuite) findPrivateEndpointConnection(client *armnetwork.PrivateLinkServicesClient, peResourceID string) string {
 	const maxAttempts = 10
 	for attempt := 0; attempt < maxAttempts; attempt++ {
-		pager := client.NewListPrivateEndpointConnectionsPager(scenarioPrivateLinkServiceRG, scenarioPrivateLinkServiceName, nil)
+		pager := client.NewListPrivateEndpointConnectionsPager(scenarioPrivateLinkServiceRG, s.privateLinkServiceName, nil)
 		for pager.More() {
 			page, err := pager.NextPage(s.ctx)
 			s.Require().NoError(err)

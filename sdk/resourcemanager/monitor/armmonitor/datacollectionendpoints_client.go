@@ -30,6 +30,9 @@ type DataCollectionEndpointsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDataCollectionEndpointsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataCollectionEndpointsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,6 +42,85 @@ func NewDataCollectionEndpointsClient(subscriptionID string, credential azcore.T
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginReconcileNSP - Reconciles the specified NSP configuration for the specified data collection endpoint.
+//
+// Reconciles the specified NSP configuration for the specified data collection endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
+//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
+//   - options - DataCollectionEndpointsClientBeginReconcileNSPOptions contains the optional parameters for the DataCollectionEndpointsClient.BeginReconcileNSP
+//     method.
+func (client *DataCollectionEndpointsClient) BeginReconcileNSP(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, options *DataCollectionEndpointsClientBeginReconcileNSPOptions) (*runtime.Poller[DataCollectionEndpointsClientReconcileNSPResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reconcileNSP(ctx, resourceGroupName, dataCollectionEndpointName, networkSecurityPerimeterConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DataCollectionEndpointsClientReconcileNSPResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DataCollectionEndpointsClientReconcileNSPResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reconcileNSP - Reconciles the specified NSP configuration for the specified data collection endpoint.
+//
+// Reconciles the specified NSP configuration for the specified data collection endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DataCollectionEndpointsClient) reconcileNSP(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, options *DataCollectionEndpointsClientBeginReconcileNSPOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DataCollectionEndpointsClient.BeginReconcileNSP"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reconcileNSPCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, networkSecurityPerimeterConfigurationName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// reconcileNSPCreateRequest creates the reconcileNSP request.
+func (client *DataCollectionEndpointsClient) reconcileNSPCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, _ *DataCollectionEndpointsClientBeginReconcileNSPOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if dataCollectionEndpointName == "" {
+		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
+	if networkSecurityPerimeterConfigurationName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20211001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
 }
 
 // Create - Creates or updates a data collection endpoint.
@@ -64,19 +146,14 @@ func (client *DataCollectionEndpointsClient) Create(ctx context.Context, resourc
 	if err != nil {
 		return DataCollectionEndpointsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DataCollectionEndpointsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
 func (client *DataCollectionEndpointsClient) createCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, body DataCollectionEndpointResource, _ *DataCollectionEndpointsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -103,8 +180,11 @@ func (client *DataCollectionEndpointsClient) createCreateRequest(ctx context.Con
 }
 
 // createHandleResponse handles the Create response.
-func (client *DataCollectionEndpointsClient) createHandleResponse(resp *http.Response) (DataCollectionEndpointsClientCreateResponse, error) {
+func (client *DataCollectionEndpointsClient) createHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionEndpointsClientCreateResponse, error) {
 	result := DataCollectionEndpointsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResource); err != nil {
 		return DataCollectionEndpointsClientCreateResponse{}, err
 	}
@@ -134,8 +214,7 @@ func (client *DataCollectionEndpointsClient) Delete(ctx context.Context, resourc
 		return DataCollectionEndpointsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return DataCollectionEndpointsClientDeleteResponse{}, err
+		return DataCollectionEndpointsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return DataCollectionEndpointsClientDeleteResponse{}, nil
 }
@@ -144,7 +223,7 @@ func (client *DataCollectionEndpointsClient) Delete(ctx context.Context, resourc
 func (client *DataCollectionEndpointsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, _ *DataCollectionEndpointsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -187,19 +266,14 @@ func (client *DataCollectionEndpointsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return DataCollectionEndpointsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DataCollectionEndpointsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *DataCollectionEndpointsClient) getCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, _ *DataCollectionEndpointsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -222,8 +296,11 @@ func (client *DataCollectionEndpointsClient) getCreateRequest(ctx context.Contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *DataCollectionEndpointsClient) getHandleResponse(resp *http.Response) (DataCollectionEndpointsClientGetResponse, error) {
+func (client *DataCollectionEndpointsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionEndpointsClientGetResponse, error) {
 	result := DataCollectionEndpointsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResource); err != nil {
 		return DataCollectionEndpointsClientGetResponse{}, err
 	}
@@ -253,19 +330,14 @@ func (client *DataCollectionEndpointsClient) GetNSP(ctx context.Context, resourc
 	if err != nil {
 		return DataCollectionEndpointsClientGetNSPResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DataCollectionEndpointsClientGetNSPResponse{}, err
-	}
-	resp, err := client.getNSPHandleResponse(httpResp)
-	return resp, err
+	return client.getNSPHandleResponse(httpResp, http.StatusOK)
 }
 
 // getNSPCreateRequest creates the GetNSP request.
 func (client *DataCollectionEndpointsClient) getNSPCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, _ *DataCollectionEndpointsClientGetNSPOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -292,8 +364,11 @@ func (client *DataCollectionEndpointsClient) getNSPCreateRequest(ctx context.Con
 }
 
 // getNSPHandleResponse handles the GetNSP response.
-func (client *DataCollectionEndpointsClient) getNSPHandleResponse(resp *http.Response) (DataCollectionEndpointsClientGetNSPResponse, error) {
+func (client *DataCollectionEndpointsClient) getNSPHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionEndpointsClientGetNSPResponse, error) {
 	result := DataCollectionEndpointsClientGetNSPResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
 		return DataCollectionEndpointsClientGetNSPResponse{}, err
 	}
@@ -317,43 +392,57 @@ func (client *DataCollectionEndpointsClient) NewListByResourceGroupPager(resourc
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return DataCollectionEndpointsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DataCollectionEndpointsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *DataCollectionEndpointsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *DataCollectionEndpointsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DataCollectionEndpointsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *DataCollectionEndpointsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240311)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240311)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *DataCollectionEndpointsClient) listByResourceGroupHandleResponse(resp *http.Response) (DataCollectionEndpointsClientListByResourceGroupResponse, error) {
+func (client *DataCollectionEndpointsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionEndpointsClientListByResourceGroupResponse, error) {
 	result := DataCollectionEndpointsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResourceListResult); err != nil {
 		return DataCollectionEndpointsClientListByResourceGroupResponse{}, err
 	}
@@ -376,39 +465,53 @@ func (client *DataCollectionEndpointsClient) NewListBySubscriptionPager(options 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return DataCollectionEndpointsClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DataCollectionEndpointsClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *DataCollectionEndpointsClient) listBySubscriptionCreateRequest(ctx context.Context, _ *DataCollectionEndpointsClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/dataCollectionEndpoints"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DataCollectionEndpointsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *DataCollectionEndpointsClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Insights/dataCollectionEndpoints"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240311)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240311)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *DataCollectionEndpointsClient) listBySubscriptionHandleResponse(resp *http.Response) (DataCollectionEndpointsClientListBySubscriptionResponse, error) {
+func (client *DataCollectionEndpointsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionEndpointsClientListBySubscriptionResponse, error) {
 	result := DataCollectionEndpointsClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResourceListResult); err != nil {
 		return DataCollectionEndpointsClientListBySubscriptionResponse{}, err
 	}
@@ -433,131 +536,65 @@ func (client *DataCollectionEndpointsClient) NewListNSPPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listNSPCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, options)
-			}, nil)
+			req, err := client.listNSPCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, nextLink, options)
 			if err != nil {
 				return DataCollectionEndpointsClientListNSPResponse{}, err
 			}
-			return client.listNSPHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DataCollectionEndpointsClientListNSPResponse{}, err
+			}
+			return client.listNSPHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listNSPCreateRequest creates the ListNSP request.
-func (client *DataCollectionEndpointsClient) listNSPCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, _ *DataCollectionEndpointsClientListNSPOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/networkSecurityPerimeterConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *DataCollectionEndpointsClient) listNSPCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, nextLink string, _ *DataCollectionEndpointsClientListNSPOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/networkSecurityPerimeterConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if dataCollectionEndpointName == "" {
+			return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if dataCollectionEndpointName == "" {
-		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20211001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listNSPHandleResponse handles the ListNSP response.
-func (client *DataCollectionEndpointsClient) listNSPHandleResponse(resp *http.Response) (DataCollectionEndpointsClientListNSPResponse, error) {
+func (client *DataCollectionEndpointsClient) listNSPHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionEndpointsClientListNSPResponse, error) {
 	result := DataCollectionEndpointsClientListNSPResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationListResult); err != nil {
 		return DataCollectionEndpointsClientListNSPResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginReconcileNSP - Reconciles the specified NSP configuration for the specified data collection endpoint.
-//
-// Reconciles the specified NSP configuration for the specified data collection endpoint.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - dataCollectionEndpointName - The name of the data collection endpoint. The name is case insensitive.
-//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
-//   - options - DataCollectionEndpointsClientBeginReconcileNSPOptions contains the optional parameters for the DataCollectionEndpointsClient.BeginReconcileNSP
-//     method.
-func (client *DataCollectionEndpointsClient) BeginReconcileNSP(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, options *DataCollectionEndpointsClientBeginReconcileNSPOptions) (*runtime.Poller[DataCollectionEndpointsClientReconcileNSPResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.reconcileNSP(ctx, resourceGroupName, dataCollectionEndpointName, networkSecurityPerimeterConfigurationName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DataCollectionEndpointsClientReconcileNSPResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DataCollectionEndpointsClientReconcileNSPResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// ReconcileNSP - Reconciles the specified NSP configuration for the specified data collection endpoint.
-//
-// Reconciles the specified NSP configuration for the specified data collection endpoint.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DataCollectionEndpointsClient) reconcileNSP(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, options *DataCollectionEndpointsClientBeginReconcileNSPOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DataCollectionEndpointsClient.BeginReconcileNSP"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.reconcileNSPCreateRequest(ctx, resourceGroupName, dataCollectionEndpointName, networkSecurityPerimeterConfigurationName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
-}
-
-// reconcileNSPCreateRequest creates the ReconcileNSP request.
-func (client *DataCollectionEndpointsClient) reconcileNSPCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, networkSecurityPerimeterConfigurationName string, _ *DataCollectionEndpointsClientBeginReconcileNSPOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if dataCollectionEndpointName == "" {
-		return nil, errors.New("parameter dataCollectionEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{dataCollectionEndpointName}", url.PathEscape(dataCollectionEndpointName))
-	if networkSecurityPerimeterConfigurationName == "" {
-		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Update - Updates part of a data collection endpoint.
@@ -583,19 +620,14 @@ func (client *DataCollectionEndpointsClient) Update(ctx context.Context, resourc
 	if err != nil {
 		return DataCollectionEndpointsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DataCollectionEndpointsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *DataCollectionEndpointsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, dataCollectionEndpointName string, body ResourceForUpdate, _ *DataCollectionEndpointsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/dataCollectionEndpoints/{dataCollectionEndpointName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -622,8 +654,11 @@ func (client *DataCollectionEndpointsClient) updateCreateRequest(ctx context.Con
 }
 
 // updateHandleResponse handles the Update response.
-func (client *DataCollectionEndpointsClient) updateHandleResponse(resp *http.Response) (DataCollectionEndpointsClientUpdateResponse, error) {
+func (client *DataCollectionEndpointsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (DataCollectionEndpointsClientUpdateResponse, error) {
 	result := DataCollectionEndpointsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DataCollectionEndpointResource); err != nil {
 		return DataCollectionEndpointsClientUpdateResponse{}, err
 	}

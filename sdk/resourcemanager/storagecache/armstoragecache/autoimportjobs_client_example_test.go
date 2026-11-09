@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/autoImportJobs_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/autoImportJobs_CreateOrUpdate.json
 func ExampleAutoImportJobsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleAutoImportJobsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/autoImportJobs_Delete.json
+// Generated from example definition: 2026-08-01/autoImportJobs_Delete.json
 func ExampleAutoImportJobsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleAutoImportJobsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/autoImportJobs_Get.json
+// Generated from example definition: 2026-08-01/autoImportJobs_Get.json
 func ExampleAutoImportJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExampleAutoImportJobsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/autoImportJobs_ListByAmlFilesystem.json
+// Generated from example definition: 2026-08-01/autoImportJobs_ListByAmlFilesystem.json
 func ExampleAutoImportJobsClient_NewListByAmlFilesystemPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -223,7 +223,7 @@ func ExampleAutoImportJobsClient_NewListByAmlFilesystemPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armstoragecache.AutoImportJobsClientListByAmlFilesystemResponse{
 		// 	AutoImportJobsListResult: armstoragecache.AutoImportJobsListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlFilesystems/fs1/autoImportJobs?$skipToken=autojob2&api-version=2026-01-01"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlFilesystems/fs1/autoImportJobs?$skipToken=autojob2&api-version=2026-08-01"),
 		// 		Value: []*armstoragecache.AutoImportJob{
 		// 			{
 		// 				Name: to.Ptr("autojob1"),
@@ -337,7 +337,7 @@ func ExampleAutoImportJobsClient_NewListByAmlFilesystemPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/autoImportJobs_Update.json
+// Generated from example definition: 2026-08-01/autoImportJobs_Update.json
 func ExampleAutoImportJobsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -5,7 +5,7 @@
 package armnetapp
 
 const (
-	version20260515Preview string = "2026-05-15-preview"
+	version20260815Preview string = "2026-08-15-preview"
 )
 
 // AcceptGrowCapacityPoolForShortTermCloneSplit - While auto splitting the short term clone volume, if the parent pool does
@@ -93,6 +93,24 @@ func PossibleApplicationTypeValues() []ApplicationType {
 	return []ApplicationType{
 		ApplicationTypeORACLE,
 		ApplicationTypeSAPHANA,
+	}
+}
+
+// AsyncDirectoryDeleteStatus - Whether Async Directory Delete is enabled for the volume.
+type AsyncDirectoryDeleteStatus string
+
+const (
+	// AsyncDirectoryDeleteStatusDisabled - Async Directory Delete is disabled
+	AsyncDirectoryDeleteStatusDisabled AsyncDirectoryDeleteStatus = "Disabled"
+	// AsyncDirectoryDeleteStatusEnabled - Async Directory Delete is enabled
+	AsyncDirectoryDeleteStatusEnabled AsyncDirectoryDeleteStatus = "Enabled"
+)
+
+// PossibleAsyncDirectoryDeleteStatusValues returns the possible values for the AsyncDirectoryDeleteStatus const type.
+func PossibleAsyncDirectoryDeleteStatusValues() []AsyncDirectoryDeleteStatus {
+	return []AsyncDirectoryDeleteStatus{
+		AsyncDirectoryDeleteStatusDisabled,
+		AsyncDirectoryDeleteStatusEnabled,
 	}
 }
 
@@ -410,6 +428,28 @@ func PossibleCifsChangeNotifyStateValues() []CifsChangeNotifyState {
 	return []CifsChangeNotifyState{
 		CifsChangeNotifyStateDisabled,
 		CifsChangeNotifyStateEnabled,
+	}
+}
+
+// ClusterPeerStatus - Cluster Peer status enum
+type ClusterPeerStatus string
+
+const (
+	// ClusterPeerStatusActive - Active peering
+	ClusterPeerStatusActive ClusterPeerStatus = "Active"
+	// ClusterPeerStatusError - Error state, an error occurred during peering, the error details can be seen by running this command
+	// on the external ONTAP cluster for more details (command: cluster peer show)
+	ClusterPeerStatusError ClusterPeerStatus = "Error"
+	// ClusterPeerStatusPending - Pending state, the peering needs to be accepted on your cluster
+	ClusterPeerStatusPending ClusterPeerStatus = "Pending"
+)
+
+// PossibleClusterPeerStatusValues returns the possible values for the ClusterPeerStatus const type.
+func PossibleClusterPeerStatusValues() []ClusterPeerStatus {
+	return []ClusterPeerStatus{
+		ClusterPeerStatusActive,
+		ClusterPeerStatusError,
+		ClusterPeerStatusPending,
 	}
 }
 
@@ -948,6 +988,88 @@ func PossibleExcludeValues() []Exclude {
 	}
 }
 
+// ExternalCacheConnectionStatus - Represents the status of an external cache connection
+type ExternalCacheConnectionStatus string
+
+const (
+	// ExternalCacheConnectionStatusConnected - The cache is connected
+	ExternalCacheConnectionStatusConnected ExternalCacheConnectionStatus = "Connected"
+	// ExternalCacheConnectionStatusDisconnected - The cache is disconnected
+	ExternalCacheConnectionStatusDisconnected ExternalCacheConnectionStatus = "Disconnected"
+	// ExternalCacheConnectionStatusPending - The cache connection is pending
+	ExternalCacheConnectionStatusPending ExternalCacheConnectionStatus = "Pending"
+	// ExternalCacheConnectionStatusUnknown - The cache status is unknown. This is a transient state and should change to either
+	// connected or disconnected.
+	ExternalCacheConnectionStatusUnknown ExternalCacheConnectionStatus = "Unknown"
+	// ExternalCacheConnectionStatusUnsupported - The cache was discovered on-premises but has no corresponding ExternalCacheConnection
+	// resource
+	ExternalCacheConnectionStatusUnsupported ExternalCacheConnectionStatus = "Unsupported"
+)
+
+// PossibleExternalCacheConnectionStatusValues returns the possible values for the ExternalCacheConnectionStatus const type.
+func PossibleExternalCacheConnectionStatusValues() []ExternalCacheConnectionStatus {
+	return []ExternalCacheConnectionStatus{
+		ExternalCacheConnectionStatusConnected,
+		ExternalCacheConnectionStatusDisconnected,
+		ExternalCacheConnectionStatusPending,
+		ExternalCacheConnectionStatusUnknown,
+		ExternalCacheConnectionStatusUnsupported,
+	}
+}
+
+// ExternalCacheState - State of a remote cache volume on an external ONTAP system
+type ExternalCacheState string
+
+const (
+	// ExternalCacheStateError - The remote cache volume is in an error state
+	ExternalCacheStateError ExternalCacheState = "error"
+	// ExternalCacheStateMixed - The remote cache volume is in a mixed state
+	ExternalCacheStateMixed ExternalCacheState = "mixed"
+	// ExternalCacheStateOffline - The remote cache volume is offline
+	ExternalCacheStateOffline ExternalCacheState = "offline"
+	// ExternalCacheStateOnline - The remote cache volume is online
+	ExternalCacheStateOnline ExternalCacheState = "online"
+	// ExternalCacheStatePending - The remote cache volume is in a pending state
+	ExternalCacheStatePending ExternalCacheState = "pending"
+	// ExternalCacheStateUnsupported - The remote cache volume is in an unsupported state
+	ExternalCacheStateUnsupported ExternalCacheState = "unsupported"
+)
+
+// PossibleExternalCacheStateValues returns the possible values for the ExternalCacheState const type.
+func PossibleExternalCacheStateValues() []ExternalCacheState {
+	return []ExternalCacheState{
+		ExternalCacheStateError,
+		ExternalCacheStateMixed,
+		ExternalCacheStateOffline,
+		ExternalCacheStateOnline,
+		ExternalCacheStatePending,
+		ExternalCacheStateUnsupported,
+	}
+}
+
+// ExternalConnectionSetupState - Provides a machine-readable value for the status of the external connection setup.
+type ExternalConnectionSetupState string
+
+const (
+	// ExternalConnectionSetupStateClusterPeerPending - The peering needs to be accepted on your cluster before the setup can
+	// proceed. see the command in 'SetupInformation.command' property
+	ExternalConnectionSetupStateClusterPeerPending ExternalConnectionSetupState = "ClusterPeerPending"
+	// ExternalConnectionSetupStateNoActionRequired - External cache connection setup is complete.
+	ExternalConnectionSetupStateNoActionRequired ExternalConnectionSetupState = "NoActionRequired"
+	// ExternalConnectionSetupStateVServerPeerRequired - Need to accept the returned 'vserver peer accept' command on your cluster
+	// to finish SVM peering. See the command in 'SetupInformation.command' property
+	ExternalConnectionSetupStateVServerPeerRequired ExternalConnectionSetupState = "VServerPeerRequired"
+)
+
+// PossibleExternalConnectionSetupStateValues returns the possible values for the ExternalConnectionSetupState const type.
+func PossibleExternalConnectionSetupStateValues() []ExternalConnectionSetupState {
+	return []ExternalConnectionSetupState{
+		ExternalConnectionSetupStateClusterPeerPending,
+		ExternalConnectionSetupStateNoActionRequired,
+		ExternalConnectionSetupStateVServerPeerRequired,
+	}
+}
+
 // ExternalReplicationSetupStatus - Property that only applies to external replications. Provides a machine-readable value
 // for the status of the external replication setup.
 type ExternalReplicationSetupStatus string
@@ -1299,6 +1421,24 @@ func PossibleOnCertificateConflictActionValues() []OnCertificateConflictAction {
 	}
 }
 
+// OriginVolume - Indicates whether a volume is designated as an origin for cache volumes.
+type OriginVolume string
+
+const (
+	// OriginVolumeDisabled - This volume is not designated as an origin for cache volumes.
+	OriginVolumeDisabled OriginVolume = "Disabled"
+	// OriginVolumeEnabled - This volume is designated as an origin for one or more cache volumes.
+	OriginVolumeEnabled OriginVolume = "Enabled"
+)
+
+// PossibleOriginVolumeValues returns the possible values for the OriginVolume const type.
+func PossibleOriginVolumeValues() []OriginVolume {
+	return []OriginVolume{
+		OriginVolumeDisabled,
+		OriginVolumeEnabled,
+	}
+}
+
 // PolicyStatus - Policy status
 type PolicyStatus string
 
@@ -1344,17 +1484,19 @@ type ProvisioningState string
 const (
 	// ProvisioningStateAccepted - Resource has been Accepted
 	ProvisioningStateAccepted ProvisioningState = "Accepted"
+	// ProvisioningStateCanceled - Resource creation was canceled.
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
 	// ProvisioningStateCreating - Resource is being Created
 	ProvisioningStateCreating ProvisioningState = "Creating"
 	// ProvisioningStateDeleting - Resource is being Deleted
 	ProvisioningStateDeleting ProvisioningState = "Deleting"
-	// ProvisioningStateFailed - Resource has Failed
+	// ProvisioningStateFailed - Resource creation failed.
 	ProvisioningStateFailed ProvisioningState = "Failed"
 	// ProvisioningStateMoving - Resource is being Moved
 	ProvisioningStateMoving ProvisioningState = "Moving"
 	// ProvisioningStatePatching - Resource is being Patched
 	ProvisioningStatePatching ProvisioningState = "Patching"
-	// ProvisioningStateSucceeded - Resource has Succeeded
+	// ProvisioningStateSucceeded - Resource has been created.
 	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
 	// ProvisioningStateUpdating - Resource is updating
 	ProvisioningStateUpdating ProvisioningState = "Updating"
@@ -1364,6 +1506,7 @@ const (
 func PossibleProvisioningStateValues() []ProvisioningState {
 	return []ProvisioningState{
 		ProvisioningStateAccepted,
+		ProvisioningStateCanceled,
 		ProvisioningStateCreating,
 		ProvisioningStateDeleting,
 		ProvisioningStateFailed,
@@ -1571,6 +1714,63 @@ func PossibleReplicationTypeValues() []ReplicationType {
 	}
 }
 
+// SVMPeerStatus - SVM Peer status enum
+type SVMPeerStatus string
+
+const (
+	// SVMPeerStatusActive - Active peering
+	SVMPeerStatusActive SVMPeerStatus = "Active"
+	// SVMPeerStatusError - Error state, use command on your cluster for more details(command: vserver peer show)
+	SVMPeerStatusError SVMPeerStatus = "Error"
+	// SVMPeerStatusPending - Pending state, the peering needs to be accepted on your SVM (command: vserver peer accept)
+	SVMPeerStatusPending SVMPeerStatus = "Pending"
+)
+
+// PossibleSVMPeerStatusValues returns the possible values for the SVMPeerStatus const type.
+func PossibleSVMPeerStatusValues() []SVMPeerStatus {
+	return []SVMPeerStatus{
+		SVMPeerStatusActive,
+		SVMPeerStatusError,
+		SVMPeerStatusPending,
+	}
+}
+
+// SVMPeerType - SVM peer relationship type enum
+type SVMPeerType string
+
+const (
+	// SVMPeerTypeCache - Cache peer
+	SVMPeerTypeCache SVMPeerType = "Cache"
+	// SVMPeerTypeReplication - Replication peer
+	SVMPeerTypeReplication SVMPeerType = "Replication"
+)
+
+// PossibleSVMPeerTypeValues returns the possible values for the SVMPeerType const type.
+func PossibleSVMPeerTypeValues() []SVMPeerType {
+	return []SVMPeerType{
+		SVMPeerTypeCache,
+		SVMPeerTypeReplication,
+	}
+}
+
+// SecureLdapType - Indicates the secure LDAP mode for encrypting communication between ANF storage and customer LDAP servers.
+type SecureLdapType string
+
+const (
+	// SecureLdapTypeLdapOverTLS - LDAP traffic is encrypted using LDAP over TLS.
+	SecureLdapTypeLdapOverTLS SecureLdapType = "LdapOverTLS"
+	// SecureLdapTypeNone - LDAP traffic is not encrypted.
+	SecureLdapTypeNone SecureLdapType = "None"
+)
+
+// PossibleSecureLdapTypeValues returns the possible values for the SecureLdapType const type.
+func PossibleSecureLdapTypeValues() []SecureLdapType {
+	return []SecureLdapType{
+		SecureLdapTypeLdapOverTLS,
+		SecureLdapTypeNone,
+	}
+}
+
 // SecurityStyle - The security style of volume, default unix, defaults to ntfs for dual protocol or CIFS protocol
 type SecurityStyle string
 
@@ -1666,6 +1866,24 @@ func PossibleSmbNonBrowsableValues() []SmbNonBrowsable {
 	return []SmbNonBrowsable{
 		SmbNonBrowsableDisabled,
 		SmbNonBrowsableEnabled,
+	}
+}
+
+// SmbOplocks - SMB opportunistic-lock setting shared by volume and cache resources. Omit the property when unspecified.
+type SmbOplocks string
+
+const (
+	// SmbOplocksDisabled - SMB opportunistic locks share setting is disabled.
+	SmbOplocksDisabled SmbOplocks = "Disabled"
+	// SmbOplocksEnabled - SMB opportunistic locks share setting is enabled.
+	SmbOplocksEnabled SmbOplocks = "Enabled"
+)
+
+// PossibleSmbOplocksValues returns the possible values for the SmbOplocks const type.
+func PossibleSmbOplocksValues() []SmbOplocks {
+	return []SmbOplocks{
+		SmbOplocksDisabled,
+		SmbOplocksEnabled,
 	}
 }
 

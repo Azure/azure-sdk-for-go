@@ -30,6 +30,9 @@ type InformationalOperationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewInformationalOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InformationalOperationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *InformationalOperationsClient) GetLimits(ctx context.Context, loca
 func (client *InformationalOperationsClient) getLimitsCreateRequest(ctx context.Context, location string, _ *InformationalOperationsClientGetLimitsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.FileShares/locations/{location}/getLimits"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -124,7 +127,7 @@ func (client *InformationalOperationsClient) GetProvisioningRecommendation(ctx c
 func (client *InformationalOperationsClient) getProvisioningRecommendationCreateRequest(ctx context.Context, location string, body FileShareProvisioningRecommendationRequest, _ *InformationalOperationsClientGetProvisioningRecommendationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.FileShares/locations/{location}/getProvisioningRecommendation"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -184,7 +187,7 @@ func (client *InformationalOperationsClient) GetUsageData(ctx context.Context, l
 func (client *InformationalOperationsClient) getUsageDataCreateRequest(ctx context.Context, location string, _ *InformationalOperationsClientGetUsageDataOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.FileShares/locations/{location}/getUsageData"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {

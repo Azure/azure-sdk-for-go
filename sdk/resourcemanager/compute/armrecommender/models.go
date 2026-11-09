@@ -6,10 +6,10 @@ package armrecommender
 
 import "time"
 
-// ComputeDiagnosticBase - Contains metadata of a diagnostic type
-type ComputeDiagnosticBase struct {
-	// Contains additional properties of a diagnostic
-	Properties *DiagnosticProperties
+// ComputePlacementScoresBase - Contains metadata of the compute placement scoring resource.
+type ComputePlacementScoresBase struct {
+	// Contains additional properties of a placement scores resource.
+	Properties *PlacementScoresProperties
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
@@ -24,10 +24,39 @@ type ComputeDiagnosticBase struct {
 	Type *string
 }
 
-// DiagnosticProperties - Contains additional properties of a diagnostic
-type DiagnosticProperties struct {
-	// Describes what are the supported resource types for a diagnostic.
-	SupportedResourceTypes []*string
+// ComputePlacementScoresInput - ComputePlacementScores API Input.
+type ComputePlacementScoresInput struct {
+	// REQUIRED; The desired virtual machine SKU sizes.
+	DesiredSizes []*ResourceSize
+
+	// Defines if the scope is zonal or regional.
+	AvailabilityZones *bool
+
+	// Desired instance count per region/zone based on the scope. If not set, defaults to 1.
+	DesiredCount *int32
+
+	// The desired regions. If not set, the location from the request URI is used as the desired location. Each location in this
+	// list must be a valid Azure region.
+	DesiredLocations []*string
+}
+
+// ComputePlacementScoresResponse - ComputePlacementScores API response.
+type ComputePlacementScoresResponse struct {
+	// Defines if the scope is zonal or regional.
+	AvailabilityZones *bool
+
+	// Desired instance count per region/zone based on the scope.
+	DesiredCount *int32
+
+	// The desired regions
+	DesiredLocations []*string
+
+	// The desired virtual machine SKU sizes.
+	DesiredSizes []*ResourceSize
+
+	// A placement score indicating the likelihood of successfully allocating the specified Spot VM(s), as well as the expected
+	// lifetimes of the Spot VM(s) after allocation.
+	PlacementScores []*PlacementScore
 }
 
 // Operation - REST API Operation
@@ -86,8 +115,8 @@ type PlacementScore struct {
 	// The availability zone.
 	AvailabilityZone *string
 
-	// Whether the desired quota is available.
-	IsQuotaAvailable *bool
+	// Placement preference from 0 to 10 (inclusive). Higher is better.
+	PlacementPreference *int32
 
 	// The region.
 	Region *string
@@ -97,7 +126,13 @@ type PlacementScore struct {
 
 	// A placement score indicating the likelihood of successfully allocating the specified Spot VM(s), as well as the expected
 	// lifetimes of the Spot VM(s) after allocation.
-	Score *string
+	Score *PlacementScoreValue
+}
+
+// PlacementScoresProperties - Contains additional properties of a placement scores resource.
+type PlacementScoresProperties struct {
+	// Describes the supported resource types for placement scoring.
+	SupportedResourceTypes []*string
 }
 
 // ResourceSize - SpotPlacementRecommender API response.
@@ -124,6 +159,28 @@ type SKUMixPlacementBase struct {
 	Type *string
 }
 
+// SKUMixPlacementCapacityLimit - Capacity availability for a single requested (VM size, zone) combination, independent of
+// the
+// recommended placement.
+type SKUMixPlacementCapacityLimit struct {
+	// REQUIRED; Upper bound, in VMs, on how much capacity can be allocated for this (VM size, zone): the smallest of
+	// the requested capacity, the available capacity, and the available quota, but never below the capacity
+	// already recommended for the slot. 0 when nothing is available.
+	Limit *int32
+
+	// REQUIRED; VM size name (e.g. Standard_D2s_v3).
+	Name *string
+
+	// REQUIRED; Priority of this entry (Regular or Spot).
+	Priority *SKUMixPlacementPriority
+
+	// REQUIRED; Why the limit is below the requested capacity, or None when the request is fully available.
+	Reason *SKUMixPlacementCapacityLimitReason
+
+	// Logical zone (e.g. "1", "2", "3"). Omitted or empty for regional requests.
+	Zone *string
+}
+
 // SKUMixPlacementCapacityProfile - Capacity-related properties for the placement request.
 type SKUMixPlacementCapacityProfile struct {
 	// REQUIRED; The capacity to run the workload. For VMs: [1..10,000]. For vCPUs: [1..100,000].
@@ -141,7 +198,7 @@ type SKUMixPlacementCapacityProfile struct {
 	// The OS type. Required when allocationStrategy is LowestPrice because pricing varies by OS.
 	OSType *SKUMixPlacementOSType
 
-	// Required when priority is Spot. Contains spot-specific configuration.
+	// Contains spot-specific configuration.
 	SpotPriorityProfile *SKUMixPlacementSpotPriorityProfile
 
 	// Zone allocation policy. Default: BestEffortBalanced.
@@ -150,9 +207,6 @@ type SKUMixPlacementCapacityProfile struct {
 
 // SKUMixPlacementDeploymentChoice - A single deployment choice recommendation.
 type SKUMixPlacementDeploymentChoice struct {
-	// REQUIRED; Unique identifier for this deployment choice.
-	ID *string
-
 	// REQUIRED; The list of VM size / zone allocations that make up this deployment choice.
 	SKUSplit []*SKUMixPlacementItem
 
@@ -176,9 +230,6 @@ type SKUMixPlacementItem struct {
 
 	// REQUIRED; Priority of this allocation (Regular or Spot).
 	Priority *SKUMixPlacementPriority
-
-	// Upper range of recommended allocation capacity.
-	CapacityMax *int32
 
 	// Logical zone (e.g. "1", "2", "3"). Omitted or empty for regional deployments.
 	Zone *string
@@ -204,17 +255,26 @@ type SKUMixPlacementRequest struct {
 
 // SKUMixPlacementResponse - Sku Mix Placement API response.
 type SKUMixPlacementResponse struct {
+	// REQUIRED; Unique identifier for this placement response, including responses that contain no placement choices.
+	// Replaces the per-choice id that was present on placementChoices in earlier API versions.
+	ID *string
+
 	// REQUIRED; Indicates whether the response is a complete or partial fulfillment.
 	PartialFulfillmentReason *SKUMixPlacementPartialFulfillmentReason
 
 	// REQUIRED; List of placement choice recommendations.
 	PlacementChoices []*SKUMixPlacementDeploymentChoice
 
+	// Capacity availability for each requested (VM size, zone) combination, independent of the recommended
+	// placement. An entry is present for every requested combination, including those excluded by capacity
+	// or quota. Only returned for requests that describe instances by VM sizes.
+	CapacityLimits []*SKUMixPlacementCapacityLimit
+
 	// Date/time until which the recommendations are valid. Callers should request fresh recommendations after this time.
 	ValidUntil *time.Time
 }
 
-// SKUMixPlacementSpotPriorityProfile - Spot priority configuration. Required when priority is Spot.
+// SKUMixPlacementSpotPriorityProfile - Spot priority configuration.
 type SKUMixPlacementSpotPriorityProfile struct {
 	// Maximum price per VM the customer is willing to pay. Default: -1 (no price restriction).
 	MaxPricePerVM *float64
@@ -250,19 +310,38 @@ type SKUMixPlacementZonePreference struct {
 	TargetMaxCapacity *int32
 }
 
+// SpotPlacementScoresBase - Contains metadata of the Spot Placement Scores resource.
+type SpotPlacementScoresBase struct {
+	// Contains additional properties of a placement scores resource.
+	Properties *PlacementScoresProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
 // SpotPlacementScoresInput - SpotPlacementScores API Input.
 type SpotPlacementScoresInput struct {
+	// REQUIRED; The desired virtual machine SKU sizes.
+	DesiredSizes []*ResourceSize
+
 	// Defines if the scope is zonal or regional.
 	AvailabilityZones *bool
 
-	// Desired instance count per region/zone based on the scope.
+	// Desired instance count per region/zone based on the scope. If not set, defaults to 1.
 	DesiredCount *int32
 
-	// The desired regions
+	// The desired regions. If not set, the location from the request URI is used as the desired location. Each location in this
+	// list must be a valid Azure region.
 	DesiredLocations []*string
-
-	// The desired virtual machine SKU sizes.
-	DesiredSizes []*ResourceSize
 }
 
 // SpotPlacementScoresResponse - SpotPlacementScores API response.

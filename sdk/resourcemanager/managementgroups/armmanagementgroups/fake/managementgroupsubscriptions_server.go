@@ -104,7 +104,7 @@ func (m *ManagementGroupSubscriptionsServerTransport) dispatchCreate(req *http.R
 	if m.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -144,7 +144,7 @@ func (m *ManagementGroupSubscriptionsServerTransport) dispatchDelete(req *http.R
 	if m.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -184,7 +184,7 @@ func (m *ManagementGroupSubscriptionsServerTransport) dispatchGetSubscription(re
 	if m.srv.GetSubscription == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetSubscription not implemented")}
 	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -226,7 +226,7 @@ func (m *ManagementGroupSubscriptionsServerTransport) dispatchNewGetSubscription
 	}
 	newGetSubscriptionsUnderManagementGroupPager := m.newGetSubscriptionsUnderManagementGroupPager.get(req)
 	if newGetSubscriptionsUnderManagementGroupPager == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/subscriptions`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subscriptions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

@@ -85,7 +85,8 @@ func (client *ViewOperationsClient) create(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -160,7 +161,8 @@ func (client *ViewOperationsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -231,7 +233,8 @@ func (client *ViewOperationsClient) remediate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -307,7 +310,8 @@ func (client *ViewOperationsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -363,7 +367,8 @@ func (client *ViewOperationsClient) ComplianceDetails(ctx context.Context, resou
 	if err != nil {
 		return ViewOperationsClientComplianceDetailsResponse{}, err
 	}
-	return client.complianceDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.complianceDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // complianceDetailsCreateRequest creates the ComplianceDetails request.
@@ -430,7 +435,8 @@ func (client *ViewOperationsClient) ComplianceResourceDetails(ctx context.Contex
 	if err != nil {
 		return ViewOperationsClientComplianceResourceDetailsResponse{}, err
 	}
-	return client.complianceResourceDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.complianceResourceDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // complianceResourceDetailsCreateRequest creates the ComplianceResourceDetails request.
@@ -495,7 +501,8 @@ func (client *ViewOperationsClient) ComplianceSummary(ctx context.Context, resou
 	if err != nil {
 		return ViewOperationsClientComplianceSummaryResponse{}, err
 	}
-	return client.complianceSummaryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.complianceSummaryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // complianceSummaryCreateRequest creates the ComplianceSummary request.
@@ -557,7 +564,8 @@ func (client *ViewOperationsClient) FilterValues(ctx context.Context, resourceGr
 	if err != nil {
 		return ViewOperationsClientFilterValuesResponse{}, err
 	}
-	return client.filterValuesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.filterValuesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // filterValuesCreateRequest creates the FilterValues request.
@@ -621,7 +629,8 @@ func (client *ViewOperationsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ViewOperationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -822,7 +831,8 @@ func (client *ViewOperationsClient) OperationalStatus(ctx context.Context, resou
 	if err != nil {
 		return ViewOperationsClientOperationalStatusResponse{}, err
 	}
-	return client.operationalStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.operationalStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // operationalStatusCreateRequest creates the OperationalStatus request.
@@ -888,7 +898,8 @@ func (client *ViewOperationsClient) RemediationResult(ctx context.Context, resou
 	if err != nil {
 		return ViewOperationsClientRemediationResultResponse{}, err
 	}
-	return client.remediationResultHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.remediationResultHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // remediationResultCreateRequest creates the RemediationResult request.

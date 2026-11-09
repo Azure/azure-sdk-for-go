@@ -63,7 +63,8 @@ func (client *OperationsClient) CheckNameAvailability(ctx context.Context, body 
 	if err != nil {
 		return OperationsClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -120,7 +121,8 @@ func (client *OperationsClient) CheckNameAvailabilityLocal(ctx context.Context, 
 	if err != nil {
 		return OperationsClientCheckNameAvailabilityLocalResponse{}, err
 	}
-	return client.checkNameAvailabilityLocalHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityLocalHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityLocalCreateRequest creates the CheckNameAvailabilityLocal request.

@@ -19,7 +19,7 @@ import (
 // ProjectCapabilityHostsClient contains the methods for the ProjectCapabilityHosts group.
 // Don't use this type directly, use NewProjectCapabilityHostsClient() instead.
 //
-// Generated from API version 2026-07-15-preview
+// Generated from API version 2026-09-15-preview
 type ProjectCapabilityHostsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -73,7 +73,7 @@ func (client *ProjectCapabilityHostsClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Create or update project capabilityHost.
+// createOrUpdate - Create or update project capabilityHost.
 //
 // Create or update project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -97,7 +97,7 @@ func (client *ProjectCapabilityHostsClient) createOrUpdate(ctx context.Context, 
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, capabilityHost ProjectCapabilityHost, _ *ProjectCapabilityHostsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/capabilityHosts/{capabilityHostName}"
 	if client.subscriptionID == "" {
@@ -125,7 +125,7 @@ func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -147,7 +147,7 @@ func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 //     method.
 func (client *ProjectCapabilityHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, options *ProjectCapabilityHostsClientBeginDeleteOptions) (*runtime.Poller[ProjectCapabilityHostsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, projectName, capabilityHostName, options)
+		resp, err := client.delete(ctx, resourceGroupName, accountName, projectName, capabilityHostName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -162,11 +162,11 @@ func (client *ProjectCapabilityHostsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete project capabilityHost.
+// delete - Delete project capabilityHost.
 //
 // Delete project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProjectCapabilityHostsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, options *ProjectCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ProjectCapabilityHostsClient) delete(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, options *ProjectCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectCapabilityHostsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -186,7 +186,7 @@ func (client *ProjectCapabilityHostsClient) deleteOperation(ctx context.Context,
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ProjectCapabilityHostsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, _ *ProjectCapabilityHostsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/projects/{projectName}/capabilityHosts/{capabilityHostName}"
 	if client.subscriptionID == "" {
@@ -214,7 +214,7 @@ func (client *ProjectCapabilityHostsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -274,7 +274,7 @@ func (client *ProjectCapabilityHostsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715Preview)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -357,7 +357,7 @@ func (client *ProjectCapabilityHostsClient) listCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715Preview)
+		reqQP.Set("api-version", version20260915Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

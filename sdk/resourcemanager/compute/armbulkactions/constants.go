@@ -330,6 +330,24 @@ func PossibleEvictionPolicyValues() []EvictionPolicy {
 	}
 }
 
+// ExtendedLocationType - The supported ExtendedLocation types.
+type ExtendedLocationType string
+
+const (
+	// ExtendedLocationTypeCustomLocation - Azure Custom Locations type
+	ExtendedLocationTypeCustomLocation ExtendedLocationType = "CustomLocation"
+	// ExtendedLocationTypeEdgeZone - Azure Edge Zones location type
+	ExtendedLocationTypeEdgeZone ExtendedLocationType = "EdgeZone"
+)
+
+// PossibleExtendedLocationTypeValues returns the possible values for the ExtendedLocationType const type.
+func PossibleExtendedLocationTypeValues() []ExtendedLocationType {
+	return []ExtendedLocationType{
+		ExtendedLocationTypeCustomLocation,
+		ExtendedLocationTypeEdgeZone,
+	}
+}
+
 // IPVersions - Available from compute Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration
 // is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
 type IPVersions string
@@ -349,7 +367,7 @@ func PossibleIPVersionsValues() []IPVersions {
 	}
 }
 
-// Language - The language used for scheduled action notifications.
+// Language - The language used for recurring bulk action notifications.
 type Language string
 
 const (
@@ -498,35 +516,35 @@ func PossibleModesValues() []Modes {
 	}
 }
 
-// Month - A month in which the scheduled action can run.
+// Month - A month in which the recurring bulk action can run.
 type Month string
 
 const (
 	// MonthAll - Every month.
 	MonthAll Month = "All"
-	// MonthApril - The scheduled action can run in April.
+	// MonthApril - The recurring bulk action can run in April.
 	MonthApril Month = "April"
-	// MonthAugust - The scheduled action can run in August.
+	// MonthAugust - The recurring bulk action can run in August.
 	MonthAugust Month = "August"
-	// MonthDecember - The scheduled action can run in December.
+	// MonthDecember - The recurring bulk action can run in December.
 	MonthDecember Month = "December"
-	// MonthFebruary - The scheduled action can run in February.
+	// MonthFebruary - The recurring bulk action can run in February.
 	MonthFebruary Month = "February"
-	// MonthJanuary - The scheduled action can run in January.
+	// MonthJanuary - The recurring bulk action can run in January.
 	MonthJanuary Month = "January"
-	// MonthJuly - The scheduled action can run in July.
+	// MonthJuly - The recurring bulk action can run in July.
 	MonthJuly Month = "July"
-	// MonthJune - The scheduled action can run in June.
+	// MonthJune - The recurring bulk action can run in June.
 	MonthJune Month = "June"
-	// MonthMarch - The scheduled action can run in March.
+	// MonthMarch - The recurring bulk action can run in March.
 	MonthMarch Month = "March"
-	// MonthMay - The scheduled action can run in May.
+	// MonthMay - The recurring bulk action can run in May.
 	MonthMay Month = "May"
-	// MonthNovember - The scheduled action can run in November.
+	// MonthNovember - The recurring bulk action can run in November.
 	MonthNovember Month = "November"
-	// MonthOctober - The scheduled action can run in October.
+	// MonthOctober - The recurring bulk action can run in October.
 	MonthOctober Month = "October"
-	// MonthSeptember - The scheduled action can run in September.
+	// MonthSeptember - The recurring bulk action can run in September.
 	MonthSeptember Month = "September"
 )
 
@@ -616,7 +634,7 @@ func PossibleNetworkInterfaceAuxiliarySKUValues() []NetworkInterfaceAuxiliarySKU
 	}
 }
 
-// NotificationType - The delivery method for scheduled action notifications.
+// NotificationType - The delivery method for recurring bulk action notifications.
 type NotificationType string
 
 const (
@@ -631,7 +649,7 @@ func PossibleNotificationTypeValues() []NotificationType {
 	}
 }
 
-// OccurrenceResourceProvisioningState - The provisioning state of a scheduled-action resource within an occurrence.
+// OccurrenceResourceProvisioningState - The provisioning state of a recurring bulk action resource within an occurrence.
 type OccurrenceResourceProvisioningState string
 
 const (
@@ -667,7 +685,7 @@ func PossibleOccurrenceResourceProvisioningStateValues() []OccurrenceResourcePro
 	}
 }
 
-// OccurrenceState - The current state of a scheduled action occurrence.
+// OccurrenceState - The current state of a recurring bulk action occurrence.
 type OccurrenceState string
 
 const (
@@ -768,48 +786,6 @@ func PossibleOriginValues() []Origin {
 		OriginSystem,
 		OriginUser,
 		OriginUserSystem,
-	}
-}
-
-// PartialFulfillmentMode - Whether the service may launch fewer instances than requested when the full capacity cannot be
-// satisfied.
-type PartialFulfillmentMode string
-
-const (
-	// PartialFulfillmentModeDisabled - Partial fulfillment is not allowed.
-	PartialFulfillmentModeDisabled PartialFulfillmentMode = "Disabled"
-	// PartialFulfillmentModeEnabled - Partial fulfillment is allowed.
-	PartialFulfillmentModeEnabled PartialFulfillmentMode = "Enabled"
-)
-
-// PossiblePartialFulfillmentModeValues returns the possible values for the PartialFulfillmentMode const type.
-func PossiblePartialFulfillmentModeValues() []PartialFulfillmentMode {
-	return []PartialFulfillmentMode{
-		PartialFulfillmentModeDisabled,
-		PartialFulfillmentModeEnabled,
-	}
-}
-
-// PartialFulfillmentReason - The reason the requested capacity could only be partially fulfilled.
-type PartialFulfillmentReason string
-
-const (
-	// PartialFulfillmentReasonInsufficientCapacity - The requested capacity could not be fully satisfied due to insufficient
-	// capacity in the region.
-	PartialFulfillmentReasonInsufficientCapacity PartialFulfillmentReason = "InsufficientCapacity"
-	// PartialFulfillmentReasonInsufficientQuota - The requested capacity could not be fully satisfied due to insufficient quota
-	// in the subscription.
-	PartialFulfillmentReasonInsufficientQuota PartialFulfillmentReason = "InsufficientQuota"
-	// PartialFulfillmentReasonNone - The requested capacity was successfully satisfied without any partial fulfillment.
-	PartialFulfillmentReasonNone PartialFulfillmentReason = "None"
-)
-
-// PossiblePartialFulfillmentReasonValues returns the possible values for the PartialFulfillmentReason const type.
-func PossiblePartialFulfillmentReasonValues() []PartialFulfillmentReason {
-	return []PartialFulfillmentReason{
-		PartialFulfillmentReasonInsufficientCapacity,
-		PartialFulfillmentReasonInsufficientQuota,
-		PartialFulfillmentReasonNone,
 	}
 }
 
@@ -997,7 +973,7 @@ func PossibleResourceOperationTypeValues() []ResourceOperationType {
 	}
 }
 
-// ResourceType - The type of compute resource targeted by the scheduled action.
+// ResourceType - The type of compute resource targeted by the recurring bulk action.
 type ResourceType string
 
 const (
@@ -1015,7 +991,7 @@ func PossibleResourceTypeValues() []ResourceType {
 	}
 }
 
-// ScheduledActionType - The operation performed by the scheduled action.
+// ScheduledActionType - The operation performed by the recurring bulk action.
 type ScheduledActionType string
 
 const (
@@ -1054,19 +1030,19 @@ func PossibleScheduledActionsDeadlineTypeValues() []ScheduledActionsDeadlineType
 	}
 }
 
-// ScheduledActionsProvisioningState - The provisioning state of the scheduled action.
+// ScheduledActionsProvisioningState - The provisioning state of the recurring bulk action.
 type ScheduledActionsProvisioningState string
 
 const (
 	// ScheduledActionsProvisioningStateCanceled - Resource creation was canceled.
 	ScheduledActionsProvisioningStateCanceled ScheduledActionsProvisioningState = "Canceled"
-	// ScheduledActionsProvisioningStateDeleting - The scheduled action is being deleted.
+	// ScheduledActionsProvisioningStateDeleting - The recurring bulk action is being deleted.
 	ScheduledActionsProvisioningStateDeleting ScheduledActionsProvisioningState = "Deleting"
 	// ScheduledActionsProvisioningStateFailed - Resource creation failed.
 	ScheduledActionsProvisioningStateFailed ScheduledActionsProvisioningState = "Failed"
 	// ScheduledActionsProvisioningStateSucceeded - Resource has been created.
 	ScheduledActionsProvisioningStateSucceeded ScheduledActionsProvisioningState = "Succeeded"
-	// ScheduledActionsProvisioningStateUpdating - The scheduled action is being updated.
+	// ScheduledActionsProvisioningStateUpdating - The recurring bulk action is being updated.
 	ScheduledActionsProvisioningStateUpdating ScheduledActionsProvisioningState = "Updating"
 )
 
@@ -1081,7 +1057,7 @@ func PossibleScheduledActionsProvisioningStateValues() []ScheduledActionsProvisi
 	}
 }
 
-// ScheduledActionsResourceOperationType - The operation to retry when a scheduled action fails.
+// ScheduledActionsResourceOperationType - The operation to retry when a recurring bulk action fails.
 type ScheduledActionsResourceOperationType string
 
 const (
@@ -1207,25 +1183,25 @@ func PossibleStorageAccountTypesValues() []StorageAccountTypes {
 	}
 }
 
-// WeekDay - A day of the week on which the scheduled action can run.
+// WeekDay - A day of the week on which the recurring bulk action can run.
 type WeekDay string
 
 const (
 	// WeekDayAll - Every day of the week.
 	WeekDayAll WeekDay = "All"
-	// WeekDayFriday - The scheduled action can run on Friday.
+	// WeekDayFriday - The recurring bulk action can run on Friday.
 	WeekDayFriday WeekDay = "Friday"
-	// WeekDayMonday - The scheduled action can run on Monday.
+	// WeekDayMonday - The recurring bulk action can run on Monday.
 	WeekDayMonday WeekDay = "Monday"
-	// WeekDaySaturday - The scheduled action can run on Saturday.
+	// WeekDaySaturday - The recurring bulk action can run on Saturday.
 	WeekDaySaturday WeekDay = "Saturday"
-	// WeekDaySunday - The scheduled action can run on Sunday.
+	// WeekDaySunday - The recurring bulk action can run on Sunday.
 	WeekDaySunday WeekDay = "Sunday"
-	// WeekDayThursday - The scheduled action can run on Thursday.
+	// WeekDayThursday - The recurring bulk action can run on Thursday.
 	WeekDayThursday WeekDay = "Thursday"
-	// WeekDayTuesday - The scheduled action can run on Tuesday.
+	// WeekDayTuesday - The recurring bulk action can run on Tuesday.
 	WeekDayTuesday WeekDay = "Tuesday"
-	// WeekDayWednesday - The scheduled action can run on Wednesday.
+	// WeekDayWednesday - The recurring bulk action can run on Wednesday.
 	WeekDayWednesday WeekDay = "Wednesday"
 )
 
@@ -1313,5 +1289,22 @@ func PossibleWindowsVMGuestPatchModeValues() []WindowsVMGuestPatchMode {
 		WindowsVMGuestPatchModeAutomaticByOS,
 		WindowsVMGuestPatchModeAutomaticByPlatform,
 		WindowsVMGuestPatchModeManual,
+	}
+}
+
+// ZonePlacementPolicyType - The policy used to select an availability zone for the virtual machine.
+type ZonePlacementPolicyType string
+
+const (
+	ZonePlacementPolicyTypeAny ZonePlacementPolicyType = "Any"
+	// ZonePlacementPolicyTypeAuto - Bulk Actions automatically selects an availability zone based on the request.
+	ZonePlacementPolicyTypeAuto ZonePlacementPolicyType = "Auto"
+)
+
+// PossibleZonePlacementPolicyTypeValues returns the possible values for the ZonePlacementPolicyType const type.
+func PossibleZonePlacementPolicyTypeValues() []ZonePlacementPolicyType {
+	return []ZonePlacementPolicyType{
+		ZonePlacementPolicyTypeAny,
+		ZonePlacementPolicyTypeAuto,
 	}
 }

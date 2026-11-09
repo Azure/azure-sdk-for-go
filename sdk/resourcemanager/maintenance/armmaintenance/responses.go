@@ -208,10 +208,16 @@ type PublicMaintenanceConfigurationsClientListResponse struct {
 	ListMaintenanceConfigurationsResult
 }
 
-// ScheduledEventClientAcknowledgeResponse contains the response from method ScheduledEventClient.Acknowledge.
-type ScheduledEventClientAcknowledgeResponse struct {
-	// Response of scheduled event acknowledge
-	ScheduledEventApproveResponse
+// ScheduledEventsClientAcknowledgeListResponse contains the response from method ScheduledEventsClient.AcknowledgeList.
+type ScheduledEventsClientAcknowledgeListResponse struct {
+	// Response of ScheduledEvents acknowledge
+	ScheduledEventsApproveResponse
+}
+
+// ScheduledEventsClientAcknowledgeResponse contains the response from method ScheduledEventsClient.Acknowledge.
+type ScheduledEventsClientAcknowledgeResponse struct {
+	// Response of ScheduledEvents acknowledge
+	ScheduledEventsApproveResponse
 }
 
 // UpdatesClientListParentResponse contains the response from method UpdatesClient.NewListParentPager.

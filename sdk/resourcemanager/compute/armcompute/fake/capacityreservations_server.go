@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v8"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/compute/armcompute/v9"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -29,6 +29,10 @@ type CapacityReservationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, options *armcompute.CapacityReservationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method CapacityReservationsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, parameters armcompute.CapacityReservationUpdate, options *armcompute.CapacityReservationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method CapacityReservationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, options *armcompute.CapacityReservationsClientGetOptions) (resp azfake.Responder[armcompute.CapacityReservationsClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type CapacityReservationsServer struct {
 	// NewListByCapacityReservationGroupPager is the fake for method CapacityReservationsClient.NewListByCapacityReservationGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByCapacityReservationGroupPager func(resourceGroupName string, capacityReservationGroupName string, options *armcompute.CapacityReservationsClientListByCapacityReservationGroupOptions) (resp azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse])
-
-	// BeginUpdate is the fake for method CapacityReservationsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, capacityReservationGroupName string, capacityReservationName string, parameters armcompute.CapacityReservationUpdate, options *armcompute.CapacityReservationsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewCapacityReservationsServerTransport creates a new instance of CapacityReservationsServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewCapacityReservationsServerTransport(srv *CapacityReservationsServer) *Ca
 		srv:                                    srv,
 		beginCreateOrUpdate:                    newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]](),
 		beginDelete:                            newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]](),
-		newListByCapacityReservationGroupPager: newTracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]](),
 		beginUpdate:                            newTracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]](),
+		newListByCapacityReservationGroupPager: newTracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type CapacityReservationsServerTransport struct {
 	srv                                    *CapacityReservationsServer
 	beginCreateOrUpdate                    *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientCreateOrUpdateResponse]]
 	beginDelete                            *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientDeleteResponse]]
-	newListByCapacityReservationGroupPager *tracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]]
 	beginUpdate                            *tracker[azfake.PollerResponder[armcompute.CapacityReservationsClientUpdateResponse]]
+	newListByCapacityReservationGroupPager *tracker[azfake.PagerResponder[armcompute.CapacityReservationsClientListByCapacityReservationGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for CapacityReservationsServerTransport.
@@ -90,12 +90,12 @@ func (c *CapacityReservationsServerTransport) dispatchToMethodFake(req *http.Req
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "CapacityReservationsClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "CapacityReservationsClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "CapacityReservationsClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "CapacityReservationsClient.NewListByCapacityReservationGroupPager":
 				res.resp, res.err = c.dispatchNewListByCapacityReservationGroupPager(req)
-			case "CapacityReservationsClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (c *CapacityReservationsServerTransport) dispatchBeginDelete(req *http.Requ
 	return resp, nil
 }
 
+func (c *CapacityReservationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityReservations/(?P<capacityReservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armcompute.CapacityReservationUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		capacityReservationGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		capacityReservationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, capacityReservationGroupNameParam, capacityReservationNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *CapacityReservationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -303,58 +355,6 @@ func (c *CapacityReservationsServerTransport) dispatchNewListByCapacityReservati
 	if !server.PagerResponderMore(newListByCapacityReservationGroupPager) {
 		c.newListByCapacityReservationGroupPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *CapacityReservationsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/capacityReservationGroups/(?P<capacityReservationGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityReservations/(?P<capacityReservationName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armcompute.CapacityReservationUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		capacityReservationGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		capacityReservationNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("capacityReservationName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, capacityReservationGroupNameParam, capacityReservationNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01-preview/ReplicasListByServer.json
+// Generated from example definition: 2026-10-01/ReplicasListByServer.json
 func ExampleReplicasClient_NewListByServerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleReplicasClient_NewListByServerPager() {
 		// 						StorageSizeGB: to.Ptr[int32](512),
 		// 						Tier: to.Ptr(armpostgresqlflexibleservers.AzureManagedDiskPerformanceTierP20),
 		// 					},
-		// 					Version: to.Ptr(armpostgresqlflexibleservers.PostgresMajorVersionSeventeen),
+		// 					Version: to.Ptr("17"),
 		// 				},
 		// 				SKU: &armpostgresqlflexibleservers.SKU{
 		// 					Name: to.Ptr("Standard_D4ds_v5"),

@@ -5,7 +5,7 @@
 package armredisenterprise
 
 const (
-	version20260601Preview string = "2026-06-01-preview"
+	version20260901 string = "2026-09-01"
 )
 
 // AccessKeyType - Which access key to regenerate.
@@ -350,6 +350,12 @@ const (
 	MigrationProvisioningStateReadyForDNSSwitch MigrationProvisioningState = "ReadyForDnsSwitch"
 	// MigrationProvisioningStateSucceeded - The migration operation has completed successfully.
 	MigrationProvisioningStateSucceeded MigrationProvisioningState = "Succeeded"
+	// MigrationProvisioningStateUnlinkFailed - Unlinking the migrated endpoint from the cluster has failed.
+	MigrationProvisioningStateUnlinkFailed MigrationProvisioningState = "UnlinkFailed"
+	// MigrationProvisioningStateUnlinked - The migrated endpoint has been unlinked from the cluster.
+	MigrationProvisioningStateUnlinked MigrationProvisioningState = "Unlinked"
+	// MigrationProvisioningStateUnlinking - The migrated endpoint is being unlinked from the cluster.
+	MigrationProvisioningStateUnlinking MigrationProvisioningState = "Unlinking"
 )
 
 // PossibleMigrationProvisioningStateValues returns the possible values for the MigrationProvisioningState const type.
@@ -363,6 +369,45 @@ func PossibleMigrationProvisioningStateValues() []MigrationProvisioningState {
 		MigrationProvisioningStateInProgress,
 		MigrationProvisioningStateReadyForDNSSwitch,
 		MigrationProvisioningStateSucceeded,
+		MigrationProvisioningStateUnlinkFailed,
+		MigrationProvisioningStateUnlinked,
+		MigrationProvisioningStateUnlinking,
+	}
+}
+
+// MigrationRollbackReason - The reason a migration operation is being undone (rolled back).
+type MigrationRollbackReason string
+
+const (
+	// MigrationRollbackReasonClientConnection - The client application was unable to connect to the target cache.
+	MigrationRollbackReasonClientConnection MigrationRollbackReason = "clientConnection"
+	// MigrationRollbackReasonCompatibility - The target cache was not compatible with the client application or workload.
+	MigrationRollbackReasonCompatibility MigrationRollbackReason = "compatibility"
+	// MigrationRollbackReasonCost - The target cache did not meet the expected cost characteristics.
+	MigrationRollbackReasonCost MigrationRollbackReason = "cost"
+	// MigrationRollbackReasonDataLoss - Data was lost during or after the migration.
+	MigrationRollbackReasonDataLoss MigrationRollbackReason = "dataLoss"
+	// MigrationRollbackReasonOther - The migration is being undone for a reason not covered by the other values.
+	MigrationRollbackReasonOther MigrationRollbackReason = "other"
+	// MigrationRollbackReasonPerformance - The target cache did not meet the expected performance characteristics.
+	MigrationRollbackReasonPerformance MigrationRollbackReason = "performance"
+	// MigrationRollbackReasonStability - The target cache did not meet the expected stability characteristics.
+	MigrationRollbackReasonStability MigrationRollbackReason = "stability"
+	// MigrationRollbackReasonTesting - The migration was performed as a test and is being reverted.
+	MigrationRollbackReasonTesting MigrationRollbackReason = "testing"
+)
+
+// PossibleMigrationRollbackReasonValues returns the possible values for the MigrationRollbackReason const type.
+func PossibleMigrationRollbackReasonValues() []MigrationRollbackReason {
+	return []MigrationRollbackReason{
+		MigrationRollbackReasonClientConnection,
+		MigrationRollbackReasonCompatibility,
+		MigrationRollbackReasonCost,
+		MigrationRollbackReasonDataLoss,
+		MigrationRollbackReasonOther,
+		MigrationRollbackReasonPerformance,
+		MigrationRollbackReasonStability,
+		MigrationRollbackReasonTesting,
 	}
 }
 

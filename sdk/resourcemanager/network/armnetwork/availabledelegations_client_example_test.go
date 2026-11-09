@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/AvailableDelegationsSubscriptionGet.json
+// Generated from example definition: 2026-03-01/AvailableDelegationsSubscriptionGet.json
 func ExampleAvailableDelegationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

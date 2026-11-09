@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-03-preview/ProtectedItemsOperationGroup_CountByProtectionGroups_MaximumSet_Gen.json
+// Generated from example definition: 2026-09-30/ProtectedItemsOperationGroup_CountByProtectionGroups_MaximumSet_Gen.json
 func ExampleProtectedItemsOperationGroupClient_CountByProtectionGroups_protectedItemsOperationGroupCountByProtectionGroupsMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleProtectedItemsOperationGroupClient_CountByProtectionGroups_protected
 	// }
 }
 
-// Generated from example definition: 2026-07-03-preview/ProtectedItemsOperationGroup_CountByProtectionGroups_MinimumSet_Gen.json
+// Generated from example definition: 2026-09-30/ProtectedItemsOperationGroup_CountByProtectionGroups_MinimumSet_Gen.json
 func ExampleProtectedItemsOperationGroupClient_CountByProtectionGroups_protectedItemsOperationGroupCountByProtectionGroupsMinimumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

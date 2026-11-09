@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/ReplicationAlertSettings_Create.json
+// Generated from example definition: 2026-11-01/ReplicationAlertSettings_Create.json
 func ExampleReplicationAlertSettingsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,7 +54,7 @@ func ExampleReplicationAlertSettingsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationAlertSettings_Get.json
+// Generated from example definition: 2026-11-01/ReplicationAlertSettings_Get.json
 func ExampleReplicationAlertSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExampleReplicationAlertSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/ReplicationAlertSettings_List.json
+// Generated from example definition: 2026-11-01/ReplicationAlertSettings_List.json
 func ExampleReplicationAlertSettingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

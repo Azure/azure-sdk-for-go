@@ -12,7 +12,28 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/ReachabilityAnalysisRunPut.json
+// Generated from example definition: 2026-03-01/ReachabilityAnalysisRunDelete.json
+func ExampleReachabilityAnalysisRunsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReachabilityAnalysisRunsClient().BeginDelete(ctx, "rg1", "testNetworkManager", "testWorkspace", "testAnalysisRun", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-03-01/ReachabilityAnalysisRunPut.json
 func ExampleReachabilityAnalysisRunsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,28 +99,7 @@ func ExampleReachabilityAnalysisRunsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ReachabilityAnalysisRunDelete.json
-func ExampleReachabilityAnalysisRunsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetwork.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewReachabilityAnalysisRunsClient().BeginDelete(ctx, "rg1", "testNetworkManager", "testWorkspace", "testAnalysisRun", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-01-01/ReachabilityAnalysisRunGet.json
+// Generated from example definition: 2026-03-01/ReachabilityAnalysisRunGet.json
 func ExampleReachabilityAnalysisRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -162,7 +162,7 @@ func ExampleReachabilityAnalysisRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/ReachabilityAnalysisRunList.json
+// Generated from example definition: 2026-03-01/ReachabilityAnalysisRunList.json
 func ExampleReachabilityAnalysisRunsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

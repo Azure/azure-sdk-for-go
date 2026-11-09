@@ -4,6 +4,18 @@
 
 package armrecommender
 
+// ComputePlacementScoresClientGetResponse contains the response from method ComputePlacementScoresClient.Get.
+type ComputePlacementScoresClientGetResponse struct {
+	// Contains metadata of the compute placement scoring resource.
+	ComputePlacementScoresBase
+}
+
+// ComputePlacementScoresClientPostResponse contains the response from method ComputePlacementScoresClient.Post.
+type ComputePlacementScoresClientPostResponse struct {
+	// ComputePlacementScores API response.
+	ComputePlacementScoresResponse
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
@@ -24,8 +36,8 @@ type SKUMixPlacementScoresClientPostResponse struct {
 
 // SpotPlacementScoresClientGetResponse contains the response from method SpotPlacementScoresClient.Get.
 type SpotPlacementScoresClientGetResponse struct {
-	// Contains metadata of a diagnostic type
-	ComputeDiagnosticBase
+	// Contains metadata of the Spot Placement Scores resource.
+	SpotPlacementScoresBase
 }
 
 // SpotPlacementScoresClientPostResponse contains the response from method SpotPlacementScoresClient.Post.

@@ -68,7 +68,8 @@ func (client *WebAppsClient) AddPremierAddOn(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientAddPremierAddOnResponse{}, err
 	}
-	return client.addPremierAddOnHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addPremierAddOnHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addPremierAddOnCreateRequest creates the AddPremierAddOn request.
@@ -138,7 +139,8 @@ func (client *WebAppsClient) AddPremierAddOnSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientAddPremierAddOnSlotResponse{}, err
 	}
-	return client.addPremierAddOnSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addPremierAddOnSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addPremierAddOnSlotCreateRequest creates the AddPremierAddOnSlot request.
@@ -213,7 +215,8 @@ func (client *WebAppsClient) AnalyzeCustomHostname(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientAnalyzeCustomHostnameResponse{}, err
 	}
-	return client.analyzeCustomHostnameHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.analyzeCustomHostnameHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // analyzeCustomHostnameCreateRequest creates the AnalyzeCustomHostname request.
@@ -280,7 +283,8 @@ func (client *WebAppsClient) AnalyzeCustomHostnameSlot(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientAnalyzeCustomHostnameSlotResponse{}, err
 	}
-	return client.analyzeCustomHostnameSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.analyzeCustomHostnameSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // analyzeCustomHostnameSlotCreateRequest creates the AnalyzeCustomHostnameSlot request.
@@ -352,7 +356,8 @@ func (client *WebAppsClient) ApplySlotConfigToProduction(ctx context.Context, re
 		return WebAppsClientApplySlotConfigToProductionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientApplySlotConfigToProductionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientApplySlotConfigToProductionResponse{}, err
 	}
 	return WebAppsClientApplySlotConfigToProductionResponse{}, nil
 }
@@ -411,7 +416,8 @@ func (client *WebAppsClient) ApplySlotConfigurationSlot(ctx context.Context, res
 		return WebAppsClientApplySlotConfigurationSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientApplySlotConfigurationSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientApplySlotConfigurationSlotResponse{}, err
 	}
 	return WebAppsClientApplySlotConfigurationSlotResponse{}, nil
 }
@@ -471,7 +477,8 @@ func (client *WebAppsClient) Backup(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WebAppsClientBackupResponse{}, err
 	}
-	return client.backupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.backupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // backupCreateRequest creates the Backup request.
@@ -539,7 +546,8 @@ func (client *WebAppsClient) BackupSlot(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return WebAppsClientBackupSlotResponse{}, err
 	}
-	return client.backupSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.backupSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // backupSlotCreateRequest creates the BackupSlot request.
@@ -633,7 +641,8 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnection(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -715,7 +724,8 @@ func (client *WebAppsClient) approveOrRejectPrivateEndpointConnectionSlot(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -804,7 +814,8 @@ func (client *WebAppsClient) createFunction(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -886,7 +897,8 @@ func (client *WebAppsClient) createInstanceFunctionSlot(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -975,7 +987,8 @@ func (client *WebAppsClient) createInstanceMSDeployOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1061,7 +1074,8 @@ func (client *WebAppsClient) createInstanceMSDeployOperationSlot(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1149,7 +1163,8 @@ func (client *WebAppsClient) createMSDeployOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1230,7 +1245,8 @@ func (client *WebAppsClient) createMSDeployOperationSlot(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1314,7 +1330,8 @@ func (client *WebAppsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1395,7 +1412,8 @@ func (client *WebAppsClient) createOrUpdateSlot(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1479,7 +1497,8 @@ func (client *WebAppsClient) createOrUpdateSourceControl(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1561,7 +1580,8 @@ func (client *WebAppsClient) createOrUpdateSourceControlSlot(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1645,7 +1665,8 @@ func (client *WebAppsClient) deletePrivateEndpointConnection(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1723,7 +1744,8 @@ func (client *WebAppsClient) deletePrivateEndpointConnectionSlot(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1807,7 +1829,8 @@ func (client *WebAppsClient) getProductionSiteDeploymentStatus(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1889,7 +1912,8 @@ func (client *WebAppsClient) getSlotSiteDeploymentStatusSlot(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1973,7 +1997,8 @@ func (client *WebAppsClient) installSiteExtension(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2051,7 +2076,8 @@ func (client *WebAppsClient) installSiteExtensionSlot(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2134,7 +2160,8 @@ func (client *WebAppsClient) listPublishingCredentials(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2210,7 +2237,8 @@ func (client *WebAppsClient) listPublishingCredentialsSlot(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2290,7 +2318,8 @@ func (client *WebAppsClient) migrateMySQL(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2368,7 +2397,8 @@ func (client *WebAppsClient) migrateStorage(ctx context.Context, subscriptionNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2449,7 +2479,8 @@ func (client *WebAppsClient) restore(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2532,7 +2563,8 @@ func (client *WebAppsClient) restoreFromBackupBlob(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2612,7 +2644,8 @@ func (client *WebAppsClient) restoreFromBackupBlobSlot(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2695,7 +2728,8 @@ func (client *WebAppsClient) restoreFromDeletedApp(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2775,7 +2809,8 @@ func (client *WebAppsClient) restoreFromDeletedAppSlot(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2856,7 +2891,8 @@ func (client *WebAppsClient) restoreSlot(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -2944,7 +2980,8 @@ func (client *WebAppsClient) restoreSnapshot(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -3025,7 +3062,8 @@ func (client *WebAppsClient) restoreSnapshotSlot(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -3107,7 +3145,8 @@ func (client *WebAppsClient) startNetworkTrace(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -3192,7 +3231,8 @@ func (client *WebAppsClient) startNetworkTraceSlot(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -3280,7 +3320,8 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -3365,7 +3406,8 @@ func (client *WebAppsClient) startWebSiteNetworkTraceOperationSlot(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -3454,7 +3496,8 @@ func (client *WebAppsClient) swapSlot(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -3537,7 +3580,8 @@ func (client *WebAppsClient) swapSlotWithProduction(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -3595,7 +3639,8 @@ func (client *WebAppsClient) CreateDeployment(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientCreateDeploymentResponse{}, err
 	}
-	return client.createDeploymentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createDeploymentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createDeploymentCreateRequest creates the CreateDeployment request.
@@ -3665,7 +3710,8 @@ func (client *WebAppsClient) CreateDeploymentSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientCreateDeploymentSlotResponse{}, err
 	}
-	return client.createDeploymentSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createDeploymentSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createDeploymentSlotCreateRequest creates the CreateDeploymentSlot request.
@@ -3740,7 +3786,8 @@ func (client *WebAppsClient) CreateOneDeployOperation(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientCreateOneDeployOperationResponse{}, err
 	}
-	return client.createOneDeployOperationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOneDeployOperationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOneDeployOperationCreateRequest creates the CreateOneDeployOperation request.
@@ -3804,7 +3851,8 @@ func (client *WebAppsClient) CreateOrUpdateConfiguration(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientCreateOrUpdateConfigurationResponse{}, err
 	}
-	return client.createOrUpdateConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateConfigurationCreateRequest creates the CreateOrUpdateConfiguration request.
@@ -3873,7 +3921,8 @@ func (client *WebAppsClient) CreateOrUpdateConfigurationSlot(ctx context.Context
 	if err != nil {
 		return WebAppsClientCreateOrUpdateConfigurationSlotResponse{}, err
 	}
-	return client.createOrUpdateConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateConfigurationSlotCreateRequest creates the CreateOrUpdateConfigurationSlot request.
@@ -3947,7 +3996,8 @@ func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifier(ctx context
 	if err != nil {
 		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierResponse{}, err
 	}
-	return client.createOrUpdateDomainOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateDomainOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateDomainOwnershipIdentifierCreateRequest creates the CreateOrUpdateDomainOwnershipIdentifier request.
@@ -4018,7 +4068,8 @@ func (client *WebAppsClient) CreateOrUpdateDomainOwnershipIdentifierSlot(ctx con
 	if err != nil {
 		return WebAppsClientCreateOrUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	return client.createOrUpdateDomainOwnershipIdentifierSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateDomainOwnershipIdentifierSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateDomainOwnershipIdentifierSlotCreateRequest creates the CreateOrUpdateDomainOwnershipIdentifierSlot request.
@@ -4093,7 +4144,8 @@ func (client *WebAppsClient) CreateOrUpdateFunctionSecret(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientCreateOrUpdateFunctionSecretResponse{}, err
 	}
-	return client.createOrUpdateFunctionSecretHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateFunctionSecretHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateFunctionSecretCreateRequest creates the CreateOrUpdateFunctionSecret request.
@@ -4167,7 +4219,8 @@ func (client *WebAppsClient) CreateOrUpdateFunctionSecretSlot(ctx context.Contex
 	if err != nil {
 		return WebAppsClientCreateOrUpdateFunctionSecretSlotResponse{}, err
 	}
-	return client.createOrUpdateFunctionSecretSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateFunctionSecretSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateFunctionSecretSlotCreateRequest creates the CreateOrUpdateFunctionSecretSlot request.
@@ -4248,7 +4301,8 @@ func (client *WebAppsClient) CreateOrUpdateHostNameBinding(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostNameBindingResponse{}, err
 	}
-	return client.createOrUpdateHostNameBindingHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHostNameBindingHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateHostNameBindingCreateRequest creates the CreateOrUpdateHostNameBinding request.
@@ -4318,7 +4372,8 @@ func (client *WebAppsClient) CreateOrUpdateHostNameBindingSlot(ctx context.Conte
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostNameBindingSlotResponse{}, err
 	}
-	return client.createOrUpdateHostNameBindingSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHostNameBindingSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateHostNameBindingSlotCreateRequest creates the CreateOrUpdateHostNameBindingSlot request.
@@ -4396,7 +4451,8 @@ func (client *WebAppsClient) CreateOrUpdateHostSecret(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostSecretResponse{}, err
 	}
-	return client.createOrUpdateHostSecretHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHostSecretHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateHostSecretCreateRequest creates the CreateOrUpdateHostSecret request.
@@ -4470,7 +4526,8 @@ func (client *WebAppsClient) CreateOrUpdateHostSecretSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHostSecretSlotResponse{}, err
 	}
-	return client.createOrUpdateHostSecretSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHostSecretSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateHostSecretSlotCreateRequest creates the CreateOrUpdateHostSecretSlot request.
@@ -4552,7 +4609,8 @@ func (client *WebAppsClient) CreateOrUpdateHybridConnection(ctx context.Context,
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHybridConnectionResponse{}, err
 	}
-	return client.createOrUpdateHybridConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHybridConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateHybridConnectionCreateRequest creates the CreateOrUpdateHybridConnection request.
@@ -4626,7 +4684,8 @@ func (client *WebAppsClient) CreateOrUpdateHybridConnectionSlot(ctx context.Cont
 	if err != nil {
 		return WebAppsClientCreateOrUpdateHybridConnectionSlotResponse{}, err
 	}
-	return client.createOrUpdateHybridConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHybridConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateHybridConnectionSlotCreateRequest creates the CreateOrUpdateHybridConnectionSlot request.
@@ -4707,7 +4766,8 @@ func (client *WebAppsClient) CreateOrUpdatePublicCertificate(ctx context.Context
 	if err != nil {
 		return WebAppsClientCreateOrUpdatePublicCertificateResponse{}, err
 	}
-	return client.createOrUpdatePublicCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdatePublicCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdatePublicCertificateCreateRequest creates the CreateOrUpdatePublicCertificate request.
@@ -4777,7 +4837,8 @@ func (client *WebAppsClient) CreateOrUpdatePublicCertificateSlot(ctx context.Con
 	if err != nil {
 		return WebAppsClientCreateOrUpdatePublicCertificateSlotResponse{}, err
 	}
-	return client.createOrUpdatePublicCertificateSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdatePublicCertificateSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdatePublicCertificateSlotCreateRequest creates the CreateOrUpdatePublicCertificateSlot request.
@@ -4855,7 +4916,8 @@ func (client *WebAppsClient) CreateOrUpdateRelayServiceConnection(ctx context.Co
 	if err != nil {
 		return WebAppsClientCreateOrUpdateRelayServiceConnectionResponse{}, err
 	}
-	return client.createOrUpdateRelayServiceConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateRelayServiceConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateRelayServiceConnectionCreateRequest creates the CreateOrUpdateRelayServiceConnection request.
@@ -4926,7 +4988,8 @@ func (client *WebAppsClient) CreateOrUpdateRelayServiceConnectionSlot(ctx contex
 	if err != nil {
 		return WebAppsClientCreateOrUpdateRelayServiceConnectionSlotResponse{}, err
 	}
-	return client.createOrUpdateRelayServiceConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateRelayServiceConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateRelayServiceConnectionSlotCreateRequest creates the CreateOrUpdateRelayServiceConnectionSlot request.
@@ -5003,7 +5066,8 @@ func (client *WebAppsClient) CreateOrUpdateSiteContainer(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSiteContainerResponse{}, err
 	}
-	return client.createOrUpdateSiteContainerHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateSiteContainerHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateSiteContainerCreateRequest creates the CreateOrUpdateSiteContainer request.
@@ -5078,7 +5142,8 @@ func (client *WebAppsClient) CreateOrUpdateSiteContainerSlot(ctx context.Context
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSiteContainerSlotResponse{}, err
 	}
-	return client.createOrUpdateSiteContainerSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateSiteContainerSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateSiteContainerSlotCreateRequest creates the CreateOrUpdateSiteContainerSlot request.
@@ -5159,7 +5224,8 @@ func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithChec
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
-	return client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateSwiftVirtualNetworkConnectionWithCheckCreateRequest creates the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheck request.
@@ -5234,7 +5300,8 @@ func (client *WebAppsClient) CreateOrUpdateSwiftVirtualNetworkConnectionWithChec
 	if err != nil {
 		return WebAppsClientCreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
-	return client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateSwiftVirtualNetworkConnectionWithCheckSlotCreateRequest creates the CreateOrUpdateSwiftVirtualNetworkConnectionWithCheckSlot request.
@@ -5308,7 +5375,8 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnection(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionResponse{}, err
 	}
-	return client.createOrUpdateVnetConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateVnetConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateVnetConnectionCreateRequest creates the CreateOrUpdateVnetConnection request.
@@ -5382,7 +5450,8 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnectionGateway(ctx context.Con
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionGatewayResponse{}, err
 	}
-	return client.createOrUpdateVnetConnectionGatewayHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateVnetConnectionGatewayHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateVnetConnectionGatewayCreateRequest creates the CreateOrUpdateVnetConnectionGateway request.
@@ -5456,7 +5525,8 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnectionGatewaySlot(ctx context
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
-	return client.createOrUpdateVnetConnectionGatewaySlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateVnetConnectionGatewaySlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateVnetConnectionGatewaySlotCreateRequest creates the CreateOrUpdateVnetConnectionGatewaySlot request.
@@ -5535,7 +5605,8 @@ func (client *WebAppsClient) CreateOrUpdateVnetConnectionSlot(ctx context.Contex
 	if err != nil {
 		return WebAppsClientCreateOrUpdateVnetConnectionSlotResponse{}, err
 	}
-	return client.createOrUpdateVnetConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateVnetConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateVnetConnectionSlotCreateRequest creates the CreateOrUpdateVnetConnectionSlot request.
@@ -5610,7 +5681,8 @@ func (client *WebAppsClient) Delete(ctx context.Context, resourceGroupName strin
 		return WebAppsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteResponse{}, err
 	}
 	return WebAppsClientDeleteResponse{}, nil
 }
@@ -5669,7 +5741,8 @@ func (client *WebAppsClient) DeleteBackup(ctx context.Context, resourceGroupName
 		return WebAppsClientDeleteBackupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteBackupResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteBackupResponse{}, err
 	}
 	return WebAppsClientDeleteBackupResponse{}, nil
 }
@@ -5726,7 +5799,8 @@ func (client *WebAppsClient) DeleteBackupConfiguration(ctx context.Context, reso
 		return WebAppsClientDeleteBackupConfigurationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteBackupConfigurationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteBackupConfigurationResponse{}, err
 	}
 	return WebAppsClientDeleteBackupConfigurationResponse{}, nil
 }
@@ -5780,7 +5854,8 @@ func (client *WebAppsClient) DeleteBackupConfigurationSlot(ctx context.Context, 
 		return WebAppsClientDeleteBackupConfigurationSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteBackupConfigurationSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteBackupConfigurationSlotResponse{}, err
 	}
 	return WebAppsClientDeleteBackupConfigurationSlotResponse{}, nil
 }
@@ -5836,7 +5911,8 @@ func (client *WebAppsClient) DeleteBackupSlot(ctx context.Context, resourceGroup
 		return WebAppsClientDeleteBackupSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteBackupSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteBackupSlotResponse{}, err
 	}
 	return WebAppsClientDeleteBackupSlotResponse{}, nil
 }
@@ -5898,7 +5974,8 @@ func (client *WebAppsClient) DeleteContinuousWebJob(ctx context.Context, resourc
 		return WebAppsClientDeleteContinuousWebJobResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteContinuousWebJobResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteContinuousWebJobResponse{}, err
 	}
 	return WebAppsClientDeleteContinuousWebJobResponse{}, nil
 }
@@ -5954,7 +6031,8 @@ func (client *WebAppsClient) DeleteContinuousWebJobSlot(ctx context.Context, res
 		return WebAppsClientDeleteContinuousWebJobSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteContinuousWebJobSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteContinuousWebJobSlotResponse{}, err
 	}
 	return WebAppsClientDeleteContinuousWebJobSlotResponse{}, nil
 }
@@ -6016,7 +6094,8 @@ func (client *WebAppsClient) DeleteDeployment(ctx context.Context, resourceGroup
 		return WebAppsClientDeleteDeploymentResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteDeploymentResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteDeploymentResponse{}, err
 	}
 	return WebAppsClientDeleteDeploymentResponse{}, nil
 }
@@ -6072,7 +6151,8 @@ func (client *WebAppsClient) DeleteDeploymentSlot(ctx context.Context, resourceG
 		return WebAppsClientDeleteDeploymentSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteDeploymentSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteDeploymentSlotResponse{}, err
 	}
 	return WebAppsClientDeleteDeploymentSlotResponse{}, nil
 }
@@ -6134,7 +6214,8 @@ func (client *WebAppsClient) DeleteDomainOwnershipIdentifier(ctx context.Context
 		return WebAppsClientDeleteDomainOwnershipIdentifierResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteDomainOwnershipIdentifierResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteDomainOwnershipIdentifierResponse{}, err
 	}
 	return WebAppsClientDeleteDomainOwnershipIdentifierResponse{}, nil
 }
@@ -6190,7 +6271,8 @@ func (client *WebAppsClient) DeleteDomainOwnershipIdentifierSlot(ctx context.Con
 		return WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse{}, err
 	}
 	return WebAppsClientDeleteDomainOwnershipIdentifierSlotResponse{}, nil
 }
@@ -6251,7 +6333,8 @@ func (client *WebAppsClient) DeleteFunction(ctx context.Context, resourceGroupNa
 		return WebAppsClientDeleteFunctionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteFunctionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteFunctionResponse{}, err
 	}
 	return WebAppsClientDeleteFunctionResponse{}, nil
 }
@@ -6307,7 +6390,8 @@ func (client *WebAppsClient) DeleteFunctionSecret(ctx context.Context, resourceG
 		return WebAppsClientDeleteFunctionSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteFunctionSecretResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteFunctionSecretResponse{}, err
 	}
 	return WebAppsClientDeleteFunctionSecretResponse{}, nil
 }
@@ -6367,7 +6451,8 @@ func (client *WebAppsClient) DeleteFunctionSecretSlot(ctx context.Context, resou
 		return WebAppsClientDeleteFunctionSecretSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteFunctionSecretSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteFunctionSecretSlotResponse{}, err
 	}
 	return WebAppsClientDeleteFunctionSecretSlotResponse{}, nil
 }
@@ -6433,7 +6518,8 @@ func (client *WebAppsClient) DeleteHostNameBinding(ctx context.Context, resource
 		return WebAppsClientDeleteHostNameBindingResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteHostNameBindingResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteHostNameBindingResponse{}, err
 	}
 	return WebAppsClientDeleteHostNameBindingResponse{}, nil
 }
@@ -6492,7 +6578,8 @@ func (client *WebAppsClient) DeleteHostNameBindingSlot(ctx context.Context, reso
 		return WebAppsClientDeleteHostNameBindingSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteHostNameBindingSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteHostNameBindingSlotResponse{}, err
 	}
 	return WebAppsClientDeleteHostNameBindingSlotResponse{}, nil
 }
@@ -6555,7 +6642,8 @@ func (client *WebAppsClient) DeleteHostSecret(ctx context.Context, resourceGroup
 		return WebAppsClientDeleteHostSecretResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteHostSecretResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteHostSecretResponse{}, err
 	}
 	return WebAppsClientDeleteHostSecretResponse{}, nil
 }
@@ -6615,7 +6703,8 @@ func (client *WebAppsClient) DeleteHostSecretSlot(ctx context.Context, resourceG
 		return WebAppsClientDeleteHostSecretSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteHostSecretSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteHostSecretSlotResponse{}, err
 	}
 	return WebAppsClientDeleteHostSecretSlotResponse{}, nil
 }
@@ -6682,7 +6771,8 @@ func (client *WebAppsClient) DeleteHybridConnection(ctx context.Context, resourc
 		return WebAppsClientDeleteHybridConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteHybridConnectionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteHybridConnectionResponse{}, err
 	}
 	return WebAppsClientDeleteHybridConnectionResponse{}, nil
 }
@@ -6742,7 +6832,8 @@ func (client *WebAppsClient) DeleteHybridConnectionSlot(ctx context.Context, res
 		return WebAppsClientDeleteHybridConnectionSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteHybridConnectionSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteHybridConnectionSlotResponse{}, err
 	}
 	return WebAppsClientDeleteHybridConnectionSlotResponse{}, nil
 }
@@ -6806,7 +6897,8 @@ func (client *WebAppsClient) DeleteInstanceFunctionSlot(ctx context.Context, res
 		return WebAppsClientDeleteInstanceFunctionSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteInstanceFunctionSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteInstanceFunctionSlotResponse{}, err
 	}
 	return WebAppsClientDeleteInstanceFunctionSlotResponse{}, nil
 }
@@ -6868,7 +6960,8 @@ func (client *WebAppsClient) DeleteInstanceProcess(ctx context.Context, resource
 		return WebAppsClientDeleteInstanceProcessResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteInstanceProcessResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteInstanceProcessResponse{}, err
 	}
 	return WebAppsClientDeleteInstanceProcessResponse{}, nil
 }
@@ -6930,7 +7023,8 @@ func (client *WebAppsClient) DeleteInstanceProcessSlot(ctx context.Context, reso
 		return WebAppsClientDeleteInstanceProcessSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteInstanceProcessSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteInstanceProcessSlotResponse{}, err
 	}
 	return WebAppsClientDeleteInstanceProcessSlotResponse{}, nil
 }
@@ -6996,7 +7090,8 @@ func (client *WebAppsClient) DeletePremierAddOn(ctx context.Context, resourceGro
 		return WebAppsClientDeletePremierAddOnResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeletePremierAddOnResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeletePremierAddOnResponse{}, err
 	}
 	return WebAppsClientDeletePremierAddOnResponse{}, nil
 }
@@ -7052,7 +7147,8 @@ func (client *WebAppsClient) DeletePremierAddOnSlot(ctx context.Context, resourc
 		return WebAppsClientDeletePremierAddOnSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeletePremierAddOnSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeletePremierAddOnSlotResponse{}, err
 	}
 	return WebAppsClientDeletePremierAddOnSlotResponse{}, nil
 }
@@ -7115,7 +7211,8 @@ func (client *WebAppsClient) DeleteProcess(ctx context.Context, resourceGroupNam
 		return WebAppsClientDeleteProcessResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteProcessResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteProcessResponse{}, err
 	}
 	return WebAppsClientDeleteProcessResponse{}, nil
 }
@@ -7173,7 +7270,8 @@ func (client *WebAppsClient) DeleteProcessSlot(ctx context.Context, resourceGrou
 		return WebAppsClientDeleteProcessSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteProcessSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteProcessSlotResponse{}, err
 	}
 	return WebAppsClientDeleteProcessSlotResponse{}, nil
 }
@@ -7235,7 +7333,8 @@ func (client *WebAppsClient) DeletePublicCertificate(ctx context.Context, resour
 		return WebAppsClientDeletePublicCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeletePublicCertificateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeletePublicCertificateResponse{}, err
 	}
 	return WebAppsClientDeletePublicCertificateResponse{}, nil
 }
@@ -7294,7 +7393,8 @@ func (client *WebAppsClient) DeletePublicCertificateSlot(ctx context.Context, re
 		return WebAppsClientDeletePublicCertificateSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeletePublicCertificateSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeletePublicCertificateSlotResponse{}, err
 	}
 	return WebAppsClientDeletePublicCertificateSlotResponse{}, nil
 }
@@ -7356,7 +7456,8 @@ func (client *WebAppsClient) DeleteRelayServiceConnection(ctx context.Context, r
 		return WebAppsClientDeleteRelayServiceConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteRelayServiceConnectionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteRelayServiceConnectionResponse{}, err
 	}
 	return WebAppsClientDeleteRelayServiceConnectionResponse{}, nil
 }
@@ -7412,7 +7513,8 @@ func (client *WebAppsClient) DeleteRelayServiceConnectionSlot(ctx context.Contex
 		return WebAppsClientDeleteRelayServiceConnectionSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteRelayServiceConnectionSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteRelayServiceConnectionSlotResponse{}, err
 	}
 	return WebAppsClientDeleteRelayServiceConnectionSlotResponse{}, nil
 }
@@ -7474,7 +7576,8 @@ func (client *WebAppsClient) DeleteSiteContainer(ctx context.Context, resourceGr
 		return WebAppsClientDeleteSiteContainerResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteSiteContainerResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteSiteContainerResponse{}, err
 	}
 	return WebAppsClientDeleteSiteContainerResponse{}, nil
 }
@@ -7534,7 +7637,8 @@ func (client *WebAppsClient) DeleteSiteContainerSlot(ctx context.Context, resour
 		return WebAppsClientDeleteSiteContainerSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteSiteContainerSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteSiteContainerSlotResponse{}, err
 	}
 	return WebAppsClientDeleteSiteContainerSlotResponse{}, nil
 }
@@ -7596,7 +7700,8 @@ func (client *WebAppsClient) DeleteSiteExtension(ctx context.Context, resourceGr
 		return WebAppsClientDeleteSiteExtensionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteSiteExtensionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteSiteExtensionResponse{}, err
 	}
 	return WebAppsClientDeleteSiteExtensionResponse{}, nil
 }
@@ -7652,7 +7757,8 @@ func (client *WebAppsClient) DeleteSiteExtensionSlot(ctx context.Context, resour
 		return WebAppsClientDeleteSiteExtensionSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientDeleteSiteExtensionSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteSiteExtensionSlotResponse{}, err
 	}
 	return WebAppsClientDeleteSiteExtensionSlotResponse{}, nil
 }
@@ -7713,7 +7819,8 @@ func (client *WebAppsClient) DeleteSlot(ctx context.Context, resourceGroupName s
 		return WebAppsClientDeleteSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteSlotResponse{}, err
 	}
 	return WebAppsClientDeleteSlotResponse{}, nil
 }
@@ -7776,7 +7883,8 @@ func (client *WebAppsClient) DeleteSourceControl(ctx context.Context, resourceGr
 		return WebAppsClientDeleteSourceControlResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return WebAppsClientDeleteSourceControlResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteSourceControlResponse{}, err
 	}
 	return WebAppsClientDeleteSourceControlResponse{}, nil
 }
@@ -7834,7 +7942,8 @@ func (client *WebAppsClient) DeleteSourceControlSlot(ctx context.Context, resour
 		return WebAppsClientDeleteSourceControlSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return WebAppsClientDeleteSourceControlSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteSourceControlSlotResponse{}, err
 	}
 	return WebAppsClientDeleteSourceControlSlotResponse{}, nil
 }
@@ -7894,7 +8003,8 @@ func (client *WebAppsClient) DeleteSwiftVirtualNetwork(ctx context.Context, reso
 		return WebAppsClientDeleteSwiftVirtualNetworkResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteSwiftVirtualNetworkResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteSwiftVirtualNetworkResponse{}, err
 	}
 	return WebAppsClientDeleteSwiftVirtualNetworkResponse{}, nil
 }
@@ -7949,7 +8059,8 @@ func (client *WebAppsClient) DeleteSwiftVirtualNetworkSlot(ctx context.Context, 
 		return WebAppsClientDeleteSwiftVirtualNetworkSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteSwiftVirtualNetworkSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteSwiftVirtualNetworkSlotResponse{}, err
 	}
 	return WebAppsClientDeleteSwiftVirtualNetworkSlotResponse{}, nil
 }
@@ -8007,7 +8118,8 @@ func (client *WebAppsClient) DeleteTriggeredWebJob(ctx context.Context, resource
 		return WebAppsClientDeleteTriggeredWebJobResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteTriggeredWebJobResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteTriggeredWebJobResponse{}, err
 	}
 	return WebAppsClientDeleteTriggeredWebJobResponse{}, nil
 }
@@ -8063,7 +8175,8 @@ func (client *WebAppsClient) DeleteTriggeredWebJobSlot(ctx context.Context, reso
 		return WebAppsClientDeleteTriggeredWebJobSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientDeleteTriggeredWebJobSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteTriggeredWebJobSlotResponse{}, err
 	}
 	return WebAppsClientDeleteTriggeredWebJobSlotResponse{}, nil
 }
@@ -8125,7 +8238,8 @@ func (client *WebAppsClient) DeleteVnetConnection(ctx context.Context, resourceG
 		return WebAppsClientDeleteVnetConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteVnetConnectionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteVnetConnectionResponse{}, err
 	}
 	return WebAppsClientDeleteVnetConnectionResponse{}, nil
 }
@@ -8181,7 +8295,8 @@ func (client *WebAppsClient) DeleteVnetConnectionSlot(ctx context.Context, resou
 		return WebAppsClientDeleteVnetConnectionSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeleteVnetConnectionSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeleteVnetConnectionSlotResponse{}, err
 	}
 	return WebAppsClientDeleteVnetConnectionSlotResponse{}, nil
 }
@@ -8242,7 +8357,8 @@ func (client *WebAppsClient) DeployWorkflowArtifacts(ctx context.Context, resour
 		return WebAppsClientDeployWorkflowArtifactsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeployWorkflowArtifactsResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeployWorkflowArtifactsResponse{}, err
 	}
 	return WebAppsClientDeployWorkflowArtifactsResponse{}, nil
 }
@@ -8303,7 +8419,8 @@ func (client *WebAppsClient) DeployWorkflowArtifactsSlot(ctx context.Context, re
 		return WebAppsClientDeployWorkflowArtifactsSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientDeployWorkflowArtifactsSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientDeployWorkflowArtifactsSlotResponse{}, err
 	}
 	return WebAppsClientDeployWorkflowArtifactsSlotResponse{}, nil
 }
@@ -8368,7 +8485,8 @@ func (client *WebAppsClient) DiscoverBackup(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebAppsClientDiscoverBackupResponse{}, err
 	}
-	return client.discoverBackupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.discoverBackupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // discoverBackupCreateRequest creates the DiscoverBackup request.
@@ -8439,7 +8557,8 @@ func (client *WebAppsClient) DiscoverBackupSlot(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientDiscoverBackupSlotResponse{}, err
 	}
-	return client.discoverBackupSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.discoverBackupSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // discoverBackupSlotCreateRequest creates the DiscoverBackupSlot request.
@@ -8511,7 +8630,8 @@ func (client *WebAppsClient) GenerateNewSitePublishingPassword(ctx context.Conte
 		return WebAppsClientGenerateNewSitePublishingPasswordResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientGenerateNewSitePublishingPasswordResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientGenerateNewSitePublishingPasswordResponse{}, err
 	}
 	return WebAppsClientGenerateNewSitePublishingPasswordResponse{}, nil
 }
@@ -8565,7 +8685,8 @@ func (client *WebAppsClient) GenerateNewSitePublishingPasswordSlot(ctx context.C
 		return WebAppsClientGenerateNewSitePublishingPasswordSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientGenerateNewSitePublishingPasswordSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientGenerateNewSitePublishingPasswordSlotResponse{}, err
 	}
 	return WebAppsClientGenerateNewSitePublishingPasswordSlotResponse{}, nil
 }
@@ -8620,7 +8741,8 @@ func (client *WebAppsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return WebAppsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -8684,7 +8806,8 @@ func (client *WebAppsClient) GetAppSettingKeyVaultReference(ctx context.Context,
 	if err != nil {
 		return WebAppsClientGetAppSettingKeyVaultReferenceResponse{}, err
 	}
-	return client.getAppSettingKeyVaultReferenceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAppSettingKeyVaultReferenceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAppSettingKeyVaultReferenceCreateRequest creates the GetAppSettingKeyVaultReference request.
@@ -8750,7 +8873,8 @@ func (client *WebAppsClient) GetAppSettingKeyVaultReferenceSlot(ctx context.Cont
 	if err != nil {
 		return WebAppsClientGetAppSettingKeyVaultReferenceSlotResponse{}, err
 	}
-	return client.getAppSettingKeyVaultReferenceSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAppSettingKeyVaultReferenceSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAppSettingKeyVaultReferenceSlotCreateRequest creates the GetAppSettingKeyVaultReferenceSlot request.
@@ -8820,7 +8944,8 @@ func (client *WebAppsClient) GetAuthSettings(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientGetAuthSettingsResponse{}, err
 	}
-	return client.getAuthSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAuthSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAuthSettingsCreateRequest creates the GetAuthSettings request.
@@ -8884,7 +9009,8 @@ func (client *WebAppsClient) GetAuthSettingsSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetAuthSettingsSlotResponse{}, err
 	}
-	return client.getAuthSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAuthSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAuthSettingsSlotCreateRequest creates the GetAuthSettingsSlot request.
@@ -8951,7 +9077,8 @@ func (client *WebAppsClient) GetAuthSettingsV2(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetAuthSettingsV2Response{}, err
 	}
-	return client.getAuthSettingsV2HandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAuthSettingsV2HandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAuthSettingsV2CreateRequest creates the GetAuthSettingsV2 request.
@@ -9015,7 +9142,8 @@ func (client *WebAppsClient) GetAuthSettingsV2Slot(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientGetAuthSettingsV2SlotResponse{}, err
 	}
-	return client.getAuthSettingsV2SlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAuthSettingsV2SlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAuthSettingsV2SlotCreateRequest creates the GetAuthSettingsV2Slot request.
@@ -9082,7 +9210,8 @@ func (client *WebAppsClient) GetAuthSettingsV2WithoutSecrets(ctx context.Context
 	if err != nil {
 		return WebAppsClientGetAuthSettingsV2WithoutSecretsResponse{}, err
 	}
-	return client.getAuthSettingsV2WithoutSecretsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAuthSettingsV2WithoutSecretsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAuthSettingsV2WithoutSecretsCreateRequest creates the GetAuthSettingsV2WithoutSecrets request.
@@ -9146,7 +9275,8 @@ func (client *WebAppsClient) GetAuthSettingsV2WithoutSecretsSlot(ctx context.Con
 	if err != nil {
 		return WebAppsClientGetAuthSettingsV2WithoutSecretsSlotResponse{}, err
 	}
-	return client.getAuthSettingsV2WithoutSecretsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAuthSettingsV2WithoutSecretsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAuthSettingsV2WithoutSecretsSlotCreateRequest creates the GetAuthSettingsV2WithoutSecretsSlot request.
@@ -9213,7 +9343,8 @@ func (client *WebAppsClient) GetBackupConfiguration(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetBackupConfigurationResponse{}, err
 	}
-	return client.getBackupConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBackupConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBackupConfigurationCreateRequest creates the GetBackupConfiguration request.
@@ -9277,7 +9408,8 @@ func (client *WebAppsClient) GetBackupConfigurationSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetBackupConfigurationSlotResponse{}, err
 	}
-	return client.getBackupConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBackupConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBackupConfigurationSlotCreateRequest creates the GetBackupConfigurationSlot request.
@@ -9344,7 +9476,8 @@ func (client *WebAppsClient) GetBackupStatus(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientGetBackupStatusResponse{}, err
 	}
-	return client.getBackupStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBackupStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBackupStatusCreateRequest creates the GetBackupStatus request.
@@ -9410,7 +9543,8 @@ func (client *WebAppsClient) GetBackupStatusSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetBackupStatusSlotResponse{}, err
 	}
-	return client.getBackupStatusSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBackupStatusSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBackupStatusSlotCreateRequest creates the GetBackupStatusSlot request.
@@ -9483,7 +9617,8 @@ func (client *WebAppsClient) GetConfiguration(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetConfigurationResponse{}, err
 	}
-	return client.getConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getConfigurationCreateRequest creates the GetConfiguration request.
@@ -9549,7 +9684,8 @@ func (client *WebAppsClient) GetConfigurationSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetConfigurationSlotResponse{}, err
 	}
-	return client.getConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getConfigurationSlotCreateRequest creates the GetConfigurationSlot request.
@@ -9617,7 +9753,8 @@ func (client *WebAppsClient) GetConfigurationSnapshot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientGetConfigurationSnapshotResponse{}, err
 	}
-	return client.getConfigurationSnapshotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getConfigurationSnapshotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getConfigurationSnapshotCreateRequest creates the GetConfigurationSnapshot request.
@@ -9683,7 +9820,8 @@ func (client *WebAppsClient) GetConfigurationSnapshotSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetConfigurationSnapshotSlotResponse{}, err
 	}
-	return client.getConfigurationSnapshotSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getConfigurationSnapshotSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getConfigurationSnapshotSlotCreateRequest creates the GetConfigurationSnapshotSlot request.
@@ -9754,7 +9892,8 @@ func (client *WebAppsClient) GetContainerLogsZip(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetContainerLogsZipResponse{}, err
 	}
-	return client.getContainerLogsZipHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.getContainerLogsZipHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // getContainerLogsZipCreateRequest creates the GetContainerLogsZip request.
@@ -9820,7 +9959,8 @@ func (client *WebAppsClient) GetContainerLogsZipSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetContainerLogsZipSlotResponse{}, err
 	}
-	return client.getContainerLogsZipSlotHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.getContainerLogsZipSlotHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // getContainerLogsZipSlotCreateRequest creates the GetContainerLogsZipSlot request.
@@ -9890,7 +10030,8 @@ func (client *WebAppsClient) GetContinuousWebJob(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetContinuousWebJobResponse{}, err
 	}
-	return client.getContinuousWebJobHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getContinuousWebJobHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getContinuousWebJobCreateRequest creates the GetContinuousWebJob request.
@@ -9956,7 +10097,8 @@ func (client *WebAppsClient) GetContinuousWebJobSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetContinuousWebJobSlotResponse{}, err
 	}
-	return client.getContinuousWebJobSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getContinuousWebJobSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getContinuousWebJobSlotCreateRequest creates the GetContinuousWebJobSlot request.
@@ -10027,7 +10169,8 @@ func (client *WebAppsClient) GetDeployment(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return WebAppsClientGetDeploymentResponse{}, err
 	}
-	return client.getDeploymentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeploymentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeploymentCreateRequest creates the GetDeployment request.
@@ -10093,7 +10236,8 @@ func (client *WebAppsClient) GetDeploymentSlot(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetDeploymentSlotResponse{}, err
 	}
-	return client.getDeploymentSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeploymentSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeploymentSlotCreateRequest creates the GetDeploymentSlot request.
@@ -10164,7 +10308,8 @@ func (client *WebAppsClient) GetDiagnosticLogsConfiguration(ctx context.Context,
 	if err != nil {
 		return WebAppsClientGetDiagnosticLogsConfigurationResponse{}, err
 	}
-	return client.getDiagnosticLogsConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDiagnosticLogsConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDiagnosticLogsConfigurationCreateRequest creates the GetDiagnosticLogsConfiguration request.
@@ -10229,7 +10374,8 @@ func (client *WebAppsClient) GetDiagnosticLogsConfigurationSlot(ctx context.Cont
 	if err != nil {
 		return WebAppsClientGetDiagnosticLogsConfigurationSlotResponse{}, err
 	}
-	return client.getDiagnosticLogsConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDiagnosticLogsConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDiagnosticLogsConfigurationSlotCreateRequest creates the GetDiagnosticLogsConfigurationSlot request.
@@ -10297,7 +10443,8 @@ func (client *WebAppsClient) GetDomainOwnershipIdentifier(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetDomainOwnershipIdentifierResponse{}, err
 	}
-	return client.getDomainOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDomainOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDomainOwnershipIdentifierCreateRequest creates the GetDomainOwnershipIdentifier request.
@@ -10363,7 +10510,8 @@ func (client *WebAppsClient) GetDomainOwnershipIdentifierSlot(ctx context.Contex
 	if err != nil {
 		return WebAppsClientGetDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	return client.getDomainOwnershipIdentifierSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDomainOwnershipIdentifierSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDomainOwnershipIdentifierSlotCreateRequest creates the GetDomainOwnershipIdentifierSlot request.
@@ -10433,7 +10581,8 @@ func (client *WebAppsClient) GetFtpAllowed(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return WebAppsClientGetFtpAllowedResponse{}, err
 	}
-	return client.getFtpAllowedHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFtpAllowedHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFtpAllowedCreateRequest creates the GetFtpAllowed request.
@@ -10496,7 +10645,8 @@ func (client *WebAppsClient) GetFtpAllowedSlot(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetFtpAllowedSlotResponse{}, err
 	}
-	return client.getFtpAllowedSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFtpAllowedSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFtpAllowedSlotCreateRequest creates the GetFtpAllowedSlot request.
@@ -10563,7 +10713,8 @@ func (client *WebAppsClient) GetFunction(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WebAppsClientGetFunctionResponse{}, err
 	}
-	return client.getFunctionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFunctionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFunctionCreateRequest creates the GetFunction request.
@@ -10630,7 +10781,8 @@ func (client *WebAppsClient) GetFunctionsAdminToken(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetFunctionsAdminTokenResponse{}, err
 	}
-	return client.getFunctionsAdminTokenHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFunctionsAdminTokenHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFunctionsAdminTokenCreateRequest creates the GetFunctionsAdminToken request.
@@ -10694,7 +10846,8 @@ func (client *WebAppsClient) GetFunctionsAdminTokenSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetFunctionsAdminTokenSlotResponse{}, err
 	}
-	return client.getFunctionsAdminTokenSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFunctionsAdminTokenSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFunctionsAdminTokenSlotCreateRequest creates the GetFunctionsAdminTokenSlot request.
@@ -10762,7 +10915,8 @@ func (client *WebAppsClient) GetHostNameBinding(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetHostNameBindingResponse{}, err
 	}
-	return client.getHostNameBindingHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHostNameBindingHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getHostNameBindingCreateRequest creates the GetHostNameBinding request.
@@ -10831,7 +10985,8 @@ func (client *WebAppsClient) GetHostNameBindingSlot(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetHostNameBindingSlotResponse{}, err
 	}
-	return client.getHostNameBindingSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHostNameBindingSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getHostNameBindingSlotCreateRequest creates the GetHostNameBindingSlot request.
@@ -10904,7 +11059,8 @@ func (client *WebAppsClient) GetHybridConnection(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetHybridConnectionResponse{}, err
 	}
-	return client.getHybridConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHybridConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getHybridConnectionCreateRequest creates the GetHybridConnection request.
@@ -10974,7 +11130,8 @@ func (client *WebAppsClient) GetHybridConnectionSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetHybridConnectionSlotResponse{}, err
 	}
-	return client.getHybridConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHybridConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getHybridConnectionSlotCreateRequest creates the GetHybridConnectionSlot request.
@@ -11048,7 +11205,8 @@ func (client *WebAppsClient) GetInstanceFunctionSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetInstanceFunctionSlotResponse{}, err
 	}
-	return client.getInstanceFunctionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceFunctionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceFunctionSlotCreateRequest creates the GetInstanceFunctionSlot request.
@@ -11118,7 +11276,8 @@ func (client *WebAppsClient) GetInstanceInfo(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientGetInstanceInfoResponse{}, err
 	}
-	return client.getInstanceInfoHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceInfoHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceInfoCreateRequest creates the GetInstanceInfo request.
@@ -11184,7 +11343,8 @@ func (client *WebAppsClient) GetInstanceInfoSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetInstanceInfoSlotResponse{}, err
 	}
-	return client.getInstanceInfoSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceInfoSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceInfoSlotCreateRequest creates the GetInstanceInfoSlot request.
@@ -11256,7 +11416,8 @@ func (client *WebAppsClient) GetInstanceMSDeployLog(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetInstanceMSDeployLogResponse{}, err
 	}
-	return client.getInstanceMSDeployLogHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceMSDeployLogHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceMSDeployLogCreateRequest creates the GetInstanceMSDeployLog request.
@@ -11325,7 +11486,8 @@ func (client *WebAppsClient) GetInstanceMSDeployLogSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetInstanceMSDeployLogSlotResponse{}, err
 	}
-	return client.getInstanceMSDeployLogSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceMSDeployLogSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceMSDeployLogSlotCreateRequest creates the GetInstanceMSDeployLogSlot request.
@@ -11397,7 +11559,8 @@ func (client *WebAppsClient) GetInstanceMsDeployStatus(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientGetInstanceMsDeployStatusResponse{}, err
 	}
-	return client.getInstanceMsDeployStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceMsDeployStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceMsDeployStatusCreateRequest creates the GetInstanceMsDeployStatus request.
@@ -11466,7 +11629,8 @@ func (client *WebAppsClient) GetInstanceMsDeployStatusSlot(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientGetInstanceMsDeployStatusSlotResponse{}, err
 	}
-	return client.getInstanceMsDeployStatusSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceMsDeployStatusSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceMsDeployStatusSlotCreateRequest creates the GetInstanceMsDeployStatusSlot request.
@@ -11536,7 +11700,8 @@ func (client *WebAppsClient) GetInstanceProcess(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetInstanceProcessResponse{}, err
 	}
-	return client.getInstanceProcessHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceProcessHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceProcessCreateRequest creates the GetInstanceProcess request.
@@ -11606,7 +11771,8 @@ func (client *WebAppsClient) GetInstanceProcessDump(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetInstanceProcessDumpResponse{}, err
 	}
-	return client.getInstanceProcessDumpHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceProcessDumpHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceProcessDumpCreateRequest creates the GetInstanceProcessDump request.
@@ -11678,7 +11844,8 @@ func (client *WebAppsClient) GetInstanceProcessDumpSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetInstanceProcessDumpSlotResponse{}, err
 	}
-	return client.getInstanceProcessDumpSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceProcessDumpSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceProcessDumpSlotCreateRequest creates the GetInstanceProcessDumpSlot request.
@@ -11754,7 +11921,8 @@ func (client *WebAppsClient) GetInstanceProcessModule(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientGetInstanceProcessModuleResponse{}, err
 	}
-	return client.getInstanceProcessModuleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceProcessModuleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceProcessModuleCreateRequest creates the GetInstanceProcessModule request.
@@ -11828,7 +11996,8 @@ func (client *WebAppsClient) GetInstanceProcessModuleSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetInstanceProcessModuleSlotResponse{}, err
 	}
-	return client.getInstanceProcessModuleSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceProcessModuleSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceProcessModuleSlotCreateRequest creates the GetInstanceProcessModuleSlot request.
@@ -11906,7 +12075,8 @@ func (client *WebAppsClient) GetInstanceProcessSlot(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetInstanceProcessSlotResponse{}, err
 	}
-	return client.getInstanceProcessSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceProcessSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceProcessSlotCreateRequest creates the GetInstanceProcessSlot request.
@@ -11983,7 +12153,8 @@ func (client *WebAppsClient) GetInstanceWorkflowSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetInstanceWorkflowSlotResponse{}, err
 	}
-	return client.getInstanceWorkflowSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceWorkflowSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceWorkflowSlotCreateRequest creates the GetInstanceWorkflowSlot request.
@@ -12053,7 +12224,8 @@ func (client *WebAppsClient) GetMSDeployLog(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebAppsClientGetMSDeployLogResponse{}, err
 	}
-	return client.getMSDeployLogHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMSDeployLogHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMSDeployLogCreateRequest creates the GetMSDeployLog request.
@@ -12117,7 +12289,8 @@ func (client *WebAppsClient) GetMSDeployLogSlot(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetMSDeployLogSlotResponse{}, err
 	}
-	return client.getMSDeployLogSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMSDeployLogSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMSDeployLogSlotCreateRequest creates the GetMSDeployLogSlot request.
@@ -12184,7 +12357,8 @@ func (client *WebAppsClient) GetMSDeployStatus(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetMSDeployStatusResponse{}, err
 	}
-	return client.getMSDeployStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMSDeployStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMSDeployStatusCreateRequest creates the GetMSDeployStatus request.
@@ -12248,7 +12422,8 @@ func (client *WebAppsClient) GetMSDeployStatusSlot(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientGetMSDeployStatusSlotResponse{}, err
 	}
-	return client.getMSDeployStatusSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMSDeployStatusSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMSDeployStatusSlotCreateRequest creates the GetMSDeployStatusSlot request.
@@ -12316,7 +12491,8 @@ func (client *WebAppsClient) GetMigrateMySQLStatus(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientGetMigrateMySQLStatusResponse{}, err
 	}
-	return client.getMigrateMySQLStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMigrateMySQLStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMigrateMySQLStatusCreateRequest creates the GetMigrateMySQLStatus request.
@@ -12381,7 +12557,8 @@ func (client *WebAppsClient) GetMigrateMySQLStatusSlot(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientGetMigrateMySQLStatusSlotResponse{}, err
 	}
-	return client.getMigrateMySQLStatusSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMigrateMySQLStatusSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMigrateMySQLStatusSlotCreateRequest creates the GetMigrateMySQLStatusSlot request.
@@ -12449,7 +12626,8 @@ func (client *WebAppsClient) GetNetworkTraceOperation(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationResponse{}, err
 	}
-	return client.getNetworkTraceOperationHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getNetworkTraceOperationHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getNetworkTraceOperationCreateRequest creates the GetNetworkTraceOperation request.
@@ -12515,7 +12693,8 @@ func (client *WebAppsClient) GetNetworkTraceOperationSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationSlotResponse{}, err
 	}
-	return client.getNetworkTraceOperationSlotHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getNetworkTraceOperationSlotHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getNetworkTraceOperationSlotCreateRequest creates the GetNetworkTraceOperationSlot request.
@@ -12585,7 +12764,8 @@ func (client *WebAppsClient) GetNetworkTraceOperationSlotV2(ctx context.Context,
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationSlotV2Response{}, err
 	}
-	return client.getNetworkTraceOperationSlotV2HandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getNetworkTraceOperationSlotV2HandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getNetworkTraceOperationSlotV2CreateRequest creates the GetNetworkTraceOperationSlotV2 request.
@@ -12657,7 +12837,8 @@ func (client *WebAppsClient) GetNetworkTraceOperationV2(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetNetworkTraceOperationV2Response{}, err
 	}
-	return client.getNetworkTraceOperationV2HandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getNetworkTraceOperationV2HandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getNetworkTraceOperationV2CreateRequest creates the GetNetworkTraceOperationV2 request.
@@ -12725,7 +12906,8 @@ func (client *WebAppsClient) GetNetworkTraces(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetNetworkTracesResponse{}, err
 	}
-	return client.getNetworkTracesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNetworkTracesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNetworkTracesCreateRequest creates the GetNetworkTraces request.
@@ -12791,7 +12973,8 @@ func (client *WebAppsClient) GetNetworkTracesSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetNetworkTracesSlotResponse{}, err
 	}
-	return client.getNetworkTracesSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNetworkTracesSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNetworkTracesSlotCreateRequest creates the GetNetworkTracesSlot request.
@@ -12861,7 +13044,8 @@ func (client *WebAppsClient) GetNetworkTracesSlotV2(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetNetworkTracesSlotV2Response{}, err
 	}
-	return client.getNetworkTracesSlotV2HandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNetworkTracesSlotV2HandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNetworkTracesSlotV2CreateRequest creates the GetNetworkTracesSlotV2 request.
@@ -12933,7 +13117,8 @@ func (client *WebAppsClient) GetNetworkTracesV2(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetNetworkTracesV2Response{}, err
 	}
-	return client.getNetworkTracesV2HandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNetworkTracesV2HandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNetworkTracesV2CreateRequest creates the GetNetworkTracesV2 request.
@@ -13000,7 +13185,8 @@ func (client *WebAppsClient) GetOneDeployStatus(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetOneDeployStatusResponse{}, err
 	}
-	return client.getOneDeployStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getOneDeployStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getOneDeployStatusCreateRequest creates the GetOneDeployStatus request.
@@ -13063,7 +13249,8 @@ func (client *WebAppsClient) GetPremierAddOn(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientGetPremierAddOnResponse{}, err
 	}
-	return client.getPremierAddOnHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPremierAddOnHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPremierAddOnCreateRequest creates the GetPremierAddOn request.
@@ -13129,7 +13316,8 @@ func (client *WebAppsClient) GetPremierAddOnSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientGetPremierAddOnSlotResponse{}, err
 	}
-	return client.getPremierAddOnSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPremierAddOnSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPremierAddOnSlotCreateRequest creates the GetPremierAddOnSlot request.
@@ -13201,7 +13389,8 @@ func (client *WebAppsClient) GetPrivateAccess(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetPrivateAccessResponse{}, err
 	}
-	return client.getPrivateAccessHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateAccessHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateAccessCreateRequest creates the GetPrivateAccess request.
@@ -13266,7 +13455,8 @@ func (client *WebAppsClient) GetPrivateAccessSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetPrivateAccessSlotResponse{}, err
 	}
-	return client.getPrivateAccessSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateAccessSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateAccessSlotCreateRequest creates the GetPrivateAccessSlot request.
@@ -13334,7 +13524,8 @@ func (client *WebAppsClient) GetPrivateEndpointConnection(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetPrivateEndpointConnectionResponse{}, err
 	}
-	return client.getPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateEndpointConnectionCreateRequest creates the GetPrivateEndpointConnection request.
@@ -13400,7 +13591,8 @@ func (client *WebAppsClient) GetPrivateEndpointConnectionSlot(ctx context.Contex
 	if err != nil {
 		return WebAppsClientGetPrivateEndpointConnectionSlotResponse{}, err
 	}
-	return client.getPrivateEndpointConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateEndpointConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateEndpointConnectionSlotCreateRequest creates the GetPrivateEndpointConnectionSlot request.
@@ -13471,7 +13663,8 @@ func (client *WebAppsClient) GetPrivateLinkResources(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetPrivateLinkResourcesResponse{}, err
 	}
-	return client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
@@ -13535,7 +13728,8 @@ func (client *WebAppsClient) GetPrivateLinkResourcesSlot(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientGetPrivateLinkResourcesSlotResponse{}, err
 	}
-	return client.getPrivateLinkResourcesSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateLinkResourcesSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateLinkResourcesSlotCreateRequest creates the GetPrivateLinkResourcesSlot request.
@@ -13602,7 +13796,8 @@ func (client *WebAppsClient) GetProcess(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return WebAppsClientGetProcessResponse{}, err
 	}
-	return client.getProcessHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getProcessHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getProcessCreateRequest creates the GetProcess request.
@@ -13669,7 +13864,8 @@ func (client *WebAppsClient) GetProcessDump(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebAppsClientGetProcessDumpResponse{}, err
 	}
-	return client.getProcessDumpHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getProcessDumpHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getProcessDumpCreateRequest creates the GetProcessDump request.
@@ -13737,7 +13933,8 @@ func (client *WebAppsClient) GetProcessDumpSlot(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetProcessDumpSlotResponse{}, err
 	}
-	return client.getProcessDumpSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getProcessDumpSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getProcessDumpSlotCreateRequest creates the GetProcessDumpSlot request.
@@ -13812,7 +14009,8 @@ func (client *WebAppsClient) GetProcessModule(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetProcessModuleResponse{}, err
 	}
-	return client.getProcessModuleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getProcessModuleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getProcessModuleCreateRequest creates the GetProcessModule request.
@@ -13882,7 +14080,8 @@ func (client *WebAppsClient) GetProcessModuleSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetProcessModuleSlotResponse{}, err
 	}
-	return client.getProcessModuleSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getProcessModuleSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getProcessModuleSlotCreateRequest creates the GetProcessModuleSlot request.
@@ -13955,7 +14154,8 @@ func (client *WebAppsClient) GetProcessSlot(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebAppsClientGetProcessSlotResponse{}, err
 	}
-	return client.getProcessSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getProcessSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getProcessSlotCreateRequest creates the GetProcessSlot request.
@@ -14027,7 +14227,8 @@ func (client *WebAppsClient) GetPublicCertificate(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetPublicCertificateResponse{}, err
 	}
-	return client.getPublicCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPublicCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPublicCertificateCreateRequest creates the GetPublicCertificate request.
@@ -14096,7 +14297,8 @@ func (client *WebAppsClient) GetPublicCertificateSlot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientGetPublicCertificateSlotResponse{}, err
 	}
-	return client.getPublicCertificateSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPublicCertificateSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPublicCertificateSlotCreateRequest creates the GetPublicCertificateSlot request.
@@ -14168,7 +14370,8 @@ func (client *WebAppsClient) GetRelayServiceConnection(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientGetRelayServiceConnectionResponse{}, err
 	}
-	return client.getRelayServiceConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRelayServiceConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRelayServiceConnectionCreateRequest creates the GetRelayServiceConnection request.
@@ -14234,7 +14437,8 @@ func (client *WebAppsClient) GetRelayServiceConnectionSlot(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientGetRelayServiceConnectionSlotResponse{}, err
 	}
-	return client.getRelayServiceConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRelayServiceConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRelayServiceConnectionSlotCreateRequest creates the GetRelayServiceConnectionSlot request.
@@ -14304,7 +14508,8 @@ func (client *WebAppsClient) GetScmAllowed(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return WebAppsClientGetScmAllowedResponse{}, err
 	}
-	return client.getScmAllowedHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getScmAllowedHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getScmAllowedCreateRequest creates the GetScmAllowed request.
@@ -14367,7 +14572,8 @@ func (client *WebAppsClient) GetScmAllowedSlot(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetScmAllowedSlotResponse{}, err
 	}
-	return client.getScmAllowedSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getScmAllowedSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getScmAllowedSlotCreateRequest creates the GetScmAllowedSlot request.
@@ -14434,7 +14640,8 @@ func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReference(ctx contex
 	if err != nil {
 		return WebAppsClientGetSiteConnectionStringKeyVaultReferenceResponse{}, err
 	}
-	return client.getSiteConnectionStringKeyVaultReferenceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteConnectionStringKeyVaultReferenceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteConnectionStringKeyVaultReferenceCreateRequest creates the GetSiteConnectionStringKeyVaultReference request.
@@ -14500,7 +14707,8 @@ func (client *WebAppsClient) GetSiteConnectionStringKeyVaultReferenceSlot(ctx co
 	if err != nil {
 		return WebAppsClientGetSiteConnectionStringKeyVaultReferenceSlotResponse{}, err
 	}
-	return client.getSiteConnectionStringKeyVaultReferenceSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteConnectionStringKeyVaultReferenceSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteConnectionStringKeyVaultReferenceSlotCreateRequest creates the GetSiteConnectionStringKeyVaultReferenceSlot request.
@@ -14572,7 +14780,8 @@ func (client *WebAppsClient) GetSiteContainer(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetSiteContainerResponse{}, err
 	}
-	return client.getSiteContainerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteContainerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteContainerCreateRequest creates the GetSiteContainer request.
@@ -14642,7 +14851,8 @@ func (client *WebAppsClient) GetSiteContainerSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetSiteContainerSlotResponse{}, err
 	}
-	return client.getSiteContainerSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteContainerSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteContainerSlotCreateRequest creates the GetSiteContainerSlot request.
@@ -14714,7 +14924,8 @@ func (client *WebAppsClient) GetSiteExtension(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetSiteExtensionResponse{}, err
 	}
-	return client.getSiteExtensionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteExtensionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteExtensionCreateRequest creates the GetSiteExtension request.
@@ -14780,7 +14991,8 @@ func (client *WebAppsClient) GetSiteExtensionSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetSiteExtensionSlotResponse{}, err
 	}
-	return client.getSiteExtensionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteExtensionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteExtensionSlotCreateRequest creates the GetSiteExtensionSlot request.
@@ -14851,7 +15063,8 @@ func (client *WebAppsClient) GetSitePhpErrorLogFlag(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetSitePhpErrorLogFlagResponse{}, err
 	}
-	return client.getSitePhpErrorLogFlagHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSitePhpErrorLogFlagHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSitePhpErrorLogFlagCreateRequest creates the GetSitePhpErrorLogFlag request.
@@ -14915,7 +15128,8 @@ func (client *WebAppsClient) GetSitePhpErrorLogFlagSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientGetSitePhpErrorLogFlagSlotResponse{}, err
 	}
-	return client.getSitePhpErrorLogFlagSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSitePhpErrorLogFlagSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSitePhpErrorLogFlagSlotCreateRequest creates the GetSitePhpErrorLogFlagSlot request.
@@ -14982,7 +15196,8 @@ func (client *WebAppsClient) GetSlot(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return WebAppsClientGetSlotResponse{}, err
 	}
-	return client.getSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSlotCreateRequest creates the GetSlot request.
@@ -15049,7 +15264,8 @@ func (client *WebAppsClient) GetSourceControl(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientGetSourceControlResponse{}, err
 	}
-	return client.getSourceControlHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	resp, err := client.getSourceControlHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	return resp, err
 }
 
 // getSourceControlCreateRequest creates the GetSourceControl request.
@@ -15114,7 +15330,8 @@ func (client *WebAppsClient) GetSourceControlSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientGetSourceControlSlotResponse{}, err
 	}
-	return client.getSourceControlSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	resp, err := client.getSourceControlSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	return resp, err
 }
 
 // getSourceControlSlotCreateRequest creates the GetSourceControlSlot request.
@@ -15181,7 +15398,8 @@ func (client *WebAppsClient) GetSwiftVirtualNetworkConnection(ctx context.Contex
 	if err != nil {
 		return WebAppsClientGetSwiftVirtualNetworkConnectionResponse{}, err
 	}
-	return client.getSwiftVirtualNetworkConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSwiftVirtualNetworkConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSwiftVirtualNetworkConnectionCreateRequest creates the GetSwiftVirtualNetworkConnection request.
@@ -15246,7 +15464,8 @@ func (client *WebAppsClient) GetSwiftVirtualNetworkConnectionSlot(ctx context.Co
 	if err != nil {
 		return WebAppsClientGetSwiftVirtualNetworkConnectionSlotResponse{}, err
 	}
-	return client.getSwiftVirtualNetworkConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSwiftVirtualNetworkConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSwiftVirtualNetworkConnectionSlotCreateRequest creates the GetSwiftVirtualNetworkConnectionSlot request.
@@ -15314,7 +15533,8 @@ func (client *WebAppsClient) GetTriggeredWebJob(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobResponse{}, err
 	}
-	return client.getTriggeredWebJobHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTriggeredWebJobHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTriggeredWebJobCreateRequest creates the GetTriggeredWebJob request.
@@ -15383,7 +15603,8 @@ func (client *WebAppsClient) GetTriggeredWebJobHistory(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobHistoryResponse{}, err
 	}
-	return client.getTriggeredWebJobHistoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTriggeredWebJobHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTriggeredWebJobHistoryCreateRequest creates the GetTriggeredWebJobHistory request.
@@ -15453,7 +15674,8 @@ func (client *WebAppsClient) GetTriggeredWebJobHistorySlot(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobHistorySlotResponse{}, err
 	}
-	return client.getTriggeredWebJobHistorySlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTriggeredWebJobHistorySlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTriggeredWebJobHistorySlotCreateRequest creates the GetTriggeredWebJobHistorySlot request.
@@ -15527,7 +15749,8 @@ func (client *WebAppsClient) GetTriggeredWebJobSlot(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientGetTriggeredWebJobSlotResponse{}, err
 	}
-	return client.getTriggeredWebJobSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTriggeredWebJobSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTriggeredWebJobSlotCreateRequest creates the GetTriggeredWebJobSlot request.
@@ -15599,7 +15822,8 @@ func (client *WebAppsClient) GetVnetConnection(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientGetVnetConnectionResponse{}, err
 	}
-	return client.getVnetConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVnetConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVnetConnectionCreateRequest creates the GetVnetConnection request.
@@ -15668,7 +15892,8 @@ func (client *WebAppsClient) GetVnetConnectionGateway(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientGetVnetConnectionGatewayResponse{}, err
 	}
-	return client.getVnetConnectionGatewayHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVnetConnectionGatewayHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVnetConnectionGatewayCreateRequest creates the GetVnetConnectionGateway request.
@@ -15738,7 +15963,8 @@ func (client *WebAppsClient) GetVnetConnectionGatewaySlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientGetVnetConnectionGatewaySlotResponse{}, err
 	}
-	return client.getVnetConnectionGatewaySlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVnetConnectionGatewaySlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVnetConnectionGatewaySlotCreateRequest creates the GetVnetConnectionGatewaySlot request.
@@ -15812,7 +16038,8 @@ func (client *WebAppsClient) GetVnetConnectionSlot(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientGetVnetConnectionSlotResponse{}, err
 	}
-	return client.getVnetConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVnetConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVnetConnectionSlotCreateRequest creates the GetVnetConnectionSlot request.
@@ -15883,7 +16110,8 @@ func (client *WebAppsClient) GetWebJob(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return WebAppsClientGetWebJobResponse{}, err
 	}
-	return client.getWebJobHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getWebJobHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getWebJobCreateRequest creates the GetWebJob request.
@@ -15948,7 +16176,8 @@ func (client *WebAppsClient) GetWebJobSlot(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return WebAppsClientGetWebJobSlotResponse{}, err
 	}
-	return client.getWebJobSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getWebJobSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getWebJobSlotCreateRequest creates the GetWebJobSlot request.
@@ -16019,7 +16248,8 @@ func (client *WebAppsClient) GetWebSiteContainerLogs(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientGetWebSiteContainerLogsResponse{}, err
 	}
-	return client.getWebSiteContainerLogsHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.getWebSiteContainerLogsHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // getWebSiteContainerLogsCreateRequest creates the GetWebSiteContainerLogs request.
@@ -16085,7 +16315,8 @@ func (client *WebAppsClient) GetWebSiteContainerLogsSlot(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientGetWebSiteContainerLogsSlotResponse{}, err
 	}
-	return client.getWebSiteContainerLogsSlotHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.getWebSiteContainerLogsSlotHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // getWebSiteContainerLogsSlotCreateRequest creates the GetWebSiteContainerLogsSlot request.
@@ -16154,7 +16385,8 @@ func (client *WebAppsClient) GetWorkflow(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WebAppsClientGetWorkflowResponse{}, err
 	}
-	return client.getWorkflowHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getWorkflowHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getWorkflowCreateRequest creates the GetWorkflow request.
@@ -16220,7 +16452,8 @@ func (client *WebAppsClient) IsCloneable(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WebAppsClientIsCloneableResponse{}, err
 	}
-	return client.isCloneableHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.isCloneableHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // isCloneableCreateRequest creates the IsCloneable request.
@@ -16283,7 +16516,8 @@ func (client *WebAppsClient) IsCloneableSlot(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebAppsClientIsCloneableSlotResponse{}, err
 	}
-	return client.isCloneableSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.isCloneableSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // isCloneableSlotCreateRequest creates the IsCloneableSlot request.
@@ -16350,7 +16584,8 @@ func (client *WebAppsClient) ListApplicationSettings(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientListApplicationSettingsResponse{}, err
 	}
-	return client.listApplicationSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listApplicationSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listApplicationSettingsCreateRequest creates the ListApplicationSettings request.
@@ -16414,7 +16649,8 @@ func (client *WebAppsClient) ListApplicationSettingsSlot(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientListApplicationSettingsSlotResponse{}, err
 	}
-	return client.listApplicationSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listApplicationSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listApplicationSettingsSlotCreateRequest creates the ListApplicationSettingsSlot request.
@@ -16481,7 +16717,8 @@ func (client *WebAppsClient) ListAzureStorageAccounts(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientListAzureStorageAccountsResponse{}, err
 	}
-	return client.listAzureStorageAccountsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listAzureStorageAccountsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listAzureStorageAccountsCreateRequest creates the ListAzureStorageAccounts request.
@@ -16545,7 +16782,8 @@ func (client *WebAppsClient) ListAzureStorageAccountsSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientListAzureStorageAccountsSlotResponse{}, err
 	}
-	return client.listAzureStorageAccountsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listAzureStorageAccountsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listAzureStorageAccountsSlotCreateRequest creates the ListAzureStorageAccountsSlot request.
@@ -16618,7 +16856,8 @@ func (client *WebAppsClient) ListBackupStatusSecrets(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientListBackupStatusSecretsResponse{}, err
 	}
-	return client.listBackupStatusSecretsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listBackupStatusSecretsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listBackupStatusSecretsCreateRequest creates the ListBackupStatusSecrets request.
@@ -16692,7 +16931,8 @@ func (client *WebAppsClient) ListBackupStatusSecretsSlot(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientListBackupStatusSecretsSlotResponse{}, err
 	}
-	return client.listBackupStatusSecretsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listBackupStatusSecretsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listBackupStatusSecretsSlotCreateRequest creates the ListBackupStatusSecretsSlot request.
@@ -16767,7 +17007,8 @@ func (client *WebAppsClient) ListConnectionStrings(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientListConnectionStringsResponse{}, err
 	}
-	return client.listConnectionStringsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listConnectionStringsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listConnectionStringsCreateRequest creates the ListConnectionStrings request.
@@ -16831,7 +17072,8 @@ func (client *WebAppsClient) ListConnectionStringsSlot(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientListConnectionStringsSlotResponse{}, err
 	}
-	return client.listConnectionStringsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listConnectionStringsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listConnectionStringsSlotCreateRequest creates the ListConnectionStringsSlot request.
@@ -16899,7 +17141,8 @@ func (client *WebAppsClient) ListDeploymentLog(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientListDeploymentLogResponse{}, err
 	}
-	return client.listDeploymentLogHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listDeploymentLogHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listDeploymentLogCreateRequest creates the ListDeploymentLog request.
@@ -16965,7 +17208,8 @@ func (client *WebAppsClient) ListDeploymentLogSlot(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientListDeploymentLogSlotResponse{}, err
 	}
-	return client.listDeploymentLogSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listDeploymentLogSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listDeploymentLogSlotCreateRequest creates the ListDeploymentLogSlot request.
@@ -17037,7 +17281,8 @@ func (client *WebAppsClient) ListFunctionKeys(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientListFunctionKeysResponse{}, err
 	}
-	return client.listFunctionKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listFunctionKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listFunctionKeysCreateRequest creates the ListFunctionKeys request.
@@ -17103,7 +17348,8 @@ func (client *WebAppsClient) ListFunctionKeysSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientListFunctionKeysSlotResponse{}, err
 	}
-	return client.listFunctionKeysSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listFunctionKeysSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listFunctionKeysSlotCreateRequest creates the ListFunctionKeysSlot request.
@@ -17175,7 +17421,8 @@ func (client *WebAppsClient) ListFunctionSecrets(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientListFunctionSecretsResponse{}, err
 	}
-	return client.listFunctionSecretsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listFunctionSecretsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listFunctionSecretsCreateRequest creates the ListFunctionSecrets request.
@@ -17241,7 +17488,8 @@ func (client *WebAppsClient) ListFunctionSecretsSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientListFunctionSecretsSlotResponse{}, err
 	}
-	return client.listFunctionSecretsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listFunctionSecretsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listFunctionSecretsSlotCreateRequest creates the ListFunctionSecretsSlot request.
@@ -17311,7 +17559,8 @@ func (client *WebAppsClient) ListHostKeys(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WebAppsClientListHostKeysResponse{}, err
 	}
-	return client.listHostKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHostKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listHostKeysCreateRequest creates the ListHostKeys request.
@@ -17375,7 +17624,8 @@ func (client *WebAppsClient) ListHostKeysSlot(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientListHostKeysSlotResponse{}, err
 	}
-	return client.listHostKeysSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHostKeysSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listHostKeysSlotCreateRequest creates the ListHostKeysSlot request.
@@ -17442,7 +17692,8 @@ func (client *WebAppsClient) ListHybridConnections(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientListHybridConnectionsResponse{}, err
 	}
-	return client.listHybridConnectionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHybridConnectionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listHybridConnectionsCreateRequest creates the ListHybridConnections request.
@@ -17506,7 +17757,8 @@ func (client *WebAppsClient) ListHybridConnectionsSlot(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientListHybridConnectionsSlotResponse{}, err
 	}
-	return client.listHybridConnectionsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHybridConnectionsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listHybridConnectionsSlotCreateRequest creates the ListHybridConnectionsSlot request.
@@ -17572,7 +17824,8 @@ func (client *WebAppsClient) ListMetadata(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WebAppsClientListMetadataResponse{}, err
 	}
-	return client.listMetadataHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listMetadataHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listMetadataCreateRequest creates the ListMetadata request.
@@ -17636,7 +17889,8 @@ func (client *WebAppsClient) ListMetadataSlot(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientListMetadataSlotResponse{}, err
 	}
-	return client.listMetadataSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listMetadataSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listMetadataSlotCreateRequest creates the ListMetadataSlot request.
@@ -17704,7 +17958,8 @@ func (client *WebAppsClient) ListNetworkFeatures(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientListNetworkFeaturesResponse{}, err
 	}
-	return client.listNetworkFeaturesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listNetworkFeaturesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listNetworkFeaturesCreateRequest creates the ListNetworkFeatures request.
@@ -17770,7 +18025,8 @@ func (client *WebAppsClient) ListNetworkFeaturesSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientListNetworkFeaturesSlotResponse{}, err
 	}
-	return client.listNetworkFeaturesSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listNetworkFeaturesSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listNetworkFeaturesSlotCreateRequest creates the ListNetworkFeaturesSlot request.
@@ -17841,7 +18097,8 @@ func (client *WebAppsClient) ListPremierAddOns(ctx context.Context, resourceGrou
 	if err != nil {
 		return WebAppsClientListPremierAddOnsResponse{}, err
 	}
-	return client.listPremierAddOnsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listPremierAddOnsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listPremierAddOnsCreateRequest creates the ListPremierAddOns request.
@@ -17905,7 +18162,8 @@ func (client *WebAppsClient) ListPremierAddOnsSlot(ctx context.Context, resource
 	if err != nil {
 		return WebAppsClientListPremierAddOnsSlotResponse{}, err
 	}
-	return client.listPremierAddOnsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listPremierAddOnsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listPremierAddOnsSlotCreateRequest creates the ListPremierAddOnsSlot request.
@@ -17974,7 +18232,8 @@ func (client *WebAppsClient) ListPublishingProfileXMLWithSecrets(ctx context.Con
 	if err != nil {
 		return WebAppsClientListPublishingProfileXMLWithSecretsResponse{}, err
 	}
-	return client.listPublishingProfileXMLWithSecretsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listPublishingProfileXMLWithSecretsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listPublishingProfileXMLWithSecretsCreateRequest creates the ListPublishingProfileXMLWithSecrets request.
@@ -18046,7 +18305,8 @@ func (client *WebAppsClient) ListPublishingProfileXMLWithSecretsSlot(ctx context
 	if err != nil {
 		return WebAppsClientListPublishingProfileXMLWithSecretsSlotResponse{}, err
 	}
-	return client.listPublishingProfileXMLWithSecretsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listPublishingProfileXMLWithSecretsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listPublishingProfileXMLWithSecretsSlotCreateRequest creates the ListPublishingProfileXMLWithSecretsSlot request.
@@ -18119,7 +18379,8 @@ func (client *WebAppsClient) ListRelayServiceConnections(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientListRelayServiceConnectionsResponse{}, err
 	}
-	return client.listRelayServiceConnectionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listRelayServiceConnectionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listRelayServiceConnectionsCreateRequest creates the ListRelayServiceConnections request.
@@ -18183,7 +18444,8 @@ func (client *WebAppsClient) ListRelayServiceConnectionsSlot(ctx context.Context
 	if err != nil {
 		return WebAppsClientListRelayServiceConnectionsSlotResponse{}, err
 	}
-	return client.listRelayServiceConnectionsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listRelayServiceConnectionsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listRelayServiceConnectionsSlotCreateRequest creates the ListRelayServiceConnectionsSlot request.
@@ -18250,7 +18512,8 @@ func (client *WebAppsClient) ListSitePushSettings(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientListSitePushSettingsResponse{}, err
 	}
-	return client.listSitePushSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSitePushSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSitePushSettingsCreateRequest creates the ListSitePushSettings request.
@@ -18314,7 +18577,8 @@ func (client *WebAppsClient) ListSitePushSettingsSlot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientListSitePushSettingsSlotResponse{}, err
 	}
-	return client.listSitePushSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSitePushSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSitePushSettingsSlotCreateRequest creates the ListSitePushSettingsSlot request.
@@ -18381,7 +18645,8 @@ func (client *WebAppsClient) ListSlotConfigurationNames(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientListSlotConfigurationNamesResponse{}, err
 	}
-	return client.listSlotConfigurationNamesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSlotConfigurationNamesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSlotConfigurationNamesCreateRequest creates the ListSlotConfigurationNames request.
@@ -18444,7 +18709,8 @@ func (client *WebAppsClient) ListSyncFunctionTriggers(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientListSyncFunctionTriggersResponse{}, err
 	}
-	return client.listSyncFunctionTriggersHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSyncFunctionTriggersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSyncFunctionTriggersCreateRequest creates the ListSyncFunctionTriggers request.
@@ -18508,7 +18774,8 @@ func (client *WebAppsClient) ListSyncFunctionTriggersSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientListSyncFunctionTriggersSlotResponse{}, err
 	}
-	return client.listSyncFunctionTriggersSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSyncFunctionTriggersSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSyncFunctionTriggersSlotCreateRequest creates the ListSyncFunctionTriggersSlot request.
@@ -18575,7 +18842,8 @@ func (client *WebAppsClient) ListSyncStatus(ctx context.Context, resourceGroupNa
 		return WebAppsClientListSyncStatusResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientListSyncStatusResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientListSyncStatusResponse{}, err
 	}
 	return WebAppsClientListSyncStatusResponse{}, nil
 }
@@ -18629,7 +18897,8 @@ func (client *WebAppsClient) ListSyncStatusSlot(ctx context.Context, resourceGro
 		return WebAppsClientListSyncStatusSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientListSyncStatusSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientListSyncStatusSlotResponse{}, err
 	}
 	return WebAppsClientListSyncStatusSlotResponse{}, nil
 }
@@ -18685,7 +18954,8 @@ func (client *WebAppsClient) ListVnetConnections(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientListVnetConnectionsResponse{}, err
 	}
-	return client.listVnetConnectionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listVnetConnectionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listVnetConnectionsCreateRequest creates the ListVnetConnections request.
@@ -18750,7 +19020,8 @@ func (client *WebAppsClient) ListVnetConnectionsSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientListVnetConnectionsSlotResponse{}, err
 	}
-	return client.listVnetConnectionsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listVnetConnectionsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listVnetConnectionsSlotCreateRequest creates the ListVnetConnectionsSlot request.
@@ -18817,7 +19088,8 @@ func (client *WebAppsClient) ListWorkflowsConnections(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientListWorkflowsConnectionsResponse{}, err
 	}
-	return client.listWorkflowsConnectionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listWorkflowsConnectionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listWorkflowsConnectionsCreateRequest creates the ListWorkflowsConnections request.
@@ -18881,7 +19153,8 @@ func (client *WebAppsClient) ListWorkflowsConnectionsSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientListWorkflowsConnectionsSlotResponse{}, err
 	}
-	return client.listWorkflowsConnectionsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listWorkflowsConnectionsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listWorkflowsConnectionsSlotCreateRequest creates the ListWorkflowsConnectionsSlot request.
@@ -24649,7 +24922,8 @@ func (client *WebAppsClient) PutPrivateAccessVnet(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientPutPrivateAccessVnetResponse{}, err
 	}
-	return client.putPrivateAccessVnetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.putPrivateAccessVnetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // putPrivateAccessVnetCreateRequest creates the PutPrivateAccessVnet request.
@@ -24719,7 +24993,8 @@ func (client *WebAppsClient) PutPrivateAccessVnetSlot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientPutPrivateAccessVnetSlotResponse{}, err
 	}
-	return client.putPrivateAccessVnetSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.putPrivateAccessVnetSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // putPrivateAccessVnetSlotCreateRequest creates the PutPrivateAccessVnetSlot request.
@@ -24792,7 +25067,8 @@ func (client *WebAppsClient) RecoverSiteConfigurationSnapshot(ctx context.Contex
 		return WebAppsClientRecoverSiteConfigurationSnapshotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientRecoverSiteConfigurationSnapshotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientRecoverSiteConfigurationSnapshotResponse{}, err
 	}
 	return WebAppsClientRecoverSiteConfigurationSnapshotResponse{}, nil
 }
@@ -24848,7 +25124,8 @@ func (client *WebAppsClient) RecoverSiteConfigurationSnapshotSlot(ctx context.Co
 		return WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse{}, err
 	}
 	return WebAppsClientRecoverSiteConfigurationSnapshotSlotResponse{}, nil
 }
@@ -24911,7 +25188,8 @@ func (client *WebAppsClient) ResetProductionSlotConfig(ctx context.Context, reso
 		return WebAppsClientResetProductionSlotConfigResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientResetProductionSlotConfigResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientResetProductionSlotConfigResponse{}, err
 	}
 	return WebAppsClientResetProductionSlotConfigResponse{}, nil
 }
@@ -24967,7 +25245,8 @@ func (client *WebAppsClient) ResetSlotConfigurationSlot(ctx context.Context, res
 		return WebAppsClientResetSlotConfigurationSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientResetSlotConfigurationSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientResetSlotConfigurationSlotResponse{}, err
 	}
 	return WebAppsClientResetSlotConfigurationSlotResponse{}, nil
 }
@@ -25023,7 +25302,8 @@ func (client *WebAppsClient) Restart(ctx context.Context, resourceGroupName stri
 		return WebAppsClientRestartResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientRestartResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientRestartResponse{}, err
 	}
 	return WebAppsClientRestartResponse{}, nil
 }
@@ -25082,7 +25362,8 @@ func (client *WebAppsClient) RestartSlot(ctx context.Context, resourceGroupName 
 		return WebAppsClientRestartSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientRestartSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientRestartSlotResponse{}, err
 	}
 	return WebAppsClientRestartSlotResponse{}, nil
 }
@@ -25146,7 +25427,8 @@ func (client *WebAppsClient) RunTriggeredWebJob(ctx context.Context, resourceGro
 		return WebAppsClientRunTriggeredWebJobResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientRunTriggeredWebJobResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientRunTriggeredWebJobResponse{}, err
 	}
 	return WebAppsClientRunTriggeredWebJobResponse{}, nil
 }
@@ -25202,7 +25484,8 @@ func (client *WebAppsClient) RunTriggeredWebJobSlot(ctx context.Context, resourc
 		return WebAppsClientRunTriggeredWebJobSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientRunTriggeredWebJobSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientRunTriggeredWebJobSlotResponse{}, err
 	}
 	return WebAppsClientRunTriggeredWebJobSlotResponse{}, nil
 }
@@ -25262,7 +25545,8 @@ func (client *WebAppsClient) Start(ctx context.Context, resourceGroupName string
 		return WebAppsClientStartResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientStartResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStartResponse{}, err
 	}
 	return WebAppsClientStartResponse{}, nil
 }
@@ -25316,7 +25600,8 @@ func (client *WebAppsClient) StartContinuousWebJob(ctx context.Context, resource
 		return WebAppsClientStartContinuousWebJobResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientStartContinuousWebJobResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStartContinuousWebJobResponse{}, err
 	}
 	return WebAppsClientStartContinuousWebJobResponse{}, nil
 }
@@ -25372,7 +25657,8 @@ func (client *WebAppsClient) StartContinuousWebJobSlot(ctx context.Context, reso
 		return WebAppsClientStartContinuousWebJobSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientStartContinuousWebJobSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStartContinuousWebJobSlotResponse{}, err
 	}
 	return WebAppsClientStartContinuousWebJobSlotResponse{}, nil
 }
@@ -25433,7 +25719,8 @@ func (client *WebAppsClient) StartSlot(ctx context.Context, resourceGroupName st
 		return WebAppsClientStartSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientStartSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStartSlotResponse{}, err
 	}
 	return WebAppsClientStartSlotResponse{}, nil
 }
@@ -25489,7 +25776,8 @@ func (client *WebAppsClient) StartWebSiteNetworkTrace(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientStartWebSiteNetworkTraceResponse{}, err
 	}
-	return client.startWebSiteNetworkTraceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.startWebSiteNetworkTraceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // startWebSiteNetworkTraceCreateRequest creates the StartWebSiteNetworkTrace request.
@@ -25562,7 +25850,8 @@ func (client *WebAppsClient) StartWebSiteNetworkTraceSlot(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientStartWebSiteNetworkTraceSlotResponse{}, err
 	}
-	return client.startWebSiteNetworkTraceSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.startWebSiteNetworkTraceSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // startWebSiteNetworkTraceSlotCreateRequest creates the StartWebSiteNetworkTraceSlot request.
@@ -25638,7 +25927,8 @@ func (client *WebAppsClient) Stop(ctx context.Context, resourceGroupName string,
 		return WebAppsClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientStopResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStopResponse{}, err
 	}
 	return WebAppsClientStopResponse{}, nil
 }
@@ -25692,7 +25982,8 @@ func (client *WebAppsClient) StopContinuousWebJob(ctx context.Context, resourceG
 		return WebAppsClientStopContinuousWebJobResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientStopContinuousWebJobResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStopContinuousWebJobResponse{}, err
 	}
 	return WebAppsClientStopContinuousWebJobResponse{}, nil
 }
@@ -25748,7 +26039,8 @@ func (client *WebAppsClient) StopContinuousWebJobSlot(ctx context.Context, resou
 		return WebAppsClientStopContinuousWebJobSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientStopContinuousWebJobSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStopContinuousWebJobSlotResponse{}, err
 	}
 	return WebAppsClientStopContinuousWebJobSlotResponse{}, nil
 }
@@ -25809,7 +26101,8 @@ func (client *WebAppsClient) StopNetworkTrace(ctx context.Context, resourceGroup
 		return WebAppsClientStopNetworkTraceResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientStopNetworkTraceResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStopNetworkTraceResponse{}, err
 	}
 	return WebAppsClientStopNetworkTraceResponse{}, nil
 }
@@ -25863,7 +26156,8 @@ func (client *WebAppsClient) StopNetworkTraceSlot(ctx context.Context, resourceG
 		return WebAppsClientStopNetworkTraceSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientStopNetworkTraceSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStopNetworkTraceSlotResponse{}, err
 	}
 	return WebAppsClientStopNetworkTraceSlotResponse{}, nil
 }
@@ -25920,7 +26214,8 @@ func (client *WebAppsClient) StopSlot(ctx context.Context, resourceGroupName str
 		return WebAppsClientStopSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientStopSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStopSlotResponse{}, err
 	}
 	return WebAppsClientStopSlotResponse{}, nil
 }
@@ -25977,7 +26272,8 @@ func (client *WebAppsClient) StopWebSiteNetworkTrace(ctx context.Context, resour
 		return WebAppsClientStopWebSiteNetworkTraceResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientStopWebSiteNetworkTraceResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStopWebSiteNetworkTraceResponse{}, err
 	}
 	return WebAppsClientStopWebSiteNetworkTraceResponse{}, nil
 }
@@ -26031,7 +26327,8 @@ func (client *WebAppsClient) StopWebSiteNetworkTraceSlot(ctx context.Context, re
 		return WebAppsClientStopWebSiteNetworkTraceSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebAppsClientStopWebSiteNetworkTraceSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientStopWebSiteNetworkTraceSlotResponse{}, err
 	}
 	return WebAppsClientStopWebSiteNetworkTraceSlotResponse{}, nil
 }
@@ -26088,7 +26385,8 @@ func (client *WebAppsClient) SyncFunctionTriggers(ctx context.Context, resourceG
 		return WebAppsClientSyncFunctionTriggersResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientSyncFunctionTriggersResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientSyncFunctionTriggersResponse{}, err
 	}
 	return WebAppsClientSyncFunctionTriggersResponse{}, nil
 }
@@ -26142,7 +26440,8 @@ func (client *WebAppsClient) SyncFunctionTriggersSlot(ctx context.Context, resou
 		return WebAppsClientSyncFunctionTriggersSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientSyncFunctionTriggersSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientSyncFunctionTriggersSlotResponse{}, err
 	}
 	return WebAppsClientSyncFunctionTriggersSlotResponse{}, nil
 }
@@ -26198,7 +26497,8 @@ func (client *WebAppsClient) SyncFunctions(ctx context.Context, resourceGroupNam
 		return WebAppsClientSyncFunctionsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientSyncFunctionsResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientSyncFunctionsResponse{}, err
 	}
 	return WebAppsClientSyncFunctionsResponse{}, nil
 }
@@ -26252,7 +26552,8 @@ func (client *WebAppsClient) SyncFunctionsSlot(ctx context.Context, resourceGrou
 		return WebAppsClientSyncFunctionsSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebAppsClientSyncFunctionsSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientSyncFunctionsSlotResponse{}, err
 	}
 	return WebAppsClientSyncFunctionsSlotResponse{}, nil
 }
@@ -26308,7 +26609,8 @@ func (client *WebAppsClient) SyncRepository(ctx context.Context, resourceGroupNa
 		return WebAppsClientSyncRepositoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientSyncRepositoryResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientSyncRepositoryResponse{}, err
 	}
 	return WebAppsClientSyncRepositoryResponse{}, nil
 }
@@ -26362,7 +26664,8 @@ func (client *WebAppsClient) SyncRepositorySlot(ctx context.Context, resourceGro
 		return WebAppsClientSyncRepositorySlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebAppsClientSyncRepositorySlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebAppsClientSyncRepositorySlotResponse{}, err
 	}
 	return WebAppsClientSyncRepositorySlotResponse{}, nil
 }
@@ -26418,7 +26721,8 @@ func (client *WebAppsClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WebAppsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -26486,7 +26790,8 @@ func (client *WebAppsClient) UpdateApplicationSettings(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientUpdateApplicationSettingsResponse{}, err
 	}
-	return client.updateApplicationSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateApplicationSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateApplicationSettingsCreateRequest creates the UpdateApplicationSettings request.
@@ -26555,7 +26860,8 @@ func (client *WebAppsClient) UpdateApplicationSettingsSlot(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientUpdateApplicationSettingsSlotResponse{}, err
 	}
-	return client.updateApplicationSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateApplicationSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateApplicationSettingsSlotCreateRequest creates the UpdateApplicationSettingsSlot request.
@@ -26627,7 +26933,8 @@ func (client *WebAppsClient) UpdateAuthSettings(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsResponse{}, err
 	}
-	return client.updateAuthSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateAuthSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateAuthSettingsCreateRequest creates the UpdateAuthSettings request.
@@ -26696,7 +27003,8 @@ func (client *WebAppsClient) UpdateAuthSettingsSlot(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsSlotResponse{}, err
 	}
-	return client.updateAuthSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateAuthSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateAuthSettingsSlotCreateRequest creates the UpdateAuthSettingsSlot request.
@@ -26768,7 +27076,8 @@ func (client *WebAppsClient) UpdateAuthSettingsV2(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsV2Response{}, err
 	}
-	return client.updateAuthSettingsV2HandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateAuthSettingsV2HandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateAuthSettingsV2CreateRequest creates the UpdateAuthSettingsV2 request.
@@ -26837,7 +27146,8 @@ func (client *WebAppsClient) UpdateAuthSettingsV2Slot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientUpdateAuthSettingsV2SlotResponse{}, err
 	}
-	return client.updateAuthSettingsV2SlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateAuthSettingsV2SlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateAuthSettingsV2SlotCreateRequest creates the UpdateAuthSettingsV2Slot request.
@@ -26909,7 +27219,8 @@ func (client *WebAppsClient) UpdateAzureStorageAccounts(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientUpdateAzureStorageAccountsResponse{}, err
 	}
-	return client.updateAzureStorageAccountsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateAzureStorageAccountsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateAzureStorageAccountsCreateRequest creates the UpdateAzureStorageAccounts request.
@@ -26978,7 +27289,8 @@ func (client *WebAppsClient) UpdateAzureStorageAccountsSlot(ctx context.Context,
 	if err != nil {
 		return WebAppsClientUpdateAzureStorageAccountsSlotResponse{}, err
 	}
-	return client.updateAzureStorageAccountsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateAzureStorageAccountsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateAzureStorageAccountsSlotCreateRequest creates the UpdateAzureStorageAccountsSlot request.
@@ -27050,7 +27362,8 @@ func (client *WebAppsClient) UpdateBackupConfiguration(ctx context.Context, reso
 	if err != nil {
 		return WebAppsClientUpdateBackupConfigurationResponse{}, err
 	}
-	return client.updateBackupConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateBackupConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateBackupConfigurationCreateRequest creates the UpdateBackupConfiguration request.
@@ -27119,7 +27432,8 @@ func (client *WebAppsClient) UpdateBackupConfigurationSlot(ctx context.Context, 
 	if err != nil {
 		return WebAppsClientUpdateBackupConfigurationSlotResponse{}, err
 	}
-	return client.updateBackupConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateBackupConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateBackupConfigurationSlotCreateRequest creates the UpdateBackupConfigurationSlot request.
@@ -27191,7 +27505,8 @@ func (client *WebAppsClient) UpdateConfiguration(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientUpdateConfigurationResponse{}, err
 	}
-	return client.updateConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateConfigurationCreateRequest creates the UpdateConfiguration request.
@@ -27260,7 +27575,8 @@ func (client *WebAppsClient) UpdateConfigurationSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientUpdateConfigurationSlotResponse{}, err
 	}
-	return client.updateConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateConfigurationSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateConfigurationSlotCreateRequest creates the UpdateConfigurationSlot request.
@@ -27332,7 +27648,8 @@ func (client *WebAppsClient) UpdateConnectionStrings(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientUpdateConnectionStringsResponse{}, err
 	}
-	return client.updateConnectionStringsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateConnectionStringsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateConnectionStringsCreateRequest creates the UpdateConnectionStrings request.
@@ -27401,7 +27718,8 @@ func (client *WebAppsClient) UpdateConnectionStringsSlot(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientUpdateConnectionStringsSlotResponse{}, err
 	}
-	return client.updateConnectionStringsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateConnectionStringsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateConnectionStringsSlotCreateRequest creates the UpdateConnectionStringsSlot request.
@@ -27473,7 +27791,8 @@ func (client *WebAppsClient) UpdateDiagnosticLogsConfig(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientUpdateDiagnosticLogsConfigResponse{}, err
 	}
-	return client.updateDiagnosticLogsConfigHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateDiagnosticLogsConfigHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateDiagnosticLogsConfigCreateRequest creates the UpdateDiagnosticLogsConfig request.
@@ -27543,7 +27862,8 @@ func (client *WebAppsClient) UpdateDiagnosticLogsConfigSlot(ctx context.Context,
 	if err != nil {
 		return WebAppsClientUpdateDiagnosticLogsConfigSlotResponse{}, err
 	}
-	return client.updateDiagnosticLogsConfigSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateDiagnosticLogsConfigSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateDiagnosticLogsConfigSlotCreateRequest creates the UpdateDiagnosticLogsConfigSlot request.
@@ -27616,7 +27936,8 @@ func (client *WebAppsClient) UpdateDomainOwnershipIdentifier(ctx context.Context
 	if err != nil {
 		return WebAppsClientUpdateDomainOwnershipIdentifierResponse{}, err
 	}
-	return client.updateDomainOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateDomainOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateDomainOwnershipIdentifierCreateRequest creates the UpdateDomainOwnershipIdentifier request.
@@ -27687,7 +28008,8 @@ func (client *WebAppsClient) UpdateDomainOwnershipIdentifierSlot(ctx context.Con
 	if err != nil {
 		return WebAppsClientUpdateDomainOwnershipIdentifierSlotResponse{}, err
 	}
-	return client.updateDomainOwnershipIdentifierSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateDomainOwnershipIdentifierSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateDomainOwnershipIdentifierSlotCreateRequest creates the UpdateDomainOwnershipIdentifierSlot request.
@@ -27762,7 +28084,8 @@ func (client *WebAppsClient) UpdateFtpAllowed(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientUpdateFtpAllowedResponse{}, err
 	}
-	return client.updateFtpAllowedHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateFtpAllowedHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateFtpAllowedCreateRequest creates the UpdateFtpAllowed request.
@@ -27829,7 +28152,8 @@ func (client *WebAppsClient) UpdateFtpAllowedSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientUpdateFtpAllowedSlotResponse{}, err
 	}
-	return client.updateFtpAllowedSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateFtpAllowedSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateFtpAllowedSlotCreateRequest creates the UpdateFtpAllowedSlot request.
@@ -27903,7 +28227,8 @@ func (client *WebAppsClient) UpdateHybridConnection(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientUpdateHybridConnectionResponse{}, err
 	}
-	return client.updateHybridConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHybridConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateHybridConnectionCreateRequest creates the UpdateHybridConnection request.
@@ -27977,7 +28302,8 @@ func (client *WebAppsClient) UpdateHybridConnectionSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientUpdateHybridConnectionSlotResponse{}, err
 	}
-	return client.updateHybridConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHybridConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateHybridConnectionSlotCreateRequest creates the UpdateHybridConnectionSlot request.
@@ -28056,7 +28382,8 @@ func (client *WebAppsClient) UpdateMachineKey(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientUpdateMachineKeyResponse{}, err
 	}
-	return client.updateMachineKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateMachineKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateMachineKeyCreateRequest creates the UpdateMachineKey request.
@@ -28119,7 +28446,8 @@ func (client *WebAppsClient) UpdateMetadata(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebAppsClientUpdateMetadataResponse{}, err
 	}
-	return client.updateMetadataHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateMetadataHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateMetadataCreateRequest creates the UpdateMetadata request.
@@ -28188,7 +28516,8 @@ func (client *WebAppsClient) UpdateMetadataSlot(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientUpdateMetadataSlotResponse{}, err
 	}
-	return client.updateMetadataSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateMetadataSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateMetadataSlotCreateRequest creates the UpdateMetadataSlot request.
@@ -28261,7 +28590,8 @@ func (client *WebAppsClient) UpdatePremierAddOn(ctx context.Context, resourceGro
 	if err != nil {
 		return WebAppsClientUpdatePremierAddOnResponse{}, err
 	}
-	return client.updatePremierAddOnHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updatePremierAddOnHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updatePremierAddOnCreateRequest creates the UpdatePremierAddOn request.
@@ -28331,7 +28661,8 @@ func (client *WebAppsClient) UpdatePremierAddOnSlot(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientUpdatePremierAddOnSlotResponse{}, err
 	}
-	return client.updatePremierAddOnSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updatePremierAddOnSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updatePremierAddOnSlotCreateRequest creates the UpdatePremierAddOnSlot request.
@@ -28408,7 +28739,8 @@ func (client *WebAppsClient) UpdateRelayServiceConnection(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientUpdateRelayServiceConnectionResponse{}, err
 	}
-	return client.updateRelayServiceConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateRelayServiceConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateRelayServiceConnectionCreateRequest creates the UpdateRelayServiceConnection request.
@@ -28478,7 +28810,8 @@ func (client *WebAppsClient) UpdateRelayServiceConnectionSlot(ctx context.Contex
 	if err != nil {
 		return WebAppsClientUpdateRelayServiceConnectionSlotResponse{}, err
 	}
-	return client.updateRelayServiceConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateRelayServiceConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateRelayServiceConnectionSlotCreateRequest creates the UpdateRelayServiceConnectionSlot request.
@@ -28553,7 +28886,8 @@ func (client *WebAppsClient) UpdateScmAllowed(ctx context.Context, resourceGroup
 	if err != nil {
 		return WebAppsClientUpdateScmAllowedResponse{}, err
 	}
-	return client.updateScmAllowedHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateScmAllowedHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateScmAllowedCreateRequest creates the UpdateScmAllowed request.
@@ -28620,7 +28954,8 @@ func (client *WebAppsClient) UpdateScmAllowedSlot(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientUpdateScmAllowedSlotResponse{}, err
 	}
-	return client.updateScmAllowedSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateScmAllowedSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateScmAllowedSlotCreateRequest creates the UpdateScmAllowedSlot request.
@@ -28692,7 +29027,8 @@ func (client *WebAppsClient) UpdateSitePushSettings(ctx context.Context, resourc
 	if err != nil {
 		return WebAppsClientUpdateSitePushSettingsResponse{}, err
 	}
-	return client.updateSitePushSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateSitePushSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateSitePushSettingsCreateRequest creates the UpdateSitePushSettings request.
@@ -28761,7 +29097,8 @@ func (client *WebAppsClient) UpdateSitePushSettingsSlot(ctx context.Context, res
 	if err != nil {
 		return WebAppsClientUpdateSitePushSettingsSlotResponse{}, err
 	}
-	return client.updateSitePushSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateSitePushSettingsSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateSitePushSettingsSlotCreateRequest creates the UpdateSitePushSettingsSlot request.
@@ -28833,7 +29170,8 @@ func (client *WebAppsClient) UpdateSlot(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return WebAppsClientUpdateSlotResponse{}, err
 	}
-	return client.updateSlotHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.updateSlotHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // updateSlotCreateRequest creates the UpdateSlot request.
@@ -28906,7 +29244,8 @@ func (client *WebAppsClient) UpdateSlotConfigurationNames(ctx context.Context, r
 	if err != nil {
 		return WebAppsClientUpdateSlotConfigurationNamesResponse{}, err
 	}
-	return client.updateSlotConfigurationNamesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateSlotConfigurationNamesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateSlotConfigurationNamesCreateRequest creates the UpdateSlotConfigurationNames request.
@@ -28974,7 +29313,8 @@ func (client *WebAppsClient) UpdateSourceControl(ctx context.Context, resourceGr
 	if err != nil {
 		return WebAppsClientUpdateSourceControlResponse{}, err
 	}
-	return client.updateSourceControlHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	resp, err := client.updateSourceControlHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	return resp, err
 }
 
 // updateSourceControlCreateRequest creates the UpdateSourceControl request.
@@ -29044,7 +29384,8 @@ func (client *WebAppsClient) UpdateSourceControlSlot(ctx context.Context, resour
 	if err != nil {
 		return WebAppsClientUpdateSourceControlSlotResponse{}, err
 	}
-	return client.updateSourceControlSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	resp, err := client.updateSourceControlSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	return resp, err
 }
 
 // updateSourceControlSlotCreateRequest creates the UpdateSourceControlSlot request.
@@ -29120,7 +29461,8 @@ func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnectionWithCheck(ctx co
 	if err != nil {
 		return WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckResponse{}, err
 	}
-	return client.updateSwiftVirtualNetworkConnectionWithCheckHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateSwiftVirtualNetworkConnectionWithCheckHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateSwiftVirtualNetworkConnectionWithCheckCreateRequest creates the UpdateSwiftVirtualNetworkConnectionWithCheck request.
@@ -29195,7 +29537,8 @@ func (client *WebAppsClient) UpdateSwiftVirtualNetworkConnectionWithCheckSlot(ct
 	if err != nil {
 		return WebAppsClientUpdateSwiftVirtualNetworkConnectionWithCheckSlotResponse{}, err
 	}
-	return client.updateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateSwiftVirtualNetworkConnectionWithCheckSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateSwiftVirtualNetworkConnectionWithCheckSlotCreateRequest creates the UpdateSwiftVirtualNetworkConnectionWithCheckSlot request.
@@ -29268,7 +29611,8 @@ func (client *WebAppsClient) UpdateVnetConnection(ctx context.Context, resourceG
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionResponse{}, err
 	}
-	return client.updateVnetConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateVnetConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateVnetConnectionCreateRequest creates the UpdateVnetConnection request.
@@ -29342,7 +29686,8 @@ func (client *WebAppsClient) UpdateVnetConnectionGateway(ctx context.Context, re
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionGatewayResponse{}, err
 	}
-	return client.updateVnetConnectionGatewayHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateVnetConnectionGatewayHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateVnetConnectionGatewayCreateRequest creates the UpdateVnetConnectionGateway request.
@@ -29416,7 +29761,8 @@ func (client *WebAppsClient) UpdateVnetConnectionGatewaySlot(ctx context.Context
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionGatewaySlotResponse{}, err
 	}
-	return client.updateVnetConnectionGatewaySlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateVnetConnectionGatewaySlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateVnetConnectionGatewaySlotCreateRequest creates the UpdateVnetConnectionGatewaySlot request.
@@ -29495,7 +29841,8 @@ func (client *WebAppsClient) UpdateVnetConnectionSlot(ctx context.Context, resou
 	if err != nil {
 		return WebAppsClientUpdateVnetConnectionSlotResponse{}, err
 	}
-	return client.updateVnetConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateVnetConnectionSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateVnetConnectionSlotCreateRequest creates the UpdateVnetConnectionSlot request.

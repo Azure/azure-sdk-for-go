@@ -90,7 +90,8 @@ func (client *EnvironmentsClient) approveOrRejectPrivateEndpointConnection(ctx c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -192,7 +193,8 @@ func (client *EnvironmentsClient) changeVnet(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -293,7 +295,8 @@ func (client *EnvironmentsClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -373,7 +376,8 @@ func (client *EnvironmentsClient) createOrUpdateMultiRolePool(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -454,7 +458,8 @@ func (client *EnvironmentsClient) createOrUpdateWorkerPool(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -537,7 +542,8 @@ func (client *EnvironmentsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -615,7 +621,8 @@ func (client *EnvironmentsClient) deletePrivateEndpointConnection(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -712,7 +719,8 @@ func (client *EnvironmentsClient) resume(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -826,7 +834,8 @@ func (client *EnvironmentsClient) suspend(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -922,7 +931,8 @@ func (client *EnvironmentsClient) upgrade(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -974,7 +984,8 @@ func (client *EnvironmentsClient) DeleteAseCustomDNSSuffixConfiguration(ctx cont
 	if err != nil {
 		return EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse{}, err
 	}
-	return client.deleteAseCustomDNSSuffixConfigurationHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.deleteAseCustomDNSSuffixConfigurationHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // deleteAseCustomDNSSuffixConfigurationCreateRequest creates the DeleteAseCustomDNSSuffixConfiguration request.
@@ -1036,7 +1047,8 @@ func (client *EnvironmentsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return EnvironmentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -1099,7 +1111,8 @@ func (client *EnvironmentsClient) GetAseCustomDNSSuffixConfiguration(ctx context
 	if err != nil {
 		return EnvironmentsClientGetAseCustomDNSSuffixConfigurationResponse{}, err
 	}
-	return client.getAseCustomDNSSuffixConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAseCustomDNSSuffixConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAseCustomDNSSuffixConfigurationCreateRequest creates the GetAseCustomDNSSuffixConfiguration request.
@@ -1162,7 +1175,8 @@ func (client *EnvironmentsClient) GetAseV3NetworkingConfiguration(ctx context.Co
 	if err != nil {
 		return EnvironmentsClientGetAseV3NetworkingConfigurationResponse{}, err
 	}
-	return client.getAseV3NetworkingConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAseV3NetworkingConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAseV3NetworkingConfigurationCreateRequest creates the GetAseV3NetworkingConfiguration request.
@@ -1225,7 +1239,8 @@ func (client *EnvironmentsClient) GetDiagnosticsItem(ctx context.Context, resour
 	if err != nil {
 		return EnvironmentsClientGetDiagnosticsItemResponse{}, err
 	}
-	return client.getDiagnosticsItemHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDiagnosticsItemHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDiagnosticsItemCreateRequest creates the GetDiagnosticsItem request.
@@ -1292,7 +1307,8 @@ func (client *EnvironmentsClient) GetMultiRolePool(ctx context.Context, resource
 	if err != nil {
 		return EnvironmentsClientGetMultiRolePoolResponse{}, err
 	}
-	return client.getMultiRolePoolHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMultiRolePoolHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMultiRolePoolCreateRequest creates the GetMultiRolePool request.
@@ -1356,7 +1372,8 @@ func (client *EnvironmentsClient) GetPrivateEndpointConnection(ctx context.Conte
 	if err != nil {
 		return EnvironmentsClientGetPrivateEndpointConnectionResponse{}, err
 	}
-	return client.getPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateEndpointConnectionCreateRequest creates the GetPrivateEndpointConnection request.
@@ -1423,7 +1440,8 @@ func (client *EnvironmentsClient) GetPrivateLinkResources(ctx context.Context, r
 	if err != nil {
 		return EnvironmentsClientGetPrivateLinkResourcesResponse{}, err
 	}
-	return client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
@@ -1485,7 +1503,8 @@ func (client *EnvironmentsClient) GetVipInfo(ctx context.Context, resourceGroupN
 	if err != nil {
 		return EnvironmentsClientGetVipInfoResponse{}, err
 	}
-	return client.getVipInfoHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVipInfoHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVipInfoCreateRequest creates the GetVipInfo request.
@@ -1549,7 +1568,8 @@ func (client *EnvironmentsClient) GetWorkerPool(ctx context.Context, resourceGro
 	if err != nil {
 		return EnvironmentsClientGetWorkerPoolResponse{}, err
 	}
-	return client.getWorkerPoolHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getWorkerPoolHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getWorkerPoolCreateRequest creates the GetWorkerPool request.
@@ -1616,7 +1636,8 @@ func (client *EnvironmentsClient) ListDiagnostics(ctx context.Context, resourceG
 	if err != nil {
 		return EnvironmentsClientListDiagnosticsResponse{}, err
 	}
-	return client.listDiagnosticsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listDiagnosticsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listDiagnosticsCreateRequest creates the ListDiagnostics request.
@@ -1679,7 +1700,8 @@ func (client *EnvironmentsClient) ListOperations(ctx context.Context, resourceGr
 	if err != nil {
 		return EnvironmentsClientListOperationsResponse{}, err
 	}
-	return client.listOperationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listOperationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listOperationsCreateRequest creates the ListOperations request.
@@ -3267,7 +3289,8 @@ func (client *EnvironmentsClient) Reboot(ctx context.Context, resourceGroupName 
 		return EnvironmentsClientRebootResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return EnvironmentsClientRebootResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EnvironmentsClientRebootResponse{}, err
 	}
 	return EnvironmentsClientRebootResponse{}, nil
 }
@@ -3320,7 +3343,8 @@ func (client *EnvironmentsClient) TestUpgradeAvailableNotification(ctx context.C
 		return EnvironmentsClientTestUpgradeAvailableNotificationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return EnvironmentsClientTestUpgradeAvailableNotificationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EnvironmentsClientTestUpgradeAvailableNotificationResponse{}, err
 	}
 	return EnvironmentsClientTestUpgradeAvailableNotificationResponse{}, nil
 }
@@ -3372,7 +3396,8 @@ func (client *EnvironmentsClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return EnvironmentsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -3439,7 +3464,8 @@ func (client *EnvironmentsClient) UpdateAseCustomDNSSuffixConfiguration(ctx cont
 	if err != nil {
 		return EnvironmentsClientUpdateAseCustomDNSSuffixConfigurationResponse{}, err
 	}
-	return client.updateAseCustomDNSSuffixConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateAseCustomDNSSuffixConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateAseCustomDNSSuffixConfigurationCreateRequest creates the UpdateAseCustomDNSSuffixConfiguration request.
@@ -3506,7 +3532,8 @@ func (client *EnvironmentsClient) UpdateAseNetworkingConfiguration(ctx context.C
 	if err != nil {
 		return EnvironmentsClientUpdateAseNetworkingConfigurationResponse{}, err
 	}
-	return client.updateAseNetworkingConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateAseNetworkingConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateAseNetworkingConfigurationCreateRequest creates the UpdateAseNetworkingConfiguration request.
@@ -3574,7 +3601,8 @@ func (client *EnvironmentsClient) UpdateMultiRolePool(ctx context.Context, resou
 	if err != nil {
 		return EnvironmentsClientUpdateMultiRolePoolResponse{}, err
 	}
-	return client.updateMultiRolePoolHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.updateMultiRolePoolHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // updateMultiRolePoolCreateRequest creates the UpdateMultiRolePool request.
@@ -3643,7 +3671,8 @@ func (client *EnvironmentsClient) UpdateWorkerPool(ctx context.Context, resource
 	if err != nil {
 		return EnvironmentsClientUpdateWorkerPoolResponse{}, err
 	}
-	return client.updateWorkerPoolHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.updateWorkerPoolHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // updateWorkerPoolCreateRequest creates the UpdateWorkerPool request.

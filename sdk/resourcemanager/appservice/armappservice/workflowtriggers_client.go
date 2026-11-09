@@ -87,7 +87,8 @@ func (client *WorkflowTriggersClient) run(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -146,7 +147,8 @@ func (client *WorkflowTriggersClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WorkflowTriggersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -217,7 +219,8 @@ func (client *WorkflowTriggersClient) GetSchemaJSON(ctx context.Context, resourc
 	if err != nil {
 		return WorkflowTriggersClientGetSchemaJSONResponse{}, err
 	}
-	return client.getSchemaJSONHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSchemaJSONHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSchemaJSONCreateRequest creates the GetSchemaJSON request.
@@ -288,7 +291,8 @@ func (client *WorkflowTriggersClient) ListCallbackURL(ctx context.Context, resou
 	if err != nil {
 		return WorkflowTriggersClientListCallbackURLResponse{}, err
 	}
-	return client.listCallbackURLHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listCallbackURLHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCallbackURLCreateRequest creates the ListCallbackURL request.

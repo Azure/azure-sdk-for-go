@@ -69,7 +69,8 @@ func (client *SitesClient) GetNetworkSecurityPerimeterConfiguration(ctx context.
 	if err != nil {
 		return SitesClientGetNetworkSecurityPerimeterConfigurationResponse{}, err
 	}
-	return client.getNetworkSecurityPerimeterConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNetworkSecurityPerimeterConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNetworkSecurityPerimeterConfigurationCreateRequest creates the GetNetworkSecurityPerimeterConfiguration request.

@@ -91,7 +91,8 @@ func (client *StaticSitesClient) approveOrRejectPrivateEndpointConnection(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -176,7 +177,8 @@ func (client *StaticSitesClient) createOrUpdateStaticSite(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -260,7 +262,8 @@ func (client *StaticSitesClient) createOrUpdateStaticSiteCustomDomain(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -344,7 +347,8 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSite(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -424,7 +428,8 @@ func (client *StaticSitesClient) createZipDeploymentForStaticSiteBuild(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -507,7 +512,8 @@ func (client *StaticSitesClient) deletePrivateEndpointConnection(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -586,7 +592,8 @@ func (client *StaticSitesClient) deleteStaticSite(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -661,7 +668,8 @@ func (client *StaticSitesClient) deleteStaticSiteBuild(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -740,7 +748,8 @@ func (client *StaticSitesClient) deleteStaticSiteCustomDomain(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -818,7 +827,8 @@ func (client *StaticSitesClient) detachStaticSite(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -894,7 +904,8 @@ func (client *StaticSitesClient) linkBackend(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -980,7 +991,8 @@ func (client *StaticSitesClient) linkBackendToBuild(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1069,7 +1081,8 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSite(c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1158,7 +1171,8 @@ func (client *StaticSitesClient) registerUserProvidedFunctionAppWithStaticSiteBu
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1250,7 +1264,8 @@ func (client *StaticSitesClient) validateBackend(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1335,7 +1350,8 @@ func (client *StaticSitesClient) validateBackendForBuild(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1424,7 +1440,8 @@ func (client *StaticSitesClient) validateCustomDomainCanBeAddedToStaticSite(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1486,7 +1503,8 @@ func (client *StaticSitesClient) CreateOrUpdateBasicAuth(ctx context.Context, re
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateBasicAuthResponse{}, err
 	}
-	return client.createOrUpdateBasicAuthHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateBasicAuthHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateBasicAuthCreateRequest creates the CreateOrUpdateBasicAuth request.
@@ -1560,7 +1578,8 @@ func (client *StaticSitesClient) CreateOrUpdateBuildDatabaseConnection(ctx conte
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateBuildDatabaseConnectionResponse{}, err
 	}
-	return client.createOrUpdateBuildDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateBuildDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateBuildDatabaseConnectionCreateRequest creates the CreateOrUpdateBuildDatabaseConnection request.
@@ -1637,7 +1656,8 @@ func (client *StaticSitesClient) CreateOrUpdateDatabaseConnection(ctx context.Co
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateDatabaseConnectionResponse{}, err
 	}
-	return client.createOrUpdateDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateDatabaseConnectionCreateRequest creates the CreateOrUpdateDatabaseConnection request.
@@ -1709,7 +1729,8 @@ func (client *StaticSitesClient) CreateOrUpdateStaticSiteAppSettings(ctx context
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteAppSettingsResponse{}, err
 	}
-	return client.createOrUpdateStaticSiteAppSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateStaticSiteAppSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateStaticSiteAppSettingsCreateRequest creates the CreateOrUpdateStaticSiteAppSettings request.
@@ -1778,7 +1799,8 @@ func (client *StaticSitesClient) CreateOrUpdateStaticSiteBuildAppSettings(ctx co
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteBuildAppSettingsResponse{}, err
 	}
-	return client.createOrUpdateStaticSiteBuildAppSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateStaticSiteBuildAppSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateStaticSiteBuildAppSettingsCreateRequest creates the CreateOrUpdateStaticSiteBuildAppSettings request.
@@ -1851,7 +1873,8 @@ func (client *StaticSitesClient) CreateOrUpdateStaticSiteBuildFunctionAppSetting
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
-	return client.createOrUpdateStaticSiteBuildFunctionAppSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateStaticSiteBuildFunctionAppSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateStaticSiteBuildFunctionAppSettingsCreateRequest creates the CreateOrUpdateStaticSiteBuildFunctionAppSettings request.
@@ -1923,7 +1946,8 @@ func (client *StaticSitesClient) CreateOrUpdateStaticSiteFunctionAppSettings(ctx
 	if err != nil {
 		return StaticSitesClientCreateOrUpdateStaticSiteFunctionAppSettingsResponse{}, err
 	}
-	return client.createOrUpdateStaticSiteFunctionAppSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateStaticSiteFunctionAppSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateStaticSiteFunctionAppSettingsCreateRequest creates the CreateOrUpdateStaticSiteFunctionAppSettings request.
@@ -1990,7 +2014,8 @@ func (client *StaticSitesClient) CreateUserRolesInvitationLink(ctx context.Conte
 	if err != nil {
 		return StaticSitesClientCreateUserRolesInvitationLinkResponse{}, err
 	}
-	return client.createUserRolesInvitationLinkHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createUserRolesInvitationLinkHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createUserRolesInvitationLinkCreateRequest creates the CreateUserRolesInvitationLink request.
@@ -2060,7 +2085,8 @@ func (client *StaticSitesClient) DeleteBuildDatabaseConnection(ctx context.Conte
 		return StaticSitesClientDeleteBuildDatabaseConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return StaticSitesClientDeleteBuildDatabaseConnectionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StaticSitesClientDeleteBuildDatabaseConnectionResponse{}, err
 	}
 	return StaticSitesClientDeleteBuildDatabaseConnectionResponse{}, nil
 }
@@ -2122,7 +2148,8 @@ func (client *StaticSitesClient) DeleteDatabaseConnection(ctx context.Context, r
 		return StaticSitesClientDeleteDatabaseConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return StaticSitesClientDeleteDatabaseConnectionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StaticSitesClientDeleteDatabaseConnectionResponse{}, err
 	}
 	return StaticSitesClientDeleteDatabaseConnectionResponse{}, nil
 }
@@ -2178,7 +2205,8 @@ func (client *StaticSitesClient) DeleteStaticSiteUser(ctx context.Context, resou
 		return StaticSitesClientDeleteStaticSiteUserResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return StaticSitesClientDeleteStaticSiteUserResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StaticSitesClientDeleteStaticSiteUserResponse{}, err
 	}
 	return StaticSitesClientDeleteStaticSiteUserResponse{}, nil
 }
@@ -2240,7 +2268,8 @@ func (client *StaticSitesClient) DetachUserProvidedFunctionAppFromStaticSite(ctx
 		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse{}, err
 	}
 	return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteResponse{}, nil
 }
@@ -2299,7 +2328,8 @@ func (client *StaticSitesClient) DetachUserProvidedFunctionAppFromStaticSiteBuil
 		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, err
 	}
 	return StaticSitesClientDetachUserProvidedFunctionAppFromStaticSiteBuildResponse{}, nil
 }
@@ -2360,7 +2390,8 @@ func (client *StaticSitesClient) GetBasicAuth(ctx context.Context, resourceGroup
 	if err != nil {
 		return StaticSitesClientGetBasicAuthResponse{}, err
 	}
-	return client.getBasicAuthHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBasicAuthHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBasicAuthCreateRequest creates the GetBasicAuth request.
@@ -2429,7 +2460,8 @@ func (client *StaticSitesClient) GetBuildDatabaseConnection(ctx context.Context,
 	if err != nil {
 		return StaticSitesClientGetBuildDatabaseConnectionResponse{}, err
 	}
-	return client.getBuildDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBuildDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBuildDatabaseConnectionCreateRequest creates the GetBuildDatabaseConnection request.
@@ -2502,7 +2534,8 @@ func (client *StaticSitesClient) GetBuildDatabaseConnectionWithDetails(ctx conte
 	if err != nil {
 		return StaticSitesClientGetBuildDatabaseConnectionWithDetailsResponse{}, err
 	}
-	return client.getBuildDatabaseConnectionWithDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBuildDatabaseConnectionWithDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBuildDatabaseConnectionWithDetailsCreateRequest creates the GetBuildDatabaseConnectionWithDetails request.
@@ -2574,7 +2607,8 @@ func (client *StaticSitesClient) GetDatabaseConnection(ctx context.Context, reso
 	if err != nil {
 		return StaticSitesClientGetDatabaseConnectionResponse{}, err
 	}
-	return client.getDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDatabaseConnectionCreateRequest creates the GetDatabaseConnection request.
@@ -2642,7 +2676,8 @@ func (client *StaticSitesClient) GetDatabaseConnectionWithDetails(ctx context.Co
 	if err != nil {
 		return StaticSitesClientGetDatabaseConnectionWithDetailsResponse{}, err
 	}
-	return client.getDatabaseConnectionWithDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDatabaseConnectionWithDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDatabaseConnectionWithDetailsCreateRequest creates the GetDatabaseConnectionWithDetails request.
@@ -2710,7 +2745,8 @@ func (client *StaticSitesClient) GetLinkedBackend(ctx context.Context, resourceG
 	if err != nil {
 		return StaticSitesClientGetLinkedBackendResponse{}, err
 	}
-	return client.getLinkedBackendHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLinkedBackendHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLinkedBackendCreateRequest creates the GetLinkedBackend request.
@@ -2779,7 +2815,8 @@ func (client *StaticSitesClient) GetLinkedBackendForBuild(ctx context.Context, r
 	if err != nil {
 		return StaticSitesClientGetLinkedBackendForBuildResponse{}, err
 	}
-	return client.getLinkedBackendForBuildHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLinkedBackendForBuildHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLinkedBackendForBuildCreateRequest creates the GetLinkedBackendForBuild request.
@@ -2851,7 +2888,8 @@ func (client *StaticSitesClient) GetPrivateEndpointConnection(ctx context.Contex
 	if err != nil {
 		return StaticSitesClientGetPrivateEndpointConnectionResponse{}, err
 	}
-	return client.getPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateEndpointConnectionCreateRequest creates the GetPrivateEndpointConnection request.
@@ -2918,7 +2956,8 @@ func (client *StaticSitesClient) GetPrivateLinkResources(ctx context.Context, re
 	if err != nil {
 		return StaticSitesClientGetPrivateLinkResourcesResponse{}, err
 	}
-	return client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
@@ -2981,7 +3020,8 @@ func (client *StaticSitesClient) GetStaticSite(ctx context.Context, resourceGrou
 	if err != nil {
 		return StaticSitesClientGetStaticSiteResponse{}, err
 	}
-	return client.getStaticSiteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getStaticSiteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getStaticSiteCreateRequest creates the GetStaticSite request.
@@ -3045,7 +3085,8 @@ func (client *StaticSitesClient) GetStaticSiteBuild(ctx context.Context, resourc
 	if err != nil {
 		return StaticSitesClientGetStaticSiteBuildResponse{}, err
 	}
-	return client.getStaticSiteBuildHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getStaticSiteBuildHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getStaticSiteBuildCreateRequest creates the GetStaticSiteBuild request.
@@ -3113,7 +3154,8 @@ func (client *StaticSitesClient) GetStaticSiteCustomDomain(ctx context.Context, 
 	if err != nil {
 		return StaticSitesClientGetStaticSiteCustomDomainResponse{}, err
 	}
-	return client.getStaticSiteCustomDomainHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getStaticSiteCustomDomainHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getStaticSiteCustomDomainCreateRequest creates the GetStaticSiteCustomDomain request.
@@ -3181,7 +3223,8 @@ func (client *StaticSitesClient) GetUserProvidedFunctionAppForStaticSite(ctx con
 	if err != nil {
 		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteResponse{}, err
 	}
-	return client.getUserProvidedFunctionAppForStaticSiteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getUserProvidedFunctionAppForStaticSiteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getUserProvidedFunctionAppForStaticSiteCreateRequest creates the GetUserProvidedFunctionAppForStaticSite request.
@@ -3251,7 +3294,8 @@ func (client *StaticSitesClient) GetUserProvidedFunctionAppForStaticSiteBuild(ct
 	if err != nil {
 		return StaticSitesClientGetUserProvidedFunctionAppForStaticSiteBuildResponse{}, err
 	}
-	return client.getUserProvidedFunctionAppForStaticSiteBuildHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getUserProvidedFunctionAppForStaticSiteBuildHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getUserProvidedFunctionAppForStaticSiteBuildCreateRequest creates the GetUserProvidedFunctionAppForStaticSiteBuild request.
@@ -3322,7 +3366,8 @@ func (client *StaticSitesClient) ListStaticSiteAppSettings(ctx context.Context, 
 	if err != nil {
 		return StaticSitesClientListStaticSiteAppSettingsResponse{}, err
 	}
-	return client.listStaticSiteAppSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listStaticSiteAppSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listStaticSiteAppSettingsCreateRequest creates the ListStaticSiteAppSettings request.
@@ -3386,7 +3431,8 @@ func (client *StaticSitesClient) ListStaticSiteBuildAppSettings(ctx context.Cont
 	if err != nil {
 		return StaticSitesClientListStaticSiteBuildAppSettingsResponse{}, err
 	}
-	return client.listStaticSiteBuildAppSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listStaticSiteBuildAppSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listStaticSiteBuildAppSettingsCreateRequest creates the ListStaticSiteBuildAppSettings request.
@@ -3454,7 +3500,8 @@ func (client *StaticSitesClient) ListStaticSiteBuildFunctionAppSettings(ctx cont
 	if err != nil {
 		return StaticSitesClientListStaticSiteBuildFunctionAppSettingsResponse{}, err
 	}
-	return client.listStaticSiteBuildFunctionAppSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listStaticSiteBuildFunctionAppSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listStaticSiteBuildFunctionAppSettingsCreateRequest creates the ListStaticSiteBuildFunctionAppSettings request.
@@ -3521,7 +3568,8 @@ func (client *StaticSitesClient) ListStaticSiteConfiguredRoles(ctx context.Conte
 	if err != nil {
 		return StaticSitesClientListStaticSiteConfiguredRolesResponse{}, err
 	}
-	return client.listStaticSiteConfiguredRolesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listStaticSiteConfiguredRolesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listStaticSiteConfiguredRolesCreateRequest creates the ListStaticSiteConfiguredRoles request.
@@ -3584,7 +3632,8 @@ func (client *StaticSitesClient) ListStaticSiteFunctionAppSettings(ctx context.C
 	if err != nil {
 		return StaticSitesClientListStaticSiteFunctionAppSettingsResponse{}, err
 	}
-	return client.listStaticSiteFunctionAppSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listStaticSiteFunctionAppSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listStaticSiteFunctionAppSettingsCreateRequest creates the ListStaticSiteFunctionAppSettings request.
@@ -3647,7 +3696,8 @@ func (client *StaticSitesClient) ListStaticSiteSecrets(ctx context.Context, reso
 	if err != nil {
 		return StaticSitesClientListStaticSiteSecretsResponse{}, err
 	}
-	return client.listStaticSiteSecretsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listStaticSiteSecretsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listStaticSiteSecretsCreateRequest creates the ListStaticSiteSecrets request.
@@ -5068,7 +5118,8 @@ func (client *StaticSitesClient) PreviewWorkflow(ctx context.Context, location s
 	if err != nil {
 		return StaticSitesClientPreviewWorkflowResponse{}, err
 	}
-	return client.previewWorkflowHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.previewWorkflowHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // previewWorkflowCreateRequest creates the PreviewWorkflow request.
@@ -5132,7 +5183,8 @@ func (client *StaticSitesClient) ResetStaticSiteAPIKey(ctx context.Context, reso
 		return StaticSitesClientResetStaticSiteAPIKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return StaticSitesClientResetStaticSiteAPIKeyResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StaticSitesClientResetStaticSiteAPIKeyResponse{}, err
 	}
 	return StaticSitesClientResetStaticSiteAPIKeyResponse{}, nil
 }
@@ -5190,7 +5242,8 @@ func (client *StaticSitesClient) UnlinkBackend(ctx context.Context, resourceGrou
 		return StaticSitesClientUnlinkBackendResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return StaticSitesClientUnlinkBackendResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StaticSitesClientUnlinkBackendResponse{}, err
 	}
 	return StaticSitesClientUnlinkBackendResponse{}, nil
 }
@@ -5252,7 +5305,8 @@ func (client *StaticSitesClient) UnlinkBackendFromBuild(ctx context.Context, res
 		return StaticSitesClientUnlinkBackendFromBuildResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return StaticSitesClientUnlinkBackendFromBuildResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StaticSitesClientUnlinkBackendFromBuildResponse{}, err
 	}
 	return StaticSitesClientUnlinkBackendFromBuildResponse{}, nil
 }
@@ -5318,7 +5372,8 @@ func (client *StaticSitesClient) UpdateBuildDatabaseConnection(ctx context.Conte
 	if err != nil {
 		return StaticSitesClientUpdateBuildDatabaseConnectionResponse{}, err
 	}
-	return client.updateBuildDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateBuildDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateBuildDatabaseConnectionCreateRequest creates the UpdateBuildDatabaseConnection request.
@@ -5395,7 +5450,8 @@ func (client *StaticSitesClient) UpdateDatabaseConnection(ctx context.Context, r
 	if err != nil {
 		return StaticSitesClientUpdateDatabaseConnectionResponse{}, err
 	}
-	return client.updateDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateDatabaseConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateDatabaseConnectionCreateRequest creates the UpdateDatabaseConnection request.
@@ -5467,7 +5523,8 @@ func (client *StaticSitesClient) UpdateStaticSite(ctx context.Context, resourceG
 	if err != nil {
 		return StaticSitesClientUpdateStaticSiteResponse{}, err
 	}
-	return client.updateStaticSiteHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.updateStaticSiteHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // updateStaticSiteCreateRequest creates the UpdateStaticSite request.
@@ -5534,7 +5591,8 @@ func (client *StaticSitesClient) UpdateStaticSiteUser(ctx context.Context, resou
 	if err != nil {
 		return StaticSitesClientUpdateStaticSiteUserResponse{}, err
 	}
-	return client.updateStaticSiteUserHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateStaticSiteUserHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateStaticSiteUserCreateRequest creates the UpdateStaticSiteUser request.

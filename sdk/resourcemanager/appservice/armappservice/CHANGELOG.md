@@ -1,6 +1,6 @@
 # Release History
 
-## 6.1.0 (2026-11-03)
+## 6.1.0 (2026-11-09)
 ### Features Added
 
 - New value `RuntimeNameGo` added to enum type `RuntimeName`

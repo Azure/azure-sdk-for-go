@@ -66,7 +66,8 @@ func (client *SiteSiloVirtualNetworkConnectionsClient) CreateOrUpdateSiteSiloVne
 	if err != nil {
 		return SiteSiloVirtualNetworkConnectionsClientCreateOrUpdateSiteSiloVnetConnectionResponse{}, err
 	}
-	return client.createOrUpdateSiteSiloVnetConnectionHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateSiteSiloVnetConnectionHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateSiteSiloVnetConnectionCreateRequest creates the CreateOrUpdateSiteSiloVnetConnection request.
@@ -137,7 +138,8 @@ func (client *SiteSiloVirtualNetworkConnectionsClient) DeleteSiteSiloVnetConnect
 		return SiteSiloVirtualNetworkConnectionsClientDeleteSiteSiloVnetConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SiteSiloVirtualNetworkConnectionsClientDeleteSiteSiloVnetConnectionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SiteSiloVirtualNetworkConnectionsClientDeleteSiteSiloVnetConnectionResponse{}, err
 	}
 	return SiteSiloVirtualNetworkConnectionsClientDeleteSiteSiloVnetConnectionResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *SiteSiloVirtualNetworkConnectionsClient) GetSiteSiloVnetConnection
 	if err != nil {
 		return SiteSiloVirtualNetworkConnectionsClientGetSiteSiloVnetConnectionResponse{}, err
 	}
-	return client.getSiteSiloVnetConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteSiloVnetConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteSiloVnetConnectionCreateRequest creates the GetSiteSiloVnetConnection request.
@@ -342,7 +345,8 @@ func (client *SiteSiloVirtualNetworkConnectionsClient) UpdateSiteSiloVnetConnect
 	if err != nil {
 		return SiteSiloVirtualNetworkConnectionsClientUpdateSiteSiloVnetConnectionResponse{}, err
 	}
-	return client.updateSiteSiloVnetConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateSiteSiloVnetConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateSiteSiloVnetConnectionCreateRequest creates the UpdateSiteSiloVnetConnection request.

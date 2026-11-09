@@ -68,7 +68,8 @@ func (client *WorkflowRunActionRepetitionsClient) Get(ctx context.Context, resou
 	if err != nil {
 		return WorkflowRunActionRepetitionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

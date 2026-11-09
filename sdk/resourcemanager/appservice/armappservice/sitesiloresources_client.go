@@ -89,7 +89,8 @@ func (client *SiteSiloResourcesClient) createOrUpdateSiteSilo(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -169,7 +170,8 @@ func (client *SiteSiloResourcesClient) deleteSiteSilo(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -224,7 +226,8 @@ func (client *SiteSiloResourcesClient) GetSiteSilo(ctx context.Context, resource
 	if err != nil {
 		return SiteSiloResourcesClientGetSiteSiloResponse{}, err
 	}
-	return client.getSiteSiloHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteSiloHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteSiloCreateRequest creates the GetSiteSilo request.
@@ -368,7 +371,8 @@ func (client *SiteSiloResourcesClient) RefreshSiteSilos(ctx context.Context, res
 		return SiteSiloResourcesClientRefreshSiteSilosResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return SiteSiloResourcesClientRefreshSiteSilosResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SiteSiloResourcesClientRefreshSiteSilosResponse{}, err
 	}
 	return SiteSiloResourcesClientRefreshSiteSilosResponse{}, nil
 }
@@ -420,7 +424,8 @@ func (client *SiteSiloResourcesClient) UpdateSiteSilo(ctx context.Context, resou
 	if err != nil {
 		return SiteSiloResourcesClientUpdateSiteSiloResponse{}, err
 	}
-	return client.updateSiteSiloHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateSiteSiloHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateSiteSiloCreateRequest creates the UpdateSiteSilo request.

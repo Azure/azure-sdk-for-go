@@ -89,7 +89,8 @@ func (client *ServerFarmSiloResourcesClient) createOrUpdateServerFarmSilo(ctx co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -169,7 +170,8 @@ func (client *ServerFarmSiloResourcesClient) deleteServerFarmSilo(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -224,7 +226,8 @@ func (client *ServerFarmSiloResourcesClient) GetServerFarmSilo(ctx context.Conte
 	if err != nil {
 		return ServerFarmSiloResourcesClientGetServerFarmSiloResponse{}, err
 	}
-	return client.getServerFarmSiloHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getServerFarmSiloHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getServerFarmSiloCreateRequest creates the GetServerFarmSilo request.
@@ -290,7 +293,8 @@ func (client *ServerFarmSiloResourcesClient) GetServerFarmSiloVnetIntegrations(c
 	if err != nil {
 		return ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse{}, err
 	}
-	return client.getServerFarmSiloVnetIntegrationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getServerFarmSiloVnetIntegrationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getServerFarmSiloVnetIntegrationsCreateRequest creates the GetServerFarmSiloVnetIntegrations request.
@@ -435,7 +439,8 @@ func (client *ServerFarmSiloResourcesClient) UpdateServerFarmSilo(ctx context.Co
 	if err != nil {
 		return ServerFarmSiloResourcesClientUpdateServerFarmSiloResponse{}, err
 	}
-	return client.updateServerFarmSiloHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateServerFarmSiloHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateServerFarmSiloCreateRequest creates the UpdateServerFarmSilo request.

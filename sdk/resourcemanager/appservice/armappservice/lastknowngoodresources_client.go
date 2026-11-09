@@ -64,7 +64,8 @@ func (client *LastKnownGoodResourcesClient) GetLastKnownGood(ctx context.Context
 	if err != nil {
 		return LastKnownGoodResourcesClientGetLastKnownGoodResponse{}, err
 	}
-	return client.getLastKnownGoodHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLastKnownGoodHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLastKnownGoodCreateRequest creates the GetLastKnownGood request.
@@ -125,7 +126,8 @@ func (client *LastKnownGoodResourcesClient) MarkLastKnownGood(ctx context.Contex
 	if err != nil {
 		return LastKnownGoodResourcesClientMarkLastKnownGoodResponse{}, err
 	}
-	return client.markLastKnownGoodHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.markLastKnownGoodHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // markLastKnownGoodCreateRequest creates the MarkLastKnownGood request.

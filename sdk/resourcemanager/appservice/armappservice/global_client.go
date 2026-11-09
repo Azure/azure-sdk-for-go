@@ -64,7 +64,8 @@ func (client *GlobalClient) GetDeletedWebApp(ctx context.Context, deletedSiteID 
 	if err != nil {
 		return GlobalClientGetDeletedWebAppResponse{}, err
 	}
-	return client.getDeletedWebAppHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeletedWebAppHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeletedWebAppCreateRequest creates the GetDeletedWebApp request.
@@ -122,7 +123,8 @@ func (client *GlobalClient) GetDeletedWebAppSnapshots(ctx context.Context, delet
 	if err != nil {
 		return GlobalClientGetDeletedWebAppSnapshotsResponse{}, err
 	}
-	return client.getDeletedWebAppSnapshotsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeletedWebAppSnapshotsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeletedWebAppSnapshotsCreateRequest creates the GetDeletedWebAppSnapshots request.
@@ -182,7 +184,8 @@ func (client *GlobalClient) GetSubscriptionOperationWithAsyncResponse(ctx contex
 		return GlobalClientGetSubscriptionOperationWithAsyncResponseResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return GlobalClientGetSubscriptionOperationWithAsyncResponseResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return GlobalClientGetSubscriptionOperationWithAsyncResponseResponse{}, err
 	}
 	return GlobalClientGetSubscriptionOperationWithAsyncResponseResponse{}, nil
 }

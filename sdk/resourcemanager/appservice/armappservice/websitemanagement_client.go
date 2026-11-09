@@ -66,7 +66,8 @@ func (client *WebSiteManagementClient) CheckNameAvailability(ctx context.Context
 	if err != nil {
 		return WebSiteManagementClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -123,7 +124,8 @@ func (client *WebSiteManagementClient) GetPublishingUser(ctx context.Context, op
 	if err != nil {
 		return WebSiteManagementClientGetPublishingUserResponse{}, err
 	}
-	return client.getPublishingUserHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPublishingUserHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPublishingUserCreateRequest creates the GetPublishingUser request.
@@ -173,7 +175,8 @@ func (client *WebSiteManagementClient) GetSourceControl(ctx context.Context, sou
 	if err != nil {
 		return WebSiteManagementClientGetSourceControlResponse{}, err
 	}
-	return client.getSourceControlHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSourceControlHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSourceControlCreateRequest creates the GetSourceControl request.
@@ -226,7 +229,8 @@ func (client *WebSiteManagementClient) GetSubscriptionDeploymentLocations(ctx co
 	if err != nil {
 		return WebSiteManagementClientGetSubscriptionDeploymentLocationsResponse{}, err
 	}
-	return client.getSubscriptionDeploymentLocationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSubscriptionDeploymentLocationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSubscriptionDeploymentLocationsCreateRequest creates the GetSubscriptionDeploymentLocations request.
@@ -279,7 +283,8 @@ func (client *WebSiteManagementClient) ListSKUs(ctx context.Context, options *We
 	if err != nil {
 		return WebSiteManagementClientListSKUsResponse{}, err
 	}
-	return client.listSKUsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSKUsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
@@ -334,7 +339,8 @@ func (client *WebSiteManagementClient) Move(ctx context.Context, resourceGroupNa
 		return WebSiteManagementClientMoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebSiteManagementClientMoveResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebSiteManagementClientMoveResponse{}, err
 	}
 	return WebSiteManagementClientMoveResponse{}, nil
 }
@@ -894,7 +900,8 @@ func (client *WebSiteManagementClient) RegionalCheckNameAvailability(ctx context
 	if err != nil {
 		return WebSiteManagementClientRegionalCheckNameAvailabilityResponse{}, err
 	}
-	return client.regionalCheckNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regionalCheckNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regionalCheckNameAvailabilityCreateRequest creates the RegionalCheckNameAvailability request.
@@ -956,7 +963,8 @@ func (client *WebSiteManagementClient) UpdatePublishingUser(ctx context.Context,
 	if err != nil {
 		return WebSiteManagementClientUpdatePublishingUserResponse{}, err
 	}
-	return client.updatePublishingUserHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updatePublishingUserHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updatePublishingUserCreateRequest creates the UpdatePublishingUser request.
@@ -1011,7 +1019,8 @@ func (client *WebSiteManagementClient) UpdateSourceControl(ctx context.Context, 
 	if err != nil {
 		return WebSiteManagementClientUpdateSourceControlResponse{}, err
 	}
-	return client.updateSourceControlHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateSourceControlHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateSourceControlCreateRequest creates the UpdateSourceControl request.
@@ -1070,7 +1079,8 @@ func (client *WebSiteManagementClient) Validate(ctx context.Context, resourceGro
 	if err != nil {
 		return WebSiteManagementClientValidateResponse{}, err
 	}
-	return client.validateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCreateRequest creates the Validate request.
@@ -1134,7 +1144,8 @@ func (client *WebSiteManagementClient) ValidateMove(ctx context.Context, resourc
 		return WebSiteManagementClientValidateMoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return WebSiteManagementClientValidateMoveResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebSiteManagementClientValidateMoveResponse{}, err
 	}
 	return WebSiteManagementClientValidateMoveResponse{}, nil
 }
@@ -1187,7 +1198,8 @@ func (client *WebSiteManagementClient) VerifyHostingEnvironmentVnet(ctx context.
 	if err != nil {
 		return WebSiteManagementClientVerifyHostingEnvironmentVnetResponse{}, err
 	}
-	return client.verifyHostingEnvironmentVnetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.verifyHostingEnvironmentVnetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // verifyHostingEnvironmentVnetCreateRequest creates the VerifyHostingEnvironmentVnet request.

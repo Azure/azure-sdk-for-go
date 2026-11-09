@@ -66,7 +66,8 @@ func (client *DeletedWebAppsClient) GetDeletedWebAppByLocation(ctx context.Conte
 	if err != nil {
 		return DeletedWebAppsClientGetDeletedWebAppByLocationResponse{}, err
 	}
-	return client.getDeletedWebAppByLocationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeletedWebAppByLocationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeletedWebAppByLocationCreateRequest creates the GetDeletedWebAppByLocation request.

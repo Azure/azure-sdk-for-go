@@ -69,7 +69,8 @@ func (client *RecommendationsClient) DisableAllForHostingEnvironment(ctx context
 		return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, err
 	}
 	return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, nil
 }
@@ -123,7 +124,8 @@ func (client *RecommendationsClient) DisableAllForWebApp(ctx context.Context, re
 		return RecommendationsClientDisableAllForWebAppResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RecommendationsClientDisableAllForWebAppResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientDisableAllForWebAppResponse{}, err
 	}
 	return RecommendationsClientDisableAllForWebAppResponse{}, nil
 }
@@ -175,7 +177,8 @@ func (client *RecommendationsClient) DisableRecommendationForHostingEnvironment(
 		return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
 	return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, nil
 }
@@ -234,7 +237,8 @@ func (client *RecommendationsClient) DisableRecommendationForSite(ctx context.Co
 		return RecommendationsClientDisableRecommendationForSiteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return RecommendationsClientDisableRecommendationForSiteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientDisableRecommendationForSiteResponse{}, err
 	}
 	return RecommendationsClientDisableRecommendationForSiteResponse{}, nil
 }
@@ -290,7 +294,8 @@ func (client *RecommendationsClient) DisableRecommendationForSubscription(ctx co
 		return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, err
 	}
 	return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, nil
 }
@@ -339,7 +344,8 @@ func (client *RecommendationsClient) GetRuleDetailsByHostingEnvironment(ctx cont
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
-	return client.getRuleDetailsByHostingEnvironmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRuleDetailsByHostingEnvironmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRuleDetailsByHostingEnvironmentCreateRequest creates the GetRuleDetailsByHostingEnvironment request.
@@ -413,7 +419,8 @@ func (client *RecommendationsClient) GetRuleDetailsByWebApp(ctx context.Context,
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByWebAppResponse{}, err
 	}
-	return client.getRuleDetailsByWebAppHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRuleDetailsByWebAppHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRuleDetailsByWebAppCreateRequest creates the GetRuleDetailsByWebApp request.
@@ -900,7 +907,8 @@ func (client *RecommendationsClient) ResetAllFilters(ctx context.Context, option
 		return RecommendationsClientResetAllFiltersResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RecommendationsClientResetAllFiltersResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientResetAllFiltersResponse{}, err
 	}
 	return RecommendationsClientResetAllFiltersResponse{}, nil
 }
@@ -946,7 +954,8 @@ func (client *RecommendationsClient) ResetAllFiltersForHostingEnvironment(ctx co
 		return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
 	return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, nil
 }
@@ -1000,7 +1009,8 @@ func (client *RecommendationsClient) ResetAllFiltersForWebApp(ctx context.Contex
 		return RecommendationsClientResetAllFiltersForWebAppResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RecommendationsClientResetAllFiltersForWebAppResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientResetAllFiltersForWebAppResponse{}, err
 	}
 	return RecommendationsClientResetAllFiltersForWebAppResponse{}, nil
 }

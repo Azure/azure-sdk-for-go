@@ -64,7 +64,8 @@ func (client *ManagedTrafficConfigResourcesClient) GetManagedTrafficConfig(ctx c
 	if err != nil {
 		return ManagedTrafficConfigResourcesClientGetManagedTrafficConfigResponse{}, err
 	}
-	return client.getManagedTrafficConfigHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getManagedTrafficConfigHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getManagedTrafficConfigCreateRequest creates the GetManagedTrafficConfig request.
@@ -206,7 +207,8 @@ func (client *ManagedTrafficConfigResourcesClient) UpdateManagedTrafficConfig(ct
 	if err != nil {
 		return ManagedTrafficConfigResourcesClientUpdateManagedTrafficConfigResponse{}, err
 	}
-	return client.updateManagedTrafficConfigHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.updateManagedTrafficConfigHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // updateManagedTrafficConfigCreateRequest creates the UpdateManagedTrafficConfig request.

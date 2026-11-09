@@ -66,7 +66,8 @@ func (client *ResourceHealthMetadataClient) GetBySite(ctx context.Context, resou
 	if err != nil {
 		return ResourceHealthMetadataClientGetBySiteResponse{}, err
 	}
-	return client.getBySiteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBySiteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBySiteCreateRequest creates the GetBySite request.
@@ -130,7 +131,8 @@ func (client *ResourceHealthMetadataClient) GetBySiteSlot(ctx context.Context, r
 	if err != nil {
 		return ResourceHealthMetadataClientGetBySiteSlotResponse{}, err
 	}
-	return client.getBySiteSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBySiteSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBySiteSlotCreateRequest creates the GetBySiteSlot request.

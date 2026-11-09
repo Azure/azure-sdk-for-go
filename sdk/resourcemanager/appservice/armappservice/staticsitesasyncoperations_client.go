@@ -88,7 +88,8 @@ func (client *StaticSitesAsyncOperationsClient) getOperationResult(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,8 @@ func (client *StaticSitesAsyncOperationsClient) GetOperationStatus(ctx context.C
 	if err != nil {
 		return StaticSitesAsyncOperationsClientGetOperationStatusResponse{}, err
 	}
-	return client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getOperationStatusCreateRequest creates the GetOperationStatus request.

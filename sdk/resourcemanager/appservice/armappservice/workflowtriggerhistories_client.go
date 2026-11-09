@@ -88,7 +88,8 @@ func (client *WorkflowTriggerHistoriesClient) resubmit(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -153,7 +154,8 @@ func (client *WorkflowTriggerHistoriesClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return WorkflowTriggerHistoriesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -19,7 +19,7 @@ import (
 // AscUsagesClient contains the methods for the AscUsages group.
 // Don't use this type directly, use NewAscUsagesClient() instead.
 //
-// Generated from API version 2026-01-01
+// Generated from API version 2026-08-01
 type AscUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type AscUsagesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAscUsagesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AscUsagesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -77,7 +80,7 @@ func (client *AscUsagesClient) listCreateRequest(ctx context.Context, location s
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageCache/locations/{location}/usages"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
@@ -93,7 +96,7 @@ func (client *AscUsagesClient) listCreateRequest(ctx context.Context, location s
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260101)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

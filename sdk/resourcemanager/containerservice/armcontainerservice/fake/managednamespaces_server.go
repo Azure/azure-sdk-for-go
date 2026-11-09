@@ -33,13 +33,13 @@ type ManagedNamespacesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, managedNamespaceName string, options *armcontainerservice.ManagedNamespacesClientGetOptions) (resp azfake.Responder[armcontainerservice.ManagedNamespacesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByManagedClusterPager is the fake for method ManagedNamespacesClient.NewListByManagedClusterPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByManagedClusterPager func(resourceGroupName string, resourceName string, options *armcontainerservice.ManagedNamespacesClientListByManagedClusterOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedNamespacesClientListByManagedClusterResponse])
-
 	// ListCredential is the fake for method ManagedNamespacesClient.ListCredential
 	// HTTP status codes to indicate success: http.StatusOK
 	ListCredential func(ctx context.Context, resourceGroupName string, resourceName string, managedNamespaceName string, options *armcontainerservice.ManagedNamespacesClientListCredentialOptions) (resp azfake.Responder[armcontainerservice.ManagedNamespacesClientListCredentialResponse], errResp azfake.ErrorResponder)
+
+	// NewListByManagedClusterPager is the fake for method ManagedNamespacesClient.NewListByManagedClusterPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByManagedClusterPager func(resourceGroupName string, resourceName string, options *armcontainerservice.ManagedNamespacesClientListByManagedClusterOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedNamespacesClientListByManagedClusterResponse])
 
 	// Update is the fake for method ManagedNamespacesClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -94,10 +94,10 @@ func (m *ManagedNamespacesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = m.dispatchBeginDelete(req)
 			case "ManagedNamespacesClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
-			case "ManagedNamespacesClient.NewListByManagedClusterPager":
-				res.resp, res.err = m.dispatchNewListByManagedClusterPager(req)
 			case "ManagedNamespacesClient.ListCredential":
 				res.resp, res.err = m.dispatchListCredential(req)
+			case "ManagedNamespacesClient.NewListByManagedClusterPager":
+				res.resp, res.err = m.dispatchNewListByManagedClusterPager(req)
 			case "ManagedNamespacesClient.Update":
 				res.resp, res.err = m.dispatchUpdate(req)
 			default:
@@ -122,7 +122,7 @@ func (m *ManagedNamespacesServerTransport) dispatchBeginCreateOrUpdate(req *http
 	}
 	beginCreateOrUpdate := m.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedNamespaces/(?P<managedNamespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNamespaces/(?P<managedNamespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -174,7 +174,7 @@ func (m *ManagedNamespacesServerTransport) dispatchBeginDelete(req *http.Request
 	}
 	beginDelete := m.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedNamespaces/(?P<managedNamespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNamespaces/(?P<managedNamespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -220,7 +220,7 @@ func (m *ManagedNamespacesServerTransport) dispatchGet(req *http.Request) (*http
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedNamespaces/(?P<managedNamespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNamespaces/(?P<managedNamespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -253,13 +253,50 @@ func (m *ManagedNamespacesServerTransport) dispatchGet(req *http.Request) (*http
 	return resp, nil
 }
 
+func (m *ManagedNamespacesServerTransport) dispatchListCredential(req *http.Request) (*http.Response, error) {
+	if m.srv.ListCredential == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListCredential not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNamespaces/(?P<managedNamespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/listCredential`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+	if err != nil {
+		return nil, err
+	}
+	managedNamespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedNamespaceName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := m.srv.ListCredential(req.Context(), resourceGroupNameParam, resourceNameParam, managedNamespaceNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (m *ManagedNamespacesServerTransport) dispatchNewListByManagedClusterPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewListByManagedClusterPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByManagedClusterPager not implemented")}
 	}
 	newListByManagedClusterPager := m.newListByManagedClusterPager.get(req)
 	if newListByManagedClusterPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedNamespaces`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNamespaces`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -294,48 +331,11 @@ func (m *ManagedNamespacesServerTransport) dispatchNewListByManagedClusterPager(
 	return resp, nil
 }
 
-func (m *ManagedNamespacesServerTransport) dispatchListCredential(req *http.Request) (*http.Response, error) {
-	if m.srv.ListCredential == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListCredential not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedNamespaces/(?P<managedNamespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/listCredential`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-	if err != nil {
-		return nil, err
-	}
-	managedNamespaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("managedNamespaceName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := m.srv.ListCredential(req.Context(), resourceGroupNameParam, resourceNameParam, managedNamespaceNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).CredentialResults, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (m *ManagedNamespacesServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if m.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/managedNamespaces/(?P<managedNamespaceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedClusters/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/managedNamespaces/(?P<managedNamespaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

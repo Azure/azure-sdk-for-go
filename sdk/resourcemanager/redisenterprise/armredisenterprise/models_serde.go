@@ -187,6 +187,7 @@ func (a AzureCacheForRedisMigrationProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "forceMigrate", a.ForceMigrate)
 	populateTime[datetime.RFC3339](objectMap, "lastModifiedTime", a.LastModifiedTime, true)
 	populate(objectMap, "provisioningState", a.ProvisioningState)
+	populateTime[datetime.RFC3339](objectMap, "rollbackEligibleUntil", a.RollbackEligibleUntil, true)
 	populate(objectMap, "skipDataMigration", a.SkipDataMigration)
 	populate(objectMap, "sourceResourceId", a.SourceResourceID)
 	objectMap["sourceType"] = SourceTypeAzureCacheForRedis
@@ -216,6 +217,9 @@ func (a *AzureCacheForRedisMigrationProperties) UnmarshalJSON(data []byte) error
 			delete(rawMsg, key)
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
+			delete(rawMsg, key)
+		case "rollbackEligibleUntil":
+			err = unpopulateTime[datetime.RFC3339](val, "RollbackEligibleUntil", &a.RollbackEligibleUntil)
 			delete(rawMsg, key)
 		case "skipDataMigration":
 			err = unpopulate(val, "SkipDataMigration", &a.SkipDataMigration)
@@ -664,6 +668,7 @@ func (d DatabaseCreateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "evictionPolicy", d.EvictionPolicy)
 	populate(objectMap, "geoReplication", d.GeoReplication)
 	populate(objectMap, "modules", d.Modules)
+	populate(objectMap, "notifyKeyspaceEvents", d.NotifyKeyspaceEvents)
 	populate(objectMap, "persistence", d.Persistence)
 	populate(objectMap, "port", d.Port)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
@@ -701,6 +706,9 @@ func (d *DatabaseCreateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "modules":
 			err = unpopulate(val, "Modules", &d.Modules)
+			delete(rawMsg, key)
+		case "notifyKeyspaceEvents":
+			err = unpopulate(val, "NotifyKeyspaceEvents", &d.NotifyKeyspaceEvents)
 			delete(rawMsg, key)
 		case "persistence":
 			err = unpopulate(val, "Persistence", &d.Persistence)
@@ -824,6 +832,7 @@ func (d DatabaseUpdateProperties) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "evictionPolicy", d.EvictionPolicy)
 	populate(objectMap, "geoReplication", d.GeoReplication)
 	populate(objectMap, "modules", d.Modules)
+	populate(objectMap, "notifyKeyspaceEvents", d.NotifyKeyspaceEvents)
 	populate(objectMap, "persistence", d.Persistence)
 	populate(objectMap, "port", d.Port)
 	populate(objectMap, "provisioningState", d.ProvisioningState)
@@ -861,6 +870,9 @@ func (d *DatabaseUpdateProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "modules":
 			err = unpopulate(val, "Modules", &d.Modules)
+			delete(rawMsg, key)
+		case "notifyKeyspaceEvents":
+			err = unpopulate(val, "NotifyKeyspaceEvents", &d.NotifyKeyspaceEvents)
 			delete(rawMsg, key)
 		case "persistence":
 			err = unpopulate(val, "Persistence", &d.Persistence)
@@ -1395,6 +1407,7 @@ func (m MigrationProperties) MarshalJSON() ([]byte, error) {
 	populateTime[datetime.RFC3339](objectMap, "creationTime", m.CreationTime, true)
 	populateTime[datetime.RFC3339](objectMap, "lastModifiedTime", m.LastModifiedTime, true)
 	populate(objectMap, "provisioningState", m.ProvisioningState)
+	populateTime[datetime.RFC3339](objectMap, "rollbackEligibleUntil", m.RollbackEligibleUntil, true)
 	populate(objectMap, "sourceType", m.SourceType)
 	populate(objectMap, "statusDetails", m.StatusDetails)
 	populate(objectMap, "targetResourceId", m.TargetResourceID)
@@ -1419,6 +1432,9 @@ func (m *MigrationProperties) UnmarshalJSON(data []byte) error {
 		case "provisioningState":
 			err = unpopulate(val, "ProvisioningState", &m.ProvisioningState)
 			delete(rawMsg, key)
+		case "rollbackEligibleUntil":
+			err = unpopulateTime[datetime.RFC3339](val, "RollbackEligibleUntil", &m.RollbackEligibleUntil)
+			delete(rawMsg, key)
 		case "sourceType":
 			err = unpopulate(val, "SourceType", &m.SourceType)
 			delete(rawMsg, key)
@@ -1427,6 +1443,33 @@ func (m *MigrationProperties) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "targetResourceId":
 			err = unpopulate(val, "TargetResourceID", &m.TargetResourceID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type MigrationUndoRequest.
+func (m MigrationUndoRequest) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "rollbackReason", m.RollbackReason)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type MigrationUndoRequest.
+func (m *MigrationUndoRequest) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", m, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "rollbackReason":
+			err = unpopulate(val, "RollbackReason", &m.RollbackReason)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1497,7 +1540,6 @@ func (m *MigrationValidationError) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type MigrationValidationRequest.
 func (m MigrationValidationRequest) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "forceMigrate", m.ForceMigrate)
 	populate(objectMap, "skipDataMigration", m.SkipDataMigration)
 	populate(objectMap, "sourceResourceId", m.SourceResourceID)
 	return json.Marshal(objectMap)
@@ -1512,9 +1554,6 @@ func (m *MigrationValidationRequest) UnmarshalJSON(data []byte) error {
 	for key, val := range rawMsg {
 		var err error
 		switch key {
-		case "forceMigrate":
-			err = unpopulate(val, "ForceMigrate", &m.ForceMigrate)
-			delete(rawMsg, key)
 		case "skipDataMigration":
 			err = unpopulate(val, "SkipDataMigration", &m.SkipDataMigration)
 			delete(rawMsg, key)

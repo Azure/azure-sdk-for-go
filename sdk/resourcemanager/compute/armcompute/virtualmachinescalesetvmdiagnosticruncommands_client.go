@@ -31,6 +31,9 @@ type VirtualMachineScaleSetVMDiagnosticRunCommandsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewVirtualMachineScaleSetVMDiagnosticRunCommandsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VirtualMachineScaleSetVMDiagnosticRunCommandsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) BeginCreateOr
 	}
 }
 
-// CreateOrUpdate - The operation to create or update the VMSS VM diagnostic run command.
+// createOrUpdate - The operation to create or update the VMSS VM diagnostic run command.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineDiagnosticRunCommand, options *VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -90,11 +93,11 @@ func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) createOrUpdat
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineDiagnosticRunCommand, _ *VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/diagnosticRunCommands/{runCommandName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -153,7 +156,7 @@ func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) BeginDelete(c
 	}
 }
 
-// Delete - The operation to delete the VMSS VM diagnostic run command.
+// deleteOperation - The operation to delete the VMSS VM diagnostic run command.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) deleteOperation(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, options *VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -175,11 +178,11 @@ func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) deleteOperati
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, _ *VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/diagnosticRunCommands/{runCommandName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -208,89 +211,90 @@ func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) deleteCreateR
 	return req, nil
 }
 
-// NewDiagnosticListPager - The operation to get all diagnostic run commands of an instance in Virtual Machine Scaleset.
+// BeginUpdate - The operation to update the VMSS VM diagnostic run command.
+// If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmScaleSetName - The name of the VirtualMachineScaleSet
 //   - instanceID - The name of the VirtualMachineScaleSetVM
-//   - options - VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions contains the optional parameters for
-//     the VirtualMachineScaleSetVMDiagnosticRunCommandsClient.NewDiagnosticListPager method.
-func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) NewDiagnosticListPager(resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions) *runtime.Pager[VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse]{
-		More: func(page VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse) (VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetVMDiagnosticRunCommandsClient.NewDiagnosticListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.diagnosticListCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, nextLink, options)
-			if err != nil {
-				return VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse{}, err
-			}
-			return client.diagnosticListHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+//   - runCommandName - The name of the VirtualMachineDiagnosticRunCommand
+//   - runCommand - Resource create parameters.
+//   - options - VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginUpdateOptions contains the optional parameters for the
+//     VirtualMachineScaleSetVMDiagnosticRunCommandsClient.BeginUpdate method.
+func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginUpdateOptions) (*runtime.Poller[VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, runCommand, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
 }
 
-// diagnosticListCreateRequest creates the DiagnosticList request.
-func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) diagnosticListCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, nextLink string, options *VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
+// update - The operation to update the VMSS VM diagnostic run command.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) update(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/diagnosticRunCommands"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if vmScaleSetName == "" {
-			return nil, errors.New("parameter vmScaleSetName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
-		if instanceID == "" {
-			return nil, errors.New("parameter instanceID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
+	const operationName = "VirtualMachineScaleSetVMDiagnosticRunCommandsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, runCommand, options)
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Expand != nil {
-			reqQP.Set("$expand", *options.Expand)
-		}
-		reqQP.Set("api-version", version20260401)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
 	}
-	return req, nil
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
 }
 
-// diagnosticListHandleResponse handles the DiagnosticList response.
-func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) diagnosticListHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse, error) {
-	result := VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
+// updateCreateRequest creates the update request.
+func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, _ *VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/diagnosticRunCommands/{runCommandName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineDiagnosticRunCommandsListResult); err != nil {
-		return VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse{}, err
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
 	}
-	return result, nil
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vmScaleSetName == "" {
+		return nil, errors.New("parameter vmScaleSetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
+	if instanceID == "" {
+		return nil, errors.New("parameter instanceID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
+	if runCommandName == "" {
+		return nil, errors.New("parameter runCommandName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{runCommandName}", url.PathEscape(runCommandName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, runCommand); err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 // Get - The operation to get the VMSS VM diagnostic run command.
@@ -322,7 +326,7 @@ func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) Get(ctx conte
 func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, options *VirtualMachineScaleSetVMDiagnosticRunCommandsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/diagnosticRunCommands/{runCommandName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -367,88 +371,87 @@ func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) getHandleResp
 	return result, nil
 }
 
-// BeginUpdate - The operation to update the VMSS VM diagnostic run command.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewDiagnosticListPager - The operation to get all diagnostic run commands of an instance in Virtual Machine Scaleset.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vmScaleSetName - The name of the VirtualMachineScaleSet
 //   - instanceID - The name of the VirtualMachineScaleSetVM
-//   - runCommandName - The name of the VirtualMachineDiagnosticRunCommand
-//   - runCommand - Resource create parameters.
-//   - options - VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginUpdateOptions contains the optional parameters for the
-//     VirtualMachineScaleSetVMDiagnosticRunCommandsClient.BeginUpdate method.
-func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginUpdateOptions) (*runtime.Poller[VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, runCommand, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualMachineScaleSetVMDiagnosticRunCommandsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+//   - options - VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions contains the optional parameters for
+//     the VirtualMachineScaleSetVMDiagnosticRunCommandsClient.NewDiagnosticListPager method.
+func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) NewDiagnosticListPager(resourceGroupName string, vmScaleSetName string, instanceID string, options *VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions) *runtime.Pager[VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse]{
+		More: func(page VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse) (VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "VirtualMachineScaleSetVMDiagnosticRunCommandsClient.NewDiagnosticListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.diagnosticListCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, nextLink, options)
+			if err != nil {
+				return VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse{}, err
+			}
+			return client.diagnosticListHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// Update - The operation to update the VMSS VM diagnostic run command.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) update(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginUpdateOptions) (*http.Response, error) {
+// diagnosticListCreateRequest creates the DiagnosticList request.
+func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) diagnosticListCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, nextLink string, options *VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "VirtualMachineScaleSetVMDiagnosticRunCommandsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmScaleSetName, instanceID, runCommandName, runCommand, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/diagnosticRunCommands"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if vmScaleSetName == "" {
+			return nil, errors.New("parameter vmScaleSetName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
+		if instanceID == "" {
+			return nil, errors.New("parameter instanceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmScaleSetName string, instanceID string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, _ *VirtualMachineScaleSetVMDiagnosticRunCommandsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{vmScaleSetName}/virtualMachines/{instanceId}/diagnosticRunCommands/{runCommandName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vmScaleSetName == "" {
-		return nil, errors.New("parameter vmScaleSetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vmScaleSetName}", url.PathEscape(vmScaleSetName))
-	if instanceID == "" {
-		return nil, errors.New("parameter instanceID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{instanceId}", url.PathEscape(instanceID))
-	if runCommandName == "" {
-		return nil, errors.New("parameter runCommandName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{runCommandName}", url.PathEscape(runCommandName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, runCommand); err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil
+}
+
+// diagnosticListHandleResponse handles the DiagnosticList response.
+func (client *VirtualMachineScaleSetVMDiagnosticRunCommandsClient) diagnosticListHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse, error) {
+	result := VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineDiagnosticRunCommandsListResult); err != nil {
+		return VirtualMachineScaleSetVMDiagnosticRunCommandsClientDiagnosticListResponse{}, err
+	}
+	return result, nil
 }

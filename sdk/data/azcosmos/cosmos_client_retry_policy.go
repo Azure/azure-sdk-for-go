@@ -212,18 +212,28 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			if state := requestDiagnosticsStateFromContext(req.Raw().Context()); state != nil && state.clientSideStats != nil {
 				state.clientSideStats.recordHTTPError(attemptStartTime, req.Raw(), err, o.resourceType, regionName.String())
 			}
-			// Honor the caller's context: if their deadline expired or
-			// they cancelled the request, do not consume their budget
-			// with our retries. Preserve both the cancellation reason
-			// (so errors.Is(returned, context.DeadlineExceeded) works)
-			// and the underlying transport error for diagnostics.
+			// Preserve downstream non-retriable errors instead of retrying them internally.
+			if errors.As(err, new(errorinfo.NonRetriable)) {
+				return nil, err
+			}
 			if ctxErr := req.Raw().Context().Err(); ctxErr != nil {
+				if !o.isWriteOperation {
+					// A send or body read failed with a done request context
+					// (attempt timeout or caller cancellation/deadline). Let
+					// azcore check the caller and decide on a fresh attempt.
+					return nil, err
+				}
 				return nil, errorinfo.NonRetriableError(fmt.Errorf("%w: underlying transport error: %v", ctxErr, err))
 			}
 			kind := classifyNetworkError(err)
 			if kind != connectionErrorNone {
 				shouldRetry, errRetry := p.attemptRetryOnNetworkError(req, kind, o.isWriteOperation, err, &retryContext)
 				if errRetry != nil {
+					// The internal retry wait may have been interrupted by context expiry.
+					// Let azcore decide whether another read attempt is allowed.
+					if !o.isWriteOperation {
+						return nil, errRetry
+					}
 					return nil, errorinfo.NonRetriableError(errRetry)
 				}
 				if !shouldRetry {
@@ -268,6 +278,11 @@ func (p *clientRetryPolicy) Do(req *policy.Request) (*http.Response, error) {
 			case http.StatusRequestTimeout:
 				shouldRetry, err := p.attemptRetryOnRequestTimeout(req, o.isWriteOperation, &retryContext)
 				if err != nil {
+					// The HTTP 408 retry wait was interrupted by context expiry.
+					// Let azcore decide whether another read attempt is allowed.
+					if !o.isWriteOperation {
+						return nil, err
+					}
 					return nil, errorinfo.NonRetriableError(err)
 				}
 				if !shouldRetry {

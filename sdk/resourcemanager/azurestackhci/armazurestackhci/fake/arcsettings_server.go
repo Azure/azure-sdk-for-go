@@ -21,14 +21,6 @@ import (
 
 // ArcSettingsServer is a fake server for instances of the armazurestackhci.ArcSettingsClient type.
 type ArcSettingsServer struct {
-	// ConsentAndInstallDefaultExtensions is the fake for method ArcSettingsClient.ConsentAndInstallDefaultExtensions
-	// HTTP status codes to indicate success: http.StatusOK
-	ConsentAndInstallDefaultExtensions func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *armazurestackhci.ArcSettingsClientConsentAndInstallDefaultExtensionsOptions) (resp azfake.Responder[armazurestackhci.ArcSettingsClientConsentAndInstallDefaultExtensionsResponse], errResp azfake.ErrorResponder)
-
-	// Create is the fake for method ArcSettingsClient.Create
-	// HTTP status codes to indicate success: http.StatusOK
-	Create func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, arcSetting armazurestackhci.ArcSetting, options *armazurestackhci.ArcSettingsClientCreateOptions) (resp azfake.Responder[armazurestackhci.ArcSettingsClientCreateResponse], errResp azfake.ErrorResponder)
-
 	// BeginCreateIdentity is the fake for method ArcSettingsClient.BeginCreateIdentity
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreateIdentity func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *armazurestackhci.ArcSettingsClientBeginCreateIdentityOptions) (resp azfake.PollerResponder[armazurestackhci.ArcSettingsClientCreateIdentityResponse], errResp azfake.ErrorResponder)
@@ -36,6 +28,22 @@ type ArcSettingsServer struct {
 	// BeginDelete is the fake for method ArcSettingsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *armazurestackhci.ArcSettingsClientBeginDeleteOptions) (resp azfake.PollerResponder[armazurestackhci.ArcSettingsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginInitializeDisableProcess is the fake for method ArcSettingsClient.BeginInitializeDisableProcess
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginInitializeDisableProcess func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *armazurestackhci.ArcSettingsClientBeginInitializeDisableProcessOptions) (resp azfake.PollerResponder[armazurestackhci.ArcSettingsClientInitializeDisableProcessResponse], errResp azfake.ErrorResponder)
+
+	// BeginReconcile is the fake for method ArcSettingsClient.BeginReconcile
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginReconcile func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest armazurestackhci.ReconcileArcSettingsRequest, options *armazurestackhci.ArcSettingsClientBeginReconcileOptions) (resp azfake.PollerResponder[armazurestackhci.ArcSettingsClientReconcileResponse], errResp azfake.ErrorResponder)
+
+	// ConsentAndInstallDefaultExtensions is the fake for method ArcSettingsClient.ConsentAndInstallDefaultExtensions
+	// HTTP status codes to indicate success: http.StatusOK
+	ConsentAndInstallDefaultExtensions func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *armazurestackhci.ArcSettingsClientConsentAndInstallDefaultExtensionsOptions) (resp azfake.Responder[armazurestackhci.ArcSettingsClientConsentAndInstallDefaultExtensionsResponse], errResp azfake.ErrorResponder)
+
+	// Create is the fake for method ArcSettingsClient.Create
+	// HTTP status codes to indicate success: http.StatusOK
+	Create func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, arcSetting armazurestackhci.ArcSetting, options *armazurestackhci.ArcSettingsClientCreateOptions) (resp azfake.Responder[armazurestackhci.ArcSettingsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// GeneratePassword is the fake for method ArcSettingsClient.GeneratePassword
 	// HTTP status codes to indicate success: http.StatusOK
@@ -45,17 +53,9 @@ type ArcSettingsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *armazurestackhci.ArcSettingsClientGetOptions) (resp azfake.Responder[armazurestackhci.ArcSettingsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// BeginInitializeDisableProcess is the fake for method ArcSettingsClient.BeginInitializeDisableProcess
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginInitializeDisableProcess func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, options *armazurestackhci.ArcSettingsClientBeginInitializeDisableProcessOptions) (resp azfake.PollerResponder[armazurestackhci.ArcSettingsClientInitializeDisableProcessResponse], errResp azfake.ErrorResponder)
-
 	// NewListByClusterPager is the fake for method ArcSettingsClient.NewListByClusterPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByClusterPager func(resourceGroupName string, clusterName string, options *armazurestackhci.ArcSettingsClientListByClusterOptions) (resp azfake.PagerResponder[armazurestackhci.ArcSettingsClientListByClusterResponse])
-
-	// BeginReconcile is the fake for method ArcSettingsClient.BeginReconcile
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginReconcile func(ctx context.Context, resourceGroupName string, clusterName string, arcSettingName string, reconcileArcSettingsRequest armazurestackhci.ReconcileArcSettingsRequest, options *armazurestackhci.ArcSettingsClientBeginReconcileOptions) (resp azfake.PollerResponder[armazurestackhci.ArcSettingsClientReconcileResponse], errResp azfake.ErrorResponder)
 
 	// Update is the fake for method ArcSettingsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -71,8 +71,8 @@ func NewArcSettingsServerTransport(srv *ArcSettingsServer) *ArcSettingsServerTra
 		beginCreateIdentity:           newTracker[azfake.PollerResponder[armazurestackhci.ArcSettingsClientCreateIdentityResponse]](),
 		beginDelete:                   newTracker[azfake.PollerResponder[armazurestackhci.ArcSettingsClientDeleteResponse]](),
 		beginInitializeDisableProcess: newTracker[azfake.PollerResponder[armazurestackhci.ArcSettingsClientInitializeDisableProcessResponse]](),
-		newListByClusterPager:         newTracker[azfake.PagerResponder[armazurestackhci.ArcSettingsClientListByClusterResponse]](),
 		beginReconcile:                newTracker[azfake.PollerResponder[armazurestackhci.ArcSettingsClientReconcileResponse]](),
+		newListByClusterPager:         newTracker[azfake.PagerResponder[armazurestackhci.ArcSettingsClientListByClusterResponse]](),
 	}
 }
 
@@ -83,8 +83,8 @@ type ArcSettingsServerTransport struct {
 	beginCreateIdentity           *tracker[azfake.PollerResponder[armazurestackhci.ArcSettingsClientCreateIdentityResponse]]
 	beginDelete                   *tracker[azfake.PollerResponder[armazurestackhci.ArcSettingsClientDeleteResponse]]
 	beginInitializeDisableProcess *tracker[azfake.PollerResponder[armazurestackhci.ArcSettingsClientInitializeDisableProcessResponse]]
-	newListByClusterPager         *tracker[azfake.PagerResponder[armazurestackhci.ArcSettingsClientListByClusterResponse]]
 	beginReconcile                *tracker[azfake.PollerResponder[armazurestackhci.ArcSettingsClientReconcileResponse]]
+	newListByClusterPager         *tracker[azfake.PagerResponder[armazurestackhci.ArcSettingsClientListByClusterResponse]]
 }
 
 // Do implements the policy.Transporter interface for ArcSettingsServerTransport.
@@ -108,24 +108,24 @@ func (a *ArcSettingsServerTransport) dispatchToMethodFake(req *http.Request, met
 		}
 		if !intercepted {
 			switch method {
-			case "ArcSettingsClient.ConsentAndInstallDefaultExtensions":
-				res.resp, res.err = a.dispatchConsentAndInstallDefaultExtensions(req)
-			case "ArcSettingsClient.Create":
-				res.resp, res.err = a.dispatchCreate(req)
 			case "ArcSettingsClient.BeginCreateIdentity":
 				res.resp, res.err = a.dispatchBeginCreateIdentity(req)
 			case "ArcSettingsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
+			case "ArcSettingsClient.BeginInitializeDisableProcess":
+				res.resp, res.err = a.dispatchBeginInitializeDisableProcess(req)
+			case "ArcSettingsClient.BeginReconcile":
+				res.resp, res.err = a.dispatchBeginReconcile(req)
+			case "ArcSettingsClient.ConsentAndInstallDefaultExtensions":
+				res.resp, res.err = a.dispatchConsentAndInstallDefaultExtensions(req)
+			case "ArcSettingsClient.Create":
+				res.resp, res.err = a.dispatchCreate(req)
 			case "ArcSettingsClient.GeneratePassword":
 				res.resp, res.err = a.dispatchGeneratePassword(req)
 			case "ArcSettingsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "ArcSettingsClient.BeginInitializeDisableProcess":
-				res.resp, res.err = a.dispatchBeginInitializeDisableProcess(req)
 			case "ArcSettingsClient.NewListByClusterPager":
 				res.resp, res.err = a.dispatchNewListByClusterPager(req)
-			case "ArcSettingsClient.BeginReconcile":
-				res.resp, res.err = a.dispatchBeginReconcile(req)
 			case "ArcSettingsClient.Update":
 				res.resp, res.err = a.dispatchUpdate(req)
 			default:
@@ -144,91 +144,13 @@ func (a *ArcSettingsServerTransport) dispatchToMethodFake(req *http.Request, met
 	}
 }
 
-func (a *ArcSettingsServerTransport) dispatchConsentAndInstallDefaultExtensions(req *http.Request) (*http.Response, error) {
-	if a.srv.ConsentAndInstallDefaultExtensions == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ConsentAndInstallDefaultExtensions not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/consentAndInstallDefaultExtensions`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.ConsentAndInstallDefaultExtensions(req.Context(), resourceGroupNameParam, clusterNameParam, arcSettingNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ArcSetting, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *ArcSettingsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
-	if a.srv.Create == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	body, err := server.UnmarshalRequestAsJSON[armazurestackhci.ArcSetting](req)
-	if err != nil {
-		return nil, err
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Create(req.Context(), resourceGroupNameParam, clusterNameParam, arcSettingNameParam, body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ArcSetting, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (a *ArcSettingsServerTransport) dispatchBeginCreateIdentity(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginCreateIdentity == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateIdentity not implemented")}
 	}
 	beginCreateIdentity := a.beginCreateIdentity.get(req)
 	if beginCreateIdentity == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createArcIdentity`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/createArcIdentity`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -276,7 +198,7 @@ func (a *ArcSettingsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	}
 	beginDelete := a.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -318,87 +240,13 @@ func (a *ArcSettingsServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (a *ArcSettingsServerTransport) dispatchGeneratePassword(req *http.Request) (*http.Response, error) {
-	if a.srv.GeneratePassword == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GeneratePassword not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/generatePassword`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.GeneratePassword(req.Context(), resourceGroupNameParam, clusterNameParam, arcSettingNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PasswordCredential, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (a *ArcSettingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 5 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, clusterNameParam, arcSettingNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ArcSetting, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (a *ArcSettingsServerTransport) dispatchBeginInitializeDisableProcess(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginInitializeDisableProcess == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginInitializeDisableProcess not implemented")}
 	}
 	beginInitializeDisableProcess := a.beginInitializeDisableProcess.get(req)
 	if beginInitializeDisableProcess == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/initializeDisableProcess`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/initializeDisableProcess`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -440,54 +288,13 @@ func (a *ArcSettingsServerTransport) dispatchBeginInitializeDisableProcess(req *
 	return resp, nil
 }
 
-func (a *ArcSettingsServerTransport) dispatchNewListByClusterPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListByClusterPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByClusterPager not implemented")}
-	}
-	newListByClusterPager := a.newListByClusterPager.get(req)
-	if newListByClusterPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListByClusterPager(resourceGroupNameParam, clusterNameParam, nil)
-		newListByClusterPager = &resp
-		a.newListByClusterPager.add(req, newListByClusterPager)
-		server.PagerResponderInjectNextLinks(newListByClusterPager, req, func(page *armazurestackhci.ArcSettingsClientListByClusterResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByClusterPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListByClusterPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByClusterPager) {
-		a.newListByClusterPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (a *ArcSettingsServerTransport) dispatchBeginReconcile(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginReconcile == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginReconcile not implemented")}
 	}
 	beginReconcile := a.beginReconcile.get(req)
 	if beginReconcile == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/reconcile`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/reconcile`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -533,11 +340,204 @@ func (a *ArcSettingsServerTransport) dispatchBeginReconcile(req *http.Request) (
 	return resp, nil
 }
 
+func (a *ArcSettingsServerTransport) dispatchConsentAndInstallDefaultExtensions(req *http.Request) (*http.Response, error) {
+	if a.srv.ConsentAndInstallDefaultExtensions == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ConsentAndInstallDefaultExtensions not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/consentAndInstallDefaultExtensions`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.ConsentAndInstallDefaultExtensions(req.Context(), resourceGroupNameParam, clusterNameParam, arcSettingNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ArcSetting, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ArcSettingsServerTransport) dispatchCreate(req *http.Request) (*http.Response, error) {
+	if a.srv.Create == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armazurestackhci.ArcSetting](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Create(req.Context(), resourceGroupNameParam, clusterNameParam, arcSettingNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ArcSetting, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ArcSettingsServerTransport) dispatchGeneratePassword(req *http.Request) (*http.Response, error) {
+	if a.srv.GeneratePassword == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GeneratePassword not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/generatePassword`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.GeneratePassword(req.Context(), resourceGroupNameParam, clusterNameParam, arcSettingNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PasswordCredential, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ArcSettingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if a.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	arcSettingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("arcSettingName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, clusterNameParam, arcSettingNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ArcSetting, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *ArcSettingsServerTransport) dispatchNewListByClusterPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListByClusterPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByClusterPager not implemented")}
+	}
+	newListByClusterPager := a.newListByClusterPager.get(req)
+	if newListByClusterPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListByClusterPager(resourceGroupNameParam, clusterNameParam, nil)
+		newListByClusterPager = &resp
+		a.newListByClusterPager.add(req, newListByClusterPager)
+		server.PagerResponderInjectNextLinks(newListByClusterPager, req, func(page *armazurestackhci.ArcSettingsClientListByClusterResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByClusterPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListByClusterPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByClusterPager) {
+		a.newListByClusterPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (a *ArcSettingsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/arcSettings/(?P<arcSettingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.AzureStackHCI/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/arcSettings/(?P<arcSettingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {

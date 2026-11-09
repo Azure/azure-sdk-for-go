@@ -29,6 +29,10 @@ type RetentionPoliciesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, schedulerName string, options *armdurabletask.RetentionPoliciesClientBeginDeleteOptions) (resp azfake.PollerResponder[armdurabletask.RetentionPoliciesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method RetentionPoliciesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, schedulerName string, properties armdurabletask.RetentionPolicy, options *armdurabletask.RetentionPoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdurabletask.RetentionPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method RetentionPoliciesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, schedulerName string, options *armdurabletask.RetentionPoliciesClientGetOptions) (resp azfake.Responder[armdurabletask.RetentionPoliciesClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type RetentionPoliciesServer struct {
 	// NewListBySchedulerPager is the fake for method RetentionPoliciesClient.NewListBySchedulerPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySchedulerPager func(resourceGroupName string, schedulerName string, options *armdurabletask.RetentionPoliciesClientListBySchedulerOptions) (resp azfake.PagerResponder[armdurabletask.RetentionPoliciesClientListBySchedulerResponse])
-
-	// BeginUpdate is the fake for method RetentionPoliciesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, schedulerName string, properties armdurabletask.RetentionPolicy, options *armdurabletask.RetentionPoliciesClientBeginUpdateOptions) (resp azfake.PollerResponder[armdurabletask.RetentionPoliciesClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewRetentionPoliciesServerTransport creates a new instance of RetentionPoliciesServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewRetentionPoliciesServerTransport(srv *RetentionPoliciesServer) *Retentio
 		srv:                     srv,
 		beginCreateOrReplace:    newTracker[azfake.PollerResponder[armdurabletask.RetentionPoliciesClientCreateOrReplaceResponse]](),
 		beginDelete:             newTracker[azfake.PollerResponder[armdurabletask.RetentionPoliciesClientDeleteResponse]](),
-		newListBySchedulerPager: newTracker[azfake.PagerResponder[armdurabletask.RetentionPoliciesClientListBySchedulerResponse]](),
 		beginUpdate:             newTracker[azfake.PollerResponder[armdurabletask.RetentionPoliciesClientUpdateResponse]](),
+		newListBySchedulerPager: newTracker[azfake.PagerResponder[armdurabletask.RetentionPoliciesClientListBySchedulerResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type RetentionPoliciesServerTransport struct {
 	srv                     *RetentionPoliciesServer
 	beginCreateOrReplace    *tracker[azfake.PollerResponder[armdurabletask.RetentionPoliciesClientCreateOrReplaceResponse]]
 	beginDelete             *tracker[azfake.PollerResponder[armdurabletask.RetentionPoliciesClientDeleteResponse]]
-	newListBySchedulerPager *tracker[azfake.PagerResponder[armdurabletask.RetentionPoliciesClientListBySchedulerResponse]]
 	beginUpdate             *tracker[azfake.PollerResponder[armdurabletask.RetentionPoliciesClientUpdateResponse]]
+	newListBySchedulerPager *tracker[azfake.PagerResponder[armdurabletask.RetentionPoliciesClientListBySchedulerResponse]]
 }
 
 // Do implements the policy.Transporter interface for RetentionPoliciesServerTransport.
@@ -90,12 +90,12 @@ func (r *RetentionPoliciesServerTransport) dispatchToMethodFake(req *http.Reques
 				res.resp, res.err = r.dispatchBeginCreateOrReplace(req)
 			case "RetentionPoliciesClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "RetentionPoliciesClient.BeginUpdate":
+				res.resp, res.err = r.dispatchBeginUpdate(req)
 			case "RetentionPoliciesClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			case "RetentionPoliciesClient.NewListBySchedulerPager":
 				res.resp, res.err = r.dispatchNewListBySchedulerPager(req)
-			case "RetentionPoliciesClient.BeginUpdate":
-				res.resp, res.err = r.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -118,7 +118,7 @@ func (r *RetentionPoliciesServerTransport) dispatchBeginCreateOrReplace(req *htt
 	}
 	beginCreateOrReplace := r.beginCreateOrReplace.get(req)
 	if beginCreateOrReplace == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retentionPolicies/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retentionPolicies/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -166,7 +166,7 @@ func (r *RetentionPoliciesServerTransport) dispatchBeginDelete(req *http.Request
 	}
 	beginDelete := r.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retentionPolicies/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retentionPolicies/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -204,87 +204,13 @@ func (r *RetentionPoliciesServerTransport) dispatchBeginDelete(req *http.Request
 	return resp, nil
 }
 
-func (r *RetentionPoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if r.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retentionPolicies/default`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, schedulerNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RetentionPolicy, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (r *RetentionPoliciesServerTransport) dispatchNewListBySchedulerPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListBySchedulerPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySchedulerPager not implemented")}
-	}
-	newListBySchedulerPager := r.newListBySchedulerPager.get(req)
-	if newListBySchedulerPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retentionPolicies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewListBySchedulerPager(resourceGroupNameParam, schedulerNameParam, nil)
-		newListBySchedulerPager = &resp
-		r.newListBySchedulerPager.add(req, newListBySchedulerPager)
-		server.PagerResponderInjectNextLinks(newListBySchedulerPager, req, func(page *armdurabletask.RetentionPoliciesClientListBySchedulerResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySchedulerPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListBySchedulerPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySchedulerPager) {
-		r.newListBySchedulerPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *RetentionPoliciesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
 	beginUpdate := r.beginUpdate.get(req)
 	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/retentionPolicies/default`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retentionPolicies/default`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -323,6 +249,80 @@ func (r *RetentionPoliciesServerTransport) dispatchBeginUpdate(req *http.Request
 		r.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (r *RetentionPoliciesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if r.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retentionPolicies/default`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.Get(req.Context(), resourceGroupNameParam, schedulerNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RetentionPolicy, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *RetentionPoliciesServerTransport) dispatchNewListBySchedulerPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListBySchedulerPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySchedulerPager not implemented")}
+	}
+	newListBySchedulerPager := r.newListBySchedulerPager.get(req)
+	if newListBySchedulerPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.DurableTask/schedulers/(?P<schedulerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/retentionPolicies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		schedulerNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("schedulerName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListBySchedulerPager(resourceGroupNameParam, schedulerNameParam, nil)
+		newListBySchedulerPager = &resp
+		r.newListBySchedulerPager.add(req, newListBySchedulerPager)
+		server.PagerResponderInjectNextLinks(newListBySchedulerPager, req, func(page *armdurabletask.RetentionPoliciesClientListBySchedulerResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySchedulerPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListBySchedulerPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySchedulerPager) {
+		r.newListBySchedulerPager.remove(req)
+	}
 	return resp, nil
 }
 

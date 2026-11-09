@@ -1,11 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+// cSpell:ignore azcosmostest
 
 package azcosmos
 
 import (
 	"context"
+	"encoding/json"
 	"io"
+	"math"
 	"net/http"
 	"net/url"
 	"strings"
@@ -168,6 +171,116 @@ func TestGroupItemsByPhysicalRange_DefaultVersion(t *testing.T) {
 	require.Len(t, groups["0"], 1)
 }
 
+type readManyV1PartitionPolicy struct {
+	rangeIDs []string
+}
+
+func (p *readManyV1PartitionPolicy) Do(req *policy.Request) (*http.Response, error) {
+	var query struct {
+		Parameters []QueryParameter `json:"parameters"`
+	}
+	if err := json.NewDecoder(req.Raw().Body).Decode(&query); err != nil {
+		return nil, err
+	}
+	rangeID := req.Raw().Header.Get(cosmosHeaderPartitionKeyRangeId)
+	p.rangeIDs = append(p.rangeIDs, rangeID)
+	documents := make([]map[string]string, 0)
+	for _, parameter := range query.Parameters {
+		if !strings.HasPrefix(parameter.Name, "@param_id") {
+			continue
+		}
+		switch parameter.Value {
+		case "low":
+			if rangeID == "0" {
+				documents = append(documents, map[string]string{"id": "low", "pk": ""})
+			}
+		case "high", "high2":
+			if rangeID == "1" {
+				documents = append(documents, map[string]string{"id": parameter.Value.(string), "pk": "asdf"})
+			}
+		}
+	}
+	body, err := json.Marshal(struct {
+		Documents []map[string]string `json:"Documents"`
+	}{Documents: documents})
+	if err != nil {
+		return nil, err
+	}
+	header := http.Header{}
+	header.Set(cosmosHeaderRequestCharge, "1")
+	return &http.Response{
+		StatusCode: http.StatusOK,
+		Header:     header,
+		Body:       io.NopCloser(strings.NewReader(string(body))),
+		Request:    req.Raw(),
+	}, nil
+}
+
+func TestReadManyItems_V1PhysicalPartitions(t *testing.T) {
+	low := ItemIdentity{ID: "low", PartitionKey: NewPartitionKeyString("")}
+	high := ItemIdentity{ID: "high", PartitionKey: NewPartitionKeyString("asdf")}
+	high2 := ItemIdentity{ID: "high2", PartitionKey: NewPartitionKeyString("asdf")}
+	missing := ItemIdentity{ID: "missing", PartitionKey: NewPartitionKeyString("")}
+	tests := []struct {
+		name     string
+		items    []ItemIdentity
+		expected []string
+		ranges   []string
+	}{
+		{"mixed keys with missing item", []ItemIdentity{low, high, missing}, []string{"low", "high"}, []string{"0", "1"}},
+		{"single item", []ItemIdentity{high}, []string{"high"}, []string{"1"}},
+		{"same logical partition", []ItemIdentity{high, high2}, []string{"high", "high2"}, []string{"1"}},
+	}
+	for _, version := range []int{0, 1} {
+		name := "explicit V1"
+		if version == 0 {
+			name = "omitted version"
+		}
+		t.Run(name, func(t *testing.T) {
+			for _, tt := range tests {
+				t.Run(tt.name, func(t *testing.T) {
+					srv, closeSrv := mock.NewTLSServer()
+					defer closeSrv()
+					service := &readManyV1PartitionPolicy{}
+					client := createReadManyTestClient(t, srv, []policy.Policy{service})
+					containerLink := "dbs/databaseId/colls/containerId"
+					client.getContainerCache().set(containerLink, &ContainerProperties{
+						ID:         "containerId",
+						ResourceID: "testRID",
+						PartitionKeyDefinition: PartitionKeyDefinition{
+							Paths: []string{"/pk"}, Kind: PartitionKeyKindHash, Version: version,
+						},
+					})
+					// Service-observed V1 split; "" is in range 0 and "asdf" in range 1.
+					client.getPKRangeCache().entries["testRID"] = &pkRangeCacheEntry{
+						routingMap: newCollectionRoutingMap([]partitionKeyRange{
+							{ID: "0", MinInclusive: "", MaxExclusive: "05C1DFFFFFFFFC"},
+							{ID: "1", MinInclusive: "05C1DFFFFFFFFC", MaxExclusive: "FF"},
+						}, "etag1"),
+					}
+					database, err := newDatabase("databaseId", client)
+					require.NoError(t, err)
+					container, err := newContainer("containerId", database)
+					require.NoError(t, err)
+					concurrency := int32(1)
+					response, err := container.ReadManyItems(context.Background(), tt.items, &ReadManyItemsOptions{MaxConcurrency: &concurrency})
+					require.NoError(t, err)
+					var ids []string
+					for _, item := range response.Items {
+						var document struct {
+							ID string `json:"id"`
+						}
+						require.NoError(t, json.Unmarshal(item, &document))
+						ids = append(ids, document.ID)
+					}
+					require.ElementsMatch(t, tt.expected, ids)
+					require.ElementsMatch(t, tt.ranges, service.rangeIDs)
+				})
+			}
+		})
+	}
+}
+
 func TestFindPhysicalRangeForEPK_FFSentinel(t *testing.T) {
 	// "FF" is the sentinel max boundary for the last partition.
 	// EPK values like "FFF697..." are longer strings that lexicographically
@@ -225,6 +338,148 @@ func TestBuildQueryChunksForRanges_Chunking(t *testing.T) {
 	require.Len(t, chunks, 2)
 	require.Equal(t, "0", chunks[0].rangeID)
 	require.Equal(t, "0", chunks[1].rangeID)
+}
+
+func TestReadManyItems_PartitionKeyHeader(t *testing.T) {
+	hierarchicalPK := NewPartitionKeyString("tenant").AppendString("user")
+	testCases := []struct {
+		name             string
+		partitionKeyDef  PartitionKeyDefinition
+		items            []ItemIdentity
+		expectedPKHeader string
+	}{
+		{
+			name: "same logical partition key",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/pk"},
+				Kind:    PartitionKeyKindHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: NewPartitionKeyString("pk1")},
+				{ID: "2", PartitionKey: NewPartitionKeyString("pk1")},
+			},
+			expectedPKHeader: `["pk1"]`,
+		},
+		{
+			name: "different logical partition keys",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/pk"},
+				Kind:    PartitionKeyKindHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: NewPartitionKeyString("pk1")},
+				{ID: "2", PartitionKey: NewPartitionKeyString("pk2")},
+			},
+		},
+		{
+			name: "different signed zero partition keys",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/pk"},
+				Kind:    PartitionKeyKindHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: NewPartitionKeyNumber(0)},
+				{ID: "2", PartitionKey: NewPartitionKeyNumber(math.Copysign(0, -1))},
+			},
+		},
+		{
+			name: "same hierarchical partition key",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/tenant", "/user"},
+				Kind:    PartitionKeyKindMultiHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: hierarchicalPK},
+				{ID: "2", PartitionKey: hierarchicalPK},
+			},
+			expectedPKHeader: `["tenant","user"]`,
+		},
+		{
+			name: "different hierarchical partition key component",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/tenant", "/user"},
+				Kind:    PartitionKeyKindMultiHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: hierarchicalPK},
+				{ID: "2", PartitionKey: NewPartitionKeyString("tenant").AppendString("other")},
+			},
+		},
+		{
+			name: "same partial hierarchical partition key",
+			partitionKeyDef: PartitionKeyDefinition{
+				Paths:   []string{"/tenant", "/user"},
+				Kind:    PartitionKeyKindMultiHash,
+				Version: 2,
+			},
+			items: []ItemIdentity{
+				{ID: "1", PartitionKey: NewPartitionKeyString("tenant")},
+				{ID: "2", PartitionKey: NewPartitionKeyString("tenant")},
+			},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			containerBody, err := json.Marshal(ContainerProperties{
+				ID:                     "containerId",
+				PartitionKeyDefinition: tc.partitionKeyDef,
+			})
+			require.NoError(t, err)
+
+			rangeBody, err := json.Marshal(struct {
+				PartitionKeyRanges []partitionKeyRange `json:"PartitionKeyRanges"`
+				Count              int                 `json:"_count"`
+			}{
+				PartitionKeyRanges: []partitionKeyRange{{ID: "0", MinInclusive: "", MaxExclusive: "FF"}},
+				Count:              1,
+			})
+			require.NoError(t, err)
+
+			srv, closeSrv := mock.NewTLSServer()
+			defer closeSrv()
+			srv.AppendResponse(mock.WithBody(containerBody), mock.WithStatusCode(http.StatusOK))
+			srv.AppendResponse(mock.WithBody(rangeBody), mock.WithStatusCode(http.StatusOK))
+			srv.AppendResponse(
+				mock.WithBody([]byte(`{"Documents":[]}`)),
+				mock.WithHeader(cosmosHeaderRequestCharge, "1.0"),
+				mock.WithStatusCode(http.StatusOK),
+			)
+
+			verifier := pipelineVerifier{}
+			internalClient, err := azcore.NewClient(
+				"azcosmostest",
+				"v1.0.0",
+				azruntime.PipelineOptions{PerCall: []policy.Policy{&headerPolicies{}, &verifier}},
+				&policy.ClientOptions{Transport: srv},
+			)
+			require.NoError(t, err)
+
+			defaultEndpoint, err := url.Parse(srv.URL())
+			require.NoError(t, err)
+			client := &Client{
+				endpoint:    srv.URL(),
+				endpointUrl: defaultEndpoint,
+				internal:    internalClient,
+				gem:         &globalEndpointManager{preferredLocations: []string{}},
+			}
+			database, err := newDatabase("databaseId", client)
+			require.NoError(t, err)
+			container, err := newContainer("containerId", database)
+			require.NoError(t, err)
+
+			_, err = container.ReadManyItems(context.Background(), tc.items, nil)
+			require.NoError(t, err)
+			require.Len(t, verifier.requests, 3)
+			require.Equal(t, tc.expectedPKHeader, verifier.requests[2].headers.Get(cosmosHeaderPartitionKey))
+			require.Equal(t, "0", verifier.requests[2].headers.Get(cosmosHeaderPartitionKeyRangeId))
+		})
+	}
 }
 
 // cancelOnNthQueryPolicy is a pipeline policy that cancels a context after the

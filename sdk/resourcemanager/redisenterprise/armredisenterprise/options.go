@@ -67,6 +67,13 @@ type ClientListSKUsForScalingOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ClustersClientBeginUnlinkMigratedEndpointOptions contains the optional parameters for the ClustersClient.BeginUnlinkMigratedEndpoint
+// method.
+type ClustersClientBeginUnlinkMigratedEndpointOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // DatabasesClientBeginCreateOptions contains the optional parameters for the DatabasesClient.BeginCreate method.
 type DatabasesClientBeginCreateOptions struct {
 	// Resumes the long-running operation from the provided token.
@@ -147,25 +154,35 @@ type DatabasesClientListKeysOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MigrationClientBeginCancelOptions contains the optional parameters for the MigrationClient.BeginCancel method.
-type MigrationClientBeginCancelOptions struct {
+// MigrationsClientBeginStartOptions contains the optional parameters for the MigrationsClient.BeginStart method.
+type MigrationsClientBeginStartOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// MigrationClientBeginStartOptions contains the optional parameters for the MigrationClient.BeginStart method.
-type MigrationClientBeginStartOptions struct {
+// MigrationsClientBeginUndoOptions contains the optional parameters for the MigrationsClient.BeginUndo method.
+type MigrationsClientBeginUndoOptions struct {
+	// Parameters supplied to undo a migration operation.
+	Body *MigrationUndoRequest
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// MigrationClientGetOptions contains the optional parameters for the MigrationClient.Get method.
-type MigrationClientGetOptions struct {
+// MigrationsClientBeginUnlinkMigratedEndpointOptions contains the optional parameters for the MigrationsClient.BeginUnlinkMigratedEndpoint
+// method.
+type MigrationsClientBeginUnlinkMigratedEndpointOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// MigrationsClientGetOptions contains the optional parameters for the MigrationsClient.Get method.
+type MigrationsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// MigrationClientListOptions contains the optional parameters for the MigrationClient.NewListPager method.
-type MigrationClientListOptions struct {
+// MigrationsClientListOptions contains the optional parameters for the MigrationsClient.NewListPager method.
+type MigrationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 

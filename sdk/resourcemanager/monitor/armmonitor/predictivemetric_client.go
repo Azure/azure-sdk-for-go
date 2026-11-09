@@ -19,7 +19,7 @@ import (
 // PredictiveMetricClient contains the methods for the PredictiveMetric group.
 // Don't use this type directly, use NewPredictiveMetricClient() instead.
 //
-// Generated from API version 2022-10-01
+// Generated from API version 2025-09-01-preview
 type PredictiveMetricClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type PredictiveMetricClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewPredictiveMetricClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PredictiveMetricClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,19 +69,14 @@ func (client *PredictiveMetricClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return PredictiveMetricClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return PredictiveMetricClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *PredictiveMetricClient) getCreateRequest(ctx context.Context, resourceGroupName string, autoscaleSettingName string, timespan string, interval string, metricNamespace string, metricName string, aggregation string, _ *PredictiveMetricClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/autoscalesettings/{autoscaleSettingName}/predictiveMetrics"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -95,7 +93,7 @@ func (client *PredictiveMetricClient) getCreateRequest(ctx context.Context, reso
 	}
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("aggregation", aggregation)
-	reqQP.Set("api-version", version20221001)
+	reqQP.Set("api-version", version20250901Preview)
 	reqQP.Set("interval", interval)
 	reqQP.Set("metricName", metricName)
 	reqQP.Set("metricNamespace", metricNamespace)
@@ -106,8 +104,11 @@ func (client *PredictiveMetricClient) getCreateRequest(ctx context.Context, reso
 }
 
 // getHandleResponse handles the Get response.
-func (client *PredictiveMetricClient) getHandleResponse(resp *http.Response) (PredictiveMetricClientGetResponse, error) {
+func (client *PredictiveMetricClient) getHandleResponse(resp *http.Response, successCodes ...int) (PredictiveMetricClientGetResponse, error) {
 	result := PredictiveMetricClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PredictiveResponse); err != nil {
 		return PredictiveMetricClientGetResponse{}, err
 	}

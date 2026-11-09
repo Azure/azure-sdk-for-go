@@ -105,7 +105,7 @@ func (f *FederatedIdentityCredentialsServerTransport) dispatchCreateOrUpdate(req
 	if f.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedIdentity/userAssignedIdentities/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/federatedIdentityCredentials/(?P<federatedIdentityCredentialResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedIdentity/userAssignedIdentities/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/federatedIdentityCredentials/(?P<federatedIdentityCredentialResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -146,7 +146,7 @@ func (f *FederatedIdentityCredentialsServerTransport) dispatchDelete(req *http.R
 	if f.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedIdentity/userAssignedIdentities/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/federatedIdentityCredentials/(?P<federatedIdentityCredentialResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedIdentity/userAssignedIdentities/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/federatedIdentityCredentials/(?P<federatedIdentityCredentialResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -183,7 +183,7 @@ func (f *FederatedIdentityCredentialsServerTransport) dispatchGet(req *http.Requ
 	if f.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedIdentity/userAssignedIdentities/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/federatedIdentityCredentials/(?P<federatedIdentityCredentialResourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedIdentity/userAssignedIdentities/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/federatedIdentityCredentials/(?P<federatedIdentityCredentialResourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -222,7 +222,7 @@ func (f *FederatedIdentityCredentialsServerTransport) dispatchNewListPager(req *
 	}
 	newListPager := f.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ManagedIdentity/userAssignedIdentities/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/federatedIdentityCredentials`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ManagedIdentity/userAssignedIdentities/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/federatedIdentityCredentials`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {

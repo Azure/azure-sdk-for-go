@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0 (2026-10-27)
+## 1.5.0 (2026-11-09)
 ### Features Added
 
 - New struct `APIOperationLink`

@@ -86,7 +86,8 @@ func (client *FlowsClient) createOrUpdate(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -165,7 +166,8 @@ func (client *FlowsClient) deleteOperation(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -239,7 +241,8 @@ func (client *FlowsClient) disable(ctx context.Context, resourceGroupName string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -314,7 +317,8 @@ func (client *FlowsClient) enable(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -390,7 +394,8 @@ func (client *FlowsClient) generatePassphrase(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -466,7 +471,8 @@ func (client *FlowsClient) link(ctx context.Context, resourceGroupName string, c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -547,7 +553,8 @@ func (client *FlowsClient) setDestinationEndpointPorts(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -628,7 +635,8 @@ func (client *FlowsClient) setDestinationEndpoints(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -709,7 +717,8 @@ func (client *FlowsClient) setPassphrase(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -790,7 +799,8 @@ func (client *FlowsClient) setSourceAddresses(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -870,7 +880,8 @@ func (client *FlowsClient) update(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -929,7 +940,8 @@ func (client *FlowsClient) Get(ctx context.Context, resourceGroupName string, co
 	if err != nil {
 		return FlowsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -995,7 +1007,8 @@ func (client *FlowsClient) GetDestinationEndpointPorts(ctx context.Context, reso
 	if err != nil {
 		return FlowsClientGetDestinationEndpointPortsResponse{}, err
 	}
-	return client.getDestinationEndpointPortsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDestinationEndpointPortsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDestinationEndpointPortsCreateRequest creates the GetDestinationEndpointPorts request.
@@ -1061,7 +1074,8 @@ func (client *FlowsClient) GetDestinationEndpoints(ctx context.Context, resource
 	if err != nil {
 		return FlowsClientGetDestinationEndpointsResponse{}, err
 	}
-	return client.getDestinationEndpointsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDestinationEndpointsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDestinationEndpointsCreateRequest creates the GetDestinationEndpoints request.
@@ -1127,7 +1141,8 @@ func (client *FlowsClient) GetSourceAddresses(ctx context.Context, resourceGroup
 	if err != nil {
 		return FlowsClientGetSourceAddressesResponse{}, err
 	}
-	return client.getSourceAddressesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSourceAddressesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSourceAddressesCreateRequest creates the GetSourceAddresses request.
@@ -1193,7 +1208,8 @@ func (client *FlowsClient) GetStreamConnectionString(ctx context.Context, resour
 	if err != nil {
 		return FlowsClientGetStreamConnectionStringResponse{}, err
 	}
-	return client.getStreamConnectionStringHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getStreamConnectionStringHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getStreamConnectionStringCreateRequest creates the GetStreamConnectionString request.

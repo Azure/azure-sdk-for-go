@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2026-11-06)
+## 0.2.0 (2026-11-09)
 ### Features Added
 
 - New value `TargetTypeMessagingTransferFlow`, `TargetTypeStorageTransferFlow` added to enum type `TargetType`

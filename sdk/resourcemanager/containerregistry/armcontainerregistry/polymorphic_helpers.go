@@ -16,10 +16,39 @@ func unmarshalAdditionalAuthenticationPropertiesClassification(rawMsg json.RawMe
 	}
 	var b AdditionalAuthenticationPropertiesClassification
 	switch m["authenticationType"] {
+	case string(AdditionalAuthenticationTypeAwsElasticContainerRegistry):
+		b = &EcrAuthenticationProperties{}
+	case string(AdditionalAuthenticationTypeEntraFederatedIdentityCredential):
+		b = &EntraFederatedIdentityCredentialAuthenticationProperties{}
 	case string(AdditionalAuthenticationTypeGoogleArtifactRegistry):
 		b = &GarAuthenticationProperties{}
 	default:
 		b = &AdditionalAuthenticationProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalAdditionalAuthenticationUpdatePropertiesClassification(rawMsg json.RawMessage) (AdditionalAuthenticationUpdatePropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b AdditionalAuthenticationUpdatePropertiesClassification
+	switch m["authenticationType"] {
+	case string(AdditionalAuthenticationTypeAwsElasticContainerRegistry):
+		b = &EcrAuthenticationUpdateProperties{}
+	case string(AdditionalAuthenticationTypeEntraFederatedIdentityCredential):
+		b = &EntraFederatedIdentityCredentialAuthenticationUpdateProperties{}
+	case string(AdditionalAuthenticationTypeGoogleArtifactRegistry):
+		b = &GarAuthenticationUpdateProperties{}
+	default:
+		b = &AdditionalAuthenticationUpdateProperties{}
 	}
 	if err := json.Unmarshal(rawMsg, b); err != nil {
 		return nil, err

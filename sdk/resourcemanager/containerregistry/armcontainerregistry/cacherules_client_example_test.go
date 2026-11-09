@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v4"
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/CacheRuleCreate.json
+// Generated from example definition: 2026-10-15-preview/CacheRuleCreate.json
 func ExampleCacheRulesClient_BeginCreate_cacheRuleCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExampleCacheRulesClient_BeginCreate_cacheRuleCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/CacheRuleCreateUserAssignedMIAuthentication.json
+// Generated from example definition: 2026-10-15-preview/CacheRuleCreateUserAssignedMIAuthentication.json
 func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,145 @@ func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthentica
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/CacheRuleCreateUserAssignedMIGoogle.json
+// Generated from example definition: 2026-10-15-preview/CacheRuleCreateUserAssignedMIAws.json
+func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthAws() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCacheRulesClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRule{
+		Identity: &armcontainerregistry.IdentityProperties{
+			Type: to.Ptr(armcontainerregistry.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcontainerregistry.UserIdentityProperties{
+				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": {},
+			},
+		},
+		Properties: &armcontainerregistry.CacheRuleProperties{
+			SourceRepository: to.Ptr("123456789012.dkr.ecr.us-west-2.amazonaws.com/hello-world"),
+			TargetRepository: to.Ptr("cached-ecr/hello-world"),
+			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationProperties{
+				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+				AccountNumber:      to.Ptr("123456789012"),
+				Region:             to.Ptr("us-west-2"),
+				RoleName:           to.Ptr("my-ecr-pull-role"),
+				RolePath:           to.Ptr("/acr/"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerregistry.CacheRulesClientCreateResponse{
+	// 	CacheRule: armcontainerregistry.CacheRule{
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/cacheRules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/cacheRules/myCacheRule"),
+	// 		Name: to.Ptr("myCacheRule"),
+	// 		Identity: &armcontainerregistry.IdentityProperties{
+	// 			Type: to.Ptr(armcontainerregistry.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armcontainerregistry.UserIdentityProperties{
+	// 				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": &armcontainerregistry.UserIdentityProperties{
+	// 					ClientID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 					PrincipalID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armcontainerregistry.CacheRuleProperties{
+	// 			SourceRepository: to.Ptr("123456789012.dkr.ecr.us-west-2.amazonaws.com/hello-world"),
+	// 			TargetRepository: to.Ptr("cached-ecr/hello-world"),
+	// 			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationProperties{
+	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+	// 				AccountNumber: to.Ptr("123456789012"),
+	// 				Region: to.Ptr("us-west-2"),
+	// 				RoleName: to.Ptr("my-ecr-pull-role"),
+	// 				RolePath: to.Ptr("/acr/"),
+	// 			},
+	// 			CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 33, 837496800, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-15-preview/CacheRuleCreateUserAssignedMIEntraFederatedIdentityCredential.json
+func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthEntraFederatedIdentityCredential() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCacheRulesClient().BeginCreate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRule{
+		Identity: &armcontainerregistry.IdentityProperties{
+			Type: to.Ptr(armcontainerregistry.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcontainerregistry.UserIdentityProperties{
+				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": {},
+			},
+		},
+		Properties: &armcontainerregistry.CacheRuleProperties{
+			SourceRepository: to.Ptr("myupstream.azurecr.io/hello-world"),
+			TargetRepository: to.Ptr("cached-upstream/hello-world"),
+			AdditionalAuthenticationProperties: &armcontainerregistry.EntraFederatedIdentityCredentialAuthenticationProperties{
+				AuthenticationType:           to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeEntraFederatedIdentityCredential),
+				SourceTenantID:               to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+				FederatedApplicationClientID: to.Ptr("abcdef12-3456-7890-abcd-ef1234567890"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerregistry.CacheRulesClientCreateResponse{
+	// 	CacheRule: armcontainerregistry.CacheRule{
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/cacheRules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/cacheRules/myCacheRule"),
+	// 		Name: to.Ptr("myCacheRule"),
+	// 		Identity: &armcontainerregistry.IdentityProperties{
+	// 			Type: to.Ptr(armcontainerregistry.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armcontainerregistry.UserIdentityProperties{
+	// 				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": &armcontainerregistry.UserIdentityProperties{
+	// 					ClientID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 					PrincipalID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armcontainerregistry.CacheRuleProperties{
+	// 			SourceRepository: to.Ptr("myupstream.azurecr.io/hello-world"),
+	// 			TargetRepository: to.Ptr("cached-upstream/hello-world"),
+	// 			AdditionalAuthenticationProperties: &armcontainerregistry.EntraFederatedIdentityCredentialAuthenticationProperties{
+	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeEntraFederatedIdentityCredential),
+	// 				SourceTenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 				FederatedApplicationClientID: to.Ptr("abcdef12-3456-7890-abcd-ef1234567890"),
+	// 			},
+	// 			CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 33, 837496800, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-15-preview/CacheRuleCreateUserAssignedMIGoogle.json
 func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthGoogle() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +302,7 @@ func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthGoogle
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/CacheRuleDelete.json
+// Generated from example definition: 2026-10-15-preview/CacheRuleDelete.json
 func ExampleCacheRulesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +323,393 @@ func ExampleCacheRulesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/CacheRuleGet.json
+// Generated from example definition: 2026-10-15-preview/CacheRuleUpdate.json
+func ExampleCacheRulesClient_BeginUpdate_cacheRuleUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCacheRulesClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRuleUpdateParameters{
+		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
+			CredentialSetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/credentialSets/myCredentialSet2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerregistry.CacheRulesClientUpdateResponse{
+	// 	CacheRule: armcontainerregistry.CacheRule{
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/cacheRules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/cacheRules/myCacheRule"),
+	// 		Name: to.Ptr("myCacheRule"),
+	// 		Properties: &armcontainerregistry.CacheRuleProperties{
+	// 			CredentialSetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/credentialSets/myCredentialSet2"),
+	// 			SourceRepository: to.Ptr("docker.io/library/hello-world"),
+	// 			TargetRepository: to.Ptr("cached-docker-hub/hello-world"),
+	// 			CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 33, 837496800, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-15-preview/CacheRuleUpdateAwsAuthentication.json
+func ExampleCacheRulesClient_BeginUpdate_updateAwsAuthenticationWhilePreservingOmittedFields() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCacheRulesClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRuleUpdateParameters{
+		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
+			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationUpdateProperties{
+				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+				RoleName:           to.Ptr("updated-ecr-pull-role"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerregistry.CacheRulesClientUpdateResponse{
+	// 	CacheRule: armcontainerregistry.CacheRule{
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/cacheRules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/cacheRules/myCacheRule"),
+	// 		Name: to.Ptr("myCacheRule"),
+	// 		Properties: &armcontainerregistry.CacheRuleProperties{
+	// 			SourceRepository: to.Ptr("123456789012.dkr.ecr.us-west-2.amazonaws.com/hello-world"),
+	// 			TargetRepository: to.Ptr("cached-ecr/hello-world"),
+	// 			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationProperties{
+	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+	// 				AccountNumber: to.Ptr("123456789012"),
+	// 				Region: to.Ptr("us-west-2"),
+	// 				RoleName: to.Ptr("updated-ecr-pull-role"),
+	// 				RolePath: to.Ptr("/acr/"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-15-preview/CacheRuleUpdateConfigureAwsAuthentication.json
+func ExampleCacheRulesClient_BeginUpdate_configureAwsAuthenticationOnAnExistingCacheRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCacheRulesClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRuleUpdateParameters{
+		Identity: &armcontainerregistry.IdentityProperties{
+			Type: to.Ptr(armcontainerregistry.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcontainerregistry.UserIdentityProperties{
+				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": {},
+			},
+		},
+		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
+			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationUpdateProperties{
+				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+				AccountNumber:      to.Ptr("123456789012"),
+				Region:             to.Ptr("us-west-2"),
+				RoleName:           to.Ptr("my-ecr-pull-role"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerregistry.CacheRulesClientUpdateResponse{
+	// 	CacheRule: armcontainerregistry.CacheRule{
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/cacheRules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/cacheRules/myCacheRule"),
+	// 		Name: to.Ptr("myCacheRule"),
+	// 		Identity: &armcontainerregistry.IdentityProperties{
+	// 			Type: to.Ptr(armcontainerregistry.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armcontainerregistry.UserIdentityProperties{
+	// 				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": &armcontainerregistry.UserIdentityProperties{
+	// 					ClientID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 					PrincipalID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armcontainerregistry.CacheRuleProperties{
+	// 			SourceRepository: to.Ptr("123456789012.dkr.ecr.us-west-2.amazonaws.com/hello-world"),
+	// 			TargetRepository: to.Ptr("cached-ecr/hello-world"),
+	// 			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationProperties{
+	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+	// 				AccountNumber: to.Ptr("123456789012"),
+	// 				Region: to.Ptr("us-west-2"),
+	// 				RoleName: to.Ptr("my-ecr-pull-role"),
+	// 				RolePath: to.Ptr("/"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-15-preview/CacheRuleUpdateConfigureEntraAuthentication.json
+func ExampleCacheRulesClient_BeginUpdate_configureEntraAuthenticationOnAnExistingCacheRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCacheRulesClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRuleUpdateParameters{
+		Identity: &armcontainerregistry.IdentityProperties{
+			Type: to.Ptr(armcontainerregistry.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcontainerregistry.UserIdentityProperties{
+				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": {},
+			},
+		},
+		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
+			AdditionalAuthenticationProperties: &armcontainerregistry.EntraFederatedIdentityCredentialAuthenticationUpdateProperties{
+				AuthenticationType:           to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeEntraFederatedIdentityCredential),
+				SourceTenantID:               to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+				FederatedApplicationClientID: to.Ptr("abcdef12-3456-7890-abcd-ef1234567890"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerregistry.CacheRulesClientUpdateResponse{
+	// 	CacheRule: armcontainerregistry.CacheRule{
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/cacheRules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/cacheRules/myCacheRule"),
+	// 		Name: to.Ptr("myCacheRule"),
+	// 		Identity: &armcontainerregistry.IdentityProperties{
+	// 			Type: to.Ptr(armcontainerregistry.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armcontainerregistry.UserIdentityProperties{
+	// 				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": &armcontainerregistry.UserIdentityProperties{
+	// 					ClientID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 					PrincipalID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armcontainerregistry.CacheRuleProperties{
+	// 			SourceRepository: to.Ptr("myupstream.azurecr.io/hello-world"),
+	// 			TargetRepository: to.Ptr("cached-upstream/hello-world"),
+	// 			AdditionalAuthenticationProperties: &armcontainerregistry.EntraFederatedIdentityCredentialAuthenticationProperties{
+	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeEntraFederatedIdentityCredential),
+	// 				SourceTenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 				FederatedApplicationClientID: to.Ptr("abcdef12-3456-7890-abcd-ef1234567890"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-15-preview/CacheRuleUpdateConfigureGoogleAuthentication.json
+func ExampleCacheRulesClient_BeginUpdate_configureGoogleAuthenticationOnAnExistingCacheRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCacheRulesClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRuleUpdateParameters{
+		Identity: &armcontainerregistry.IdentityProperties{
+			Type: to.Ptr(armcontainerregistry.ResourceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armcontainerregistry.UserIdentityProperties{
+				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": {},
+			},
+		},
+		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
+			AdditionalAuthenticationProperties: &armcontainerregistry.GarAuthenticationUpdateProperties{
+				AuthenticationType:       to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeGoogleArtifactRegistry),
+				ProjectNumber:            to.Ptr("123456789012"),
+				WorkloadIdentityPool:     to.Ptr("my-workload-identity-pool"),
+				WorkloadIdentityProvider: to.Ptr("my-workload-identity-provider"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerregistry.CacheRulesClientUpdateResponse{
+	// 	CacheRule: armcontainerregistry.CacheRule{
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/cacheRules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/cacheRules/myCacheRule"),
+	// 		Name: to.Ptr("myCacheRule"),
+	// 		Identity: &armcontainerregistry.IdentityProperties{
+	// 			Type: to.Ptr(armcontainerregistry.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armcontainerregistry.UserIdentityProperties{
+	// 				"/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/myResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myUserAssignedIdentity": &armcontainerregistry.UserIdentityProperties{
+	// 					ClientID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 					PrincipalID: to.Ptr("12345678-1234-1234-1234-123456789012"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armcontainerregistry.CacheRuleProperties{
+	// 			SourceRepository: to.Ptr("us-west1-docker.pkg.dev/my-project/my-repository/hello-world"),
+	// 			TargetRepository: to.Ptr("cached-gar/hello-world"),
+	// 			AdditionalAuthenticationProperties: &armcontainerregistry.GarAuthenticationProperties{
+	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeGoogleArtifactRegistry),
+	// 				ProjectNumber: to.Ptr("123456789012"),
+	// 				WorkloadIdentityPool: to.Ptr("my-workload-identity-pool"),
+	// 				WorkloadIdentityProvider: to.Ptr("my-workload-identity-provider"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-15-preview/CacheRuleUpdateEntraAuthentication.json
+func ExampleCacheRulesClient_BeginUpdate_updateEntraAuthenticationWhilePreservingOmittedFields() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCacheRulesClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRuleUpdateParameters{
+		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
+			AdditionalAuthenticationProperties: &armcontainerregistry.EntraFederatedIdentityCredentialAuthenticationUpdateProperties{
+				AuthenticationType:           to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeEntraFederatedIdentityCredential),
+				FederatedApplicationClientID: to.Ptr("fedcba98-7654-3210-abcd-ef1234567890"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerregistry.CacheRulesClientUpdateResponse{
+	// 	CacheRule: armcontainerregistry.CacheRule{
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/cacheRules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/cacheRules/myCacheRule"),
+	// 		Name: to.Ptr("myCacheRule"),
+	// 		Properties: &armcontainerregistry.CacheRuleProperties{
+	// 			SourceRepository: to.Ptr("myupstream.azurecr.io/hello-world"),
+	// 			TargetRepository: to.Ptr("cached-upstream/hello-world"),
+	// 			AdditionalAuthenticationProperties: &armcontainerregistry.EntraFederatedIdentityCredentialAuthenticationProperties{
+	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeEntraFederatedIdentityCredential),
+	// 				SourceTenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 				FederatedApplicationClientID: to.Ptr("fedcba98-7654-3210-abcd-ef1234567890"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-15-preview/CacheRuleUpdateGoogleAuthentication.json
+func ExampleCacheRulesClient_BeginUpdate_updateGoogleAuthenticationWhilePreservingOmittedFields() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewCacheRulesClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRuleUpdateParameters{
+		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
+			AdditionalAuthenticationProperties: &armcontainerregistry.GarAuthenticationUpdateProperties{
+				AuthenticationType:       to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeGoogleArtifactRegistry),
+				WorkloadIdentityProvider: to.Ptr("updated-identity-provider"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerregistry.CacheRulesClientUpdateResponse{
+	// 	CacheRule: armcontainerregistry.CacheRule{
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/cacheRules"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/cacheRules/myCacheRule"),
+	// 		Name: to.Ptr("myCacheRule"),
+	// 		Properties: &armcontainerregistry.CacheRuleProperties{
+	// 			SourceRepository: to.Ptr("us-west1-docker.pkg.dev/my-project/my-repository/hello-world"),
+	// 			TargetRepository: to.Ptr("cached-gar/hello-world"),
+	// 			AdditionalAuthenticationProperties: &armcontainerregistry.GarAuthenticationProperties{
+	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeGoogleArtifactRegistry),
+	// 				ProjectNumber: to.Ptr("123456789012"),
+	// 				WorkloadIdentityPool: to.Ptr("my-workload-identity-pool"),
+	// 				WorkloadIdentityProvider: to.Ptr("updated-identity-provider"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-15-preview/CacheRuleGet.json
 func ExampleCacheRulesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +743,7 @@ func ExampleCacheRulesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/CacheRuleList.json
+// Generated from example definition: 2026-10-15-preview/CacheRuleList.json
 func ExampleCacheRulesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -260,46 +784,4 @@ func ExampleCacheRulesClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-09-01-preview/CacheRuleUpdate.json
-func ExampleCacheRulesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewCacheRulesClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRuleUpdateParameters{
-		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
-			CredentialSetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/credentialSets/myCredentialSet2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerregistry.CacheRulesClientUpdateResponse{
-	// 	CacheRule: armcontainerregistry.CacheRule{
-	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/cacheRules"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/cacheRules/myCacheRule"),
-	// 		Name: to.Ptr("myCacheRule"),
-	// 		Properties: &armcontainerregistry.CacheRuleProperties{
-	// 			CredentialSetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/credentialSets/myCredentialSet2"),
-	// 			SourceRepository: to.Ptr("docker.io/library/hello-world"),
-	// 			TargetRepository: to.Ptr("cached-docker-hub/hello-world"),
-	// 			CreationDate: to.Ptr(time.Date(2022, time.November, 7, 18, 20, 33, 837496800, time.UTC)),
-	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

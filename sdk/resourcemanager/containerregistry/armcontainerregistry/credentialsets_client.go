@@ -19,7 +19,7 @@ import (
 // CredentialSetsClient contains the methods for the CredentialSets group.
 // Don't use this type directly, use NewCredentialSetsClient() instead.
 //
-// Generated from API version 2026-09-01-preview
+// Generated from API version 2026-10-15-preview
 type CredentialSetsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *CredentialSetsClient) BeginCreate(ctx context.Context, resourceGro
 	}
 }
 
-// Create - Creates a credential set for a container registry with the specified parameters.
+// create - Creates a credential set for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CredentialSetsClient) create(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetCreateParameters CredentialSet, options *CredentialSetsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *CredentialSetsClient) create(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *CredentialSetsClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetCreateParameters CredentialSet, _ *CredentialSetsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}"
 	if client.subscriptionID == "" {
@@ -115,7 +116,7 @@ func (client *CredentialSetsClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261015Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -149,7 +150,7 @@ func (client *CredentialSetsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Deletes a credential set from a container registry.
+// deleteOperation - Deletes a credential set from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CredentialSetsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, options *CredentialSetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *CredentialSetsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CredentialSetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, _ *CredentialSetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}"
 	if client.subscriptionID == "" {
@@ -195,8 +197,90 @@ func (client *CredentialSetsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261015Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates a credential set for a container registry with the specified parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the container registry.
+//   - credentialSetName - The name of the credential set.
+//   - credentialSetUpdateParameters - The parameters for updating a credential set.
+//   - options - CredentialSetsClientBeginUpdateOptions contains the optional parameters for the CredentialSetsClient.BeginUpdate
+//     method.
+func (client *CredentialSetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetUpdateParameters CredentialSetUpdateParameters, options *CredentialSetsClientBeginUpdateOptions) (*runtime.Poller[CredentialSetsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CredentialSetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CredentialSetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a credential set for a container registry with the specified parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CredentialSetsClient) update(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetUpdateParameters CredentialSetUpdateParameters, options *CredentialSetsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CredentialSetsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *CredentialSetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetUpdateParameters CredentialSetUpdateParameters, _ *CredentialSetsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if registryName == "" {
+		return nil, errors.New("parameter registryName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
+	if credentialSetName == "" {
+		return nil, errors.New("parameter credentialSetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{credentialSetName}", url.PathEscape(credentialSetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261015Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, credentialSetUpdateParameters); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -220,7 +304,8 @@ func (client *CredentialSetsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return CredentialSetsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -247,7 +332,7 @@ func (client *CredentialSetsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261015Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -322,7 +407,7 @@ func (client *CredentialSetsClient) listCreateRequest(ctx context.Context, resou
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260901Preview)
+		reqQP.Set("api-version", version20261015Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -339,85 +424,4 @@ func (client *CredentialSetsClient) listHandleResponse(resp *http.Response, succ
 		return CredentialSetsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates a credential set for a container registry with the specified parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - registryName - The name of the container registry.
-//   - credentialSetName - The name of the credential set.
-//   - credentialSetUpdateParameters - The parameters for updating a credential set.
-//   - options - CredentialSetsClientBeginUpdateOptions contains the optional parameters for the CredentialSetsClient.BeginUpdate
-//     method.
-func (client *CredentialSetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetUpdateParameters CredentialSetUpdateParameters, options *CredentialSetsClientBeginUpdateOptions) (*runtime.Poller[CredentialSetsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CredentialSetsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CredentialSetsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a credential set for a container registry with the specified parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CredentialSetsClient) update(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetUpdateParameters CredentialSetUpdateParameters, options *CredentialSetsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CredentialSetsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, credentialSetName, credentialSetUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *CredentialSetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, credentialSetName string, credentialSetUpdateParameters CredentialSetUpdateParameters, _ *CredentialSetsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/credentialSets/{credentialSetName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if registryName == "" {
-		return nil, errors.New("parameter registryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	if credentialSetName == "" {
-		return nil, errors.New("parameter credentialSetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{credentialSetName}", url.PathEscape(credentialSetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, credentialSetUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

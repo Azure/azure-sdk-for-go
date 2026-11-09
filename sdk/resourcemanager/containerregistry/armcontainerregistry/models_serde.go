@@ -94,6 +94,33 @@ func (a *AdditionalAuthenticationProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type AdditionalAuthenticationUpdateProperties.
+func (a AdditionalAuthenticationUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "authenticationType", a.AuthenticationType)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AdditionalAuthenticationUpdateProperties.
+func (a *AdditionalAuthenticationUpdateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &a.AuthenticationType)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type Archive.
 func (a Archive) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -610,7 +637,7 @@ func (c *CacheRuleUpdateProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "additionalAuthenticationProperties":
-			c.AdditionalAuthenticationProperties, err = unmarshalAdditionalAuthenticationPropertiesClassification(val)
+			c.AdditionalAuthenticationProperties, err = unmarshalAdditionalAuthenticationUpdatePropertiesClassification(val)
 			delete(rawMsg, key)
 		case "credentialSetResourceId":
 			err = unpopulate(val, "CredentialSetResourceID", &c.CredentialSetResourceID)
@@ -1126,6 +1153,92 @@ func (c *CredentialSetUpdateProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type EcrAuthenticationProperties.
+func (e EcrAuthenticationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "accountNumber", e.AccountNumber)
+	objectMap["authenticationType"] = AdditionalAuthenticationTypeAwsElasticContainerRegistry
+	populate(objectMap, "region", e.Region)
+	populate(objectMap, "roleName", e.RoleName)
+	populate(objectMap, "rolePath", e.RolePath)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EcrAuthenticationProperties.
+func (e *EcrAuthenticationProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "accountNumber":
+			err = unpopulate(val, "AccountNumber", &e.AccountNumber)
+			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &e.AuthenticationType)
+			delete(rawMsg, key)
+		case "region":
+			err = unpopulate(val, "Region", &e.Region)
+			delete(rawMsg, key)
+		case "roleName":
+			err = unpopulate(val, "RoleName", &e.RoleName)
+			delete(rawMsg, key)
+		case "rolePath":
+			err = unpopulate(val, "RolePath", &e.RolePath)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EcrAuthenticationUpdateProperties.
+func (e EcrAuthenticationUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "accountNumber", e.AccountNumber)
+	objectMap["authenticationType"] = AdditionalAuthenticationTypeAwsElasticContainerRegistry
+	populate(objectMap, "region", e.Region)
+	populate(objectMap, "roleName", e.RoleName)
+	populate(objectMap, "rolePath", e.RolePath)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EcrAuthenticationUpdateProperties.
+func (e *EcrAuthenticationUpdateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "accountNumber":
+			err = unpopulate(val, "AccountNumber", &e.AccountNumber)
+			delete(rawMsg, key)
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &e.AuthenticationType)
+			delete(rawMsg, key)
+		case "region":
+			err = unpopulate(val, "Region", &e.Region)
+			delete(rawMsg, key)
+		case "roleName":
+			err = unpopulate(val, "RoleName", &e.RoleName)
+			delete(rawMsg, key)
+		case "rolePath":
+			err = unpopulate(val, "RolePath", &e.RolePath)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type EncryptionProperty.
 func (e EncryptionProperty) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -1148,6 +1261,76 @@ func (e *EncryptionProperty) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "status":
 			err = unpopulate(val, "Status", &e.Status)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EntraFederatedIdentityCredentialAuthenticationProperties.
+func (e EntraFederatedIdentityCredentialAuthenticationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["authenticationType"] = AdditionalAuthenticationTypeEntraFederatedIdentityCredential
+	populate(objectMap, "federatedApplicationClientId", e.FederatedApplicationClientID)
+	populate(objectMap, "sourceTenantId", e.SourceTenantID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EntraFederatedIdentityCredentialAuthenticationProperties.
+func (e *EntraFederatedIdentityCredentialAuthenticationProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &e.AuthenticationType)
+			delete(rawMsg, key)
+		case "federatedApplicationClientId":
+			err = unpopulate(val, "FederatedApplicationClientID", &e.FederatedApplicationClientID)
+			delete(rawMsg, key)
+		case "sourceTenantId":
+			err = unpopulate(val, "SourceTenantID", &e.SourceTenantID)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type EntraFederatedIdentityCredentialAuthenticationUpdateProperties.
+func (e EntraFederatedIdentityCredentialAuthenticationUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["authenticationType"] = AdditionalAuthenticationTypeEntraFederatedIdentityCredential
+	populate(objectMap, "federatedApplicationClientId", e.FederatedApplicationClientID)
+	populate(objectMap, "sourceTenantId", e.SourceTenantID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type EntraFederatedIdentityCredentialAuthenticationUpdateProperties.
+func (e *EntraFederatedIdentityCredentialAuthenticationUpdateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &e.AuthenticationType)
+			delete(rawMsg, key)
+		case "federatedApplicationClientId":
+			err = unpopulate(val, "FederatedApplicationClientID", &e.FederatedApplicationClientID)
+			delete(rawMsg, key)
+		case "sourceTenantId":
+			err = unpopulate(val, "SourceTenantID", &e.SourceTenantID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -1582,6 +1765,45 @@ func (g GarAuthenticationProperties) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type GarAuthenticationProperties.
 func (g *GarAuthenticationProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "authenticationType":
+			err = unpopulate(val, "AuthenticationType", &g.AuthenticationType)
+			delete(rawMsg, key)
+		case "projectNumber":
+			err = unpopulate(val, "ProjectNumber", &g.ProjectNumber)
+			delete(rawMsg, key)
+		case "workloadIdentityPool":
+			err = unpopulate(val, "WorkloadIdentityPool", &g.WorkloadIdentityPool)
+			delete(rawMsg, key)
+		case "workloadIdentityProvider":
+			err = unpopulate(val, "WorkloadIdentityProvider", &g.WorkloadIdentityProvider)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type GarAuthenticationUpdateProperties.
+func (g GarAuthenticationUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	objectMap["authenticationType"] = AdditionalAuthenticationTypeGoogleArtifactRegistry
+	populate(objectMap, "projectNumber", g.ProjectNumber)
+	populate(objectMap, "workloadIdentityPool", g.WorkloadIdentityPool)
+	populate(objectMap, "workloadIdentityProvider", g.WorkloadIdentityProvider)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type GarAuthenticationUpdateProperties.
+func (g *GarAuthenticationUpdateProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())

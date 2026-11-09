@@ -1,6 +1,6 @@
 # Release History
 
-## 5.0.0-beta.2 (2026-09-20)
+## 5.0.0-beta.2 (2026-11-09)
 ### Features Added
 
 - New field `AssetVersion`, `PathOnCompute` in struct `CustomModelJobOutput`

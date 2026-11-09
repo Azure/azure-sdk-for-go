@@ -45,6 +45,96 @@ func NewEnvironmentVersionsClient(subscriptionID string, credential azcore.Token
 	return client, nil
 }
 
+// BeginPublish - Publish version asset into registry.
+//
+// Publish version asset into registry.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - Name of Azure Machine Learning workspace.
+//   - name - Container name. This is case-sensitive.
+//   - version - Version identifier. This is case-sensitive.
+//   - body - Destination registry info
+//   - options - EnvironmentVersionsClientBeginPublishOptions contains the optional parameters for the EnvironmentVersionsClient.BeginPublish
+//     method.
+func (client *EnvironmentVersionsClient) BeginPublish(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DestinationAsset, options *EnvironmentVersionsClientBeginPublishOptions) (*runtime.Poller[EnvironmentVersionsClientPublishResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.publish(ctx, resourceGroupName, workspaceName, name, version, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EnvironmentVersionsClientPublishResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EnvironmentVersionsClientPublishResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// publish - Publish version asset into registry.
+//
+// Publish version asset into registry.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *EnvironmentVersionsClient) publish(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DestinationAsset, options *EnvironmentVersionsClientBeginPublishOptions) (*http.Response, error) {
+	var err error
+	const operationName = "EnvironmentVersionsClient.BeginPublish"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.publishCreateRequest(ctx, resourceGroupName, workspaceName, name, version, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// publishCreateRequest creates the publish request.
+func (client *EnvironmentVersionsClient) publishCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DestinationAsset, _ *EnvironmentVersionsClientBeginPublishOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/environments/{name}/versions/{version}/publish"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if version == "" {
+		return nil, errors.New("parameter version cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260515Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // CreateOrUpdate - Creates or updates an EnvironmentVersion.
 //
 // Creates or updates an EnvironmentVersion.
@@ -70,7 +160,8 @@ func (client *EnvironmentVersionsClient) CreateOrUpdate(ctx context.Context, res
 	if err != nil {
 		return EnvironmentVersionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -148,7 +239,8 @@ func (client *EnvironmentVersionsClient) Delete(ctx context.Context, resourceGro
 		return EnvironmentVersionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return EnvironmentVersionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EnvironmentVersionsClientDeleteResponse{}, err
 	}
 	return EnvironmentVersionsClientDeleteResponse{}, nil
 }
@@ -209,7 +301,8 @@ func (client *EnvironmentVersionsClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return EnvironmentVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -352,93 +445,4 @@ func (client *EnvironmentVersionsClient) listHandleResponse(resp *http.Response,
 		return EnvironmentVersionsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginPublish - Publish version asset into registry.
-//
-// Publish version asset into registry.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - workspaceName - Name of Azure Machine Learning workspace.
-//   - name - Container name. This is case-sensitive.
-//   - version - Version identifier. This is case-sensitive.
-//   - body - Destination registry info
-//   - options - EnvironmentVersionsClientBeginPublishOptions contains the optional parameters for the EnvironmentVersionsClient.BeginPublish
-//     method.
-func (client *EnvironmentVersionsClient) BeginPublish(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DestinationAsset, options *EnvironmentVersionsClientBeginPublishOptions) (*runtime.Poller[EnvironmentVersionsClientPublishResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.publish(ctx, resourceGroupName, workspaceName, name, version, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[EnvironmentVersionsClientPublishResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[EnvironmentVersionsClientPublishResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Publish - Publish version asset into registry.
-//
-// Publish version asset into registry.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *EnvironmentVersionsClient) publish(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DestinationAsset, options *EnvironmentVersionsClientBeginPublishOptions) (*http.Response, error) {
-	var err error
-	const operationName = "EnvironmentVersionsClient.BeginPublish"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.publishCreateRequest(ctx, resourceGroupName, workspaceName, name, version, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// publishCreateRequest creates the Publish request.
-func (client *EnvironmentVersionsClient) publishCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, name string, version string, body DestinationAsset, _ *EnvironmentVersionsClientBeginPublishOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/environments/{name}/versions/{version}/publish"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if workspaceName == "" {
-		return nil, errors.New("parameter workspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if version == "" {
-		return nil, errors.New("parameter version cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{version}", url.PathEscape(version))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260515Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

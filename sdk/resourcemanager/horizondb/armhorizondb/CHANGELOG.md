@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.0 (2026-11-06)
+## 0.4.0 (2026-11-09)
 ### Breaking Changes
 
 - Field `Tags` of struct `Pool` has been removed

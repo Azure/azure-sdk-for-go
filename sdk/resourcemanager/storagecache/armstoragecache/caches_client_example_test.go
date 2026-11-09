@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-01-01/Caches_CreateOrUpdate.json
+// Generated from example definition: 2026-08-01/Caches_CreateOrUpdate.json
 func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -237,7 +237,7 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_CreateOrUpdate_ldap_only.json
+// Generated from example definition: 2026-08-01/Caches_CreateOrUpdate_ldap_only.json
 func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -436,7 +436,7 @@ func ExampleCachesClient_BeginCreateOrUpdate_cachesCreateOrUpdateLdapOnly() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_DebugInfo.json
+// Generated from example definition: 2026-08-01/Caches_DebugInfo.json
 func ExampleCachesClient_BeginDebugInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -462,7 +462,7 @@ func ExampleCachesClient_BeginDebugInfo() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_Delete.json
+// Generated from example definition: 2026-08-01/Caches_Delete.json
 func ExampleCachesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,7 +488,7 @@ func ExampleCachesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_Flush.json
+// Generated from example definition: 2026-08-01/Caches_Flush.json
 func ExampleCachesClient_BeginFlush() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -514,7 +514,7 @@ func ExampleCachesClient_BeginFlush() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_Get.json
+// Generated from example definition: 2026-08-01/Caches_Get.json
 func ExampleCachesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -677,7 +677,7 @@ func ExampleCachesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_List.json
+// Generated from example definition: 2026-08-01/Caches_List.json
 func ExampleCachesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -959,7 +959,7 @@ func ExampleCachesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Caches_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01/Caches_ListByResourceGroup.json
 func ExampleCachesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1244,7 +1244,7 @@ func ExampleCachesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/PausePrimingJob.json
+// Generated from example definition: 2026-08-01/PausePrimingJob.json
 func ExampleCachesClient_BeginPausePrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1268,7 +1268,7 @@ func ExampleCachesClient_BeginPausePrimingJob() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/ResumePrimingJob.json
+// Generated from example definition: 2026-08-01/ResumePrimingJob.json
 func ExampleCachesClient_BeginResumePrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1292,7 +1292,7 @@ func ExampleCachesClient_BeginResumePrimingJob() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/SpaceAllocation_Post.json
+// Generated from example definition: 2026-08-01/SpaceAllocation_Post.json
 func ExampleCachesClient_BeginSpaceAllocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1327,7 +1327,7 @@ func ExampleCachesClient_BeginSpaceAllocation() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Caches_Start.json
+// Generated from example definition: 2026-08-01/Caches_Start.json
 func ExampleCachesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1353,7 +1353,7 @@ func ExampleCachesClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StartPrimingJob.json
+// Generated from example definition: 2026-08-01/StartPrimingJob.json
 func ExampleCachesClient_BeginStartPrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1378,7 +1378,7 @@ func ExampleCachesClient_BeginStartPrimingJob() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Caches_Stop.json
+// Generated from example definition: 2026-08-01/Caches_Stop.json
 func ExampleCachesClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1404,7 +1404,7 @@ func ExampleCachesClient_BeginStop() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/StopPrimingJob.json
+// Generated from example definition: 2026-08-01/StopPrimingJob.json
 func ExampleCachesClient_BeginStopPrimingJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1428,7 +1428,7 @@ func ExampleCachesClient_BeginStopPrimingJob() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/Caches_Update.json
+// Generated from example definition: 2026-08-01/Caches_Update.json
 func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1698,7 +1698,7 @@ func ExampleCachesClient_BeginUpdate_cachesUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_Update_ldap_only.json
+// Generated from example definition: 2026-08-01/Caches_Update_ldap_only.json
 func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1947,7 +1947,7 @@ func ExampleCachesClient_BeginUpdate_cachesUpdateLdapOnly() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/Caches_UpgradeFirmware.json
+// Generated from example definition: 2026-08-01/Caches_UpgradeFirmware.json
 func ExampleCachesClient_BeginUpgradeFirmware() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

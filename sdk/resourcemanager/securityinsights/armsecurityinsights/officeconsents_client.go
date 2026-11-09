@@ -19,7 +19,7 @@ import (
 // OfficeConsentsClient contains the methods for the OfficeConsents group.
 // Don't use this type directly, use NewOfficeConsentsClient() instead.
 //
-// Generated from API version 2025-07-01-preview
+// Generated from API version 2025-10-01-preview
 type OfficeConsentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -94,7 +94,7 @@ func (client *OfficeConsentsClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -146,7 +146,7 @@ func (client *OfficeConsentsClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250701Preview)
+	reqQP.Set("api-version", version20251001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -221,7 +221,7 @@ func (client *OfficeConsentsClient) listCreateRequest(ctx context.Context, resou
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250701Preview)
+		reqQP.Set("api-version", version20251001Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

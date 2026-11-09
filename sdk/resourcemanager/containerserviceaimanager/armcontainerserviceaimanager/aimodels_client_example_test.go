@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-02-preview/AIModels_CalculateCost.json
+// Generated from example definition: 2026-09-02-preview/AIModels_CalculateCost.json
 func ExampleAIModelsClient_CalculateCost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleAIModelsClient_CalculateCost() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAIModelsClient().CalculateCost(ctx, "eastus", "9806f0c862fdd920", armcontainerserviceaimanager.CalculateCostRequest{}, nil)
+	res, err := clientFactory.NewAIModelsClient().CalculateCost(ctx, "eastus", "9806f0c862fdd920", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -69,7 +69,7 @@ func ExampleAIModelsClient_CalculateCost() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AIModels_Get.json
+// Generated from example definition: 2026-09-02-preview/AIModels_Get.json
 func ExampleAIModelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleAIModelsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-02-preview/AIModels_List.json
+// Generated from example definition: 2026-09-02-preview/AIModels_List.json
 func ExampleAIModelsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleAIModelsClient_NewListPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/eastus/aiModels?api-version=2026-05-02-preview&$skiptoken=token"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.ContainerService/locations/eastus/aiModels?api-version=2026-09-02-preview&$skiptoken=token"),
 		// 	},
 		// }
 	}

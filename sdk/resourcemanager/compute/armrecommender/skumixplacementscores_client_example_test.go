@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-05-preview/GetSkuMixPlacementScores.json
+// Generated from example definition: 2026-10-05-preview/GetSkuMixPlacementScores.json
 func ExampleSKUMixPlacementScoresClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,7 @@ func ExampleSKUMixPlacementScoresClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-05-preview/GenerateSkuMixPlacementScores.json
+// Generated from example definition: 2026-10-05-preview/GenerateSkuMixPlacementScores.json
 func ExampleSKUMixPlacementScoresClient_Post() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

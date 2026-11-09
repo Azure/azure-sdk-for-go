@@ -34,21 +34,9 @@ type AccountsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method AccountsClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientGetOptions) (resp azfake.Responder[armnetapp.AccountsClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetChangeKeyVaultInformation is the fake for method AccountsClient.BeginGetChangeKeyVaultInformation
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetChangeKeyVaultInformation func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientBeginGetChangeKeyVaultInformationOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientGetChangeKeyVaultInformationResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method AccountsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, options *armnetapp.AccountsClientListOptions) (resp azfake.PagerResponder[armnetapp.AccountsClientListResponse])
-
-	// NewListBySubscriptionPager is the fake for method AccountsClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armnetapp.AccountsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse])
 
 	// BeginRefreshLdapBindPassword is the fake for method AccountsClient.BeginRefreshLdapBindPassword
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -65,6 +53,18 @@ type AccountsServer struct {
 	// BeginUpdate is the fake for method AccountsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, body armnetapp.AccountPatch, options *armnetapp.AccountsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.AccountsClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method AccountsClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, accountName string, options *armnetapp.AccountsClientGetOptions) (resp azfake.Responder[armnetapp.AccountsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListBySubscriptionPager is the fake for method AccountsClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armnetapp.AccountsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse])
+
+	// NewListPager is the fake for method AccountsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, options *armnetapp.AccountsClientListOptions) (resp azfake.PagerResponder[armnetapp.AccountsClientListResponse])
 }
 
 // NewAccountsServerTransport creates a new instance of AccountsServerTransport with the provided implementation.
@@ -77,12 +77,12 @@ func NewAccountsServerTransport(srv *AccountsServer) *AccountsServerTransport {
 		beginCreateOrUpdate:               newTracker[azfake.PollerResponder[armnetapp.AccountsClientCreateOrUpdateResponse]](),
 		beginDelete:                       newTracker[azfake.PollerResponder[armnetapp.AccountsClientDeleteResponse]](),
 		beginGetChangeKeyVaultInformation: newTracker[azfake.PollerResponder[armnetapp.AccountsClientGetChangeKeyVaultInformationResponse]](),
-		newListPager:                      newTracker[azfake.PagerResponder[armnetapp.AccountsClientListResponse]](),
-		newListBySubscriptionPager:        newTracker[azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse]](),
 		beginRefreshLdapBindPassword:      newTracker[azfake.PollerResponder[armnetapp.AccountsClientRefreshLdapBindPasswordResponse]](),
 		beginRenewCredentials:             newTracker[azfake.PollerResponder[armnetapp.AccountsClientRenewCredentialsResponse]](),
 		beginTransitionToCmk:              newTracker[azfake.PollerResponder[armnetapp.AccountsClientTransitionToCmkResponse]](),
 		beginUpdate:                       newTracker[azfake.PollerResponder[armnetapp.AccountsClientUpdateResponse]](),
+		newListBySubscriptionPager:        newTracker[azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse]](),
+		newListPager:                      newTracker[azfake.PagerResponder[armnetapp.AccountsClientListResponse]](),
 	}
 }
 
@@ -94,12 +94,12 @@ type AccountsServerTransport struct {
 	beginCreateOrUpdate               *tracker[azfake.PollerResponder[armnetapp.AccountsClientCreateOrUpdateResponse]]
 	beginDelete                       *tracker[azfake.PollerResponder[armnetapp.AccountsClientDeleteResponse]]
 	beginGetChangeKeyVaultInformation *tracker[azfake.PollerResponder[armnetapp.AccountsClientGetChangeKeyVaultInformationResponse]]
-	newListPager                      *tracker[azfake.PagerResponder[armnetapp.AccountsClientListResponse]]
-	newListBySubscriptionPager        *tracker[azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse]]
 	beginRefreshLdapBindPassword      *tracker[azfake.PollerResponder[armnetapp.AccountsClientRefreshLdapBindPasswordResponse]]
 	beginRenewCredentials             *tracker[azfake.PollerResponder[armnetapp.AccountsClientRenewCredentialsResponse]]
 	beginTransitionToCmk              *tracker[azfake.PollerResponder[armnetapp.AccountsClientTransitionToCmkResponse]]
 	beginUpdate                       *tracker[azfake.PollerResponder[armnetapp.AccountsClientUpdateResponse]]
+	newListBySubscriptionPager        *tracker[azfake.PagerResponder[armnetapp.AccountsClientListBySubscriptionResponse]]
+	newListPager                      *tracker[azfake.PagerResponder[armnetapp.AccountsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for AccountsServerTransport.
@@ -129,14 +129,8 @@ func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
 			case "AccountsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
-			case "AccountsClient.Get":
-				res.resp, res.err = a.dispatchGet(req)
 			case "AccountsClient.BeginGetChangeKeyVaultInformation":
 				res.resp, res.err = a.dispatchBeginGetChangeKeyVaultInformation(req)
-			case "AccountsClient.NewListPager":
-				res.resp, res.err = a.dispatchNewListPager(req)
-			case "AccountsClient.NewListBySubscriptionPager":
-				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			case "AccountsClient.BeginRefreshLdapBindPassword":
 				res.resp, res.err = a.dispatchBeginRefreshLdapBindPassword(req)
 			case "AccountsClient.BeginRenewCredentials":
@@ -145,6 +139,12 @@ func (a *AccountsServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = a.dispatchBeginTransitionToCmk(req)
 			case "AccountsClient.BeginUpdate":
 				res.resp, res.err = a.dispatchBeginUpdate(req)
+			case "AccountsClient.Get":
+				res.resp, res.err = a.dispatchGet(req)
+			case "AccountsClient.NewListBySubscriptionPager":
+				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
+			case "AccountsClient.NewListPager":
+				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -307,39 +307,6 @@ func (a *AccountsServerTransport) dispatchBeginDelete(req *http.Request) (*http.
 	return resp, nil
 }
 
-func (a *AccountsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if a.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Account, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (a *AccountsServerTransport) dispatchBeginGetChangeKeyVaultInformation(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginGetChangeKeyVaultInformation == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetChangeKeyVaultInformation not implemented")}
@@ -381,76 +348,6 @@ func (a *AccountsServerTransport) dispatchBeginGetChangeKeyVaultInformation(req 
 		a.beginGetChangeKeyVaultInformation.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (a *AccountsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := a.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := a.srv.NewListPager(resourceGroupNameParam, nil)
-		newListPager = &resp
-		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.AccountsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		a.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (a *AccountsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if a.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := a.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetapp.AccountsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		a.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		a.newListBySubscriptionPager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -641,6 +538,109 @@ func (a *AccountsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.
 		a.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if a.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := a.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Account, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := a.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := a.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetapp.AccountsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		a.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (a *AccountsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if a.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := a.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := a.srv.NewListPager(resourceGroupNameParam, nil)
+		newListPager = &resp
+		a.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armnetapp.AccountsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		a.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		a.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

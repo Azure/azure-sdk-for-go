@@ -19,7 +19,7 @@ import (
 // ConnectorsClient contains the methods for the Connectors group.
 // Don't use this type directly, use NewConnectorsClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-09-01
 type ConnectorsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ConnectorsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewConnectorsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ConnectorsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *ConnectorsClient) BeginCreate(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Create - Create a Storage Connector if it does not already exist; otherwise, error out. This API will not allow you to
+// create - Create a Storage Connector if it does not already exist; otherwise, error out. This API will not allow you to
 // replace an already existing resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectorsClient) create(ctx context.Context, resourceGroupName string, accountName string, connectorName string, resource Connector, options *ConnectorsClientBeginCreateOptions) (*http.Response, error) {
@@ -86,17 +89,16 @@ func (client *ConnectorsClient) create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ConnectorsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, resource Connector, _ *ConnectorsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -116,7 +118,7 @@ func (client *ConnectorsClient) createCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -150,7 +152,7 @@ func (client *ConnectorsClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a Storage Connector.
+// deleteOperation - Delete a Storage Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, connectorName string, options *ConnectorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,17 +169,16 @@ func (client *ConnectorsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, _ *ConnectorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -197,141 +198,9 @@ func (client *ConnectorsClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Get the specified Storage Connector.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
-//     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - connectorName - The name of the Storage Connector.
-//   - options - ConnectorsClientGetOptions contains the optional parameters for the ConnectorsClient.Get method.
-func (client *ConnectorsClient) Get(ctx context.Context, resourceGroupName string, accountName string, connectorName string, options *ConnectorsClientGetOptions) (ConnectorsClientGetResponse, error) {
-	var err error
-	const operationName = "ConnectorsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, connectorName, options)
-	if err != nil {
-		return ConnectorsClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ConnectorsClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ConnectorsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, _ *ConnectorsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if connectorName == "" {
-		return nil, errors.New("parameter connectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *ConnectorsClient) getHandleResponse(resp *http.Response) (ConnectorsClientGetResponse, error) {
-	result := ConnectorsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Connector); err != nil {
-		return ConnectorsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByStorageAccountPager - List all Storage Connectors in a Storage Account.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
-//     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - options - ConnectorsClientListByStorageAccountOptions contains the optional parameters for the ConnectorsClient.NewListByStorageAccountPager
-//     method.
-func (client *ConnectorsClient) NewListByStorageAccountPager(resourceGroupName string, accountName string, options *ConnectorsClientListByStorageAccountOptions) *runtime.Pager[ConnectorsClientListByStorageAccountResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ConnectorsClientListByStorageAccountResponse]{
-		More: func(page ConnectorsClientListByStorageAccountResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ConnectorsClientListByStorageAccountResponse) (ConnectorsClientListByStorageAccountResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConnectorsClient.NewListByStorageAccountPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByStorageAccountCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
-			if err != nil {
-				return ConnectorsClientListByStorageAccountResponse{}, err
-			}
-			return client.listByStorageAccountHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByStorageAccountCreateRequest creates the ListByStorageAccount request.
-func (client *ConnectorsClient) listByStorageAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, _ *ConnectorsClientListByStorageAccountOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listByStorageAccountHandleResponse handles the ListByStorageAccount response.
-func (client *ConnectorsClient) listByStorageAccountHandleResponse(resp *http.Response) (ConnectorsClientListByStorageAccountResponse, error) {
-	result := ConnectorsClientListByStorageAccountResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorListResult); err != nil {
-		return ConnectorsClientListByStorageAccountResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginTestExistingConnection - This method is used to verify that the connection to the backing data store works.
@@ -366,7 +235,7 @@ func (client *ConnectorsClient) BeginTestExistingConnection(ctx context.Context,
 	}
 }
 
-// TestExistingConnection - This method is used to verify that the connection to the backing data store works.
+// testExistingConnection - This method is used to verify that the connection to the backing data store works.
 // This API is designed to be used for monitoring and debugging purposes. From the caller’s perspective,
 // this method does the following: Calls List on the backing data store, attempting to list up to one blob/object/etc.
 // If the above succeeds, and if a blob/object/etc is found, calls Get on that object, attempting to download one byte.
@@ -386,17 +255,16 @@ func (client *ConnectorsClient) testExistingConnection(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// testExistingConnectionCreateRequest creates the TestExistingConnection request.
+// testExistingConnectionCreateRequest creates the testExistingConnection request.
 func (client *ConnectorsClient) testExistingConnectionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, body TestExistingConnectionRequest, _ *ConnectorsClientBeginTestExistingConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}/testExistingConnection"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -416,7 +284,7 @@ func (client *ConnectorsClient) testExistingConnectionCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -451,7 +319,7 @@ func (client *ConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Update - Update a Storage Connector.
+// update - Update a Storage Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectorsClient) update(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, options *ConnectorsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -468,17 +336,16 @@ func (client *ConnectorsClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, properties ConnectorUpdate, _ *ConnectorsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -498,7 +365,7 @@ func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -506,4 +373,148 @@ func (client *ConnectorsClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Get the specified Storage Connector.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - connectorName - The name of the Storage Connector.
+//   - options - ConnectorsClientGetOptions contains the optional parameters for the ConnectorsClient.Get method.
+func (client *ConnectorsClient) Get(ctx context.Context, resourceGroupName string, accountName string, connectorName string, options *ConnectorsClientGetOptions) (ConnectorsClientGetResponse, error) {
+	var err error
+	const operationName = "ConnectorsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, connectorName, options)
+	if err != nil {
+		return ConnectorsClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ConnectorsClientGetResponse{}, err
+	}
+	return client.getHandleResponse(httpResp, http.StatusOK)
+}
+
+// getCreateRequest creates the Get request.
+func (client *ConnectorsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, connectorName string, _ *ConnectorsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors/{connectorName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if connectorName == "" {
+		return nil, errors.New("parameter connectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *ConnectorsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectorsClientGetResponse, error) {
+	result := ConnectorsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Connector); err != nil {
+		return ConnectorsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByStorageAccountPager - List all Storage Connectors in a Storage Account.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - options - ConnectorsClientListByStorageAccountOptions contains the optional parameters for the ConnectorsClient.NewListByStorageAccountPager
+//     method.
+func (client *ConnectorsClient) NewListByStorageAccountPager(resourceGroupName string, accountName string, options *ConnectorsClientListByStorageAccountOptions) *runtime.Pager[ConnectorsClientListByStorageAccountResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ConnectorsClientListByStorageAccountResponse]{
+		More: func(page ConnectorsClientListByStorageAccountResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ConnectorsClientListByStorageAccountResponse) (ConnectorsClientListByStorageAccountResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ConnectorsClient.NewListByStorageAccountPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByStorageAccountCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
+			if err != nil {
+				return ConnectorsClientListByStorageAccountResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ConnectorsClientListByStorageAccountResponse{}, err
+			}
+			return client.listByStorageAccountHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByStorageAccountCreateRequest creates the ListByStorageAccount request.
+func (client *ConnectorsClient) listByStorageAccountCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, _ *ConnectorsClientListByStorageAccountOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/connectors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByStorageAccountHandleResponse handles the ListByStorageAccount response.
+func (client *ConnectorsClient) listByStorageAccountHandleResponse(resp *http.Response, successCodes ...int) (ConnectorsClientListByStorageAccountResponse, error) {
+	result := ConnectorsClientListByStorageAccountResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectorListResult); err != nil {
+		return ConnectorsClientListByStorageAccountResponse{}, err
+	}
+	return result, nil
 }

@@ -19,7 +19,7 @@ func TestHTTPTraceNamespacePolicy(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
 
-	pl := exported.NewPipeline(srv, exported.PolicyFunc(httpTraceNamespacePolicy))
+	pl := exported.NewPipeline(nil, srv, exported.PolicyFunc(httpTraceNamespacePolicy))
 
 	// no tracer
 	req, err := exported.NewRequest(context.Background(), http.MethodGet, srv.URL())

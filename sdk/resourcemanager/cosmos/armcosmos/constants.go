@@ -5,7 +5,7 @@
 package armcosmos
 
 const (
-	version20260315 string = "2026-03-15"
+	version20260401Preview string = "2026-04-01-preview"
 )
 
 // APIType - Enum to indicate the API type of the restorable database account.
@@ -29,6 +29,42 @@ func PossibleAPITypeValues() []APIType {
 		APITypeMongoDB,
 		APITypeSQL,
 		APITypeTable,
+	}
+}
+
+// AccessRuleDirection - Direction of Access Rule
+type AccessRuleDirection string
+
+const (
+	// AccessRuleDirectionInbound - Applies to inbound network traffic to the secured resources.
+	AccessRuleDirectionInbound AccessRuleDirection = "Inbound"
+	// AccessRuleDirectionOutbound - Applies to outbound network traffic from the secured resources
+	AccessRuleDirectionOutbound AccessRuleDirection = "Outbound"
+)
+
+// PossibleAccessRuleDirectionValues returns the possible values for the AccessRuleDirection const type.
+func PossibleAccessRuleDirectionValues() []AccessRuleDirection {
+	return []AccessRuleDirection{
+		AccessRuleDirectionInbound,
+		AccessRuleDirectionOutbound,
+	}
+}
+
+// AllocationState - Allocation state of the cluster and data center resources.
+type AllocationState string
+
+const (
+	// AllocationStateActive - Active implies the virtual machines of the cluster are allocated.
+	AllocationStateActive AllocationState = "Active"
+	// AllocationStateDeallocated - Deallocated implies virtual machines and resources are deallocated.
+	AllocationStateDeallocated AllocationState = "Deallocated"
+)
+
+// PossibleAllocationStateValues returns the possible values for the AllocationState const type.
+func PossibleAllocationStateValues() []AllocationState {
+	return []AllocationState{
+		AllocationStateActive,
+		AllocationStateDeallocated,
 	}
 }
 
@@ -137,6 +173,26 @@ func PossibleBackupPolicyTypeValues() []BackupPolicyType {
 	}
 }
 
+// BackupState - The current state of the backup.
+type BackupState string
+
+const (
+	BackupStateFailed     BackupState = "Failed"
+	BackupStateInProgress BackupState = "InProgress"
+	BackupStateInitiated  BackupState = "Initiated"
+	BackupStateSucceeded  BackupState = "Succeeded"
+)
+
+// PossibleBackupStateValues returns the possible values for the BackupState const type.
+func PossibleBackupStateValues() []BackupState {
+	return []BackupState{
+		BackupStateFailed,
+		BackupStateInProgress,
+		BackupStateInitiated,
+		BackupStateSucceeded,
+	}
+}
+
 // BackupStorageRedundancy - Enum to indicate type of backup storage redundancy.
 type BackupStorageRedundancy string
 
@@ -152,6 +208,86 @@ func PossibleBackupStorageRedundancyValues() []BackupStorageRedundancy {
 		BackupStorageRedundancyGeo,
 		BackupStorageRedundancyLocal,
 		BackupStorageRedundancyZone,
+	}
+}
+
+// CapacityMode - Indicates the capacity mode of the account.
+type CapacityMode string
+
+const (
+	CapacityModeNone        CapacityMode = "None"
+	CapacityModeProvisioned CapacityMode = "Provisioned"
+	CapacityModeServerless  CapacityMode = "Serverless"
+)
+
+// PossibleCapacityModeValues returns the possible values for the CapacityMode const type.
+func PossibleCapacityModeValues() []CapacityMode {
+	return []CapacityMode{
+		CapacityModeNone,
+		CapacityModeProvisioned,
+		CapacityModeServerless,
+	}
+}
+
+// CapacityModeTransitionStatus - The transition status of capacity mode.
+type CapacityModeTransitionStatus string
+
+const (
+	CapacityModeTransitionStatusCompleted   CapacityModeTransitionStatus = "Completed"
+	CapacityModeTransitionStatusFailed      CapacityModeTransitionStatus = "Failed"
+	CapacityModeTransitionStatusInProgress  CapacityModeTransitionStatus = "InProgress"
+	CapacityModeTransitionStatusInitialized CapacityModeTransitionStatus = "Initialized"
+	CapacityModeTransitionStatusInvalid     CapacityModeTransitionStatus = "Invalid"
+)
+
+// PossibleCapacityModeTransitionStatusValues returns the possible values for the CapacityModeTransitionStatus const type.
+func PossibleCapacityModeTransitionStatusValues() []CapacityModeTransitionStatus {
+	return []CapacityModeTransitionStatus{
+		CapacityModeTransitionStatusCompleted,
+		CapacityModeTransitionStatusFailed,
+		CapacityModeTransitionStatusInProgress,
+		CapacityModeTransitionStatusInitialized,
+		CapacityModeTransitionStatusInvalid,
+	}
+}
+
+// ClusterType - Type of the cluster. If set to Production, some operations might not be permitted on cluster.
+type ClusterType string
+
+const (
+	ClusterTypeNonProduction ClusterType = "NonProduction"
+	ClusterTypeProduction    ClusterType = "Production"
+)
+
+// PossibleClusterTypeValues returns the possible values for the ClusterType const type.
+func PossibleClusterTypeValues() []ClusterType {
+	return []ClusterType{
+		ClusterTypeNonProduction,
+		ClusterTypeProduction,
+	}
+}
+
+// CommandStatus - Status of the command.
+type CommandStatus string
+
+const (
+	CommandStatusDone       CommandStatus = "Done"
+	CommandStatusEnqueue    CommandStatus = "Enqueue"
+	CommandStatusFailed     CommandStatus = "Failed"
+	CommandStatusFinished   CommandStatus = "Finished"
+	CommandStatusProcessing CommandStatus = "Processing"
+	CommandStatusRunning    CommandStatus = "Running"
+)
+
+// PossibleCommandStatusValues returns the possible values for the CommandStatus const type.
+func PossibleCommandStatusValues() []CommandStatus {
+	return []CommandStatus{
+		CommandStatusDone,
+		CommandStatusEnqueue,
+		CommandStatusFailed,
+		CommandStatusFinished,
+		CommandStatusProcessing,
+		CommandStatusRunning,
 	}
 }
 
@@ -230,6 +366,8 @@ type ContinuousTier string
 
 const (
 	ContinuousTierContinuous30Days ContinuousTier = "Continuous30Days"
+	// ContinuousTierContinuous35Days - Continuous 35 Days backup tier.
+	ContinuousTierContinuous35Days ContinuousTier = "Continuous35Days"
 	ContinuousTierContinuous7Days  ContinuousTier = "Continuous7Days"
 )
 
@@ -237,7 +375,74 @@ const (
 func PossibleContinuousTierValues() []ContinuousTier {
 	return []ContinuousTier{
 		ContinuousTierContinuous30Days,
+		ContinuousTierContinuous35Days,
 		ContinuousTierContinuous7Days,
+	}
+}
+
+// CopyJobMode - Mode of job execution
+type CopyJobMode string
+
+const (
+	CopyJobModeOffline CopyJobMode = "Offline"
+	CopyJobModeOnline  CopyJobMode = "Online"
+)
+
+// PossibleCopyJobModeValues returns the possible values for the CopyJobMode const type.
+func PossibleCopyJobModeValues() []CopyJobMode {
+	return []CopyJobMode{
+		CopyJobModeOffline,
+		CopyJobModeOnline,
+	}
+}
+
+// CopyJobStatus - Job Status
+type CopyJobStatus string
+
+const (
+	CopyJobStatusCancelled    CopyJobStatus = "Cancelled"
+	CopyJobStatusCompleted    CopyJobStatus = "Completed"
+	CopyJobStatusFaulted      CopyJobStatus = "Faulted"
+	CopyJobStatusPartitioning CopyJobStatus = "Partitioning"
+	CopyJobStatusPaused       CopyJobStatus = "Paused"
+	CopyJobStatusPending      CopyJobStatus = "Pending"
+	CopyJobStatusRunning      CopyJobStatus = "Running"
+)
+
+// PossibleCopyJobStatusValues returns the possible values for the CopyJobStatus const type.
+func PossibleCopyJobStatusValues() []CopyJobStatus {
+	return []CopyJobStatus{
+		CopyJobStatusCancelled,
+		CopyJobStatusCompleted,
+		CopyJobStatusFaulted,
+		CopyJobStatusPartitioning,
+		CopyJobStatusPaused,
+		CopyJobStatusPending,
+		CopyJobStatusRunning,
+	}
+}
+
+// CopyJobType - Copy Job Type
+type CopyJobType string
+
+const (
+	CopyJobTypeAzureBlobStorageToCassandraRU CopyJobType = "AzureBlobStorageToCassandraRU"
+	CopyJobTypeCassandraRUToAzureBlobStorage CopyJobType = "CassandraRUToAzureBlobStorage"
+	CopyJobTypeCassandraRUToCassandraRU      CopyJobType = "CassandraRUToCassandraRU"
+	CopyJobTypeMongoRUToMongoRU              CopyJobType = "MongoRUToMongoRU"
+	CopyJobTypeMongoRUToMongoVCore           CopyJobType = "MongoRUToMongoVCore"
+	CopyJobTypeNoSQLRUToNoSQLRU              CopyJobType = "NoSqlRUToNoSqlRU"
+)
+
+// PossibleCopyJobTypeValues returns the possible values for the CopyJobType const type.
+func PossibleCopyJobTypeValues() []CopyJobType {
+	return []CopyJobType{
+		CopyJobTypeAzureBlobStorageToCassandraRU,
+		CopyJobTypeCassandraRUToAzureBlobStorage,
+		CopyJobTypeCassandraRUToCassandraRU,
+		CopyJobTypeMongoRUToMongoRU,
+		CopyJobTypeMongoRUToMongoVCore,
+		CopyJobTypeNoSQLRUToNoSQLRU,
 	}
 }
 
@@ -278,6 +483,45 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 		CreatedByTypeKey,
 		CreatedByTypeManagedIdentity,
 		CreatedByTypeUser,
+	}
+}
+
+type DataTransferComponent string
+
+const (
+	DataTransferComponentAzureBlobStorage                     DataTransferComponent = "AzureBlobStorage"
+	DataTransferComponentBaseCosmosDataTransferDataSourceSink DataTransferComponent = "BaseCosmosDataTransferDataSourceSink"
+	DataTransferComponentCosmosDBCassandra                    DataTransferComponent = "CosmosDBCassandra"
+	DataTransferComponentCosmosDBMongo                        DataTransferComponent = "CosmosDBMongo"
+	DataTransferComponentCosmosDBMongoVCore                   DataTransferComponent = "CosmosDBMongoVCore"
+	DataTransferComponentCosmosDBSQL                          DataTransferComponent = "CosmosDBSql"
+)
+
+// PossibleDataTransferComponentValues returns the possible values for the DataTransferComponent const type.
+func PossibleDataTransferComponentValues() []DataTransferComponent {
+	return []DataTransferComponent{
+		DataTransferComponentAzureBlobStorage,
+		DataTransferComponentBaseCosmosDataTransferDataSourceSink,
+		DataTransferComponentCosmosDBCassandra,
+		DataTransferComponentCosmosDBMongo,
+		DataTransferComponentCosmosDBMongoVCore,
+		DataTransferComponentCosmosDBSQL,
+	}
+}
+
+// DataTransferJobMode - Mode of job execution
+type DataTransferJobMode string
+
+const (
+	DataTransferJobModeOffline DataTransferJobMode = "Offline"
+	DataTransferJobModeOnline  DataTransferJobMode = "Online"
+)
+
+// PossibleDataTransferJobModeValues returns the possible values for the DataTransferJobMode const type.
+func PossibleDataTransferJobModeValues() []DataTransferJobMode {
+	return []DataTransferJobMode{
+		DataTransferJobModeOffline,
+		DataTransferJobModeOnline,
 	}
 }
 
@@ -395,6 +639,40 @@ func PossibleDistanceFunctionValues() []DistanceFunction {
 	}
 }
 
+// EnableFullTextQuery - Describe the level of detail with which queries are to be logged.
+type EnableFullTextQuery string
+
+const (
+	EnableFullTextQueryFalse EnableFullTextQuery = "False"
+	EnableFullTextQueryNone  EnableFullTextQuery = "None"
+	EnableFullTextQueryTrue  EnableFullTextQuery = "True"
+)
+
+// PossibleEnableFullTextQueryValues returns the possible values for the EnableFullTextQuery const type.
+func PossibleEnableFullTextQueryValues() []EnableFullTextQuery {
+	return []EnableFullTextQuery{
+		EnableFullTextQueryFalse,
+		EnableFullTextQueryNone,
+		EnableFullTextQueryTrue,
+	}
+}
+
+// FleetAnalyticsPropertiesStorageLocationType - The type of the fleet analytics resource.
+type FleetAnalyticsPropertiesStorageLocationType string
+
+const (
+	FleetAnalyticsPropertiesStorageLocationTypeFabricLakehouse FleetAnalyticsPropertiesStorageLocationType = "FabricLakehouse"
+	FleetAnalyticsPropertiesStorageLocationTypeStorageAccount  FleetAnalyticsPropertiesStorageLocationType = "StorageAccount"
+)
+
+// PossibleFleetAnalyticsPropertiesStorageLocationTypeValues returns the possible values for the FleetAnalyticsPropertiesStorageLocationType const type.
+func PossibleFleetAnalyticsPropertiesStorageLocationTypeValues() []FleetAnalyticsPropertiesStorageLocationType {
+	return []FleetAnalyticsPropertiesStorageLocationType{
+		FleetAnalyticsPropertiesStorageLocationTypeFabricLakehouse,
+		FleetAnalyticsPropertiesStorageLocationTypeStorageAccount,
+	}
+}
+
 // FleetspacePropertiesFleetspaceAPIKind - The kind of API this fleetspace belongs to. Acceptable values: 'NoSQL'
 type FleetspacePropertiesFleetspaceAPIKind string
 
@@ -423,6 +701,51 @@ func PossibleFleetspacePropertiesServiceTierValues() []FleetspacePropertiesServi
 	return []FleetspacePropertiesServiceTier{
 		FleetspacePropertiesServiceTierBusinessCritical,
 		FleetspacePropertiesServiceTierGeneralPurpose,
+	}
+}
+
+// GarnetAuthenticationType - The authentication method used for the Garnet cluster.
+type GarnetAuthenticationType string
+
+const (
+	// GarnetAuthenticationTypeEntra - Microsoft Entra authentication.
+	GarnetAuthenticationTypeEntra GarnetAuthenticationType = "Entra"
+)
+
+// PossibleGarnetAuthenticationTypeValues returns the possible values for the GarnetAuthenticationType const type.
+func PossibleGarnetAuthenticationTypeValues() []GarnetAuthenticationType {
+	return []GarnetAuthenticationType{
+		GarnetAuthenticationTypeEntra,
+	}
+}
+
+// GarnetCacheProvisioningState - The status of the resource at the time the operation was called.
+type GarnetCacheProvisioningState string
+
+const (
+	// GarnetCacheProvisioningStateCanceled - Canceled
+	GarnetCacheProvisioningStateCanceled GarnetCacheProvisioningState = "Canceled"
+	// GarnetCacheProvisioningStateCreating - Creating
+	GarnetCacheProvisioningStateCreating GarnetCacheProvisioningState = "Creating"
+	// GarnetCacheProvisioningStateDeleting - Deleting
+	GarnetCacheProvisioningStateDeleting GarnetCacheProvisioningState = "Deleting"
+	// GarnetCacheProvisioningStateFailed - Failed
+	GarnetCacheProvisioningStateFailed GarnetCacheProvisioningState = "Failed"
+	// GarnetCacheProvisioningStateSucceeded - Succeeded
+	GarnetCacheProvisioningStateSucceeded GarnetCacheProvisioningState = "Succeeded"
+	// GarnetCacheProvisioningStateUpdating - Updating
+	GarnetCacheProvisioningStateUpdating GarnetCacheProvisioningState = "Updating"
+)
+
+// PossibleGarnetCacheProvisioningStateValues returns the possible values for the GarnetCacheProvisioningState const type.
+func PossibleGarnetCacheProvisioningStateValues() []GarnetCacheProvisioningState {
+	return []GarnetCacheProvisioningState{
+		GarnetCacheProvisioningStateCanceled,
+		GarnetCacheProvisioningStateCreating,
+		GarnetCacheProvisioningStateDeleting,
+		GarnetCacheProvisioningStateFailed,
+		GarnetCacheProvisioningStateSucceeded,
+		GarnetCacheProvisioningStateUpdating,
 	}
 }
 
@@ -459,6 +782,33 @@ func PossibleIndexingModeValues() []IndexingMode {
 		IndexingModeConsistent,
 		IndexingModeLazy,
 		IndexingModeNone,
+	}
+}
+
+// IssueType - Type of issue
+type IssueType string
+
+const (
+	// IssueTypeConfigurationPropagationFailure - An error occurred while applying the network security perimeter (NSP) configuration.
+	IssueTypeConfigurationPropagationFailure IssueType = "ConfigurationPropagationFailure"
+	// IssueTypeMissingIdentityConfiguration - An managed identity hasn't been associated with the resource. The resource will
+	// still be able to validate inbound traffic from the network security perimeter (NSP) or matching inbound access rules, but
+	// it won't be able to perform outbound access as a member of the NSP.
+	IssueTypeMissingIdentityConfiguration IssueType = "MissingIdentityConfiguration"
+	// IssueTypeMissingPerimeterConfiguration - A network connectivity issue is happening on the resource which could be addressed
+	// either by adding new resources to the network security perimeter (NSP) or by modifying access rules.
+	IssueTypeMissingPerimeterConfiguration IssueType = "MissingPerimeterConfiguration"
+	// IssueTypeUnknown - Unknown issue type
+	IssueTypeUnknown IssueType = "Unknown"
+)
+
+// PossibleIssueTypeValues returns the possible values for the IssueType const type.
+func PossibleIssueTypeValues() []IssueType {
+	return []IssueType{
+		IssueTypeConfigurationPropagationFailure,
+		IssueTypeMissingIdentityConfiguration,
+		IssueTypeMissingPerimeterConfiguration,
+		IssueTypeUnknown,
 	}
 }
 
@@ -593,6 +943,41 @@ func PossibleNetworkACLBypassValues() []NetworkACLBypass {
 	}
 }
 
+// NetworkSecurityPerimeterConfigurationProvisioningState - Provisioning state of a network security perimeter configuration
+// that is being created or updated.
+type NetworkSecurityPerimeterConfigurationProvisioningState string
+
+const (
+	// NetworkSecurityPerimeterConfigurationProvisioningStateAccepted - The configuration request was accepted and provisioning
+	// has not started yet.
+	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateCanceled - The configuration provisioning was canceled.
+	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateCreating - The configuration is being created.
+	NetworkSecurityPerimeterConfigurationProvisioningStateCreating NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateDeleting - The configuration is being deleted.
+	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateFailed - The configuration failed to provision.
+	NetworkSecurityPerimeterConfigurationProvisioningStateFailed NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded - The configuration was provisioned successfully.
+	NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded NetworkSecurityPerimeterConfigurationProvisioningState = "Succeeded"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateUpdating - The configuration is being updated.
+	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
+)
+
+// PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigurationProvisioningState const type.
+func PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues() []NetworkSecurityPerimeterConfigurationProvisioningState {
+	return []NetworkSecurityPerimeterConfigurationProvisioningState{
+		NetworkSecurityPerimeterConfigurationProvisioningStateAccepted,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCanceled,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCreating,
+		NetworkSecurityPerimeterConfigurationProvisioningStateDeleting,
+		NetworkSecurityPerimeterConfigurationProvisioningStateFailed,
+		NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded,
+		NetworkSecurityPerimeterConfigurationProvisioningStateUpdating,
+	}
+}
+
 // NodeState - The state of the node in Cassandra ring.
 type NodeState string
 
@@ -708,6 +1093,29 @@ func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
 		PublicNetworkAccessDisabled,
 		PublicNetworkAccessEnabled,
 		PublicNetworkAccessSecuredByPerimeter,
+	}
+}
+
+// ResourceAssociationAccessMode - Access mode of the resource association
+type ResourceAssociationAccessMode string
+
+const (
+	// ResourceAssociationAccessModeAudit - Audit access mode - traffic to the resource that fails access checks is logged but
+	// not blocked
+	ResourceAssociationAccessModeAudit ResourceAssociationAccessMode = "Audit"
+	// ResourceAssociationAccessModeEnforced - Enforced access mode - traffic to the resource that failed access checks is blocked
+	ResourceAssociationAccessModeEnforced ResourceAssociationAccessMode = "Enforced"
+	// ResourceAssociationAccessModeLearning - Learning access mode - traffic to the resource is enabled for analysis but not
+	// blocked
+	ResourceAssociationAccessModeLearning ResourceAssociationAccessMode = "Learning"
+)
+
+// PossibleResourceAssociationAccessModeValues returns the possible values for the ResourceAssociationAccessMode const type.
+func PossibleResourceAssociationAccessModeValues() []ResourceAssociationAccessMode {
+	return []ResourceAssociationAccessMode{
+		ResourceAssociationAccessModeAudit,
+		ResourceAssociationAccessModeEnforced,
+		ResourceAssociationAccessModeLearning,
 	}
 }
 
@@ -869,6 +1277,42 @@ func PossibleServiceTypeValues() []ServiceType {
 	}
 }
 
+// Severity - Severity of the issue.
+type Severity string
+
+const (
+	// SeverityError - The issue is an error and prevents the configuration from being applied.
+	SeverityError Severity = "Error"
+	// SeverityWarning - The issue is a warning and does not prevent the configuration from being applied.
+	SeverityWarning Severity = "Warning"
+)
+
+// PossibleSeverityValues returns the possible values for the Severity const type.
+func PossibleSeverityValues() []Severity {
+	return []Severity{
+		SeverityError,
+		SeverityWarning,
+	}
+}
+
+// SoftDeleteActionKind - The kind of soft delete action to perform.
+type SoftDeleteActionKind string
+
+const (
+	// SoftDeleteActionKindPermanentDeleteResource - Permanently deletes the soft-deleted resource.
+	SoftDeleteActionKindPermanentDeleteResource SoftDeleteActionKind = "PermanentDeleteResource"
+	// SoftDeleteActionKindRestoreSoftDeletedResource - Restores the soft-deleted resource to active/online state.
+	SoftDeleteActionKindRestoreSoftDeletedResource SoftDeleteActionKind = "RestoreSoftDeletedResource"
+)
+
+// PossibleSoftDeleteActionKindValues returns the possible values for the SoftDeleteActionKind const type.
+func PossibleSoftDeleteActionKindValues() []SoftDeleteActionKind {
+	return []SoftDeleteActionKind{
+		SoftDeleteActionKindPermanentDeleteResource,
+		SoftDeleteActionKindRestoreSoftDeletedResource,
+	}
+}
+
 // SpatialType - Indicates the spatial type of index.
 type SpatialType string
 
@@ -918,6 +1362,40 @@ func PossibleStatusValues() []Status {
 		StatusSucceeded,
 		StatusUninitialized,
 		StatusUpdating,
+	}
+}
+
+// SupportedActions - Indicates whether what action to take for the Chaos Fault.
+type SupportedActions string
+
+const (
+	SupportedActionsDisable SupportedActions = "Disable"
+	SupportedActionsEnable  SupportedActions = "Enable"
+)
+
+// PossibleSupportedActionsValues returns the possible values for the SupportedActions const type.
+func PossibleSupportedActionsValues() []SupportedActions {
+	return []SupportedActions{
+		SupportedActionsDisable,
+		SupportedActionsEnable,
+	}
+}
+
+// ThroughputPolicyType - ThroughputPolicy to apply for throughput redistribution
+type ThroughputPolicyType string
+
+const (
+	ThroughputPolicyTypeCustom ThroughputPolicyType = "custom"
+	ThroughputPolicyTypeEqual  ThroughputPolicyType = "equal"
+	ThroughputPolicyTypeNone   ThroughputPolicyType = "none"
+)
+
+// PossibleThroughputPolicyTypeValues returns the possible values for the ThroughputPolicyType const type.
+func PossibleThroughputPolicyTypeValues() []ThroughputPolicyType {
+	return []ThroughputPolicyType{
+		ThroughputPolicyTypeCustom,
+		ThroughputPolicyTypeEqual,
+		ThroughputPolicyTypeNone,
 	}
 }
 

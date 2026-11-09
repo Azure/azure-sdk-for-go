@@ -7,11 +7,11 @@ package armrecoveryservicessiterecovery_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v4"
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/SupportedOperatingSystems_Get.json
+// Generated from example definition: 2026-11-01/SupportedOperatingSystems_Get.json
 func ExampleSupportedOperatingSystemsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

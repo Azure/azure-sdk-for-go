@@ -19,7 +19,7 @@ import (
 // RoutesClient contains the methods for the Routes group.
 // Don't use this type directly, use NewRoutesClient() instead.
 //
-// Generated from API version 2025-06-01
+// Generated from API version 2026-10-01
 type RoutesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -72,7 +72,7 @@ func (client *RoutesClient) BeginCreate(ctx context.Context, resourceGroupName s
 	}
 }
 
-// Create - Creates a new route with the specified route name under the specified subscription, resource group, profile, and
+// create - Creates a new route with the specified route name under the specified subscription, resource group, profile, and
 // AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RoutesClient) create(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, route Route, options *RoutesClientBeginCreateOptions) (*http.Response, error) {
@@ -95,7 +95,7 @@ func (client *RoutesClient) create(ctx context.Context, resourceGroupName string
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *RoutesClient) createCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, route Route, _ *RoutesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}"
 	if client.subscriptionID == "" {
@@ -123,7 +123,7 @@ func (client *RoutesClient) createCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -160,8 +160,8 @@ func (client *RoutesClient) BeginDelete(ctx context.Context, resourceGroupName s
 	}
 }
 
-// Delete - Deletes an existing route with the specified route name under the specified subscription, resource group, profile,
-// and AzureFrontDoor endpoint.
+// deleteOperation - Deletes an existing route with the specified route name under the specified subscription, resource group,
+// profile, and AzureFrontDoor endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RoutesClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, options *RoutesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -183,7 +183,7 @@ func (client *RoutesClient) deleteOperation(ctx context.Context, resourceGroupNa
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, _ *RoutesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}"
 	if client.subscriptionID == "" {
@@ -211,8 +211,96 @@ func (client *RoutesClient) deleteCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates an existing route with the specified route name under the specified subscription, resource group,
+// profile, and AzureFrontDoor endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
+//     resource group.
+//   - endpointName - Name of the endpoint under the profile which is unique globally.
+//   - routeName - Name of the routing rule.
+//   - routeUpdateProperties - Route update properties
+//   - options - RoutesClientBeginUpdateOptions contains the optional parameters for the RoutesClient.BeginUpdate method.
+func (client *RoutesClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, options *RoutesClientBeginUpdateOptions) (*runtime.Poller[RoutesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoutesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoutesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an existing route with the specified route name under the specified subscription, resource group, profile,
+// and AzureFrontDoor endpoint.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *RoutesClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, options *RoutesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "RoutesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *RoutesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, _ *RoutesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
+	if routeName == "" {
+		return nil, errors.New("parameter routeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{routeName}", url.PathEscape(routeName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, routeUpdateProperties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -270,7 +358,7 @@ func (client *RoutesClient) getCreateRequest(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -352,7 +440,7 @@ func (client *RoutesClient) listByEndpointCreateRequest(ctx context.Context, res
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250601)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -369,92 +457,4 @@ func (client *RoutesClient) listByEndpointHandleResponse(resp *http.Response, su
 		return RoutesClientListByEndpointResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates an existing route with the specified route name under the specified subscription, resource group,
-// profile, and AzureFrontDoor endpoint.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is unique within the
-//     resource group.
-//   - endpointName - Name of the endpoint under the profile which is unique globally.
-//   - routeName - Name of the routing rule.
-//   - routeUpdateProperties - Route update properties
-//   - options - RoutesClientBeginUpdateOptions contains the optional parameters for the RoutesClient.BeginUpdate method.
-func (client *RoutesClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, options *RoutesClientBeginUpdateOptions) (*runtime.Poller[RoutesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RoutesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RoutesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an existing route with the specified route name under the specified subscription, resource group, profile,
-// and AzureFrontDoor endpoint.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *RoutesClient) update(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, options *RoutesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "RoutesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, endpointName, routeName, routeUpdateProperties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *RoutesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, endpointName string, routeName string, routeUpdateProperties RouteUpdateParameters, _ *RoutesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cdn/profiles/{profileName}/afdEndpoints/{endpointName}/routes/{routeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", url.PathEscape(endpointName))
-	if routeName == "" {
-		return nil, errors.New("parameter routeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{routeName}", url.PathEscape(routeName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, routeUpdateProperties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

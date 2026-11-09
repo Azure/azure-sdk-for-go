@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-08-01/MarketplacesByBillingAccountList.json
+// Generated from example definition: 2026-06-01/MarketplacesByBillingAccountList.json
 func ExampleMarketplacesClient_NewListPager_billingAccountMarketplacesList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleMarketplacesClient_NewListPager_billingAccountMarketplacesList() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/MarketplacesByBillingAccountListForBillingPeriod.json
+// Generated from example definition: 2026-06-01/MarketplacesByBillingAccountListForBillingPeriod.json
 func ExampleMarketplacesClient_NewListPager_billingAccountMarketplacesListForBillingPeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -142,7 +142,7 @@ func ExampleMarketplacesClient_NewListPager_billingAccountMarketplacesListForBil
 	}
 }
 
-// Generated from example definition: 2024-08-01/MarketplacesByDepartmentList.json
+// Generated from example definition: 2026-06-01/MarketplacesByDepartmentList.json
 func ExampleMarketplacesClient_NewListPager_departmentMarketplacesList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -208,7 +208,7 @@ func ExampleMarketplacesClient_NewListPager_departmentMarketplacesList() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/MarketplacesByDepartment_ListByBillingPeriod.json
+// Generated from example definition: 2026-06-01/MarketplacesByDepartment_ListByBillingPeriod.json
 func ExampleMarketplacesClient_NewListPager_departmentMarketplacesListForBillingPeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -274,7 +274,7 @@ func ExampleMarketplacesClient_NewListPager_departmentMarketplacesListForBilling
 	}
 }
 
-// Generated from example definition: 2024-08-01/MarketplacesByEnrollmentAccountList.json
+// Generated from example definition: 2026-06-01/MarketplacesByEnrollmentAccountList.json
 func ExampleMarketplacesClient_NewListPager_enrollmentAccountMarketplacesList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -340,7 +340,7 @@ func ExampleMarketplacesClient_NewListPager_enrollmentAccountMarketplacesList() 
 	}
 }
 
-// Generated from example definition: 2024-08-01/MarketplacesByEnrollmentAccounts_ListByBillingPeriod.json
+// Generated from example definition: 2026-06-01/MarketplacesByEnrollmentAccounts_ListByBillingPeriod.json
 func ExampleMarketplacesClient_NewListPager_enrollmentAccountMarketplacesListForBillingPeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +406,7 @@ func ExampleMarketplacesClient_NewListPager_enrollmentAccountMarketplacesListFor
 	}
 }
 
-// Generated from example definition: 2024-08-01/MarketplacesByManagementGroupList.json
+// Generated from example definition: 2026-06-01/MarketplacesByManagementGroupList.json
 func ExampleMarketplacesClient_NewListPager_managementGroupMarketplacesList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -507,7 +507,7 @@ func ExampleMarketplacesClient_NewListPager_managementGroupMarketplacesList() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/MarketplacesByManagementGroup_ListForBillingPeriod.json
+// Generated from example definition: 2026-06-01/MarketplacesByManagementGroup_ListForBillingPeriod.json
 func ExampleMarketplacesClient_NewListPager_managementGroupMarketplacesListForBillingPeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -608,7 +608,7 @@ func ExampleMarketplacesClient_NewListPager_managementGroupMarketplacesListForBi
 	}
 }
 
-// Generated from example definition: 2024-08-01/MarketplacesList.json
+// Generated from example definition: 2026-06-01/MarketplacesList.json
 func ExampleMarketplacesClient_NewListPager_subscriptionMarketplacesList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -673,7 +673,7 @@ func ExampleMarketplacesClient_NewListPager_subscriptionMarketplacesList() {
 	}
 }
 
-// Generated from example definition: 2024-08-01/MarketplacesListForBillingPeriod.json
+// Generated from example definition: 2026-06-01/MarketplacesListForBillingPeriod.json
 func ExampleMarketplacesClient_NewListPager_subscriptionMarketplacesListForBillingPeriod() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

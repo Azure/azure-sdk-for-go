@@ -1,9 +1,7 @@
 # Release History
 
-## 2.0.0 (2026-11-01)
+## 2.0.0 (2026-11-09)
 ### Breaking Changes
-
-- For migration help on parameter-group updates, see [SDK Breaking Changes Migration Guide - Parameter Group Changes](https://aka.ms/azsdk/go/breakingchanges/migration/parameter-group).
 
 - Function `*AdminKeysClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, searchManagementRequestOptions *SearchManagementRequestOptions, options *AdminKeysClientGetOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, options *AdminKeysClientGetOptions)`
 - Function `*AdminKeysClient.Regenerate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, searchServiceName string, keyKind AdminKeyKind, searchManagementRequestOptions *SearchManagementRequestOptions, options *AdminKeysClientRegenerateOptions)` to `(ctx context.Context, resourceGroupName string, searchServiceName string, keyKind AdminKeyKind, options *AdminKeysClientRegenerateOptions)`

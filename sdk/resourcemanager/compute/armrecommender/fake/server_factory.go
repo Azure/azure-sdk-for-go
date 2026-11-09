@@ -15,6 +15,9 @@ import (
 
 // ServerFactory is a fake server for instances of the armrecommender.ClientFactory type.
 type ServerFactory struct {
+	// ComputePlacementScoresServer contains the fakes for client ComputePlacementScoresClient
+	ComputePlacementScoresServer ComputePlacementScoresServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -37,11 +40,12 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armrecommender.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                           *ServerFactory
-	trMu                          sync.Mutex
-	trOperationsServer            *OperationsServerTransport
-	trSKUMixPlacementScoresServer *SKUMixPlacementScoresServerTransport
-	trSpotPlacementScoresServer   *SpotPlacementScoresServerTransport
+	srv                            *ServerFactory
+	trMu                           sync.Mutex
+	trComputePlacementScoresServer *ComputePlacementScoresServerTransport
+	trOperationsServer             *OperationsServerTransport
+	trSKUMixPlacementScoresServer  *SKUMixPlacementScoresServerTransport
+	trSpotPlacementScoresServer    *SpotPlacementScoresServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -57,6 +61,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "ComputePlacementScoresClient":
+		initServer(&s.trMu, &s.trComputePlacementScoresServer, func() *ComputePlacementScoresServerTransport {
+			return NewComputePlacementScoresServerTransport(&s.srv.ComputePlacementScoresServer)
+		})
+		resp, err = s.trComputePlacementScoresServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

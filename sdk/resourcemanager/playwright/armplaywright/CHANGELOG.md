@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (2026-08-24)
+## 1.1.0-beta.2 (2026-11-09)
 ### Features Added
 
 - New field `SubnetID` in struct `WorkspaceProperties`

@@ -70,7 +70,7 @@ func (client *AkriConnectorClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create a AkriConnectorResource
+// createOrUpdate - Create a AkriConnectorResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AkriConnectorClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, akriConnectorTemplateName string, connectorName string, resource AkriConnectorResource, options *AkriConnectorClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *AkriConnectorClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AkriConnectorClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, akriConnectorTemplateName string, connectorName string, resource AkriConnectorResource, _ *AkriConnectorClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
@@ -155,7 +156,7 @@ func (client *AkriConnectorClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete a AkriConnectorResource
+// deleteOperation - Delete a AkriConnectorResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AkriConnectorClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, akriConnectorTemplateName string, connectorName string, options *AkriConnectorClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,12 +173,13 @@ func (client *AkriConnectorClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AkriConnectorClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, akriConnectorTemplateName string, connectorName string, _ *AkriConnectorClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/akriConnectorTemplates/{akriConnectorTemplateName}/connectors/{connectorName}"
 	if client.subscriptionID == "" {
@@ -231,7 +233,8 @@ func (client *AkriConnectorClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AkriConnectorClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

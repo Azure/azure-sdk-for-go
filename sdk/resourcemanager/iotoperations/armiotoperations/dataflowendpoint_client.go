@@ -69,7 +69,7 @@ func (client *DataflowEndpointClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create a DataflowEndpointResource
+// createOrUpdate - Create a DataflowEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DataflowEndpointClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, dataflowEndpointName string, resource DataflowEndpointResource, options *DataflowEndpointClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *DataflowEndpointClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DataflowEndpointClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowEndpointName string, resource DataflowEndpointResource, _ *DataflowEndpointClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowEndpoints/{dataflowEndpointName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *DataflowEndpointClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a DataflowEndpointResource
+// deleteOperation - Delete a DataflowEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DataflowEndpointClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, dataflowEndpointName string, options *DataflowEndpointClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *DataflowEndpointClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DataflowEndpointClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, dataflowEndpointName string, _ *DataflowEndpointClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/dataflowEndpoints/{dataflowEndpointName}"
 	if client.subscriptionID == "" {
@@ -220,7 +222,8 @@ func (client *DataflowEndpointClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return DataflowEndpointClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

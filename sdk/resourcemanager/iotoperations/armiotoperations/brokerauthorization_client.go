@@ -70,7 +70,7 @@ func (client *BrokerAuthorizationClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create a BrokerAuthorizationResource
+// createOrUpdate - Create a BrokerAuthorizationResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BrokerAuthorizationClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authorizationName string, resource BrokerAuthorizationResource, options *BrokerAuthorizationClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *BrokerAuthorizationClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BrokerAuthorizationClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authorizationName string, resource BrokerAuthorizationResource, _ *BrokerAuthorizationClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authorizations/{authorizationName}"
 	if client.subscriptionID == "" {
@@ -155,7 +156,7 @@ func (client *BrokerAuthorizationClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a BrokerAuthorizationResource
+// deleteOperation - Delete a BrokerAuthorizationResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BrokerAuthorizationClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authorizationName string, options *BrokerAuthorizationClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,12 +173,13 @@ func (client *BrokerAuthorizationClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BrokerAuthorizationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, brokerName string, authorizationName string, _ *BrokerAuthorizationClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/brokers/{brokerName}/authorizations/{authorizationName}"
 	if client.subscriptionID == "" {
@@ -231,7 +233,8 @@ func (client *BrokerAuthorizationClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return BrokerAuthorizationClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

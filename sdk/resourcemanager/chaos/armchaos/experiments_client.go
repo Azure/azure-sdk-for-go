@@ -84,7 +84,8 @@ func (client *ExperimentsClient) cancel(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -155,7 +156,8 @@ func (client *ExperimentsClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -229,7 +231,8 @@ func (client *ExperimentsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -298,7 +301,8 @@ func (client *ExperimentsClient) start(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -368,7 +372,8 @@ func (client *ExperimentsClient) update(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -424,7 +429,8 @@ func (client *ExperimentsClient) ExecutionDetails(ctx context.Context, resourceG
 	if err != nil {
 		return ExperimentsClientExecutionDetailsResponse{}, err
 	}
-	return client.executionDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executionDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executionDetailsCreateRequest creates the ExecutionDetails request.
@@ -488,7 +494,8 @@ func (client *ExperimentsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ExperimentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -550,7 +557,8 @@ func (client *ExperimentsClient) GetExecution(ctx context.Context, resourceGroup
 	if err != nil {
 		return ExperimentsClientGetExecutionResponse{}, err
 	}
-	return client.getExecutionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getExecutionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getExecutionCreateRequest creates the GetExecution request.

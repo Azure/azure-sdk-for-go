@@ -63,7 +63,8 @@ func (client *TargetTypesClient) Get(ctx context.Context, location string, targe
 	if err != nil {
 		return TargetTypesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

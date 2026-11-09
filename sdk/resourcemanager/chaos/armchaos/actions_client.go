@@ -63,7 +63,8 @@ func (client *ActionsClient) Get(ctx context.Context, location string, actionNam
 	if err != nil {
 		return ActionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

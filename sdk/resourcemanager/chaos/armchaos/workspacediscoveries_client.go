@@ -68,7 +68,8 @@ func (client *WorkspaceDiscoveriesClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return WorkspaceDiscoveriesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

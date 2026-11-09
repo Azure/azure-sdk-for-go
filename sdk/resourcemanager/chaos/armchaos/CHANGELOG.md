@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0 (2026-11-04)
+## 2.1.0 (2026-11-09)
 ### Features Added
 
 - New value `ProvisioningStateRunning` added to enum type `ProvisioningState`

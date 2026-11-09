@@ -66,7 +66,8 @@ func (client *ScenariosClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return ScenariosClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -142,7 +143,8 @@ func (client *ScenariosClient) Delete(ctx context.Context, resourceGroupName str
 		return ScenariosClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ScenariosClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ScenariosClientDeleteResponse{}, err
 	}
 	return ScenariosClientDeleteResponse{}, nil
 }
@@ -196,7 +198,8 @@ func (client *ScenariosClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return ScenariosClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -56,7 +56,8 @@ func (client *ScenarioTemplatesClient) Get(ctx context.Context, scenarioTemplate
 	if err != nil {
 		return ScenarioTemplatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

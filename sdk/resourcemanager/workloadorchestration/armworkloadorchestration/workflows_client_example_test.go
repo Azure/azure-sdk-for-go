@@ -87,6 +87,56 @@ func ExampleWorkflowsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-05-01-preview/Workflows_Update_MaximumSet_Gen.json
+func ExampleWorkflowsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkflowsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", armworkloadorchestration.Workflow{
+		Properties: &armworkloadorchestration.WorkflowProperties{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadorchestration.WorkflowsClientUpdateResponse{
+	// 	Workflow: armworkloadorchestration.Workflow{
+	// 		Properties: &armworkloadorchestration.WorkflowProperties{
+	// 			WorkflowTemplateID: to.Ptr("rzshmlsq"),
+	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
+	// 		},
+	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
+	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
+	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
+	// 		},
+	// 		ETag: to.Ptr("nmjjcn"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/workflows/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/contexts/workflows"),
+	// 		SystemData: &armworkloadorchestration.SystemData{
+	// 			CreatedBy: to.Ptr("qbgzyk"),
+	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
+	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-05-01-preview/Workflows_Get_MaximumSet_Gen.json
 func ExampleWorkflowsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -183,54 +233,4 @@ func ExampleWorkflowsClient_NewListByContextPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Workflows_Update_MaximumSet_Gen.json
-func ExampleWorkflowsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkflowsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", armworkloadorchestration.Workflow{
-		Properties: &armworkloadorchestration.WorkflowProperties{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadorchestration.WorkflowsClientUpdateResponse{
-	// 	Workflow: armworkloadorchestration.Workflow{
-	// 		Properties: &armworkloadorchestration.WorkflowProperties{
-	// 			WorkflowTemplateID: to.Ptr("rzshmlsq"),
-	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
-	// 		},
-	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
-	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
-	// 		},
-	// 		ETag: to.Ptr("nmjjcn"),
-	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/workflows/testname"),
-	// 		Name: to.Ptr("testname"),
-	// 		Type: to.Ptr("Microsoft.Edge/contexts/workflows"),
-	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("qbgzyk"),
-	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
-	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

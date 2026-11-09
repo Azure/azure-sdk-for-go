@@ -68,7 +68,7 @@ func (client *SolutionDeploymentsClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create or update a SolutionDeployment Resource
+// createOrUpdate - Create or update a SolutionDeployment Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SolutionDeploymentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, solutionDeploymentName string, resource SolutionDeployment, options *SolutionDeploymentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *SolutionDeploymentsClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SolutionDeploymentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, solutionDeploymentName string, resource SolutionDeployment, _ *SolutionDeploymentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}"
 	if client.subscriptionID == "" {
@@ -143,7 +144,7 @@ func (client *SolutionDeploymentsClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a SolutionDeployment Resource
+// deleteOperation - Delete a SolutionDeployment Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SolutionDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, solutionDeploymentName string, options *SolutionDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,12 +161,13 @@ func (client *SolutionDeploymentsClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SolutionDeploymentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, solutionDeploymentName string, _ *SolutionDeploymentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionDeployments/{solutionDeploymentName}"
 	if client.subscriptionID == "" {
@@ -209,7 +211,8 @@ func (client *SolutionDeploymentsClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return SolutionDeploymentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -410,7 +413,8 @@ func (client *SolutionDeploymentsClient) Update(ctx context.Context, resourceGro
 	if err != nil {
 		return SolutionDeploymentsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

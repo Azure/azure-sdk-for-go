@@ -69,7 +69,7 @@ func (client *SolutionTemplateVersionsClient) BeginBulkDeploySolution(ctx contex
 	}
 }
 
-// BulkDeploySolution - Post request for bulk deploy
+// bulkDeploySolution - Post request for bulk deploy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SolutionTemplateVersionsClient) bulkDeploySolution(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkDeploySolutionParameter, options *SolutionTemplateVersionsClientBeginBulkDeploySolutionOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *SolutionTemplateVersionsClient) bulkDeploySolution(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// bulkDeploySolutionCreateRequest creates the BulkDeploySolution request.
+// bulkDeploySolutionCreateRequest creates the bulkDeploySolution request.
 func (client *SolutionTemplateVersionsClient) bulkDeploySolutionCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkDeploySolutionParameter, _ *SolutionTemplateVersionsClientBeginBulkDeploySolutionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}/bulkDeploySolution"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *SolutionTemplateVersionsClient) BeginBulkPublishSolution(ctx conte
 	}
 }
 
-// BulkPublishSolution - Post request for bulk publish
+// bulkPublishSolution - Post request for bulk publish
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SolutionTemplateVersionsClient) bulkPublishSolution(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkPublishSolutionParameter, options *SolutionTemplateVersionsClientBeginBulkPublishSolutionOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *SolutionTemplateVersionsClient) bulkPublishSolution(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// bulkPublishSolutionCreateRequest creates the BulkPublishSolution request.
+// bulkPublishSolutionCreateRequest creates the bulkPublishSolution request.
 func (client *SolutionTemplateVersionsClient) bulkPublishSolutionCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkPublishSolutionParameter, _ *SolutionTemplateVersionsClientBeginBulkPublishSolutionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}/bulkPublishSolution"
 	if client.subscriptionID == "" {
@@ -229,7 +231,7 @@ func (client *SolutionTemplateVersionsClient) BeginBulkReviewSolution(ctx contex
 	}
 }
 
-// BulkReviewSolution - Post request for bulk review
+// bulkReviewSolution - Post request for bulk review
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SolutionTemplateVersionsClient) bulkReviewSolution(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkReviewSolutionParameter, options *SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions) (*http.Response, error) {
 	var err error
@@ -246,12 +248,13 @@ func (client *SolutionTemplateVersionsClient) bulkReviewSolution(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// bulkReviewSolutionCreateRequest creates the BulkReviewSolution request.
+// bulkReviewSolutionCreateRequest creates the bulkReviewSolution request.
 func (client *SolutionTemplateVersionsClient) bulkReviewSolutionCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, body BulkReviewSolutionParameter, _ *SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}/bulkReviewSolution"
 	if client.subscriptionID == "" {
@@ -309,7 +312,7 @@ func (client *SolutionTemplateVersionsClient) BeginCreateOrUpdate(ctx context.Co
 	}
 }
 
-// CreateOrUpdate - Create or update a Solution Template Version Resource
+// createOrUpdate - Create or update a Solution Template Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SolutionTemplateVersionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, resource SolutionTemplateVersion, options *SolutionTemplateVersionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -326,12 +329,13 @@ func (client *SolutionTemplateVersionsClient) createOrUpdate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SolutionTemplateVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, resource SolutionTemplateVersion, _ *SolutionTemplateVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}"
 	if client.subscriptionID == "" {
@@ -389,7 +393,7 @@ func (client *SolutionTemplateVersionsClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// Delete - Delete a Solution Template Version Resource
+// deleteOperation - Delete a Solution Template Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SolutionTemplateVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, options *SolutionTemplateVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -406,12 +410,13 @@ func (client *SolutionTemplateVersionsClient) deleteOperation(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SolutionTemplateVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, solutionTemplateName string, solutionTemplateVersionName string, _ *SolutionTemplateVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/solutionTemplates/{solutionTemplateName}/versions/{solutionTemplateVersionName}"
 	if client.subscriptionID == "" {
@@ -461,7 +466,8 @@ func (client *SolutionTemplateVersionsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return SolutionTemplateVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -605,7 +611,8 @@ func (client *SolutionTemplateVersionsClient) Update(ctx context.Context, resour
 	if err != nil {
 		return SolutionTemplateVersionsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

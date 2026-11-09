@@ -29,6 +29,10 @@ type ConfigTemplateMetadatasServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateMetadataName string, options *armworkloadorchestration.ConfigTemplateMetadatasClientBeginDeleteOptions) (resp azfake.PollerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method ConfigTemplateMetadatasClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateMetadataName string, properties armworkloadorchestration.ConfigTemplateMetadataUpdate, options *armworkloadorchestration.ConfigTemplateMetadatasClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ConfigTemplateMetadatasClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateMetadataName string, options *armworkloadorchestration.ConfigTemplateMetadatasClientGetOptions) (resp azfake.Responder[armworkloadorchestration.ConfigTemplateMetadatasClientGetResponse], errResp azfake.ErrorResponder)
@@ -36,10 +40,6 @@ type ConfigTemplateMetadatasServer struct {
 	// NewListByConfigTemplatePager is the fake for method ConfigTemplateMetadatasClient.NewListByConfigTemplatePager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByConfigTemplatePager func(resourceGroupName string, configTemplateName string, options *armworkloadorchestration.ConfigTemplateMetadatasClientListByConfigTemplateOptions) (resp azfake.PagerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientListByConfigTemplateResponse])
-
-	// BeginUpdate is the fake for method ConfigTemplateMetadatasClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, configTemplateName string, configTemplateMetadataName string, properties armworkloadorchestration.ConfigTemplateMetadataUpdate, options *armworkloadorchestration.ConfigTemplateMetadatasClientBeginUpdateOptions) (resp azfake.PollerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewConfigTemplateMetadatasServerTransport creates a new instance of ConfigTemplateMetadatasServerTransport with the provided implementation.
@@ -50,8 +50,8 @@ func NewConfigTemplateMetadatasServerTransport(srv *ConfigTemplateMetadatasServe
 		srv:                          srv,
 		beginCreateOrUpdate:          newTracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientCreateOrUpdateResponse]](),
 		beginDelete:                  newTracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientDeleteResponse]](),
-		newListByConfigTemplatePager: newTracker[azfake.PagerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientListByConfigTemplateResponse]](),
 		beginUpdate:                  newTracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientUpdateResponse]](),
+		newListByConfigTemplatePager: newTracker[azfake.PagerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientListByConfigTemplateResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ type ConfigTemplateMetadatasServerTransport struct {
 	srv                          *ConfigTemplateMetadatasServer
 	beginCreateOrUpdate          *tracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientCreateOrUpdateResponse]]
 	beginDelete                  *tracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientDeleteResponse]]
-	newListByConfigTemplatePager *tracker[azfake.PagerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientListByConfigTemplateResponse]]
 	beginUpdate                  *tracker[azfake.PollerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientUpdateResponse]]
+	newListByConfigTemplatePager *tracker[azfake.PagerResponder[armworkloadorchestration.ConfigTemplateMetadatasClientListByConfigTemplateResponse]]
 }
 
 // Do implements the policy.Transporter interface for ConfigTemplateMetadatasServerTransport.
@@ -70,7 +70,7 @@ func (c *ConfigTemplateMetadatasServerTransport) Do(req *http.Request) (*http.Re
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return c.dispatchToMethodFake(req, method)
@@ -90,12 +90,12 @@ func (c *ConfigTemplateMetadatasServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ConfigTemplateMetadatasClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ConfigTemplateMetadatasClient.BeginUpdate":
+				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ConfigTemplateMetadatasClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
 			case "ConfigTemplateMetadatasClient.NewListByConfigTemplatePager":
 				res.resp, res.err = c.dispatchNewListByConfigTemplatePager(req)
-			case "ConfigTemplateMetadatasClient.BeginUpdate":
-				res.resp, res.err = c.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,6 +212,58 @@ func (c *ConfigTemplateMetadatasServerTransport) dispatchBeginDelete(req *http.R
 	return resp, nil
 }
 
+func (c *ConfigTemplateMetadatasServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginUpdate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
+	}
+	beginUpdate := c.beginUpdate.get(req)
+	if beginUpdate == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/configTemplates/(?P<configTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configTemplateMetadatas/(?P<configTemplateMetadataName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.ConfigTemplateMetadataUpdate](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		configTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateName")])
+		if err != nil {
+			return nil, err
+		}
+		configTemplateMetadataNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateMetadataName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, configTemplateNameParam, configTemplateMetadataNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUpdate = &respr
+		c.beginUpdate.add(req, beginUpdate)
+	}
+
+	resp, err := server.PollerResponderNext(beginUpdate, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
+		c.beginUpdate.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUpdate) {
+		c.beginUpdate.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (c *ConfigTemplateMetadatasServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if c.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -287,58 +339,6 @@ func (c *ConfigTemplateMetadatasServerTransport) dispatchNewListByConfigTemplate
 	if !server.PagerResponderMore(newListByConfigTemplatePager) {
 		c.newListByConfigTemplatePager.remove(req)
 	}
-	return resp, nil
-}
-
-func (c *ConfigTemplateMetadatasServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
-	if c.srv.BeginUpdate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
-	}
-	beginUpdate := c.beginUpdate.get(req)
-	if beginUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Edge/configTemplates/(?P<configTemplateName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/configTemplateMetadatas/(?P<configTemplateMetadataName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 5 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armworkloadorchestration.ConfigTemplateMetadataUpdate](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		configTemplateNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateName")])
-		if err != nil {
-			return nil, err
-		}
-		configTemplateMetadataNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("configTemplateMetadataName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := c.srv.BeginUpdate(req.Context(), resourceGroupNameParam, configTemplateNameParam, configTemplateMetadataNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUpdate = &respr
-		c.beginUpdate.add(req, beginUpdate)
-	}
-
-	resp, err := server.PollerResponderNext(beginUpdate, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
-		c.beginUpdate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUpdate) {
-		c.beginUpdate.remove(req)
-	}
-
 	return resp, nil
 }
 

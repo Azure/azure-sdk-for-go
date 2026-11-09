@@ -1,6 +1,6 @@
 # Release History
 
-## 0.4.0 (2026-09-15)
+## 0.4.0 (2026-11-09)
 ### Breaking Changes
 
 - Type of `ConfigTemplateVersionProperties.Configurations` has been changed from `*string` to `map[string]any`

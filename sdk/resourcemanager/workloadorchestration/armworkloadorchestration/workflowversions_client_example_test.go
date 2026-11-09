@@ -137,6 +137,105 @@ func ExampleWorkflowVersionsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-05-01-preview/WorkflowVersions_Update_MaximumSet_Gen.json
+func ExampleWorkflowVersionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWorkflowVersionsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", "abcde", armworkloadorchestration.WorkflowVersion{
+		Properties: &armworkloadorchestration.WorkflowVersionProperties{
+			StageSpec: []*armworkloadorchestration.StageSpec{
+				{
+					Name:          to.Ptr("jgldxxbuucvqlpstdbbql"),
+					Specification: map[string]any{},
+					Tasks: []*armworkloadorchestration.TaskSpec{
+						{
+							Name:          to.Ptr("hozvidsilycopddjfuebjglcourar"),
+							TargetID:      to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
+							Specification: map[string]any{},
+						},
+					},
+					TaskOption: &armworkloadorchestration.TaskOption{
+						Concurrency: to.Ptr[int32](2),
+						ErrorAction: &armworkloadorchestration.ErrorAction{
+							Mode:                 to.Ptr(armworkloadorchestration.ErrorActionModeStopOnAnyFailure),
+							MaxToleratedFailures: to.Ptr[int32](0),
+						},
+					},
+				},
+			},
+			Specification: map[string]any{},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadorchestration.WorkflowVersionsClientUpdateResponse{
+	// 	WorkflowVersion: armworkloadorchestration.WorkflowVersion{
+	// 		Properties: &armworkloadorchestration.WorkflowVersionProperties{
+	// 			StageSpec: []*armworkloadorchestration.StageSpec{
+	// 				{
+	// 					Name: to.Ptr("jgldxxbuucvqlpstdbbql"),
+	// 					Specification: map[string]any{
+	// 					},
+	// 					Tasks: []*armworkloadorchestration.TaskSpec{
+	// 						{
+	// 							Name: to.Ptr("hozvidsilycopddjfuebjglcourar"),
+	// 							TargetID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
+	// 							Specification: map[string]any{
+	// 							},
+	// 						},
+	// 					},
+	// 					TaskOption: &armworkloadorchestration.TaskOption{
+	// 						Concurrency: to.Ptr[int32](2),
+	// 						ErrorAction: &armworkloadorchestration.ErrorAction{
+	// 							Mode: to.Ptr(armworkloadorchestration.ErrorActionModeStopOnAnyFailure),
+	// 							MaxToleratedFailures: to.Ptr[int32](0),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			State: to.Ptr(armworkloadorchestration.StateInReview),
+	// 			Specification: map[string]any{
+	// 			},
+	// 			Revision: to.Ptr[int32](24),
+	// 			Configuration: to.Ptr("tugprkeex"),
+	// 			ReviewID: to.Ptr("ouqzskyqbhqenbhokmycmunokbw"),
+	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
+	// 		},
+	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
+	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
+	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
+	// 		},
+	// 		ETag: to.Ptr("bynuoe"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/workflows/testname/versions/abcde"),
+	// 		Name: to.Ptr("abcde"),
+	// 		Type: to.Ptr("Microsoft.Edge/contexts/workflows/versions"),
+	// 		SystemData: &armworkloadorchestration.SystemData{
+	// 			CreatedBy: to.Ptr("qbgzyk"),
+	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
+	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-05-01-preview/WorkflowVersions_Get_MaximumSet_Gen.json
 func ExampleWorkflowVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -287,103 +386,4 @@ func ExampleWorkflowVersionsClient_NewListByWorkflowPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-05-01-preview/WorkflowVersions_Update_MaximumSet_Gen.json
-func ExampleWorkflowVersionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWorkflowVersionsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", "abcde", armworkloadorchestration.WorkflowVersion{
-		Properties: &armworkloadorchestration.WorkflowVersionProperties{
-			StageSpec: []*armworkloadorchestration.StageSpec{
-				{
-					Name:          to.Ptr("jgldxxbuucvqlpstdbbql"),
-					Specification: map[string]any{},
-					Tasks: []*armworkloadorchestration.TaskSpec{
-						{
-							Name:          to.Ptr("hozvidsilycopddjfuebjglcourar"),
-							TargetID:      to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
-							Specification: map[string]any{},
-						},
-					},
-					TaskOption: &armworkloadorchestration.TaskOption{
-						Concurrency: to.Ptr[int32](2),
-						ErrorAction: &armworkloadorchestration.ErrorAction{
-							Mode:                 to.Ptr(armworkloadorchestration.ErrorActionModeStopOnAnyFailure),
-							MaxToleratedFailures: to.Ptr[int32](0),
-						},
-					},
-				},
-			},
-			Specification: map[string]any{},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadorchestration.WorkflowVersionsClientUpdateResponse{
-	// 	WorkflowVersion: armworkloadorchestration.WorkflowVersion{
-	// 		Properties: &armworkloadorchestration.WorkflowVersionProperties{
-	// 			StageSpec: []*armworkloadorchestration.StageSpec{
-	// 				{
-	// 					Name: to.Ptr("jgldxxbuucvqlpstdbbql"),
-	// 					Specification: map[string]any{
-	// 					},
-	// 					Tasks: []*armworkloadorchestration.TaskSpec{
-	// 						{
-	// 							Name: to.Ptr("hozvidsilycopddjfuebjglcourar"),
-	// 							TargetID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
-	// 							Specification: map[string]any{
-	// 							},
-	// 						},
-	// 					},
-	// 					TaskOption: &armworkloadorchestration.TaskOption{
-	// 						Concurrency: to.Ptr[int32](2),
-	// 						ErrorAction: &armworkloadorchestration.ErrorAction{
-	// 							Mode: to.Ptr(armworkloadorchestration.ErrorActionModeStopOnAnyFailure),
-	// 							MaxToleratedFailures: to.Ptr[int32](0),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			State: to.Ptr(armworkloadorchestration.StateInReview),
-	// 			Specification: map[string]any{
-	// 			},
-	// 			Revision: to.Ptr[int32](24),
-	// 			Configuration: to.Ptr("tugprkeex"),
-	// 			ReviewID: to.Ptr("ouqzskyqbhqenbhokmycmunokbw"),
-	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
-	// 		},
-	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
-	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
-	// 		},
-	// 		ETag: to.Ptr("bynuoe"),
-	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testname/workflows/testname/versions/abcde"),
-	// 		Name: to.Ptr("abcde"),
-	// 		Type: to.Ptr("Microsoft.Edge/contexts/workflows/versions"),
-	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("qbgzyk"),
-	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
-	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

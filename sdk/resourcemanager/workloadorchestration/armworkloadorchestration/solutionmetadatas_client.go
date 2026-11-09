@@ -57,7 +57,8 @@ func (client *SolutionMetadatasClient) Get(ctx context.Context, resourceURI stri
 	if err != nil {
 		return SolutionMetadatasClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

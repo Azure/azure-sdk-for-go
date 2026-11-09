@@ -147,6 +147,94 @@ func ExampleInstancesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-05-01-preview/Instances_Update_MaximumSet_Gen.json
+func ExampleInstancesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewInstancesClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", "testname", armworkloadorchestration.Instance{
+		Properties: &armworkloadorchestration.InstanceProperties{
+			SolutionVersionID: to.Ptr("ttjgk"),
+			TargetID:          to.Ptr("bebahvhrwsnxkxlignvhxivicdyzvc"),
+			ActiveState:       to.Ptr(armworkloadorchestration.ActiveStateActive),
+			ReconciliationPolicy: &armworkloadorchestration.ReconciliationPolicyProperties{
+				State:    to.Ptr(armworkloadorchestration.ReconciliationStateInactive),
+				Interval: to.Ptr("otpsmjex"),
+			},
+			SolutionScope: to.Ptr("testname"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadorchestration.InstancesClientUpdateResponse{
+	// 	Instance: armworkloadorchestration.Instance{
+	// 		Properties: &armworkloadorchestration.InstanceProperties{
+	// 			SolutionVersionID: to.Ptr("nrufwrrlslbu"),
+	// 			TargetID: to.Ptr("cxhzexpvtx"),
+	// 			ActiveState: to.Ptr(armworkloadorchestration.ActiveStateActive),
+	// 			ReconciliationPolicy: &armworkloadorchestration.ReconciliationPolicyProperties{
+	// 				State: to.Ptr(armworkloadorchestration.ReconciliationStateInactive),
+	// 				Interval: to.Ptr("otpsmjex"),
+	// 			},
+	// 			SolutionScope: to.Ptr("testname"),
+	// 			Status: &armworkloadorchestration.DeploymentStatus{
+	// 				LastModified: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 31, 397000000, time.UTC)),
+	// 				Deployed: to.Ptr[int32](23),
+	// 				ExpectedRunningJobID: to.Ptr[int32](26),
+	// 				RunningJobID: to.Ptr[int32](14),
+	// 				Status: to.Ptr("cgnpefkydfiqivyeggo"),
+	// 				StatusDetails: to.Ptr("tigubrypckktt"),
+	// 				Generation: to.Ptr[int32](6),
+	// 				TargetStatuses: []*armworkloadorchestration.TargetStatus{
+	// 					{
+	// 						Name: to.Ptr("jtgdfywzpqjvyigrqy"),
+	// 						Status: to.Ptr("uq"),
+	// 						ComponentStatuses: []*armworkloadorchestration.ComponentStatus{
+	// 							{
+	// 								Name: to.Ptr("xyucclhkogrcbyasbibiuvjwxmw"),
+	// 								Status: to.Ptr("iimiidgzeawmi"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			DeploymentTimestampEpoch: to.Ptr[int64](16),
+	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
+	// 		},
+	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
+	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
+	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
+	// 		},
+	// 		ETag: to.Ptr("pnqjgphudmgyxjeroradhbl"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testname/solutions/testname/instances/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/targets/solutions/instances"),
+	// 		SystemData: &armworkloadorchestration.SystemData{
+	// 			CreatedBy: to.Ptr("qbgzyk"),
+	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
+	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-05-01-preview/Instances_Get_MaximumSet_Gen.json
 func ExampleInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -301,92 +389,4 @@ func ExampleInstancesClient_NewListBySolutionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Instances_Update_MaximumSet_Gen.json
-func ExampleInstancesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewInstancesClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", "testname", armworkloadorchestration.Instance{
-		Properties: &armworkloadorchestration.InstanceProperties{
-			SolutionVersionID: to.Ptr("ttjgk"),
-			TargetID:          to.Ptr("bebahvhrwsnxkxlignvhxivicdyzvc"),
-			ActiveState:       to.Ptr(armworkloadorchestration.ActiveStateActive),
-			ReconciliationPolicy: &armworkloadorchestration.ReconciliationPolicyProperties{
-				State:    to.Ptr(armworkloadorchestration.ReconciliationStateInactive),
-				Interval: to.Ptr("otpsmjex"),
-			},
-			SolutionScope: to.Ptr("testname"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadorchestration.InstancesClientUpdateResponse{
-	// 	Instance: armworkloadorchestration.Instance{
-	// 		Properties: &armworkloadorchestration.InstanceProperties{
-	// 			SolutionVersionID: to.Ptr("nrufwrrlslbu"),
-	// 			TargetID: to.Ptr("cxhzexpvtx"),
-	// 			ActiveState: to.Ptr(armworkloadorchestration.ActiveStateActive),
-	// 			ReconciliationPolicy: &armworkloadorchestration.ReconciliationPolicyProperties{
-	// 				State: to.Ptr(armworkloadorchestration.ReconciliationStateInactive),
-	// 				Interval: to.Ptr("otpsmjex"),
-	// 			},
-	// 			SolutionScope: to.Ptr("testname"),
-	// 			Status: &armworkloadorchestration.DeploymentStatus{
-	// 				LastModified: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 31, 397000000, time.UTC)),
-	// 				Deployed: to.Ptr[int32](23),
-	// 				ExpectedRunningJobID: to.Ptr[int32](26),
-	// 				RunningJobID: to.Ptr[int32](14),
-	// 				Status: to.Ptr("cgnpefkydfiqivyeggo"),
-	// 				StatusDetails: to.Ptr("tigubrypckktt"),
-	// 				Generation: to.Ptr[int32](6),
-	// 				TargetStatuses: []*armworkloadorchestration.TargetStatus{
-	// 					{
-	// 						Name: to.Ptr("jtgdfywzpqjvyigrqy"),
-	// 						Status: to.Ptr("uq"),
-	// 						ComponentStatuses: []*armworkloadorchestration.ComponentStatus{
-	// 							{
-	// 								Name: to.Ptr("xyucclhkogrcbyasbibiuvjwxmw"),
-	// 								Status: to.Ptr("iimiidgzeawmi"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			DeploymentTimestampEpoch: to.Ptr[int64](16),
-	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
-	// 		},
-	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
-	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
-	// 		},
-	// 		ETag: to.Ptr("pnqjgphudmgyxjeroradhbl"),
-	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testname/solutions/testname/instances/testname"),
-	// 		Name: to.Ptr("testname"),
-	// 		Type: to.Ptr("Microsoft.Edge/targets/solutions/instances"),
-	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("qbgzyk"),
-	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
-	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

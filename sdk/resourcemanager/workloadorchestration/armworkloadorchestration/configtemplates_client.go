@@ -68,7 +68,7 @@ func (client *ConfigTemplatesClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create or update a Config Template Resource
+// createOrUpdate - Create or update a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConfigTemplatesClient) createOrUpdate(ctx context.Context, resourceGroupName string, configTemplateName string, resource ConfigTemplate, options *ConfigTemplatesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *ConfigTemplatesClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConfigTemplatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, resource ConfigTemplate, _ *ConfigTemplatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *ConfigTemplatesClient) BeginCreateVersion(ctx context.Context, res
 	}
 }
 
-// CreateVersion - Create or update a Config Template Version Resource with the specified UpdateType
+// createVersion - Create or update a Config Template Version Resource with the specified UpdateType
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConfigTemplatesClient) createVersion(ctx context.Context, resourceGroupName string, configTemplateName string, body ConfigTemplateVersionWithUpdateType, options *ConfigTemplatesClientBeginCreateVersionOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *ConfigTemplatesClient) createVersion(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createVersionCreateRequest creates the CreateVersion request.
+// createVersionCreateRequest creates the createVersion request.
 func (client *ConfigTemplatesClient) createVersionCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, body ConfigTemplateVersionWithUpdateType, _ *ConfigTemplatesClientBeginCreateVersionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/createVersion"
 	if client.subscriptionID == "" {
@@ -219,7 +221,7 @@ func (client *ConfigTemplatesClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete a Config Template Resource
+// deleteOperation - Delete a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConfigTemplatesClient) deleteOperation(ctx context.Context, resourceGroupName string, configTemplateName string, options *ConfigTemplatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -236,12 +238,13 @@ func (client *ConfigTemplatesClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConfigTemplatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, _ *ConfigTemplatesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}"
 	if client.subscriptionID == "" {
@@ -266,6 +269,158 @@ func (client *ConfigTemplatesClient) deleteCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
+// BeginLinkToHierarchies - Apply a Config Template to a particular hierarchy node
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - configTemplateName - The name of the ConfigTemplate
+//   - body - The content of the action request
+//   - options - ConfigTemplatesClientBeginLinkToHierarchiesOptions contains the optional parameters for the ConfigTemplatesClient.BeginLinkToHierarchies
+//     method.
+func (client *ConfigTemplatesClient) BeginLinkToHierarchies(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, options *ConfigTemplatesClientBeginLinkToHierarchiesOptions) (*runtime.Poller[ConfigTemplatesClientLinkToHierarchiesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.linkToHierarchies(ctx, resourceGroupName, configTemplateName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigTemplatesClientLinkToHierarchiesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConfigTemplatesClientLinkToHierarchiesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// linkToHierarchies - Apply a Config Template to a particular hierarchy node
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConfigTemplatesClient) linkToHierarchies(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, options *ConfigTemplatesClientBeginLinkToHierarchiesOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConfigTemplatesClient.BeginLinkToHierarchies"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.linkToHierarchiesCreateRequest(ctx, resourceGroupName, configTemplateName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// linkToHierarchiesCreateRequest creates the linkToHierarchies request.
+func (client *ConfigTemplatesClient) linkToHierarchiesCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, _ *ConfigTemplatesClientBeginLinkToHierarchiesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/linkToHierarchies"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if configTemplateName == "" {
+		return nil, errors.New("parameter configTemplateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configTemplateName}", url.PathEscape(configTemplateName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUnLinkFromHierarchies - Remove a Config Template from a particular hierarchy node
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - configTemplateName - The name of the ConfigTemplate
+//   - body - The content of the action request
+//   - options - ConfigTemplatesClientBeginUnLinkFromHierarchiesOptions contains the optional parameters for the ConfigTemplatesClient.BeginUnLinkFromHierarchies
+//     method.
+func (client *ConfigTemplatesClient) BeginUnLinkFromHierarchies(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, options *ConfigTemplatesClientBeginUnLinkFromHierarchiesOptions) (*runtime.Poller[ConfigTemplatesClientUnLinkFromHierarchiesResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.unLinkFromHierarchies(ctx, resourceGroupName, configTemplateName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigTemplatesClientUnLinkFromHierarchiesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConfigTemplatesClientUnLinkFromHierarchiesResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// unLinkFromHierarchies - Remove a Config Template from a particular hierarchy node
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConfigTemplatesClient) unLinkFromHierarchies(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, options *ConfigTemplatesClientBeginUnLinkFromHierarchiesOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConfigTemplatesClient.BeginUnLinkFromHierarchies"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.unLinkFromHierarchiesCreateRequest(ctx, resourceGroupName, configTemplateName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// unLinkFromHierarchiesCreateRequest creates the unLinkFromHierarchies request.
+func (client *ConfigTemplatesClient) unLinkFromHierarchiesCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, _ *ConfigTemplatesClientBeginUnLinkFromHierarchiesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/unLinkFromHierarchies"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if configTemplateName == "" {
+		return nil, errors.New("parameter configTemplateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{configTemplateName}", url.PathEscape(configTemplateName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -285,7 +440,8 @@ func (client *ConfigTemplatesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ConfigTemplatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -324,81 +480,6 @@ func (client *ConfigTemplatesClient) getHandleResponse(resp *http.Response, succ
 		return ConfigTemplatesClientGetResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginLinkToHierarchies - Apply a Config Template to a particular hierarchy node
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - configTemplateName - The name of the ConfigTemplate
-//   - body - The content of the action request
-//   - options - ConfigTemplatesClientBeginLinkToHierarchiesOptions contains the optional parameters for the ConfigTemplatesClient.BeginLinkToHierarchies
-//     method.
-func (client *ConfigTemplatesClient) BeginLinkToHierarchies(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, options *ConfigTemplatesClientBeginLinkToHierarchiesOptions) (*runtime.Poller[ConfigTemplatesClientLinkToHierarchiesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.linkToHierarchies(ctx, resourceGroupName, configTemplateName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigTemplatesClientLinkToHierarchiesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConfigTemplatesClientLinkToHierarchiesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// LinkToHierarchies - Apply a Config Template to a particular hierarchy node
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConfigTemplatesClient) linkToHierarchies(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, options *ConfigTemplatesClientBeginLinkToHierarchiesOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ConfigTemplatesClient.BeginLinkToHierarchies"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.linkToHierarchiesCreateRequest(ctx, resourceGroupName, configTemplateName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// linkToHierarchiesCreateRequest creates the LinkToHierarchies request.
-func (client *ConfigTemplatesClient) linkToHierarchiesCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, _ *ConfigTemplatesClientBeginLinkToHierarchiesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/linkToHierarchies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if configTemplateName == "" {
-		return nil, errors.New("parameter configTemplateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{configTemplateName}", url.PathEscape(configTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListByResourceGroupPager - List by specified resource group
@@ -561,7 +642,8 @@ func (client *ConfigTemplatesClient) RemoveVersion(ctx context.Context, resource
 	if err != nil {
 		return ConfigTemplatesClientRemoveVersionResponse{}, err
 	}
-	return client.removeVersionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.removeVersionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // removeVersionCreateRequest creates the RemoveVersion request.
@@ -606,81 +688,6 @@ func (client *ConfigTemplatesClient) removeVersionHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// BeginUnLinkFromHierarchies - Remove a Config Template from a particular hierarchy node
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - configTemplateName - The name of the ConfigTemplate
-//   - body - The content of the action request
-//   - options - ConfigTemplatesClientBeginUnLinkFromHierarchiesOptions contains the optional parameters for the ConfigTemplatesClient.BeginUnLinkFromHierarchies
-//     method.
-func (client *ConfigTemplatesClient) BeginUnLinkFromHierarchies(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, options *ConfigTemplatesClientBeginUnLinkFromHierarchiesOptions) (*runtime.Poller[ConfigTemplatesClientUnLinkFromHierarchiesResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.unLinkFromHierarchies(ctx, resourceGroupName, configTemplateName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConfigTemplatesClientUnLinkFromHierarchiesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConfigTemplatesClientUnLinkFromHierarchiesResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// UnLinkFromHierarchies - Remove a Config Template from a particular hierarchy node
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConfigTemplatesClient) unLinkFromHierarchies(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, options *ConfigTemplatesClientBeginUnLinkFromHierarchiesOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ConfigTemplatesClient.BeginUnLinkFromHierarchies"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.unLinkFromHierarchiesCreateRequest(ctx, resourceGroupName, configTemplateName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// unLinkFromHierarchiesCreateRequest creates the UnLinkFromHierarchies request.
-func (client *ConfigTemplatesClient) unLinkFromHierarchiesCreateRequest(ctx context.Context, resourceGroupName string, configTemplateName string, body HierarchySelector, _ *ConfigTemplatesClientBeginUnLinkFromHierarchiesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/configTemplates/{configTemplateName}/unLinkFromHierarchies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if configTemplateName == "" {
-		return nil, errors.New("parameter configTemplateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{configTemplateName}", url.PathEscape(configTemplateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
 // Update - update a Config Template Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -701,7 +708,8 @@ func (client *ConfigTemplatesClient) Update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ConfigTemplatesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

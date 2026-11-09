@@ -157,84 +157,6 @@ func ExampleTargetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Targets_Get_MaximumSet_Gen.json
-func ExampleTargetsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewTargetsClient().Get(ctx, "rgconfigurationmanager", "testname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadorchestration.TargetsClientGetResponse{
-	// 	Target: armworkloadorchestration.Target{
-	// 		Properties: &armworkloadorchestration.TargetProperties{
-	// 			DisplayName: to.Ptr("uqslbtoqsdhxuzhjyxxhh"),
-	// 			ContextID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testContext"),
-	// 			TargetSpecification: map[string]any{
-	// 			},
-	// 			Capabilities: []*string{
-	// 				to.Ptr("jo"),
-	// 			},
-	// 			HierarchyLevel: to.Ptr("gfeixwakwerayliymdejq"),
-	// 			Status: &armworkloadorchestration.DeploymentStatus{
-	// 				LastModified: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 31, 397000000, time.UTC)),
-	// 				Deployed: to.Ptr[int32](23),
-	// 				ExpectedRunningJobID: to.Ptr[int32](26),
-	// 				RunningJobID: to.Ptr[int32](14),
-	// 				Status: to.Ptr("cgnpefkydfiqivyeggo"),
-	// 				StatusDetails: to.Ptr("tigubrypckktt"),
-	// 				Generation: to.Ptr[int32](6),
-	// 				TargetStatuses: []*armworkloadorchestration.TargetStatus{
-	// 					{
-	// 						Name: to.Ptr("jtgdfywzpqjvyigrqy"),
-	// 						Status: to.Ptr("uq"),
-	// 						ComponentStatuses: []*armworkloadorchestration.ComponentStatus{
-	// 							{
-	// 								Name: to.Ptr("xyucclhkogrcbyasbibiuvjwxmw"),
-	// 								Status: to.Ptr("iimiidgzeawmi"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			SolutionScope: to.Ptr("testname"),
-	// 			State: to.Ptr(armworkloadorchestration.ResourceStateActive),
-	// 			Description: to.Ptr("tprpzngmtoweelhwwilawu"),
-	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
-	// 		},
-	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
-	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Location: to.Ptr("yimw"),
-	// 		ETag: to.Ptr("zgimf"),
-	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testname"),
-	// 		Name: to.Ptr("testname"),
-	// 		Type: to.Ptr("Microsoft.Edge/targets"),
-	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("qbgzyk"),
-	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
-	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-05-01-preview/Targets_InstallSolution_MaximumSet_Gen.json
 func ExampleTargetsClient_BeginInstallSolution() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -255,256 +177,6 @@ func ExampleTargetsClient_BeginInstallSolution() {
 	_, err = poller.PollUntilDone(ctx, nil)
 	if err != nil {
 		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Targets_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleTargetsClient_NewListByResourceGroupPager_targetsListByResourceGroupMaximumSetGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewTargetsClient().NewListByResourceGroupPager("rgconfigurationmanager", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armworkloadorchestration.TargetsClientListByResourceGroupResponse{
-		// 	TargetListResult: armworkloadorchestration.TargetListResult{
-		// 		Value: []*armworkloadorchestration.Target{
-		// 			{
-		// 				Properties: &armworkloadorchestration.TargetProperties{
-		// 					DisplayName: to.Ptr("uqslbtoqsdhxuzhjyxxhh"),
-		// 					ContextID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testContext"),
-		// 					TargetSpecification: map[string]any{
-		// 					},
-		// 					Capabilities: []*string{
-		// 						to.Ptr("jo"),
-		// 					},
-		// 					HierarchyLevel: to.Ptr("gfeixwakwerayliymdejq"),
-		// 					Status: &armworkloadorchestration.DeploymentStatus{
-		// 						LastModified: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 31, 397000000, time.UTC)),
-		// 						Deployed: to.Ptr[int32](23),
-		// 						ExpectedRunningJobID: to.Ptr[int32](26),
-		// 						RunningJobID: to.Ptr[int32](14),
-		// 						Status: to.Ptr("cgnpefkydfiqivyeggo"),
-		// 						StatusDetails: to.Ptr("tigubrypckktt"),
-		// 						Generation: to.Ptr[int32](6),
-		// 						TargetStatuses: []*armworkloadorchestration.TargetStatus{
-		// 							{
-		// 								Name: to.Ptr("jtgdfywzpqjvyigrqy"),
-		// 								Status: to.Ptr("uq"),
-		// 								ComponentStatuses: []*armworkloadorchestration.ComponentStatus{
-		// 									{
-		// 										Name: to.Ptr("xyucclhkogrcbyasbibiuvjwxmw"),
-		// 										Status: to.Ptr("iimiidgzeawmi"),
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					SolutionScope: to.Ptr("testname"),
-		// 					State: to.Ptr(armworkloadorchestration.ResourceStateActive),
-		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
-		// 					Description: to.Ptr("qmelpvdcmysqwwzjtlvgcw"),
-		// 				},
-		// 				ETag: to.Ptr("zgimf"),
-		// 				ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-		// 					Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
-		// 					Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Location: to.Ptr("yimw"),
-		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
-		// 				Name: to.Ptr("testTarget"),
-		// 				Type: to.Ptr("Microsoft.Edge/targets"),
-		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("qbgzyk"),
-		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
-		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Targets_ListByResourceGroup_MinimumSet_Gen.json
-func ExampleTargetsClient_NewListByResourceGroupPager_targetsListByResourceGroupMaximumSetGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewTargetsClient().NewListByResourceGroupPager("rgconfigurationmanager", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armworkloadorchestration.TargetsClientListByResourceGroupResponse{
-		// 	TargetListResult: armworkloadorchestration.TargetListResult{
-		// 		Value: []*armworkloadorchestration.Target{
-		// 			{
-		// 				Location: to.Ptr("yimw"),
-		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
-		// 				Name: to.Ptr("testTarget"),
-		// 				Type: to.Ptr("Microsoft.Edge/targets"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Targets_ListBySubscription_MaximumSet_Gen.json
-func ExampleTargetsClient_NewListBySubscriptionPager_targetsListBySubscriptionMaximumSetGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewTargetsClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armworkloadorchestration.TargetsClientListBySubscriptionResponse{
-		// 	TargetListResult: armworkloadorchestration.TargetListResult{
-		// 		Value: []*armworkloadorchestration.Target{
-		// 			{
-		// 				Properties: &armworkloadorchestration.TargetProperties{
-		// 					DisplayName: to.Ptr("uqslbtoqsdhxuzhjyxxhh"),
-		// 					ContextID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testContext"),
-		// 					TargetSpecification: map[string]any{
-		// 					},
-		// 					Capabilities: []*string{
-		// 						to.Ptr("jo"),
-		// 					},
-		// 					HierarchyLevel: to.Ptr("gfeixwakwerayliymdejq"),
-		// 					Status: &armworkloadorchestration.DeploymentStatus{
-		// 						LastModified: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 31, 397000000, time.UTC)),
-		// 						Deployed: to.Ptr[int32](23),
-		// 						ExpectedRunningJobID: to.Ptr[int32](26),
-		// 						RunningJobID: to.Ptr[int32](14),
-		// 						Status: to.Ptr("cgnpefkydfiqivyeggo"),
-		// 						StatusDetails: to.Ptr("tigubrypckktt"),
-		// 						Generation: to.Ptr[int32](6),
-		// 						TargetStatuses: []*armworkloadorchestration.TargetStatus{
-		// 							{
-		// 								Name: to.Ptr("jtgdfywzpqjvyigrqy"),
-		// 								Status: to.Ptr("uq"),
-		// 								ComponentStatuses: []*armworkloadorchestration.ComponentStatus{
-		// 									{
-		// 										Name: to.Ptr("xyucclhkogrcbyasbibiuvjwxmw"),
-		// 										Status: to.Ptr("iimiidgzeawmi"),
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					SolutionScope: to.Ptr("testname"),
-		// 					State: to.Ptr(armworkloadorchestration.ResourceStateActive),
-		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
-		// 					Description: to.Ptr("hjkewzevnjwoh"),
-		// 				},
-		// 				ETag: to.Ptr("zgimf"),
-		// 				ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-		// 					Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
-		// 					Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Location: to.Ptr("yimw"),
-		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
-		// 				Name: to.Ptr("testTarget"),
-		// 				Type: to.Ptr("Microsoft.Edge/targets"),
-		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("qbgzyk"),
-		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
-		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/a"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Targets_ListBySubscription_MinimumSet_Gen.json
-func ExampleTargetsClient_NewListBySubscriptionPager_targetsListBySubscriptionMaximumSetGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewTargetsClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armworkloadorchestration.TargetsClientListBySubscriptionResponse{
-		// 	TargetListResult: armworkloadorchestration.TargetListResult{
-		// 		Value: []*armworkloadorchestration.Target{
-		// 			{
-		// 				Location: to.Ptr("yimw"),
-		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
-		// 				Name: to.Ptr("testTarget"),
-		// 				Type: to.Ptr("Microsoft.Edge/targets"),
-		// 			},
-		// 		},
-		// 	},
-		// }
 	}
 }
 
@@ -1218,4 +890,332 @@ func ExampleTargetsClient_BeginUpdateExternalValidationStatus() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Targets_Get_MaximumSet_Gen.json
+func ExampleTargetsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewTargetsClient().Get(ctx, "rgconfigurationmanager", "testname", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadorchestration.TargetsClientGetResponse{
+	// 	Target: armworkloadorchestration.Target{
+	// 		Properties: &armworkloadorchestration.TargetProperties{
+	// 			DisplayName: to.Ptr("uqslbtoqsdhxuzhjyxxhh"),
+	// 			ContextID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testContext"),
+	// 			TargetSpecification: map[string]any{
+	// 			},
+	// 			Capabilities: []*string{
+	// 				to.Ptr("jo"),
+	// 			},
+	// 			HierarchyLevel: to.Ptr("gfeixwakwerayliymdejq"),
+	// 			Status: &armworkloadorchestration.DeploymentStatus{
+	// 				LastModified: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 31, 397000000, time.UTC)),
+	// 				Deployed: to.Ptr[int32](23),
+	// 				ExpectedRunningJobID: to.Ptr[int32](26),
+	// 				RunningJobID: to.Ptr[int32](14),
+	// 				Status: to.Ptr("cgnpefkydfiqivyeggo"),
+	// 				StatusDetails: to.Ptr("tigubrypckktt"),
+	// 				Generation: to.Ptr[int32](6),
+	// 				TargetStatuses: []*armworkloadorchestration.TargetStatus{
+	// 					{
+	// 						Name: to.Ptr("jtgdfywzpqjvyigrqy"),
+	// 						Status: to.Ptr("uq"),
+	// 						ComponentStatuses: []*armworkloadorchestration.ComponentStatus{
+	// 							{
+	// 								Name: to.Ptr("xyucclhkogrcbyasbibiuvjwxmw"),
+	// 								Status: to.Ptr("iimiidgzeawmi"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			SolutionScope: to.Ptr("testname"),
+	// 			State: to.Ptr(armworkloadorchestration.ResourceStateActive),
+	// 			Description: to.Ptr("tprpzngmtoweelhwwilawu"),
+	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
+	// 		},
+	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
+	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
+	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("yimw"),
+	// 		ETag: to.Ptr("zgimf"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/targets"),
+	// 		SystemData: &armworkloadorchestration.SystemData{
+	// 			CreatedBy: to.Ptr("qbgzyk"),
+	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
+	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/Targets_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleTargetsClient_NewListByResourceGroupPager_targetsListByResourceGroupMaximumSetGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTargetsClient().NewListByResourceGroupPager("rgconfigurationmanager", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armworkloadorchestration.TargetsClientListByResourceGroupResponse{
+		// 	TargetListResult: armworkloadorchestration.TargetListResult{
+		// 		Value: []*armworkloadorchestration.Target{
+		// 			{
+		// 				Properties: &armworkloadorchestration.TargetProperties{
+		// 					DisplayName: to.Ptr("uqslbtoqsdhxuzhjyxxhh"),
+		// 					ContextID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testContext"),
+		// 					TargetSpecification: map[string]any{
+		// 					},
+		// 					Capabilities: []*string{
+		// 						to.Ptr("jo"),
+		// 					},
+		// 					HierarchyLevel: to.Ptr("gfeixwakwerayliymdejq"),
+		// 					Status: &armworkloadorchestration.DeploymentStatus{
+		// 						LastModified: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 31, 397000000, time.UTC)),
+		// 						Deployed: to.Ptr[int32](23),
+		// 						ExpectedRunningJobID: to.Ptr[int32](26),
+		// 						RunningJobID: to.Ptr[int32](14),
+		// 						Status: to.Ptr("cgnpefkydfiqivyeggo"),
+		// 						StatusDetails: to.Ptr("tigubrypckktt"),
+		// 						Generation: to.Ptr[int32](6),
+		// 						TargetStatuses: []*armworkloadorchestration.TargetStatus{
+		// 							{
+		// 								Name: to.Ptr("jtgdfywzpqjvyigrqy"),
+		// 								Status: to.Ptr("uq"),
+		// 								ComponentStatuses: []*armworkloadorchestration.ComponentStatus{
+		// 									{
+		// 										Name: to.Ptr("xyucclhkogrcbyasbibiuvjwxmw"),
+		// 										Status: to.Ptr("iimiidgzeawmi"),
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					SolutionScope: to.Ptr("testname"),
+		// 					State: to.Ptr(armworkloadorchestration.ResourceStateActive),
+		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
+		// 					Description: to.Ptr("qmelpvdcmysqwwzjtlvgcw"),
+		// 				},
+		// 				ETag: to.Ptr("zgimf"),
+		// 				ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
+		// 					Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
+		// 					Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Location: to.Ptr("yimw"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
+		// 				Name: to.Ptr("testTarget"),
+		// 				Type: to.Ptr("Microsoft.Edge/targets"),
+		// 				SystemData: &armworkloadorchestration.SystemData{
+		// 					CreatedBy: to.Ptr("qbgzyk"),
+		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
+		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Targets_ListByResourceGroup_MinimumSet_Gen.json
+func ExampleTargetsClient_NewListByResourceGroupPager_targetsListByResourceGroupMaximumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTargetsClient().NewListByResourceGroupPager("rgconfigurationmanager", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armworkloadorchestration.TargetsClientListByResourceGroupResponse{
+		// 	TargetListResult: armworkloadorchestration.TargetListResult{
+		// 		Value: []*armworkloadorchestration.Target{
+		// 			{
+		// 				Location: to.Ptr("yimw"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
+		// 				Name: to.Ptr("testTarget"),
+		// 				Type: to.Ptr("Microsoft.Edge/targets"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Targets_ListBySubscription_MaximumSet_Gen.json
+func ExampleTargetsClient_NewListBySubscriptionPager_targetsListBySubscriptionMaximumSetGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTargetsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armworkloadorchestration.TargetsClientListBySubscriptionResponse{
+		// 	TargetListResult: armworkloadorchestration.TargetListResult{
+		// 		Value: []*armworkloadorchestration.Target{
+		// 			{
+		// 				Properties: &armworkloadorchestration.TargetProperties{
+		// 					DisplayName: to.Ptr("uqslbtoqsdhxuzhjyxxhh"),
+		// 					ContextID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/contexts/testContext"),
+		// 					TargetSpecification: map[string]any{
+		// 					},
+		// 					Capabilities: []*string{
+		// 						to.Ptr("jo"),
+		// 					},
+		// 					HierarchyLevel: to.Ptr("gfeixwakwerayliymdejq"),
+		// 					Status: &armworkloadorchestration.DeploymentStatus{
+		// 						LastModified: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 31, 397000000, time.UTC)),
+		// 						Deployed: to.Ptr[int32](23),
+		// 						ExpectedRunningJobID: to.Ptr[int32](26),
+		// 						RunningJobID: to.Ptr[int32](14),
+		// 						Status: to.Ptr("cgnpefkydfiqivyeggo"),
+		// 						StatusDetails: to.Ptr("tigubrypckktt"),
+		// 						Generation: to.Ptr[int32](6),
+		// 						TargetStatuses: []*armworkloadorchestration.TargetStatus{
+		// 							{
+		// 								Name: to.Ptr("jtgdfywzpqjvyigrqy"),
+		// 								Status: to.Ptr("uq"),
+		// 								ComponentStatuses: []*armworkloadorchestration.ComponentStatus{
+		// 									{
+		// 										Name: to.Ptr("xyucclhkogrcbyasbibiuvjwxmw"),
+		// 										Status: to.Ptr("iimiidgzeawmi"),
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					SolutionScope: to.Ptr("testname"),
+		// 					State: to.Ptr(armworkloadorchestration.ResourceStateActive),
+		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
+		// 					Description: to.Ptr("hjkewzevnjwoh"),
+		// 				},
+		// 				ETag: to.Ptr("zgimf"),
+		// 				ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
+		// 					Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
+		// 					Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Location: to.Ptr("yimw"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
+		// 				Name: to.Ptr("testTarget"),
+		// 				Type: to.Ptr("Microsoft.Edge/targets"),
+		// 				SystemData: &armworkloadorchestration.SystemData{
+		// 					CreatedBy: to.Ptr("qbgzyk"),
+		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
+		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/a"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Targets_ListBySubscription_MinimumSet_Gen.json
+func ExampleTargetsClient_NewListBySubscriptionPager_targetsListBySubscriptionMaximumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewTargetsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armworkloadorchestration.TargetsClientListBySubscriptionResponse{
+		// 	TargetListResult: armworkloadorchestration.TargetListResult{
+		// 		Value: []*armworkloadorchestration.Target{
+		// 			{
+		// 				Location: to.Ptr("yimw"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testTarget"),
+		// 				Name: to.Ptr("testTarget"),
+		// 				Type: to.Ptr("Microsoft.Edge/targets"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

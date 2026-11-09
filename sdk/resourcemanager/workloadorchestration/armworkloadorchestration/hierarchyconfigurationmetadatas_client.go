@@ -58,7 +58,8 @@ func (client *HierarchyConfigurationMetadatasClient) Get(ctx context.Context, re
 	if err != nil {
 		return HierarchyConfigurationMetadatasClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

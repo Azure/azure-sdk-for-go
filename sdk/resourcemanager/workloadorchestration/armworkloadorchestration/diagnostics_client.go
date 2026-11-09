@@ -68,7 +68,7 @@ func (client *DiagnosticsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Creates new or updates existing Diagnostic resource.
+// createOrUpdate - Creates new or updates existing Diagnostic resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DiagnosticsClient) createOrUpdate(ctx context.Context, resourceGroupName string, diagnosticName string, resource Diagnostic, options *DiagnosticsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *DiagnosticsClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DiagnosticsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, diagnosticName string, resource Diagnostic, _ *DiagnosticsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/diagnostics/{diagnosticName}"
 	if client.subscriptionID == "" {
@@ -142,7 +143,7 @@ func (client *DiagnosticsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes specified Diagnostic resource.
+// deleteOperation - Deletes specified Diagnostic resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DiagnosticsClient) deleteOperation(ctx context.Context, resourceGroupName string, diagnosticName string, options *DiagnosticsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -159,12 +160,13 @@ func (client *DiagnosticsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DiagnosticsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, diagnosticName string, _ *DiagnosticsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/diagnostics/{diagnosticName}"
 	if client.subscriptionID == "" {
@@ -189,6 +191,82 @@ func (client *DiagnosticsClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
+// BeginUpdate - Updates existing Diagnostic resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - diagnosticName - Name of Diagnostic.
+//   - properties - The resource properties to be updated.
+//   - options - DiagnosticsClientBeginUpdateOptions contains the optional parameters for the DiagnosticsClient.BeginUpdate method.
+func (client *DiagnosticsClient) BeginUpdate(ctx context.Context, resourceGroupName string, diagnosticName string, properties DiagnosticUpdate, options *DiagnosticsClientBeginUpdateOptions) (*runtime.Poller[DiagnosticsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, diagnosticName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiagnosticsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DiagnosticsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates existing Diagnostic resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DiagnosticsClient) update(ctx context.Context, resourceGroupName string, diagnosticName string, properties DiagnosticUpdate, options *DiagnosticsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DiagnosticsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, diagnosticName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *DiagnosticsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diagnosticName string, properties DiagnosticUpdate, _ *DiagnosticsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/diagnostics/{diagnosticName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if diagnosticName == "" {
+		return nil, errors.New("parameter diagnosticName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{diagnosticName}", url.PathEscape(diagnosticName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Returns details of specified Diagnostic resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -208,7 +286,8 @@ func (client *DiagnosticsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return DiagnosticsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -386,79 +465,4 @@ func (client *DiagnosticsClient) listBySubscriptionHandleResponse(resp *http.Res
 		return DiagnosticsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates existing Diagnostic resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - diagnosticName - Name of Diagnostic.
-//   - properties - The resource properties to be updated.
-//   - options - DiagnosticsClientBeginUpdateOptions contains the optional parameters for the DiagnosticsClient.BeginUpdate method.
-func (client *DiagnosticsClient) BeginUpdate(ctx context.Context, resourceGroupName string, diagnosticName string, properties DiagnosticUpdate, options *DiagnosticsClientBeginUpdateOptions) (*runtime.Poller[DiagnosticsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, diagnosticName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DiagnosticsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DiagnosticsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates existing Diagnostic resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DiagnosticsClient) update(ctx context.Context, resourceGroupName string, diagnosticName string, properties DiagnosticUpdate, options *DiagnosticsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DiagnosticsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, diagnosticName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *DiagnosticsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, diagnosticName string, properties DiagnosticUpdate, _ *DiagnosticsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/diagnostics/{diagnosticName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if diagnosticName == "" {
-		return nil, errors.New("parameter diagnosticName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{diagnosticName}", url.PathEscape(diagnosticName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

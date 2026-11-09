@@ -137,6 +137,60 @@ func ExampleConfigTemplatesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-05-01-preview/ConfigTemplates_LinkToHierarchies_MaximumSet_Gen.json
+func ExampleConfigTemplatesClient_BeginLinkToHierarchies() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewConfigTemplatesClient().BeginLinkToHierarchies(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.HierarchySelector{
+		ContextID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/context/test"),
+		HierarchyIDs: []*string{
+			to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testname"),
+		},
+		Level: to.Ptr("jwfyiatxaecbpounw"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/ConfigTemplates_UnLinkFromHierarchies_MaximumSet_Gen.json
+func ExampleConfigTemplatesClient_BeginUnLinkFromHierarchies() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewConfigTemplatesClient().BeginUnLinkFromHierarchies(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.HierarchySelector{
+		ContextID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/context/test"),
+		HierarchyIDs: []*string{
+			to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testname"),
+		},
+		Level: to.Ptr("jwfyiatxaecbpounw"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-05-01-preview/ConfigTemplates_Get_MaximumSet_Gen.json
 func ExampleConfigTemplatesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -180,33 +234,6 @@ func ExampleConfigTemplatesClient_Get() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/ConfigTemplates_LinkToHierarchies_MaximumSet_Gen.json
-func ExampleConfigTemplatesClient_BeginLinkToHierarchies() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewConfigTemplatesClient().BeginLinkToHierarchies(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.HierarchySelector{
-		ContextID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/context/test"),
-		HierarchyIDs: []*string{
-			to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testname"),
-		},
-		Level: to.Ptr("jwfyiatxaecbpounw"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }
 
 // Generated from example definition: 2026-05-01-preview/ConfigTemplates_ListByResourceGroup_MaximumSet_Gen.json
@@ -418,33 +445,6 @@ func ExampleConfigTemplatesClient_RemoveVersion() {
 	// 		Status: to.Ptr("qflqzblghfetitwbgmua"),
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/ConfigTemplates_UnLinkFromHierarchies_MaximumSet_Gen.json
-func ExampleConfigTemplatesClient_BeginUnLinkFromHierarchies() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewConfigTemplatesClient().BeginUnLinkFromHierarchies(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.HierarchySelector{
-		ContextID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/context/test"),
-		HierarchyIDs: []*string{
-			to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testname"),
-		},
-		Level: to.Ptr("jwfyiatxaecbpounw"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }
 
 // Generated from example definition: 2026-05-01-preview/ConfigTemplates_Update_MaximumSet_Gen.json

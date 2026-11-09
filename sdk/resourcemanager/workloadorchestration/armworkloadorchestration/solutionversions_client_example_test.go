@@ -174,6 +174,136 @@ func ExampleSolutionVersionsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-05-01-preview/SolutionVersions_Update_MaximumSet_Gen.json
+func ExampleSolutionVersionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSolutionVersionsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", "testname", armworkloadorchestration.SolutionVersion{
+		Properties: &armworkloadorchestration.SolutionVersionProperties{
+			Specification: map[string]any{},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armworkloadorchestration.SolutionVersionsClientUpdateResponse{
+	// 	SolutionVersion: armworkloadorchestration.SolutionVersion{
+	// 		Properties: &armworkloadorchestration.SolutionVersionProperties{
+	// 			Specification: map[string]any{
+	// 			},
+	// 			State: to.Ptr(armworkloadorchestration.StateInReview),
+	// 			CurrentStage: &armworkloadorchestration.StageMap{
+	// 				Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
+	// 				Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
+	// 				DisplayState: to.Ptr("ctxqv"),
+	// 				StartTime: to.Ptr(time.Date(2026, time.April, 7, 10, 27, 56, 991000000, time.UTC)),
+	// 				EndTime: to.Ptr(time.Date(2026, time.April, 7, 10, 27, 56, 991000000, time.UTC)),
+	// 				ChildStages: []*armworkloadorchestration.StageMap{
+	// 					{
+	// 						DisplayState: to.Ptr("ctxqv"),
+	// 						Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
+	// 						Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
+	// 						StartTime: to.Ptr(time.Date(2026, time.April, 7, 10, 27, 56, 991000000, time.UTC)),
+	// 						EndTime: to.Ptr(time.Date(2026, time.April, 7, 10, 27, 56, 991000000, time.UTC)),
+	// 						ChildStages: []*armworkloadorchestration.StageMap{
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ErrorDetails: &armworkloadorchestration.ErrorDetail{
+	// 				Code: to.Ptr("wfjndhlcqgbdf"),
+	// 				Message: to.Ptr("vwlupxz"),
+	// 				Target: to.Ptr("vvcgnsjtnmm"),
+	// 				Details: []*armworkloadorchestration.ErrorDetail{
+	// 					{
+	// 						Code: to.Ptr("rvoeznmrlhiuzxy"),
+	// 						Message: to.Ptr("medjtxlvxknoxkkjjguezzug"),
+	// 						Target: to.Ptr("qxniyfzldvhhjchueswgdaj"),
+	// 						Details: []*armworkloadorchestration.ErrorDetail{
+	// 						},
+	// 						AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
+	// 							{
+	// 								Type: to.Ptr("ozpduwmokkzaxfeocggb"),
+	// 								Info: map[string]any{
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 				AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
+	// 					{
+	// 						Type: to.Ptr("zzxugrbxittbjvdjlz"),
+	// 						Info: map[string]any{
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			ActionType: to.Ptr(armworkloadorchestration.JobTypeDeploy),
+	// 			SolutionTemplateVersionID: to.Ptr("hjwnvnzb"),
+	// 			Revision: to.Ptr[int32](3),
+	// 			TargetDisplayName: to.Ptr("xjcwpdtckxlqrutagfacrstllgngn"),
+	// 			ReviewID: to.Ptr("sdwushtcnbtyjlfwpklb"),
+	// 			ExternalValidationID: to.Ptr("ucckl"),
+	// 			Stages: []*armworkloadorchestration.StageMap{
+	// 				{
+	// 					DisplayState: to.Ptr("pvg"),
+	// 					Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
+	// 					Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
+	// 					StartTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 55, 495000000, time.UTC)),
+	// 					EndTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 55, 496000000, time.UTC)),
+	// 					ChildStages: []*armworkloadorchestration.StageMap{
+	// 					},
+	// 				},
+	// 			},
+	// 			SolutionInstanceName: to.Ptr("testname"),
+	// 			SolutionDependencies: []*armworkloadorchestration.SolutionDependency{
+	// 				{
+	// 					SolutionVersionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target/Solutions/solution/Versions/solution-1.0.0.1"),
+	// 					SolutionInstanceName: to.Ptr("testname"),
+	// 					SolutionTemplateVersionID: to.Ptr("prtkwhngfxjzfpgabbemnjluo"),
+	// 					TargetID: to.Ptr("clqruxfoqocpevnvlffcxwrcm"),
+	// 					Dependencies: []*armworkloadorchestration.SolutionDependency{
+	// 					},
+	// 				},
+	// 			},
+	// 			LatestActionTrackingURI: to.Ptr("imayoycslcrsaemfndsiapwomj"),
+	// 			LatestActionTriggeredBy: to.Ptr("nzqfgrkqprlwaoiphhrbmm"),
+	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
+	// 		},
+	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
+	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
+	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
+	// 		},
+	// 		ETag: to.Ptr("xrnp"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testname/solutions/testname/versions/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/targets/solutions/versions"),
+	// 		SystemData: &armworkloadorchestration.SystemData{
+	// 			CreatedBy: to.Ptr("qbgzyk"),
+	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
+	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-05-01-preview/SolutionVersions_Get_MaximumSet_Gen.json
 func ExampleSolutionVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -403,134 +533,4 @@ func ExampleSolutionVersionsClient_NewListBySolutionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-05-01-preview/SolutionVersions_Update_MaximumSet_Gen.json
-func ExampleSolutionVersionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSolutionVersionsClient().BeginUpdate(ctx, "rgconfigurationmanager", "testname", "testname", "testname", armworkloadorchestration.SolutionVersion{
-		Properties: &armworkloadorchestration.SolutionVersionProperties{
-			Specification: map[string]any{},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armworkloadorchestration.SolutionVersionsClientUpdateResponse{
-	// 	SolutionVersion: armworkloadorchestration.SolutionVersion{
-	// 		Properties: &armworkloadorchestration.SolutionVersionProperties{
-	// 			Specification: map[string]any{
-	// 			},
-	// 			State: to.Ptr(armworkloadorchestration.StateInReview),
-	// 			CurrentStage: &armworkloadorchestration.StageMap{
-	// 				Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
-	// 				Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
-	// 				DisplayState: to.Ptr("ctxqv"),
-	// 				StartTime: to.Ptr(time.Date(2026, time.April, 7, 10, 27, 56, 991000000, time.UTC)),
-	// 				EndTime: to.Ptr(time.Date(2026, time.April, 7, 10, 27, 56, 991000000, time.UTC)),
-	// 				ChildStages: []*armworkloadorchestration.StageMap{
-	// 					{
-	// 						DisplayState: to.Ptr("ctxqv"),
-	// 						Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
-	// 						Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
-	// 						StartTime: to.Ptr(time.Date(2026, time.April, 7, 10, 27, 56, 991000000, time.UTC)),
-	// 						EndTime: to.Ptr(time.Date(2026, time.April, 7, 10, 27, 56, 991000000, time.UTC)),
-	// 						ChildStages: []*armworkloadorchestration.StageMap{
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ErrorDetails: &armworkloadorchestration.ErrorDetail{
-	// 				Code: to.Ptr("wfjndhlcqgbdf"),
-	// 				Message: to.Ptr("vwlupxz"),
-	// 				Target: to.Ptr("vvcgnsjtnmm"),
-	// 				Details: []*armworkloadorchestration.ErrorDetail{
-	// 					{
-	// 						Code: to.Ptr("rvoeznmrlhiuzxy"),
-	// 						Message: to.Ptr("medjtxlvxknoxkkjjguezzug"),
-	// 						Target: to.Ptr("qxniyfzldvhhjchueswgdaj"),
-	// 						Details: []*armworkloadorchestration.ErrorDetail{
-	// 						},
-	// 						AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
-	// 							{
-	// 								Type: to.Ptr("ozpduwmokkzaxfeocggb"),
-	// 								Info: map[string]any{
-	// 								},
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 				AdditionalInfo: []*armworkloadorchestration.ErrorAdditionalInfo{
-	// 					{
-	// 						Type: to.Ptr("zzxugrbxittbjvdjlz"),
-	// 						Info: map[string]any{
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			ActionType: to.Ptr(armworkloadorchestration.JobTypeDeploy),
-	// 			SolutionTemplateVersionID: to.Ptr("hjwnvnzb"),
-	// 			Revision: to.Ptr[int32](3),
-	// 			TargetDisplayName: to.Ptr("xjcwpdtckxlqrutagfacrstllgngn"),
-	// 			ReviewID: to.Ptr("sdwushtcnbtyjlfwpklb"),
-	// 			ExternalValidationID: to.Ptr("ucckl"),
-	// 			Stages: []*armworkloadorchestration.StageMap{
-	// 				{
-	// 					DisplayState: to.Ptr("pvg"),
-	// 					Stage: to.Ptr(armworkloadorchestration.CMStagesConfiguration),
-	// 					Status: to.Ptr(armworkloadorchestration.StateCategoryPending),
-	// 					StartTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 55, 495000000, time.UTC)),
-	// 					EndTime: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 55, 496000000, time.UTC)),
-	// 					ChildStages: []*armworkloadorchestration.StageMap{
-	// 					},
-	// 				},
-	// 			},
-	// 			SolutionInstanceName: to.Ptr("testname"),
-	// 			SolutionDependencies: []*armworkloadorchestration.SolutionDependency{
-	// 				{
-	// 					SolutionVersionID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg/providers/Microsoft.Edge/Targets/target/Solutions/solution/Versions/solution-1.0.0.1"),
-	// 					SolutionInstanceName: to.Ptr("testname"),
-	// 					SolutionTemplateVersionID: to.Ptr("prtkwhngfxjzfpgabbemnjluo"),
-	// 					TargetID: to.Ptr("clqruxfoqocpevnvlffcxwrcm"),
-	// 					Dependencies: []*armworkloadorchestration.SolutionDependency{
-	// 					},
-	// 				},
-	// 			},
-	// 			LatestActionTrackingURI: to.Ptr("imayoycslcrsaemfndsiapwomj"),
-	// 			LatestActionTriggeredBy: to.Ptr("nzqfgrkqprlwaoiphhrbmm"),
-	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
-	// 		},
-	// 		ExtendedLocation: &armworkloadorchestration.ExtendedLocation{
-	// 			Name: to.Ptr("ggfwkwklvvkrmlysvvhcj"),
-	// 			Type: to.Ptr(armworkloadorchestration.ExtendedLocationTypeEdgeZone),
-	// 		},
-	// 		ETag: to.Ptr("xrnp"),
-	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/targets/testname/solutions/testname/versions/testname"),
-	// 		Name: to.Ptr("testname"),
-	// 		Type: to.Ptr("Microsoft.Edge/targets/solutions/versions"),
-	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("qbgzyk"),
-	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
-	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

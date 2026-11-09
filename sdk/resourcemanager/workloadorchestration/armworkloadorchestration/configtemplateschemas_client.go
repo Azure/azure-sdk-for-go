@@ -66,7 +66,8 @@ func (client *ConfigTemplateSchemasClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return ConfigTemplateSchemasClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

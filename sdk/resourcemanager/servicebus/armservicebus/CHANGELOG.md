@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.5 (2026-07-22)
+## 2.0.0-beta.5 (2026-11-09)
 ### Breaking Changes
 
 - Field `ClusterArmID` of struct `NamespaceReplicaLocation` has been removed

@@ -68,7 +68,8 @@ func (client *RulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return RulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -148,7 +149,8 @@ func (client *RulesClient) Delete(ctx context.Context, resourceGroupName string,
 		return RulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return RulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RulesClientDeleteResponse{}, err
 	}
 	return RulesClientDeleteResponse{}, nil
 }
@@ -212,7 +214,8 @@ func (client *RulesClient) Get(ctx context.Context, resourceGroupName string, na
 	if err != nil {
 		return RulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

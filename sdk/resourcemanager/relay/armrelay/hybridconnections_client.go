@@ -66,7 +66,8 @@ func (client *HybridConnectionsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return HybridConnectionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -138,7 +139,8 @@ func (client *HybridConnectionsClient) CreateOrUpdateAuthorizationRule(ctx conte
 	if err != nil {
 		return HybridConnectionsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
-	return client.createOrUpdateAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
@@ -213,7 +215,8 @@ func (client *HybridConnectionsClient) Delete(ctx context.Context, resourceGroup
 		return HybridConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return HybridConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return HybridConnectionsClientDeleteResponse{}, err
 	}
 	return HybridConnectionsClientDeleteResponse{}, nil
 }
@@ -270,7 +273,8 @@ func (client *HybridConnectionsClient) DeleteAuthorizationRule(ctx context.Conte
 		return HybridConnectionsClientDeleteAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return HybridConnectionsClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return HybridConnectionsClientDeleteAuthorizationRuleResponse{}, err
 	}
 	return HybridConnectionsClientDeleteAuthorizationRuleResponse{}, nil
 }
@@ -328,7 +332,8 @@ func (client *HybridConnectionsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return HybridConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -395,7 +400,8 @@ func (client *HybridConnectionsClient) GetAuthorizationRule(ctx context.Context,
 	if err != nil {
 		return HybridConnectionsClientGetAuthorizationRuleResponse{}, err
 	}
-	return client.getAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
@@ -440,6 +446,78 @@ func (client *HybridConnectionsClient) getAuthorizationRuleHandleResponse(resp *
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AuthorizationRule); err != nil {
 		return HybridConnectionsClientGetAuthorizationRuleResponse{}, err
+	}
+	return result, nil
+}
+
+// ListKeys - Primary and secondary connection strings to the hybrid connection.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - namespaceName - The namespace name
+//   - hybridConnectionName - The hybrid connection name.
+//   - authorizationRuleName - The authorization rule name.
+//   - options - HybridConnectionsClientListKeysOptions contains the optional parameters for the HybridConnectionsClient.ListKeys
+//     method.
+func (client *HybridConnectionsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, options *HybridConnectionsClientListKeysOptions) (HybridConnectionsClientListKeysResponse, error) {
+	var err error
+	const operationName = "HybridConnectionsClient.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName, options)
+	if err != nil {
+		return HybridConnectionsClientListKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return HybridConnectionsClientListKeysResponse{}, err
+	}
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listKeysCreateRequest creates the ListKeys request.
+func (client *HybridConnectionsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, _ *HybridConnectionsClientListKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if hybridConnectionName == "" {
+		return nil, errors.New("parameter hybridConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{hybridConnectionName}", url.PathEscape(hybridConnectionName))
+	if authorizationRuleName == "" {
+		return nil, errors.New("parameter authorizationRuleName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listKeysHandleResponse handles the ListKeys response.
+func (client *HybridConnectionsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (HybridConnectionsClientListKeysResponse, error) {
+	result := HybridConnectionsClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
+		return HybridConnectionsClientListKeysResponse{}, err
 	}
 	return result, nil
 }
@@ -603,77 +681,6 @@ func (client *HybridConnectionsClient) listByNamespaceHandleResponse(resp *http.
 	return result, nil
 }
 
-// ListKeys - Primary and secondary connection strings to the hybrid connection.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - namespaceName - The namespace name
-//   - hybridConnectionName - The hybrid connection name.
-//   - authorizationRuleName - The authorization rule name.
-//   - options - HybridConnectionsClientListKeysOptions contains the optional parameters for the HybridConnectionsClient.ListKeys
-//     method.
-func (client *HybridConnectionsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, options *HybridConnectionsClientListKeysOptions) (HybridConnectionsClientListKeysResponse, error) {
-	var err error
-	const operationName = "HybridConnectionsClient.ListKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, hybridConnectionName, authorizationRuleName, options)
-	if err != nil {
-		return HybridConnectionsClientListKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return HybridConnectionsClientListKeysResponse{}, err
-	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listKeysCreateRequest creates the ListKeys request.
-func (client *HybridConnectionsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, hybridConnectionName string, authorizationRuleName string, _ *HybridConnectionsClientListKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/namespaces/{namespaceName}/hybridConnections/{hybridConnectionName}/authorizationRules/{authorizationRuleName}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if hybridConnectionName == "" {
-		return nil, errors.New("parameter hybridConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{hybridConnectionName}", url.PathEscape(hybridConnectionName))
-	if authorizationRuleName == "" {
-		return nil, errors.New("parameter authorizationRuleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listKeysHandleResponse handles the ListKeys response.
-func (client *HybridConnectionsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (HybridConnectionsClientListKeysResponse, error) {
-	result := HybridConnectionsClientListKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return HybridConnectionsClientListKeysResponse{}, err
-	}
-	return result, nil
-}
-
 // RegenerateKeys - Regenerates the primary or secondary connection strings to the hybrid connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -697,7 +704,8 @@ func (client *HybridConnectionsClient) RegenerateKeys(ctx context.Context, resou
 	if err != nil {
 		return HybridConnectionsClientRegenerateKeysResponse{}, err
 	}
-	return client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.

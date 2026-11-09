@@ -68,7 +68,7 @@ func (client *ClustersClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Relay cluster.
+// createOrUpdate - Creates or updates a Relay cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, resource Cluster, options *ClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *ClustersClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, resource Cluster, _ *ClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/clusters/{clusterName}"
 	if client.subscriptionID == "" {
@@ -142,7 +143,7 @@ func (client *ClustersClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Deletes a Relay cluster.
+// deleteOperation - Deletes a Relay cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -159,12 +160,13 @@ func (client *ClustersClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/clusters/{clusterName}"
 	if client.subscriptionID == "" {
@@ -208,7 +210,8 @@ func (client *ClustersClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ClustersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -267,7 +270,8 @@ func (client *ClustersClient) ListAvailableClusterRegion(ctx context.Context, op
 	if err != nil {
 		return ClustersClientListAvailableClusterRegionResponse{}, err
 	}
-	return client.listAvailableClusterRegionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listAvailableClusterRegionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listAvailableClusterRegionCreateRequest creates the ListAvailableClusterRegion request.
@@ -296,6 +300,128 @@ func (client *ClustersClient) listAvailableClusterRegionHandleResponse(resp *htt
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AvailableRelayClustersList); err != nil {
 		return ClustersClientListAvailableClusterRegionResponse{}, err
+	}
+	return result, nil
+}
+
+// ListNamespaces - Lists Relay namespace resource IDs assigned to a Relay cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the Relay cluster.
+//   - options - ClustersClientListNamespacesOptions contains the optional parameters for the ClustersClient.ListNamespaces method.
+func (client *ClustersClient) ListNamespaces(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListNamespacesOptions) (ClustersClientListNamespacesResponse, error) {
+	var err error
+	const operationName = "ClustersClient.ListNamespaces"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listNamespacesCreateRequest(ctx, resourceGroupName, clusterName, options)
+	if err != nil {
+		return ClustersClientListNamespacesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClustersClientListNamespacesResponse{}, err
+	}
+	resp, err := client.listNamespacesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listNamespacesCreateRequest creates the ListNamespaces request.
+func (client *ClustersClient) listNamespacesCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ClustersClientListNamespacesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/clusters/{clusterName}/namespaces"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listNamespacesHandleResponse handles the ListNamespaces response.
+func (client *ClustersClient) listNamespacesHandleResponse(resp *http.Response, successCodes ...int) (ClustersClientListNamespacesResponse, error) {
+	result := ClustersClientListNamespacesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceIDListResult); err != nil {
+		return ClustersClientListNamespacesResponse{}, err
+	}
+	return result, nil
+}
+
+// ListSKUs - Lists SKUs supported by a Relay cluster.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the Relay cluster.
+//   - options - ClustersClientListSKUsOptions contains the optional parameters for the ClustersClient.ListSKUs method.
+func (client *ClustersClient) ListSKUs(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListSKUsOptions) (ClustersClientListSKUsResponse, error) {
+	var err error
+	const operationName = "ClustersClient.ListSKUs"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSKUsCreateRequest(ctx, resourceGroupName, clusterName, options)
+	if err != nil {
+		return ClustersClientListSKUsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ClustersClientListSKUsResponse{}, err
+	}
+	resp, err := client.listSKUsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listSKUsCreateRequest creates the ListSKUs request.
+func (client *ClustersClient) listSKUsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ClustersClientListSKUsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/clusters/{clusterName}/skus"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSKUsHandleResponse handles the ListSKUs response.
+func (client *ClustersClient) listSKUsHandleResponse(resp *http.Response, successCodes ...int) (ClustersClientListSKUsResponse, error) {
+	result := ClustersClientListSKUsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterSKUListResult); err != nil {
+		return ClustersClientListSKUsResponse{}, err
 	}
 	return result, nil
 }
@@ -439,126 +565,6 @@ func (client *ClustersClient) listBySubscriptionHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListNamespaces - Lists Relay namespace resource IDs assigned to a Relay cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the Relay cluster.
-//   - options - ClustersClientListNamespacesOptions contains the optional parameters for the ClustersClient.ListNamespaces method.
-func (client *ClustersClient) ListNamespaces(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListNamespacesOptions) (ClustersClientListNamespacesResponse, error) {
-	var err error
-	const operationName = "ClustersClient.ListNamespaces"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listNamespacesCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersClientListNamespacesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClustersClientListNamespacesResponse{}, err
-	}
-	return client.listNamespacesHandleResponse(httpResp, http.StatusOK)
-}
-
-// listNamespacesCreateRequest creates the ListNamespaces request.
-func (client *ClustersClient) listNamespacesCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ClustersClientListNamespacesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/clusters/{clusterName}/namespaces"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listNamespacesHandleResponse handles the ListNamespaces response.
-func (client *ClustersClient) listNamespacesHandleResponse(resp *http.Response, successCodes ...int) (ClustersClientListNamespacesResponse, error) {
-	result := ClustersClientListNamespacesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NamespaceIDListResult); err != nil {
-		return ClustersClientListNamespacesResponse{}, err
-	}
-	return result, nil
-}
-
-// ListSKUs - Lists SKUs supported by a Relay cluster.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the Relay cluster.
-//   - options - ClustersClientListSKUsOptions contains the optional parameters for the ClustersClient.ListSKUs method.
-func (client *ClustersClient) ListSKUs(ctx context.Context, resourceGroupName string, clusterName string, options *ClustersClientListSKUsOptions) (ClustersClientListSKUsResponse, error) {
-	var err error
-	const operationName = "ClustersClient.ListSKUs"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listSKUsCreateRequest(ctx, resourceGroupName, clusterName, options)
-	if err != nil {
-		return ClustersClientListSKUsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ClustersClientListSKUsResponse{}, err
-	}
-	return client.listSKUsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listSKUsCreateRequest creates the ListSKUs request.
-func (client *ClustersClient) listSKUsCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, _ *ClustersClientListSKUsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Relay/clusters/{clusterName}/skus"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listSKUsHandleResponse handles the ListSKUs response.
-func (client *ClustersClient) listSKUsHandleResponse(resp *http.Response, successCodes ...int) (ClustersClientListSKUsResponse, error) {
-	result := ClustersClientListSKUsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ClusterSKUListResult); err != nil {
-		return ClustersClientListSKUsResponse{}, err
-	}
-	return result, nil
-}
-
 // Update - Updates mutable properties of a Relay cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -579,7 +585,8 @@ func (client *ClustersClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ClustersClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

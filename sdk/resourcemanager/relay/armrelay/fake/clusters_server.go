@@ -37,14 +37,6 @@ type ClustersServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAvailableClusterRegion func(ctx context.Context, options *armrelay.ClustersClientListAvailableClusterRegionOptions) (resp azfake.Responder[armrelay.ClustersClientListAvailableClusterRegionResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceGroupPager is the fake for method ClustersClient.NewListByResourceGroupPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armrelay.ClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armrelay.ClustersClientListByResourceGroupResponse])
-
-	// NewListBySubscriptionPager is the fake for method ClustersClient.NewListBySubscriptionPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armrelay.ClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armrelay.ClustersClientListBySubscriptionResponse])
-
 	// ListNamespaces is the fake for method ClustersClient.ListNamespaces
 	// HTTP status codes to indicate success: http.StatusOK
 	ListNamespaces func(ctx context.Context, resourceGroupName string, clusterName string, options *armrelay.ClustersClientListNamespacesOptions) (resp azfake.Responder[armrelay.ClustersClientListNamespacesResponse], errResp azfake.ErrorResponder)
@@ -52,6 +44,14 @@ type ClustersServer struct {
 	// ListSKUs is the fake for method ClustersClient.ListSKUs
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSKUs func(ctx context.Context, resourceGroupName string, clusterName string, options *armrelay.ClustersClientListSKUsOptions) (resp azfake.Responder[armrelay.ClustersClientListSKUsResponse], errResp azfake.ErrorResponder)
+
+	// NewListByResourceGroupPager is the fake for method ClustersClient.NewListByResourceGroupPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupPager func(resourceGroupName string, options *armrelay.ClustersClientListByResourceGroupOptions) (resp azfake.PagerResponder[armrelay.ClustersClientListByResourceGroupResponse])
+
+	// NewListBySubscriptionPager is the fake for method ClustersClient.NewListBySubscriptionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListBySubscriptionPager func(options *armrelay.ClustersClientListBySubscriptionOptions) (resp azfake.PagerResponder[armrelay.ClustersClientListBySubscriptionResponse])
 
 	// Update is the fake for method ClustersClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
@@ -86,7 +86,7 @@ func (c *ClustersServerTransport) Do(req *http.Request) (*http.Response, error) 
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return c.dispatchToMethodFake(req, method)
@@ -110,14 +110,14 @@ func (c *ClustersServerTransport) dispatchToMethodFake(req *http.Request, method
 				res.resp, res.err = c.dispatchGet(req)
 			case "ClustersClient.ListAvailableClusterRegion":
 				res.resp, res.err = c.dispatchListAvailableClusterRegion(req)
-			case "ClustersClient.NewListByResourceGroupPager":
-				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
-			case "ClustersClient.NewListBySubscriptionPager":
-				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			case "ClustersClient.ListNamespaces":
 				res.resp, res.err = c.dispatchListNamespaces(req)
 			case "ClustersClient.ListSKUs":
 				res.resp, res.err = c.dispatchListSKUs(req)
+			case "ClustersClient.NewListByResourceGroupPager":
+				res.resp, res.err = c.dispatchNewListByResourceGroupPager(req)
+			case "ClustersClient.NewListBySubscriptionPager":
+				res.resp, res.err = c.dispatchNewListBySubscriptionPager(req)
 			case "ClustersClient.Update":
 				res.resp, res.err = c.dispatchUpdate(req)
 			default:
@@ -286,6 +286,72 @@ func (c *ClustersServerTransport) dispatchListAvailableClusterRegion(req *http.R
 	return resp, nil
 }
 
+func (c *ClustersServerTransport) dispatchListNamespaces(req *http.Request) (*http.Response, error) {
+	if c.srv.ListNamespaces == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListNamespaces not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Relay/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/namespaces`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.ListNamespaces(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NamespaceIDListResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ClustersServerTransport) dispatchListSKUs(req *http.Request) (*http.Response, error) {
+	if c.srv.ListSKUs == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListSKUs not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Relay/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.ListSKUs(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterSKUListResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (c *ClustersServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if c.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
@@ -352,72 +418,6 @@ func (c *ClustersServerTransport) dispatchNewListBySubscriptionPager(req *http.R
 	}
 	if !server.PagerResponderMore(newListBySubscriptionPager) {
 		c.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (c *ClustersServerTransport) dispatchListNamespaces(req *http.Request) (*http.Response, error) {
-	if c.srv.ListNamespaces == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListNamespaces not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Relay/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/namespaces`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.ListNamespaces(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).NamespaceIDListResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (c *ClustersServerTransport) dispatchListSKUs(req *http.Request) (*http.Response, error) {
-	if c.srv.ListSKUs == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListSKUs not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Relay/clusters/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := c.srv.ListSKUs(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ClusterSKUListResult, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

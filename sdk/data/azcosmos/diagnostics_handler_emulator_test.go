@@ -39,15 +39,15 @@ func TestEmulatorDiagnosticsSnapshotSurvivesClientClose(t *testing.T) {
 	require.Equal(t, "ReadItem", diagnostic.Operation)
 	require.Error(t, diagnostic.Error)
 	require.NotNil(t, diagnostic.Diagnostics)
-	require.True(t, json.Valid([]byte(diagnostic.Diagnostics.JSON)))
+	jsonSnapshot := requireDiagnosticsJSON(t, diagnostic.Diagnostics)
+	require.True(t, json.Valid([]byte(jsonSnapshot)))
 	require.Positive(t, diagnostic.Diagnostics.AttemptCount)
-	jsonSnapshot := diagnostic.Diagnostics.JSON
 	_, err = container.ReadItem(t.Context(), NewPartitionKeyString("missing"), uniqueItemID(t), nil)
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Equal(t, 404, cosmosErr.StatusCode)
 	<-observed
 	require.NoError(t, client.Close())
-	require.Equal(t, jsonSnapshot, diagnostic.Diagnostics.JSON, "snapshot must survive native completion and client release")
+	require.Equal(t, jsonSnapshot, requireDiagnosticsJSON(t, diagnostic.Diagnostics), "snapshot must survive native completion and client release")
 }
 
 func TestEmulatorDiagnosticsHandlerCanCloseClient(t *testing.T) {

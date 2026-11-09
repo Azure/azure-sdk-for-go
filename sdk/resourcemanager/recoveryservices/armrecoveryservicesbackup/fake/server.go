@@ -22,11 +22,11 @@ import (
 type Server struct {
 	// BeginBMSPrepareDataMove is the fake for method Client.BeginBMSPrepareDataMove
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginBMSPrepareDataMove func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.PrepareDataMoveRequest, options *armrecoveryservicesbackup.ClientBeginBMSPrepareDataMoveOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsPrepareDataMoveResponse], errResp azfake.ErrorResponder)
+	BeginBMSPrepareDataMove func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.PrepareDataMoveRequest, options *armrecoveryservicesbackup.ClientBeginBMSPrepareDataMoveOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSPrepareDataMoveResponse], errResp azfake.ErrorResponder)
 
 	// BeginBMSTriggerDataMove is the fake for method Client.BeginBMSTriggerDataMove
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginBMSTriggerDataMove func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.TriggerDataMoveRequest, options *armrecoveryservicesbackup.ClientBeginBMSTriggerDataMoveOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsTriggerDataMoveResponse], errResp azfake.ErrorResponder)
+	BeginBMSTriggerDataMove func(ctx context.Context, vaultName string, resourceGroupName string, parameters armrecoveryservicesbackup.TriggerDataMoveRequest, options *armrecoveryservicesbackup.ClientBeginBMSTriggerDataMoveOptions) (resp azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSTriggerDataMoveResponse], errResp azfake.ErrorResponder)
 
 	// BeginMoveRecoveryPoint is the fake for method Client.BeginMoveRecoveryPoint
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
@@ -43,8 +43,8 @@ type Server struct {
 func NewServerTransport(srv *Server) *ServerTransport {
 	return &ServerTransport{
 		srv:                     srv,
-		beginBMSPrepareDataMove: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsPrepareDataMoveResponse]](),
-		beginBMSTriggerDataMove: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsTriggerDataMoveResponse]](),
+		beginBMSPrepareDataMove: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSPrepareDataMoveResponse]](),
+		beginBMSTriggerDataMove: newTracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSTriggerDataMoveResponse]](),
 		beginMoveRecoveryPoint:  newTracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientMoveRecoveryPointResponse]](),
 	}
 }
@@ -53,8 +53,8 @@ func NewServerTransport(srv *Server) *ServerTransport {
 // Don't use this type directly, use NewServerTransport instead.
 type ServerTransport struct {
 	srv                     *Server
-	beginBMSPrepareDataMove *tracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsPrepareDataMoveResponse]]
-	beginBMSTriggerDataMove *tracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBmsTriggerDataMoveResponse]]
+	beginBMSPrepareDataMove *tracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSPrepareDataMoveResponse]]
+	beginBMSTriggerDataMove *tracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientBMSTriggerDataMoveResponse]]
 	beginMoveRecoveryPoint  *tracker[azfake.PollerResponder[armrecoveryservicesbackup.ClientMoveRecoveryPointResponse]]
 }
 

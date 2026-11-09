@@ -1906,9 +1906,8 @@ type Preferences struct {
 	// Optional Preferences related to the reverse shipment logistics of the sku.
 	ReverseTransportPreferences *TransportPreferences
 
-	// FLAG; CONSTANT; Preferences related to the Access Tier of storage accounts.
-	// Field has constant value []string{"Archive"}, any specified value is ignored.
-	StorageAccountAccessTierPreferences []string
+	// Preferences related to the Access Tier of storage accounts.
+	StorageAccountAccessTierPreferences []*string
 
 	// Preferences related to the shipment logistics of the sku.
 	TransportPreferences *TransportPreferences

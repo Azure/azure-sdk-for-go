@@ -137,13 +137,13 @@ type BackupsClientTriggerResponse struct {
 	// placeholder for future response values
 }
 
-// ClientBmsPrepareDataMoveResponse contains the response from method Client.BeginBMSPrepareDataMove.
-type ClientBmsPrepareDataMoveResponse struct {
+// ClientBMSPrepareDataMoveResponse contains the response from method Client.BeginBMSPrepareDataMove.
+type ClientBMSPrepareDataMoveResponse struct {
 	// placeholder for future response values
 }
 
-// ClientBmsTriggerDataMoveResponse contains the response from method Client.BeginBMSTriggerDataMove.
-type ClientBmsTriggerDataMoveResponse struct {
+// ClientBMSTriggerDataMoveResponse contains the response from method Client.BeginBMSTriggerDataMove.
+type ClientBMSTriggerDataMoveResponse struct {
 	// placeholder for future response values
 }
 

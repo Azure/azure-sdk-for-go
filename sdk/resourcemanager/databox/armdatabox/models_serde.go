@@ -3622,9 +3622,7 @@ func (p Preferences) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "encryptionPreferences", p.EncryptionPreferences)
 	populate(objectMap, "preferredDataCenterRegion", p.PreferredDataCenterRegion)
 	populate(objectMap, "reverseTransportPreferences", p.ReverseTransportPreferences)
-	if p.StorageAccountAccessTierPreferences != nil {
-		objectMap["storageAccountAccessTierPreferences"] = []string{"Archive"}
-	}
+	populate(objectMap, "storageAccountAccessTierPreferences", p.StorageAccountAccessTierPreferences)
 	populate(objectMap, "transportPreferences", p.TransportPreferences)
 	return json.Marshal(objectMap)
 }

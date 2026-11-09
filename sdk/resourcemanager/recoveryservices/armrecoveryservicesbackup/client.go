@@ -49,18 +49,18 @@ func NewClient(subscriptionID string, credential azcore.TokenCredential, options
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClientBeginBMSPrepareDataMoveOptions contains the optional parameters for the Client.BeginBMSPrepareDataMove
 //     method.
-func (client *Client) BeginBMSPrepareDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, options *ClientBeginBMSPrepareDataMoveOptions) (*runtime.Poller[ClientBmsPrepareDataMoveResponse], error) {
+func (client *Client) BeginBMSPrepareDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters PrepareDataMoveRequest, options *ClientBeginBMSPrepareDataMoveOptions) (*runtime.Poller[ClientBMSPrepareDataMoveResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.bmsPrepareDataMove(ctx, vaultName, resourceGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientBmsPrepareDataMoveResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientBMSPrepareDataMoveResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientBmsPrepareDataMoveResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientBMSPrepareDataMoveResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -123,18 +123,18 @@ func (client *Client) bmsPrepareDataMoveCreateRequest(ctx context.Context, vault
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - ClientBeginBMSTriggerDataMoveOptions contains the optional parameters for the Client.BeginBMSTriggerDataMove
 //     method.
-func (client *Client) BeginBMSTriggerDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, options *ClientBeginBMSTriggerDataMoveOptions) (*runtime.Poller[ClientBmsTriggerDataMoveResponse], error) {
+func (client *Client) BeginBMSTriggerDataMove(ctx context.Context, vaultName string, resourceGroupName string, parameters TriggerDataMoveRequest, options *ClientBeginBMSTriggerDataMoveOptions) (*runtime.Poller[ClientBMSTriggerDataMoveResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.bmsTriggerDataMove(ctx, vaultName, resourceGroupName, parameters, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientBmsTriggerDataMoveResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ClientBMSTriggerDataMoveResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientBmsTriggerDataMoveResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ClientBMSTriggerDataMoveResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}

@@ -38,7 +38,7 @@ func ExampleClient_BeginBMSPrepareDataMove() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicesbackup.ClientBmsPrepareDataMoveResponse{
+	// res = armrecoveryservicesbackup.ClientBMSPrepareDataMoveResponse{
 	// }
 }
 
@@ -69,7 +69,7 @@ func ExampleClient_BeginBMSTriggerDataMove() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicesbackup.ClientBmsTriggerDataMoveResponse{
+	// res = armrecoveryservicesbackup.ClientBMSTriggerDataMoveResponse{
 	// }
 }
 

@@ -230,6 +230,15 @@ If you encounter bugs or have suggestions, please
 
 ## Contributing
 
+### Multi-partition ReadMany integration test
+
+From this module directory, run `go test . -run '^TestReadMany_MultiplePhysicalPartitions$' -count=1 -v`.
+Set `EMULATOR=true` to use the local emulator, or set `AZURE_COSMOS_CONNECTION_STRING` to use an Azure test account.
+The test creates a temporary database and sequentially provisions containers at **11,000 RU/s**, which incurs charges on Azure.
+It deletes the containers and database during cleanup. Use a provisioned-throughput account with sufficient available capacity, not a serverless account.
+The test requires at least two physical ranges and verifies that items occupy multiple ranges; a single-partition fixture fails rather than silently reducing coverage.
+It covers omitted-version V1, explicit V1, and V2 containers.
+
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License
 Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For
 details, visit https://cla.microsoft.com.
@@ -241,4 +250,3 @@ do this once across all repos using our CLA.
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-

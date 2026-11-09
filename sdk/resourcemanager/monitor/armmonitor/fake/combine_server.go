@@ -93,7 +93,7 @@ func (c *CombineServerTransport) dispatchBeginCreateNotificationsAtTenantActionG
 	}
 	beginCreateNotificationsAtTenantActionGroupResourceLevel := c.beginCreateNotificationsAtTenantActionGroupResourceLevel.get(req)
 	if beginCreateNotificationsAtTenantActionGroupResourceLevel == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Insights/tenantActionGroups/(?P<tenantActionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/createNotifications`
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Insights/tenantActionGroups/(?P<tenantActionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/createNotifications`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -139,7 +139,7 @@ func (c *CombineServerTransport) dispatchGetTestNotificationsAtTenantActionGroup
 	if c.srv.GetTestNotificationsAtTenantActionGroupResourceLevel == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetTestNotificationsAtTenantActionGroupResourceLevel not implemented")}
 	}
-	const regexStr = `/providers/microsoft\.Management/managementGroups/(?P<managementGroupId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/microsoft\.Insights/tenantActionGroups/(?P<tenantActionGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/notificationStatus/(?P<notificationId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/providers/microsoft\.Management/managementGroups/(?P<managementGroupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/microsoft\.Insights/tenantActionGroups/(?P<tenantActionGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/notificationStatus/(?P<notificationId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

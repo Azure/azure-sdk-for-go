@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-31/DPSCertificateCreateOrUpdate.json
+// Generated from example definition: 2026-11-01/DPSCertificateCreateOrUpdate.json
 func ExampleDpsCertificateClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -53,7 +53,7 @@ func ExampleDpsCertificateClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSDeleteCertificate.json
+// Generated from example definition: 2026-11-01/DPSDeleteCertificate.json
 func ExampleDpsCertificateClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleDpsCertificateClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSGenerateVerificationCode.json
+// Generated from example definition: 2026-11-01/DPSGenerateVerificationCode.json
 func ExampleDpsCertificateClient_GenerateVerificationCode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleDpsCertificateClient_GenerateVerificationCode() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSGetCertificate.json
+// Generated from example definition: 2026-11-01/DPSGetCertificate.json
 func ExampleDpsCertificateClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -147,7 +147,7 @@ func ExampleDpsCertificateClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSGetCertificates.json
+// Generated from example definition: 2026-11-01/DPSGetCertificates.json
 func ExampleDpsCertificateClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -188,7 +188,7 @@ func ExampleDpsCertificateClient_List() {
 	// }
 }
 
-// Generated from example definition: 2026-08-31/DPSVerifyCertificate.json
+// Generated from example definition: 2026-11-01/DPSVerifyCertificate.json
 func ExampleDpsCertificateClient_VerifyCertificate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

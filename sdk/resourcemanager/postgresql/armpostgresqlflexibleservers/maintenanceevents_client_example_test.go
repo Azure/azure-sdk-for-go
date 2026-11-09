@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-07-01-preview/MaintenanceEventsApplyNow.json
+// Generated from example definition: 2026-10-01/MaintenanceEventsApplyNow.json
 func ExampleMaintenanceEventsClient_BeginApplyNow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -48,7 +48,44 @@ func ExampleMaintenanceEventsClient_BeginApplyNow() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/MaintenanceEventsGet.json
+// Generated from example definition: 2026-10-01/MaintenanceEventsReschedule.json
+func ExampleMaintenanceEventsClient_BeginReschedule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMaintenanceEventsClient().BeginReschedule(ctx, "exampleresourcegroup", "exampleserver", "XXXX-111", armpostgresqlflexibleservers.MaintenanceEventRescheduleRequest{
+		PostponeToDateTime: to.Ptr(time.Date(2026, time.April, 10, 10, 0, 0, 0, time.UTC)),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpostgresqlflexibleservers.MaintenanceEventsClientRescheduleResponse{
+	// 	MaintenanceEventActionResponse: armpostgresqlflexibleservers.MaintenanceEventActionResponse{
+	// 		MaintenanceEventID: to.Ptr("XXXX-111"),
+	// 		ServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver"),
+	// 		Status: to.Ptr(armpostgresqlflexibleservers.MaintenanceEventStatus("Accepted")),
+	// 		PlannedStartTime: to.Ptr(time.Date(2026, time.April, 10, 10, 0, 0, 0, time.UTC)),
+	// 		PlannedEndTime: to.Ptr(time.Date(2026, time.April, 10, 10, 5, 0, 0, time.UTC)),
+	// 		AppliedNow: to.Ptr(false),
+	// 		LastUpdatedTime: to.Ptr(time.Date(2026, time.April, 7, 12, 0, 0, 0, time.UTC)),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/MaintenanceEventsGet.json
 func ExampleMaintenanceEventsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +124,7 @@ func ExampleMaintenanceEventsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01-preview/MaintenanceEventsListByServer.json
+// Generated from example definition: 2026-10-01/MaintenanceEventsListByServer.json
 func ExampleMaintenanceEventsClient_NewListPager_listOngoingAndScheduledMaintenanceEventsForAServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +189,7 @@ func ExampleMaintenanceEventsClient_NewListPager_listOngoingAndScheduledMaintena
 	}
 }
 
-// Generated from example definition: 2026-07-01-preview/MaintenanceEventsListByServerWithFilter.json
+// Generated from example definition: 2026-10-01/MaintenanceEventsListByServerWithFilter.json
 func ExampleMaintenanceEventsClient_NewListPager_listMaintenanceEventsFilteredByStatusForAServer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,41 +253,4 @@ func ExampleMaintenanceEventsClient_NewListPager_listMaintenanceEventsFilteredBy
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01-preview/MaintenanceEventsReschedule.json
-func ExampleMaintenanceEventsClient_BeginReschedule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpostgresqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMaintenanceEventsClient().BeginReschedule(ctx, "exampleresourcegroup", "exampleserver", "XXXX-111", armpostgresqlflexibleservers.MaintenanceEventRescheduleRequest{
-		PostponeToDateTime: to.Ptr(time.Date(2026, time.April, 10, 10, 0, 0, 0, time.UTC)),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpostgresqlflexibleservers.MaintenanceEventsClientRescheduleResponse{
-	// 	MaintenanceEventActionResponse: armpostgresqlflexibleservers.MaintenanceEventActionResponse{
-	// 		MaintenanceEventID: to.Ptr("XXXX-111"),
-	// 		ServerID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/exampleresourcegroup/providers/Microsoft.DBforPostgreSQL/flexibleServers/exampleserver"),
-	// 		Status: to.Ptr(armpostgresqlflexibleservers.MaintenanceEventStatus("Accepted")),
-	// 		PlannedStartTime: to.Ptr(time.Date(2026, time.April, 10, 10, 0, 0, 0, time.UTC)),
-	// 		PlannedEndTime: to.Ptr(time.Date(2026, time.April, 10, 10, 5, 0, 0, time.UTC)),
-	// 		AppliedNow: to.Ptr(false),
-	// 		LastUpdatedTime: to.Ptr(time.Date(2026, time.April, 7, 12, 0, 0, 0, time.UTC)),
-	// 	},
-	// }
 }

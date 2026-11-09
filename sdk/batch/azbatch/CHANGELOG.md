@@ -1,9 +1,8 @@
 # Release History
 
-## 1.0.0 (2026-11-05)
+## 1.0.0 (2026-11-09)
 ### Breaking Changes
 
-- Function `NewClient` parameter(s) have been changed from `(endpoint string, credential azcore.TokenCredential, opts *ClientOptions)` to `(endpoint string, credential azcore.TokenCredential, options *ClientOptions)`
 - Function `*Client.CreateJob` parameter(s) have been changed from `(ctx context.Context, job CreateJobContent, options *CreateJobOptions)` to `(ctx context.Context, job CreateJobOptions, options *CreateJobOptions)`
 - Function `*Client.CreateJobSchedule` parameter(s) have been changed from `(ctx context.Context, jobSchedule CreateJobScheduleContent, options *CreateJobScheduleOptions)` to `(ctx context.Context, jobSchedule CreateJobScheduleOptions, options *CreateJobScheduleOptions)`
 - Function `*Client.CreateNodeUser` parameter(s) have been changed from `(ctx context.Context, poolID string, nodeID string, userParam CreateNodeUserContent, options *CreateNodeUserOptions)` to `(ctx context.Context, poolID string, nodeID string, userParam CreateNodeUserOptions, options *CreateNodeUserOptions)`

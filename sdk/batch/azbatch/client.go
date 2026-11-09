@@ -99,7 +99,8 @@ func (client *Client) CreateJob(ctx context.Context, job CreateJobOptions, optio
 	if err != nil {
 		return CreateJobResponse{}, err
 	}
-	return client.createJobHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createJobHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createJobCreateRequest creates the CreateJob request.
@@ -177,7 +178,8 @@ func (client *Client) CreateJobSchedule(ctx context.Context, jobSchedule CreateJ
 	if err != nil {
 		return CreateJobScheduleResponse{}, err
 	}
-	return client.createJobScheduleHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createJobScheduleHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createJobScheduleCreateRequest creates the CreateJobSchedule request.
@@ -259,7 +261,8 @@ func (client *Client) CreateNodeUser(ctx context.Context, poolID string, nodeID 
 	if err != nil {
 		return CreateNodeUserResponse{}, err
 	}
-	return client.createNodeUserHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createNodeUserHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createNodeUserCreateRequest creates the CreateNodeUser request.
@@ -347,7 +350,8 @@ func (client *Client) CreatePool(ctx context.Context, pool CreatePoolOptions, op
 	if err != nil {
 		return CreatePoolResponse{}, err
 	}
-	return client.createPoolHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createPoolHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createPoolCreateRequest creates the CreatePool request.
@@ -428,7 +432,8 @@ func (client *Client) CreateTask(ctx context.Context, jobID string, task CreateT
 	if err != nil {
 		return CreateTaskResponse{}, err
 	}
-	return client.createTaskHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createTaskHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createTaskCreateRequest creates the CreateTask request.
@@ -524,7 +529,8 @@ func (client *Client) CreateTaskCollection(ctx context.Context, jobID string, ta
 	if err != nil {
 		return CreateTaskCollectionResponse{}, err
 	}
-	return client.createTaskCollectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createTaskCollectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createTaskCollectionCreateRequest creates the CreateTaskCollection request.
@@ -608,7 +614,8 @@ func (client *Client) DeallocateNode(ctx context.Context, poolID string, nodeID 
 	if err != nil {
 		return DeallocateNodeResponse{}, err
 	}
-	return client.deallocateNodeHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.deallocateNodeHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // deallocateNodeCreateRequest creates the DeallocateNode request.
@@ -704,7 +711,8 @@ func (client *Client) DeleteJob(ctx context.Context, jobID string, options *Dele
 	if err != nil {
 		return DeleteJobResponse{}, err
 	}
-	return client.deleteJobHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.deleteJobHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // deleteJobCreateRequest creates the DeleteJob request.
@@ -788,7 +796,8 @@ func (client *Client) DeleteJobSchedule(ctx context.Context, jobScheduleID strin
 	if err != nil {
 		return DeleteJobScheduleResponse{}, err
 	}
-	return client.deleteJobScheduleHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.deleteJobScheduleHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // deleteJobScheduleCreateRequest creates the DeleteJobSchedule request.
@@ -870,7 +879,8 @@ func (client *Client) DeleteNodeFile(ctx context.Context, poolID string, nodeID 
 	if err != nil {
 		return DeleteNodeFileResponse{}, err
 	}
-	return client.deleteNodeFileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteNodeFileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteNodeFileCreateRequest creates the DeleteNodeFile request.
@@ -950,7 +960,8 @@ func (client *Client) DeleteNodeUser(ctx context.Context, poolID string, nodeID 
 	if err != nil {
 		return DeleteNodeUserResponse{}, err
 	}
-	return client.deleteNodeUserHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteNodeUserHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteNodeUserCreateRequest creates the DeleteNodeUser request.
@@ -1034,7 +1045,8 @@ func (client *Client) DeletePool(ctx context.Context, poolID string, options *De
 	if err != nil {
 		return DeletePoolResponse{}, err
 	}
-	return client.deletePoolHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.deletePoolHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // deletePoolCreateRequest creates the DeletePool request.
@@ -1116,7 +1128,8 @@ func (client *Client) DeleteTask(ctx context.Context, jobID string, taskID strin
 	if err != nil {
 		return DeleteTaskResponse{}, err
 	}
-	return client.deleteTaskHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteTaskHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteTaskCreateRequest creates the DeleteTask request.
@@ -1199,7 +1212,8 @@ func (client *Client) DeleteTaskFile(ctx context.Context, jobID string, taskID s
 	if err != nil {
 		return DeleteTaskFileResponse{}, err
 	}
-	return client.deleteTaskFileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteTaskFileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteTaskFileCreateRequest creates the DeleteTaskFile request.
@@ -1283,7 +1297,8 @@ func (client *Client) DisableJob(ctx context.Context, jobID string, disableOptio
 	if err != nil {
 		return DisableJobResponse{}, err
 	}
-	return client.disableJobHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.disableJobHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // disableJobCreateRequest creates the DisableJob request.
@@ -1377,7 +1392,8 @@ func (client *Client) DisableJobSchedule(ctx context.Context, jobScheduleID stri
 	if err != nil {
 		return DisableJobScheduleResponse{}, err
 	}
-	return client.disableJobScheduleHandleResponse(httpResp, http.StatusNoContent)
+	resp, err := client.disableJobScheduleHandleResponse(httpResp, http.StatusNoContent)
+	return resp, err
 }
 
 // disableJobScheduleCreateRequest creates the DisableJobSchedule request.
@@ -1469,7 +1485,8 @@ func (client *Client) DisableNodeScheduling(ctx context.Context, poolID string, 
 	if err != nil {
 		return DisableNodeSchedulingResponse{}, err
 	}
-	return client.disableNodeSchedulingHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.disableNodeSchedulingHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // disableNodeSchedulingCreateRequest creates the DisableNodeScheduling request.
@@ -1558,7 +1575,8 @@ func (client *Client) DisablePoolAutoScale(ctx context.Context, poolID string, o
 	if err != nil {
 		return DisablePoolAutoScaleResponse{}, err
 	}
-	return client.disablePoolAutoScaleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.disablePoolAutoScaleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // disablePoolAutoScaleCreateRequest creates the DisablePoolAutoScale request.
@@ -1641,7 +1659,8 @@ func (client *Client) EnableJob(ctx context.Context, jobID string, options *Enab
 	if err != nil {
 		return EnableJobResponse{}, err
 	}
-	return client.enableJobHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.enableJobHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // enableJobCreateRequest creates the EnableJob request.
@@ -1731,7 +1750,8 @@ func (client *Client) EnableJobSchedule(ctx context.Context, jobScheduleID strin
 	if err != nil {
 		return EnableJobScheduleResponse{}, err
 	}
-	return client.enableJobScheduleHandleResponse(httpResp, http.StatusNoContent)
+	resp, err := client.enableJobScheduleHandleResponse(httpResp, http.StatusNoContent)
+	return resp, err
 }
 
 // enableJobScheduleCreateRequest creates the EnableJobSchedule request.
@@ -1823,7 +1843,8 @@ func (client *Client) EnableNodeScheduling(ctx context.Context, poolID string, n
 	if err != nil {
 		return EnableNodeSchedulingResponse{}, err
 	}
-	return client.enableNodeSchedulingHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.enableNodeSchedulingHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // enableNodeSchedulingCreateRequest creates the EnableNodeScheduling request.
@@ -1911,7 +1932,8 @@ func (client *Client) EnablePoolAutoScale(ctx context.Context, poolID string, en
 	if err != nil {
 		return EnablePoolAutoScaleResponse{}, err
 	}
-	return client.enablePoolAutoScaleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.enablePoolAutoScaleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // enablePoolAutoScaleCreateRequest creates the EnablePoolAutoScale request.
@@ -2008,7 +2030,8 @@ func (client *Client) EvaluatePoolAutoScale(ctx context.Context, poolID string, 
 	if err != nil {
 		return EvaluatePoolAutoScaleResponse{}, err
 	}
-	return client.evaluatePoolAutoScaleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.evaluatePoolAutoScaleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // evaluatePoolAutoScaleCreateRequest creates the EvaluatePoolAutoScale request.
@@ -2098,7 +2121,8 @@ func (client *Client) GetApplication(ctx context.Context, applicationID string, 
 	if err != nil {
 		return GetApplicationResponse{}, err
 	}
-	return client.getApplicationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getApplicationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getApplicationCreateRequest creates the GetApplication request.
@@ -2177,7 +2201,8 @@ func (client *Client) GetJob(ctx context.Context, jobID string, options *GetJobO
 	if err != nil {
 		return GetJobResponse{}, err
 	}
-	return client.getJobHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getJobHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getJobCreateRequest creates the GetJob request.
@@ -2272,7 +2297,8 @@ func (client *Client) GetJobSchedule(ctx context.Context, jobScheduleID string, 
 	if err != nil {
 		return GetJobScheduleResponse{}, err
 	}
-	return client.getJobScheduleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getJobScheduleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getJobScheduleCreateRequest creates the GetJobSchedule request.
@@ -2372,7 +2398,8 @@ func (client *Client) GetJobTaskCounts(ctx context.Context, jobID string, option
 	if err != nil {
 		return GetJobTaskCountsResponse{}, err
 	}
-	return client.getJobTaskCountsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getJobTaskCountsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getJobTaskCountsCreateRequest creates the GetJobTaskCounts request.
@@ -2452,7 +2479,8 @@ func (client *Client) GetNode(ctx context.Context, poolID string, nodeID string,
 	if err != nil {
 		return GetNodeResponse{}, err
 	}
-	return client.getNodeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNodeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNodeCreateRequest creates the GetNode request.
@@ -2540,7 +2568,8 @@ func (client *Client) GetNodeExtension(ctx context.Context, poolID string, nodeI
 	if err != nil {
 		return GetNodeExtensionResponse{}, err
 	}
-	return client.getNodeExtensionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNodeExtensionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNodeExtensionCreateRequest creates the GetNodeExtension request.
@@ -2630,7 +2659,8 @@ func (client *Client) GetNodeFile(ctx context.Context, poolID string, nodeID str
 	if err != nil {
 		return GetNodeFileResponse{}, err
 	}
-	return client.getNodeFileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNodeFileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNodeFileCreateRequest creates the GetNodeFile request.
@@ -2755,7 +2785,8 @@ func (client *Client) GetNodeFileProperties(ctx context.Context, poolID string, 
 	if err != nil {
 		return GetNodeFilePropertiesResponse{}, err
 	}
-	return client.getNodeFilePropertiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNodeFilePropertiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNodeFilePropertiesCreateRequest creates the GetNodeFileProperties request.
@@ -2874,7 +2905,8 @@ func (client *Client) GetNodeRemoteLoginSettings(ctx context.Context, poolID str
 	if err != nil {
 		return GetNodeRemoteLoginSettingsResponse{}, err
 	}
-	return client.getNodeRemoteLoginSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNodeRemoteLoginSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNodeRemoteLoginSettingsCreateRequest creates the GetNodeRemoteLoginSettings request.
@@ -2955,7 +2987,8 @@ func (client *Client) GetPool(ctx context.Context, poolID string, options *GetPo
 	if err != nil {
 		return GetPoolResponse{}, err
 	}
-	return client.getPoolHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPoolHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPoolCreateRequest creates the GetPool request.
@@ -3055,7 +3088,8 @@ func (client *Client) GetTask(ctx context.Context, jobID string, taskID string, 
 	if err != nil {
 		return GetTaskResponse{}, err
 	}
-	return client.getTaskHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTaskHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTaskCreateRequest creates the GetTask request.
@@ -3159,7 +3193,8 @@ func (client *Client) GetTaskFile(ctx context.Context, jobID string, taskID stri
 	if err != nil {
 		return GetTaskFileResponse{}, err
 	}
-	return client.getTaskFileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTaskFileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTaskFileCreateRequest creates the GetTaskFile request.
@@ -3284,7 +3319,8 @@ func (client *Client) GetTaskFileProperties(ctx context.Context, jobID string, t
 	if err != nil {
 		return GetTaskFilePropertiesResponse{}, err
 	}
-	return client.getTaskFilePropertiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTaskFilePropertiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTaskFilePropertiesCreateRequest creates the GetTaskFileProperties request.
@@ -3400,7 +3436,8 @@ func (client *Client) JobScheduleExists(ctx context.Context, jobScheduleID strin
 	if err != nil {
 		return JobScheduleExistsResponse{}, err
 	}
-	return client.jobScheduleExistsHandleResponse(httpResp, http.StatusOK, http.StatusNotFound)
+	resp, err := client.jobScheduleExistsHandleResponse(httpResp, http.StatusOK, http.StatusNotFound)
+	return resp, err
 }
 
 // jobScheduleExistsCreateRequest creates the JobScheduleExists request.
@@ -4954,7 +4991,8 @@ func (client *Client) PoolExists(ctx context.Context, poolID string, options *Po
 	if err != nil {
 		return PoolExistsResponse{}, err
 	}
-	return client.poolExistsHandleResponse(httpResp, http.StatusOK, http.StatusNotFound)
+	resp, err := client.poolExistsHandleResponse(httpResp, http.StatusOK, http.StatusNotFound)
+	return resp, err
 }
 
 // poolExistsCreateRequest creates the PoolExists request.
@@ -5049,7 +5087,8 @@ func (client *Client) ReactivateTask(ctx context.Context, jobID string, taskID s
 	if err != nil {
 		return ReactivateTaskResponse{}, err
 	}
-	return client.reactivateTaskHandleResponse(httpResp, http.StatusNoContent)
+	resp, err := client.reactivateTaskHandleResponse(httpResp, http.StatusNoContent)
+	return resp, err
 }
 
 // reactivateTaskCreateRequest creates the ReactivateTask request.
@@ -5144,7 +5183,8 @@ func (client *Client) RebootNode(ctx context.Context, poolID string, nodeID stri
 	if err != nil {
 		return RebootNodeResponse{}, err
 	}
-	return client.rebootNodeHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.rebootNodeHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // rebootNodeCreateRequest creates the RebootNode request.
@@ -5236,7 +5276,8 @@ func (client *Client) ReimageNode(ctx context.Context, poolID string, nodeID str
 	if err != nil {
 		return ReimageNodeResponse{}, err
 	}
-	return client.reimageNodeHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.reimageNodeHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // reimageNodeCreateRequest creates the ReimageNode request.
@@ -5328,7 +5369,8 @@ func (client *Client) RemoveNodes(ctx context.Context, poolID string, removeOpti
 	if err != nil {
 		return RemoveNodesResponse{}, err
 	}
-	return client.removeNodesHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.removeNodesHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // removeNodesCreateRequest creates the RemoveNodes request.
@@ -5425,7 +5467,8 @@ func (client *Client) ReplaceJob(ctx context.Context, jobID string, job Job, opt
 	if err != nil {
 		return ReplaceJobResponse{}, err
 	}
-	return client.replaceJobHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.replaceJobHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // replaceJobCreateRequest creates the ReplaceJob request.
@@ -5524,7 +5567,8 @@ func (client *Client) ReplaceJobSchedule(ctx context.Context, jobScheduleID stri
 	if err != nil {
 		return ReplaceJobScheduleResponse{}, err
 	}
-	return client.replaceJobScheduleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.replaceJobScheduleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // replaceJobScheduleCreateRequest creates the ReplaceJobSchedule request.
@@ -5624,7 +5668,8 @@ func (client *Client) ReplaceNodeUser(ctx context.Context, poolID string, nodeID
 	if err != nil {
 		return ReplaceNodeUserResponse{}, err
 	}
-	return client.replaceNodeUserHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.replaceNodeUserHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // replaceNodeUserCreateRequest creates the ReplaceNodeUser request.
@@ -5717,7 +5762,8 @@ func (client *Client) ReplacePoolProperties(ctx context.Context, poolID string, 
 	if err != nil {
 		return ReplacePoolPropertiesResponse{}, err
 	}
-	return client.replacePoolPropertiesHandleResponse(httpResp, http.StatusNoContent)
+	resp, err := client.replacePoolPropertiesHandleResponse(httpResp, http.StatusNoContent)
+	return resp, err
 }
 
 // replacePoolPropertiesCreateRequest creates the ReplacePoolProperties request.
@@ -5799,7 +5845,8 @@ func (client *Client) ReplaceTask(ctx context.Context, jobID string, taskID stri
 	if err != nil {
 		return ReplaceTaskResponse{}, err
 	}
-	return client.replaceTaskHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.replaceTaskHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // replaceTaskCreateRequest creates the ReplaceTask request.
@@ -5904,7 +5951,8 @@ func (client *Client) ResizePool(ctx context.Context, poolID string, resizeOptio
 	if err != nil {
 		return ResizePoolResponse{}, err
 	}
-	return client.resizePoolHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.resizePoolHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // resizePoolCreateRequest creates the ResizePool request.
@@ -5999,7 +6047,8 @@ func (client *Client) StartNode(ctx context.Context, poolID string, nodeID strin
 	if err != nil {
 		return StartNodeResponse{}, err
 	}
-	return client.startNodeHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.startNodeHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // startNodeCreateRequest creates the StartNode request.
@@ -6087,7 +6136,8 @@ func (client *Client) StopPoolResize(ctx context.Context, poolID string, options
 	if err != nil {
 		return StopPoolResizeResponse{}, err
 	}
-	return client.stopPoolResizeHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.stopPoolResizeHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // stopPoolResizeCreateRequest creates the StopPoolResize request.
@@ -6182,7 +6232,8 @@ func (client *Client) TerminateJob(ctx context.Context, jobID string, options *T
 	if err != nil {
 		return TerminateJobResponse{}, err
 	}
-	return client.terminateJobHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.terminateJobHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // terminateJobCreateRequest creates the TerminateJob request.
@@ -6282,7 +6333,8 @@ func (client *Client) TerminateJobSchedule(ctx context.Context, jobScheduleID st
 	if err != nil {
 		return TerminateJobScheduleResponse{}, err
 	}
-	return client.terminateJobScheduleHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.terminateJobScheduleHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // terminateJobScheduleCreateRequest creates the TerminateJobSchedule request.
@@ -6378,7 +6430,8 @@ func (client *Client) TerminateTask(ctx context.Context, jobID string, taskID st
 	if err != nil {
 		return TerminateTaskResponse{}, err
 	}
-	return client.terminateTaskHandleResponse(httpResp, http.StatusNoContent)
+	resp, err := client.terminateTaskHandleResponse(httpResp, http.StatusNoContent)
+	return resp, err
 }
 
 // terminateTaskCreateRequest creates the TerminateTask request.
@@ -6475,7 +6528,8 @@ func (client *Client) UpdateJob(ctx context.Context, jobID string, job UpdateJob
 	if err != nil {
 		return UpdateJobResponse{}, err
 	}
-	return client.updateJobHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateJobHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateJobCreateRequest creates the UpdateJob request.
@@ -6574,7 +6628,8 @@ func (client *Client) UpdateJobSchedule(ctx context.Context, jobScheduleID strin
 	if err != nil {
 		return UpdateJobScheduleResponse{}, err
 	}
-	return client.updateJobScheduleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateJobScheduleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateJobScheduleCreateRequest creates the UpdateJobSchedule request.
@@ -6671,7 +6726,8 @@ func (client *Client) UpdatePool(ctx context.Context, poolID string, pool Update
 	if err != nil {
 		return UpdatePoolResponse{}, err
 	}
-	return client.updatePoolHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updatePoolHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updatePoolCreateRequest creates the UpdatePool request.
@@ -6772,7 +6828,8 @@ func (client *Client) UploadNodeLogs(ctx context.Context, poolID string, nodeID 
 	if err != nil {
 		return UploadNodeLogsResponse{}, err
 	}
-	return client.uploadNodeLogsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.uploadNodeLogsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // uploadNodeLogsCreateRequest creates the UploadNodeLogs request.

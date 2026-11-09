@@ -55,7 +55,8 @@ func (client *LiveTokenClient) Get(ctx context.Context, resourceURI string, opti
 	if err != nil {
 		return LiveTokenClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

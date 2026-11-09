@@ -64,7 +64,8 @@ func (client *ComponentCurrentBillingFeaturesClient) Get(ctx context.Context, re
 	if err != nil {
 		return ComponentCurrentBillingFeaturesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -126,7 +127,8 @@ func (client *ComponentCurrentBillingFeaturesClient) Update(ctx context.Context,
 	if err != nil {
 		return ComponentCurrentBillingFeaturesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

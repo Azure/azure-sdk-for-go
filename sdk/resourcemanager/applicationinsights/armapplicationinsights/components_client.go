@@ -66,7 +66,8 @@ func (client *ComponentsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return ComponentsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *ComponentsClient) Delete(ctx context.Context, resourceGroupName st
 		return ComponentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ComponentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ComponentsClientDeleteResponse{}, err
 	}
 	return ComponentsClientDeleteResponse{}, nil
 }
@@ -180,7 +182,8 @@ func (client *ComponentsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return ComponentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -242,7 +245,8 @@ func (client *ComponentsClient) GetPurgeStatus(ctx context.Context, resourceGrou
 	if err != nil {
 		return ComponentsClientGetPurgeStatusResponse{}, err
 	}
-	return client.getPurgeStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPurgeStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPurgeStatusCreateRequest creates the GetPurgeStatus request.
@@ -452,7 +456,8 @@ func (client *ComponentsClient) Purge(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ComponentsClientPurgeResponse{}, err
 	}
-	return client.purgeHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.purgeHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // purgeCreateRequest creates the Purge request.
@@ -517,7 +522,8 @@ func (client *ComponentsClient) UpdateTags(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ComponentsClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

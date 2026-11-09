@@ -67,7 +67,8 @@ func (client *FavoritesClient) Add(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FavoritesClientAddResponse{}, err
 	}
-	return client.addHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addCreateRequest creates the Add request.
@@ -137,7 +138,8 @@ func (client *FavoritesClient) Delete(ctx context.Context, resourceGroupName str
 		return FavoritesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return FavoritesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FavoritesClientDeleteResponse{}, err
 	}
 	return FavoritesClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *FavoritesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FavoritesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -255,7 +258,8 @@ func (client *FavoritesClient) List(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return FavoritesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -329,7 +333,8 @@ func (client *FavoritesClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FavoritesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

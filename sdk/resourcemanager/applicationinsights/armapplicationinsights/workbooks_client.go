@@ -66,7 +66,8 @@ func (client *WorkbooksClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return WorkbooksClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -134,7 +135,8 @@ func (client *WorkbooksClient) Delete(ctx context.Context, resourceGroupName str
 		return WorkbooksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WorkbooksClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WorkbooksClientDeleteResponse{}, err
 	}
 	return WorkbooksClientDeleteResponse{}, nil
 }
@@ -183,7 +185,8 @@ func (client *WorkbooksClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return WorkbooksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -482,7 +485,8 @@ func (client *WorkbooksClient) RevisionGet(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return WorkbooksClientRevisionGetResponse{}, err
 	}
-	return client.revisionGetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.revisionGetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // revisionGetCreateRequest creates the RevisionGet request.
@@ -547,7 +551,8 @@ func (client *WorkbooksClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return WorkbooksClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

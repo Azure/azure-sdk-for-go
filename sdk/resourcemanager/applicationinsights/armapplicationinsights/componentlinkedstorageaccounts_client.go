@@ -67,7 +67,8 @@ func (client *ComponentLinkedStorageAccountsClient) CreateAndUpdate(ctx context.
 	if err != nil {
 		return ComponentLinkedStorageAccountsClientCreateAndUpdateResponse{}, err
 	}
-	return client.createAndUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createAndUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createAndUpdateCreateRequest creates the CreateAndUpdate request.
@@ -138,7 +139,8 @@ func (client *ComponentLinkedStorageAccountsClient) Delete(ctx context.Context, 
 		return ComponentLinkedStorageAccountsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ComponentLinkedStorageAccountsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ComponentLinkedStorageAccountsClientDeleteResponse{}, err
 	}
 	return ComponentLinkedStorageAccountsClientDeleteResponse{}, nil
 }
@@ -193,7 +195,8 @@ func (client *ComponentLinkedStorageAccountsClient) Get(ctx context.Context, res
 	if err != nil {
 		return ComponentLinkedStorageAccountsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -261,7 +264,8 @@ func (client *ComponentLinkedStorageAccountsClient) Update(ctx context.Context, 
 	if err != nil {
 		return ComponentLinkedStorageAccountsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

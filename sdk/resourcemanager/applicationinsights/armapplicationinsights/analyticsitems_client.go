@@ -67,7 +67,8 @@ func (client *AnalyticsItemsClient) Delete(ctx context.Context, resourceGroupNam
 		return AnalyticsItemsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return AnalyticsItemsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AnalyticsItemsClientDeleteResponse{}, err
 	}
 	return AnalyticsItemsClientDeleteResponse{}, nil
 }
@@ -128,7 +129,8 @@ func (client *AnalyticsItemsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AnalyticsItemsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -200,7 +202,8 @@ func (client *AnalyticsItemsClient) List(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return AnalyticsItemsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -276,7 +279,8 @@ func (client *AnalyticsItemsClient) Put(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AnalyticsItemsClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.

@@ -64,7 +64,8 @@ func (client *ComponentFeatureCapabilitiesClient) Get(ctx context.Context, resou
 	if err != nil {
 		return ComponentFeatureCapabilitiesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -65,7 +65,8 @@ func (client *ExportConfigurationsClient) Create(ctx context.Context, resourceGr
 	if err != nil {
 		return ExportConfigurationsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -131,7 +132,8 @@ func (client *ExportConfigurationsClient) Delete(ctx context.Context, resourceGr
 	if err != nil {
 		return ExportConfigurationsClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -197,7 +199,8 @@ func (client *ExportConfigurationsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ExportConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -262,7 +265,8 @@ func (client *ExportConfigurationsClient) List(ctx context.Context, resourceGrou
 	if err != nil {
 		return ExportConfigurationsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -325,7 +329,8 @@ func (client *ExportConfigurationsClient) Update(ctx context.Context, resourceGr
 	if err != nil {
 		return ExportConfigurationsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

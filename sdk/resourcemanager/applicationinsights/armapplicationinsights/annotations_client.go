@@ -64,7 +64,8 @@ func (client *AnnotationsClient) Create(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AnnotationsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -130,7 +131,8 @@ func (client *AnnotationsClient) Delete(ctx context.Context, resourceGroupName s
 		return AnnotationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return AnnotationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AnnotationsClientDeleteResponse{}, err
 	}
 	return AnnotationsClientDeleteResponse{}, nil
 }
@@ -184,7 +186,8 @@ func (client *AnnotationsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return AnnotationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

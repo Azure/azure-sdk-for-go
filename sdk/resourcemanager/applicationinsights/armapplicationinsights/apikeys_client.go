@@ -64,7 +64,8 @@ func (client *APIKeysClient) Create(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return APIKeysClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -129,7 +130,8 @@ func (client *APIKeysClient) Delete(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return APIKeysClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -194,7 +196,8 @@ func (client *APIKeysClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return APIKeysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

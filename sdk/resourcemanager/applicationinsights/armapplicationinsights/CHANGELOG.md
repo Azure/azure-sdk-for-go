@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.5 (2026-10-13)
+## 2.0.0-beta.5 (2026-11-09)
 ### Features Added
 
 - New enum type `AzureMonitorWorkspaceIngestionMode` with values `AzureMonitorWorkspaceIngestionModeDisabled`, `AzureMonitorWorkspaceIngestionModeEnabled`, `AzureMonitorWorkspaceIngestionModeNotOptedIn`

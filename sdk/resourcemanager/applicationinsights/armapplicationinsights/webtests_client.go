@@ -64,7 +64,8 @@ func (client *WebTestsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WebTestsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -129,7 +130,8 @@ func (client *WebTestsClient) Delete(ctx context.Context, resourceGroupName stri
 		return WebTestsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WebTestsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebTestsClientDeleteResponse{}, err
 	}
 	return WebTestsClientDeleteResponse{}, nil
 }
@@ -178,7 +180,8 @@ func (client *WebTestsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return WebTestsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -454,7 +457,8 @@ func (client *WebTestsClient) UpdateTags(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WebTestsClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

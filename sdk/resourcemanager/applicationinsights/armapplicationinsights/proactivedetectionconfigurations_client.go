@@ -65,7 +65,8 @@ func (client *ProactiveDetectionConfigurationsClient) Get(ctx context.Context, r
 	if err != nil {
 		return ProactiveDetectionConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -130,7 +131,8 @@ func (client *ProactiveDetectionConfigurationsClient) List(ctx context.Context, 
 	if err != nil {
 		return ProactiveDetectionConfigurationsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -193,7 +195,8 @@ func (client *ProactiveDetectionConfigurationsClient) Update(ctx context.Context
 	if err != nil {
 		return ProactiveDetectionConfigurationsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

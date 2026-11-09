@@ -65,7 +65,8 @@ func (client *WorkItemConfigurationsClient) Create(ctx context.Context, resource
 	if err != nil {
 		return WorkItemConfigurationsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -133,7 +134,8 @@ func (client *WorkItemConfigurationsClient) Delete(ctx context.Context, resource
 		return WorkItemConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WorkItemConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WorkItemConfigurationsClientDeleteResponse{}, err
 	}
 	return WorkItemConfigurationsClientDeleteResponse{}, nil
 }
@@ -187,7 +189,8 @@ func (client *WorkItemConfigurationsClient) GetDefault(ctx context.Context, reso
 	if err != nil {
 		return WorkItemConfigurationsClientGetDefaultResponse{}, err
 	}
-	return client.getDefaultHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDefaultHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDefaultCreateRequest creates the GetDefault request.
@@ -250,7 +253,8 @@ func (client *WorkItemConfigurationsClient) GetItem(ctx context.Context, resourc
 	if err != nil {
 		return WorkItemConfigurationsClientGetItemResponse{}, err
 	}
-	return client.getItemHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getItemHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getItemCreateRequest creates the GetItem request.
@@ -396,7 +400,8 @@ func (client *WorkItemConfigurationsClient) UpdateItem(ctx context.Context, reso
 	if err != nil {
 		return WorkItemConfigurationsClientUpdateItemResponse{}, err
 	}
-	return client.updateItemHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateItemHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateItemCreateRequest creates the UpdateItem request.

@@ -65,7 +65,8 @@ func (client *WorkbookTemplatesClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return WorkbookTemplatesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *WorkbookTemplatesClient) Delete(ctx context.Context, resourceGroup
 		return WorkbookTemplatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WorkbookTemplatesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WorkbookTemplatesClientDeleteResponse{}, err
 	}
 	return WorkbookTemplatesClientDeleteResponse{}, nil
 }
@@ -180,7 +182,8 @@ func (client *WorkbookTemplatesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return WorkbookTemplatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -314,7 +317,8 @@ func (client *WorkbookTemplatesClient) Update(ctx context.Context, resourceGroup
 	if err != nil {
 		return WorkbookTemplatesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

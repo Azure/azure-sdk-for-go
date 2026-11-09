@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (2026-10-19)
+## 0.2.0 (2026-11-09)
 ### Breaking Changes
 
 - Struct `VMImageRepositoryCredentials` has been removed

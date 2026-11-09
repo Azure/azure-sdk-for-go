@@ -86,7 +86,8 @@ func (client *NetworkSecurityGroupsClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -161,7 +162,8 @@ func (client *NetworkSecurityGroupsClient) deleteOperation(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -232,7 +234,8 @@ func (client *NetworkSecurityGroupsClient) updateTags(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -287,7 +290,8 @@ func (client *NetworkSecurityGroupsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return NetworkSecurityGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -64,7 +64,8 @@ func (client *OperationsClient) CreateOrUpdate(ctx context.Context, providerName
 	if err != nil {
 		return OperationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -124,7 +125,8 @@ func (client *OperationsClient) Delete(ctx context.Context, providerNamespace st
 		return OperationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return OperationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return OperationsClientDeleteResponse{}, err
 	}
 	return OperationsClientDeleteResponse{}, nil
 }
@@ -169,7 +171,8 @@ func (client *OperationsClient) ListByProviderRegistration(ctx context.Context, 
 	if err != nil {
 		return OperationsClientListByProviderRegistrationResponse{}, err
 	}
-	return client.listByProviderRegistrationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByProviderRegistrationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByProviderRegistrationCreateRequest creates the ListByProviderRegistration request.

@@ -85,7 +85,8 @@ func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, provide
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -140,7 +141,8 @@ func (client *DefaultRolloutsClient) Delete(ctx context.Context, providerNamespa
 		return DefaultRolloutsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DefaultRolloutsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DefaultRolloutsClientDeleteResponse{}, err
 	}
 	return DefaultRolloutsClientDeleteResponse{}, nil
 }
@@ -189,7 +191,8 @@ func (client *DefaultRolloutsClient) Get(ctx context.Context, providerNamespace 
 	if err != nil {
 		return DefaultRolloutsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -322,7 +325,8 @@ func (client *DefaultRolloutsClient) Stop(ctx context.Context, providerNamespace
 		return DefaultRolloutsClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return DefaultRolloutsClientStopResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DefaultRolloutsClientStopResponse{}, err
 	}
 	return DefaultRolloutsClientStopResponse{}, nil
 }

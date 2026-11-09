@@ -85,7 +85,8 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -162,7 +163,8 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdateNestedResourceTypeF
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -241,7 +243,8 @@ func (client *ResourceTypeRegistrationsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -312,7 +315,8 @@ func (client *ResourceTypeRegistrationsClient) deleteNestedResourceTypeFirst(ctx
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -366,7 +370,8 @@ func (client *ResourceTypeRegistrationsClient) Get(ctx context.Context, provider
 	if err != nil {
 		return ResourceTypeRegistrationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -428,7 +433,8 @@ func (client *ResourceTypeRegistrationsClient) GetNestedResourceTypeFirst(ctx co
 	if err != nil {
 		return ResourceTypeRegistrationsClientGetNestedResourceTypeFirstResponse{}, err
 	}
-	return client.getNestedResourceTypeFirstHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNestedResourceTypeFirstHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNestedResourceTypeFirstCreateRequest creates the GetNestedResourceTypeFirst request.

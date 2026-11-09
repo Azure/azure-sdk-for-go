@@ -66,7 +66,8 @@ func (client *EndpointRegistrationsClient) CreateOrUpdate(ctx context.Context, p
 	if err != nil {
 		return EndpointRegistrationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -139,7 +140,8 @@ func (client *EndpointRegistrationsClient) CreateOrUpdateNestedResourceTypeFirst
 	if err != nil {
 		return EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse{}, err
 	}
-	return client.createOrUpdateNestedResourceTypeFirstHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateNestedResourceTypeFirstHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateNestedResourceTypeFirstCreateRequest creates the CreateOrUpdateNestedResourceTypeFirst request.
@@ -217,7 +219,8 @@ func (client *EndpointRegistrationsClient) CreateOrUpdateNestedResourceTypeSecon
 	if err != nil {
 		return EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeSecondResponse{}, err
 	}
-	return client.createOrUpdateNestedResourceTypeSecondHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateNestedResourceTypeSecondHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateNestedResourceTypeSecondCreateRequest creates the CreateOrUpdateNestedResourceTypeSecond request.
@@ -300,7 +303,8 @@ func (client *EndpointRegistrationsClient) CreateOrUpdateNestedResourceTypeThird
 	if err != nil {
 		return EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeThirdResponse{}, err
 	}
-	return client.createOrUpdateNestedResourceTypeThirdHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateNestedResourceTypeThirdHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateNestedResourceTypeThirdCreateRequest creates the CreateOrUpdateNestedResourceTypeThird request.
@@ -383,7 +387,8 @@ func (client *EndpointRegistrationsClient) Delete(ctx context.Context, providerN
 		return EndpointRegistrationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return EndpointRegistrationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EndpointRegistrationsClientDeleteResponse{}, err
 	}
 	return EndpointRegistrationsClientDeleteResponse{}, nil
 }
@@ -440,7 +445,8 @@ func (client *EndpointRegistrationsClient) DeleteNestedResourceTypeFirst(ctx con
 		return EndpointRegistrationsClientDeleteNestedResourceTypeFirstResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return EndpointRegistrationsClientDeleteNestedResourceTypeFirstResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EndpointRegistrationsClientDeleteNestedResourceTypeFirstResponse{}, err
 	}
 	return EndpointRegistrationsClientDeleteNestedResourceTypeFirstResponse{}, nil
 }
@@ -502,7 +508,8 @@ func (client *EndpointRegistrationsClient) DeleteNestedResourceTypeSecond(ctx co
 		return EndpointRegistrationsClientDeleteNestedResourceTypeSecondResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return EndpointRegistrationsClientDeleteNestedResourceTypeSecondResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EndpointRegistrationsClientDeleteNestedResourceTypeSecondResponse{}, err
 	}
 	return EndpointRegistrationsClientDeleteNestedResourceTypeSecondResponse{}, nil
 }
@@ -569,7 +576,8 @@ func (client *EndpointRegistrationsClient) DeleteNestedResourceTypeThird(ctx con
 		return EndpointRegistrationsClientDeleteNestedResourceTypeThirdResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return EndpointRegistrationsClientDeleteNestedResourceTypeThirdResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EndpointRegistrationsClientDeleteNestedResourceTypeThirdResponse{}, err
 	}
 	return EndpointRegistrationsClientDeleteNestedResourceTypeThirdResponse{}, nil
 }
@@ -636,7 +644,8 @@ func (client *EndpointRegistrationsClient) Get(ctx context.Context, providerName
 	if err != nil {
 		return EndpointRegistrationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -703,7 +712,8 @@ func (client *EndpointRegistrationsClient) GetNestedResourceTypeFirst(ctx contex
 	if err != nil {
 		return EndpointRegistrationsClientGetNestedResourceTypeFirstResponse{}, err
 	}
-	return client.getNestedResourceTypeFirstHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNestedResourceTypeFirstHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNestedResourceTypeFirstCreateRequest creates the GetNestedResourceTypeFirst request.
@@ -775,7 +785,8 @@ func (client *EndpointRegistrationsClient) GetNestedResourceTypeSecond(ctx conte
 	if err != nil {
 		return EndpointRegistrationsClientGetNestedResourceTypeSecondResponse{}, err
 	}
-	return client.getNestedResourceTypeSecondHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNestedResourceTypeSecondHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNestedResourceTypeSecondCreateRequest creates the GetNestedResourceTypeSecond request.
@@ -852,7 +863,8 @@ func (client *EndpointRegistrationsClient) GetNestedResourceTypeThird(ctx contex
 	if err != nil {
 		return EndpointRegistrationsClientGetNestedResourceTypeThirdResponse{}, err
 	}
-	return client.getNestedResourceTypeThirdHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNestedResourceTypeThirdHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNestedResourceTypeThirdCreateRequest creates the GetNestedResourceTypeThird request.

@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0 (2026-10-22)
+## 4.1.0 (2026-11-09)
 ### Features Added
 
 - New value `OptInHeaderTypeAuxiliaryUserContext`, `OptInHeaderTypeUserContext` added to enum type `OptInHeaderType`

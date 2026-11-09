@@ -85,7 +85,8 @@ func (client *AuthorizedApplicationsClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,8 @@ func (client *AuthorizedApplicationsClient) Delete(ctx context.Context, provider
 		return AuthorizedApplicationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AuthorizedApplicationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AuthorizedApplicationsClientDeleteResponse{}, err
 	}
 	return AuthorizedApplicationsClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *AuthorizedApplicationsClient) Get(ctx context.Context, providerNam
 	if err != nil {
 		return AuthorizedApplicationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

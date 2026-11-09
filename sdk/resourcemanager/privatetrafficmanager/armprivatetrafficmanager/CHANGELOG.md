@@ -1,5 +1,11 @@
 # Release History
 
+## 0.1.1 (2026-11-05)
+
+### Other Changes
+
+* Retract module.
+
 ## 0.1.0 (2026-10-19)
 ### Other Changes
 

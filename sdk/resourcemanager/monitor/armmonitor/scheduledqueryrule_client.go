@@ -30,6 +30,9 @@ type ScheduledQueryRuleClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewScheduledQueryRuleClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ScheduledQueryRuleClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,137 +42,6 @@ func NewScheduledQueryRuleClient(subscriptionID string, credential azcore.TokenC
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// GetNSP - Gets a network security perimeter configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ruleName - The name of the rule.
-//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
-//   - options - ScheduledQueryRuleClientGetNSPOptions contains the optional parameters for the ScheduledQueryRuleClient.GetNSP
-//     method.
-func (client *ScheduledQueryRuleClient) GetNSP(ctx context.Context, resourceGroupName string, ruleName string, networkSecurityPerimeterConfigurationName string, options *ScheduledQueryRuleClientGetNSPOptions) (ScheduledQueryRuleClientGetNSPResponse, error) {
-	var err error
-	const operationName = "ScheduledQueryRuleClient.GetNSP"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getNSPCreateRequest(ctx, resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName, options)
-	if err != nil {
-		return ScheduledQueryRuleClientGetNSPResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ScheduledQueryRuleClientGetNSPResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ScheduledQueryRuleClientGetNSPResponse{}, err
-	}
-	resp, err := client.getNSPHandleResponse(httpResp)
-	return resp, err
-}
-
-// getNSPCreateRequest creates the GetNSP request.
-func (client *ScheduledQueryRuleClient) getNSPCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, networkSecurityPerimeterConfigurationName string, _ *ScheduledQueryRuleClientGetNSPOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ruleName == "" {
-		return nil, errors.New("parameter ruleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
-	if networkSecurityPerimeterConfigurationName == "" {
-		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getNSPHandleResponse handles the GetNSP response.
-func (client *ScheduledQueryRuleClient) getNSPHandleResponse(resp *http.Response) (ScheduledQueryRuleClientGetNSPResponse, error) {
-	result := ScheduledQueryRuleClientGetNSPResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
-		return ScheduledQueryRuleClientGetNSPResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListNSPPager - Gets a list of NSP configurations for specified scheduled query rule.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - ruleName - The name of the rule.
-//   - options - ScheduledQueryRuleClientListNSPOptions contains the optional parameters for the ScheduledQueryRuleClient.NewListNSPPager
-//     method.
-func (client *ScheduledQueryRuleClient) NewListNSPPager(resourceGroupName string, ruleName string, options *ScheduledQueryRuleClientListNSPOptions) *runtime.Pager[ScheduledQueryRuleClientListNSPResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ScheduledQueryRuleClientListNSPResponse]{
-		More: func(page ScheduledQueryRuleClientListNSPResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ScheduledQueryRuleClientListNSPResponse) (ScheduledQueryRuleClientListNSPResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScheduledQueryRuleClient.NewListNSPPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listNSPCreateRequest(ctx, resourceGroupName, ruleName, options)
-			}, nil)
-			if err != nil {
-				return ScheduledQueryRuleClientListNSPResponse{}, err
-			}
-			return client.listNSPHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listNSPCreateRequest creates the ListNSP request.
-func (client *ScheduledQueryRuleClient) listNSPCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, _ *ScheduledQueryRuleClientListNSPOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}/networkSecurityPerimeterConfigurations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ruleName == "" {
-		return nil, errors.New("parameter ruleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20211001)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listNSPHandleResponse handles the ListNSP response.
-func (client *ScheduledQueryRuleClient) listNSPHandleResponse(resp *http.Response) (ScheduledQueryRuleClientListNSPResponse, error) {
-	result := ScheduledQueryRuleClientListNSPResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationListResult); err != nil {
-		return ScheduledQueryRuleClientListNSPResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginReconcileNSP - Reconcile network security perimeter configuration for ScheduledQueryRule resource.
@@ -196,7 +68,7 @@ func (client *ScheduledQueryRuleClient) BeginReconcileNSP(ctx context.Context, r
 	}
 }
 
-// ReconcileNSP - Reconcile network security perimeter configuration for ScheduledQueryRule resource.
+// reconcileNSP - Reconcile network security perimeter configuration for ScheduledQueryRule resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScheduledQueryRuleClient) reconcileNSP(ctx context.Context, resourceGroupName string, ruleName string, networkSecurityPerimeterConfigurationName string, options *ScheduledQueryRuleClientBeginReconcileNSPOptions) (*http.Response, error) {
 	var err error
@@ -213,17 +85,16 @@ func (client *ScheduledQueryRuleClient) reconcileNSP(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
+		return nil, runtime.NewResponseError(httpResp)
 	}
 	return httpResp, nil
 }
 
-// reconcileNSPCreateRequest creates the ReconcileNSP request.
+// reconcileNSPCreateRequest creates the reconcileNSP request.
 func (client *ScheduledQueryRuleClient) reconcileNSPCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, networkSecurityPerimeterConfigurationName string, _ *ScheduledQueryRuleClientBeginReconcileNSPOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -246,4 +117,147 @@ func (client *ScheduledQueryRuleClient) reconcileNSPCreateRequest(ctx context.Co
 	reqQP.Set("api-version", version20211001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
+}
+
+// GetNSP - Gets a network security perimeter configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ruleName - The name of the rule.
+//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
+//   - options - ScheduledQueryRuleClientGetNSPOptions contains the optional parameters for the ScheduledQueryRuleClient.GetNSP
+//     method.
+func (client *ScheduledQueryRuleClient) GetNSP(ctx context.Context, resourceGroupName string, ruleName string, networkSecurityPerimeterConfigurationName string, options *ScheduledQueryRuleClientGetNSPOptions) (ScheduledQueryRuleClientGetNSPResponse, error) {
+	var err error
+	const operationName = "ScheduledQueryRuleClient.GetNSP"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getNSPCreateRequest(ctx, resourceGroupName, ruleName, networkSecurityPerimeterConfigurationName, options)
+	if err != nil {
+		return ScheduledQueryRuleClientGetNSPResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ScheduledQueryRuleClientGetNSPResponse{}, err
+	}
+	return client.getNSPHandleResponse(httpResp, http.StatusOK)
+}
+
+// getNSPCreateRequest creates the GetNSP request.
+func (client *ScheduledQueryRuleClient) getNSPCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, networkSecurityPerimeterConfigurationName string, _ *ScheduledQueryRuleClientGetNSPOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if ruleName == "" {
+		return nil, errors.New("parameter ruleName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
+	if networkSecurityPerimeterConfigurationName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20211001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getNSPHandleResponse handles the GetNSP response.
+func (client *ScheduledQueryRuleClient) getNSPHandleResponse(resp *http.Response, successCodes ...int) (ScheduledQueryRuleClientGetNSPResponse, error) {
+	result := ScheduledQueryRuleClientGetNSPResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfiguration); err != nil {
+		return ScheduledQueryRuleClientGetNSPResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListNSPPager - Gets a list of NSP configurations for specified scheduled query rule.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - ruleName - The name of the rule.
+//   - options - ScheduledQueryRuleClientListNSPOptions contains the optional parameters for the ScheduledQueryRuleClient.NewListNSPPager
+//     method.
+func (client *ScheduledQueryRuleClient) NewListNSPPager(resourceGroupName string, ruleName string, options *ScheduledQueryRuleClientListNSPOptions) *runtime.Pager[ScheduledQueryRuleClientListNSPResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ScheduledQueryRuleClientListNSPResponse]{
+		More: func(page ScheduledQueryRuleClientListNSPResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ScheduledQueryRuleClientListNSPResponse) (ScheduledQueryRuleClientListNSPResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ScheduledQueryRuleClient.NewListNSPPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listNSPCreateRequest(ctx, resourceGroupName, ruleName, nextLink, options)
+			if err != nil {
+				return ScheduledQueryRuleClientListNSPResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ScheduledQueryRuleClientListNSPResponse{}, err
+			}
+			return client.listNSPHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listNSPCreateRequest creates the ListNSP request.
+func (client *ScheduledQueryRuleClient) listNSPCreateRequest(ctx context.Context, resourceGroupName string, ruleName string, nextLink string, _ *ScheduledQueryRuleClientListNSPOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.Insights/scheduledQueryRules/{ruleName}/networkSecurityPerimeterConfigurations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if ruleName == "" {
+			return nil, errors.New("parameter ruleName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ruleName}", url.PathEscape(ruleName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20211001)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listNSPHandleResponse handles the ListNSP response.
+func (client *ScheduledQueryRuleClient) listNSPHandleResponse(resp *http.Response, successCodes ...int) (ScheduledQueryRuleClientListNSPResponse, error) {
+	result := ScheduledQueryRuleClientListNSPResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.NetworkSecurityPerimeterConfigurationListResult); err != nil {
+		return ScheduledQueryRuleClientListNSPResponse{}, err
+	}
+	return result, nil
 }

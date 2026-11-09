@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/recoveryservices/armrecoveryservicessiterecovery/v4"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -25,13 +25,13 @@ type ReplicationNetworksServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, fabricName string, networkName string, options *armrecoveryservicessiterecovery.ReplicationNetworksClientGetOptions) (resp azfake.Responder[armrecoveryservicessiterecovery.ReplicationNetworksClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ReplicationNetworksClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, resourceName string, options *armrecoveryservicessiterecovery.ReplicationNetworksClientListOptions) (resp azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationNetworksClientListResponse])
-
 	// NewListByReplicationFabricsPager is the fake for method ReplicationNetworksClient.NewListByReplicationFabricsPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByReplicationFabricsPager func(resourceGroupName string, resourceName string, fabricName string, options *armrecoveryservicessiterecovery.ReplicationNetworksClientListByReplicationFabricsOptions) (resp azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationNetworksClientListByReplicationFabricsResponse])
+
+	// NewListPager is the fake for method ReplicationNetworksClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, resourceName string, options *armrecoveryservicessiterecovery.ReplicationNetworksClientListOptions) (resp azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationNetworksClientListResponse])
 }
 
 // NewReplicationNetworksServerTransport creates a new instance of ReplicationNetworksServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type ReplicationNetworksServer struct {
 func NewReplicationNetworksServerTransport(srv *ReplicationNetworksServer) *ReplicationNetworksServerTransport {
 	return &ReplicationNetworksServerTransport{
 		srv:                              srv,
-		newListPager:                     newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationNetworksClientListResponse]](),
 		newListByReplicationFabricsPager: newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationNetworksClientListByReplicationFabricsResponse]](),
+		newListPager:                     newTracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationNetworksClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewReplicationNetworksServerTransport(srv *ReplicationNetworksServer) *Repl
 // Don't use this type directly, use NewReplicationNetworksServerTransport instead.
 type ReplicationNetworksServerTransport struct {
 	srv                              *ReplicationNetworksServer
-	newListPager                     *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationNetworksClientListResponse]]
 	newListByReplicationFabricsPager *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationNetworksClientListByReplicationFabricsResponse]]
+	newListPager                     *tracker[azfake.PagerResponder[armrecoveryservicessiterecovery.ReplicationNetworksClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ReplicationNetworksServerTransport.
@@ -76,10 +76,10 @@ func (r *ReplicationNetworksServerTransport) dispatchToMethodFake(req *http.Requ
 			switch method {
 			case "ReplicationNetworksClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
-			case "ReplicationNetworksClient.NewListPager":
-				res.resp, res.err = r.dispatchNewListPager(req)
 			case "ReplicationNetworksClient.NewListByReplicationFabricsPager":
 				res.resp, res.err = r.dispatchNewListByReplicationFabricsPager(req)
+			case "ReplicationNetworksClient.NewListPager":
+				res.resp, res.err = r.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -137,47 +137,6 @@ func (r *ReplicationNetworksServerTransport) dispatchGet(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (r *ReplicationNetworksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if r.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := r.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationNetworks`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := r.srv.NewListPager(resourceGroupNameParam, resourceNameParam, nil)
-		newListPager = &resp
-		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armrecoveryservicessiterecovery.ReplicationNetworksClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		r.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		r.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (r *ReplicationNetworksServerTransport) dispatchNewListByReplicationFabricsPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListByReplicationFabricsPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByReplicationFabricsPager not implemented")}
@@ -219,6 +178,47 @@ func (r *ReplicationNetworksServerTransport) dispatchNewListByReplicationFabrics
 	}
 	if !server.PagerResponderMore(newListByReplicationFabricsPager) {
 		r.newListByReplicationFabricsPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (r *ReplicationNetworksServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if r.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := r.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/vaults/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/replicationNetworks`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resourceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := r.srv.NewListPager(resourceGroupNameParam, resourceNameParam, nil)
+		newListPager = &resp
+		r.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armrecoveryservicessiterecovery.ReplicationNetworksClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		r.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		r.newListPager.remove(req)
 	}
 	return resp, nil
 }

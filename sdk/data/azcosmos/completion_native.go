@@ -141,6 +141,7 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t, verbosity Dia
 	if diagnostics != nil {
 		diagnostics.StatusCode = int(completion.http_status_code)
 		diagnostics.SubStatus = subStatus
+		diagnostics.initializeJSON(verbosity)
 	}
 
 	response := ItemResponse{

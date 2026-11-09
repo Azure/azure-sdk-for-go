@@ -29,8 +29,15 @@ func requireEmulatorDiagnostics(t *testing.T, diagnostics *Diagnostics, status, 
 	require.Equal(t, subStatus, diagnostics.Attempts[0].SubStatus)
 	require.NotEmpty(t, diagnostics.Attempts[0].Endpoint)
 	require.NotEmpty(t, diagnostics.RegionsContacted)
-	require.True(t, json.Valid([]byte(diagnostics.JSON)))
+	require.True(t, json.Valid([]byte(requireDiagnosticsJSON(t, diagnostics))))
 	require.Positive(t, diagnostics.Elapsed)
+}
+
+func requireDiagnosticsJSON(t *testing.T, diagnostics *Diagnostics) string {
+	t.Helper()
+	rendered, err := diagnostics.JSON()
+	require.NoError(t, err)
+	return rendered
 }
 
 func TestEmulatorDiagnosticsPointOperations(t *testing.T) {
@@ -60,7 +67,7 @@ func TestEmulatorDiagnosticsPointOperations(t *testing.T) {
 	_, err = container.DeleteItem(t.Context(), pk, id, nil)
 	require.NoError(t, err)
 	requireEmulatorDiagnostics(t, created.Diagnostics, http.StatusCreated, 0, false)
-	require.True(t, json.Valid([]byte(read.Diagnostics.JSON)), "snapshots survive later native completions")
+	require.True(t, json.Valid([]byte(requireDiagnosticsJSON(t, read.Diagnostics))), "snapshots survive later native completions")
 }
 
 func TestEmulatorDiagnosticsWireFailures(t *testing.T) {
@@ -153,7 +160,9 @@ func TestEmulatorDiagnosticsVerbosityOption(t *testing.T) {
 	trackEmulatorItem(t, summaryContainer, pk, id)
 	summary, err := summaryContainer.CreateItem(t.Context(), pk, id, json.RawMessage(body), nil)
 	require.NoError(t, err)
-	require.True(t, json.Valid([]byte(summary.Diagnostics.JSON)))
+	summaryJSON := requireDiagnosticsJSON(t, summary.Diagnostics)
+	require.True(t, json.Valid([]byte(summaryJSON)))
+	require.NotContains(t, summaryJSON, `"attempts"`)
 
 	detailedID := uniqueItemID(t)
 	detailedPK := NewPartitionKeyString(detailedID)
@@ -162,12 +171,12 @@ func TestEmulatorDiagnosticsVerbosityOption(t *testing.T) {
 	trackEmulatorItem(t, detailedContainer, detailedPK, detailedID)
 	detailed, err := detailedContainer.CreateItem(t.Context(), detailedPK, detailedID, json.RawMessage(detailedBody), nil)
 	require.NoError(t, err)
-	require.True(t, json.Valid([]byte(detailed.Diagnostics.JSON)))
+	detailedJSON := requireDiagnosticsJSON(t, detailed.Diagnostics)
+	require.True(t, json.Valid([]byte(detailedJSON)))
+	require.Contains(t, detailedJSON, `"attempts"`)
 
-	// Both renderings describe a single-attempt create. DETAILED's per-attempt record is at least
-	// as large as SUMMARY's deduplicated one, which is what distinguishes the two renderings for a
-	// caller that opted into DETAILED.
-	require.GreaterOrEqual(t, len(detailed.Diagnostics.JSON), len(summary.Diagnostics.JSON))
+	// DETAILED includes the retained per-attempt record omitted by SUMMARY.
+	require.Greater(t, len(detailedJSON), len(summaryJSON))
 
 	// The default client, used by every other diagnostics test in this file, must render the same
 	// way as an explicit DiagnosticsVerbositySummary.
@@ -179,7 +188,9 @@ func TestEmulatorDiagnosticsVerbosityOption(t *testing.T) {
 	trackEmulatorItem(t, defaultContainer, defaultPK, defaultID)
 	defaultResult, err := defaultContainer.CreateItem(t.Context(), defaultPK, defaultID, json.RawMessage(defaultBody), nil)
 	require.NoError(t, err)
-	require.True(t, json.Valid([]byte(defaultResult.Diagnostics.JSON)))
+	defaultJSON := requireDiagnosticsJSON(t, defaultResult.Diagnostics)
+	require.True(t, json.Valid([]byte(defaultJSON)))
+	require.NotContains(t, defaultJSON, `"attempts"`)
 }
 
 func TestEmulatorDiagnosticsSurviveClientClose(t *testing.T) {
@@ -203,4 +214,6 @@ func TestEmulatorDiagnosticsSurviveClientClose(t *testing.T) {
 
 	requireEmulatorDiagnostics(t, read.Diagnostics, http.StatusOK, 0, false)
 	requireEmulatorDiagnostics(t, missing.Diagnostics, http.StatusNotFound, 0, true)
+	require.NotEmpty(t, requireDiagnosticsJSON(t, read.Diagnostics))
+	require.NotEmpty(t, requireDiagnosticsJSON(t, missing.Diagnostics))
 }

@@ -2,15 +2,17 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.6.0-beta.5 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.6.0-beta.5 (2026-11-06)
 
 ### Bugs Fixed
 
+* Fixed `ReadManyItems` silently omitting existing items from multi-partition containers using V1 partition key hashing, including containers whose partition key definition omits the version. V1 routing now uses the service-compatible binary EPK encoding and string truncation. See [PR 27867](https://github.com/Azure/azure-sdk-for-go/pull/27867).
+* Set `MaxConnsPerHost` to 1000 on the default HTTP transport (previously 0, unlimited). HTTP/1.1 requests can now wait for a connection when the limit is reached; this setting is not a strict HTTP/2 connection limit. See [PR 27925](https://github.com/Azure/azure-sdk-for-go/pull/27925).
+* Fixed `ChangeFeedOptions.StartFrom` being ignored by the service, which read the change feed from the beginning instead. The `If-Modified-Since` header is now an HTTP date ending in `GMT` rather than `UTC`. See [PR 27787](https://github.com/Azure/azure-sdk-for-go/pull/27787).
+
 ### Other Changes
+
+* Migrated the default HTTP/2 transport configuration to `net/http`, preserving the 2-second idle health check interval and 1-second ping-response timeout. See [PR 27925](https://github.com/Azure/azure-sdk-for-go/pull/27925).
 
 ## 1.6.0-beta.4 (2026-10-14)
 

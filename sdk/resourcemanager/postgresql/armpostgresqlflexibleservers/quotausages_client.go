@@ -19,7 +19,7 @@ import (
 // QuotaUsagesClient contains the methods for the QuotaUsages group.
 // Don't use this type directly, use NewQuotaUsagesClient() instead.
 //
-// Generated from API version 2026-07-01-preview
+// Generated from API version 2026-10-01
 type QuotaUsagesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -96,7 +96,7 @@ func (client *QuotaUsagesClient) listCreateRequest(ctx context.Context, location
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260701Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-10-20)
+## 1.1.0-beta.1 (2026-11-09)
 ### Features Added
 
 - New enum type `BillingAccountCategoryTypeEnum` with values `BillingAccountCategoryTypeEnumLocation`, `BillingAccountCategoryTypeEnumResourceType`, `BillingAccountCategoryTypeEnumSubscription`

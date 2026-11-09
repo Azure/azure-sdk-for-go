@@ -55,7 +55,8 @@ func (client *CarbonServiceClient) QueryCarbonEmissionDataAvailableDateRange(ctx
 	if err != nil {
 		return CarbonServiceClientQueryCarbonEmissionDataAvailableDateRangeResponse{}, err
 	}
-	return client.queryCarbonEmissionDataAvailableDateRangeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryCarbonEmissionDataAvailableDateRangeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryCarbonEmissionDataAvailableDateRangeCreateRequest creates the QueryCarbonEmissionDataAvailableDateRange request.
@@ -103,7 +104,8 @@ func (client *CarbonServiceClient) QueryCarbonEmissionReports(ctx context.Contex
 	if err != nil {
 		return CarbonServiceClientQueryCarbonEmissionReportsResponse{}, err
 	}
-	return client.queryCarbonEmissionReportsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryCarbonEmissionReportsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryCarbonEmissionReportsCreateRequest creates the QueryCarbonEmissionReports request.
@@ -157,7 +159,8 @@ func (client *CarbonServiceClient) QueryCarbonEmissionReportsByBillingAccount(ct
 	if err != nil {
 		return CarbonServiceClientQueryCarbonEmissionReportsByBillingAccountResponse{}, err
 	}
-	return client.queryCarbonEmissionReportsByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryCarbonEmissionReportsByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryCarbonEmissionReportsByBillingAccountCreateRequest creates the QueryCarbonEmissionReportsByBillingAccount request.

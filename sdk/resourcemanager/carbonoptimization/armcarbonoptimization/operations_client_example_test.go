@@ -6,10 +6,9 @@ package armcarbonoptimization_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization"
+	"log"
 )
 
 // Generated from example definition: 2026-05-01-preview/listOperations.json

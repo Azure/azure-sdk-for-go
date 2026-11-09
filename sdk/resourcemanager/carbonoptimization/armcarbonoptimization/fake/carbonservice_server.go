@@ -8,14 +8,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"regexp"
-	"slices"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/carbonoptimization/armcarbonoptimization"
+	"net/http"
+	"regexp"
+	"slices"
 )
 
 // CarbonServiceServer is a fake server for instances of the armcarbonoptimization.CarbonServiceClient type.
@@ -51,7 +50,7 @@ func (c *CarbonServiceServerTransport) Do(req *http.Request) (*http.Response, er
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return c.dispatchToMethodFake(req, method)

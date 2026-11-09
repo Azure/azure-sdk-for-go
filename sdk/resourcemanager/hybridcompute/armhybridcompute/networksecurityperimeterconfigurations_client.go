@@ -85,7 +85,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileForPrivateL
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) GetByPrivateLinkScop
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetByPrivateLinkScopeResponse{}, err
 	}
-	return client.getByPrivateLinkScopeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByPrivateLinkScopeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByPrivateLinkScopeCreateRequest creates the GetByPrivateLinkScope request.

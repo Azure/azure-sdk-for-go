@@ -1,6 +1,6 @@
 # Release History
 
-## 3.1.0 (2026-10-26)
+## 3.1.0 (2026-11-09)
 ### Features Added
 
 - New value `IdentityKeyStoreTpmTransition` added to enum type `IdentityKeyStore`

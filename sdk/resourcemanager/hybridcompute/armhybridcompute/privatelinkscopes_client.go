@@ -84,7 +84,8 @@ func (client *PrivateLinkScopesClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -136,7 +137,8 @@ func (client *PrivateLinkScopesClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return PrivateLinkScopesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -200,7 +202,8 @@ func (client *PrivateLinkScopesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PrivateLinkScopesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -261,7 +264,8 @@ func (client *PrivateLinkScopesClient) GetValidationDetails(ctx context.Context,
 	if err != nil {
 		return PrivateLinkScopesClientGetValidationDetailsResponse{}, err
 	}
-	return client.getValidationDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getValidationDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getValidationDetailsCreateRequest creates the GetValidationDetails request.
@@ -322,7 +326,8 @@ func (client *PrivateLinkScopesClient) GetValidationDetailsForMachine(ctx contex
 	if err != nil {
 		return PrivateLinkScopesClientGetValidationDetailsForMachineResponse{}, err
 	}
-	return client.getValidationDetailsForMachineHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getValidationDetailsForMachineHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getValidationDetailsForMachineCreateRequest creates the GetValidationDetailsForMachine request.
@@ -523,7 +528,8 @@ func (client *PrivateLinkScopesClient) UpdateTags(ctx context.Context, resourceG
 	if err != nil {
 		return PrivateLinkScopesClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

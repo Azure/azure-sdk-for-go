@@ -1,14 +1,43 @@
 # Release History
 
-## 1.7.1-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
+* Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
+  clients authenticated with an `azcore.TokenCredential`, and only to the file reads they send to the blob endpoint;
+  requests to the DFS endpoint, writes and every other operation keep using the bearer token. With
+  `SessionOptions.Enabled` set to true, reads are authenticated with a session created and cached per file system.
+  The default, nil, currently resolves to disabled; false disables sessions explicitly.
+  * Each client created with a constructor has its own session cache. Clients derived from it with
+    `service.Client.NewFileSystemClient`, `filesystem.Client.NewDirectoryClient` and `filesystem.Client.NewFileClient`
+    share that cache. Clients created with `directory.Client.NewFileClient` and
+    `directory.Client.NewSubdirectoryClient` have their own cache, so navigating through a directory can create
+    additional sessions for the same file system.
+  * The account name that signs session requests is derived from the client's URL, or set with
+    `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
+    fails if `SessionOptions.Enabled` was set to true.
+* Added support for data locality in managed downloads through `LayoutAwareRouting` on `file.DownloadBufferOptions`
+  and `file.DownloadFileOptions`. When it is set to true and the initial read carries the service's layout download
+  hint, the remaining chunks are routed to the endpoint that serves each one. The default, nil, currently resolves to
+  disabled; false disables it explicitly. When the service can't provide a layout, downloads use the client's
+  configured endpoint.
 
 ### Breaking Changes
 
 ### Bugs Fixed
+* The token credential constructors now return the error from creating their blob client instead of discarding it.
 
 ### Other Changes
+* Updated `azblob` version to `1.9.0-beta.1`
+
+## 1.7.1 (2026-11-03)
+
+### Bugs Fixed
+* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
+
+### Other Changes
+* Updated `azcore` version to `1.23.3`
+* Updated `azblob` version to `1.8.3`
 
 ## 1.7.0 (2026-10-08)
 

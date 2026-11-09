@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/maintenance/armmaintenance/v2"
 	"log"
 )
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignmentsForResourceGroup_CreateOrUpdate.json
 func ExampleConfigurationAssignmentsForResourceGroupClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleConfigurationAssignmentsForResourceGroupClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignmentsForResourceGroup_Delete.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignmentsForResourceGroup_Delete.json
 func ExampleConfigurationAssignmentsForResourceGroupClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,7 +128,7 @@ func ExampleConfigurationAssignmentsForResourceGroupClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignmentsForResourceGroup_Get.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignmentsForResourceGroup_Get.json
 func ExampleConfigurationAssignmentsForResourceGroupClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleConfigurationAssignmentsForResourceGroupClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/ConfigurationAssignmentsForResourceGroup_UpdateForResource.json
+// Generated from example definition: 2025-10-01-preview/ConfigurationAssignmentsForResourceGroup_UpdateForResource.json
 func ExampleConfigurationAssignmentsForResourceGroupClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

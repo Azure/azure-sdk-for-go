@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15-preview/CalculateModelCapacity.json
+// Generated from example definition: 2026-09-15-preview/CalculateModelCapacity.json
 func ExampleManagementClient_CalculateModelCapacity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -69,7 +69,7 @@ func ExampleManagementClient_CalculateModelCapacity() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/CheckDomainAvailability.json
+// Generated from example definition: 2026-09-15-preview/CheckDomainAvailability.json
 func ExampleManagementClient_CheckDomainAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,7 +100,7 @@ func ExampleManagementClient_CheckDomainAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/CheckSkuAvailability.json
+// Generated from example definition: 2026-09-15-preview/CheckSkuAvailability.json
 func ExampleManagementClient_CheckSKUAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

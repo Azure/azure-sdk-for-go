@@ -5,7 +5,7 @@
 package armhybridconnectivity
 
 const (
-	version20241201 string = "2024-12-01"
+	version20270101 string = "2027-01-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -62,18 +62,39 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// GCPTemplateFormat - GCP template format.
+type GCPTemplateFormat string
+
+const (
+	// GCPTemplateFormatShellScript - Shell script template format
+	GCPTemplateFormatShellScript GCPTemplateFormat = "shellscript"
+	// GCPTemplateFormatTerraform - Terraform template format
+	GCPTemplateFormatTerraform GCPTemplateFormat = "terraform"
+)
+
+// PossibleGCPTemplateFormatValues returns the possible values for the GCPTemplateFormat const type.
+func PossibleGCPTemplateFormatValues() []GCPTemplateFormat {
+	return []GCPTemplateFormat{
+		GCPTemplateFormatShellScript,
+		GCPTemplateFormatTerraform,
+	}
+}
+
 // HostType - Enum of host cloud the public cloud connector is referencing.
 type HostType string
 
 const (
 	// HostTypeAWS - AWS state
 	HostTypeAWS HostType = "AWS"
+	// HostTypeGCP - GCP state
+	HostTypeGCP HostType = "GCP"
 )
 
 // PossibleHostTypeValues returns the possible values for the HostType const type.
 func PossibleHostTypeValues() []HostType {
 	return []HostType{
 		HostTypeAWS,
+		HostTypeGCP,
 	}
 }
 

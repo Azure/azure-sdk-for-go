@@ -71,15 +71,16 @@ type AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetOptions stru
 	// placeholder for future optional parameters
 }
 
+// CapacityReservationGroupsClientBeginDeleteOptions contains the optional parameters for the CapacityReservationGroupsClient.BeginDelete
+// method.
+type CapacityReservationGroupsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // CapacityReservationGroupsClientCreateOrUpdateOptions contains the optional parameters for the CapacityReservationGroupsClient.CreateOrUpdate
 // method.
 type CapacityReservationGroupsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CapacityReservationGroupsClientDeleteOptions contains the optional parameters for the CapacityReservationGroupsClient.Delete
-// method.
-type CapacityReservationGroupsClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 

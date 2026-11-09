@@ -30,14 +30,14 @@ const (
 	// ExpectContinueModeApplyOnThrottle indicates that Expect-Continue will not be applied
 	// until specific errors are encountered from the service, at which point it will be
 	// applied for a fixed window of time after the last triggering error. This is the default.
-	ExpectContinueModeApplyOnThrottle = exported.ExpectContinueModeApplyOnThrottle
+	ExpectContinueModeApplyOnThrottle ExpectContinueMode = exported.ExpectContinueModeApplyOnThrottle
 
 	// ExpectContinueModeOn indicates Expect-Continue will be applied regardless of recent
 	// error status. The ContentLengthThreshold option still applies.
-	ExpectContinueModeOn = exported.ExpectContinueModeOn
+	ExpectContinueModeOn ExpectContinueMode = exported.ExpectContinueModeOn
 
 	// ExpectContinueModeOff indicates Expect-Continue will never be applied.
-	ExpectContinueModeOff = exported.ExpectContinueModeOff
+	ExpectContinueModeOff ExpectContinueMode = exported.ExpectContinueModeOff
 )
 
 // ExpectContinueOptions configures the behavior for applying the HTTP "Expect: 100-continue"
@@ -229,35 +229,36 @@ func (l ListBlobsInclude) format() []generated.ListBlobsIncludeItem {
 type StorageResponseFormat = exported.StorageResponseFormat
 
 const (
-	// StorageResponseFormatAuto lets the SDK choose the response format.
-	// For the current release this resolves to XML; a future release will resolve to Arrow.
-	StorageResponseFormatAuto = exported.StorageResponseFormatAuto
+	// StorageResponseFormatAuto lets the SDK choose the response format. It currently resolves to
+	// StorageResponseFormatXML; Arrow is opt-in.
+	StorageResponseFormatAuto StorageResponseFormat = exported.StorageResponseFormatAuto
 
 	// StorageResponseFormatXML forces XML-only responses. Use when you need raw XML responses (e.g. debugging).
-	StorageResponseFormatXML = exported.StorageResponseFormatXML
+	StorageResponseFormatXML StorageResponseFormat = exported.StorageResponseFormatXML
 
 	// StorageResponseFormatArrow sends both Arrow and XML in the Accept header; the service returns Arrow
 	// when Photon is enabled, otherwise falls back to XML. The SDK handles both transparently.
-	StorageResponseFormatArrow = exported.StorageResponseFormatArrow
+	// An Arrow listing doesn't carry the service endpoint, so ServiceEndpoint is nil in its response.
+	StorageResponseFormatArrow StorageResponseFormat = exported.StorageResponseFormatArrow
 )
 
 // ListBlobsFlatOptions contains the optional parameters for the ContainerClient.ListBlobFlatSegment method.
 type ListBlobsFlatOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
 	Include ListBlobsInclude
-	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
+	// A string value that identifies the portion of the list of blobs to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
-	// operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used
+	// operation did not return all blobs remaining to be listed with the current page. The NextMarker value can be used
 	// as the value for the marker parameter in a subsequent call to request the next
 	// page of list items. The marker value is opaque to the client.
 	Marker *string
-	// Specifies the maximum number of containers to return. If the request does not specify MaxResults, or specifies a value
+	// Specifies the maximum number of blobs to return. If the request does not specify MaxResults, or specifies a value
 	// greater than 5000, the server will return up to 5000 items. Note that if the
 	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
 	// of the results. For this reason, it is possible that the service will
 	// return fewer results than specified by MaxResults, or than the default of 5000.
 	MaxResults *int32
-	// Filters the results to return only containers whose name begins with the specified prefix.
+	// Filters the results to return only blobs whose name begins with the specified prefix.
 	Prefix *string
 	// Specifies the relative path to list paths from. For non-recursive list, only one entity level is supported; For recursive
 	// list, multiple entity levels are supported. (Inclusive)
@@ -266,7 +267,7 @@ type ListBlobsFlatOptions struct {
 	// Only supported when ResponseFormat is StorageResponseFormatArrow.
 	EndBefore *string
 	// ResponseFormat specifies the format the service should use to return list results.
-	// Defaults to StorageResponseFormatAuto, which resolves to XML for the current release.
+	// Defaults to StorageResponseFormatAuto, which resolves to XML.
 	ResponseFormat StorageResponseFormat
 }
 
@@ -290,19 +291,19 @@ func (o *ListBlobsFlatOptions) formatArrow() generated.ContainerClientListBlobFl
 type ListBlobsHierarchyOptions struct {
 	// Include this parameter to specify one or more datasets to include in the response.
 	Include ListBlobsInclude
-	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
+	// A string value that identifies the portion of the list of blobs to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
-	// operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used
+	// operation did not return all blobs remaining to be listed with the current page. The NextMarker value can be used
 	// as the value for the marker parameter in a subsequent call to request the next
 	// page of list items. The marker value is opaque to the client.
 	Marker *string
-	// Specifies the maximum number of containers to return. If the request does not specify MaxResults, or specifies a value
+	// Specifies the maximum number of blobs to return. If the request does not specify MaxResults, or specifies a value
 	// greater than 5000, the server will return up to 5000 items. Note that if the
 	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
 	// of the results. For this reason, it is possible that the service will
 	// return fewer results than specified by MaxResults, or than the default of 5000.
 	MaxResults *int32
-	// Filters the results to return only containers whose name begins with the specified prefix.
+	// Filters the results to return only blobs whose name begins with the specified prefix.
 	Prefix *string
 	// Specifies the relative path to list paths from. For non-recursive list, only one entity level is supported; For recursive
 	// list, multiple entity levels are supported. (Inclusive)
@@ -311,7 +312,7 @@ type ListBlobsHierarchyOptions struct {
 	// Only supported when ResponseFormat is StorageResponseFormatArrow.
 	EndBefore *string
 	// ResponseFormat specifies the format the service should use to return list results.
-	// Defaults to StorageResponseFormatAuto, which resolves to XML for the current release.
+	// Defaults to StorageResponseFormatAuto, which resolves to XML.
 	ResponseFormat StorageResponseFormat
 }
 
@@ -560,13 +561,13 @@ func (o *SubmitBatchOptions) format() *generated.ContainerClientSubmitBatchOptio
 
 // FilterBlobsOptions provides set of options for Client.FilterBlobs.
 type FilterBlobsOptions struct {
-	// A string value that identifies the portion of the list of containers to be returned with the next listing operation. The
+	// A string value that identifies the portion of the list of blobs to be returned with the next listing operation. The
 	// operation returns the NextMarker value within the response body if the listing
-	// operation did not return all containers remaining to be listed with the current page. The NextMarker value can be used
+	// operation did not return all blobs remaining to be listed with the current page. The NextMarker value can be used
 	// as the value for the marker parameter in a subsequent call to request the next
 	// page of list items. The marker value is opaque to the client.
 	Marker *string
-	// Specifies the maximum number of containers to return. If the request does not specify maxresults, or specifies a value
+	// Specifies the maximum number of blobs to return. If the request does not specify maxresults, or specifies a value
 	// greater than 5000, the server will return up to 5000 items. Note that if the
 	// listing operation crosses a partition boundary, then the service will return a continuation token for retrieving the remainder
 	// of the results. For this reason, it is possible that the service will

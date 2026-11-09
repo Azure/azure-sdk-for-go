@@ -87,7 +87,8 @@ func (client *MongoClustersClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -162,7 +163,8 @@ func (client *MongoClustersClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -233,7 +235,8 @@ func (client *MongoClustersClient) promote(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -310,7 +313,8 @@ func (client *MongoClustersClient) update(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -365,7 +369,8 @@ func (client *MongoClustersClient) CheckNameAvailability(ctx context.Context, lo
 	if err != nil {
 		return MongoClustersClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -425,7 +430,8 @@ func (client *MongoClustersClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return MongoClustersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -487,7 +493,8 @@ func (client *MongoClustersClient) ListConnectionStrings(ctx context.Context, re
 	if err != nil {
 		return MongoClustersClientListConnectionStringsResponse{}, err
 	}
-	return client.listConnectionStringsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listConnectionStringsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listConnectionStringsCreateRequest creates the ListConnectionStrings request.

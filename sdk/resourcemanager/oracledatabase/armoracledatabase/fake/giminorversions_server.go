@@ -12,11 +12,12 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/oracledatabase/armoracledatabase/v3"
 	"net/http"
 	"net/url"
 	"regexp"
 	"slices"
+	"strconv"
 )
 
 // GiMinorVersionsServer is a fake server for instances of the armoracledatabase.GiMinorVersionsClient type.
@@ -148,11 +149,20 @@ func (g *GiMinorVersionsServerTransport) dispatchNewListByParentPager(req *http.
 		}
 		shapeFamilyParam := getOptional(armoracledatabase.ShapeFamily(qp.Get("shapeFamily")))
 		zoneParam := getOptional(qp.Get("zone"))
+		shapeParam := getOptional(qp.Get("shape"))
+		isGiVersionForProvisioningParam, err := parseOptional(qp.Get("isGiVersionForProvisioning"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		sortOrderParam := getOptional(armoracledatabase.GiMinorVersionSortOrder(qp.Get("sortOrder")))
 		var options *armoracledatabase.GiMinorVersionsClientListByParentOptions
-		if shapeFamilyParam != nil || zoneParam != nil {
+		if shapeFamilyParam != nil || zoneParam != nil || shapeParam != nil || isGiVersionForProvisioningParam != nil || sortOrderParam != nil {
 			options = &armoracledatabase.GiMinorVersionsClientListByParentOptions{
-				ShapeFamily: shapeFamilyParam,
-				Zone:        zoneParam,
+				ShapeFamily:                shapeFamilyParam,
+				Zone:                       zoneParam,
+				Shape:                      shapeParam,
+				IsGiVersionForProvisioning: isGiVersionForProvisioningParam,
+				SortOrder:                  sortOrderParam,
 			}
 		}
 		resp := g.srv.NewListByParentPager(locationParam, giversionnameParam, options)

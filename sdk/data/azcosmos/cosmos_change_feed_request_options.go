@@ -5,6 +5,7 @@ package azcosmos
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 	"time"
 )
@@ -17,7 +18,7 @@ type ChangeFeedOptions struct {
 	MaxItemCount int32
 
 	// StartFrom is a user-friendly way to specify the time for change feed
-	// Will be set to the IfModifiedSince header
+	// Will be set to the IfModifiedSince header, as an HTTP date in GMT
 	StartFrom *time.Time
 
 	// PartitionKey is the logical partition key value for the request.
@@ -61,7 +62,7 @@ func (options *ChangeFeedOptions) buildRequestHeaders(head changeFeedRange, reso
 			headers[cosmosHeaderMaxItemCount] = strconv.FormatInt(int64(options.MaxItemCount), 10)
 		}
 		if options.StartFrom != nil {
-			headers[cosmosHeaderIfModifiedSince] = options.StartFrom.UTC().Format(time.RFC1123)
+			headers[cosmosHeaderIfModifiedSince] = options.StartFrom.UTC().Format(http.TimeFormat)
 		}
 		if options.PartitionKey != nil {
 			pkJSON, err := options.PartitionKey.toJsonString()

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01-preview/GetQuotaUsage.json
+// Generated from example definition: 2026-09-01-preview/GetQuotaUsage.json
 func ExampleManagementClient_UsageBySubscriptionSKU() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

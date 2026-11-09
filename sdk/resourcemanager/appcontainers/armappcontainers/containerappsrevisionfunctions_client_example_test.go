@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-02-preview/ContainerAppsRevisionFunctions_Get.json
+// Generated from example definition: 2026-07-01/ContainerAppsRevisionFunctions_Get.json
 func ExampleContainerAppsRevisionFunctionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -36,7 +36,7 @@ func ExampleContainerAppsRevisionFunctionsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/myResourceGroup/providers/Microsoft.App/containerApps/myContainerApp/revisions/myContainerApp-abc123/functions/HttpExample"),
 	// 		Properties: &armappcontainers.ContainerAppsFunctionProperties{
 	// 			InvokeURLTemplate: to.Ptr("https://mycontainerapp.example-region.azurecontainerapps.io/api/HttpExample"),
-	// 			IsDisabled: to.Ptr(false),
+	// 			State: to.Ptr(armappcontainers.ContainerAppsFunctionStateEnabled),
 	// 			TriggerType: to.Ptr("httpTrigger"),
 	// 			Language: to.Ptr("dotnet-isolated"),
 	// 		},
@@ -44,7 +44,7 @@ func ExampleContainerAppsRevisionFunctionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-02-preview/ContainerAppsRevisionFunctions_List.json
+// Generated from example definition: 2026-07-01/ContainerAppsRevisionFunctions_List.json
 func ExampleContainerAppsRevisionFunctionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleContainerAppsRevisionFunctionsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/myResourceGroup/providers/Microsoft.App/containerApps/myContainerApp/revisions/myContainerApp-abc123/functions/HttpExample"),
 		// 				Properties: &armappcontainers.ContainerAppsFunctionProperties{
 		// 					InvokeURLTemplate: to.Ptr("https://mycontainerapp.example-region.azurecontainerapps.io/api/HttpExample"),
-		// 					IsDisabled: to.Ptr(false),
+		// 					State: to.Ptr(armappcontainers.ContainerAppsFunctionStateEnabled),
 		// 					TriggerType: to.Ptr("httpTrigger"),
 		// 					Language: to.Ptr("dotnet-isolated"),
 		// 				},
@@ -86,7 +86,7 @@ func ExampleContainerAppsRevisionFunctionsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789abc/resourceGroups/myResourceGroup/providers/Microsoft.App/containerApps/myContainerApp/revisions/myContainerApp-abc123/functions/TimerFunction"),
 		// 				Properties: &armappcontainers.ContainerAppsFunctionProperties{
 		// 					InvokeURLTemplate: to.Ptr("https://mycontainerapp.example-region.azurecontainerapps.io/api/TimerFunction"),
-		// 					IsDisabled: to.Ptr(false),
+		// 					State: to.Ptr(armappcontainers.ContainerAppsFunctionStateEnabled),
 		// 					TriggerType: to.Ptr("timerTrigger"),
 		// 					Language: to.Ptr("dotnet-isolated"),
 		// 				},

@@ -19,7 +19,7 @@ import (
 // RestorableMongodbResourcesClient contains the methods for the RestorableMongodbResources group.
 // Don't use this type directly, use NewRestorableMongodbResourcesClient() instead.
 //
-// Generated from API version 2026-03-15
+// Generated from API version 2026-04-01-preview
 type RestorableMongodbResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -104,7 +104,7 @@ func (client *RestorableMongodbResourcesClient) listCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260315)
+		reqQP.Set("api-version", version20260401Preview)
 		if options != nil && options.RestoreLocation != nil {
 			reqQP.Set("restoreLocation", *options.RestoreLocation)
 		}

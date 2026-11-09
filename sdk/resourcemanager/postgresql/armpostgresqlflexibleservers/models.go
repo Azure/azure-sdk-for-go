@@ -153,6 +153,9 @@ type Backup struct {
 	// Indicates if the server is configured to create geographically redundant backups.
 	GeoRedundantBackup *GeographicallyRedundantBackup
 
+	// Indicates if the server is configured to create immutable backups.
+	ImmutableBackup *ImmutableBackup
+
 	// READ-ONLY; Earliest restore point time (ISO8601 format) for a server.
 	EarliestRestoreDate *time.Time
 }
@@ -200,6 +203,9 @@ type BackupAutomaticAndOnDemandProperties struct {
 type BackupForPatch struct {
 	// Backup retention days for the server.
 	BackupRetentionDays *int32
+
+	// Indicates if the server is configured to create immutable backups.
+	ImmutableBackup *ImmutableBackup
 
 	// READ-ONLY; Earliest restore point time (ISO8601 format) for a server.
 	EarliestRestoreDate *time.Time
@@ -964,7 +970,7 @@ type MajorVersionUpgradePrecheckResourceProperties struct {
 	Status *MajorVersionUpgradePrecheckStatus
 
 	// The target PostgreSQL major version for the upgrade.
-	TargetVersion *PostgresMajorVersion
+	TargetVersion *string
 }
 
 // MetricSpecification - Metric specification for an operation.
@@ -1782,6 +1788,10 @@ type ServerProperties struct {
 	// Data encryption properties of a server.
 	DataEncryption *DataEncryption
 
+	// Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the server. If not specified on create,
+	// it defaults to Disabled.
+	FipsMode *FipsMode
+
 	// High availability properties of a server.
 	HighAvailability *HighAvailability
 
@@ -1810,7 +1820,7 @@ type ServerProperties struct {
 	Storage *Storage
 
 	// Major version of PostgreSQL database engine.
-	Version *PostgresMajorVersion
+	Version *string
 
 	// READ-ONLY; Fully qualified domain name of a server.
 	FullyQualifiedDomainName *string
@@ -1852,6 +1862,10 @@ type ServerPropertiesForPatch struct {
 	// Data encryption properties of a server.
 	DataEncryption *DataEncryption
 
+	// Indicates if FIPS (Federal Information Processing Standards) mode is enabled on the server. If not specified, the current
+	// value is preserved.
+	FipsMode *FipsMode
+
 	// High availability properties of a server.
 	HighAvailability *HighAvailabilityForPatch
 
@@ -1868,11 +1882,14 @@ type ServerPropertiesForPatch struct {
 	// Role of the server in a replication set.
 	ReplicationRole *ReplicationRole
 
+	// Identifier of the server to be used as the source of the new server.
+	SourceServerResourceID *string
+
 	// Storage properties of a server.
 	Storage *Storage
 
 	// Major version of PostgreSQL database engine.
-	Version *PostgresMajorVersion
+	Version *string
 
 	// READ-ONLY; Name of the login designated as the first password based administrator assigned to your instance of PostgreSQL.
 	// Must be specified the first time that you enable password based authentication on a server. Once set to a given value,
@@ -1953,7 +1970,7 @@ type ServiceSpecification struct {
 // StartMajorVersionUpgradePrecheckRequest - Request model for starting a major version upgrade precheck.
 type StartMajorVersionUpgradePrecheckRequest struct {
 	// REQUIRED; The target major version to upgrade to.
-	TargetVersion *PostgresMajorVersion
+	TargetVersion *string
 }
 
 // StartMajorVersionUpgradePrecheckResponse - Response model for starting a major version upgrade precheck.
@@ -1973,6 +1990,14 @@ type Storage struct {
 	// Flag to enable or disable the automatic growth of storage size of a server when available space is nearing zero and conditions
 	// allow for automatically growing storage size.
 	AutoGrow *StorageAutoGrow
+
+	// Storage autogrow increment as a percentage of the current allocated storage size. This value is not an absolute size increment
+	// or a utilization threshold.
+	AutoGrowIncrementPercent *int32
+
+	// Maximum allocated storage size to which storage autogrow may grow, in MB. This value is not a disk-utilization trigger
+	// threshold and must be at least the effective current or requested storage size. Storage conversion uses 1 GB = 1,024 MB.
+	AutoGrowMaxThresholdMb *int32
 
 	// Maximum IOPS supported for storage. Required when type of storage is PremiumV2_LRS or UltraSSD_LRS.
 	Iops *int32
@@ -2123,10 +2148,10 @@ type TuningOptionsProperties struct {
 // UpgradeSequence - Upgrade sequence information.
 type UpgradeSequence struct {
 	// The source PostgreSQL version.
-	SourceVersion *PostgresMajorVersion
+	SourceVersion *string
 
 	// The target PostgreSQL version.
-	TargetVersion *PostgresMajorVersion
+	TargetVersion *string
 }
 
 // UserAssignedIdentity - Identities associated with a server.

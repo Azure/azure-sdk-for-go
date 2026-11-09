@@ -69,7 +69,7 @@ func (client *VirtualMachineDiagnosticRunCommandsClient) BeginCreateOrUpdate(ctx
 	}
 }
 
-// CreateOrUpdate - The operation to create or update the diagnostic run command.
+// createOrUpdate - The operation to create or update the diagnostic run command.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineDiagnosticRunCommandsClient) createOrUpdate(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineDiagnosticRunCommand, options *VirtualMachineDiagnosticRunCommandsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -91,7 +91,7 @@ func (client *VirtualMachineDiagnosticRunCommandsClient) createOrUpdate(ctx cont
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *VirtualMachineDiagnosticRunCommandsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineDiagnosticRunCommand, _ *VirtualMachineDiagnosticRunCommandsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/diagnosticRunCommands/{runCommandName}"
 	if client.subscriptionID == "" {
@@ -149,7 +149,7 @@ func (client *VirtualMachineDiagnosticRunCommandsClient) BeginDelete(ctx context
 	}
 }
 
-// Delete - The operation to delete the diagnostic run command.
+// deleteOperation - The operation to delete the diagnostic run command.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VirtualMachineDiagnosticRunCommandsClient) deleteOperation(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineDiagnosticRunCommandsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,7 +171,7 @@ func (client *VirtualMachineDiagnosticRunCommandsClient) deleteOperation(ctx con
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VirtualMachineDiagnosticRunCommandsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, _ *VirtualMachineDiagnosticRunCommandsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/diagnosticRunCommands/{runCommandName}"
 	if client.subscriptionID == "" {
@@ -198,6 +198,156 @@ func (client *VirtualMachineDiagnosticRunCommandsClient) deleteCreateRequest(ctx
 	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
+}
+
+// BeginUpdate - The operation to update the diagnostic run command.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vmName - The name of the VirtualMachine
+//   - runCommandName - The name of the VirtualMachineDiagnosticRunCommand
+//   - runCommand - Parameters supplied to the Update Virtual Machine Diagnostic RunCommand operation.
+//   - options - VirtualMachineDiagnosticRunCommandsClientBeginUpdateOptions contains the optional parameters for the VirtualMachineDiagnosticRunCommandsClient.BeginUpdate
+//     method.
+func (client *VirtualMachineDiagnosticRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineDiagnosticRunCommandsClientBeginUpdateOptions) (*runtime.Poller[VirtualMachineDiagnosticRunCommandsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, vmName, runCommandName, runCommand, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachineDiagnosticRunCommandsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualMachineDiagnosticRunCommandsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - The operation to update the diagnostic run command.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *VirtualMachineDiagnosticRunCommandsClient) update(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineDiagnosticRunCommandsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "VirtualMachineDiagnosticRunCommandsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmName, runCommandName, runCommand, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *VirtualMachineDiagnosticRunCommandsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, _ *VirtualMachineDiagnosticRunCommandsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/diagnosticRunCommands/{runCommandName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vmName == "" {
+		return nil, errors.New("parameter vmName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
+	if runCommandName == "" {
+		return nil, errors.New("parameter runCommandName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{runCommandName}", url.PathEscape(runCommandName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, runCommand); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// GetByVirtualMachine - The operation to get the diagnostic run command.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - vmName - The name of the VirtualMachine
+//   - runCommandName - The name of the VirtualMachineDiagnosticRunCommand
+//   - options - VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineOptions contains the optional parameters for the
+//     VirtualMachineDiagnosticRunCommandsClient.GetByVirtualMachine method.
+func (client *VirtualMachineDiagnosticRunCommandsClient) GetByVirtualMachine(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineOptions) (VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse, error) {
+	var err error
+	const operationName = "VirtualMachineDiagnosticRunCommandsClient.GetByVirtualMachine"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByVirtualMachineCreateRequest(ctx, resourceGroupName, vmName, runCommandName, options)
+	if err != nil {
+		return VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse{}, err
+	}
+	return client.getByVirtualMachineHandleResponse(httpResp, http.StatusOK)
+}
+
+// getByVirtualMachineCreateRequest creates the GetByVirtualMachine request.
+func (client *VirtualMachineDiagnosticRunCommandsClient) getByVirtualMachineCreateRequest(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/diagnosticRunCommands/{runCommandName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if vmName == "" {
+		return nil, errors.New("parameter vmName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
+	if runCommandName == "" {
+		return nil, errors.New("parameter runCommandName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{runCommandName}", url.PathEscape(runCommandName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Expand != nil {
+		reqQP.Set("$expand", *options.Expand)
+	}
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByVirtualMachineHandleResponse handles the GetByVirtualMachine response.
+func (client *VirtualMachineDiagnosticRunCommandsClient) getByVirtualMachineHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse, error) {
+	result := VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineDiagnosticRunCommand); err != nil {
+		return VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse{}, err
+	}
+	return result, nil
 }
 
 // NewDiagnosticListByVirtualMachinePager - The operation to get all diagnostic run commands of a Virtual Machine.
@@ -278,154 +428,4 @@ func (client *VirtualMachineDiagnosticRunCommandsClient) diagnosticListByVirtual
 		return VirtualMachineDiagnosticRunCommandsClientDiagnosticListByVirtualMachineResponse{}, err
 	}
 	return result, nil
-}
-
-// GetByVirtualMachine - The operation to get the diagnostic run command.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - vmName - The name of the VirtualMachine
-//   - runCommandName - The name of the VirtualMachineDiagnosticRunCommand
-//   - options - VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineOptions contains the optional parameters for the
-//     VirtualMachineDiagnosticRunCommandsClient.GetByVirtualMachine method.
-func (client *VirtualMachineDiagnosticRunCommandsClient) GetByVirtualMachine(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineOptions) (VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse, error) {
-	var err error
-	const operationName = "VirtualMachineDiagnosticRunCommandsClient.GetByVirtualMachine"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getByVirtualMachineCreateRequest(ctx, resourceGroupName, vmName, runCommandName, options)
-	if err != nil {
-		return VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse{}, err
-	}
-	return client.getByVirtualMachineHandleResponse(httpResp, http.StatusOK)
-}
-
-// getByVirtualMachineCreateRequest creates the GetByVirtualMachine request.
-func (client *VirtualMachineDiagnosticRunCommandsClient) getByVirtualMachineCreateRequest(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, options *VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/diagnosticRunCommands/{runCommandName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vmName == "" {
-		return nil, errors.New("parameter vmName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if runCommandName == "" {
-		return nil, errors.New("parameter runCommandName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{runCommandName}", url.PathEscape(runCommandName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Expand != nil {
-		reqQP.Set("$expand", *options.Expand)
-	}
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getByVirtualMachineHandleResponse handles the GetByVirtualMachine response.
-func (client *VirtualMachineDiagnosticRunCommandsClient) getByVirtualMachineHandleResponse(resp *http.Response, successCodes ...int) (VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse, error) {
-	result := VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VirtualMachineDiagnosticRunCommand); err != nil {
-		return VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse{}, err
-	}
-	return result, nil
-}
-
-// BeginUpdate - The operation to update the diagnostic run command.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - vmName - The name of the VirtualMachine
-//   - runCommandName - The name of the VirtualMachineDiagnosticRunCommand
-//   - runCommand - Parameters supplied to the Update Virtual Machine Diagnostic RunCommand operation.
-//   - options - VirtualMachineDiagnosticRunCommandsClientBeginUpdateOptions contains the optional parameters for the VirtualMachineDiagnosticRunCommandsClient.BeginUpdate
-//     method.
-func (client *VirtualMachineDiagnosticRunCommandsClient) BeginUpdate(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineDiagnosticRunCommandsClientBeginUpdateOptions) (*runtime.Poller[VirtualMachineDiagnosticRunCommandsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, vmName, runCommandName, runCommand, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[VirtualMachineDiagnosticRunCommandsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[VirtualMachineDiagnosticRunCommandsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - The operation to update the diagnostic run command.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualMachineDiagnosticRunCommandsClient) update(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, options *VirtualMachineDiagnosticRunCommandsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "VirtualMachineDiagnosticRunCommandsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, vmName, runCommandName, runCommand, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *VirtualMachineDiagnosticRunCommandsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, vmName string, runCommandName string, runCommand VirtualMachineRunCommandUpdate, _ *VirtualMachineDiagnosticRunCommandsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}/diagnosticRunCommands/{runCommandName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if vmName == "" {
-		return nil, errors.New("parameter vmName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vmName}", url.PathEscape(vmName))
-	if runCommandName == "" {
-		return nil, errors.New("parameter runCommandName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{runCommandName}", url.PathEscape(runCommandName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, runCommand); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

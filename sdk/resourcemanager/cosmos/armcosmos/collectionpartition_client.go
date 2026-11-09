@@ -19,7 +19,7 @@ import (
 // CollectionPartitionClient contains the methods for the CollectionPartition group.
 // Don't use this type directly, use NewCollectionPartitionClient() instead.
 //
-// Generated from API version 2026-03-15
+// Generated from API version 2026-04-01-preview
 type CollectionPartitionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -116,7 +116,7 @@ func (client *CollectionPartitionClient) listMetricsCreateRequest(ctx context.Co
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
 		reqQP.Set("$filter", filter)
-		reqQP.Set("api-version", version20260315)
+		reqQP.Set("api-version", version20260401Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -206,7 +206,7 @@ func (client *CollectionPartitionClient) listUsagesCreateRequest(ctx context.Con
 		if options != nil && options.Filter != nil {
 			reqQP.Set("$filter", *options.Filter)
 		}
-		reqQP.Set("api-version", version20260315)
+		reqQP.Set("api-version", version20260401Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -2317,3 +2317,63 @@ func (s *ServiceUnrecordedTestsSuite) TestDelegationSASRequestHeadersAndQueryPar
 	_require.Equal(originalURL, roundtripURL)
 	_require.Equal(sasQueryParams.Encode(), roundtripParts.SAS.Encode())
 }
+
+// TestServiceGetSASURLPreservesCustomQueryParams is a regression test for GetSASURL()
+// appending a duplicated "?" to the resulting URL when the client's URL already contained a
+// query string (e.g. a customer-provided endpoint with pre-existing custom query parameters),
+// which previously produced a malformed SAS URL.
+func TestServiceGetSASURLPreservesCustomQueryParams(t *testing.T) {
+	_require := require.New(t)
+	const accountName = "fakestorageaccount"
+	// base64-encoded fake key; not a real secret.
+	const accountKey = "PSA7dl59RwZBFEBhBEtdrsq/g7VpjMFeSPzdC4SoBiQI3xVLg2y8HRoAF3PidfB8/i9v67QCNSAdVdJdKrmqSw=="
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net/?customparam=value", accountName)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
+	_require.NoError(err)
+
+	sasURL, err := svcClient.GetSASURL(
+		sas.AccountResourceTypes{Object: true},
+		sas.AccountPermissions{Read: true},
+		time.Now().Add(time.Hour),
+		nil,
+	)
+	_require.NoError(err)
+
+	_require.Equal(1, strings.Count(sasURL, "?"), "SAS URL must not contain a duplicated '?': %s", sasURL)
+	_require.Contains(sasURL, "customparam=value")
+	_require.Contains(sasURL, "sig=")
+}
+
+// TestServiceGetSASURLNoTrailingSlashBeforeQuery is a regression test for GetSASURL()
+// corrupting the query string when the client's URL has a query string but no trailing slash
+// after the account path (e.g. https://acct.blob.core.windows.net?customparam=value). The
+// trailing slash added for consistency with the portal must be appended to the account path,
+// not to the query string value.
+func TestServiceGetSASURLNoTrailingSlashBeforeQuery(t *testing.T) {
+	_require := require.New(t)
+	const accountName = "fakestorageaccount"
+	// base64-encoded fake key; not a real secret.
+	const accountKey = "PSA7dl59RwZBFEBhBEtdrsq/g7VpjMFeSPzdC4SoBiQI3xVLg2y8HRoAF3PidfB8/i9v67QCNSAdVdJdKrmqSw=="
+	cred, err := service.NewSharedKeyCredential(accountName, accountKey)
+	_require.NoError(err)
+
+	serviceURL := fmt.Sprintf("https://%s.blob.core.windows.net?customparam=value", accountName)
+	svcClient, err := service.NewClientWithSharedKeyCredential(serviceURL, cred, nil)
+	_require.NoError(err)
+
+	sasURL, err := svcClient.GetSASURL(
+		sas.AccountResourceTypes{Object: true},
+		sas.AccountPermissions{Read: true},
+		time.Now().Add(time.Hour),
+		nil,
+	)
+	_require.NoError(err)
+
+	_require.Equal(1, strings.Count(sasURL, "?"), "SAS URL must not contain a duplicated '?': %s", sasURL)
+	_require.Contains(sasURL, "customparam=value&", "query value must not be corrupted with an appended slash: %s", sasURL)
+	_require.NotContains(sasURL, "customparam=value/", "query value must not have a trailing slash appended: %s", sasURL)
+	_require.True(strings.HasPrefix(sasURL, fmt.Sprintf("https://%s.blob.core.windows.net/?", accountName)), "trailing slash must be appended to the account path: %s", sasURL)
+}

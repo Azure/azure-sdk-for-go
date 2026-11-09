@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15-preview/CreateAccount.json
+// Generated from example definition: 2026-09-15-preview/CreateAccount.json
 func ExampleAccountsClient_BeginCreate_createAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleAccountsClient_BeginCreate_createAccount() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/CreateAccountMin.json
+// Generated from example definition: 2026-09-15-preview/CreateAccountMin.json
 func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleAccountsClient_BeginCreate_createAccountMin() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/CreateAccountWithAgentHostingConfiguration.json
+// Generated from example definition: 2026-09-15-preview/CreateAccountWithAgentHostingConfiguration.json
 func ExampleAccountsClient_BeginCreate_createAFoundryAccountWithCustomerOwnedAksHosting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleAccountsClient_BeginCreate_createAFoundryAccountWithCustomerOwnedAks
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/DeleteAccount.json
+// Generated from example definition: 2026-09-15-preview/DeleteAccount.json
 func ExampleAccountsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,63 @@ func ExampleAccountsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/EvaluateDeploymentPolicies.json
+// Generated from example definition: 2026-09-15-preview/UpdateAccount.json
+func ExampleAccountsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAccountsClient().BeginUpdate(ctx, "bvttest", "bingSearch", armcognitiveservices.Account{
+		Location: to.Ptr("global"),
+		Properties: &armcognitiveservices.AccountProperties{
+			CostControlConnections: &armcognitiveservices.CostControlConnections{
+				AppInsightsConnectionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myAppInsightsConnection"),
+				EventGridConnectionID:   to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myEventGridConnection"),
+			},
+		},
+		SKU: &armcognitiveservices.SKU{
+			Name: to.Ptr("S2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientUpdateResponse{
+	// 	Account: armcognitiveservices.Account{
+	// 		Name: to.Ptr("bingSearch"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
+	// 		Etag: to.Ptr("W/\"datetime'2017-04-10T07%3A46%3A21.5618831Z'\""),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch"),
+	// 		Kind: to.Ptr("Bing.Search"),
+	// 		Location: to.Ptr("global"),
+	// 		Properties: &armcognitiveservices.AccountProperties{
+	// 			CostControlConnections: &armcognitiveservices.CostControlConnections{
+	// 				AppInsightsConnectionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myAppInsightsConnection"),
+	// 				EventGridConnectionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch/connections/myEventGridConnection"),
+	// 			},
+	// 			Endpoint: to.Ptr("https://api.cognitive.microsoft.com/bing/v5.0"),
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 		},
+	// 		SKU: &armcognitiveservices.SKU{
+	// 			Name: to.Ptr("S2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-15-preview/EvaluateDeploymentPolicies.json
 func ExampleAccountsClient_EvaluateDeploymentPolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -349,7 +405,7 @@ func ExampleAccountsClient_EvaluateDeploymentPolicies() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/GetAccount.json
+// Generated from example definition: 2026-09-15-preview/GetAccount.json
 func ExampleAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,6 +432,10 @@ func ExampleAccountsClient_Get() {
 	// 		Kind: to.Ptr("Emotion"),
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armcognitiveservices.AccountProperties{
+	// 			CostControlConnections: &armcognitiveservices.CostControlConnections{
+	// 				AppInsightsConnectionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount/connections/myAppInsightsConnection"),
+	// 				EventGridConnectionID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount/connections/myEventGridConnection"),
+	// 			},
 	// 			Endpoint: to.Ptr("https://westus.api.cognitive.microsoft.com/emotion/v1.0"),
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
 	// 		},
@@ -390,8 +450,8 @@ func ExampleAccountsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/ListAccountsBySubscription.json
-func ExampleAccountsClient_NewListPager() {
+// Generated from example definition: 2026-09-15-preview/ListKeys.json
+func ExampleAccountsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -401,90 +461,221 @@ func ExampleAccountsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAccountsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcognitiveservices.AccountsClientListResponse{
-		// 	AccountListResult: armcognitiveservices.AccountListResult{
-		// 		Value: []*armcognitiveservices.Account{
-		// 			{
-		// 				Name: to.Ptr("bingSearch"),
-		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 				Etag: to.Ptr("W/\"datetime'2017-03-27T11%3A19%3A08.762494Z'\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch"),
-		// 				Kind: to.Ptr("Bing.Search"),
-		// 				Location: to.Ptr("global"),
-		// 				Properties: &armcognitiveservices.AccountProperties{
-		// 					Endpoint: to.Ptr("https://api.cognitive.microsoft.com/bing/v5.0"),
-		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
-		// 				},
-		// 				SKU: &armcognitiveservices.SKU{
-		// 					Name: to.Ptr("S1"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("CrisProd"),
-		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 				Etag: to.Ptr("W/\"datetime'2017-03-31T08%3A57%3A07.4499566Z'\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/CrisProd"),
-		// 				Kind: to.Ptr("CRIS"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armcognitiveservices.AccountProperties{
-		// 					Endpoint: to.Ptr("https://westus.api.cognitive.microsoft.com/sts/v1.0"),
-		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
-		// 				},
-		// 				SKU: &armcognitiveservices.SKU{
-		// 					Name: to.Ptr("S0"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"can't delete it successfully": to.Ptr("v-yunjin"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("rayrptest0308"),
-		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 				Etag: to.Ptr("W/\"datetime'2017-03-27T11%3A15%3A23.5232645Z'\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/rayrptest0308"),
-		// 				Kind: to.Ptr("Face"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armcognitiveservices.AccountProperties{
-		// 					Endpoint: to.Ptr("https://westus.api.cognitive.microsoft.com/face/v1.0"),
-		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
-		// 				},
-		// 				SKU: &armcognitiveservices.SKU{
-		// 					Name: to.Ptr("S0"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("raytest02"),
-		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-		// 				Etag: to.Ptr("W/\"datetime'2017-04-04T02%3A07%3A07.3957572Z'\""),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/raytest02"),
-		// 				Kind: to.Ptr("Emotion"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armcognitiveservices.AccountProperties{
-		// 					Endpoint: to.Ptr("https://westus.api.cognitive.microsoft.com/emotion/v1.0"),
-		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
-		// 				},
-		// 				SKU: &armcognitiveservices.SKU{
-		// 					Name: to.Ptr("S0"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewAccountsClient().ListKeys(ctx, "myResourceGroup", "myAccount", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientListKeysResponse{
+	// 	APIKeys: armcognitiveservices.APIKeys{
+	// 		Key1: to.Ptr("KEY1"),
+	// 		Key2: to.Ptr("KEY2"),
+	// 	},
+	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/ListAccountsByResourceGroup.json
+// Generated from example definition: 2026-09-15-preview/ListSkus.json
+func ExampleAccountsClient_ListSKUs() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().ListSKUs(ctx, "myResourceGroup", "myAccount", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientListSKUsResponse{
+	// 	AccountSKUListResult: armcognitiveservices.AccountSKUListResult{
+	// 		Value: []*armcognitiveservices.AccountSKU{
+	// 			{
+	// 				ResourceType: to.Ptr("Microsoft.CognitiveServices/accounts"),
+	// 				SKU: &armcognitiveservices.SKU{
+	// 					Name: to.Ptr("F0"),
+	// 					Tier: to.Ptr(armcognitiveservices.SKUTierFree),
+	// 				},
+	// 			},
+	// 			{
+	// 				ResourceType: to.Ptr("Microsoft.CognitiveServices/accounts"),
+	// 				SKU: &armcognitiveservices.SKU{
+	// 					Name: to.Ptr("S0"),
+	// 					Tier: to.Ptr(armcognitiveservices.SKUTierStandard),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-15-preview/GetUsages.json
+func ExampleAccountsClient_ListUsages_getUsages() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("5a4f5c2e-6983-4ccb-bd34-2196d5b5bbd3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().ListUsages(ctx, "myResourceGroup", "TestUsage02", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientListUsagesResponse{
+	// 	UsageListResult: armcognitiveservices.UsageListResult{
+	// 		Value: []*armcognitiveservices.Usage{
+	// 			{
+	// 				Name: &armcognitiveservices.MetricName{
+	// 					LocalizedValue: to.Ptr("Face.Transactions"),
+	// 					Value: to.Ptr("Face.Transactions"),
+	// 				},
+	// 				CurrentValue: to.Ptr[float64](3),
+	// 				Limit: to.Ptr[float64](30000),
+	// 				NextResetTime: to.Ptr("2018-03-28T09:33:51Z"),
+	// 				QuotaPeriod: to.Ptr("30.00:00:00"),
+	// 				Status: to.Ptr(armcognitiveservices.QuotaUsageStatusIncluded),
+	// 				Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
+	// 				ScopeType: to.Ptr(armcognitiveservices.QuotaScopeTypeRegional),
+	// 				ScopeID: to.Ptr("eastus"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-15-preview/GetUsagesClassicScope.json
+func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("5a4f5c2e-6983-4ccb-bd34-2196d5b5bbd3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().ListUsages(ctx, "myResourceGroup", "TestUsage02", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientListUsagesResponse{
+	// 	UsageListResult: armcognitiveservices.UsageListResult{
+	// 		Value: []*armcognitiveservices.Usage{
+	// 			{
+	// 				Name: &armcognitiveservices.MetricName{
+	// 					LocalizedValue: to.Ptr("Face.Transactions"),
+	// 					Value: to.Ptr("Face.Transactions"),
+	// 				},
+	// 				CurrentValue: to.Ptr[float64](2),
+	// 				Limit: to.Ptr[float64](20000),
+	// 				NextResetTime: to.Ptr("2018-03-28T09:33:51Z"),
+	// 				QuotaPeriod: to.Ptr("30.00:00:00"),
+	// 				Status: to.Ptr(armcognitiveservices.QuotaUsageStatusIncluded),
+	// 				Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
+	// 				ScopeType: to.Ptr(armcognitiveservices.QuotaScopeTypeClassic),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-15-preview/GetUsagesDataZoneScope.json
+func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("5a4f5c2e-6983-4ccb-bd34-2196d5b5bbd3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().ListUsages(ctx, "myResourceGroup", "TestUsage02", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientListUsagesResponse{
+	// 	UsageListResult: armcognitiveservices.UsageListResult{
+	// 		Value: []*armcognitiveservices.Usage{
+	// 			{
+	// 				Name: &armcognitiveservices.MetricName{
+	// 					LocalizedValue: to.Ptr("Face.Transactions"),
+	// 					Value: to.Ptr("Face.Transactions"),
+	// 				},
+	// 				CurrentValue: to.Ptr[float64](4),
+	// 				Limit: to.Ptr[float64](40000),
+	// 				NextResetTime: to.Ptr("2018-03-28T09:33:51Z"),
+	// 				QuotaPeriod: to.Ptr("30.00:00:00"),
+	// 				Status: to.Ptr(armcognitiveservices.QuotaUsageStatusIncluded),
+	// 				Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
+	// 				ScopeType: to.Ptr(armcognitiveservices.QuotaScopeTypeDataZone),
+	// 				ScopeID: to.Ptr("US"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-15-preview/GetUsagesGlobalScope.json
+func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("5a4f5c2e-6983-4ccb-bd34-2196d5b5bbd3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewAccountsClient().ListUsages(ctx, "myResourceGroup", "TestUsage02", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.AccountsClientListUsagesResponse{
+	// 	UsageListResult: armcognitiveservices.UsageListResult{
+	// 		Value: []*armcognitiveservices.Usage{
+	// 			{
+	// 				Name: &armcognitiveservices.MetricName{
+	// 					LocalizedValue: to.Ptr("Face.Transactions"),
+	// 					Value: to.Ptr("Face.Transactions"),
+	// 				},
+	// 				CurrentValue: to.Ptr[float64](5),
+	// 				Limit: to.Ptr[float64](50000),
+	// 				NextResetTime: to.Ptr("2018-03-28T09:33:51Z"),
+	// 				QuotaPeriod: to.Ptr("30.00:00:00"),
+	// 				Status: to.Ptr(armcognitiveservices.QuotaUsageStatusIncluded),
+	// 				Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
+	// 				ScopeType: to.Ptr(armcognitiveservices.QuotaScopeTypeGlobal),
+	// 				ScopeID: to.Ptr("Global"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-15-preview/ListAccountsByResourceGroup.json
 func ExampleAccountsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -551,33 +742,7 @@ func ExampleAccountsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15-preview/ListKeys.json
-func ExampleAccountsClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().ListKeys(ctx, "myResourceGroup", "myAccount", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcognitiveservices.AccountsClientListKeysResponse{
-	// 	APIKeys: armcognitiveservices.APIKeys{
-	// 		Key1: to.Ptr("KEY1"),
-	// 		Key2: to.Ptr("KEY2"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-15-preview/ListAccountModels.json
+// Generated from example definition: 2026-09-15-preview/ListAccountModels.json
 func ExampleAccountsClient_NewListModelsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -778,8 +943,8 @@ func ExampleAccountsClient_NewListModelsPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15-preview/ListSkus.json
-func ExampleAccountsClient_ListSKUs() {
+// Generated from example definition: 2026-09-15-preview/ListAccountsBySubscription.json
+func ExampleAccountsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -789,195 +954,90 @@ func ExampleAccountsClient_ListSKUs() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAccountsClient().ListSKUs(ctx, "myResourceGroup", "myAccount", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewAccountsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcognitiveservices.AccountsClientListResponse{
+		// 	AccountListResult: armcognitiveservices.AccountListResult{
+		// 		Value: []*armcognitiveservices.Account{
+		// 			{
+		// 				Name: to.Ptr("bingSearch"),
+		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
+		// 				Etag: to.Ptr("W/\"datetime'2017-03-27T11%3A19%3A08.762494Z'\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch"),
+		// 				Kind: to.Ptr("Bing.Search"),
+		// 				Location: to.Ptr("global"),
+		// 				Properties: &armcognitiveservices.AccountProperties{
+		// 					Endpoint: to.Ptr("https://api.cognitive.microsoft.com/bing/v5.0"),
+		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+		// 				},
+		// 				SKU: &armcognitiveservices.SKU{
+		// 					Name: to.Ptr("S1"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("CrisProd"),
+		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
+		// 				Etag: to.Ptr("W/\"datetime'2017-03-31T08%3A57%3A07.4499566Z'\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/CrisProd"),
+		// 				Kind: to.Ptr("CRIS"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armcognitiveservices.AccountProperties{
+		// 					Endpoint: to.Ptr("https://westus.api.cognitive.microsoft.com/sts/v1.0"),
+		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+		// 				},
+		// 				SKU: &armcognitiveservices.SKU{
+		// 					Name: to.Ptr("S0"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"can't delete it successfully": to.Ptr("v-yunjin"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("rayrptest0308"),
+		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
+		// 				Etag: to.Ptr("W/\"datetime'2017-03-27T11%3A15%3A23.5232645Z'\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/rayrptest0308"),
+		// 				Kind: to.Ptr("Face"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armcognitiveservices.AccountProperties{
+		// 					Endpoint: to.Ptr("https://westus.api.cognitive.microsoft.com/face/v1.0"),
+		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+		// 				},
+		// 				SKU: &armcognitiveservices.SKU{
+		// 					Name: to.Ptr("S0"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("raytest02"),
+		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
+		// 				Etag: to.Ptr("W/\"datetime'2017-04-04T02%3A07%3A07.3957572Z'\""),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/raytest02"),
+		// 				Kind: to.Ptr("Emotion"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armcognitiveservices.AccountProperties{
+		// 					Endpoint: to.Ptr("https://westus.api.cognitive.microsoft.com/emotion/v1.0"),
+		// 					ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+		// 				},
+		// 				SKU: &armcognitiveservices.SKU{
+		// 					Name: to.Ptr("S0"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcognitiveservices.AccountsClientListSKUsResponse{
-	// 	AccountSKUListResult: armcognitiveservices.AccountSKUListResult{
-	// 		Value: []*armcognitiveservices.AccountSKU{
-	// 			{
-	// 				ResourceType: to.Ptr("Microsoft.CognitiveServices/accounts"),
-	// 				SKU: &armcognitiveservices.SKU{
-	// 					Name: to.Ptr("F0"),
-	// 					Tier: to.Ptr(armcognitiveservices.SKUTierFree),
-	// 				},
-	// 			},
-	// 			{
-	// 				ResourceType: to.Ptr("Microsoft.CognitiveServices/accounts"),
-	// 				SKU: &armcognitiveservices.SKU{
-	// 					Name: to.Ptr("S0"),
-	// 					Tier: to.Ptr(armcognitiveservices.SKUTierStandard),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
 }
 
-// Generated from example definition: 2026-07-15-preview/GetUsages.json
-func ExampleAccountsClient_ListUsages_getUsages() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("5a4f5c2e-6983-4ccb-bd34-2196d5b5bbd3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().ListUsages(ctx, "myResourceGroup", "TestUsage02", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcognitiveservices.AccountsClientListUsagesResponse{
-	// 	UsageListResult: armcognitiveservices.UsageListResult{
-	// 		Value: []*armcognitiveservices.Usage{
-	// 			{
-	// 				Name: &armcognitiveservices.MetricName{
-	// 					LocalizedValue: to.Ptr("Face.Transactions"),
-	// 					Value: to.Ptr("Face.Transactions"),
-	// 				},
-	// 				CurrentValue: to.Ptr[float64](3),
-	// 				Limit: to.Ptr[float64](30000),
-	// 				NextResetTime: to.Ptr("2018-03-28T09:33:51Z"),
-	// 				QuotaPeriod: to.Ptr("30.00:00:00"),
-	// 				Status: to.Ptr(armcognitiveservices.QuotaUsageStatusIncluded),
-	// 				Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
-	// 				ScopeType: to.Ptr(armcognitiveservices.QuotaScopeTypeRegional),
-	// 				ScopeID: to.Ptr("eastus"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-15-preview/GetUsagesClassicScope.json
-func ExampleAccountsClient_ListUsages_getUsagesClassicScope() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("5a4f5c2e-6983-4ccb-bd34-2196d5b5bbd3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().ListUsages(ctx, "myResourceGroup", "TestUsage02", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcognitiveservices.AccountsClientListUsagesResponse{
-	// 	UsageListResult: armcognitiveservices.UsageListResult{
-	// 		Value: []*armcognitiveservices.Usage{
-	// 			{
-	// 				Name: &armcognitiveservices.MetricName{
-	// 					LocalizedValue: to.Ptr("Face.Transactions"),
-	// 					Value: to.Ptr("Face.Transactions"),
-	// 				},
-	// 				CurrentValue: to.Ptr[float64](2),
-	// 				Limit: to.Ptr[float64](20000),
-	// 				NextResetTime: to.Ptr("2018-03-28T09:33:51Z"),
-	// 				QuotaPeriod: to.Ptr("30.00:00:00"),
-	// 				Status: to.Ptr(armcognitiveservices.QuotaUsageStatusIncluded),
-	// 				Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
-	// 				ScopeType: to.Ptr(armcognitiveservices.QuotaScopeTypeClassic),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-15-preview/GetUsagesDataZoneScope.json
-func ExampleAccountsClient_ListUsages_getUsagesDataZoneScope() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("5a4f5c2e-6983-4ccb-bd34-2196d5b5bbd3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().ListUsages(ctx, "myResourceGroup", "TestUsage02", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcognitiveservices.AccountsClientListUsagesResponse{
-	// 	UsageListResult: armcognitiveservices.UsageListResult{
-	// 		Value: []*armcognitiveservices.Usage{
-	// 			{
-	// 				Name: &armcognitiveservices.MetricName{
-	// 					LocalizedValue: to.Ptr("Face.Transactions"),
-	// 					Value: to.Ptr("Face.Transactions"),
-	// 				},
-	// 				CurrentValue: to.Ptr[float64](4),
-	// 				Limit: to.Ptr[float64](40000),
-	// 				NextResetTime: to.Ptr("2018-03-28T09:33:51Z"),
-	// 				QuotaPeriod: to.Ptr("30.00:00:00"),
-	// 				Status: to.Ptr(armcognitiveservices.QuotaUsageStatusIncluded),
-	// 				Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
-	// 				ScopeType: to.Ptr(armcognitiveservices.QuotaScopeTypeDataZone),
-	// 				ScopeID: to.Ptr("US"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-15-preview/GetUsagesGlobalScope.json
-func ExampleAccountsClient_ListUsages_getUsagesGlobalScope() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("5a4f5c2e-6983-4ccb-bd34-2196d5b5bbd3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewAccountsClient().ListUsages(ctx, "myResourceGroup", "TestUsage02", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcognitiveservices.AccountsClientListUsagesResponse{
-	// 	UsageListResult: armcognitiveservices.UsageListResult{
-	// 		Value: []*armcognitiveservices.Usage{
-	// 			{
-	// 				Name: &armcognitiveservices.MetricName{
-	// 					LocalizedValue: to.Ptr("Face.Transactions"),
-	// 					Value: to.Ptr("Face.Transactions"),
-	// 				},
-	// 				CurrentValue: to.Ptr[float64](5),
-	// 				Limit: to.Ptr[float64](50000),
-	// 				NextResetTime: to.Ptr("2018-03-28T09:33:51Z"),
-	// 				QuotaPeriod: to.Ptr("30.00:00:00"),
-	// 				Status: to.Ptr(armcognitiveservices.QuotaUsageStatusIncluded),
-	// 				Unit: to.Ptr(armcognitiveservices.UnitTypeCount),
-	// 				ScopeType: to.Ptr(armcognitiveservices.QuotaScopeTypeGlobal),
-	// 				ScopeID: to.Ptr("Global"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-15-preview/RegenerateKey.json
+// Generated from example definition: 2026-09-15-preview/RegenerateKey.json
 func ExampleAccountsClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1001,52 +1061,6 @@ func ExampleAccountsClient_RegenerateKey() {
 	// 	APIKeys: armcognitiveservices.APIKeys{
 	// 		Key1: to.Ptr("KEY1"),
 	// 		Key2: to.Ptr("KEY2"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-07-15-preview/UpdateAccount.json
-func ExampleAccountsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAccountsClient().BeginUpdate(ctx, "bvttest", "bingSearch", armcognitiveservices.Account{
-		Location: to.Ptr("global"),
-		SKU: &armcognitiveservices.SKU{
-			Name: to.Ptr("S2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcognitiveservices.AccountsClientUpdateResponse{
-	// 	Account: armcognitiveservices.Account{
-	// 		Name: to.Ptr("bingSearch"),
-	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts"),
-	// 		Etag: to.Ptr("W/\"datetime'2017-04-10T07%3A46%3A21.5618831Z'\""),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/bvttest/providers/Microsoft.CognitiveServices/accounts/bingSearch"),
-	// 		Kind: to.Ptr("Bing.Search"),
-	// 		Location: to.Ptr("global"),
-	// 		Properties: &armcognitiveservices.AccountProperties{
-	// 			Endpoint: to.Ptr("https://api.cognitive.microsoft.com/bing/v5.0"),
-	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
-	// 		},
-	// 		SKU: &armcognitiveservices.SKU{
-	// 			Name: to.Ptr("S2"),
-	// 		},
 	// 	},
 	// }
 }

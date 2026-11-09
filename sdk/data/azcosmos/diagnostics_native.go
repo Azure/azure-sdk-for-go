@@ -111,13 +111,10 @@ import (
 // copyDiagnostics copies the native diagnostics for one completion into Go memory.
 //
 // It is best effort: diagnostics are optional and must never block an otherwise successful or
-// cancelled operation, so a failure copying one section (regions, attempts, or the JSON
-// rendering) does not discard the scalar fields or any other section that copied cleanly. The
-// returned Diagnostics is non-nil whenever d is non-nil; the returned error, if any, joins every
-// section that could not be copied.
-//
-// verbosity selects how copyDiagnosticJSON renders out.JSON; see [DiagnosticsVerbosity].
-func copyDiagnostics(d *C.cosmos_diagnostics_t, verbosity DiagnosticsVerbosity) (*Diagnostics, error) {
+// cancelled operation, so a failure copying regions or attempts does not discard the scalar fields
+// or the other section. The returned Diagnostics is non-nil whenever d is non-nil; the returned
+// error, if any, joins every section that could not be copied.
+func copyDiagnostics(d *C.cosmos_diagnostics_t, _ DiagnosticsVerbosity) (*Diagnostics, error) {
 	if d == nil {
 		return nil, nil
 	}
@@ -133,7 +130,6 @@ func copyDiagnostics(d *C.cosmos_diagnostics_t, verbosity DiagnosticsVerbosity) 
 	return out, errors.Join(
 		copyDiagnosticRegions(d, out),
 		copyDiagnosticAttempts(d, out),
-		copyDiagnosticJSON(d, out, verbosity),
 	)
 }
 
@@ -190,59 +186,6 @@ func copyDiagnosticAttempts(d *C.cosmos_diagnostics_t, out *Diagnostics) error {
 			ServerDurationMS: float64(attempt.server_duration_ms),
 		}
 	}
-	return nil
-}
-
-// nativeDiagnosticsVerbosity maps the public DiagnosticsVerbosity to the native driver's
-// cosmos_diagnostics_verbosity_t.
-//
-// DiagnosticsVerbosityDefault and any unrecognized value (which validate rejects on ClientOptions
-// but a zero-value Diagnostics path could still reach here) resolve to SUMMARY, the SDK's chosen
-// default, rather than the driver's own cosmos_diagnostics_verbosity_t_DEFAULT: that leaves the
-// SDK dependent on a native runtime default it does not control.
-func nativeDiagnosticsVerbosity(verbosity DiagnosticsVerbosity) C.cosmos_diagnostics_verbosity_t {
-	if verbosity == DiagnosticsVerbosityDetailed {
-		return C.cosmos_diagnostics_verbosity_t_DETAILED
-	}
-	return C.cosmos_diagnostics_verbosity_t_SUMMARY
-}
-
-// nativeDiagnosticsVerbosityCode exposes nativeDiagnosticsVerbosity's result as a plain uint32.
-// Defined here rather than in a _test.go file so tests can assert on the mapping without
-// importing "C" themselves, the same reason stubCopyDiagnosticsForCompletion lives outside
-// completion_native_test.go.
-func nativeDiagnosticsVerbosityCode(verbosity DiagnosticsVerbosity) uint32 {
-	return uint32(nativeDiagnosticsVerbosity(verbosity))
-}
-
-// copyDiagnosticJSON copies the driver's diagnostics rendering into out.JSON, at the verbosity
-// requested by verbosity (see [DiagnosticsVerbosity] and [ClientOptions.DiagnosticsVerbosity]).
-//
-// Every completion pays for whatever verbosity is requested here regardless of whether a caller
-// ever reads JSON, since the native handle cannot outlive translateCompletionOutcome (there is no
-// retain/clone for cosmos_diagnostics_t, so rendering cannot be deferred to first Go-side access
-// the way Rust's and Java's Cosmos SDKs defer their own JSON materialization). DETAILED repeats the
-// full per-attempt timeline this package already copies losslessly into out.Attempts, at real
-// per-request serialization and allocation cost; SUMMARY is the driver's bounded, deduplicated
-// rendering and is the SDK's default for exactly that reason. A caller that needs the full
-// per-attempt detail should use out.Attempts directly rather than parsing JSON, which is
-// diagnostic text, not a stable schema.
-//
-// It leaves that field empty on failure rather than touching fields the other sections own.
-func copyDiagnosticJSON(d *C.cosmos_diagnostics_t, out *Diagnostics, verbosity DiagnosticsVerbosity) error {
-	var data *C.uint8_t
-	var length C.uintptr_t
-	nativeVerbosity := nativeDiagnosticsVerbosity(verbosity)
-	if status := C.cosmos_diagnostics_to_json(d, nativeVerbosity, &data, &length); status != 0 { //nolint:gocritic // dupSubExpr targets cgo-generated code.
-		return fmt.Errorf("azcosmos: rendering native diagnostics (status %d)", int32(status))
-	}
-	if length == 0 {
-		return nil
-	}
-	if data == nil {
-		return fmt.Errorf("azcosmos: native diagnostics returned a null JSON buffer")
-	}
-	out.JSON = string(unsafe.Slice((*byte)(unsafe.Pointer(data)), int(length)))
 	return nil
 }
 

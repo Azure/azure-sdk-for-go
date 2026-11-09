@@ -67,7 +67,7 @@ func TestNativeThrottleRetryReturnsSingleFinalResponse(t *testing.T) {
 	require.NotEmpty(t, response.Diagnostics.RegionsContacted)
 	require.Len(t, response.Diagnostics.Attempts, 3)
 	require.GreaterOrEqual(t, response.Diagnostics.TotalRequestCharge, response.RequestCharge)
-	require.True(t, json.Valid([]byte(response.Diagnostics.JSON)))
+	require.True(t, json.Valid([]byte(requireDiagnosticsJSON(t, response.Diagnostics))))
 	for _, attempt := range response.Diagnostics.Attempts[:2] {
 		require.Equal(t, http.StatusTooManyRequests, attempt.StatusCode)
 		require.Equal(t, int(nativeFaultThrottleSubStatus), attempt.SubStatus)
@@ -80,7 +80,7 @@ func TestNativeThrottleRetryReturnsSingleFinalResponse(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, uint32(1), next.AttemptCount)
 	require.Len(t, response.Diagnostics.Attempts, 3, "the snapshot survives later native completions")
-	require.True(t, json.Valid([]byte(response.Diagnostics.JSON)))
+	require.True(t, json.Valid([]byte(requireDiagnosticsJSON(t, response.Diagnostics))))
 }
 
 func TestNativeThrottleRetryExhaustion(t *testing.T) {
@@ -105,7 +105,7 @@ func TestNativeThrottleRetryExhaustion(t *testing.T) {
 	require.True(t, cosmosErr.Diagnostics.Failed)
 	require.Positive(t, cosmosErr.Diagnostics.Elapsed)
 	require.NotEmpty(t, cosmosErr.Diagnostics.RegionsContacted)
-	require.True(t, json.Valid([]byte(cosmosErr.Diagnostics.JSON)))
+	require.True(t, json.Valid([]byte(requireDiagnosticsJSON(t, cosmosErr.Diagnostics))))
 	require.Equal(t, int(cosmosErr.AttemptCount), len(cosmosErr.Diagnostics.Attempts))
 	for _, attempt := range cosmosErr.Diagnostics.Attempts {
 		require.Equal(t, http.StatusTooManyRequests, attempt.StatusCode)

@@ -307,5 +307,7 @@ func requireCriticalDiagnostics(t *testing.T, diagnostics *azcosmos.Diagnostics,
 	require.NotNilf(t, diagnostics, "operation must carry diagnostics")
 	require.Equal(t, expectStatusCode, diagnostics.StatusCode)
 	require.NotZero(t, diagnostics.AttemptCount, "diagnostics must record at least one attempt")
-	require.NotEmpty(t, diagnostics.JSON, "diagnostics must render a JSON summary")
+	rendered, err := diagnostics.JSON()
+	require.NoError(t, err)
+	require.NotEmpty(t, rendered, "diagnostics must render a JSON summary")
 }

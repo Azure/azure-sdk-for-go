@@ -62,7 +62,7 @@ func (client *CertificateObjectGlobalRulestackClient) BeginCreateOrUpdate(ctx co
 	}
 }
 
-// CreateOrUpdate - Create a CertificateObjectGlobalRulestackResource
+// createOrUpdate - Create a CertificateObjectGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificateObjectGlobalRulestackClient) createOrUpdate(ctx context.Context, globalRulestackName string, name string, resource CertificateObjectGlobalRulestackResource, options *CertificateObjectGlobalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -79,12 +79,13 @@ func (client *CertificateObjectGlobalRulestackClient) createOrUpdate(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CertificateObjectGlobalRulestackClient) createOrUpdateCreateRequest(ctx context.Context, globalRulestackName string, name string, resource CertificateObjectGlobalRulestackResource, _ *CertificateObjectGlobalRulestackClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/certificates/{name}"
 	if globalRulestackName == "" {
@@ -133,7 +134,7 @@ func (client *CertificateObjectGlobalRulestackClient) BeginDelete(ctx context.Co
 	}
 }
 
-// Delete - Delete a CertificateObjectGlobalRulestackResource
+// deleteOperation - Delete a CertificateObjectGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificateObjectGlobalRulestackClient) deleteOperation(ctx context.Context, globalRulestackName string, name string, options *CertificateObjectGlobalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -150,12 +151,13 @@ func (client *CertificateObjectGlobalRulestackClient) deleteOperation(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CertificateObjectGlobalRulestackClient) deleteCreateRequest(ctx context.Context, globalRulestackName string, name string, _ *CertificateObjectGlobalRulestackClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/certificates/{name}"
 	if globalRulestackName == "" {
@@ -196,7 +198,8 @@ func (client *CertificateObjectGlobalRulestackClient) Get(ctx context.Context, g
 	if err != nil {
 		return CertificateObjectGlobalRulestackClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

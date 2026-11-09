@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.1 (2026-08-21)
+## 2.1.0-beta.1 (2026-11-09)
 ### Features Added
 
 - New enum type `CustomCaptureConfigurationsProtocol` with values `CustomCaptureConfigurationsProtocolTCP`, `CustomCaptureConfigurationsProtocolUDP`

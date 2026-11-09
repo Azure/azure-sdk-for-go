@@ -69,7 +69,7 @@ func (client *CertificateObjectLocalRulestackClient) BeginCreateOrUpdate(ctx con
 	}
 }
 
-// CreateOrUpdate - Create a CertificateObjectLocalRulestackResource
+// createOrUpdate - Create a CertificateObjectLocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificateObjectLocalRulestackClient) createOrUpdate(ctx context.Context, resourceGroupName string, localRulestackName string, name string, resource CertificateObjectLocalRulestackResource, options *CertificateObjectLocalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *CertificateObjectLocalRulestackClient) createOrUpdate(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CertificateObjectLocalRulestackClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, name string, resource CertificateObjectLocalRulestackResource, _ *CertificateObjectLocalRulestackClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates/{name}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *CertificateObjectLocalRulestackClient) BeginDelete(ctx context.Con
 	}
 }
 
-// Delete - Delete a CertificateObjectLocalRulestackResource
+// deleteOperation - Delete a CertificateObjectLocalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CertificateObjectLocalRulestackClient) deleteOperation(ctx context.Context, resourceGroupName string, localRulestackName string, name string, options *CertificateObjectLocalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *CertificateObjectLocalRulestackClient) deleteOperation(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CertificateObjectLocalRulestackClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, localRulestackName string, name string, _ *CertificateObjectLocalRulestackClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates/{name}"
 	if client.subscriptionID == "" {
@@ -221,7 +223,8 @@ func (client *CertificateObjectLocalRulestackClient) Get(ctx context.Context, re
 	if err != nil {
 		return CertificateObjectLocalRulestackClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

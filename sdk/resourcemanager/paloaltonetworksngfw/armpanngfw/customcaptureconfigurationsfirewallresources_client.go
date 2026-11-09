@@ -31,6 +31,9 @@ type CustomCaptureConfigurationsFirewallResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCustomCaptureConfigurationsFirewallResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CustomCaptureConfigurationsFirewallResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -65,14 +68,15 @@ func (client *CustomCaptureConfigurationsFirewallResourcesClient) CreateOrUpdate
 	if err != nil {
 		return CustomCaptureConfigurationsFirewallResourcesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
 func (client *CustomCaptureConfigurationsFirewallResourcesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, resource CustomCaptureConfigurationsFirewallResource, _ *CustomCaptureConfigurationsFirewallResourcesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/customCaptureConfigurations/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -132,7 +136,8 @@ func (client *CustomCaptureConfigurationsFirewallResourcesClient) Delete(ctx con
 		return CustomCaptureConfigurationsFirewallResourcesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return CustomCaptureConfigurationsFirewallResourcesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CustomCaptureConfigurationsFirewallResourcesClientDeleteResponse{}, err
 	}
 	return CustomCaptureConfigurationsFirewallResourcesClientDeleteResponse{}, nil
 }
@@ -141,7 +146,7 @@ func (client *CustomCaptureConfigurationsFirewallResourcesClient) Delete(ctx con
 func (client *CustomCaptureConfigurationsFirewallResourcesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, _ *CustomCaptureConfigurationsFirewallResourcesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/customCaptureConfigurations/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -184,14 +189,15 @@ func (client *CustomCaptureConfigurationsFirewallResourcesClient) Get(ctx contex
 	if err != nil {
 		return CustomCaptureConfigurationsFirewallResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
 func (client *CustomCaptureConfigurationsFirewallResourcesClient) getCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, _ *CustomCaptureConfigurationsFirewallResourcesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/customCaptureConfigurations/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -264,7 +270,7 @@ func (client *CustomCaptureConfigurationsFirewallResourcesClient) listByFirewall
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/customCaptureConfigurations"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {

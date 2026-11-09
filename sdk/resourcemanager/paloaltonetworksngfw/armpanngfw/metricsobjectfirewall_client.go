@@ -68,7 +68,7 @@ func (client *MetricsObjectFirewallClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Create a MetricsObjectFirewallResource
+// createOrUpdate - Create a MetricsObjectFirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MetricsObjectFirewallClient) createOrUpdate(ctx context.Context, resourceGroupName string, firewallName string, resource MetricsObjectFirewallResource, options *MetricsObjectFirewallClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *MetricsObjectFirewallClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *MetricsObjectFirewallClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, resource MetricsObjectFirewallResource, _ *MetricsObjectFirewallClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/metrics/default"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *MetricsObjectFirewallClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Delete a MetricsObjectFirewallResource
+// deleteOperation - Delete a MetricsObjectFirewallResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MetricsObjectFirewallClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallName string, options *MetricsObjectFirewallClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *MetricsObjectFirewallClient) deleteOperation(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MetricsObjectFirewallClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, firewallName string, _ *MetricsObjectFirewallClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/metrics/default"
 	if client.subscriptionID == "" {
@@ -211,7 +213,8 @@ func (client *MetricsObjectFirewallClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return MetricsObjectFirewallClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

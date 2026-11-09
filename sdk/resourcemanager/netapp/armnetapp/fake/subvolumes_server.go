@@ -29,21 +29,21 @@ type SubvolumesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *armnetapp.SubvolumesClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetapp.SubvolumesClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method SubvolumesClient.Get
-	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *armnetapp.SubvolumesClientGetOptions) (resp azfake.Responder[armnetapp.SubvolumesClientGetResponse], errResp azfake.ErrorResponder)
-
 	// BeginGetMetadata is the fake for method SubvolumesClient.BeginGetMetadata
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginGetMetadata func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *armnetapp.SubvolumesClientBeginGetMetadataOptions) (resp azfake.PollerResponder[armnetapp.SubvolumesClientGetMetadataResponse], errResp azfake.ErrorResponder)
 
-	// NewListByVolumePager is the fake for method SubvolumesClient.NewListByVolumePager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListByVolumePager func(resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.SubvolumesClientListByVolumeOptions) (resp azfake.PagerResponder[armnetapp.SubvolumesClientListByVolumeResponse])
-
 	// BeginUpdate is the fake for method SubvolumesClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginUpdate func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, body armnetapp.SubvolumePatchRequest, options *armnetapp.SubvolumesClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetapp.SubvolumesClientUpdateResponse], errResp azfake.ErrorResponder)
+
+	// Get is the fake for method SubvolumesClient.Get
+	// HTTP status codes to indicate success: http.StatusOK
+	Get func(ctx context.Context, resourceGroupName string, accountName string, poolName string, volumeName string, subvolumeName string, options *armnetapp.SubvolumesClientGetOptions) (resp azfake.Responder[armnetapp.SubvolumesClientGetResponse], errResp azfake.ErrorResponder)
+
+	// NewListByVolumePager is the fake for method SubvolumesClient.NewListByVolumePager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByVolumePager func(resourceGroupName string, accountName string, poolName string, volumeName string, options *armnetapp.SubvolumesClientListByVolumeOptions) (resp azfake.PagerResponder[armnetapp.SubvolumesClientListByVolumeResponse])
 }
 
 // NewSubvolumesServerTransport creates a new instance of SubvolumesServerTransport with the provided implementation.
@@ -55,8 +55,8 @@ func NewSubvolumesServerTransport(srv *SubvolumesServer) *SubvolumesServerTransp
 		beginCreate:          newTracker[azfake.PollerResponder[armnetapp.SubvolumesClientCreateResponse]](),
 		beginDelete:          newTracker[azfake.PollerResponder[armnetapp.SubvolumesClientDeleteResponse]](),
 		beginGetMetadata:     newTracker[azfake.PollerResponder[armnetapp.SubvolumesClientGetMetadataResponse]](),
-		newListByVolumePager: newTracker[azfake.PagerResponder[armnetapp.SubvolumesClientListByVolumeResponse]](),
 		beginUpdate:          newTracker[azfake.PollerResponder[armnetapp.SubvolumesClientUpdateResponse]](),
+		newListByVolumePager: newTracker[azfake.PagerResponder[armnetapp.SubvolumesClientListByVolumeResponse]](),
 	}
 }
 
@@ -67,8 +67,8 @@ type SubvolumesServerTransport struct {
 	beginCreate          *tracker[azfake.PollerResponder[armnetapp.SubvolumesClientCreateResponse]]
 	beginDelete          *tracker[azfake.PollerResponder[armnetapp.SubvolumesClientDeleteResponse]]
 	beginGetMetadata     *tracker[azfake.PollerResponder[armnetapp.SubvolumesClientGetMetadataResponse]]
-	newListByVolumePager *tracker[azfake.PagerResponder[armnetapp.SubvolumesClientListByVolumeResponse]]
 	beginUpdate          *tracker[azfake.PollerResponder[armnetapp.SubvolumesClientUpdateResponse]]
+	newListByVolumePager *tracker[azfake.PagerResponder[armnetapp.SubvolumesClientListByVolumeResponse]]
 }
 
 // Do implements the policy.Transporter interface for SubvolumesServerTransport.
@@ -96,14 +96,14 @@ func (s *SubvolumesServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = s.dispatchBeginCreate(req)
 			case "SubvolumesClient.BeginDelete":
 				res.resp, res.err = s.dispatchBeginDelete(req)
-			case "SubvolumesClient.Get":
-				res.resp, res.err = s.dispatchGet(req)
 			case "SubvolumesClient.BeginGetMetadata":
 				res.resp, res.err = s.dispatchBeginGetMetadata(req)
-			case "SubvolumesClient.NewListByVolumePager":
-				res.resp, res.err = s.dispatchNewListByVolumePager(req)
 			case "SubvolumesClient.BeginUpdate":
 				res.resp, res.err = s.dispatchBeginUpdate(req)
+			case "SubvolumesClient.Get":
+				res.resp, res.err = s.dispatchGet(req)
+			case "SubvolumesClient.NewListByVolumePager":
+				res.resp, res.err = s.dispatchNewListByVolumePager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -236,51 +236,6 @@ func (s *SubvolumesServerTransport) dispatchBeginDelete(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (s *SubvolumesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if s.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subvolumes/(?P<subvolumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 7 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-	if err != nil {
-		return nil, err
-	}
-	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-	if err != nil {
-		return nil, err
-	}
-	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-	if err != nil {
-		return nil, err
-	}
-	subvolumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("subvolumeName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, subvolumeNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SubvolumeInfo, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
 func (s *SubvolumesServerTransport) dispatchBeginGetMetadata(req *http.Request) (*http.Response, error) {
 	if s.srv.BeginGetMetadata == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginGetMetadata not implemented")}
@@ -334,55 +289,6 @@ func (s *SubvolumesServerTransport) dispatchBeginGetMetadata(req *http.Request) 
 		s.beginGetMetadata.remove(req)
 	}
 
-	return resp, nil
-}
-
-func (s *SubvolumesServerTransport) dispatchNewListByVolumePager(req *http.Request) (*http.Response, error) {
-	if s.srv.NewListByVolumePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByVolumePager not implemented")}
-	}
-	newListByVolumePager := s.newListByVolumePager.get(req)
-	if newListByVolumePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subvolumes`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
-		if err != nil {
-			return nil, err
-		}
-		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
-		if err != nil {
-			return nil, err
-		}
-		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := s.srv.NewListByVolumePager(resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
-		newListByVolumePager = &resp
-		s.newListByVolumePager.add(req, newListByVolumePager)
-		server.PagerResponderInjectNextLinks(newListByVolumePager, req, func(page *armnetapp.SubvolumesClientListByVolumeResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByVolumePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		s.newListByVolumePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByVolumePager) {
-		s.newListByVolumePager.remove(req)
-	}
 	return resp, nil
 }
 
@@ -443,6 +349,100 @@ func (s *SubvolumesServerTransport) dispatchBeginUpdate(req *http.Request) (*htt
 		s.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (s *SubvolumesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if s.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subvolumes/(?P<subvolumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 7 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+	if err != nil {
+		return nil, err
+	}
+	poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+	if err != nil {
+		return nil, err
+	}
+	volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+	if err != nil {
+		return nil, err
+	}
+	subvolumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("subvolumeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := s.srv.Get(req.Context(), resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, subvolumeNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SubvolumeInfo, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (s *SubvolumesServerTransport) dispatchNewListByVolumePager(req *http.Request) (*http.Response, error) {
+	if s.srv.NewListByVolumePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByVolumePager not implemented")}
+	}
+	newListByVolumePager := s.newListByVolumePager.get(req)
+	if newListByVolumePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetApp/netAppAccounts/(?P<accountName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/capacityPools/(?P<poolName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/volumes/(?P<volumeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/subvolumes`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		accountNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("accountName")])
+		if err != nil {
+			return nil, err
+		}
+		poolNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("poolName")])
+		if err != nil {
+			return nil, err
+		}
+		volumeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("volumeName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := s.srv.NewListByVolumePager(resourceGroupNameParam, accountNameParam, poolNameParam, volumeNameParam, nil)
+		newListByVolumePager = &resp
+		s.newListByVolumePager.add(req, newListByVolumePager)
+		server.PagerResponderInjectNextLinks(newListByVolumePager, req, func(page *armnetapp.SubvolumesClientListByVolumeResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByVolumePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		s.newListByVolumePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByVolumePager) {
+		s.newListByVolumePager.remove(req)
+	}
 	return resp, nil
 }
 

@@ -15,15 +15,24 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redisenterprise/armredisenterprise/v4"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 	"slices"
 )
 
 // MigrationsServer is a fake server for instances of the armredisenterprise.MigrationsClient type.
 type MigrationsServer struct {
-	// BeginCancel is the fake for method MigrationsClient.BeginCancel
+	// BeginStart is the fake for method MigrationsClient.BeginStart
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginStart func(ctx context.Context, resourceGroupName string, clusterName string, parameters armredisenterprise.Migration, options *armredisenterprise.MigrationsClientBeginStartOptions) (resp azfake.PollerResponder[armredisenterprise.MigrationsClientStartResponse], errResp azfake.ErrorResponder)
+
+	// BeginUndo is the fake for method MigrationsClient.BeginUndo
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginCancel func(ctx context.Context, resourceGroupName string, clusterName string, options *armredisenterprise.MigrationsClientBeginCancelOptions) (resp azfake.PollerResponder[armredisenterprise.MigrationsClientCancelResponse], errResp azfake.ErrorResponder)
+	BeginUndo func(ctx context.Context, resourceGroupName string, clusterName string, options *armredisenterprise.MigrationsClientBeginUndoOptions) (resp azfake.PollerResponder[armredisenterprise.MigrationsClientUndoResponse], errResp azfake.ErrorResponder)
+
+	// BeginUnlinkMigratedEndpoint is the fake for method MigrationsClient.BeginUnlinkMigratedEndpoint
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginUnlinkMigratedEndpoint func(ctx context.Context, resourceGroupName string, clusterName string, options *armredisenterprise.MigrationsClientBeginUnlinkMigratedEndpointOptions) (resp azfake.PollerResponder[armredisenterprise.MigrationsClientUnlinkMigratedEndpointResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method MigrationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
@@ -32,10 +41,6 @@ type MigrationsServer struct {
 	// NewListPager is the fake for method MigrationsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, clusterName string, options *armredisenterprise.MigrationsClientListOptions) (resp azfake.PagerResponder[armredisenterprise.MigrationsClientListResponse])
-
-	// BeginStart is the fake for method MigrationsClient.BeginStart
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginStart func(ctx context.Context, resourceGroupName string, clusterName string, parameters armredisenterprise.Migration, options *armredisenterprise.MigrationsClientBeginStartOptions) (resp azfake.PollerResponder[armredisenterprise.MigrationsClientStartResponse], errResp azfake.ErrorResponder)
 
 	// Validate is the fake for method MigrationsClient.Validate
 	// HTTP status codes to indicate success: http.StatusOK
@@ -47,20 +52,22 @@ type MigrationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewMigrationsServerTransport(srv *MigrationsServer) *MigrationsServerTransport {
 	return &MigrationsServerTransport{
-		srv:          srv,
-		beginCancel:  newTracker[azfake.PollerResponder[armredisenterprise.MigrationsClientCancelResponse]](),
-		newListPager: newTracker[azfake.PagerResponder[armredisenterprise.MigrationsClientListResponse]](),
-		beginStart:   newTracker[azfake.PollerResponder[armredisenterprise.MigrationsClientStartResponse]](),
+		srv:                         srv,
+		beginStart:                  newTracker[azfake.PollerResponder[armredisenterprise.MigrationsClientStartResponse]](),
+		beginUndo:                   newTracker[azfake.PollerResponder[armredisenterprise.MigrationsClientUndoResponse]](),
+		beginUnlinkMigratedEndpoint: newTracker[azfake.PollerResponder[armredisenterprise.MigrationsClientUnlinkMigratedEndpointResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armredisenterprise.MigrationsClientListResponse]](),
 	}
 }
 
 // MigrationsServerTransport connects instances of armredisenterprise.MigrationsClient to instances of MigrationsServer.
 // Don't use this type directly, use NewMigrationsServerTransport instead.
 type MigrationsServerTransport struct {
-	srv          *MigrationsServer
-	beginCancel  *tracker[azfake.PollerResponder[armredisenterprise.MigrationsClientCancelResponse]]
-	newListPager *tracker[azfake.PagerResponder[armredisenterprise.MigrationsClientListResponse]]
-	beginStart   *tracker[azfake.PollerResponder[armredisenterprise.MigrationsClientStartResponse]]
+	srv                         *MigrationsServer
+	beginStart                  *tracker[azfake.PollerResponder[armredisenterprise.MigrationsClientStartResponse]]
+	beginUndo                   *tracker[azfake.PollerResponder[armredisenterprise.MigrationsClientUndoResponse]]
+	beginUnlinkMigratedEndpoint *tracker[azfake.PollerResponder[armredisenterprise.MigrationsClientUnlinkMigratedEndpointResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armredisenterprise.MigrationsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for MigrationsServerTransport.
@@ -84,14 +91,16 @@ func (m *MigrationsServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "MigrationsClient.BeginCancel":
-				res.resp, res.err = m.dispatchBeginCancel(req)
+			case "MigrationsClient.BeginStart":
+				res.resp, res.err = m.dispatchBeginStart(req)
+			case "MigrationsClient.BeginUndo":
+				res.resp, res.err = m.dispatchBeginUndo(req)
+			case "MigrationsClient.BeginUnlinkMigratedEndpoint":
+				res.resp, res.err = m.dispatchBeginUnlinkMigratedEndpoint(req)
 			case "MigrationsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
 			case "MigrationsClient.NewListPager":
 				res.resp, res.err = m.dispatchNewListPager(req)
-			case "MigrationsClient.BeginStart":
-				res.resp, res.err = m.dispatchBeginStart(req)
 			case "MigrationsClient.Validate":
 				res.resp, res.err = m.dispatchValidate(req)
 			default:
@@ -110,13 +119,115 @@ func (m *MigrationsServerTransport) dispatchToMethodFake(req *http.Request, meth
 	}
 }
 
-func (m *MigrationsServerTransport) dispatchBeginCancel(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginCancel == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginCancel not implemented")}
+func (m *MigrationsServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginStart == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
 	}
-	beginCancel := m.beginCancel.get(req)
-	if beginCancel == nil {
+	beginStart := m.beginStart.get(req)
+	if beginStart == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrations/default`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armredisenterprise.Migration](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := m.srv.BeginStart(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginStart = &respr
+		m.beginStart.add(req, beginStart)
+	}
+
+	resp, err := server.PollerResponderNext(beginStart, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		m.beginStart.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginStart) {
+		m.beginStart.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MigrationsServerTransport) dispatchBeginUndo(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUndo == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUndo not implemented")}
+	}
+	beginUndo := m.beginUndo.get(req)
+	if beginUndo == nil {
 		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrations/default/cancel`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armredisenterprise.MigrationUndoRequest](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
+		if err != nil {
+			return nil, err
+		}
+		var options *armredisenterprise.MigrationsClientBeginUndoOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armredisenterprise.MigrationsClientBeginUndoOptions{
+				Body: &body,
+			}
+		}
+		respr, errRespr := m.srv.BeginUndo(req.Context(), resourceGroupNameParam, clusterNameParam, options)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUndo = &respr
+		m.beginUndo.add(req, beginUndo)
+	}
+
+	resp, err := server.PollerResponderNext(beginUndo, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		m.beginUndo.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUndo) {
+		m.beginUndo.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (m *MigrationsServerTransport) dispatchBeginUnlinkMigratedEndpoint(req *http.Request) (*http.Response, error) {
+	if m.srv.BeginUnlinkMigratedEndpoint == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUnlinkMigratedEndpoint not implemented")}
+	}
+	beginUnlinkMigratedEndpoint := m.beginUnlinkMigratedEndpoint.get(req)
+	if beginUnlinkMigratedEndpoint == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrations/default/unlinkMigratedEndpoint`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -130,25 +241,25 @@ func (m *MigrationsServerTransport) dispatchBeginCancel(req *http.Request) (*htt
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := m.srv.BeginCancel(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
+		respr, errRespr := m.srv.BeginUnlinkMigratedEndpoint(req.Context(), resourceGroupNameParam, clusterNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
-		beginCancel = &respr
-		m.beginCancel.add(req, beginCancel)
+		beginUnlinkMigratedEndpoint = &respr
+		m.beginUnlinkMigratedEndpoint.add(req, beginUnlinkMigratedEndpoint)
 	}
 
-	resp, err := server.PollerResponderNext(beginCancel, req)
+	resp, err := server.PollerResponderNext(beginUnlinkMigratedEndpoint, req)
 	if err != nil {
 		return nil, err
 	}
 
 	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		m.beginCancel.remove(req)
+		m.beginUnlinkMigratedEndpoint.remove(req)
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
 	}
-	if !server.PollerResponderMore(beginCancel) {
-		m.beginCancel.remove(req)
+	if !server.PollerResponderMore(beginUnlinkMigratedEndpoint) {
+		m.beginUnlinkMigratedEndpoint.remove(req)
 	}
 
 	return resp, nil
@@ -225,54 +336,6 @@ func (m *MigrationsServerTransport) dispatchNewListPager(req *http.Request) (*ht
 	if !server.PagerResponderMore(newListPager) {
 		m.newListPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (m *MigrationsServerTransport) dispatchBeginStart(req *http.Request) (*http.Response, error) {
-	if m.srv.BeginStart == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginStart not implemented")}
-	}
-	beginStart := m.beginStart.get(req)
-	if beginStart == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Cache/redisEnterprise/(?P<clusterName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/migrations/default`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armredisenterprise.Migration](req)
-		if err != nil {
-			return nil, err
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		clusterNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("clusterName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := m.srv.BeginStart(req.Context(), resourceGroupNameParam, clusterNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginStart = &respr
-		m.beginStart.add(req, beginStart)
-	}
-
-	resp, err := server.PollerResponderNext(beginStart, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
-		m.beginStart.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginStart) {
-		m.beginStart.remove(req)
-	}
-
 	return resp, nil
 }
 

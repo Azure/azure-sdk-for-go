@@ -21,6 +21,10 @@ import (
 
 // DeletedVaultsServer is a fake server for instances of the armrecoveryservices.DeletedVaultsClient type.
 type DeletedVaultsServer struct {
+	// BeginUndelete is the fake for method DeletedVaultsClient.BeginUndelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginUndelete func(ctx context.Context, location string, deletedVaultName string, body armrecoveryservices.DeletedVaultUndeleteInput, options *armrecoveryservices.DeletedVaultsClientBeginUndeleteOptions) (resp azfake.PollerResponder[armrecoveryservices.DeletedVaultsClientUndeleteResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method DeletedVaultsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, location string, deletedVaultName string, options *armrecoveryservices.DeletedVaultsClientGetOptions) (resp azfake.Responder[armrecoveryservices.DeletedVaultsClientGetResponse], errResp azfake.ErrorResponder)
@@ -32,10 +36,6 @@ type DeletedVaultsServer struct {
 	// NewListBySubscriptionIDPager is the fake for method DeletedVaultsClient.NewListBySubscriptionIDPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionIDPager func(location string, options *armrecoveryservices.DeletedVaultsClientListBySubscriptionIDOptions) (resp azfake.PagerResponder[armrecoveryservices.DeletedVaultsClientListBySubscriptionIDResponse])
-
-	// BeginUndelete is the fake for method DeletedVaultsClient.BeginUndelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginUndelete func(ctx context.Context, location string, deletedVaultName string, body armrecoveryservices.DeletedVaultUndeleteInput, options *armrecoveryservices.DeletedVaultsClientBeginUndeleteOptions) (resp azfake.PollerResponder[armrecoveryservices.DeletedVaultsClientUndeleteResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDeletedVaultsServerTransport creates a new instance of DeletedVaultsServerTransport with the provided implementation.
@@ -44,8 +44,8 @@ type DeletedVaultsServer struct {
 func NewDeletedVaultsServerTransport(srv *DeletedVaultsServer) *DeletedVaultsServerTransport {
 	return &DeletedVaultsServerTransport{
 		srv:                          srv,
-		newListBySubscriptionIDPager: newTracker[azfake.PagerResponder[armrecoveryservices.DeletedVaultsClientListBySubscriptionIDResponse]](),
 		beginUndelete:                newTracker[azfake.PollerResponder[armrecoveryservices.DeletedVaultsClientUndeleteResponse]](),
+		newListBySubscriptionIDPager: newTracker[azfake.PagerResponder[armrecoveryservices.DeletedVaultsClientListBySubscriptionIDResponse]](),
 	}
 }
 
@@ -53,8 +53,8 @@ func NewDeletedVaultsServerTransport(srv *DeletedVaultsServer) *DeletedVaultsSer
 // Don't use this type directly, use NewDeletedVaultsServerTransport instead.
 type DeletedVaultsServerTransport struct {
 	srv                          *DeletedVaultsServer
-	newListBySubscriptionIDPager *tracker[azfake.PagerResponder[armrecoveryservices.DeletedVaultsClientListBySubscriptionIDResponse]]
 	beginUndelete                *tracker[azfake.PollerResponder[armrecoveryservices.DeletedVaultsClientUndeleteResponse]]
+	newListBySubscriptionIDPager *tracker[azfake.PagerResponder[armrecoveryservices.DeletedVaultsClientListBySubscriptionIDResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeletedVaultsServerTransport.
@@ -78,14 +78,14 @@ func (d *DeletedVaultsServerTransport) dispatchToMethodFake(req *http.Request, m
 		}
 		if !intercepted {
 			switch method {
+			case "DeletedVaultsClient.BeginUndelete":
+				res.resp, res.err = d.dispatchBeginUndelete(req)
 			case "DeletedVaultsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
 			case "DeletedVaultsClient.GetOperationStatus":
 				res.resp, res.err = d.dispatchGetOperationStatus(req)
 			case "DeletedVaultsClient.NewListBySubscriptionIDPager":
 				res.resp, res.err = d.dispatchNewListBySubscriptionIDPager(req)
-			case "DeletedVaultsClient.BeginUndelete":
-				res.resp, res.err = d.dispatchBeginUndelete(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -100,6 +100,54 @@ func (d *DeletedVaultsServerTransport) dispatchToMethodFake(req *http.Request, m
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
+}
+
+func (d *DeletedVaultsServerTransport) dispatchBeginUndelete(req *http.Request) (*http.Response, error) {
+	if d.srv.BeginUndelete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginUndelete not implemented")}
+	}
+	beginUndelete := d.beginUndelete.get(req)
+	if beginUndelete == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedVaults/(?P<deletedVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/undelete`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armrecoveryservices.DeletedVaultUndeleteInput](req)
+		if err != nil {
+			return nil, err
+		}
+		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
+		if err != nil {
+			return nil, err
+		}
+		deletedVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deletedVaultName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := d.srv.BeginUndelete(req.Context(), locationParam, deletedVaultNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginUndelete = &respr
+		d.beginUndelete.add(req, beginUndelete)
+	}
+
+	resp, err := server.PollerResponderNext(beginUndelete, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		d.beginUndelete.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginUndelete) {
+		d.beginUndelete.remove(req)
+	}
+
+	return resp, nil
 }
 
 func (d *DeletedVaultsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
@@ -206,54 +254,6 @@ func (d *DeletedVaultsServerTransport) dispatchNewListBySubscriptionIDPager(req 
 	if !server.PagerResponderMore(newListBySubscriptionIDPager) {
 		d.newListBySubscriptionIDPager.remove(req)
 	}
-	return resp, nil
-}
-
-func (d *DeletedVaultsServerTransport) dispatchBeginUndelete(req *http.Request) (*http.Response, error) {
-	if d.srv.BeginUndelete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method BeginUndelete not implemented")}
-	}
-	beginUndelete := d.beginUndelete.get(req)
-	if beginUndelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.RecoveryServices/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/deletedVaults/(?P<deletedVaultName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/undelete`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		body, err := server.UnmarshalRequestAsJSON[armrecoveryservices.DeletedVaultUndeleteInput](req)
-		if err != nil {
-			return nil, err
-		}
-		locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
-		if err != nil {
-			return nil, err
-		}
-		deletedVaultNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deletedVaultName")])
-		if err != nil {
-			return nil, err
-		}
-		respr, errRespr := d.srv.BeginUndelete(req.Context(), locationParam, deletedVaultNameParam, body, nil)
-		if respErr := server.GetError(errRespr, req); respErr != nil {
-			return nil, respErr
-		}
-		beginUndelete = &respr
-		d.beginUndelete.add(req, beginUndelete)
-	}
-
-	resp, err := server.PollerResponderNext(beginUndelete, req)
-	if err != nil {
-		return nil, err
-	}
-
-	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
-		d.beginUndelete.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
-	}
-	if !server.PollerResponderMore(beginUndelete) {
-		d.beginUndelete.remove(req)
-	}
-
 	return resp, nil
 }
 

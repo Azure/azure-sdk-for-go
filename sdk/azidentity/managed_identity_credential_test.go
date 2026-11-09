@@ -493,11 +493,11 @@ func TestManagedIdentityCredential_AppService(t *testing.T) {
 			defer close()
 			srv.AppendResponse(
 				mock.WithPredicate(validateReq(t)),
-				mock.WithBody([]byte(fmt.Sprintf(
+				mock.WithBody(fmt.Appendf(nil,
 					`{"access_token": "%s", "expires_on": "%d", "resource": "https://vault.azure.net", "token_type": "Bearer", "client_id": "some-guid"}`,
 					tokenValue,
 					time.Now().Add(time.Hour).Unix(),
-				))),
+				)),
 			)
 			srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
 			setEnvironmentVariables(t, map[string]string{identityEndpoint: srv.URL(), identityHeader: expectedHeader})
@@ -629,9 +629,9 @@ func TestManagedIdentityCredential_ExpiresOnInt(t *testing.T) {
 	expires := time.Now().Add(time.Hour).Unix()
 	scope := t.Name()
 	srv.AppendResponse(
-		mock.WithBody([]byte(fmt.Sprintf(
+		mock.WithBody(fmt.Appendf(nil,
 			`{"access_token":%q,"expires_on":%d,"resource":%q,"token_type":"Bearer"}`, tokenValue, expires, scope,
-		))),
+		)),
 	)
 	setEnvironmentVariables(t, map[string]string{msiEndpoint: srv.URL()})
 	options := ManagedIdentityCredentialOptions{}

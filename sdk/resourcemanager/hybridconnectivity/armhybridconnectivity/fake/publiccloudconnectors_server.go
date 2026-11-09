@@ -8,15 +8,16 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
+	"net/url"
+	"regexp"
+	"slices"
+
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
-	"net/http"
-	"net/url"
-	"regexp"
-	"slices"
 )
 
 // PublicCloudConnectorsServer is a fake server for instances of the armhybridconnectivity.PublicCloudConnectorsClient type.
@@ -24,6 +25,10 @@ type PublicCloudConnectorsServer struct {
 	// BeginCreateOrUpdate is the fake for method PublicCloudConnectorsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, publicCloudConnector string, resource armhybridconnectivity.PublicCloudConnector, options *armhybridconnectivity.PublicCloudConnectorsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginTestPermissions is the fake for method PublicCloudConnectorsClient.BeginTestPermissions
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginTestPermissions func(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *armhybridconnectivity.PublicCloudConnectorsClientBeginTestPermissionsOptions) (resp azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse], errResp azfake.ErrorResponder)
 
 	// Delete is the fake for method PublicCloudConnectorsClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
@@ -41,10 +46,6 @@ type PublicCloudConnectorsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armhybridconnectivity.PublicCloudConnectorsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armhybridconnectivity.PublicCloudConnectorsClientListBySubscriptionResponse])
 
-	// BeginTestPermissions is the fake for method PublicCloudConnectorsClient.BeginTestPermissions
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginTestPermissions func(ctx context.Context, resourceGroupName string, publicCloudConnector string, options *armhybridconnectivity.PublicCloudConnectorsClientBeginTestPermissionsOptions) (resp azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse], errResp azfake.ErrorResponder)
-
 	// Update is the fake for method PublicCloudConnectorsClient.Update
 	// HTTP status codes to indicate success: http.StatusOK
 	Update func(ctx context.Context, resourceGroupName string, publicCloudConnector string, properties armhybridconnectivity.PublicCloudConnectorUpdate, options *armhybridconnectivity.PublicCloudConnectorsClientUpdateOptions) (resp azfake.Responder[armhybridconnectivity.PublicCloudConnectorsClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -57,9 +58,9 @@ func NewPublicCloudConnectorsServerTransport(srv *PublicCloudConnectorsServer) *
 	return &PublicCloudConnectorsServerTransport{
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientCreateOrUpdateResponse]](),
+		beginTestPermissions:        newTracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armhybridconnectivity.PublicCloudConnectorsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armhybridconnectivity.PublicCloudConnectorsClientListBySubscriptionResponse]](),
-		beginTestPermissions:        newTracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse]](),
 	}
 }
 
@@ -68,9 +69,9 @@ func NewPublicCloudConnectorsServerTransport(srv *PublicCloudConnectorsServer) *
 type PublicCloudConnectorsServerTransport struct {
 	srv                         *PublicCloudConnectorsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientCreateOrUpdateResponse]]
+	beginTestPermissions        *tracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armhybridconnectivity.PublicCloudConnectorsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armhybridconnectivity.PublicCloudConnectorsClientListBySubscriptionResponse]]
-	beginTestPermissions        *tracker[azfake.PollerResponder[armhybridconnectivity.PublicCloudConnectorsClientTestPermissionsResponse]]
 }
 
 // Do implements the policy.Transporter interface for PublicCloudConnectorsServerTransport.
@@ -96,6 +97,8 @@ func (p *PublicCloudConnectorsServerTransport) dispatchToMethodFake(req *http.Re
 			switch method {
 			case "PublicCloudConnectorsClient.BeginCreateOrUpdate":
 				res.resp, res.err = p.dispatchBeginCreateOrUpdate(req)
+			case "PublicCloudConnectorsClient.BeginTestPermissions":
+				res.resp, res.err = p.dispatchBeginTestPermissions(req)
 			case "PublicCloudConnectorsClient.Delete":
 				res.resp, res.err = p.dispatchDelete(req)
 			case "PublicCloudConnectorsClient.Get":
@@ -104,8 +107,6 @@ func (p *PublicCloudConnectorsServerTransport) dispatchToMethodFake(req *http.Re
 				res.resp, res.err = p.dispatchNewListByResourceGroupPager(req)
 			case "PublicCloudConnectorsClient.NewListBySubscriptionPager":
 				res.resp, res.err = p.dispatchNewListBySubscriptionPager(req)
-			case "PublicCloudConnectorsClient.BeginTestPermissions":
-				res.resp, res.err = p.dispatchBeginTestPermissions(req)
 			case "PublicCloudConnectorsClient.Update":
 				res.resp, res.err = p.dispatchUpdate(req)
 			default:
@@ -130,7 +131,7 @@ func (p *PublicCloudConnectorsServerTransport) dispatchBeginCreateOrUpdate(req *
 	}
 	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -172,149 +173,13 @@ func (p *PublicCloudConnectorsServerTransport) dispatchBeginCreateOrUpdate(req *
 	return resp, nil
 }
 
-func (p *PublicCloudConnectorsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
-	if p.srv.Delete == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	publicCloudConnectorParam, err := url.PathUnescape(matches[regex.SubexpIndex("publicCloudConnector")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Delete(req.Context(), resourceGroupNameParam, publicCloudConnectorParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *PublicCloudConnectorsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if p.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	publicCloudConnectorParam, err := url.PathUnescape(matches[regex.SubexpIndex("publicCloudConnector")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, publicCloudConnectorParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PublicCloudConnector, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (p *PublicCloudConnectorsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armhybridconnectivity.PublicCloudConnectorsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		p.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (p *PublicCloudConnectorsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if p.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := p.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := p.srv.NewListBySubscriptionPager(nil)
-		newListBySubscriptionPager = &resp
-		p.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armhybridconnectivity.PublicCloudConnectorsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		p.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		p.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (p *PublicCloudConnectorsServerTransport) dispatchBeginTestPermissions(req *http.Request) (*http.Response, error) {
 	if p.srv.BeginTestPermissions == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginTestPermissions not implemented")}
 	}
 	beginTestPermissions := p.beginTestPermissions.get(req)
 	if beginTestPermissions == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/testPermissions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/testPermissions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -352,11 +217,147 @@ func (p *PublicCloudConnectorsServerTransport) dispatchBeginTestPermissions(req 
 	return resp, nil
 }
 
+func (p *PublicCloudConnectorsServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
+	if p.srv.Delete == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	publicCloudConnectorParam, err := url.PathUnescape(matches[regex.SubexpIndex("publicCloudConnector")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Delete(req.Context(), resourceGroupNameParam, publicCloudConnectorParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK, http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PublicCloudConnectorsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if p.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	publicCloudConnectorParam, err := url.PathUnescape(matches[regex.SubexpIndex("publicCloudConnector")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, publicCloudConnectorParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).PublicCloudConnector, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PublicCloudConnectorsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := p.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := p.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		p.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armhybridconnectivity.PublicCloudConnectorsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		p.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (p *PublicCloudConnectorsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if p.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := p.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := p.srv.NewListBySubscriptionPager(nil)
+		newListBySubscriptionPager = &resp
+		p.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armhybridconnectivity.PublicCloudConnectorsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		p.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		p.newListBySubscriptionPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (p *PublicCloudConnectorsServerTransport) dispatchUpdate(req *http.Request) (*http.Response, error) {
 	if p.srv.Update == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Update not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.HybridConnectivity/publicCloudConnectors/(?P<publicCloudConnector>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

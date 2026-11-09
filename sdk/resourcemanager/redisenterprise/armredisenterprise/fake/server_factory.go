@@ -21,11 +21,11 @@ type ServerFactory struct {
 	// Server contains the fakes for client Client
 	Server Server
 
+	// ClustersServer contains the fakes for client ClustersClient
+	ClustersServer ClustersServer
+
 	// DatabasesServer contains the fakes for client DatabasesClient
 	DatabasesServer DatabasesServer
-
-	// MigrationServer contains the fakes for client MigrationClient
-	MigrationServer MigrationServer
 
 	// MigrationsServer contains the fakes for client MigrationsClient
 	MigrationsServer MigrationsServer
@@ -59,8 +59,8 @@ type ServerFactoryTransport struct {
 	trMu                               sync.Mutex
 	trAccessPolicyAssignmentServer     *AccessPolicyAssignmentServerTransport
 	trServer                           *ServerTransport
+	trClustersServer                   *ClustersServerTransport
 	trDatabasesServer                  *DatabasesServerTransport
-	trMigrationServer                  *MigrationServerTransport
 	trMigrationsServer                 *MigrationsServerTransport
 	trOperationsServer                 *OperationsServerTransport
 	trOperationsStatusServer           *OperationsStatusServerTransport
@@ -89,12 +89,12 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "Client":
 		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
+	case "ClustersClient":
+		initServer(&s.trMu, &s.trClustersServer, func() *ClustersServerTransport { return NewClustersServerTransport(&s.srv.ClustersServer) })
+		resp, err = s.trClustersServer.Do(req)
 	case "DatabasesClient":
 		initServer(&s.trMu, &s.trDatabasesServer, func() *DatabasesServerTransport { return NewDatabasesServerTransport(&s.srv.DatabasesServer) })
 		resp, err = s.trDatabasesServer.Do(req)
-	case "MigrationClient":
-		initServer(&s.trMu, &s.trMigrationServer, func() *MigrationServerTransport { return NewMigrationServerTransport(&s.srv.MigrationServer) })
-		resp, err = s.trMigrationServer.Do(req)
 	case "MigrationsClient":
 		initServer(&s.trMu, &s.trMigrationsServer, func() *MigrationsServerTransport { return NewMigrationsServerTransport(&s.srv.MigrationsServer) })
 		resp, err = s.trMigrationsServer.Do(req)

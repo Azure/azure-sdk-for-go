@@ -19,7 +19,7 @@ import (
 // TargetTypesClient contains the methods for the TargetTypes group.
 // Don't use this type directly, use NewTargetTypesClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-08-01-preview
 type TargetTypesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type TargetTypesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTargetTypesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TargetTypesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *TargetTypesClient) Get(ctx context.Context, location string, targe
 func (client *TargetTypesClient) getCreateRequest(ctx context.Context, location string, targetTypeName string, _ *TargetTypesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/targetTypes/{targetTypeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -83,7 +86,7 @@ func (client *TargetTypesClient) getCreateRequest(ctx context.Context, location 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -137,7 +140,7 @@ func (client *TargetTypesClient) listCreateRequest(ctx context.Context, location
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/locations/{location}/targetTypes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
@@ -153,7 +156,7 @@ func (client *TargetTypesClient) listCreateRequest(ctx context.Context, location
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260501Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		if options != nil && options.ContinuationToken != nil {
 			reqQP.Set("continuationToken", *options.ContinuationToken)
 		}

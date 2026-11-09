@@ -21,6 +21,12 @@ type ServerFactory struct {
 	// AdvancedPlatformMetricsServer contains the fakes for client AdvancedPlatformMetricsClient
 	AdvancedPlatformMetricsServer AdvancedPlatformMetricsServer
 
+	// BlobAccessPointConfigurationsServer contains the fakes for client BlobAccessPointConfigurationsClient
+	BlobAccessPointConfigurationsServer BlobAccessPointConfigurationsServer
+
+	// BlobAccessPointConnectionTestsServer contains the fakes for client BlobAccessPointConnectionTestsClient
+	BlobAccessPointConnectionTestsServer BlobAccessPointConnectionTestsServer
+
 	// BlobContainersServer contains the fakes for client BlobContainersClient
 	BlobContainersServer BlobContainersServer
 
@@ -32,6 +38,12 @@ type ServerFactory struct {
 
 	// ConnectorsServer contains the fakes for client ConnectorsClient
 	ConnectorsServer ConnectorsServer
+
+	// ContextCacheContainersServer contains the fakes for client ContextCacheContainersClient
+	ContextCacheContainersServer ContextCacheContainersServer
+
+	// ContextCachesServer contains the fakes for client ContextCachesClient
+	ContextCachesServer ContextCachesServer
 
 	// DataSharesServer contains the fakes for client DataSharesClient
 	DataSharesServer DataSharesServer
@@ -113,10 +125,14 @@ type ServerFactoryTransport struct {
 	trMu                                           sync.Mutex
 	trAccountsServer                               *AccountsServerTransport
 	trAdvancedPlatformMetricsServer                *AdvancedPlatformMetricsServerTransport
+	trBlobAccessPointConfigurationsServer          *BlobAccessPointConfigurationsServerTransport
+	trBlobAccessPointConnectionTestsServer         *BlobAccessPointConnectionTestsServerTransport
 	trBlobContainersServer                         *BlobContainersServerTransport
 	trBlobInventoryPoliciesServer                  *BlobInventoryPoliciesServerTransport
 	trBlobServicesServer                           *BlobServicesServerTransport
 	trConnectorsServer                             *ConnectorsServerTransport
+	trContextCacheContainersServer                 *ContextCacheContainersServerTransport
+	trContextCachesServer                          *ContextCachesServerTransport
 	trDataSharesServer                             *DataSharesServerTransport
 	trDeletedAccountsServer                        *DeletedAccountsServerTransport
 	trEncryptionScopesServer                       *EncryptionScopesServerTransport
@@ -161,6 +177,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAdvancedPlatformMetricsServerTransport(&s.srv.AdvancedPlatformMetricsServer)
 		})
 		resp, err = s.trAdvancedPlatformMetricsServer.Do(req)
+	case "BlobAccessPointConfigurationsClient":
+		initServer(&s.trMu, &s.trBlobAccessPointConfigurationsServer, func() *BlobAccessPointConfigurationsServerTransport {
+			return NewBlobAccessPointConfigurationsServerTransport(&s.srv.BlobAccessPointConfigurationsServer)
+		})
+		resp, err = s.trBlobAccessPointConfigurationsServer.Do(req)
+	case "BlobAccessPointConnectionTestsClient":
+		initServer(&s.trMu, &s.trBlobAccessPointConnectionTestsServer, func() *BlobAccessPointConnectionTestsServerTransport {
+			return NewBlobAccessPointConnectionTestsServerTransport(&s.srv.BlobAccessPointConnectionTestsServer)
+		})
+		resp, err = s.trBlobAccessPointConnectionTestsServer.Do(req)
 	case "BlobContainersClient":
 		initServer(&s.trMu, &s.trBlobContainersServer, func() *BlobContainersServerTransport {
 			return NewBlobContainersServerTransport(&s.srv.BlobContainersServer)
@@ -177,6 +203,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ConnectorsClient":
 		initServer(&s.trMu, &s.trConnectorsServer, func() *ConnectorsServerTransport { return NewConnectorsServerTransport(&s.srv.ConnectorsServer) })
 		resp, err = s.trConnectorsServer.Do(req)
+	case "ContextCacheContainersClient":
+		initServer(&s.trMu, &s.trContextCacheContainersServer, func() *ContextCacheContainersServerTransport {
+			return NewContextCacheContainersServerTransport(&s.srv.ContextCacheContainersServer)
+		})
+		resp, err = s.trContextCacheContainersServer.Do(req)
+	case "ContextCachesClient":
+		initServer(&s.trMu, &s.trContextCachesServer, func() *ContextCachesServerTransport {
+			return NewContextCachesServerTransport(&s.srv.ContextCachesServer)
+		})
+		resp, err = s.trContextCachesServer.Do(req)
 	case "DataSharesClient":
 		initServer(&s.trMu, &s.trDataSharesServer, func() *DataSharesServerTransport { return NewDataSharesServerTransport(&s.srv.DataSharesServer) })
 		resp, err = s.trDataSharesServer.Do(req)

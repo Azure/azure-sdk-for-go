@@ -102,7 +102,7 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchNewListConfigurations
 	}
 	newListConfigurationsPager := p.newListConfigurationsPager.get(req)
 	if newListConfigurationsPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeOrder/listConfigurations`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/listConfigurations`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -147,7 +147,7 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchNewListProductFamilie
 	}
 	newListProductFamiliesPager := p.newListProductFamiliesPager.get(req)
 	if newListProductFamiliesPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeOrder/listProductFamilies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/listProductFamilies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
@@ -194,7 +194,7 @@ func (p *ProductsAndConfigurationsServerTransport) dispatchNewListProductFamilie
 	}
 	newListProductFamiliesMetadataPager := p.newListProductFamiliesMetadataPager.get(req)
 	if newListProductFamiliesMetadataPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.EdgeOrder/productFamiliesMetadata`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.EdgeOrder/productFamiliesMetadata`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

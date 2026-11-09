@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-09-01/Workflows_Abort.json
+// Generated from example definition: 2025-12-01/Workflows_Abort.json
 func ExampleWorkflowsClient_Abort() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,7 +35,7 @@ func ExampleWorkflowsClient_Abort() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/Workflows_Get.json
+// Generated from example definition: 2025-12-01/Workflows_Get.json
 func ExampleWorkflowsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleWorkflowsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2022-09-01/Workflows_ListByStorageSyncService.json
+// Generated from example definition: 2025-12-01/Workflows_ListByStorageSyncService.json
 func ExampleWorkflowsClient_NewListByStorageSyncServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

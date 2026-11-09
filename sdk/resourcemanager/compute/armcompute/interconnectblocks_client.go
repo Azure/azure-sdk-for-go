@@ -30,6 +30,9 @@ type InterconnectBlocksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewInterconnectBlocksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*InterconnectBlocksClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *InterconnectBlocksClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Creates or updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity
+// createOrUpdate - Creates or updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity
 // may be modified.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InterconnectBlocksClient) createOrUpdate(ctx context.Context, resourceGroupName string, interconnectBlockName string, resource InterconnectBlock, options *InterconnectBlocksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -89,11 +92,11 @@ func (client *InterconnectBlocksClient) createOrUpdate(ctx context.Context, reso
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *InterconnectBlocksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, interconnectBlockName string, resource InterconnectBlock, _ *InterconnectBlocksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/interconnectBlocks/{interconnectBlockName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -143,8 +146,8 @@ func (client *InterconnectBlocksClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Deletes an Interconnect Block. The operation is only allowed when there are no virtual machines or VMSS VM instances
-// associated with the Interconnect Block.
+// deleteOperation - Deletes an Interconnect Block. The operation is only allowed when there are no virtual machines or VMSS
+// VM instances associated with the Interconnect Block.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *InterconnectBlocksClient) deleteOperation(ctx context.Context, resourceGroupName string, interconnectBlockName string, options *InterconnectBlocksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,11 +169,11 @@ func (client *InterconnectBlocksClient) deleteOperation(ctx context.Context, res
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *InterconnectBlocksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, interconnectBlockName string, _ *InterconnectBlocksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/interconnectBlocks/{interconnectBlockName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -188,6 +191,82 @@ func (client *InterconnectBlocksClient) deleteCreateRequest(ctx context.Context,
 	reqQP := req.Raw().URL.Query()
 	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginUpdate - Updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be modified.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - interconnectBlockName - The name of the Interconnect Block.
+//   - properties - Parameters supplied to the Update Interconnect Block operation.
+//   - options - InterconnectBlocksClientBeginUpdateOptions contains the optional parameters for the InterconnectBlocksClient.BeginUpdate
+//     method.
+func (client *InterconnectBlocksClient) BeginUpdate(ctx context.Context, resourceGroupName string, interconnectBlockName string, properties InterconnectBlockUpdate, options *InterconnectBlocksClientBeginUpdateOptions) (*runtime.Poller[InterconnectBlocksClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, interconnectBlockName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InterconnectBlocksClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InterconnectBlocksClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be modified.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *InterconnectBlocksClient) update(ctx context.Context, resourceGroupName string, interconnectBlockName string, properties InterconnectBlockUpdate, options *InterconnectBlocksClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "InterconnectBlocksClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, interconnectBlockName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *InterconnectBlocksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, interconnectBlockName string, properties InterconnectBlockUpdate, _ *InterconnectBlocksClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/interconnectBlocks/{interconnectBlockName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if interconnectBlockName == "" {
+		return nil, errors.New("parameter interconnectBlockName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{interconnectBlockName}", url.PathEscape(interconnectBlockName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -217,7 +296,7 @@ func (client *InterconnectBlocksClient) Get(ctx context.Context, resourceGroupNa
 func (client *InterconnectBlocksClient) getCreateRequest(ctx context.Context, resourceGroupName string, interconnectBlockName string, options *InterconnectBlocksClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/interconnectBlocks/{interconnectBlockName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -292,7 +371,7 @@ func (client *InterconnectBlocksClient) listByResourceGroupCreateRequest(ctx con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/interconnectBlocks"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -364,7 +443,7 @@ func (client *InterconnectBlocksClient) listBySubscriptionCreateRequest(ctx cont
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/interconnectBlocks"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -393,80 +472,4 @@ func (client *InterconnectBlocksClient) listBySubscriptionHandleResponse(resp *h
 		return InterconnectBlocksClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be modified.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - interconnectBlockName - The name of the Interconnect Block.
-//   - properties - Parameters supplied to the Update Interconnect Block operation.
-//   - options - InterconnectBlocksClientBeginUpdateOptions contains the optional parameters for the InterconnectBlocksClient.BeginUpdate
-//     method.
-func (client *InterconnectBlocksClient) BeginUpdate(ctx context.Context, resourceGroupName string, interconnectBlockName string, properties InterconnectBlockUpdate, options *InterconnectBlocksClientBeginUpdateOptions) (*runtime.Poller[InterconnectBlocksClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, interconnectBlockName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[InterconnectBlocksClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[InterconnectBlocksClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an Interconnect Block. When updating an Interconnect Block, only tags and sku.capacity may be modified.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *InterconnectBlocksClient) update(ctx context.Context, resourceGroupName string, interconnectBlockName string, properties InterconnectBlockUpdate, options *InterconnectBlocksClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "InterconnectBlocksClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, interconnectBlockName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *InterconnectBlocksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, interconnectBlockName string, properties InterconnectBlockUpdate, _ *InterconnectBlocksClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/interconnectBlocks/{interconnectBlockName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if interconnectBlockName == "" {
-		return nil, errors.New("parameter interconnectBlockName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{interconnectBlockName}", url.PathEscape(interconnectBlockName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

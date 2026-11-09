@@ -19,7 +19,7 @@ import (
 // UpdatesClient contains the methods for the Updates group.
 // Don't use this type directly, use NewUpdatesClient() instead.
 //
-// Generated from API version 2026-04-30
+// Generated from API version 2026-10-01
 type UpdatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type UpdatesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewUpdatesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*UpdatesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -64,7 +67,7 @@ func (client *UpdatesClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Delete specified Update
+// deleteOperation - Delete specified Update
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UpdatesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -86,11 +89,11 @@ func (client *UpdatesClient) deleteOperation(ctx context.Context, resourceGroupN
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *UpdatesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, _ *UpdatesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -110,7 +113,156 @@ func (client *UpdatesClient) deleteCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginPost - Apply Update
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - updateName - The name of the Update
+//   - options - UpdatesClientBeginPostOptions contains the optional parameters for the UpdatesClient.BeginPost method.
+func (client *UpdatesClient) BeginPost(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPostOptions) (*runtime.Poller[UpdatesClientPostResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.post(ctx, resourceGroupName, clusterName, updateName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UpdatesClientPostResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UpdatesClientPostResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// post - Apply Update
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *UpdatesClient) post(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPostOptions) (*http.Response, error) {
+	var err error
+	const operationName = "UpdatesClient.BeginPost"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.postCreateRequest(ctx, resourceGroupName, clusterName, updateName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// postCreateRequest creates the post request.
+func (client *UpdatesClient) postCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, _ *UpdatesClientBeginPostOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/apply"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if updateName == "" {
+		return nil, errors.New("parameter updateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{updateName}", url.PathEscape(updateName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginPrepare - Prepare Update
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster.
+//   - updateName - The name of the Update
+//   - options - UpdatesClientBeginPrepareOptions contains the optional parameters for the UpdatesClient.BeginPrepare method.
+func (client *UpdatesClient) BeginPrepare(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPrepareOptions) (*runtime.Poller[UpdatesClientPrepareResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.prepare(ctx, resourceGroupName, clusterName, updateName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UpdatesClientPrepareResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UpdatesClientPrepareResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// prepare - Prepare Update
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *UpdatesClient) prepare(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPrepareOptions) (*http.Response, error) {
+	var err error
+	const operationName = "UpdatesClient.BeginPrepare"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.prepareCreateRequest(ctx, resourceGroupName, clusterName, updateName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// prepareCreateRequest creates the prepare request.
+func (client *UpdatesClient) prepareCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, _ *UpdatesClientBeginPrepareOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/prepare"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if updateName == "" {
+		return nil, errors.New("parameter updateName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{updateName}", url.PathEscape(updateName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -142,7 +294,7 @@ func (client *UpdatesClient) Get(ctx context.Context, resourceGroupName string, 
 func (client *UpdatesClient) getCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, _ *UpdatesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -162,7 +314,7 @@ func (client *UpdatesClient) getCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -217,7 +369,7 @@ func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGrou
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -237,7 +389,7 @@ func (client *UpdatesClient) listCreateRequest(ctx context.Context, resourceGrou
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -254,155 +406,6 @@ func (client *UpdatesClient) listHandleResponse(resp *http.Response, successCode
 		return UpdatesClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginPost - Apply Update
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - updateName - The name of the Update
-//   - options - UpdatesClientBeginPostOptions contains the optional parameters for the UpdatesClient.BeginPost method.
-func (client *UpdatesClient) BeginPost(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPostOptions) (*runtime.Poller[UpdatesClientPostResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.post(ctx, resourceGroupName, clusterName, updateName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UpdatesClientPostResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UpdatesClientPostResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Post - Apply Update
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *UpdatesClient) post(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPostOptions) (*http.Response, error) {
-	var err error
-	const operationName = "UpdatesClient.BeginPost"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.postCreateRequest(ctx, resourceGroupName, clusterName, updateName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// postCreateRequest creates the Post request.
-func (client *UpdatesClient) postCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, _ *UpdatesClientBeginPostOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/apply"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if updateName == "" {
-		return nil, errors.New("parameter updateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{updateName}", url.PathEscape(updateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
-// BeginPrepare - Prepare Update
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster.
-//   - updateName - The name of the Update
-//   - options - UpdatesClientBeginPrepareOptions contains the optional parameters for the UpdatesClient.BeginPrepare method.
-func (client *UpdatesClient) BeginPrepare(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPrepareOptions) (*runtime.Poller[UpdatesClientPrepareResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.prepare(ctx, resourceGroupName, clusterName, updateName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[UpdatesClientPrepareResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[UpdatesClientPrepareResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Prepare - Prepare Update
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *UpdatesClient) prepare(ctx context.Context, resourceGroupName string, clusterName string, updateName string, options *UpdatesClientBeginPrepareOptions) (*http.Response, error) {
-	var err error
-	const operationName = "UpdatesClient.BeginPrepare"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.prepareCreateRequest(ctx, resourceGroupName, clusterName, updateName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// prepareCreateRequest creates the Prepare request.
-func (client *UpdatesClient) prepareCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, _ *UpdatesClientBeginPrepareOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}/prepare"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if updateName == "" {
-		return nil, errors.New("parameter updateName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{updateName}", url.PathEscape(updateName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }
 
 // Put - Put specified Update
@@ -433,7 +436,7 @@ func (client *UpdatesClient) Put(ctx context.Context, resourceGroupName string, 
 func (client *UpdatesClient) putCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, updateName string, updateProperties Update, _ *UpdatesClientPutOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHCI/clusters/{clusterName}/updates/{updateName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -453,7 +456,7 @@ func (client *UpdatesClient) putCreateRequest(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

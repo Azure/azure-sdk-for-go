@@ -62,7 +62,7 @@ type AccessPolicyAssignmentPropertiesUser struct {
 
 // AzureCacheForRedisMigrationProperties - Properties for Redis Enterprise migration operation for Azure Cache for Redis.
 type AzureCacheForRedisMigrationProperties struct {
-	// REQUIRED; Sets whether the data is migrated from source to target or not. This property must be true during the preview.
+	// REQUIRED; Sets whether the data is migrated from source to target or not. Set this property to true to skip data migration.
 	SkipDataMigration *bool
 
 	// REQUIRED; The source resource ID to migrate from. This is the resource ID of the Azure Cache for Redis.
@@ -90,6 +90,11 @@ type AzureCacheForRedisMigrationProperties struct {
 	// READ-ONLY; Current provisioning status of the migration
 	ProvisioningState *MigrationProvisioningState
 
+	// READ-ONLY; The timestamp until which a successful migration remains eligible to be undone (rolled back) to the source cache.
+	// This property is only returned while the migration is in the Succeeded state, and is calculated from the time the migration
+	// succeeded plus the rollback window. After this time the source cache is released and the migration can no longer be undone.
+	RollbackEligibleUntil *time.Time
+
 	// READ-ONLY; Additional details about the migration operation's status in free text format.
 	StatusDetails *string
 
@@ -100,12 +105,13 @@ type AzureCacheForRedisMigrationProperties struct {
 // GetMigrationProperties implements the MigrationPropertiesClassification interface for type AzureCacheForRedisMigrationProperties.
 func (a *AzureCacheForRedisMigrationProperties) GetMigrationProperties() *MigrationProperties {
 	return &MigrationProperties{
-		CreationTime:      a.CreationTime,
-		LastModifiedTime:  a.LastModifiedTime,
-		ProvisioningState: a.ProvisioningState,
-		SourceType:        a.SourceType,
-		StatusDetails:     a.StatusDetails,
-		TargetResourceID:  a.TargetResourceID,
+		CreationTime:          a.CreationTime,
+		LastModifiedTime:      a.LastModifiedTime,
+		ProvisioningState:     a.ProvisioningState,
+		RollbackEligibleUntil: a.RollbackEligibleUntil,
+		SourceType:            a.SourceType,
+		StatusDetails:         a.StatusDetails,
+		TargetResourceID:      a.TargetResourceID,
 	}
 }
 
@@ -328,6 +334,11 @@ type DatabaseCreateProperties struct {
 	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
 	Modules []*Module
 
+	// Specifies which keyspace events should trigger notifications. Default is an empty string, meaning this feature is disabled.
+	// When enabled, at least 'K' (keyspace events) or 'E' (keyevent events) must be present. For example, 'AKE' enables all standard
+	// events. See https://redis.io/docs/latest/develop/use/keyspace-notifications/ for the complete list of event types.
+	NotifyKeyspaceEvents *string
+
 	// Persistence settings
 	Persistence *Persistence
 
@@ -392,6 +403,11 @@ type DatabaseUpdateProperties struct {
 
 	// Optional set of redis modules to enable in this database - modules can only be added at creation time.
 	Modules []*Module
+
+	// Specifies which keyspace events should trigger notifications. Default is an empty string, meaning this feature is disabled.
+	// When enabled, at least 'K' (keyspace events) or 'E' (keyevent events) must be present. For example, 'AKE' enables all standard
+	// events. See https://redis.io/docs/latest/develop/use/keyspace-notifications/ for the complete list of event types.
+	NotifyKeyspaceEvents *string
 
 	// Persistence settings
 	Persistence *Persistence
@@ -578,6 +594,11 @@ type MigrationProperties struct {
 	// READ-ONLY; Current provisioning status of the migration
 	ProvisioningState *MigrationProvisioningState
 
+	// READ-ONLY; The timestamp until which a successful migration remains eligible to be undone (rolled back) to the source cache.
+	// This property is only returned while the migration is in the Succeeded state, and is calculated from the time the migration
+	// succeeded plus the rollback window. After this time the source cache is released and the migration can no longer be undone.
+	RollbackEligibleUntil *time.Time
+
 	// READ-ONLY; Additional details about the migration operation's status in free text format.
 	StatusDetails *string
 
@@ -587,6 +608,13 @@ type MigrationProperties struct {
 
 // GetMigrationProperties implements the MigrationPropertiesClassification interface for type MigrationProperties.
 func (m *MigrationProperties) GetMigrationProperties() *MigrationProperties { return m }
+
+// MigrationUndoRequest - Parameters supplied to the undo migration operation.
+type MigrationUndoRequest struct {
+	// The reason for undoing (rolling back) the migration. Choose the value that best describes why the rollback is needed. This
+	// information helps us improve the migration experience and does not change how the rollback is performed.
+	RollbackReason *MigrationRollbackReason
+}
 
 // MigrationValidationDisparity - Represents a specific validation issue found during migration validation.
 type MigrationValidationDisparity struct {
@@ -608,11 +636,6 @@ type MigrationValidationError struct {
 type MigrationValidationRequest struct {
 	// REQUIRED; The source resource ID to validate migration from. This is the resource ID of the Azure Cache for Redis.
 	SourceResourceID *string
-
-	// Sets whether to ignore warnings when validating if the source cache can be migrated to the target cache. If this property
-	// is true, the isValid property in the response will ignore warning-level disparities between the source and target resource.
-	// The default value is false.
-	ForceMigrate *bool
 
 	// Sets whether the data is migrated from source to target or not. The default value is true.
 	SkipDataMigration *bool

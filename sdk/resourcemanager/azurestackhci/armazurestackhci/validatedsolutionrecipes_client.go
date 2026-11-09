@@ -19,7 +19,7 @@ import (
 // ValidatedSolutionRecipesClient contains the methods for the ValidatedSolutionRecipes group.
 // Don't use this type directly, use NewValidatedSolutionRecipesClient() instead.
 //
-// Generated from API version 2026-04-30
+// Generated from API version 2026-10-01
 type ValidatedSolutionRecipesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type ValidatedSolutionRecipesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewValidatedSolutionRecipesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ValidatedSolutionRecipesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -68,7 +71,7 @@ func (client *ValidatedSolutionRecipesClient) Get(ctx context.Context, location 
 func (client *ValidatedSolutionRecipesClient) getCreateRequest(ctx context.Context, location string, validatedSolutionRecipeName string, _ *ValidatedSolutionRecipesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/locations/{location}/validatedSolutionRecipes/{validatedSolutionRecipeName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -84,7 +87,7 @@ func (client *ValidatedSolutionRecipesClient) getCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260430)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -139,7 +142,7 @@ func (client *ValidatedSolutionRecipesClient) listBySubscriptionLocationResource
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.AzureStackHCI/locations/{location}/validatedSolutionRecipes"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if location == "" {
@@ -155,7 +158,7 @@ func (client *ValidatedSolutionRecipesClient) listBySubscriptionLocationResource
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260430)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -82,13 +82,6 @@ func (c *ClientFactory) NewGoalResourcesClient() *GoalResourcesClient {
 	}
 }
 
-// NewGoalTemplatesClient creates a new instance of GoalTemplatesClient.
-func (c *ClientFactory) NewGoalTemplatesClient() *GoalTemplatesClient {
-	return &GoalTemplatesClient{
-		internal: c.internal,
-	}
-}
-
 // NewOperationStatusClient creates a new instance of OperationStatusClient.
 func (c *ClientFactory) NewOperationStatusClient() *OperationStatusClient {
 	return &OperationStatusClient{

@@ -19,7 +19,7 @@ import (
 // BlobContainersClient contains the methods for the BlobContainers group.
 // Don't use this type directly, use NewBlobContainersClient() instead.
 //
-// Generated from API version 2026-04-01
+// Generated from API version 2026-09-01
 type BlobContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -30,6 +30,9 @@ type BlobContainersClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewBlobContainersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BlobContainersClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -39,6 +42,88 @@ func NewBlobContainersClient(subscriptionID string, credential azcore.TokenCrede
 		internal:       cl,
 	}
 	return client, nil
+}
+
+// BeginObjectLevelWorm - This operation migrates a blob container from container level WORM to object level immutability
+// enabled container. Prerequisites require a container level immutability policy either in locked or unlocked state, Account
+// level versioning must be enabled and there should be no Legal hold on the container.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
+//     3 and 24 characters in length and use numbers and lower-case letters only.
+//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
+//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately
+//     preceded and followed by a letter or number.
+//   - options - BlobContainersClientBeginObjectLevelWormOptions contains the optional parameters for the BlobContainersClient.BeginObjectLevelWorm
+//     method.
+func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientBeginObjectLevelWormOptions) (*runtime.Poller[BlobContainersClientObjectLevelWormResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.objectLevelWorm(ctx, resourceGroupName, accountName, containerName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BlobContainersClientObjectLevelWormResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BlobContainersClientObjectLevelWormResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// objectLevelWorm - This operation migrates a blob container from container level WORM to object level immutability enabled
+// container. Prerequisites require a container level immutability policy either in locked or unlocked state, Account level
+// versioning must be enabled and there should be no Legal hold on the container.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *BlobContainersClient) objectLevelWorm(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientBeginObjectLevelWormOptions) (*http.Response, error) {
+	var err error
+	const operationName = "BlobContainersClient.BeginObjectLevelWorm"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.objectLevelWormCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		return nil, runtime.NewResponseError(httpResp)
+	}
+	return httpResp, nil
+}
+
+// objectLevelWormCreateRequest creates the objectLevelWorm request.
+func (client *BlobContainersClient) objectLevelWormCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, _ *BlobContainersClientBeginObjectLevelWormOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/migrate"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if accountName == "" {
+		return nil, errors.New("parameter accountName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+	if containerName == "" {
+		return nil, errors.New("parameter containerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
 }
 
 // ClearLegalHold - Clears legal hold tags. Clearing the same or non-existent tag results in an idempotent operation. ClearLegalHold
@@ -67,19 +152,14 @@ func (client *BlobContainersClient) ClearLegalHold(ctx context.Context, resource
 	if err != nil {
 		return BlobContainersClientClearLegalHoldResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientClearLegalHoldResponse{}, err
-	}
-	resp, err := client.clearLegalHoldHandleResponse(httpResp)
-	return resp, err
+	return client.clearLegalHoldHandleResponse(httpResp, http.StatusOK)
 }
 
 // clearLegalHoldCreateRequest creates the ClearLegalHold request.
 func (client *BlobContainersClient) clearLegalHoldCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, _ *BlobContainersClientClearLegalHoldOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/clearLegalHold"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -99,7 +179,7 @@ func (client *BlobContainersClient) clearLegalHoldCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -110,8 +190,11 @@ func (client *BlobContainersClient) clearLegalHoldCreateRequest(ctx context.Cont
 }
 
 // clearLegalHoldHandleResponse handles the ClearLegalHold response.
-func (client *BlobContainersClient) clearLegalHoldHandleResponse(resp *http.Response) (BlobContainersClientClearLegalHoldResponse, error) {
+func (client *BlobContainersClient) clearLegalHoldHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientClearLegalHoldResponse, error) {
 	result := BlobContainersClientClearLegalHoldResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LegalHold); err != nil {
 		return BlobContainersClientClearLegalHoldResponse{}, err
 	}
@@ -143,19 +226,14 @@ func (client *BlobContainersClient) Create(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return BlobContainersClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
-	return resp, err
+	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 }
 
 // createCreateRequest creates the Create request.
 func (client *BlobContainersClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, _ *BlobContainersClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -175,7 +253,7 @@ func (client *BlobContainersClient) createCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -186,8 +264,11 @@ func (client *BlobContainersClient) createCreateRequest(ctx context.Context, res
 }
 
 // createHandleResponse handles the Create response.
-func (client *BlobContainersClient) createHandleResponse(resp *http.Response) (BlobContainersClientCreateResponse, error) {
+func (client *BlobContainersClient) createHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientCreateResponse, error) {
 	result := BlobContainersClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobContainer); err != nil {
 		return BlobContainersClientCreateResponse{}, err
 	}
@@ -220,19 +301,14 @@ func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context
 	if err != nil {
 		return BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse{}, err
-	}
-	resp, err := client.createOrUpdateImmutabilityPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.createOrUpdateImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // createOrUpdateImmutabilityPolicyCreateRequest creates the CreateOrUpdateImmutabilityPolicy request.
 func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, parameters ImmutabilityPolicy, options *BlobContainersClientCreateOrUpdateImmutabilityPolicyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -252,7 +328,7 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -266,9 +342,12 @@ func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyCreateReques
 }
 
 // createOrUpdateImmutabilityPolicyHandleResponse handles the CreateOrUpdateImmutabilityPolicy response.
-func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyHandleResponse(resp *http.Response) (BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse, error) {
+func (client *BlobContainersClient) createOrUpdateImmutabilityPolicyHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse, error) {
 	result := BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
@@ -301,8 +380,7 @@ func (client *BlobContainersClient) Delete(ctx context.Context, resourceGroupNam
 		return BlobContainersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientDeleteResponse{}, err
+		return BlobContainersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
 	}
 	return BlobContainersClientDeleteResponse{}, nil
 }
@@ -311,7 +389,7 @@ func (client *BlobContainersClient) Delete(ctx context.Context, resourceGroupNam
 func (client *BlobContainersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, _ *BlobContainersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -331,7 +409,7 @@ func (client *BlobContainersClient) deleteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -364,19 +442,14 @@ func (client *BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context
 	if err != nil {
 		return BlobContainersClientDeleteImmutabilityPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientDeleteImmutabilityPolicyResponse{}, err
-	}
-	resp, err := client.deleteImmutabilityPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.deleteImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // deleteImmutabilityPolicyCreateRequest creates the DeleteImmutabilityPolicy request.
 func (client *BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, _ *BlobContainersClientDeleteImmutabilityPolicyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -396,7 +469,7 @@ func (client *BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -404,9 +477,12 @@ func (client *BlobContainersClient) deleteImmutabilityPolicyCreateRequest(ctx co
 }
 
 // deleteImmutabilityPolicyHandleResponse handles the DeleteImmutabilityPolicy response.
-func (client *BlobContainersClient) deleteImmutabilityPolicyHandleResponse(resp *http.Response) (BlobContainersClientDeleteImmutabilityPolicyResponse, error) {
+func (client *BlobContainersClient) deleteImmutabilityPolicyHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientDeleteImmutabilityPolicyResponse, error) {
 	result := BlobContainersClientDeleteImmutabilityPolicyResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
@@ -442,19 +518,14 @@ func (client *BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context
 	if err != nil {
 		return BlobContainersClientExtendImmutabilityPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientExtendImmutabilityPolicyResponse{}, err
-	}
-	resp, err := client.extendImmutabilityPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.extendImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // extendImmutabilityPolicyCreateRequest creates the ExtendImmutabilityPolicy request.
 func (client *BlobContainersClient) extendImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, options *BlobContainersClientExtendImmutabilityPolicyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/default/extend"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -474,7 +545,7 @@ func (client *BlobContainersClient) extendImmutabilityPolicyCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -489,9 +560,12 @@ func (client *BlobContainersClient) extendImmutabilityPolicyCreateRequest(ctx co
 }
 
 // extendImmutabilityPolicyHandleResponse handles the ExtendImmutabilityPolicy response.
-func (client *BlobContainersClient) extendImmutabilityPolicyHandleResponse(resp *http.Response) (BlobContainersClientExtendImmutabilityPolicyResponse, error) {
+func (client *BlobContainersClient) extendImmutabilityPolicyHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientExtendImmutabilityPolicyResponse, error) {
 	result := BlobContainersClientExtendImmutabilityPolicyResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
@@ -523,19 +597,14 @@ func (client *BlobContainersClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return BlobContainersClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
+	return client.getHandleResponse(httpResp, http.StatusOK)
 }
 
 // getCreateRequest creates the Get request.
 func (client *BlobContainersClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, _ *BlobContainersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -555,15 +624,18 @@ func (client *BlobContainersClient) getCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // getHandleResponse handles the Get response.
-func (client *BlobContainersClient) getHandleResponse(resp *http.Response) (BlobContainersClientGetResponse, error) {
+func (client *BlobContainersClient) getHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientGetResponse, error) {
 	result := BlobContainersClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobContainer); err != nil {
 		return BlobContainersClientGetResponse{}, err
 	}
@@ -595,19 +667,14 @@ func (client *BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, r
 	if err != nil {
 		return BlobContainersClientGetImmutabilityPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientGetImmutabilityPolicyResponse{}, err
-	}
-	resp, err := client.getImmutabilityPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.getImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // getImmutabilityPolicyCreateRequest creates the GetImmutabilityPolicy request.
 func (client *BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientGetImmutabilityPolicyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -627,7 +694,7 @@ func (client *BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -637,9 +704,12 @@ func (client *BlobContainersClient) getImmutabilityPolicyCreateRequest(ctx conte
 }
 
 // getImmutabilityPolicyHandleResponse handles the GetImmutabilityPolicy response.
-func (client *BlobContainersClient) getImmutabilityPolicyHandleResponse(resp *http.Response) (BlobContainersClientGetImmutabilityPolicyResponse, error) {
+func (client *BlobContainersClient) getImmutabilityPolicyHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientGetImmutabilityPolicyResponse, error) {
 	result := BlobContainersClientGetImmutabilityPolicyResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
@@ -672,19 +742,14 @@ func (client *BlobContainersClient) Lease(ctx context.Context, resourceGroupName
 	if err != nil {
 		return BlobContainersClientLeaseResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientLeaseResponse{}, err
-	}
-	resp, err := client.leaseHandleResponse(httpResp)
-	return resp, err
+	return client.leaseHandleResponse(httpResp, http.StatusOK)
 }
 
 // leaseCreateRequest creates the Lease request.
 func (client *BlobContainersClient) leaseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientLeaseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/lease"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -704,7 +769,7 @@ func (client *BlobContainersClient) leaseCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Parameters != nil {
@@ -718,83 +783,13 @@ func (client *BlobContainersClient) leaseCreateRequest(ctx context.Context, reso
 }
 
 // leaseHandleResponse handles the Lease response.
-func (client *BlobContainersClient) leaseHandleResponse(resp *http.Response) (BlobContainersClientLeaseResponse, error) {
+func (client *BlobContainersClient) leaseHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientLeaseResponse, error) {
 	result := BlobContainersClientLeaseResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LeaseContainerResponse); err != nil {
 		return BlobContainersClientLeaseResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
-// token.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
-//     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - options - BlobContainersClientListOptions contains the optional parameters for the BlobContainersClient.NewListPager method.
-func (client *BlobContainersClient) NewListPager(resourceGroupName string, accountName string, options *BlobContainersClientListOptions) *runtime.Pager[BlobContainersClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[BlobContainersClientListResponse]{
-		More: func(page BlobContainersClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *BlobContainersClientListResponse) (BlobContainersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BlobContainersClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, accountName, options)
-			}, nil)
-			if err != nil {
-				return BlobContainersClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *BlobContainersClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, options *BlobContainersClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	if options != nil && options.Include != nil {
-		reqQP.Set("$include", string(*options.Include))
-	}
-	if options != nil && options.Maxpagesize != nil {
-		reqQP.Set("$maxpagesize", *options.Maxpagesize)
-	}
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *BlobContainersClient) listHandleResponse(resp *http.Response) (BlobContainersClientListResponse, error) {
-	result := BlobContainersClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListContainerItems); err != nil {
-		return BlobContainersClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -826,19 +821,14 @@ func (client *BlobContainersClient) LockImmutabilityPolicy(ctx context.Context, 
 	if err != nil {
 		return BlobContainersClientLockImmutabilityPolicyResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientLockImmutabilityPolicyResponse{}, err
-	}
-	resp, err := client.lockImmutabilityPolicyHandleResponse(httpResp)
-	return resp, err
+	return client.lockImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
 }
 
 // lockImmutabilityPolicyCreateRequest creates the LockImmutabilityPolicy request.
 func (client *BlobContainersClient) lockImmutabilityPolicyCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, ifMatch string, _ *BlobContainersClientLockImmutabilityPolicyOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/immutabilityPolicies/default/lock"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -858,7 +848,7 @@ func (client *BlobContainersClient) lockImmutabilityPolicyCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["If-Match"] = []string{ifMatch}
@@ -866,9 +856,12 @@ func (client *BlobContainersClient) lockImmutabilityPolicyCreateRequest(ctx cont
 }
 
 // lockImmutabilityPolicyHandleResponse handles the LockImmutabilityPolicy response.
-func (client *BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *http.Response) (BlobContainersClientLockImmutabilityPolicyResponse, error) {
+func (client *BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientLockImmutabilityPolicyResponse, error) {
 	result := BlobContainersClientLockImmutabilityPolicyResponse{}
-	if val := resp.Header.Get("ETag"); val != "" {
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("Etag"); val != "" {
 		result.ETag = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ImmutabilityPolicy); err != nil {
@@ -877,87 +870,91 @@ func (client *BlobContainersClient) lockImmutabilityPolicyHandleResponse(resp *h
 	return result, nil
 }
 
-// BeginObjectLevelWorm - This operation migrates a blob container from container level WORM to object level immutability
-// enabled container. Prerequisites require a container level immutability policy either in locked or unlocked state, Account
-// level versioning must be enabled and there should be no Legal hold on the container.
-// If the operation fails it returns an *azcore.ResponseError type.
+// NewListPager - Lists all containers and does not support a prefix like data plane. Also SRP today does not return continuation
+// token.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of the storage account within the specified resource group. Storage account names must be between
 //     3 and 24 characters in length and use numbers and lower-case letters only.
-//   - containerName - The name of the blob container within the specified storage account. Blob container names must be between
-//     3 and 63 characters in length and use numbers, lower-case letters and dash (-) only. Every dash (-) character must be immediately
-//     preceded and followed by a letter or number.
-//   - options - BlobContainersClientBeginObjectLevelWormOptions contains the optional parameters for the BlobContainersClient.BeginObjectLevelWorm
-//     method.
-func (client *BlobContainersClient) BeginObjectLevelWorm(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientBeginObjectLevelWormOptions) (*runtime.Poller[BlobContainersClientObjectLevelWormResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.objectLevelWorm(ctx, resourceGroupName, accountName, containerName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[BlobContainersClientObjectLevelWormResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[BlobContainersClientObjectLevelWormResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
+//   - options - BlobContainersClientListOptions contains the optional parameters for the BlobContainersClient.NewListPager method.
+func (client *BlobContainersClient) NewListPager(resourceGroupName string, accountName string, options *BlobContainersClientListOptions) *runtime.Pager[BlobContainersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[BlobContainersClientListResponse]{
+		More: func(page BlobContainersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *BlobContainersClientListResponse) (BlobContainersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BlobContainersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
+			if err != nil {
+				return BlobContainersClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return BlobContainersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// ObjectLevelWorm - This operation migrates a blob container from container level WORM to object level immutability enabled
-// container. Prerequisites require a container level immutability policy either in locked or unlocked state, Account level
-// versioning must be enabled and there should be no Legal hold on the container.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *BlobContainersClient) objectLevelWorm(ctx context.Context, resourceGroupName string, accountName string, containerName string, options *BlobContainersClientBeginObjectLevelWormOptions) (*http.Response, error) {
+// listCreateRequest creates the List request.
+func (client *BlobContainersClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, options *BlobContainersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
 	var err error
-	const operationName = "BlobContainersClient.BeginObjectLevelWorm"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.objectLevelWormCreateRequest(ctx, resourceGroupName, accountName, containerName, options)
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if accountName == "" {
+			return nil, errors.New("parameter accountName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
 	if err != nil {
 		return nil, err
 	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Include != nil {
+			reqQP.Set("$include", string(*options.Include))
+		}
+		if options != nil && options.Maxpagesize != nil {
+			reqQP.Set("$maxpagesize", *options.Maxpagesize)
+		}
+		reqQP.Set("api-version", version20260901)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return nil, err
-	}
-	return httpResp, nil
+	return req, nil
 }
 
-// objectLevelWormCreateRequest creates the ObjectLevelWorm request.
-func (client *BlobContainersClient) objectLevelWormCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, _ *BlobContainersClientBeginObjectLevelWormOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/migrate"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+// listHandleResponse handles the List response.
+func (client *BlobContainersClient) listHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientListResponse, error) {
+	result := BlobContainersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListContainerItems); err != nil {
+		return BlobContainersClientListResponse{}, err
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if accountName == "" {
-		return nil, errors.New("parameter accountName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{accountName}", url.PathEscape(accountName))
-	if containerName == "" {
-		return nil, errors.New("parameter containerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{containerName}", url.PathEscape(containerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
+	return result, nil
 }
 
 // SetLegalHold - Sets legal hold tags. Setting the same tag results in an idempotent operation. SetLegalHold follows an append
@@ -986,19 +983,14 @@ func (client *BlobContainersClient) SetLegalHold(ctx context.Context, resourceGr
 	if err != nil {
 		return BlobContainersClientSetLegalHoldResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientSetLegalHoldResponse{}, err
-	}
-	resp, err := client.setLegalHoldHandleResponse(httpResp)
-	return resp, err
+	return client.setLegalHoldHandleResponse(httpResp, http.StatusOK)
 }
 
 // setLegalHoldCreateRequest creates the SetLegalHold request.
 func (client *BlobContainersClient) setLegalHoldCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, legalHold LegalHold, _ *BlobContainersClientSetLegalHoldOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}/setLegalHold"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1018,7 +1010,7 @@ func (client *BlobContainersClient) setLegalHoldCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1029,8 +1021,11 @@ func (client *BlobContainersClient) setLegalHoldCreateRequest(ctx context.Contex
 }
 
 // setLegalHoldHandleResponse handles the SetLegalHold response.
-func (client *BlobContainersClient) setLegalHoldHandleResponse(resp *http.Response) (BlobContainersClientSetLegalHoldResponse, error) {
+func (client *BlobContainersClient) setLegalHoldHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientSetLegalHoldResponse, error) {
 	result := BlobContainersClientSetLegalHoldResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.LegalHold); err != nil {
 		return BlobContainersClientSetLegalHoldResponse{}, err
 	}
@@ -1062,19 +1057,14 @@ func (client *BlobContainersClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return BlobContainersClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return BlobContainersClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
-	return resp, err
+	return client.updateHandleResponse(httpResp, http.StatusOK)
 }
 
 // updateCreateRequest creates the Update request.
 func (client *BlobContainersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, containerName string, blobContainer BlobContainer, _ *BlobContainersClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/blobServices/default/containers/{containerName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -1094,7 +1084,7 @@ func (client *BlobContainersClient) updateCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -1105,8 +1095,11 @@ func (client *BlobContainersClient) updateCreateRequest(ctx context.Context, res
 }
 
 // updateHandleResponse handles the Update response.
-func (client *BlobContainersClient) updateHandleResponse(resp *http.Response) (BlobContainersClientUpdateResponse, error) {
+func (client *BlobContainersClient) updateHandleResponse(resp *http.Response, successCodes ...int) (BlobContainersClientUpdateResponse, error) {
 	result := BlobContainersClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.BlobContainer); err != nil {
 		return BlobContainersClientUpdateResponse{}, err
 	}

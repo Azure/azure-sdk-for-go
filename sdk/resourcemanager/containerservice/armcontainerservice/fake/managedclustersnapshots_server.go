@@ -33,13 +33,13 @@ type ManagedClusterSnapshotsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, resourceName string, options *armcontainerservice.ManagedClusterSnapshotsClientGetOptions) (resp azfake.Responder[armcontainerservice.ManagedClusterSnapshotsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method ManagedClusterSnapshotsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armcontainerservice.ManagedClusterSnapshotsClientListOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListResponse])
-
 	// NewListByResourceGroupPager is the fake for method ManagedClusterSnapshotsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armcontainerservice.ManagedClusterSnapshotsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListByResourceGroupResponse])
+
+	// NewListPager is the fake for method ManagedClusterSnapshotsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armcontainerservice.ManagedClusterSnapshotsClientListOptions) (resp azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListResponse])
 
 	// UpdateTags is the fake for method ManagedClusterSnapshotsClient.UpdateTags
 	// HTTP status codes to indicate success: http.StatusOK
@@ -52,8 +52,8 @@ type ManagedClusterSnapshotsServer struct {
 func NewManagedClusterSnapshotsServerTransport(srv *ManagedClusterSnapshotsServer) *ManagedClusterSnapshotsServerTransport {
 	return &ManagedClusterSnapshotsServerTransport{
 		srv:                         srv,
-		newListPager:                newTracker[azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListResponse]](),
 	}
 }
 
@@ -61,8 +61,8 @@ func NewManagedClusterSnapshotsServerTransport(srv *ManagedClusterSnapshotsServe
 // Don't use this type directly, use NewManagedClusterSnapshotsServerTransport instead.
 type ManagedClusterSnapshotsServerTransport struct {
 	srv                         *ManagedClusterSnapshotsServer
-	newListPager                *tracker[azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armcontainerservice.ManagedClusterSnapshotsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for ManagedClusterSnapshotsServerTransport.
@@ -92,10 +92,10 @@ func (m *ManagedClusterSnapshotsServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = m.dispatchDelete(req)
 			case "ManagedClusterSnapshotsClient.Get":
 				res.resp, res.err = m.dispatchGet(req)
-			case "ManagedClusterSnapshotsClient.NewListPager":
-				res.resp, res.err = m.dispatchNewListPager(req)
 			case "ManagedClusterSnapshotsClient.NewListByResourceGroupPager":
 				res.resp, res.err = m.dispatchNewListByResourceGroupPager(req)
+			case "ManagedClusterSnapshotsClient.NewListPager":
+				res.resp, res.err = m.dispatchNewListPager(req)
 			case "ManagedClusterSnapshotsClient.UpdateTags":
 				res.resp, res.err = m.dispatchUpdateTags(req)
 			default:
@@ -118,7 +118,7 @@ func (m *ManagedClusterSnapshotsServerTransport) dispatchCreateOrUpdate(req *htt
 	if m.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedclustersnapshots/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedclustersnapshots/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -155,7 +155,7 @@ func (m *ManagedClusterSnapshotsServerTransport) dispatchDelete(req *http.Reques
 	if m.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedclustersnapshots/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedclustersnapshots/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -188,7 +188,7 @@ func (m *ManagedClusterSnapshotsServerTransport) dispatchGet(req *http.Request) 
 	if m.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedclustersnapshots/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedclustersnapshots/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
@@ -217,46 +217,13 @@ func (m *ManagedClusterSnapshotsServerTransport) dispatchGet(req *http.Request) 
 	return resp, nil
 }
 
-func (m *ManagedClusterSnapshotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if m.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := m.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedclustersnapshots`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := m.srv.NewListPager(nil)
-		newListPager = &resp
-		m.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.ManagedClusterSnapshotsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		m.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		m.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (m *ManagedClusterSnapshotsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if m.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
 	newListByResourceGroupPager := m.newListByResourceGroupPager.get(req)
 	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedclustersnapshots`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedclustersnapshots`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -287,11 +254,44 @@ func (m *ManagedClusterSnapshotsServerTransport) dispatchNewListByResourceGroupP
 	return resp, nil
 }
 
+func (m *ManagedClusterSnapshotsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if m.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := m.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedclustersnapshots`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := m.srv.NewListPager(nil)
+		newListPager = &resp
+		m.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcontainerservice.ManagedClusterSnapshotsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		m.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		m.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
 func (m *ManagedClusterSnapshotsServerTransport) dispatchUpdateTags(req *http.Request) (*http.Response, error) {
 	if m.srv.UpdateTags == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateTags not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.ContainerService/managedclustersnapshots/(?P<resourceName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ContainerService/managedclustersnapshots/(?P<resourceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {

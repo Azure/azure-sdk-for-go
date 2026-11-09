@@ -66,7 +66,8 @@ func (client *AgreementsClient) CreateOrUpdate(ctx context.Context, agreementNam
 	if err != nil {
 		return AgreementsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -129,7 +130,8 @@ func (client *AgreementsClient) Delete(ctx context.Context, agreementName string
 		return AgreementsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AgreementsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AgreementsClientDeleteResponse{}, err
 	}
 	return AgreementsClientDeleteResponse{}, nil
 }
@@ -173,7 +175,8 @@ func (client *AgreementsClient) Get(ctx context.Context, agreementName string, o
 	if err != nil {
 		return AgreementsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

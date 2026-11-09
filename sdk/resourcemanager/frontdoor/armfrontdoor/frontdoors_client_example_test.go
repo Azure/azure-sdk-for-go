@@ -565,8 +565,8 @@ func ExampleFrontDoorsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01/FrontdoorListAll.json
-func ExampleFrontDoorsClient_NewListPager() {
+// Generated from example definition: 2026-04-01/FrontdoorList.json
+func ExampleFrontDoorsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -576,7 +576,7 @@ func ExampleFrontDoorsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFrontDoorsClient().NewListPager(nil)
+	pager := clientFactory.NewFrontDoorsClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -587,7 +587,7 @@ func ExampleFrontDoorsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armfrontdoor.FrontDoorsClientListResponse{
+		// page = armfrontdoor.FrontDoorsClientListByResourceGroupResponse{
 		// 	ListResult: armfrontdoor.ListResult{
 		// 		Value: []*armfrontdoor.FrontDoor{
 		// 			{
@@ -645,6 +645,7 @@ func ExampleFrontDoorsClient_NewListPager() {
 		// 					},
 		// 					BackendPoolsSettings: &armfrontdoor.BackendPoolsSettings{
 		// 						EnforceCertificateNameCheck: to.Ptr(armfrontdoor.EnforceCertificateNameCheckEnabledStateEnabled),
+		// 						SendRecvTimeoutSeconds: to.Ptr[int32](60),
 		// 					},
 		// 					Cname: to.Ptr("frontDoor1.azurefd.net"),
 		// 					EnabledState: to.Ptr(armfrontdoor.FrontDoorEnabledStateEnabled),
@@ -803,8 +804,8 @@ func ExampleFrontDoorsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/FrontdoorList.json
-func ExampleFrontDoorsClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-04-01/FrontdoorListAll.json
+func ExampleFrontDoorsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -814,7 +815,7 @@ func ExampleFrontDoorsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFrontDoorsClient().NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewFrontDoorsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -825,7 +826,7 @@ func ExampleFrontDoorsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armfrontdoor.FrontDoorsClientListByResourceGroupResponse{
+		// page = armfrontdoor.FrontDoorsClientListResponse{
 		// 	ListResult: armfrontdoor.ListResult{
 		// 		Value: []*armfrontdoor.FrontDoor{
 		// 			{
@@ -883,7 +884,6 @@ func ExampleFrontDoorsClient_NewListByResourceGroupPager() {
 		// 					},
 		// 					BackendPoolsSettings: &armfrontdoor.BackendPoolsSettings{
 		// 						EnforceCertificateNameCheck: to.Ptr(armfrontdoor.EnforceCertificateNameCheckEnabledStateEnabled),
-		// 						SendRecvTimeoutSeconds: to.Ptr[int32](60),
 		// 					},
 		// 					Cname: to.Ptr("frontDoor1.azurefd.net"),
 		// 					EnabledState: to.Ptr(armfrontdoor.FrontDoorEnabledStateEnabled),

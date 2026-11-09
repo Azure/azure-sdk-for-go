@@ -71,7 +71,7 @@ func (client *ExperimentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Creates or updates an Experiment
+// createOrUpdate - Creates or updates an Experiment
 //
 // Creates or updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -90,12 +90,13 @@ func (client *ExperimentsClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, _ *ExperimentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
 	if client.subscriptionID == "" {
@@ -154,7 +155,7 @@ func (client *ExperimentsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes an Experiment
+// deleteOperation - Deletes an Experiment
 //
 // Deletes an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -173,12 +174,13 @@ func (client *ExperimentsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, _ *ExperimentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
 	if client.subscriptionID == "" {
@@ -207,6 +209,91 @@ func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
+// BeginUpdate - Updates an Experiment by Experiment id
+//
+// Updates an Experiment
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - The Profile identifier associated with the Tenant and Partner
+//   - experimentName - The Experiment identifier associated with the Experiment
+//   - parameters - The Experiment Update Model
+//   - options - ExperimentsClientBeginUpdateOptions contains the optional parameters for the ExperimentsClient.BeginUpdate method.
+func (client *ExperimentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*runtime.Poller[ExperimentsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, profileName, experimentName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExperimentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExperimentsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an Experiment by Experiment id
+//
+// Updates an Experiment
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ExperimentsClient) update(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ExperimentsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, experimentName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ExperimentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, _ *ExperimentsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	if experimentName == "" {
+		return nil, errors.New("parameter experimentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{experimentName}", url.PathEscape(experimentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Gets an Experiment by ExperimentName
 //
 // Gets an Experiment by ExperimentName
@@ -229,7 +316,8 @@ func (client *ExperimentsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ExperimentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -351,88 +439,4 @@ func (client *ExperimentsClient) listByProfileHandleResponse(resp *http.Response
 		return ExperimentsClientListByProfileResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates an Experiment by Experiment id
-//
-// Updates an Experiment
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - The Profile identifier associated with the Tenant and Partner
-//   - experimentName - The Experiment identifier associated with the Experiment
-//   - parameters - The Experiment Update Model
-//   - options - ExperimentsClientBeginUpdateOptions contains the optional parameters for the ExperimentsClient.BeginUpdate method.
-func (client *ExperimentsClient) BeginUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*runtime.Poller[ExperimentsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, profileName, experimentName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ExperimentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ExperimentsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an Experiment by Experiment id
-//
-// Updates an Experiment
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExperimentsClient) update(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ExperimentsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, profileName, experimentName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ExperimentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, _ *ExperimentsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if experimentName == "" {
-		return nil, errors.New("parameter experimentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{experimentName}", url.PathEscape(experimentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

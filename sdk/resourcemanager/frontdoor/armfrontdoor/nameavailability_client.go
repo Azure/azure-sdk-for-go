@@ -54,7 +54,8 @@ func (client *NameAvailabilityClient) Check(ctx context.Context, checkFrontDoorN
 	if err != nil {
 		return NameAvailabilityClientCheckResponse{}, err
 	}
-	return client.checkHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkCreateRequest creates the Check request.

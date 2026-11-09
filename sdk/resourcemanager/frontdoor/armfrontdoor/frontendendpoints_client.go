@@ -68,7 +68,7 @@ func (client *FrontendEndpointsClient) BeginDisableHTTPS(ctx context.Context, re
 	}
 }
 
-// DisableHTTPS - Disables a frontendEndpoint for HTTPS traffic
+// disableHTTPS - Disables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FrontendEndpointsClient) disableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, options *FrontendEndpointsClientBeginDisableHTTPSOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *FrontendEndpointsClient) disableHTTPS(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// disableHTTPSCreateRequest creates the DisableHTTPS request.
+// disableHTTPSCreateRequest creates the disableHTTPS request.
 func (client *FrontendEndpointsClient) disableHTTPSCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, _ *FrontendEndpointsClientBeginDisableHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/disableHttps"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *FrontendEndpointsClient) BeginEnableHTTPS(ctx context.Context, res
 	}
 }
 
-// EnableHTTPS - Enables a frontendEndpoint for HTTPS traffic
+// enableHTTPS - Enables a frontendEndpoint for HTTPS traffic
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FrontendEndpointsClient) enableHTTPS(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration, options *FrontendEndpointsClientBeginEnableHTTPSOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *FrontendEndpointsClient) enableHTTPS(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// enableHTTPSCreateRequest creates the EnableHTTPS request.
+// enableHTTPSCreateRequest creates the enableHTTPS request.
 func (client *FrontendEndpointsClient) enableHTTPSCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontendEndpointName string, customHTTPSConfiguration CustomHTTPSConfiguration, _ *FrontendEndpointsClientBeginEnableHTTPSOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/enableHttps"
 	if client.subscriptionID == "" {
@@ -219,7 +221,8 @@ func (client *FrontendEndpointsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return FrontendEndpointsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -63,7 +63,8 @@ func (client *NameAvailabilityWithSubscriptionClient) Check(ctx context.Context,
 	if err != nil {
 		return NameAvailabilityWithSubscriptionClientCheckResponse{}, err
 	}
-	return client.checkHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkCreateRequest creates the Check request.

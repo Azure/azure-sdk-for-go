@@ -29,21 +29,21 @@ type NetworkExperimentProfilesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, profileName string, options *armfrontdoor.NetworkExperimentProfilesClientBeginDeleteOptions) (resp azfake.PollerResponder[armfrontdoor.NetworkExperimentProfilesClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method NetworkExperimentProfilesClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, parameters armfrontdoor.ProfileUpdateModel, options *armfrontdoor.NetworkExperimentProfilesClientBeginUpdateOptions) (resp azfake.PollerResponder[armfrontdoor.NetworkExperimentProfilesClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method NetworkExperimentProfilesClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, profileName string, options *armfrontdoor.NetworkExperimentProfilesClientGetOptions) (resp azfake.Responder[armfrontdoor.NetworkExperimentProfilesClientGetResponse], errResp azfake.ErrorResponder)
-
-	// NewListPager is the fake for method NetworkExperimentProfilesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armfrontdoor.NetworkExperimentProfilesClientListOptions) (resp azfake.PagerResponder[armfrontdoor.NetworkExperimentProfilesClientListResponse])
 
 	// NewListByResourceGroupPager is the fake for method NetworkExperimentProfilesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armfrontdoor.NetworkExperimentProfilesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armfrontdoor.NetworkExperimentProfilesClientListByResourceGroupResponse])
 
-	// BeginUpdate is the fake for method NetworkExperimentProfilesClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, profileName string, parameters armfrontdoor.ProfileUpdateModel, options *armfrontdoor.NetworkExperimentProfilesClientBeginUpdateOptions) (resp azfake.PollerResponder[armfrontdoor.NetworkExperimentProfilesClientUpdateResponse], errResp azfake.ErrorResponder)
+	// NewListPager is the fake for method NetworkExperimentProfilesClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armfrontdoor.NetworkExperimentProfilesClientListOptions) (resp azfake.PagerResponder[armfrontdoor.NetworkExperimentProfilesClientListResponse])
 }
 
 // NewNetworkExperimentProfilesServerTransport creates a new instance of NetworkExperimentProfilesServerTransport with the provided implementation.
@@ -54,9 +54,9 @@ func NewNetworkExperimentProfilesServerTransport(srv *NetworkExperimentProfilesS
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armfrontdoor.NetworkExperimentProfilesClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armfrontdoor.NetworkExperimentProfilesClientDeleteResponse]](),
-		newListPager:                newTracker[azfake.PagerResponder[armfrontdoor.NetworkExperimentProfilesClientListResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armfrontdoor.NetworkExperimentProfilesClientListByResourceGroupResponse]](),
 		beginUpdate:                 newTracker[azfake.PollerResponder[armfrontdoor.NetworkExperimentProfilesClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armfrontdoor.NetworkExperimentProfilesClientListByResourceGroupResponse]](),
+		newListPager:                newTracker[azfake.PagerResponder[armfrontdoor.NetworkExperimentProfilesClientListResponse]](),
 	}
 }
 
@@ -66,9 +66,9 @@ type NetworkExperimentProfilesServerTransport struct {
 	srv                         *NetworkExperimentProfilesServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armfrontdoor.NetworkExperimentProfilesClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armfrontdoor.NetworkExperimentProfilesClientDeleteResponse]]
-	newListPager                *tracker[azfake.PagerResponder[armfrontdoor.NetworkExperimentProfilesClientListResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armfrontdoor.NetworkExperimentProfilesClientListByResourceGroupResponse]]
 	beginUpdate                 *tracker[azfake.PollerResponder[armfrontdoor.NetworkExperimentProfilesClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armfrontdoor.NetworkExperimentProfilesClientListByResourceGroupResponse]]
+	newListPager                *tracker[azfake.PagerResponder[armfrontdoor.NetworkExperimentProfilesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for NetworkExperimentProfilesServerTransport.
@@ -76,7 +76,7 @@ func (n *NetworkExperimentProfilesServerTransport) Do(req *http.Request) (*http.
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return n.dispatchToMethodFake(req, method)
@@ -96,14 +96,14 @@ func (n *NetworkExperimentProfilesServerTransport) dispatchToMethodFake(req *htt
 				res.resp, res.err = n.dispatchBeginCreateOrUpdate(req)
 			case "NetworkExperimentProfilesClient.BeginDelete":
 				res.resp, res.err = n.dispatchBeginDelete(req)
-			case "NetworkExperimentProfilesClient.Get":
-				res.resp, res.err = n.dispatchGet(req)
-			case "NetworkExperimentProfilesClient.NewListPager":
-				res.resp, res.err = n.dispatchNewListPager(req)
-			case "NetworkExperimentProfilesClient.NewListByResourceGroupPager":
-				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
 			case "NetworkExperimentProfilesClient.BeginUpdate":
 				res.resp, res.err = n.dispatchBeginUpdate(req)
+			case "NetworkExperimentProfilesClient.Get":
+				res.resp, res.err = n.dispatchGet(req)
+			case "NetworkExperimentProfilesClient.NewListByResourceGroupPager":
+				res.resp, res.err = n.dispatchNewListByResourceGroupPager(req)
+			case "NetworkExperimentProfilesClient.NewListPager":
+				res.resp, res.err = n.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -212,109 +212,6 @@ func (n *NetworkExperimentProfilesServerTransport) dispatchBeginDelete(req *http
 	return resp, nil
 }
 
-func (n *NetworkExperimentProfilesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if n.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/NetworkExperimentProfiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, profileNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Profile, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (n *NetworkExperimentProfilesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := n.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/NetworkExperimentProfiles`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := n.srv.NewListPager(nil)
-		newListPager = &resp
-		n.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armfrontdoor.NetworkExperimentProfilesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		n.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (n *NetworkExperimentProfilesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if n.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/NetworkExperimentProfiles`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armfrontdoor.NetworkExperimentProfilesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		n.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		n.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (n *NetworkExperimentProfilesServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if n.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -360,6 +257,109 @@ func (n *NetworkExperimentProfilesServerTransport) dispatchBeginUpdate(req *http
 		n.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (n *NetworkExperimentProfilesServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if n.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/NetworkExperimentProfiles/(?P<profileName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	profileNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("profileName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := n.srv.Get(req.Context(), resourceGroupNameParam, profileNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).Profile, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (n *NetworkExperimentProfilesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := n.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/NetworkExperimentProfiles`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := n.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		n.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armfrontdoor.NetworkExperimentProfilesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		n.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (n *NetworkExperimentProfilesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if n.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := n.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Network/NetworkExperimentProfiles`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := n.srv.NewListPager(nil)
+		newListPager = &resp
+		n.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armfrontdoor.NetworkExperimentProfilesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		n.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		n.newListPager.remove(req)
+	}
 	return resp, nil
 }
 

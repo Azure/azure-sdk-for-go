@@ -69,7 +69,7 @@ func (client *EndpointsClient) BeginPurgeContent(ctx context.Context, resourceGr
 	}
 }
 
-// PurgeContent - Removes a content from Front Door.
+// purgeContent - Removes a content from Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, options *EndpointsClientBeginPurgeContentOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *EndpointsClient) purgeContent(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// purgeContentCreateRequest creates the PurgeContent request.
+// purgeContentCreateRequest creates the purgeContent request.
 func (client *EndpointsClient) purgeContentCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, contentFilePaths PurgeParameters, _ *EndpointsClientBeginPurgeContentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/purge"
 	if client.subscriptionID == "" {

@@ -70,7 +70,8 @@ func (client *ReportsClient) GetLatencyScorecards(ctx context.Context, resourceG
 	if err != nil {
 		return ReportsClientGetLatencyScorecardsResponse{}, err
 	}
-	return client.getLatencyScorecardsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLatencyScorecardsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLatencyScorecardsCreateRequest creates the GetLatencyScorecards request.
@@ -148,7 +149,8 @@ func (client *ReportsClient) GetTimeseries(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ReportsClientGetTimeseriesResponse{}, err
 	}
-	return client.getTimeseriesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTimeseriesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTimeseriesCreateRequest creates the GetTimeseries request.

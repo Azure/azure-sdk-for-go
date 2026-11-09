@@ -69,7 +69,7 @@ func (client *RulesEnginesClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 }
 
-// CreateOrUpdate - Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
+// createOrUpdate - Creates a new Rules Engine Configuration with the specified name within the specified Front Door.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RulesEnginesClient) createOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, rulesEngineParameters RulesEngine, options *RulesEnginesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *RulesEnginesClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RulesEnginesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, rulesEngineParameters RulesEngine, _ *RulesEnginesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *RulesEnginesClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Deletes an existing Rules Engine Configuration with the specified parameters.
+// deleteOperation - Deletes an existing Rules Engine Configuration with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RulesEnginesClient) deleteOperation(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, options *RulesEnginesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *RulesEnginesClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RulesEnginesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, rulesEngineName string, _ *RulesEnginesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/rulesEngines/{rulesEngineName}"
 	if client.subscriptionID == "" {
@@ -220,7 +222,8 @@ func (client *RulesEnginesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return RulesEnginesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

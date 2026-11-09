@@ -68,7 +68,7 @@ func (client *FrontDoorsClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Creates a new Front Door with a Front Door name under the specified subscription and resource group.
+// createOrUpdate - Creates a new Front Door with a Front Door name under the specified subscription and resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FrontDoorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, frontDoorName string, frontDoorParameters FrontDoor, options *FrontDoorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *FrontDoorsClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FrontDoorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, frontDoorParameters FrontDoor, _ *FrontDoorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}"
 	if client.subscriptionID == "" {
@@ -142,7 +143,7 @@ func (client *FrontDoorsClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Deletes an existing Front Door with the specified parameters.
+// deleteOperation - Deletes an existing Front Door with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FrontDoorsClient) deleteOperation(ctx context.Context, resourceGroupName string, frontDoorName string, options *FrontDoorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -159,12 +160,13 @@ func (client *FrontDoorsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FrontDoorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, frontDoorName string, _ *FrontDoorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}"
 	if client.subscriptionID == "" {
@@ -208,7 +210,8 @@ func (client *FrontDoorsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return FrontDoorsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -245,72 +248,6 @@ func (client *FrontDoorsClient) getHandleResponse(resp *http.Response, successCo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.FrontDoor); err != nil {
 		return FrontDoorsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Lists all of the Front Doors within an Azure subscription.
-//   - options - FrontDoorsClientListOptions contains the optional parameters for the FrontDoorsClient.NewListPager method.
-func (client *FrontDoorsClient) NewListPager(options *FrontDoorsClientListOptions) *runtime.Pager[FrontDoorsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[FrontDoorsClientListResponse]{
-		More: func(page FrontDoorsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *FrontDoorsClientListResponse) (FrontDoorsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FrontDoorsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return FrontDoorsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return FrontDoorsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *FrontDoorsClient) listCreateRequest(ctx context.Context, nextLink string, _ *FrontDoorsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *FrontDoorsClient) listHandleResponse(resp *http.Response, successCodes ...int) (FrontDoorsClientListResponse, error) {
-	result := FrontDoorsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
-		return FrontDoorsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -387,6 +324,72 @@ func (client *FrontDoorsClient) listByResourceGroupHandleResponse(resp *http.Res
 	return result, nil
 }
 
+// NewListPager - Lists all of the Front Doors within an Azure subscription.
+//   - options - FrontDoorsClientListOptions contains the optional parameters for the FrontDoorsClient.NewListPager method.
+func (client *FrontDoorsClient) NewListPager(options *FrontDoorsClientListOptions) *runtime.Pager[FrontDoorsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[FrontDoorsClientListResponse]{
+		More: func(page FrontDoorsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *FrontDoorsClientListResponse) (FrontDoorsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FrontDoorsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return FrontDoorsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FrontDoorsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *FrontDoorsClient) listCreateRequest(ctx context.Context, nextLink string, _ *FrontDoorsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Network/frontDoors"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *FrontDoorsClient) listHandleResponse(resp *http.Response, successCodes ...int) (FrontDoorsClientListResponse, error) {
+	result := FrontDoorsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListResult); err != nil {
+		return FrontDoorsClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // ValidateCustomDomain - Validates the custom domain mapping to ensure it maps to the correct Front Door endpoint in DNS.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -408,7 +411,8 @@ func (client *FrontDoorsClient) ValidateCustomDomain(ctx context.Context, resour
 	if err != nil {
 		return FrontDoorsClientValidateCustomDomainResponse{}, err
 	}
-	return client.validateCustomDomainHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateCustomDomainHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCustomDomainCreateRequest creates the ValidateCustomDomain request.

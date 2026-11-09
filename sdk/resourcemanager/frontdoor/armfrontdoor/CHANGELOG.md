@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0 (2026-09-14)
+## 2.1.0 (2026-11-09)
 ### Features Added
 
 - New value `MatchVariableJA4` added to enum type `MatchVariable`

@@ -21,6 +21,9 @@ type DatabaseClient struct {
 }
 
 func newDatabase(id string, client *Client) (*DatabaseClient, error) {
+	if err := client.validateResourceName("database", id); err != nil {
+		return nil, err
+	}
 	return &DatabaseClient{
 		id:     id,
 		client: client,
@@ -50,6 +53,9 @@ func (db *DatabaseClient) CreateContainer(
 	ctx context.Context,
 	containerProperties ContainerProperties,
 	o *CreateContainerOptions) (ContainerResponse, error) {
+	if err := db.client.validateResourceName("container", containerProperties.ID); err != nil {
+		return ContainerResponse{}, err
+	}
 	var err error
 	spanName, err := db.getSpanForContainers(operationTypeCreate, resourceTypeCollection, containerProperties.ID)
 	if err != nil {

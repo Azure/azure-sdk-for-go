@@ -10,6 +10,13 @@ import (
 // ClientOptions defines the options for the Cosmos client.
 type ClientOptions struct {
 	azcore.ClientOptions
+	// DisableResourceNameValidation disables client-side validation of database,
+	// container, and item IDs. By default, IDs must be non-empty, cannot equal
+	// "." or "..", and cannot contain '/', '\', '?', '#', tab, line feed, or
+	// carriage return. Disable validation only for compatibility with existing
+	// service-accepted names that are unsafe for resource addressing.
+	// JSON escaping of transactional batch IDs is always enabled.
+	DisableResourceNameValidation bool
 	// When EnableContentResponseOnWrite is false will cause the response to have a null resource. This reduces networking and CPU load by not sending the resource back over the network and serializing it on the client.
 	// The default is false.
 	EnableContentResponseOnWrite bool

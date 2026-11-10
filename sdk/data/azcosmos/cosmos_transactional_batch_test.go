@@ -4,11 +4,148 @@
 package azcosmos
 
 import (
+	"bytes"
+	"context"
 	"encoding/json"
+	"errors"
+	"io"
+	"net/http"
+	"net/url"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/stretchr/testify/require"
 )
+
+func TestTransactionalBatchIDsJSONEscaped(t *testing.T) {
+	etag := azcore.ETag(`etag"value`)
+	for _, id := range []string{
+		"safe", `item"quoted`, `allowed","id":"victim`,
+		`allowed","operationType":"Delete","id":"victim`,
+		`allowed","ifMatch":"*`, `item\name`, "item\n\t\r", "item\x00", "\u4e16\u754c",
+	} {
+		for _, options := range []*TransactionalBatchItemOptions{nil, {IfMatchETag: &etag}} {
+			batch := &TransactionalBatch{}
+			batch.DeleteItem(id, options)
+			batch.ReadItem(id, options)
+			batch.ReplaceItem(id, []byte(`{"value":1}`), options)
+			patch := PatchOperations{}
+			patch.AppendAdd("/value", 1)
+			batch.PatchItem(id, patch, options)
+			for _, op := range batch.operations {
+				payload, err := json.Marshal(op)
+				require.NoError(t, err)
+				var fields map[string]json.RawMessage
+				require.NoError(t, json.Unmarshal(payload, &fields))
+				var actualID string
+				require.NoError(t, json.Unmarshal(fields["id"], &actualID))
+				require.Equal(t, id, actualID, "payload: %s", payload)
+				require.Equal(t, 1, bytes.Count(payload, []byte(`"id":`)), "payload: %s", payload)
+				var operationType string
+				require.NoError(t, json.Unmarshal(fields["operationType"], &operationType))
+				expectedFields := map[string]any{"id": id}
+				switch op.(type) {
+				case batchOperationRead:
+					require.Equal(t, "Read", operationType)
+				case batchOperationDelete:
+					require.Equal(t, "Delete", operationType)
+				case batchOperationReplace:
+					require.Equal(t, "Replace", operationType)
+					expectedFields["resourceBody"] = json.RawMessage(`{"value":1}`)
+				case batchOperationPatch:
+					require.Equal(t, "Patch", operationType)
+					expectedFields["resourceBody"] = patch
+				}
+				expectedFields["operationType"] = operationType
+				if options != nil && operationType != "Read" {
+					expectedFields["ifMatch"] = etag
+				}
+				expected, err := json.Marshal(expectedFields)
+				require.NoError(t, err)
+				require.JSONEq(t, string(expected), string(payload))
+			}
+		}
+	}
+}
+
+func TestTransactionalBatchResourceNameValidation(t *testing.T) {
+	for _, id := range []string{"", ".", "..", "other/item", `other\item`, "item?", "item#", "item\t", "item\n", "item\r"} {
+		body, err := json.Marshal(map[string]string{"id": id})
+		require.NoError(t, err)
+		batch := &TransactionalBatch{}
+		batch.CreateItem(body, nil)
+		batch.UpsertItem(body, nil)
+		batch.ReplaceItem(id, []byte(`{}`), nil)
+		batch.ReplaceItem("safe", body, nil)
+		batch.ReadItem(id, nil)
+		batch.DeleteItem(id, nil)
+		batch.PatchItem(id, PatchOperations{}, nil)
+		container := &ContainerClient{database: &DatabaseClient{client: &Client{}}}
+		for _, op := range batch.operations {
+			invalid := TransactionalBatch{operations: []batchOperation{batchOperationRead{operationType: "Read", id: "safe"}, op}}
+			require.ErrorContains(t, invalid.validateResourceNames(&Client{}), "batch operation at index 1: invalid item ID")
+			require.NoError(t, invalid.validateResourceNames(&Client{disableResourceNameValidation: true}))
+			_, err := container.ExecuteTransactionalBatch(context.Background(), invalid, nil)
+			require.ErrorContains(t, err, "batch operation at index 1: invalid item ID")
+		}
+	}
+}
+
+func TestTransactionalBatchRejectsMalformedItemBodies(t *testing.T) {
+	for _, body := range []string{
+		``, `not JSON`, `{"id":"safe"`,
+		`{"id":"safe"},"id":"victim"`,
+		`{"id":"safe"},"operationType":"Delete","id":"victim"`,
+	} {
+		batch := &TransactionalBatch{}
+		batch.CreateItem([]byte(body), nil)
+		batch.UpsertItem([]byte(body), nil)
+		batch.ReplaceItem("safe", []byte(body), nil)
+		for _, op := range batch.operations {
+			_, err := json.Marshal(op)
+			require.ErrorContains(t, err, "batch item body must be valid JSON")
+		}
+	}
+}
+
+func TestTransactionalBatchEscapedIDReachesPipeline(t *testing.T) {
+	for _, disabled := range []bool{false, true} {
+		t.Run(map[bool]string{false: "default", true: "disabled"}[disabled], func(t *testing.T) {
+			id := `allowed","id":"victim`
+			if disabled {
+				id = "allowed\\name" + id
+			}
+			reachedPipeline := errors.New("request reached pipeline")
+			var body []byte
+			internal, err := azcore.NewClient("azcosmostest", "v1.0.0", runtime.PipelineOptions{
+				PerCall: []policy.Policy{policyFunc(func(req *policy.Request) (*http.Response, error) {
+					var err error
+					body, err = io.ReadAll(req.Raw().Body)
+					require.NoError(t, err)
+					return nil, reachedPipeline
+				})},
+			}, nil)
+			require.NoError(t, err)
+			client := &Client{
+				endpoint: "https://localhost", internal: internal, gem: &globalEndpointManager{},
+				endpointUrl:                   &url.URL{Scheme: "https", Host: "localhost"},
+				disableResourceNameValidation: disabled,
+			}
+			container, err := client.NewContainer("database", "container")
+			require.NoError(t, err)
+			batch := container.NewTransactionalBatch(NewPartitionKeyString("pk"))
+			batch.DeleteItem(id, nil)
+			_, err = container.ExecuteTransactionalBatch(context.Background(), batch, nil)
+			require.ErrorIs(t, err, reachedPipeline)
+			expected, err := json.Marshal([]map[string]string{{"operationType": "Delete", "id": id}})
+			require.NoError(t, err)
+			require.JSONEq(t, string(expected), string(body))
+			require.Equal(t, 1, bytes.Count(body, []byte(`"id":`)))
+		})
+	}
+}
 
 func TestTransactionalBatchCreateItem(t *testing.T) {
 	batch := &TransactionalBatch{}

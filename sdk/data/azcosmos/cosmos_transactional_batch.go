@@ -6,6 +6,7 @@ package azcosmos
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
@@ -89,6 +90,36 @@ type batchOperation interface {
 	getOperationType() operationType
 }
 
+func (b TransactionalBatch) validateResourceNames(client *Client) error {
+	if client.disableResourceNameValidation {
+		return nil
+	}
+	for i, operation := range b.operations {
+		var err error
+		switch op := operation.(type) {
+		case batchOperationCreate:
+			err = client.validateItemBodyID(op.resourceBody)
+		case batchOperationUpsert:
+			err = client.validateItemBodyID(op.resourceBody)
+		case batchOperationReplace:
+			err = client.validateResourceName("item", op.id)
+			if err == nil {
+				err = client.validateItemBodyID(op.resourceBody)
+			}
+		case batchOperationRead:
+			err = client.validateResourceName("item", op.id)
+		case batchOperationDelete:
+			err = client.validateResourceName("item", op.id)
+		case batchOperationPatch:
+			err = client.validateResourceName("item", op.id)
+		}
+		if err != nil {
+			return fmt.Errorf("batch operation at index %d: %w", i, err)
+		}
+	}
+	return nil
+}
+
 type batchOperationCreate struct {
 	operationType string
 	resourceBody  []byte
@@ -100,6 +131,9 @@ func (b batchOperationCreate) getOperationType() operationType {
 
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationCreate) MarshalJSON() ([]byte, error) {
+	if !json.Valid(b.resourceBody) {
+		return nil, errors.New("batch item body must be valid JSON")
+	}
 	buffer := bytes.NewBufferString("{")
 	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
 	fmt.Fprint(buffer, ",\"resourceBody\":")
@@ -120,9 +154,14 @@ func (b batchOperationDelete) getOperationType() operationType {
 
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationDelete) MarshalJSON() ([]byte, error) {
+	id, err := json.Marshal(b.id)
+	if err != nil {
+		return nil, err
+	}
 	buffer := bytes.NewBufferString("{")
 	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
-	fmt.Fprintf(buffer, ",\"id\":\"%s\"", b.id)
+	fmt.Fprint(buffer, ",\"id\":")
+	buffer.Write(id)
 	if b.ifMatch != nil {
 		fmt.Fprint(buffer, ",\"ifMatch\":")
 		etag, err := json.Marshal(b.ifMatch)
@@ -149,6 +188,13 @@ func (b batchOperationReplace) getOperationType() operationType {
 
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationReplace) MarshalJSON() ([]byte, error) {
+	if !json.Valid(b.resourceBody) {
+		return nil, errors.New("batch item body must be valid JSON")
+	}
+	id, err := json.Marshal(b.id)
+	if err != nil {
+		return nil, err
+	}
 	buffer := bytes.NewBufferString("{")
 	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
 	if b.ifMatch != nil {
@@ -160,7 +206,8 @@ func (b batchOperationReplace) MarshalJSON() ([]byte, error) {
 		buffer.Write(etag)
 	}
 
-	fmt.Fprintf(buffer, ",\"id\":\"%s\"", b.id)
+	fmt.Fprint(buffer, ",\"id\":")
+	buffer.Write(id)
 	fmt.Fprint(buffer, ",\"resourceBody\":")
 	buffer.Write(b.resourceBody)
 	fmt.Fprint(buffer, "}")
@@ -179,6 +226,9 @@ func (b batchOperationUpsert) getOperationType() operationType {
 
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationUpsert) MarshalJSON() ([]byte, error) {
+	if !json.Valid(b.resourceBody) {
+		return nil, errors.New("batch item body must be valid JSON")
+	}
 	buffer := bytes.NewBufferString("{")
 	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
 	if b.ifMatch != nil {
@@ -209,6 +259,10 @@ func (b batchOperationPatch) getOperationType() operationType {
 
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationPatch) MarshalJSON() ([]byte, error) {
+	id, err := json.Marshal(b.id)
+	if err != nil {
+		return nil, err
+	}
 	buffer := bytes.NewBufferString("{")
 	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
 
@@ -221,7 +275,8 @@ func (b batchOperationPatch) MarshalJSON() ([]byte, error) {
 		buffer.Write(etag)
 	}
 
-	fmt.Fprintf(buffer, ",\"id\":\"%s\"", b.id)
+	fmt.Fprint(buffer, ",\"id\":")
+	buffer.Write(id)
 	fmt.Fprint(buffer, ",\"resourceBody\":")
 	p, err := json.Marshal(b.patchOperations)
 	if err != nil {
@@ -243,9 +298,14 @@ func (b batchOperationRead) getOperationType() operationType {
 
 // MarshalJSON implements the json.Marshaler interface
 func (b batchOperationRead) MarshalJSON() ([]byte, error) {
+	id, err := json.Marshal(b.id)
+	if err != nil {
+		return nil, err
+	}
 	buffer := bytes.NewBufferString("{")
 	fmt.Fprintf(buffer, "\"operationType\":\"%s\"", b.operationType)
-	fmt.Fprintf(buffer, ",\"id\":\"%s\"", b.id)
+	fmt.Fprint(buffer, ",\"id\":")
+	buffer.Write(id)
 	fmt.Fprint(buffer, "}")
 	return buffer.Bytes(), nil
 }

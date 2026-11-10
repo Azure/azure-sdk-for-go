@@ -2,17 +2,19 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## Unreleased
+## 1.6.0-beta.6 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
 
 ### Bugs Fixed
 
-* Fixed transactional batch item IDs being inserted into JSON without escaping. IDs now remain a single string value in Read, Replace, Patch, and Delete operations.
-* Fixed JSON escaping of database and container IDs in resource properties.
-* Reject malformed transactional batch item bodies before serialization so they cannot alter the surrounding operation.
+* Fixed transactional batch item IDs being inserted into JSON without escaping. IDs now remain a single string value in Read, Replace, Patch, and Delete operations. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
+* Reject malformed transactional batch item bodies before serialization so they cannot alter the surrounding operation. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
+* Database, container, and item IDs are now validated before request construction by default, including IDs in Create, Upsert, Replace, read-many, and transactional batch operations. Empty IDs, exact dot segments, and names containing `/`, `\`, `?`, `#`, tab, line feed, or carriage return are rejected. Set `ClientOptions.DisableResourceNameValidation` to `true` only for compatibility with existing service-accepted names. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
 
 ### Other Changes
-
-* Database, container, and item IDs are now validated before request construction by default, including IDs in Create, Upsert, Replace, read-many, and transactional batch operations. Empty IDs, exact dot segments, and names containing `/`, `\`, `?`, `#`, tab, line feed, or carriage return are rejected. Set `ClientOptions.DisableResourceNameValidation` to `true` only for compatibility with existing service-accepted names. JSON escaping and batch item body serialization checks cannot be disabled.
 
 ## 1.6.0-beta.5 (2026-11-06)
 

@@ -55,7 +55,8 @@ func (client *ChargesClient) List(ctx context.Context, scope string, options *Ch
 	if err != nil {
 		return ChargesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

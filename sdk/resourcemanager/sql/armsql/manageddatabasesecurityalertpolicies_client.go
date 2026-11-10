@@ -67,7 +67,8 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) CreateOrUpdate(ctx con
 	if err != nil {
 		return ManagedDatabaseSecurityAlertPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -142,7 +143,8 @@ func (client *ManagedDatabaseSecurityAlertPoliciesClient) Get(ctx context.Contex
 	if err != nil {
 		return ManagedDatabaseSecurityAlertPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

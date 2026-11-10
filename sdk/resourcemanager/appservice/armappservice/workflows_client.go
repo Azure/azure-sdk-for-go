@@ -67,7 +67,8 @@ func (client *WorkflowsClient) RegenerateAccessKey(ctx context.Context, resource
 		return WorkflowsClientRegenerateAccessKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WorkflowsClientRegenerateAccessKeyResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WorkflowsClientRegenerateAccessKeyResponse{}, err
 	}
 	return WorkflowsClientRegenerateAccessKeyResponse{}, nil
 }
@@ -127,7 +128,8 @@ func (client *WorkflowsClient) Validate(ctx context.Context, resourceGroupName s
 		return WorkflowsClientValidateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WorkflowsClientValidateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WorkflowsClientValidateResponse{}, err
 	}
 	return WorkflowsClientValidateResponse{}, nil
 }

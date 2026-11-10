@@ -70,7 +70,7 @@ func (client *AssociationsInterfaceClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Create a Association
+// createOrUpdate - Create a Association
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AssociationsInterfaceClient) createOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, resource Association, options *AssociationsInterfaceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *AssociationsInterfaceClient) createOrUpdate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AssociationsInterfaceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, resource Association, _ *AssociationsInterfaceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}"
 	if client.subscriptionID == "" {
@@ -150,7 +151,7 @@ func (client *AssociationsInterfaceClient) BeginDelete(ctx context.Context, reso
 	}
 }
 
-// Delete - Delete a Association
+// deleteOperation - Delete a Association
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AssociationsInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, options *AssociationsInterfaceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,12 +168,13 @@ func (client *AssociationsInterfaceClient) deleteOperation(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AssociationsInterfaceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, associationName string, _ *AssociationsInterfaceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}"
 	if client.subscriptionID == "" {
@@ -222,7 +224,8 @@ func (client *AssociationsInterfaceClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return AssociationsInterfaceClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -366,7 +369,8 @@ func (client *AssociationsInterfaceClient) Update(ctx context.Context, resourceG
 	if err != nil {
 		return AssociationsInterfaceClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

@@ -63,7 +63,8 @@ func (client *PrivateEndpointClient) GetOperationStatus(ctx context.Context, vau
 	if err != nil {
 		return PrivateEndpointClientGetOperationStatusResponse{}, err
 	}
-	return client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getOperationStatusCreateRequest creates the GetOperationStatus request.

@@ -62,7 +62,8 @@ func (client *ExpressRouteProviderPortsLocationClient) List(ctx context.Context,
 	if err != nil {
 		return ExpressRouteProviderPortsLocationClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

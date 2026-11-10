@@ -52,7 +52,7 @@ func NewRaiPoliciesClient(subscriptionID string, credential azcore.TokenCredenti
 //   - options - RaiPoliciesClientBeginDeleteOptions contains the optional parameters for the RaiPoliciesClient.BeginDelete method.
 func (client *RaiPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, options *RaiPoliciesClientBeginDeleteOptions) (*runtime.Poller[RaiPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, raiPolicyName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, raiPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -67,9 +67,9 @@ func (client *RaiPoliciesClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// delete - Deletes the specified Content Filters associated with the Azure OpenAI account.
+// deleteOperation - Deletes the specified Content Filters associated with the Azure OpenAI account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiPoliciesClient) delete(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, options *RaiPoliciesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RaiPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, options *RaiPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiPoliciesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -84,7 +84,8 @@ func (client *RaiPoliciesClient) delete(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -143,7 +144,8 @@ func (client *RaiPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err != nil {
 		return RaiPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -221,7 +223,8 @@ func (client *RaiPoliciesClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return RaiPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

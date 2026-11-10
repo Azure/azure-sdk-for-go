@@ -59,7 +59,8 @@ func (client *DataPolicyManifestsClient) GetByPolicyMode(ctx context.Context, po
 	if err != nil {
 		return DataPolicyManifestsClientGetByPolicyModeResponse{}, err
 	}
-	return client.getByPolicyModeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByPolicyModeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByPolicyModeCreateRequest creates the GetByPolicyMode request.

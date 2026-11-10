@@ -64,7 +64,8 @@ func (client *SSHPublicKeysClient) Create(ctx context.Context, resourceGroupName
 	if err != nil {
 		return SSHPublicKeysClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -129,7 +130,8 @@ func (client *SSHPublicKeysClient) Delete(ctx context.Context, resourceGroupName
 		return SSHPublicKeysClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SSHPublicKeysClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SSHPublicKeysClientDeleteResponse{}, err
 	}
 	return SSHPublicKeysClientDeleteResponse{}, nil
 }
@@ -180,7 +182,8 @@ func (client *SSHPublicKeysClient) GenerateKeyPair(ctx context.Context, resource
 	if err != nil {
 		return SSHPublicKeysClientGenerateKeyPairResponse{}, err
 	}
-	return client.generateKeyPairHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateKeyPairHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateKeyPairCreateRequest creates the GenerateKeyPair request.
@@ -247,7 +250,8 @@ func (client *SSHPublicKeysClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return SSHPublicKeysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -449,7 +453,8 @@ func (client *SSHPublicKeysClient) Update(ctx context.Context, resourceGroupName
 	if err != nil {
 		return SSHPublicKeysClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

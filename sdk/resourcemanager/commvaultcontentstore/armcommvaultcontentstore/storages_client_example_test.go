@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-09-30/Storages_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Storages_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleStoragesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleStoragesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/Storages_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Storages_Delete_MaximumSet_Gen.json
 func ExampleStoragesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -87,7 +87,7 @@ func ExampleStoragesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-30/Storages_DisableComplianceLock_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Storages_DisableComplianceLock_MaximumSet_Gen.json
 func ExampleStoragesClient_DisableComplianceLock() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleStoragesClient_DisableComplianceLock() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/Storages_EnableComplianceLock_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Storages_EnableComplianceLock_MaximumSet_Gen.json
 func ExampleStoragesClient_EnableComplianceLock() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleStoragesClient_EnableComplianceLock() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/Storages_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Storages_Get_MaximumSet_Gen.json
 func ExampleStoragesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -197,7 +197,7 @@ func ExampleStoragesClient_Get() {
 	// 			Location: to.Ptr("idxxvyqhyxvahalfmkbjxklfbimouxnasnxdmaydqv"),
 	// 			StorageType: to.Ptr(armcommvaultcontentstore.StorageTypeAirGapProtect),
 	// 			Vendor: to.Ptr(armcommvaultcontentstore.VendorAzureBlobStorage),
-	// 			Class: to.Ptr(armcommvaultcontentstore.StorageClassTypeCool),
+	// 			Class: to.Ptr(armcommvaultcontentstore.StorageClassTypeCold),
 	// 			ProvisioningState: to.Ptr(armcommvaultcontentstore.ResourceProvisioningStateSucceeded),
 	// 			ComplianceLockStatus: to.Ptr(armcommvaultcontentstore.ComplianceLockStatusEnabled),
 	// 		},
@@ -216,7 +216,7 @@ func ExampleStoragesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/Storages_ListByCloudAccount_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Storages_ListByCloudAccount_MaximumSet_Gen.json
 func ExampleStoragesClient_NewListByCloudAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -246,7 +246,7 @@ func ExampleStoragesClient_NewListByCloudAccountPager() {
 		// 					Location: to.Ptr("idxxvyqhyxvahalfmkbjxklfbimouxnasnxdmaydqv"),
 		// 					StorageType: to.Ptr(armcommvaultcontentstore.StorageTypeAirGapProtect),
 		// 					Vendor: to.Ptr(armcommvaultcontentstore.VendorAzureBlobStorage),
-		// 					Class: to.Ptr(armcommvaultcontentstore.StorageClassTypeCool),
+		// 					Class: to.Ptr(armcommvaultcontentstore.StorageClassTypeCold),
 		// 					ProvisioningState: to.Ptr(armcommvaultcontentstore.ResourceProvisioningStateSucceeded),
 		// 					ComplianceLockStatus: to.Ptr(armcommvaultcontentstore.ComplianceLockStatusEnabled),
 		// 				},
@@ -269,7 +269,7 @@ func ExampleStoragesClient_NewListByCloudAccountPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-30/Storages_Refresh_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Storages_Refresh_MaximumSet_Gen.json
 func ExampleStoragesClient_Refresh() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,6 +12,48 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-06-02-preview/Environment_Delete_MaximumSet_Gen.json
+func ExampleEnvironmentClient_BeginDelete_environmentDeleteMaximumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEnvironmentClient().BeginDelete(ctx, "rgconfluent", "sowkvcymfiziohnofcudjyyaro", "lnmkjsylkxqqyrqmdaf", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-06-02-preview/Environment_Delete_MinimumSet_Gen.json
+func ExampleEnvironmentClient_BeginDelete_environmentDeleteMinimumSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEnvironmentClient().BeginDelete(ctx, "rgconfluent", "yetpbmqrfbsanzjzkzdodlcygpj", "quuhiyvpfajfxrqcyxsb", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-06-02-preview/Environment_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleEnvironmentClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -72,46 +114,4 @@ func ExampleEnvironmentClient_CreateOrUpdate() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-06-02-preview/Environment_Delete_MaximumSet_Gen.json
-func ExampleEnvironmentClient_BeginDelete_environmentDeleteMaximumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEnvironmentClient().BeginDelete(ctx, "rgconfluent", "sowkvcymfiziohnofcudjyyaro", "lnmkjsylkxqqyrqmdaf", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-06-02-preview/Environment_Delete_MinimumSet_Gen.json
-func ExampleEnvironmentClient_BeginDelete_environmentDeleteMinimumSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconfluent.NewClientFactory("DC34558A-05D3-4370-AED8-75E60B381F94", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEnvironmentClient().BeginDelete(ctx, "rgconfluent", "yetpbmqrfbsanzjzkzdodlcygpj", "quuhiyvpfajfxrqcyxsb", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }

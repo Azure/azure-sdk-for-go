@@ -68,7 +68,7 @@ func (client *FleetspaceClient) BeginCreate(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Create - Creates an Azure Cosmos DB fleetspace under a fleet.
+// create - Creates an Azure Cosmos DB fleetspace under a fleet.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FleetspaceClient) create(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceResource, options *FleetspaceClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *FleetspaceClient) create(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *FleetspaceClient) createCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceResource, _ *FleetspaceClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces/{fleetspaceName}"
 	if client.subscriptionID == "" {
@@ -148,7 +149,7 @@ func (client *FleetspaceClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Deletes an existing Azure Cosmos DB Fleetspace.
+// deleteOperation - Deletes an existing Azure Cosmos DB Fleetspace.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FleetspaceClient) deleteOperation(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, options *FleetspaceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,12 +166,13 @@ func (client *FleetspaceClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FleetspaceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, _ *FleetspaceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces/{fleetspaceName}"
 	if client.subscriptionID == "" {
@@ -199,6 +201,88 @@ func (client *FleetspaceClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
+// BeginUpdate - Update the properties of an existing Azure Cosmos DB fleetspace under a fleet.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
+//   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
+//   - body - The parameters to provide for the current fleetspace.
+//   - options - FleetspaceClientBeginUpdateOptions contains the optional parameters for the FleetspaceClient.BeginUpdate method.
+func (client *FleetspaceClient) BeginUpdate(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceUpdate, options *FleetspaceClientBeginUpdateOptions) (*runtime.Poller[FleetspaceClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, fleetName, fleetspaceName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetspaceClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetspaceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update the properties of an existing Azure Cosmos DB fleetspace under a fleet.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *FleetspaceClient) update(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceUpdate, options *FleetspaceClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "FleetspaceClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, fleetName, fleetspaceName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *FleetspaceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceUpdate, _ *FleetspaceClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces/{fleetspaceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if fleetName == "" {
+		return nil, errors.New("parameter fleetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
+	if fleetspaceName == "" {
+		return nil, errors.New("parameter fleetspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{fleetspaceName}", url.PathEscape(fleetspaceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Retrieves the properties of an existing Azure Cosmos DB fleetspace under a fleet
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -219,7 +303,8 @@ func (client *FleetspaceClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return FleetspaceClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -338,85 +423,4 @@ func (client *FleetspaceClient) listHandleResponse(resp *http.Response, successC
 		return FleetspaceClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update the properties of an existing Azure Cosmos DB fleetspace under a fleet.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - fleetName - Cosmos DB fleet name. Needs to be unique under a subscription.
-//   - fleetspaceName - Cosmos DB fleetspace name. Needs to be unique under a fleet.
-//   - body - The parameters to provide for the current fleetspace.
-//   - options - FleetspaceClientBeginUpdateOptions contains the optional parameters for the FleetspaceClient.BeginUpdate method.
-func (client *FleetspaceClient) BeginUpdate(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceUpdate, options *FleetspaceClientBeginUpdateOptions) (*runtime.Poller[FleetspaceClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, fleetName, fleetspaceName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FleetspaceClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FleetspaceClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update the properties of an existing Azure Cosmos DB fleetspace under a fleet.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *FleetspaceClient) update(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceUpdate, options *FleetspaceClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "FleetspaceClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, fleetName, fleetspaceName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *FleetspaceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, fleetspaceName string, body FleetspaceUpdate, _ *FleetspaceClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/fleets/{fleetName}/fleetspaces/{fleetspaceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if fleetName == "" {
-		return nil, errors.New("parameter fleetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetName}", url.PathEscape(fleetName))
-	if fleetspaceName == "" {
-		return nil, errors.New("parameter fleetspaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{fleetspaceName}", url.PathEscape(fleetspaceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

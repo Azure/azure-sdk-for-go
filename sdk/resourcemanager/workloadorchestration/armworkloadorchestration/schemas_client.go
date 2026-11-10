@@ -68,7 +68,7 @@ func (client *SchemasClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - Create or update a Schema Resource
+// createOrUpdate - Create or update a Schema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemasClient) createOrUpdate(ctx context.Context, resourceGroupName string, schemaName string, resource Schema, options *SchemasClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *SchemasClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SchemasClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, resource Schema, _ *SchemasClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *SchemasClient) BeginCreateVersion(ctx context.Context, resourceGro
 	}
 }
 
-// CreateVersion - Create a Schema Version Resource
+// createVersion - Create a Schema Version Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemasClient) createVersion(ctx context.Context, resourceGroupName string, schemaName string, body SchemaVersionWithUpdateType, options *SchemasClientBeginCreateVersionOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *SchemasClient) createVersion(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createVersionCreateRequest creates the CreateVersion request.
+// createVersionCreateRequest creates the createVersion request.
 func (client *SchemasClient) createVersionCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, body SchemaVersionWithUpdateType, _ *SchemasClientBeginCreateVersionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}/createVersion"
 	if client.subscriptionID == "" {
@@ -218,7 +220,7 @@ func (client *SchemasClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Delete a Schema Resource
+// deleteOperation - Delete a Schema Resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SchemasClient) deleteOperation(ctx context.Context, resourceGroupName string, schemaName string, options *SchemasClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -235,12 +237,13 @@ func (client *SchemasClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SchemasClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, schemaName string, _ *SchemasClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/schemas/{schemaName}"
 	if client.subscriptionID == "" {
@@ -284,7 +287,8 @@ func (client *SchemasClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return SchemasClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -484,7 +488,8 @@ func (client *SchemasClient) RemoveVersion(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return SchemasClientRemoveVersionResponse{}, err
 	}
-	return client.removeVersionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.removeVersionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // removeVersionCreateRequest creates the RemoveVersion request.
@@ -549,7 +554,8 @@ func (client *SchemasClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SchemasClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

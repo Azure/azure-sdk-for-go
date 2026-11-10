@@ -67,7 +67,8 @@ func (client *DataMaskingPoliciesClient) CreateOrUpdate(ctx context.Context, res
 	if err != nil {
 		return DataMaskingPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -141,7 +142,8 @@ func (client *DataMaskingPoliciesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DataMaskingPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

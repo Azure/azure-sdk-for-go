@@ -58,7 +58,8 @@ func (client *ServiceDiagnosticSettingsClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return ServiceDiagnosticSettingsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -115,7 +116,8 @@ func (client *ServiceDiagnosticSettingsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ServiceDiagnosticSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -169,7 +171,8 @@ func (client *ServiceDiagnosticSettingsClient) Update(ctx context.Context, resou
 	if err != nil {
 		return ServiceDiagnosticSettingsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

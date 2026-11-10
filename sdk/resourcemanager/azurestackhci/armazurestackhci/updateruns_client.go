@@ -85,7 +85,8 @@ func (client *UpdateRunsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -144,7 +145,8 @@ func (client *UpdateRunsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return UpdateRunsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -296,7 +298,8 @@ func (client *UpdateRunsClient) Put(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return UpdateRunsClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.

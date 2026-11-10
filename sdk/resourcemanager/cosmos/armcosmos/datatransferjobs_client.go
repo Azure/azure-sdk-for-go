@@ -30,6 +30,9 @@ type DataTransferJobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDataTransferJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DataTransferJobsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,14 +64,15 @@ func (client *DataTransferJobsClient) Cancel(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DataTransferJobsClientCancelResponse{}, err
 	}
-	return client.cancelHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.cancelHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // cancelCreateRequest creates the Cancel request.
 func (client *DataTransferJobsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, _ *DataTransferJobsClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/dataTransferJobs/{jobName}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -127,14 +131,15 @@ func (client *DataTransferJobsClient) Complete(ctx context.Context, resourceGrou
 	if err != nil {
 		return DataTransferJobsClientCompleteResponse{}, err
 	}
-	return client.completeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.completeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // completeCreateRequest creates the Complete request.
 func (client *DataTransferJobsClient) completeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, _ *DataTransferJobsClientCompleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/dataTransferJobs/{jobName}/complete"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -192,14 +197,15 @@ func (client *DataTransferJobsClient) Create(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DataTransferJobsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
 func (client *DataTransferJobsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, jobCreateParameters CreateJobRequest, _ *DataTransferJobsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/dataTransferJobs/{jobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -261,14 +267,15 @@ func (client *DataTransferJobsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return DataTransferJobsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
 func (client *DataTransferJobsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, _ *DataTransferJobsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/dataTransferJobs/{jobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -344,7 +351,7 @@ func (client *DataTransferJobsClient) listByDatabaseAccountCreateRequest(ctx con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/dataTransferJobs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -403,14 +410,15 @@ func (client *DataTransferJobsClient) Pause(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return DataTransferJobsClientPauseResponse{}, err
 	}
-	return client.pauseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.pauseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // pauseCreateRequest creates the Pause request.
 func (client *DataTransferJobsClient) pauseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, _ *DataTransferJobsClientPauseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/dataTransferJobs/{jobName}/pause"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -468,14 +476,15 @@ func (client *DataTransferJobsClient) Resume(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DataTransferJobsClientResumeResponse{}, err
 	}
-	return client.resumeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.resumeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // resumeCreateRequest creates the Resume request.
 func (client *DataTransferJobsClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, _ *DataTransferJobsClientResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/dataTransferJobs/{jobName}/resume"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

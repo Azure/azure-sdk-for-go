@@ -66,7 +66,8 @@ func (client *DscNodeClient) Delete(ctx context.Context, resourceGroupName strin
 		return DscNodeClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return DscNodeClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DscNodeClientDeleteResponse{}, err
 	}
 	return DscNodeClientDeleteResponse{}, nil
 }
@@ -120,7 +121,8 @@ func (client *DscNodeClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return DscNodeClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -275,7 +277,8 @@ func (client *DscNodeClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return DscNodeClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

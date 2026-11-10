@@ -85,7 +85,8 @@ func (client *ExpressRoutePortsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -128,7 +129,7 @@ func (client *ExpressRoutePortsClient) createOrUpdateCreateRequest(ctx context.C
 //     method.
 func (client *ExpressRoutePortsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsClientBeginDeleteOptions) (*runtime.Poller[ExpressRoutePortsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, expressRoutePortName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRoutePortName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -144,9 +145,9 @@ func (client *ExpressRoutePortsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// delete - Deletes the specified ExpressRoutePort resource.
+// deleteOperation - Deletes the specified ExpressRoutePort resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRoutePortsClient) delete(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRoutePortsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRoutePortName string, options *ExpressRoutePortsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRoutePortsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -161,7 +162,8 @@ func (client *ExpressRoutePortsClient) delete(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -212,7 +214,8 @@ func (client *ExpressRoutePortsClient) GenerateLOA(ctx context.Context, resource
 	if err != nil {
 		return ExpressRoutePortsClientGenerateLOAResponse{}, err
 	}
-	return client.generateLOAHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateLOAHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateLOACreateRequest creates the GenerateLOA request.
@@ -276,7 +279,8 @@ func (client *ExpressRoutePortsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ExpressRoutePortsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -477,7 +481,8 @@ func (client *ExpressRoutePortsClient) UpdateTags(ctx context.Context, resourceG
 	if err != nil {
 		return ExpressRoutePortsClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

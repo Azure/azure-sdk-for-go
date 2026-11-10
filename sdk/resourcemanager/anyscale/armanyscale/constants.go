@@ -45,8 +45,8 @@ func PossibleAgreementStatusValues() []AgreementStatus {
 type CPUArchitecture string
 
 const (
-	// CPUArchitectureArm64 - ARM 64-bit architecture.
-	CPUArchitectureArm64 CPUArchitecture = "arm64"
+	// CPUArchitectureARM64 - ARM 64-bit architecture.
+	CPUArchitectureARM64 CPUArchitecture = "arm64"
 	// CPUArchitectureX8664 - x86 64-bit architecture.
 	CPUArchitectureX8664 CPUArchitecture = "x86_64"
 )
@@ -54,7 +54,7 @@ const (
 // PossibleCPUArchitectureValues returns the possible values for the CPUArchitecture const type.
 func PossibleCPUArchitectureValues() []CPUArchitecture {
 	return []CPUArchitecture{
-		CPUArchitectureArm64,
+		CPUArchitectureARM64,
 		CPUArchitectureX8664,
 	}
 }
@@ -197,12 +197,12 @@ func PossibleOriginValues() []Origin {
 type Provider string
 
 const (
-	// ProviderAws - Amazon Web Services
-	ProviderAws Provider = "AWS"
+	// ProviderAWS - Amazon Web Services
+	ProviderAWS Provider = "AWS"
 	// ProviderAzure - Microsoft Azure
 	ProviderAzure Provider = "Azure"
-	// ProviderGcp - Google Cloud Platform
-	ProviderGcp Provider = "GCP"
+	// ProviderGCP - Google Cloud Platform
+	ProviderGCP Provider = "GCP"
 	// ProviderGeneric - Generic Kubernetes
 	ProviderGeneric Provider = "Generic"
 )
@@ -210,9 +210,9 @@ const (
 // PossibleProviderValues returns the possible values for the Provider const type.
 func PossibleProviderValues() []Provider {
 	return []Provider{
-		ProviderAws,
+		ProviderAWS,
 		ProviderAzure,
-		ProviderGcp,
+		ProviderGCP,
 		ProviderGeneric,
 	}
 }

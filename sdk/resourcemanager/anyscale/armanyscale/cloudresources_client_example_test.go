@@ -25,7 +25,7 @@ func ExampleCloudResourcesClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewCloudResourcesClient().BeginCreateOrUpdate(ctx, "rganyscale", "AnyscaleCloud", "AnyscaleCloudResource", armanyscale.CloudResource{
 		Properties: &armanyscale.CloudResourceProperties{
-			Provider:                    to.Ptr(armanyscale.ProviderAws),
+			Provider:                    to.Ptr(armanyscale.ProviderAWS),
 			ComputeStack:                to.Ptr(armanyscale.ComputeStackK8S),
 			CloudStorageBucketName:      to.Ptr("s3://anyscale-storage"),
 			CloudStorageBucketEndpoint:  to.Ptr("https://anyscale-storage.s3.us-west-2.amazonaws.com"),
@@ -53,7 +53,7 @@ func ExampleCloudResourcesClient_BeginCreateOrUpdate() {
 	// 	CloudResource: armanyscale.CloudResource{
 	// 		Properties: &armanyscale.CloudResourceProperties{
 	// 			CloudResourceID: to.Ptr("cldrsrc_a1b2c3d4e5f6g7h8i9j0k1l2m3"),
-	// 			Provider: to.Ptr(armanyscale.ProviderAws),
+	// 			Provider: to.Ptr(armanyscale.ProviderAWS),
 	// 			ComputeStack: to.Ptr(armanyscale.ComputeStackK8S),
 	// 			CloudStorageBucketName: to.Ptr("s3://anyscale-storage"),
 	// 			CloudStorageBucketEndpoint: to.Ptr("https://anyscale-storage.s3.us-west-2.amazonaws.com"),
@@ -125,7 +125,7 @@ func ExampleCloudResourcesClient_Get() {
 	// 	CloudResource: armanyscale.CloudResource{
 	// 		Properties: &armanyscale.CloudResourceProperties{
 	// 			CloudResourceID: to.Ptr("cldrsrc_a1b2c3d4e5f6g7h8i9j0k1l2m3"),
-	// 			Provider: to.Ptr(armanyscale.ProviderAws),
+	// 			Provider: to.Ptr(armanyscale.ProviderAWS),
 	// 			ComputeStack: to.Ptr(armanyscale.ComputeStackK8S),
 	// 			CloudStorageBucketName: to.Ptr("s3://anyscale-storage"),
 	// 			CloudStorageBucketEndpoint: to.Ptr("https://anyscale-storage.s3.us-west-2.amazonaws.com"),
@@ -182,7 +182,7 @@ func ExampleCloudResourcesClient_NewListByResourceGroupPager() {
 		// 			{
 		// 				Properties: &armanyscale.CloudResourceProperties{
 		// 					CloudResourceID: to.Ptr("cldrsrc_a1b2c3d4e5f6g7h8i9j0k1l2m3"),
-		// 					Provider: to.Ptr(armanyscale.ProviderAws),
+		// 					Provider: to.Ptr(armanyscale.ProviderAWS),
 		// 					ComputeStack: to.Ptr(armanyscale.ComputeStackK8S),
 		// 					CloudStorageBucketName: to.Ptr("s3://anyscale-storage"),
 		// 					CloudStorageBucketEndpoint: to.Ptr("https://anyscale-storage.s3.us-west-2.amazonaws.com"),
@@ -232,7 +232,7 @@ func ExampleCloudResourcesClient_Update() {
 			"team":        to.Ptr("ml-platform"),
 		},
 		Properties: &armanyscale.CloudResourceUpdateProperties{
-			Provider:                    to.Ptr(armanyscale.ProviderAws),
+			Provider:                    to.Ptr(armanyscale.ProviderAWS),
 			ComputeStack:                to.Ptr(armanyscale.ComputeStackK8S),
 			CloudStorageBucketName:      to.Ptr("s3://anyscale-storage"),
 			CloudStorageBucketEndpoint:  to.Ptr("https://anyscale-storage.s3.us-west-2.amazonaws.com"),
@@ -249,7 +249,7 @@ func ExampleCloudResourcesClient_Update() {
 	// 	CloudResource: armanyscale.CloudResource{
 	// 		Properties: &armanyscale.CloudResourceProperties{
 	// 			CloudResourceID: to.Ptr("cldrsrc_a1b2c3d4e5f6g7h8i9j0k1l2m3"),
-	// 			Provider: to.Ptr(armanyscale.ProviderAws),
+	// 			Provider: to.Ptr(armanyscale.ProviderAWS),
 	// 			ComputeStack: to.Ptr(armanyscale.ComputeStackK8S),
 	// 			CloudStorageBucketName: to.Ptr("s3://anyscale-storage"),
 	// 			CloudStorageBucketEndpoint: to.Ptr("https://anyscale-storage.s3.us-west-2.amazonaws.com"),

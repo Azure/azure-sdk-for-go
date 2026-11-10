@@ -57,7 +57,7 @@ func ExampleUnifiedResilienceItemsClient_Get() {
 	// 					NotEvaluatedResourceCount: to.Ptr[int64](1),
 	// 					UserConfirmationNeededCount: to.Ptr[int64](2),
 	// 					EvaluationDateTime: to.Ptr(time.Date(2025, time.May, 1, 8, 0, 0, 0, time.UTC)),
-	// 					EstimatedRecoveryPointObjective: to.Ptr(armresiliencemanagement.IsoDuration("PT10M")),
+	// 					EstimatedRecoveryPointObjective: to.Ptr(armresiliencemanagement.ISODuration("PT10M")),
 	// 				},
 	// 			},
 	// 			BillingInfo: &armresiliencemanagement.UnifiedResilienceItemBillingInfo{
@@ -136,7 +136,7 @@ func ExampleUnifiedResilienceItemsClient_NewListPager_unifiedResilienceItemsList
 		// 							NotEvaluatedResourceCount: to.Ptr[int64](1),
 		// 							UserConfirmationNeededCount: to.Ptr[int64](2),
 		// 							EvaluationDateTime: to.Ptr(time.Date(2025, time.May, 1, 8, 0, 0, 0, time.UTC)),
-		// 							EstimatedRecoveryPointObjective: to.Ptr(armresiliencemanagement.IsoDuration("PT10M")),
+		// 							EstimatedRecoveryPointObjective: to.Ptr(armresiliencemanagement.ISODuration("PT10M")),
 		// 						},
 		// 					},
 		// 					BillingInfo: &armresiliencemanagement.UnifiedResilienceItemBillingInfo{

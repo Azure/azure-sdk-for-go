@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (2026-11-09)
+## 1.1.0-beta.1 (2026-11-10)
 ### Features Added
 
 - New value `RecoveryPlanTypeCyberRecovery` added to enum type `RecoveryPlanType`
@@ -9,7 +9,7 @@
 - New enum type `CopyOptions` with values `CopyOptionsOverwrite`, `CopyOptionsSkip`
 - New enum type `FaultEligibility` with values `FaultEligibilityEligible`, `FaultEligibilityIneligible`, `FaultEligibilityUnknown`
 - New enum type `FaultIneligibleReason` with values `FaultIneligibleReasonRecoveryPlanNotConfigured`, `FaultIneligibleReasonResourceNotIncludedInRecoveryPlan`
-- New enum type `IsoDuration` with values `IsoDurationPT15M`, `IsoDurationPT1H`, `IsoDurationPT24H`, `IsoDurationPT4H`
+- New enum type `ISODuration` with values `ISODurationPT15M`, `ISODurationPT1H`, `ISODurationPT24H`, `ISODurationPT4H`
 - New enum type `RecoveryPointHealthStatus` with values `RecoveryPointHealthStatusAll`, `RecoveryPointHealthStatusHealthyAndUnknown`, `RecoveryPointHealthStatusHealthyOnly`
 - New enum type `RecoveryPointPolicyType` with values `RecoveryPointPolicyTypeLatest`, `RecoveryPointPolicyTypeRandom`
 - New enum type `RecoveryResourceInclusionEligibility` with values `RecoveryResourceInclusionEligibilityCanBeIncluded`, `RecoveryResourceInclusionEligibilityCannotBeIncluded`
@@ -20,7 +20,7 @@
 - New enum type `ResourceInclusionDisabledReason` with values `ResourceInclusionDisabledReasonResourceActiveActiveProtection`, `ResourceInclusionDisabledReasonResourceHighlyAvailable`
 - New enum type `ResourceProtectionState` with values `ResourceProtectionStateNotProtected`, `ResourceProtectionStateProtected`, `ResourceProtectionStateUnknown`
 - New enum type `TargetProvisioningMode` with values `TargetProvisioningModeExisting`
-- New enum type `WorkloadType` with values `WorkloadTypeAzureFileShare`, `WorkloadTypeAzureVM`, `WorkloadTypeOracleInAzureVM`, `WorkloadTypeSQLDatabaseInAzureVM`, `WorkloadTypeSapAseInAzureVM`, `WorkloadTypeSapHanaInAzureVM`
+- New enum type `WorkloadType` with values `WorkloadTypeAzureFileShare`, `WorkloadTypeAzureVM`, `WorkloadTypeOracleInAzureVM`, `WorkloadTypeSAPASEInAzureVM`, `WorkloadTypeSAPHANAInAzureVM`, `WorkloadTypeSQLDatabaseInAzureVM`
 - New function `*ClientFactory.NewRecoveryConfigProfilesClient() *RecoveryConfigProfilesClient`
 - New function `*CyberResiliencyGroupProperties.GetRecoveryGroupResiliencyProperties() *RecoveryGroupResiliencyProperties`
 - New function `*CyberResiliencyPlanProperties.GetRecoveryPlanResiliencyProperties() *RecoveryPlanResiliencyProperties`

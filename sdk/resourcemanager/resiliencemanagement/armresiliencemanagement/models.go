@@ -578,7 +578,7 @@ type DrillRunProperties struct {
 	Operation *string
 
 	// READ-ONLY; Recovery time objective for the drill run.
-	RecoveryTimeObjective *IsoDuration
+	RecoveryTimeObjective *ISODuration
 
 	// READ-ONLY; Summary of report generation for this Drill Run.
 	Report *DrillReportSummary
@@ -2376,10 +2376,10 @@ func (r *RegionalDrillResourceProperties) GetDrillResourceProperties() *DrillRes
 // RegionalObjectives - Recovery objectives targeted by a goal assignment for regional resiliency.
 type RegionalObjectives struct {
 	// REQUIRED; Target regional recovery point objective. eg, PT15M for 15 minutes.
-	TargetRecoveryPointObjective *IsoDuration
+	TargetRecoveryPointObjective *ISODuration
 
 	// REQUIRED; Target regional recovery time objective. eg, PT1H for 1 hour.
-	TargetRecoveryTimeObjective *IsoDuration
+	TargetRecoveryTimeObjective *ISODuration
 }
 
 // ReportStageStatus - Report generation status for a single Drill Run stage.
@@ -2953,7 +2953,7 @@ type UnifiedResilienceItemRegionalResiliencyPosture struct {
 	EnabledResourceCount *int64
 
 	// The estimated recovery point objective computed for the service group, expressed as an ISO 8601 duration.
-	EstimatedRecoveryPointObjective *IsoDuration
+	EstimatedRecoveryPointObjective *ISODuration
 
 	// The date and time when the regional resiliency posture was last evaluated.
 	EvaluationDateTime *time.Time

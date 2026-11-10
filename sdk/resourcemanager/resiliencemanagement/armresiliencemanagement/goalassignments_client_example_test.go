@@ -33,8 +33,8 @@ func ExampleGoalAssignmentsClient_BeginCreateOrUpdate_goalAssignmentsCreateOrUpd
 			RequireZonalResiliency:    to.Ptr(true),
 			RequireRegionalResiliency: to.Ptr(true),
 			RegionalObjectives: &armresiliencemanagement.RegionalObjectives{
-				TargetRecoveryPointObjective: to.Ptr(armresiliencemanagement.IsoDurationPT15M),
-				TargetRecoveryTimeObjective:  to.Ptr(armresiliencemanagement.IsoDurationPT1H),
+				TargetRecoveryPointObjective: to.Ptr(armresiliencemanagement.ISODurationPT15M),
+				TargetRecoveryTimeObjective:  to.Ptr(armresiliencemanagement.ISODurationPT1H),
 			},
 		},
 	}, nil)
@@ -181,8 +181,8 @@ func ExampleGoalAssignmentsClient_BeginUpdate() {
 			RequireZonalResiliency:    to.Ptr(true),
 			RequireRegionalResiliency: to.Ptr(true),
 			RegionalObjectives: &armresiliencemanagement.RegionalObjectives{
-				TargetRecoveryPointObjective: to.Ptr(armresiliencemanagement.IsoDurationPT15M),
-				TargetRecoveryTimeObjective:  to.Ptr(armresiliencemanagement.IsoDurationPT1H),
+				TargetRecoveryPointObjective: to.Ptr(armresiliencemanagement.ISODurationPT15M),
+				TargetRecoveryTimeObjective:  to.Ptr(armresiliencemanagement.ISODurationPT1H),
 			},
 		},
 	}, nil)
@@ -285,8 +285,8 @@ func ExampleGoalAssignmentsClient_Get() {
 	// 			RequireZonalResiliency: to.Ptr(true),
 	// 			RequireRegionalResiliency: to.Ptr(true),
 	// 			RegionalObjectives: &armresiliencemanagement.RegionalObjectives{
-	// 				TargetRecoveryPointObjective: to.Ptr(armresiliencemanagement.IsoDurationPT15M),
-	// 				TargetRecoveryTimeObjective: to.Ptr(armresiliencemanagement.IsoDurationPT1H),
+	// 				TargetRecoveryPointObjective: to.Ptr(armresiliencemanagement.ISODurationPT15M),
+	// 				TargetRecoveryTimeObjective: to.Ptr(armresiliencemanagement.ISODurationPT1H),
 	// 			},
 	// 		},
 	// 		ID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/goalAssignments/ga1"),
@@ -342,8 +342,8 @@ func ExampleGoalAssignmentsClient_NewListPager_goalAssignmentsListMaximumSet() {
 		// 					RequireZonalResiliency: to.Ptr(true),
 		// 					RequireRegionalResiliency: to.Ptr(true),
 		// 					RegionalObjectives: &armresiliencemanagement.RegionalObjectives{
-		// 						TargetRecoveryPointObjective: to.Ptr(armresiliencemanagement.IsoDurationPT15M),
-		// 						TargetRecoveryTimeObjective: to.Ptr(armresiliencemanagement.IsoDurationPT1H),
+		// 						TargetRecoveryPointObjective: to.Ptr(armresiliencemanagement.ISODurationPT15M),
+		// 						TargetRecoveryTimeObjective: to.Ptr(armresiliencemanagement.ISODurationPT1H),
 		// 					},
 		// 				},
 		// 				ID: to.Ptr("/providers/Microsoft.AzureResilienceManagement/goalAssignments/ga1"),

@@ -665,6 +665,30 @@ func PossibleHAStatusValues() []HAStatus {
 	}
 }
 
+// ISODuration - ISO 8601 duration formats.
+type ISODuration string
+
+const (
+	// ISODurationPT15M - 15 minutes.
+	ISODurationPT15M ISODuration = "PT15M"
+	// ISODurationPT1H - 1 hour.
+	ISODurationPT1H ISODuration = "PT1H"
+	// ISODurationPT24H - 24 hours.
+	ISODurationPT24H ISODuration = "PT24H"
+	// ISODurationPT4H - 4 hours.
+	ISODurationPT4H ISODuration = "PT4H"
+)
+
+// PossibleISODurationValues returns the possible values for the ISODuration const type.
+func PossibleISODurationValues() []ISODuration {
+	return []ISODuration{
+		ISODurationPT15M,
+		ISODurationPT1H,
+		ISODurationPT24H,
+		ISODurationPT4H,
+	}
+}
+
 // InitialConfig - Enum for Initial config of Drill object.
 type InitialConfig string
 
@@ -680,30 +704,6 @@ func PossibleInitialConfigValues() []InitialConfig {
 	return []InitialConfig{
 		InitialConfigComplete,
 		InitialConfigPending,
-	}
-}
-
-// IsoDuration - ISO 8601 duration formats.
-type IsoDuration string
-
-const (
-	// IsoDurationPT15M - 15 minutes.
-	IsoDurationPT15M IsoDuration = "PT15M"
-	// IsoDurationPT1H - 1 hour.
-	IsoDurationPT1H IsoDuration = "PT1H"
-	// IsoDurationPT24H - 24 hours.
-	IsoDurationPT24H IsoDuration = "PT24H"
-	// IsoDurationPT4H - 4 hours.
-	IsoDurationPT4H IsoDuration = "PT4H"
-)
-
-// PossibleIsoDurationValues returns the possible values for the IsoDuration const type.
-func PossibleIsoDurationValues() []IsoDuration {
-	return []IsoDuration{
-		IsoDurationPT15M,
-		IsoDurationPT1H,
-		IsoDurationPT24H,
-		IsoDurationPT4H,
 	}
 }
 
@@ -1636,12 +1636,12 @@ const (
 	WorkloadTypeAzureVM WorkloadType = "AzureVm"
 	// WorkloadTypeOracleInAzureVM - An Oracle workload hosted in an Azure virtual machine.
 	WorkloadTypeOracleInAzureVM WorkloadType = "OracleInAzureVm"
+	// WorkloadTypeSAPASEInAzureVM - An SAP ASE workload hosted in an Azure virtual machine.
+	WorkloadTypeSAPASEInAzureVM WorkloadType = "SapAseInAzureVm"
+	// WorkloadTypeSAPHANAInAzureVM - An SAP HANA workload hosted in an Azure virtual machine.
+	WorkloadTypeSAPHANAInAzureVM WorkloadType = "SapHanaInAzureVm"
 	// WorkloadTypeSQLDatabaseInAzureVM - A SQL database workload hosted in an Azure virtual machine.
 	WorkloadTypeSQLDatabaseInAzureVM WorkloadType = "SqlDatabaseInAzureVm"
-	// WorkloadTypeSapAseInAzureVM - An SAP ASE workload hosted in an Azure virtual machine.
-	WorkloadTypeSapAseInAzureVM WorkloadType = "SapAseInAzureVm"
-	// WorkloadTypeSapHanaInAzureVM - An SAP HANA workload hosted in an Azure virtual machine.
-	WorkloadTypeSapHanaInAzureVM WorkloadType = "SapHanaInAzureVm"
 )
 
 // PossibleWorkloadTypeValues returns the possible values for the WorkloadType const type.
@@ -1650,8 +1650,8 @@ func PossibleWorkloadTypeValues() []WorkloadType {
 		WorkloadTypeAzureFileShare,
 		WorkloadTypeAzureVM,
 		WorkloadTypeOracleInAzureVM,
+		WorkloadTypeSAPASEInAzureVM,
+		WorkloadTypeSAPHANAInAzureVM,
 		WorkloadTypeSQLDatabaseInAzureVM,
-		WorkloadTypeSapAseInAzureVM,
-		WorkloadTypeSapHanaInAzureVM,
 	}
 }

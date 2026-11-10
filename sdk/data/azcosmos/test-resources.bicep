@@ -9,6 +9,9 @@ param baseName string
 @description('Object ID of the service principal used by the live test task.')
 param testApplicationOid string
 
+@description('Azure region for the single-region live smoke account.')
+param location string = resourceGroup().location
+
 var accountName = toLower(baseName)
 var databaseName = 'go-live'
 var containerName = 'items'
@@ -16,7 +19,7 @@ var dataContributorRole = '00000000-0000-0000-0000-000000000002'
 
 resource account 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {
   name: accountName
-  location: 'eastus'
+  location: location
   kind: 'GlobalDocumentDB'
   properties: {
     databaseAccountOfferType: 'Standard'
@@ -28,7 +31,7 @@ resource account 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {
     }
     locations: [
       {
-        locationName: 'East US'
+        locationName: location
         failoverPriority: 0
         isZoneRedundant: false
       }
@@ -82,3 +85,4 @@ resource role 'Microsoft.DocumentDB/databaseAccounts/sqlRoleAssignments@2024-05-
 output AZCOSMOS_ENDPOINT string = account.properties.documentEndpoint
 output AZCOSMOS_DATABASE string = database.name
 output AZCOSMOS_CONTAINER string = container.name
+output AZCOSMOS_REGION string = location

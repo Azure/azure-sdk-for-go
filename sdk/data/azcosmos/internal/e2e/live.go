@@ -10,6 +10,13 @@ import (
 	"slices"
 )
 
+// LiveRegion is the Azure location used by the bounded live smoke lane.
+const LiveRegion = "eastus2"
+
+// LiveCatalogRegion preserves the original region in the pinned shared profiles.
+// The live lane explicitly adapts only that region to LiveRegion.
+const LiveCatalogRegion = "East US"
+
 // LiveScenario identifies a bounded live check and its shared setup profile.
 type LiveScenario struct {
 	ID      string
@@ -27,7 +34,10 @@ var LiveScenarios = []LiveScenario{
 }
 
 // ValidateLiveSelection rejects catalog drift and unsupported requirements before network I/O.
-func ValidateLiveSelection(catalog Catalog, selection []LiveScenario) error {
+func ValidateLiveSelection(catalog Catalog, selection []LiveScenario, region string) error {
+	if region != LiveRegion {
+		return fmt.Errorf("e2e: live region %q is unsupported; expected %q", region, LiveRegion)
+	}
 	if len(selection) == 0 {
 		return fmt.Errorf("e2e: live selection is empty")
 	}
@@ -82,7 +92,7 @@ func liveProfileSupported(profile Profile) bool {
 	}
 	region, ok := regions[0].(map[string]any)
 	replication, replicationOK := account["replication"].(map[string]any)
-	return ok && region["name"] == "East US" &&
+	return ok && region["name"] == LiveCatalogRegion &&
 		replicationOK && replication["minDelayMs"] == float64(0) && replication["maxDelayMs"] == float64(0) &&
 		account["id"] == "sessionSingleRegion" && account["consistency"] == "session" &&
 		account["writeMode"] == "single" && account["perPartitionFailover"] == false &&

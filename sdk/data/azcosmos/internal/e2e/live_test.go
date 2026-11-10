@@ -12,7 +12,12 @@ import (
 func TestLiveSelection(t *testing.T) {
 	catalog, err := LoadCatalog()
 	require.NoError(t, err)
-	require.NoError(t, ValidateLiveSelection(catalog, LiveScenarios))
+	require.NoError(t, ValidateLiveSelection(catalog, LiveScenarios, LiveRegion))
+	for _, region := range []string{"", "eastus", "East US 2", "westus3"} {
+		t.Run("unsupported region "+region, func(t *testing.T) {
+			require.ErrorContains(t, ValidateLiveSelection(catalog, LiveScenarios, region), "live region")
+		})
+	}
 	for _, tc := range []struct {
 		name string
 		edit func(*Catalog, *[]LiveScenario)
@@ -49,6 +54,11 @@ func TestLiveSelection(t *testing.T) {
 			p.Accounts[0]["consistency"] = "strong"
 			c.Profiles[p.ID] = p
 		}},
+		{"catalog region drift", func(c *Catalog, _ *[]LiveScenario) {
+			p := c.Profiles["smokeTests"]
+			p.Accounts[0]["regions"].([]any)[0].(map[string]any)["name"] = "East US 2"
+			c.Profiles[p.ID] = p
+		}},
 		{"non-default runtime", func(c *Catalog, _ *[]LiveScenario) {
 			p := c.Profiles["smokeTests"]
 			p.Runtimes[0]["gatewayV2"] = "enabled"
@@ -60,7 +70,7 @@ func TestLiveSelection(t *testing.T) {
 			require.NoError(t, err)
 			selection := append([]LiveScenario(nil), LiveScenarios...)
 			tc.edit(&catalog, &selection)
-			require.Error(t, ValidateLiveSelection(catalog, selection))
+			require.Error(t, ValidateLiveSelection(catalog, selection, LiveRegion))
 		})
 	}
 }

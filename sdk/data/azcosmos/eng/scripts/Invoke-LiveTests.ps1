@@ -40,6 +40,9 @@ try {
     if ($env:AZURE_COSMOS_E2E_BACKEND -ne 'azureLive' -or $env:AZURE_RECORD_MODE -ne 'live') {
         throw 'Explicit AZURE_COSMOS_E2E_BACKEND=azureLive and AZURE_RECORD_MODE=live are required.'
     }
+    if ($env:AZCOSMOS_REGION -cne 'eastus2') {
+        throw 'AZCOSMOS_REGION=eastus2 is required for the live smoke region adaptation.'
+    }
     $driverModule = "github.com/Azure/azure-cosmos-driver/$($target.GOOS)/$($target.GOARCH)"
     $driver = (& go list -m -json $driverModule) | ConvertFrom-Json
     if ($LASTEXITCODE -ne 0) { throw 'Cannot identify the native driver dependency.' }
@@ -59,7 +62,9 @@ try {
         backend = 'azureLive'
         authentication = 'entra'
         expectedAccountConsistency = 'Session'
-        expectedAccountRegions = @('East US')
+        expectedAccountRegions = @($env:AZCOSMOS_REGION)
+        catalogAccountRegions = @('East US')
+        catalogProfileRegionOverride = $true
         expectedAccountWriteMode = 'single'
         buildId = $env:BUILD_BUILDID
     } | ConvertTo-Json | Set-Content -LiteralPath (Join-Path $OutputDirectory 'metadata.json')

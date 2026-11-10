@@ -271,7 +271,7 @@ extends:
             - template: /eng/common/TestResources/deploy-test-resources.yml@self
               parameters:
                 ServiceDirectory: data/azcosmos
-                Location: eastus
+                Location: eastus2
                 ServiceConnection: azure-sdk-tests-cosmos
                 UseFederatedAuth: true
                 DeleteAfterHours: 8
@@ -296,6 +296,7 @@ extends:
                 AZCOSMOS_ENDPOINT: $(AZCOSMOS_ENDPOINT)
                 AZCOSMOS_DATABASE: $(AZCOSMOS_DATABASE)
                 AZCOSMOS_CONTAINER: $(AZCOSMOS_CONTAINER)
+                AZCOSMOS_REGION: $(AZCOSMOS_REGION)
                 CGO_ENABLED: '1'
 
             - task: PublishTestResults@2

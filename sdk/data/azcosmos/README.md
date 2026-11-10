@@ -520,10 +520,13 @@ shared scenario IDs: `bootstrap.primary-success`, `item.lifecycle`,
 `coreOperations`. This certifies only these selected scenarios, not every scenario or
 axis in either profile. Extended, multi-region, and long-running partition-split
 profiles are not implemented by this lane, including on scheduled runs.
-The pinned catalog is not refreshed. Unsupported setup requirements and omitted
+The pinned catalog is not refreshed. Its single-region East US profiles are explicitly
+adapted to East US 2 for live smoke; all other profile requirements remain unchanged.
+Logs and metadata identify that region-only adaptation rather than claiming an
+unmodified profile run. Unsupported deployment regions, setup requirements, and omitted
 required live scenarios fail validation before network I/O.
 
-For local execution, use a dedicated single-region East US Session account and a
+For local execution, use a dedicated single-region East US 2 Session account and a
 database/container with partition-key path `/pk`. The identity needs Cosmos DB
 data-plane permissions for metadata, items, and queries at database scope; management
 permissions alone are insufficient. Tests never create/delete databases or containers.
@@ -538,6 +541,7 @@ $env:AZURE_COSMOS_E2E_BACKEND = 'azureLive'
 $env:AZCOSMOS_ENDPOINT = 'https://<test-account>.documents.azure.com/'
 $env:AZCOSMOS_DATABASE = '<test-database>'
 $env:AZCOSMOS_CONTAINER = '<test-container>'
+$env:AZCOSMOS_REGION = 'eastus2'
 $env:CGO_ENABLED = '1'
 ./sdk/data/azcosmos/eng/scripts/Invoke-LiveTests.ps1 -OutputDirectory <temporary-results-directory>
 ```
@@ -548,7 +552,8 @@ runs only `TestAzureLive` with race detection and a 12-minute timeout. Missing c
 failed setup, skipped/missing scenarios, and incomplete results fail the run.
 `Test-LiveResults.ps1` emits JUnit and JSON with selected scenario IDs, profiles,
 durations, and outcomes; `metadata.json` records credential-free build/driver metadata
-and the expected (not independently measured) account configuration. Never enable
+and both the expected (not independently measured) account configuration and original
+catalog region. Never enable
 credential/body logging or publish `.env` files, tokens, or raw native diagnostics.
 
 Each scenario uses an isolated runtime and random item IDs/partition keys. Cleanup is
@@ -556,7 +561,8 @@ registered before writes with independent timeouts. Setup retries only newly dep
 RBAC's 403/5302 for at most 90 seconds; scenarios are not retried. Explicit session-token
 reuse is covered without claiming broader session-management profile coverage.
 
-[`test-resources.bicep`](test-resources.bicep) creates a run-owned Session account,
+[`test-resources.bicep`](test-resources.bicep) uses the deployment location (East US 2
+in CI) to create a run-owned Session account,
 database, 400 RU/s container, and database-scoped data role assignment, without emitting
 account keys. Live jobs allow 45 minutes for provisioning and execution, with a 15-minute
 cancellation cleanup grace period. Teardown runs on success, failure, and cancellation;

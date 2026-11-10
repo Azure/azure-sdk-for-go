@@ -53,7 +53,8 @@ func TestAzureLive(t *testing.T) {
 	}
 	catalog, err := internale2e.LoadCatalog()
 	require.NoError(t, err)
-	require.NoError(t, internale2e.ValidateLiveSelection(catalog, internale2e.LiveScenarios))
+	region := os.Getenv("AZCOSMOS_REGION")
+	require.NoError(t, internale2e.ValidateLiveSelection(catalog, internale2e.LiveScenarios, region))
 	tests := map[string]func(*testing.T, *liveFixture){
 		"bootstrap.primary-success":     liveBootstrap,
 		"item.lifecycle":                liveLifecycle,
@@ -80,7 +81,8 @@ func TestAzureLive(t *testing.T) {
 		test, exists := tests[scenario.ID]
 		require.True(t, exists, "selected live scenario must have an implementation")
 		t.Run(scenario.ID, func(t *testing.T) {
-			t.Logf("scenario=%s profile=%s fidelity=full", scenario.ID, scenario.Profile)
+			t.Logf("scenario=%s profile=%s fidelity=full expected-region=%s catalog-region=%q",
+				scenario.ID, scenario.Profile, region, internale2e.LiveCatalogRegion)
 			test(t, newLiveFixture(t, endpoint, databaseID, containerID))
 		})
 	}

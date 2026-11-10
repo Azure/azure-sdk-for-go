@@ -1,9 +1,9 @@
 # Release History
 
-## 3.1.0 (2026-11-09)
+## 3.1.0 (2026-11-10)
 ### Features Added
 
-- New value `IdentityKeyStoreTpmTransition` added to enum type `IdentityKeyStore`
+- New value `IdentityKeyStoreTPMTransition` added to enum type `IdentityKeyStore`
 - New function `*ClientFactory.NewVMApplicationsClient() *VMApplicationsClient`
 - New function `NewVMApplicationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*VMApplicationsClient, error)`
 - New function `*VMApplicationsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, machineName string, applicationName string, resource VMApplication, options *VMApplicationsClientBeginCreateOrUpdateOptions) (*runtime.Poller[VMApplicationsClientCreateOrUpdateResponse], error)`

@@ -302,8 +302,8 @@ const (
 	IdentityKeyStoreDefault IdentityKeyStore = "Default"
 	// IdentityKeyStoreTPM - TPM
 	IdentityKeyStoreTPM IdentityKeyStore = "TPM"
-	// IdentityKeyStoreTpmTransition - The machine is transitioning its identity key store to TPM.
-	IdentityKeyStoreTpmTransition IdentityKeyStore = "TpmTransition"
+	// IdentityKeyStoreTPMTransition - The machine is transitioning its identity key store to TPM.
+	IdentityKeyStoreTPMTransition IdentityKeyStore = "TpmTransition"
 )
 
 // PossibleIdentityKeyStoreValues returns the possible values for the IdentityKeyStore const type.
@@ -311,7 +311,7 @@ func PossibleIdentityKeyStoreValues() []IdentityKeyStore {
 	return []IdentityKeyStore{
 		IdentityKeyStoreDefault,
 		IdentityKeyStoreTPM,
-		IdentityKeyStoreTpmTransition,
+		IdentityKeyStoreTPMTransition,
 	}
 }
 

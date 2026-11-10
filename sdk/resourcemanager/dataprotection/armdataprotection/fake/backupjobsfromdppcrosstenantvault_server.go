@@ -18,32 +18,32 @@ import (
 	"slices"
 )
 
-// BackupJobsFromDppCrossTenantVaultServer is a fake server for instances of the armdataprotection.BackupJobsFromDppCrossTenantVaultClient type.
-type BackupJobsFromDppCrossTenantVaultServer struct {
-	// NewListPager is the fake for method BackupJobsFromDppCrossTenantVaultClient.NewListPager
+// BackupJobsFromDPPCrossTenantVaultServer is a fake server for instances of the armdataprotection.BackupJobsFromDPPCrossTenantVaultClient type.
+type BackupJobsFromDPPCrossTenantVaultServer struct {
+	// NewListPager is the fake for method BackupJobsFromDPPCrossTenantVaultClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, vaultName string, mappingName string, options *armdataprotection.BackupJobsFromDppCrossTenantVaultClientListOptions) (resp azfake.PagerResponder[armdataprotection.BackupJobsFromDppCrossTenantVaultClientListResponse])
+	NewListPager func(resourceGroupName string, vaultName string, mappingName string, options *armdataprotection.BackupJobsFromDPPCrossTenantVaultClientListOptions) (resp azfake.PagerResponder[armdataprotection.BackupJobsFromDPPCrossTenantVaultClientListResponse])
 }
 
-// NewBackupJobsFromDppCrossTenantVaultServerTransport creates a new instance of BackupJobsFromDppCrossTenantVaultServerTransport with the provided implementation.
-// The returned BackupJobsFromDppCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.BackupJobsFromDppCrossTenantVaultClient via the
+// NewBackupJobsFromDPPCrossTenantVaultServerTransport creates a new instance of BackupJobsFromDPPCrossTenantVaultServerTransport with the provided implementation.
+// The returned BackupJobsFromDPPCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.BackupJobsFromDPPCrossTenantVaultClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewBackupJobsFromDppCrossTenantVaultServerTransport(srv *BackupJobsFromDppCrossTenantVaultServer) *BackupJobsFromDppCrossTenantVaultServerTransport {
-	return &BackupJobsFromDppCrossTenantVaultServerTransport{
+func NewBackupJobsFromDPPCrossTenantVaultServerTransport(srv *BackupJobsFromDPPCrossTenantVaultServer) *BackupJobsFromDPPCrossTenantVaultServerTransport {
+	return &BackupJobsFromDPPCrossTenantVaultServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armdataprotection.BackupJobsFromDppCrossTenantVaultClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armdataprotection.BackupJobsFromDPPCrossTenantVaultClientListResponse]](),
 	}
 }
 
-// BackupJobsFromDppCrossTenantVaultServerTransport connects instances of armdataprotection.BackupJobsFromDppCrossTenantVaultClient to instances of BackupJobsFromDppCrossTenantVaultServer.
-// Don't use this type directly, use NewBackupJobsFromDppCrossTenantVaultServerTransport instead.
-type BackupJobsFromDppCrossTenantVaultServerTransport struct {
-	srv          *BackupJobsFromDppCrossTenantVaultServer
-	newListPager *tracker[azfake.PagerResponder[armdataprotection.BackupJobsFromDppCrossTenantVaultClientListResponse]]
+// BackupJobsFromDPPCrossTenantVaultServerTransport connects instances of armdataprotection.BackupJobsFromDPPCrossTenantVaultClient to instances of BackupJobsFromDPPCrossTenantVaultServer.
+// Don't use this type directly, use NewBackupJobsFromDPPCrossTenantVaultServerTransport instead.
+type BackupJobsFromDPPCrossTenantVaultServerTransport struct {
+	srv          *BackupJobsFromDPPCrossTenantVaultServer
+	newListPager *tracker[azfake.PagerResponder[armdataprotection.BackupJobsFromDPPCrossTenantVaultClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for BackupJobsFromDppCrossTenantVaultServerTransport.
-func (b *BackupJobsFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for BackupJobsFromDPPCrossTenantVaultServerTransport.
+func (b *BackupJobsFromDPPCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -53,7 +53,7 @@ func (b *BackupJobsFromDppCrossTenantVaultServerTransport) Do(req *http.Request)
 	return b.dispatchToMethodFake(req, method)
 }
 
-func (b *BackupJobsFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (b *BackupJobsFromDPPCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -63,7 +63,7 @@ func (b *BackupJobsFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(
 		}
 		if !intercepted {
 			switch method {
-			case "BackupJobsFromDppCrossTenantVaultClient.NewListPager":
+			case "BackupJobsFromDPPCrossTenantVaultClient.NewListPager":
 				res.resp, res.err = b.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -81,7 +81,7 @@ func (b *BackupJobsFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(
 	}
 }
 
-func (b *BackupJobsFromDppCrossTenantVaultServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (b *BackupJobsFromDPPCrossTenantVaultServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if b.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
@@ -108,7 +108,7 @@ func (b *BackupJobsFromDppCrossTenantVaultServerTransport) dispatchNewListPager(
 		resp := b.srv.NewListPager(resourceGroupNameParam, vaultNameParam, mappingNameParam, nil)
 		newListPager = &resp
 		b.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdataprotection.BackupJobsFromDppCrossTenantVaultClientListResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdataprotection.BackupJobsFromDPPCrossTenantVaultClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -126,7 +126,7 @@ func (b *BackupJobsFromDppCrossTenantVaultServerTransport) dispatchNewListPager(
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to BackupJobsFromDppCrossTenantVaultServerTransport
+// set this to conditionally intercept incoming requests to BackupJobsFromDPPCrossTenantVaultServerTransport
 var backupJobsFromDppCrossTenantVaultServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

@@ -18,28 +18,28 @@ import (
 	"slices"
 )
 
-// RecoveryPointFromDppCrossTenantVaultServer is a fake server for instances of the armdataprotection.RecoveryPointFromDppCrossTenantVaultClient type.
-type RecoveryPointFromDppCrossTenantVaultServer struct {
-	// Get is the fake for method RecoveryPointFromDppCrossTenantVaultClient.Get
+// RecoveryPointFromDPPCrossTenantVaultServer is a fake server for instances of the armdataprotection.RecoveryPointFromDPPCrossTenantVaultClient type.
+type RecoveryPointFromDPPCrossTenantVaultServer struct {
+	// Get is the fake for method RecoveryPointFromDPPCrossTenantVaultClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, recoveryPointID string, options *armdataprotection.RecoveryPointFromDppCrossTenantVaultClientGetOptions) (resp azfake.Responder[armdataprotection.RecoveryPointFromDppCrossTenantVaultClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, recoveryPointID string, options *armdataprotection.RecoveryPointFromDPPCrossTenantVaultClientGetOptions) (resp azfake.Responder[armdataprotection.RecoveryPointFromDPPCrossTenantVaultClientGetResponse], errResp azfake.ErrorResponder)
 }
 
-// NewRecoveryPointFromDppCrossTenantVaultServerTransport creates a new instance of RecoveryPointFromDppCrossTenantVaultServerTransport with the provided implementation.
-// The returned RecoveryPointFromDppCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.RecoveryPointFromDppCrossTenantVaultClient via the
+// NewRecoveryPointFromDPPCrossTenantVaultServerTransport creates a new instance of RecoveryPointFromDPPCrossTenantVaultServerTransport with the provided implementation.
+// The returned RecoveryPointFromDPPCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.RecoveryPointFromDPPCrossTenantVaultClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewRecoveryPointFromDppCrossTenantVaultServerTransport(srv *RecoveryPointFromDppCrossTenantVaultServer) *RecoveryPointFromDppCrossTenantVaultServerTransport {
-	return &RecoveryPointFromDppCrossTenantVaultServerTransport{srv: srv}
+func NewRecoveryPointFromDPPCrossTenantVaultServerTransport(srv *RecoveryPointFromDPPCrossTenantVaultServer) *RecoveryPointFromDPPCrossTenantVaultServerTransport {
+	return &RecoveryPointFromDPPCrossTenantVaultServerTransport{srv: srv}
 }
 
-// RecoveryPointFromDppCrossTenantVaultServerTransport connects instances of armdataprotection.RecoveryPointFromDppCrossTenantVaultClient to instances of RecoveryPointFromDppCrossTenantVaultServer.
-// Don't use this type directly, use NewRecoveryPointFromDppCrossTenantVaultServerTransport instead.
-type RecoveryPointFromDppCrossTenantVaultServerTransport struct {
-	srv *RecoveryPointFromDppCrossTenantVaultServer
+// RecoveryPointFromDPPCrossTenantVaultServerTransport connects instances of armdataprotection.RecoveryPointFromDPPCrossTenantVaultClient to instances of RecoveryPointFromDPPCrossTenantVaultServer.
+// Don't use this type directly, use NewRecoveryPointFromDPPCrossTenantVaultServerTransport instead.
+type RecoveryPointFromDPPCrossTenantVaultServerTransport struct {
+	srv *RecoveryPointFromDPPCrossTenantVaultServer
 }
 
-// Do implements the policy.Transporter interface for RecoveryPointFromDppCrossTenantVaultServerTransport.
-func (r *RecoveryPointFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for RecoveryPointFromDPPCrossTenantVaultServerTransport.
+func (r *RecoveryPointFromDPPCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -49,7 +49,7 @@ func (r *RecoveryPointFromDppCrossTenantVaultServerTransport) Do(req *http.Reque
 	return r.dispatchToMethodFake(req, method)
 }
 
-func (r *RecoveryPointFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (r *RecoveryPointFromDPPCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -59,7 +59,7 @@ func (r *RecoveryPointFromDppCrossTenantVaultServerTransport) dispatchToMethodFa
 		}
 		if !intercepted {
 			switch method {
-			case "RecoveryPointFromDppCrossTenantVaultClient.Get":
+			case "RecoveryPointFromDPPCrossTenantVaultClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -77,7 +77,7 @@ func (r *RecoveryPointFromDppCrossTenantVaultServerTransport) dispatchToMethodFa
 	}
 }
 
-func (r *RecoveryPointFromDppCrossTenantVaultServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (r *RecoveryPointFromDPPCrossTenantVaultServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -122,7 +122,7 @@ func (r *RecoveryPointFromDppCrossTenantVaultServerTransport) dispatchGet(req *h
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to RecoveryPointFromDppCrossTenantVaultServerTransport
+// set this to conditionally intercept incoming requests to RecoveryPointFromDPPCrossTenantVaultServerTransport
 var recoveryPointFromDppCrossTenantVaultServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

@@ -32,25 +32,25 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewBackupInstanceFromDppCrossTenantVaultClient creates a new instance of BackupInstanceFromDppCrossTenantVaultClient.
-func (c *ClientFactory) NewBackupInstanceFromDppCrossTenantVaultClient() *BackupInstanceFromDppCrossTenantVaultClient {
-	return &BackupInstanceFromDppCrossTenantVaultClient{
+// NewBackupInstanceFromDPPCrossTenantVaultClient creates a new instance of BackupInstanceFromDPPCrossTenantVaultClient.
+func (c *ClientFactory) NewBackupInstanceFromDPPCrossTenantVaultClient() *BackupInstanceFromDPPCrossTenantVaultClient {
+	return &BackupInstanceFromDPPCrossTenantVaultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewBackupInstanceOperationResultFromDppCrossTenantVaultClient creates a new instance of BackupInstanceOperationResultFromDppCrossTenantVaultClient.
-func (c *ClientFactory) NewBackupInstanceOperationResultFromDppCrossTenantVaultClient() *BackupInstanceOperationResultFromDppCrossTenantVaultClient {
-	return &BackupInstanceOperationResultFromDppCrossTenantVaultClient{
+// NewBackupInstanceOperationResultFromDPPCrossTenantVaultClient creates a new instance of BackupInstanceOperationResultFromDPPCrossTenantVaultClient.
+func (c *ClientFactory) NewBackupInstanceOperationResultFromDPPCrossTenantVaultClient() *BackupInstanceOperationResultFromDPPCrossTenantVaultClient {
+	return &BackupInstanceOperationResultFromDPPCrossTenantVaultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewBackupInstanceOperationStatusFromDppCrossTenantVaultClient creates a new instance of BackupInstanceOperationStatusFromDppCrossTenantVaultClient.
-func (c *ClientFactory) NewBackupInstanceOperationStatusFromDppCrossTenantVaultClient() *BackupInstanceOperationStatusFromDppCrossTenantVaultClient {
-	return &BackupInstanceOperationStatusFromDppCrossTenantVaultClient{
+// NewBackupInstanceOperationStatusFromDPPCrossTenantVaultClient creates a new instance of BackupInstanceOperationStatusFromDPPCrossTenantVaultClient.
+func (c *ClientFactory) NewBackupInstanceOperationStatusFromDPPCrossTenantVaultClient() *BackupInstanceOperationStatusFromDPPCrossTenantVaultClient {
+	return &BackupInstanceOperationStatusFromDPPCrossTenantVaultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -71,17 +71,17 @@ func (c *ClientFactory) NewBackupInstancesExtensionRoutingClient() *BackupInstan
 	}
 }
 
-// NewBackupInstancesFromDppCrossTenantVaultClient creates a new instance of BackupInstancesFromDppCrossTenantVaultClient.
-func (c *ClientFactory) NewBackupInstancesFromDppCrossTenantVaultClient() *BackupInstancesFromDppCrossTenantVaultClient {
-	return &BackupInstancesFromDppCrossTenantVaultClient{
+// NewBackupInstancesFromDPPCrossTenantVaultClient creates a new instance of BackupInstancesFromDPPCrossTenantVaultClient.
+func (c *ClientFactory) NewBackupInstancesFromDPPCrossTenantVaultClient() *BackupInstancesFromDPPCrossTenantVaultClient {
+	return &BackupInstancesFromDPPCrossTenantVaultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewBackupJobsFromDppCrossTenantVaultClient creates a new instance of BackupJobsFromDppCrossTenantVaultClient.
-func (c *ClientFactory) NewBackupJobsFromDppCrossTenantVaultClient() *BackupJobsFromDppCrossTenantVaultClient {
-	return &BackupJobsFromDppCrossTenantVaultClient{
+// NewBackupJobsFromDPPCrossTenantVaultClient creates a new instance of BackupJobsFromDPPCrossTenantVaultClient.
+func (c *ClientFactory) NewBackupJobsFromDPPCrossTenantVaultClient() *BackupJobsFromDPPCrossTenantVaultClient {
+	return &BackupJobsFromDPPCrossTenantVaultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -119,6 +119,22 @@ func (c *ClientFactory) NewClient() *Client {
 	}
 }
 
+// NewDPPCrossTenantVaultMappingStatusClient creates a new instance of DPPCrossTenantVaultMappingStatusClient.
+func (c *ClientFactory) NewDPPCrossTenantVaultMappingStatusClient() *DPPCrossTenantVaultMappingStatusClient {
+	return &DPPCrossTenantVaultMappingStatusClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewDPPCrossTenantVaultMappingsClient creates a new instance of DPPCrossTenantVaultMappingsClient.
+func (c *ClientFactory) NewDPPCrossTenantVaultMappingsClient() *DPPCrossTenantVaultMappingsClient {
+	return &DPPCrossTenantVaultMappingsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewDeletedBackupInstancesClient creates a new instance of DeletedBackupInstancesClient.
 func (c *ClientFactory) NewDeletedBackupInstancesClient() *DeletedBackupInstancesClient {
 	return &DeletedBackupInstancesClient{
@@ -130,22 +146,6 @@ func (c *ClientFactory) NewDeletedBackupInstancesClient() *DeletedBackupInstance
 // NewDeletedBackupVaultsClient creates a new instance of DeletedBackupVaultsClient.
 func (c *ClientFactory) NewDeletedBackupVaultsClient() *DeletedBackupVaultsClient {
 	return &DeletedBackupVaultsClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewDppCrossTenantVaultMappingStatusClient creates a new instance of DppCrossTenantVaultMappingStatusClient.
-func (c *ClientFactory) NewDppCrossTenantVaultMappingStatusClient() *DppCrossTenantVaultMappingStatusClient {
-	return &DppCrossTenantVaultMappingStatusClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
-// NewDppCrossTenantVaultMappingsClient creates a new instance of DppCrossTenantVaultMappingsClient.
-func (c *ClientFactory) NewDppCrossTenantVaultMappingsClient() *DppCrossTenantVaultMappingsClient {
-	return &DppCrossTenantVaultMappingsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -199,9 +199,9 @@ func (c *ClientFactory) NewFetchSecondaryRecoveryPointsClient() *FetchSecondaryR
 	}
 }
 
-// NewJobFromDppCrossTenantVaultClient creates a new instance of JobFromDppCrossTenantVaultClient.
-func (c *ClientFactory) NewJobFromDppCrossTenantVaultClient() *JobFromDppCrossTenantVaultClient {
-	return &JobFromDppCrossTenantVaultClient{
+// NewJobFromDPPCrossTenantVaultClient creates a new instance of JobFromDPPCrossTenantVaultClient.
+func (c *ClientFactory) NewJobFromDPPCrossTenantVaultClient() *JobFromDPPCrossTenantVaultClient {
+	return &JobFromDPPCrossTenantVaultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -254,9 +254,9 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
-// NewRecoveryPointFromDppCrossTenantVaultClient creates a new instance of RecoveryPointFromDppCrossTenantVaultClient.
-func (c *ClientFactory) NewRecoveryPointFromDppCrossTenantVaultClient() *RecoveryPointFromDppCrossTenantVaultClient {
-	return &RecoveryPointFromDppCrossTenantVaultClient{
+// NewRecoveryPointFromDPPCrossTenantVaultClient creates a new instance of RecoveryPointFromDPPCrossTenantVaultClient.
+func (c *ClientFactory) NewRecoveryPointFromDPPCrossTenantVaultClient() *RecoveryPointFromDPPCrossTenantVaultClient {
+	return &RecoveryPointFromDPPCrossTenantVaultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -270,9 +270,9 @@ func (c *ClientFactory) NewRecoveryPointsClient() *RecoveryPointsClient {
 	}
 }
 
-// NewRecoveryPointsFromDppCrossTenantVaultClient creates a new instance of RecoveryPointsFromDppCrossTenantVaultClient.
-func (c *ClientFactory) NewRecoveryPointsFromDppCrossTenantVaultClient() *RecoveryPointsFromDppCrossTenantVaultClient {
-	return &RecoveryPointsFromDppCrossTenantVaultClient{
+// NewRecoveryPointsFromDPPCrossTenantVaultClient creates a new instance of RecoveryPointsFromDPPCrossTenantVaultClient.
+func (c *ClientFactory) NewRecoveryPointsFromDPPCrossTenantVaultClient() *RecoveryPointsFromDPPCrossTenantVaultClient {
+	return &RecoveryPointsFromDPPCrossTenantVaultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -294,25 +294,25 @@ func (c *ClientFactory) NewRestorableTimeRangesClient() *RestorableTimeRangesCli
 	}
 }
 
-// NewRestorableTimeRangesFromDppCrossTenantVaultClient creates a new instance of RestorableTimeRangesFromDppCrossTenantVaultClient.
-func (c *ClientFactory) NewRestorableTimeRangesFromDppCrossTenantVaultClient() *RestorableTimeRangesFromDppCrossTenantVaultClient {
-	return &RestorableTimeRangesFromDppCrossTenantVaultClient{
+// NewRestorableTimeRangesFromDPPCrossTenantVaultClient creates a new instance of RestorableTimeRangesFromDPPCrossTenantVaultClient.
+func (c *ClientFactory) NewRestorableTimeRangesFromDPPCrossTenantVaultClient() *RestorableTimeRangesFromDPPCrossTenantVaultClient {
+	return &RestorableTimeRangesFromDPPCrossTenantVaultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewRestoresFromDppCrossTenantVaultClient creates a new instance of RestoresFromDppCrossTenantVaultClient.
-func (c *ClientFactory) NewRestoresFromDppCrossTenantVaultClient() *RestoresFromDppCrossTenantVaultClient {
-	return &RestoresFromDppCrossTenantVaultClient{
+// NewRestoresFromDPPCrossTenantVaultClient creates a new instance of RestoresFromDPPCrossTenantVaultClient.
+func (c *ClientFactory) NewRestoresFromDPPCrossTenantVaultClient() *RestoresFromDPPCrossTenantVaultClient {
+	return &RestoresFromDPPCrossTenantVaultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
 }
 
-// NewValidateRestoreFromDppCrossTenantVaultClient creates a new instance of ValidateRestoreFromDppCrossTenantVaultClient.
-func (c *ClientFactory) NewValidateRestoreFromDppCrossTenantVaultClient() *ValidateRestoreFromDppCrossTenantVaultClient {
-	return &ValidateRestoreFromDppCrossTenantVaultClient{
+// NewValidateRestoreFromDPPCrossTenantVaultClient creates a new instance of ValidateRestoreFromDPPCrossTenantVaultClient.
+func (c *ClientFactory) NewValidateRestoreFromDPPCrossTenantVaultClient() *ValidateRestoreFromDPPCrossTenantVaultClient {
+	return &ValidateRestoreFromDPPCrossTenantVaultClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

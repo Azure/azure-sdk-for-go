@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// DppCrossTenantVaultMappingsClient contains the methods for the DppCrossTenantVaultMappings group.
-// Don't use this type directly, use NewDppCrossTenantVaultMappingsClient() instead.
+// DPPCrossTenantVaultMappingsClient contains the methods for the DPPCrossTenantVaultMappings group.
+// Don't use this type directly, use NewDPPCrossTenantVaultMappingsClient() instead.
 //
 // Generated from API version 2026-08-31-preview
-type DppCrossTenantVaultMappingsClient struct {
+type DPPCrossTenantVaultMappingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewDppCrossTenantVaultMappingsClient creates a new instance of DppCrossTenantVaultMappingsClient with the specified values.
+// NewDPPCrossTenantVaultMappingsClient creates a new instance of DPPCrossTenantVaultMappingsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewDppCrossTenantVaultMappingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DppCrossTenantVaultMappingsClient, error) {
+func NewDPPCrossTenantVaultMappingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DPPCrossTenantVaultMappingsClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewDppCrossTenantVaultMappingsClient(subscriptionID string, credential azco
 	if err != nil {
 		return nil, err
 	}
-	client := &DppCrossTenantVaultMappingsClient{
+	client := &DPPCrossTenantVaultMappingsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -50,28 +50,28 @@ func NewDppCrossTenantVaultMappingsClient(subscriptionID string, credential azco
 //   - vaultName - The name of the backup vault.
 //   - mappingName - The name of the cross-tenant vault mapping.
 //   - resource - Resource create parameters.
-//   - options - DppCrossTenantVaultMappingsClientCreateOrUpdateOptions contains the optional parameters for the DppCrossTenantVaultMappingsClient.CreateOrUpdate
+//   - options - DPPCrossTenantVaultMappingsClientCreateOrUpdateOptions contains the optional parameters for the DPPCrossTenantVaultMappingsClient.CreateOrUpdate
 //     method.
-func (client *DppCrossTenantVaultMappingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, resource CrossTenantVaultMapping, options *DppCrossTenantVaultMappingsClientCreateOrUpdateOptions) (DppCrossTenantVaultMappingsClientCreateOrUpdateResponse, error) {
+func (client *DPPCrossTenantVaultMappingsClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, resource CrossTenantVaultMapping, options *DPPCrossTenantVaultMappingsClientCreateOrUpdateOptions) (DPPCrossTenantVaultMappingsClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "DppCrossTenantVaultMappingsClient.CreateOrUpdate"
+	const operationName = "DPPCrossTenantVaultMappingsClient.CreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, vaultName, mappingName, resource, options)
 	if err != nil {
-		return DppCrossTenantVaultMappingsClientCreateOrUpdateResponse{}, err
+		return DPPCrossTenantVaultMappingsClientCreateOrUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DppCrossTenantVaultMappingsClientCreateOrUpdateResponse{}, err
+		return DPPCrossTenantVaultMappingsClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DppCrossTenantVaultMappingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, resource CrossTenantVaultMapping, _ *DppCrossTenantVaultMappingsClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *DPPCrossTenantVaultMappingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, resource CrossTenantVaultMapping, _ *DPPCrossTenantVaultMappingsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/crossTenantVaultMappings/{mappingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -105,13 +105,13 @@ func (client *DppCrossTenantVaultMappingsClient) createOrUpdateCreateRequest(ctx
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DppCrossTenantVaultMappingsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DppCrossTenantVaultMappingsClientCreateOrUpdateResponse, error) {
-	result := DppCrossTenantVaultMappingsClientCreateOrUpdateResponse{}
+func (client *DPPCrossTenantVaultMappingsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DPPCrossTenantVaultMappingsClientCreateOrUpdateResponse, error) {
+	result := DPPCrossTenantVaultMappingsClientCreateOrUpdateResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CrossTenantVaultMapping); err != nil {
-		return DppCrossTenantVaultMappingsClientCreateOrUpdateResponse{}, err
+		return DPPCrossTenantVaultMappingsClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
@@ -121,28 +121,28 @@ func (client *DppCrossTenantVaultMappingsClient) createOrUpdateHandleResponse(re
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - mappingName - The name of the cross-tenant vault mapping.
-//   - options - DppCrossTenantVaultMappingsClientGetOptions contains the optional parameters for the DppCrossTenantVaultMappingsClient.Get
+//   - options - DPPCrossTenantVaultMappingsClientGetOptions contains the optional parameters for the DPPCrossTenantVaultMappingsClient.Get
 //     method.
-func (client *DppCrossTenantVaultMappingsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *DppCrossTenantVaultMappingsClientGetOptions) (DppCrossTenantVaultMappingsClientGetResponse, error) {
+func (client *DPPCrossTenantVaultMappingsClient) Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *DPPCrossTenantVaultMappingsClientGetOptions) (DPPCrossTenantVaultMappingsClientGetResponse, error) {
 	var err error
-	const operationName = "DppCrossTenantVaultMappingsClient.Get"
+	const operationName = "DPPCrossTenantVaultMappingsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, mappingName, options)
 	if err != nil {
-		return DppCrossTenantVaultMappingsClientGetResponse{}, err
+		return DPPCrossTenantVaultMappingsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DppCrossTenantVaultMappingsClientGetResponse{}, err
+		return DPPCrossTenantVaultMappingsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *DppCrossTenantVaultMappingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, _ *DppCrossTenantVaultMappingsClientGetOptions) (*policy.Request, error) {
+func (client *DPPCrossTenantVaultMappingsClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, _ *DPPCrossTenantVaultMappingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/crossTenantVaultMappings/{mappingName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -172,13 +172,13 @@ func (client *DppCrossTenantVaultMappingsClient) getCreateRequest(ctx context.Co
 }
 
 // getHandleResponse handles the Get response.
-func (client *DppCrossTenantVaultMappingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DppCrossTenantVaultMappingsClientGetResponse, error) {
-	result := DppCrossTenantVaultMappingsClientGetResponse{}
+func (client *DPPCrossTenantVaultMappingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DPPCrossTenantVaultMappingsClientGetResponse, error) {
+	result := DPPCrossTenantVaultMappingsClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CrossTenantVaultMapping); err != nil {
-		return DppCrossTenantVaultMappingsClientGetResponse{}, err
+		return DPPCrossTenantVaultMappingsClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -186,26 +186,26 @@ func (client *DppCrossTenantVaultMappingsClient) getHandleResponse(resp *http.Re
 // NewListPager - Lists the cross-tenant vault mappings under the target vault.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
-//   - options - DppCrossTenantVaultMappingsClientListOptions contains the optional parameters for the DppCrossTenantVaultMappingsClient.NewListPager
+//   - options - DPPCrossTenantVaultMappingsClientListOptions contains the optional parameters for the DPPCrossTenantVaultMappingsClient.NewListPager
 //     method.
-func (client *DppCrossTenantVaultMappingsClient) NewListPager(resourceGroupName string, vaultName string, options *DppCrossTenantVaultMappingsClientListOptions) *runtime.Pager[DppCrossTenantVaultMappingsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DppCrossTenantVaultMappingsClientListResponse]{
-		More: func(page DppCrossTenantVaultMappingsClientListResponse) bool {
+func (client *DPPCrossTenantVaultMappingsClient) NewListPager(resourceGroupName string, vaultName string, options *DPPCrossTenantVaultMappingsClientListOptions) *runtime.Pager[DPPCrossTenantVaultMappingsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DPPCrossTenantVaultMappingsClientListResponse]{
+		More: func(page DPPCrossTenantVaultMappingsClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *DppCrossTenantVaultMappingsClientListResponse) (DppCrossTenantVaultMappingsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DppCrossTenantVaultMappingsClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *DPPCrossTenantVaultMappingsClientListResponse) (DPPCrossTenantVaultMappingsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DPPCrossTenantVaultMappingsClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listCreateRequest(ctx, resourceGroupName, vaultName, nextLink, options)
 			if err != nil {
-				return DppCrossTenantVaultMappingsClientListResponse{}, err
+				return DPPCrossTenantVaultMappingsClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return DppCrossTenantVaultMappingsClientListResponse{}, err
+				return DPPCrossTenantVaultMappingsClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp, http.StatusOK)
 		},
@@ -214,7 +214,7 @@ func (client *DppCrossTenantVaultMappingsClient) NewListPager(resourceGroupName 
 }
 
 // listCreateRequest creates the List request.
-func (client *DppCrossTenantVaultMappingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, nextLink string, _ *DppCrossTenantVaultMappingsClientListOptions) (*policy.Request, error) {
+func (client *DPPCrossTenantVaultMappingsClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, nextLink string, _ *DPPCrossTenantVaultMappingsClientListOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -249,13 +249,13 @@ func (client *DppCrossTenantVaultMappingsClient) listCreateRequest(ctx context.C
 }
 
 // listHandleResponse handles the List response.
-func (client *DppCrossTenantVaultMappingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DppCrossTenantVaultMappingsClientListResponse, error) {
-	result := DppCrossTenantVaultMappingsClientListResponse{}
+func (client *DPPCrossTenantVaultMappingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DPPCrossTenantVaultMappingsClientListResponse, error) {
+	result := DPPCrossTenantVaultMappingsClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CrossTenantVaultMappingList); err != nil {
-		return DppCrossTenantVaultMappingsClientListResponse{}, err
+		return DPPCrossTenantVaultMappingsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -265,31 +265,31 @@ func (client *DppCrossTenantVaultMappingsClient) listHandleResponse(resp *http.R
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
 //   - mappingName - The name of the cross-tenant vault mapping.
-//   - options - DppCrossTenantVaultMappingsClientRemoveOptions contains the optional parameters for the DppCrossTenantVaultMappingsClient.Remove
+//   - options - DPPCrossTenantVaultMappingsClientRemoveOptions contains the optional parameters for the DPPCrossTenantVaultMappingsClient.Remove
 //     method.
-func (client *DppCrossTenantVaultMappingsClient) Remove(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *DppCrossTenantVaultMappingsClientRemoveOptions) (DppCrossTenantVaultMappingsClientRemoveResponse, error) {
+func (client *DPPCrossTenantVaultMappingsClient) Remove(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *DPPCrossTenantVaultMappingsClientRemoveOptions) (DPPCrossTenantVaultMappingsClientRemoveResponse, error) {
 	var err error
-	const operationName = "DppCrossTenantVaultMappingsClient.Remove"
+	const operationName = "DPPCrossTenantVaultMappingsClient.Remove"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.removeCreateRequest(ctx, resourceGroupName, vaultName, mappingName, options)
 	if err != nil {
-		return DppCrossTenantVaultMappingsClientRemoveResponse{}, err
+		return DPPCrossTenantVaultMappingsClientRemoveResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DppCrossTenantVaultMappingsClientRemoveResponse{}, err
+		return DPPCrossTenantVaultMappingsClientRemoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return DppCrossTenantVaultMappingsClientRemoveResponse{}, err
+		return DPPCrossTenantVaultMappingsClientRemoveResponse{}, err
 	}
-	return DppCrossTenantVaultMappingsClientRemoveResponse{}, nil
+	return DPPCrossTenantVaultMappingsClientRemoveResponse{}, nil
 }
 
 // removeCreateRequest creates the Remove request.
-func (client *DppCrossTenantVaultMappingsClient) removeCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *DppCrossTenantVaultMappingsClientRemoveOptions) (*policy.Request, error) {
+func (client *DPPCrossTenantVaultMappingsClient) removeCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *DPPCrossTenantVaultMappingsClientRemoveOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/crossTenantVaultMappings/{mappingName}/remove"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")

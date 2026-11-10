@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/DppCrossTenantVaultMappings_CreateOrUpdate.json
-func ExampleDppCrossTenantVaultMappingsClient_CreateOrUpdate() {
+func ExampleDPPCrossTenantVaultMappingsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleDppCrossTenantVaultMappingsClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDppCrossTenantVaultMappingsClient().CreateOrUpdate(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", armdataprotection.CrossTenantVaultMapping{
+	res, err := clientFactory.NewDPPCrossTenantVaultMappingsClient().CreateOrUpdate(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", armdataprotection.CrossTenantVaultMapping{
 		Properties: &armdataprotection.CrossTenantVaultMappingProperties{
 			SourceVaultID: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/sourceRG/providers/Microsoft.DataProtection/backupVaults/sourceVault"),
 			ResourceGuardOperationRequests: []*string{
@@ -37,7 +37,7 @@ func ExampleDppCrossTenantVaultMappingsClient_CreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.DppCrossTenantVaultMappingsClientCreateOrUpdateResponse{
+	// res = armdataprotection.DPPCrossTenantVaultMappingsClientCreateOrUpdateResponse{
 	// 	CrossTenantVaultMapping: armdataprotection.CrossTenantVaultMapping{
 	// 		Name: to.Ptr("sampleCrossTenantMapping"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/crossTenantVaultMappings"),
@@ -55,7 +55,7 @@ func ExampleDppCrossTenantVaultMappingsClient_CreateOrUpdate() {
 }
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/DppCrossTenantVaultMappings_Get.json
-func ExampleDppCrossTenantVaultMappingsClient_Get() {
+func ExampleDPPCrossTenantVaultMappingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -65,14 +65,14 @@ func ExampleDppCrossTenantVaultMappingsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDppCrossTenantVaultMappingsClient().Get(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", nil)
+	res, err := clientFactory.NewDPPCrossTenantVaultMappingsClient().Get(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.DppCrossTenantVaultMappingsClientGetResponse{
+	// res = armdataprotection.DPPCrossTenantVaultMappingsClientGetResponse{
 	// 	CrossTenantVaultMapping: armdataprotection.CrossTenantVaultMapping{
 	// 		Name: to.Ptr("sampleCrossTenantMapping"),
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/crossTenantVaultMappings"),
@@ -90,7 +90,7 @@ func ExampleDppCrossTenantVaultMappingsClient_Get() {
 }
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/DppCrossTenantVaultMappings_List.json
-func ExampleDppCrossTenantVaultMappingsClient_NewListPager() {
+func ExampleDPPCrossTenantVaultMappingsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -100,7 +100,7 @@ func ExampleDppCrossTenantVaultMappingsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDppCrossTenantVaultMappingsClient().NewListPager("000pikumar", "PratikPrivatePreviewVault1", nil)
+	pager := clientFactory.NewDPPCrossTenantVaultMappingsClient().NewListPager("000pikumar", "PratikPrivatePreviewVault1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -111,7 +111,7 @@ func ExampleDppCrossTenantVaultMappingsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdataprotection.DppCrossTenantVaultMappingsClientListResponse{
+		// page = armdataprotection.DPPCrossTenantVaultMappingsClientListResponse{
 		// 	CrossTenantVaultMappingList: armdataprotection.CrossTenantVaultMappingList{
 		// 		Value: []*armdataprotection.CrossTenantVaultMapping{
 		// 			{
@@ -134,7 +134,7 @@ func ExampleDppCrossTenantVaultMappingsClient_NewListPager() {
 }
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/DppCrossTenantVaultMappings_Remove.json
-func ExampleDppCrossTenantVaultMappingsClient_Remove() {
+func ExampleDPPCrossTenantVaultMappingsClient_Remove() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -144,7 +144,7 @@ func ExampleDppCrossTenantVaultMappingsClient_Remove() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewDppCrossTenantVaultMappingsClient().Remove(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", nil)
+	_, err = clientFactory.NewDPPCrossTenantVaultMappingsClient().Remove(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

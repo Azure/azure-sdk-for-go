@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/ValidateRestoreFromDppCrossTenantVault_Trigger.json
-func ExampleValidateRestoreFromDppCrossTenantVaultClient_BeginTrigger() {
+func ExampleValidateRestoreFromDPPCrossTenantVaultClient_BeginTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleValidateRestoreFromDppCrossTenantVaultClient_BeginTrigger() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewValidateRestoreFromDppCrossTenantVaultClient().BeginTrigger(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", armdataprotection.ValidateRestoreRequestObject{
+	poller, err := clientFactory.NewValidateRestoreFromDPPCrossTenantVaultClient().BeginTrigger(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", armdataprotection.ValidateRestoreRequestObject{
 		RestoreRequestObject: &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
 			IdentityDetails: &armdataprotection.IdentityDetails{
 				UseSystemAssignedIdentity:  to.Ptr(false),
@@ -75,7 +75,7 @@ func ExampleValidateRestoreFromDppCrossTenantVaultClient_BeginTrigger() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.ValidateRestoreFromDppCrossTenantVaultClientTriggerResponse{
+	// res = armdataprotection.ValidateRestoreFromDPPCrossTenantVaultClientTriggerResponse{
 	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
 	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),

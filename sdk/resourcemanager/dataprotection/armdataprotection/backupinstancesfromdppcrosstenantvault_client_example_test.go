@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/BackupInstancesFromDppCrossTenantVault_List.json
-func ExampleBackupInstancesFromDppCrossTenantVaultClient_NewListPager() {
+func ExampleBackupInstancesFromDPPCrossTenantVaultClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,7 +22,7 @@ func ExampleBackupInstancesFromDppCrossTenantVaultClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewBackupInstancesFromDppCrossTenantVaultClient().NewListPager("000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", nil)
+	pager := clientFactory.NewBackupInstancesFromDPPCrossTenantVaultClient().NewListPager("000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -33,7 +33,7 @@ func ExampleBackupInstancesFromDppCrossTenantVaultClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdataprotection.BackupInstancesFromDppCrossTenantVaultClientListResponse{
+		// page = armdataprotection.BackupInstancesFromDPPCrossTenantVaultClientListResponse{
 		// 	CrossTenantBackupInstanceResourceList: armdataprotection.CrossTenantBackupInstanceResourceList{
 		// 		Value: []*armdataprotection.CrossTenantBackupInstanceResource{
 		// 			{

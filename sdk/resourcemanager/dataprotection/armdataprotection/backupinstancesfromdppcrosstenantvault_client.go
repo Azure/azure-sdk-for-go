@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// BackupInstancesFromDppCrossTenantVaultClient contains the methods for the BackupInstancesFromDppCrossTenantVault group.
-// Don't use this type directly, use NewBackupInstancesFromDppCrossTenantVaultClient() instead.
+// BackupInstancesFromDPPCrossTenantVaultClient contains the methods for the BackupInstancesFromDPPCrossTenantVault group.
+// Don't use this type directly, use NewBackupInstancesFromDPPCrossTenantVaultClient() instead.
 //
 // Generated from API version 2026-08-31-preview
-type BackupInstancesFromDppCrossTenantVaultClient struct {
+type BackupInstancesFromDPPCrossTenantVaultClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewBackupInstancesFromDppCrossTenantVaultClient creates a new instance of BackupInstancesFromDppCrossTenantVaultClient with the specified values.
+// NewBackupInstancesFromDPPCrossTenantVaultClient creates a new instance of BackupInstancesFromDPPCrossTenantVaultClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewBackupInstancesFromDppCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstancesFromDppCrossTenantVaultClient, error) {
+func NewBackupInstancesFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstancesFromDPPCrossTenantVaultClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewBackupInstancesFromDppCrossTenantVaultClient(subscriptionID string, cred
 	if err != nil {
 		return nil, err
 	}
-	client := &BackupInstancesFromDppCrossTenantVaultClient{
+	client := &BackupInstancesFromDPPCrossTenantVaultClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -48,26 +48,26 @@ func NewBackupInstancesFromDppCrossTenantVaultClient(subscriptionID string, cred
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the BackupVaultResource
 //   - mappingName - The name of the CrossTenantVaultMapping
-//   - options - BackupInstancesFromDppCrossTenantVaultClientListOptions contains the optional parameters for the BackupInstancesFromDppCrossTenantVaultClient.NewListPager
+//   - options - BackupInstancesFromDPPCrossTenantVaultClientListOptions contains the optional parameters for the BackupInstancesFromDPPCrossTenantVaultClient.NewListPager
 //     method.
-func (client *BackupInstancesFromDppCrossTenantVaultClient) NewListPager(resourceGroupName string, vaultName string, mappingName string, options *BackupInstancesFromDppCrossTenantVaultClientListOptions) *runtime.Pager[BackupInstancesFromDppCrossTenantVaultClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[BackupInstancesFromDppCrossTenantVaultClientListResponse]{
-		More: func(page BackupInstancesFromDppCrossTenantVaultClientListResponse) bool {
+func (client *BackupInstancesFromDPPCrossTenantVaultClient) NewListPager(resourceGroupName string, vaultName string, mappingName string, options *BackupInstancesFromDPPCrossTenantVaultClientListOptions) *runtime.Pager[BackupInstancesFromDPPCrossTenantVaultClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[BackupInstancesFromDPPCrossTenantVaultClientListResponse]{
+		More: func(page BackupInstancesFromDPPCrossTenantVaultClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *BackupInstancesFromDppCrossTenantVaultClientListResponse) (BackupInstancesFromDppCrossTenantVaultClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BackupInstancesFromDppCrossTenantVaultClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *BackupInstancesFromDPPCrossTenantVaultClientListResponse) (BackupInstancesFromDPPCrossTenantVaultClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "BackupInstancesFromDPPCrossTenantVaultClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listCreateRequest(ctx, resourceGroupName, vaultName, mappingName, nextLink, options)
 			if err != nil {
-				return BackupInstancesFromDppCrossTenantVaultClientListResponse{}, err
+				return BackupInstancesFromDPPCrossTenantVaultClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return BackupInstancesFromDppCrossTenantVaultClientListResponse{}, err
+				return BackupInstancesFromDPPCrossTenantVaultClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp, http.StatusOK)
 		},
@@ -76,7 +76,7 @@ func (client *BackupInstancesFromDppCrossTenantVaultClient) NewListPager(resourc
 }
 
 // listCreateRequest creates the List request.
-func (client *BackupInstancesFromDppCrossTenantVaultClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, nextLink string, _ *BackupInstancesFromDppCrossTenantVaultClientListOptions) (*policy.Request, error) {
+func (client *BackupInstancesFromDPPCrossTenantVaultClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, nextLink string, _ *BackupInstancesFromDPPCrossTenantVaultClientListOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -115,13 +115,13 @@ func (client *BackupInstancesFromDppCrossTenantVaultClient) listCreateRequest(ct
 }
 
 // listHandleResponse handles the List response.
-func (client *BackupInstancesFromDppCrossTenantVaultClient) listHandleResponse(resp *http.Response, successCodes ...int) (BackupInstancesFromDppCrossTenantVaultClientListResponse, error) {
-	result := BackupInstancesFromDppCrossTenantVaultClientListResponse{}
+func (client *BackupInstancesFromDPPCrossTenantVaultClient) listHandleResponse(resp *http.Response, successCodes ...int) (BackupInstancesFromDPPCrossTenantVaultClientListResponse, error) {
+	result := BackupInstancesFromDPPCrossTenantVaultClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CrossTenantBackupInstanceResourceList); err != nil {
-		return BackupInstancesFromDppCrossTenantVaultClientListResponse{}, err
+		return BackupInstancesFromDPPCrossTenantVaultClientListResponse{}, err
 	}
 	return result, nil
 }

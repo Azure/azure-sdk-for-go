@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// BackupInstanceFromDppCrossTenantVaultClient contains the methods for the BackupInstanceFromDppCrossTenantVault group.
-// Don't use this type directly, use NewBackupInstanceFromDppCrossTenantVaultClient() instead.
+// BackupInstanceFromDPPCrossTenantVaultClient contains the methods for the BackupInstanceFromDPPCrossTenantVault group.
+// Don't use this type directly, use NewBackupInstanceFromDPPCrossTenantVaultClient() instead.
 //
 // Generated from API version 2026-08-31-preview
-type BackupInstanceFromDppCrossTenantVaultClient struct {
+type BackupInstanceFromDPPCrossTenantVaultClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewBackupInstanceFromDppCrossTenantVaultClient creates a new instance of BackupInstanceFromDppCrossTenantVaultClient with the specified values.
+// NewBackupInstanceFromDPPCrossTenantVaultClient creates a new instance of BackupInstanceFromDPPCrossTenantVaultClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewBackupInstanceFromDppCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstanceFromDppCrossTenantVaultClient, error) {
+func NewBackupInstanceFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*BackupInstanceFromDPPCrossTenantVaultClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewBackupInstanceFromDppCrossTenantVaultClient(subscriptionID string, crede
 	if err != nil {
 		return nil, err
 	}
-	client := &BackupInstanceFromDppCrossTenantVaultClient{
+	client := &BackupInstanceFromDPPCrossTenantVaultClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -50,28 +50,28 @@ func NewBackupInstanceFromDppCrossTenantVaultClient(subscriptionID string, crede
 //   - vaultName - The name of the BackupVaultResource
 //   - mappingName - The name of the CrossTenantVaultMapping
 //   - backupInstanceName - The name of the BackupInstanceResource
-//   - options - BackupInstanceFromDppCrossTenantVaultClientGetOptions contains the optional parameters for the BackupInstanceFromDppCrossTenantVaultClient.Get
+//   - options - BackupInstanceFromDPPCrossTenantVaultClientGetOptions contains the optional parameters for the BackupInstanceFromDPPCrossTenantVaultClient.Get
 //     method.
-func (client *BackupInstanceFromDppCrossTenantVaultClient) Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, options *BackupInstanceFromDppCrossTenantVaultClientGetOptions) (BackupInstanceFromDppCrossTenantVaultClientGetResponse, error) {
+func (client *BackupInstanceFromDPPCrossTenantVaultClient) Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, options *BackupInstanceFromDPPCrossTenantVaultClientGetOptions) (BackupInstanceFromDPPCrossTenantVaultClientGetResponse, error) {
 	var err error
-	const operationName = "BackupInstanceFromDppCrossTenantVaultClient.Get"
+	const operationName = "BackupInstanceFromDPPCrossTenantVaultClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, mappingName, backupInstanceName, options)
 	if err != nil {
-		return BackupInstanceFromDppCrossTenantVaultClientGetResponse{}, err
+		return BackupInstanceFromDPPCrossTenantVaultClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return BackupInstanceFromDppCrossTenantVaultClientGetResponse{}, err
+		return BackupInstanceFromDPPCrossTenantVaultClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *BackupInstanceFromDppCrossTenantVaultClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, _ *BackupInstanceFromDppCrossTenantVaultClientGetOptions) (*policy.Request, error) {
+func (client *BackupInstanceFromDPPCrossTenantVaultClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, _ *BackupInstanceFromDPPCrossTenantVaultClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/crossTenantVaultMappings/{mappingName}/backupInstances/{backupInstanceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -105,13 +105,13 @@ func (client *BackupInstanceFromDppCrossTenantVaultClient) getCreateRequest(ctx 
 }
 
 // getHandleResponse handles the Get response.
-func (client *BackupInstanceFromDppCrossTenantVaultClient) getHandleResponse(resp *http.Response, successCodes ...int) (BackupInstanceFromDppCrossTenantVaultClientGetResponse, error) {
-	result := BackupInstanceFromDppCrossTenantVaultClientGetResponse{}
+func (client *BackupInstanceFromDPPCrossTenantVaultClient) getHandleResponse(resp *http.Response, successCodes ...int) (BackupInstanceFromDPPCrossTenantVaultClientGetResponse, error) {
+	result := BackupInstanceFromDPPCrossTenantVaultClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CrossTenantBackupInstanceResource); err != nil {
-		return BackupInstanceFromDppCrossTenantVaultClientGetResponse{}, err
+		return BackupInstanceFromDPPCrossTenantVaultClientGetResponse{}, err
 	}
 	return result, nil
 }

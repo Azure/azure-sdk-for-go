@@ -18,32 +18,32 @@ import (
 	"slices"
 )
 
-// BackupInstancesFromDppCrossTenantVaultServer is a fake server for instances of the armdataprotection.BackupInstancesFromDppCrossTenantVaultClient type.
-type BackupInstancesFromDppCrossTenantVaultServer struct {
-	// NewListPager is the fake for method BackupInstancesFromDppCrossTenantVaultClient.NewListPager
+// BackupInstancesFromDPPCrossTenantVaultServer is a fake server for instances of the armdataprotection.BackupInstancesFromDPPCrossTenantVaultClient type.
+type BackupInstancesFromDPPCrossTenantVaultServer struct {
+	// NewListPager is the fake for method BackupInstancesFromDPPCrossTenantVaultClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, vaultName string, mappingName string, options *armdataprotection.BackupInstancesFromDppCrossTenantVaultClientListOptions) (resp azfake.PagerResponder[armdataprotection.BackupInstancesFromDppCrossTenantVaultClientListResponse])
+	NewListPager func(resourceGroupName string, vaultName string, mappingName string, options *armdataprotection.BackupInstancesFromDPPCrossTenantVaultClientListOptions) (resp azfake.PagerResponder[armdataprotection.BackupInstancesFromDPPCrossTenantVaultClientListResponse])
 }
 
-// NewBackupInstancesFromDppCrossTenantVaultServerTransport creates a new instance of BackupInstancesFromDppCrossTenantVaultServerTransport with the provided implementation.
-// The returned BackupInstancesFromDppCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.BackupInstancesFromDppCrossTenantVaultClient via the
+// NewBackupInstancesFromDPPCrossTenantVaultServerTransport creates a new instance of BackupInstancesFromDPPCrossTenantVaultServerTransport with the provided implementation.
+// The returned BackupInstancesFromDPPCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.BackupInstancesFromDPPCrossTenantVaultClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewBackupInstancesFromDppCrossTenantVaultServerTransport(srv *BackupInstancesFromDppCrossTenantVaultServer) *BackupInstancesFromDppCrossTenantVaultServerTransport {
-	return &BackupInstancesFromDppCrossTenantVaultServerTransport{
+func NewBackupInstancesFromDPPCrossTenantVaultServerTransport(srv *BackupInstancesFromDPPCrossTenantVaultServer) *BackupInstancesFromDPPCrossTenantVaultServerTransport {
+	return &BackupInstancesFromDPPCrossTenantVaultServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armdataprotection.BackupInstancesFromDppCrossTenantVaultClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armdataprotection.BackupInstancesFromDPPCrossTenantVaultClientListResponse]](),
 	}
 }
 
-// BackupInstancesFromDppCrossTenantVaultServerTransport connects instances of armdataprotection.BackupInstancesFromDppCrossTenantVaultClient to instances of BackupInstancesFromDppCrossTenantVaultServer.
-// Don't use this type directly, use NewBackupInstancesFromDppCrossTenantVaultServerTransport instead.
-type BackupInstancesFromDppCrossTenantVaultServerTransport struct {
-	srv          *BackupInstancesFromDppCrossTenantVaultServer
-	newListPager *tracker[azfake.PagerResponder[armdataprotection.BackupInstancesFromDppCrossTenantVaultClientListResponse]]
+// BackupInstancesFromDPPCrossTenantVaultServerTransport connects instances of armdataprotection.BackupInstancesFromDPPCrossTenantVaultClient to instances of BackupInstancesFromDPPCrossTenantVaultServer.
+// Don't use this type directly, use NewBackupInstancesFromDPPCrossTenantVaultServerTransport instead.
+type BackupInstancesFromDPPCrossTenantVaultServerTransport struct {
+	srv          *BackupInstancesFromDPPCrossTenantVaultServer
+	newListPager *tracker[azfake.PagerResponder[armdataprotection.BackupInstancesFromDPPCrossTenantVaultClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for BackupInstancesFromDppCrossTenantVaultServerTransport.
-func (b *BackupInstancesFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for BackupInstancesFromDPPCrossTenantVaultServerTransport.
+func (b *BackupInstancesFromDPPCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -53,7 +53,7 @@ func (b *BackupInstancesFromDppCrossTenantVaultServerTransport) Do(req *http.Req
 	return b.dispatchToMethodFake(req, method)
 }
 
-func (b *BackupInstancesFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (b *BackupInstancesFromDPPCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -63,7 +63,7 @@ func (b *BackupInstancesFromDppCrossTenantVaultServerTransport) dispatchToMethod
 		}
 		if !intercepted {
 			switch method {
-			case "BackupInstancesFromDppCrossTenantVaultClient.NewListPager":
+			case "BackupInstancesFromDPPCrossTenantVaultClient.NewListPager":
 				res.resp, res.err = b.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -81,7 +81,7 @@ func (b *BackupInstancesFromDppCrossTenantVaultServerTransport) dispatchToMethod
 	}
 }
 
-func (b *BackupInstancesFromDppCrossTenantVaultServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (b *BackupInstancesFromDPPCrossTenantVaultServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if b.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
@@ -108,7 +108,7 @@ func (b *BackupInstancesFromDppCrossTenantVaultServerTransport) dispatchNewListP
 		resp := b.srv.NewListPager(resourceGroupNameParam, vaultNameParam, mappingNameParam, nil)
 		newListPager = &resp
 		b.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdataprotection.BackupInstancesFromDppCrossTenantVaultClientListResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdataprotection.BackupInstancesFromDPPCrossTenantVaultClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -126,7 +126,7 @@ func (b *BackupInstancesFromDppCrossTenantVaultServerTransport) dispatchNewListP
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to BackupInstancesFromDppCrossTenantVaultServerTransport
+// set this to conditionally intercept incoming requests to BackupInstancesFromDPPCrossTenantVaultServerTransport
 var backupInstancesFromDppCrossTenantVaultServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

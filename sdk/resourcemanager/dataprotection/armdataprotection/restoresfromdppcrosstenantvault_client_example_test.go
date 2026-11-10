@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/RestoresFromDppCrossTenantVault_Trigger.json
-func ExampleRestoresFromDppCrossTenantVaultClient_BeginTrigger() {
+func ExampleRestoresFromDPPCrossTenantVaultClient_BeginTrigger() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleRestoresFromDppCrossTenantVaultClient_BeginTrigger() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRestoresFromDppCrossTenantVaultClient().BeginTrigger(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
+	poller, err := clientFactory.NewRestoresFromDPPCrossTenantVaultClient().BeginTrigger(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", &armdataprotection.AzureBackupRecoveryPointBasedRestoreRequest{
 		IdentityDetails: &armdataprotection.IdentityDetails{
 			UseSystemAssignedIdentity:  to.Ptr(false),
 			UserAssignedIdentityArmURL: to.Ptr("/subscriptions/f75d8d8b-6735-4697-82e1-1a7a3ff0d5d4/resourceGroups/rg-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testUami"),
@@ -73,7 +73,7 @@ func ExampleRestoresFromDppCrossTenantVaultClient_BeginTrigger() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.RestoresFromDppCrossTenantVaultClientTriggerResponse{
+	// res = armdataprotection.RestoresFromDPPCrossTenantVaultClientTriggerResponse{
 	// 	OperationJobExtendedInfo: armdataprotection.OperationJobExtendedInfo{
 	// 		JobID: to.Ptr("c60cb49-63e8-4b21-b9bd-26277b3fdfae"),
 	// 		ObjectType: to.Ptr("OperationJobExtendedInfo"),

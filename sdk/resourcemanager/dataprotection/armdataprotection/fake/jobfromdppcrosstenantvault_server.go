@@ -18,28 +18,28 @@ import (
 	"slices"
 )
 
-// JobFromDppCrossTenantVaultServer is a fake server for instances of the armdataprotection.JobFromDppCrossTenantVaultClient type.
-type JobFromDppCrossTenantVaultServer struct {
-	// Get is the fake for method JobFromDppCrossTenantVaultClient.Get
+// JobFromDPPCrossTenantVaultServer is a fake server for instances of the armdataprotection.JobFromDPPCrossTenantVaultClient type.
+type JobFromDPPCrossTenantVaultServer struct {
+	// Get is the fake for method JobFromDPPCrossTenantVaultClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, jobID string, options *armdataprotection.JobFromDppCrossTenantVaultClientGetOptions) (resp azfake.Responder[armdataprotection.JobFromDppCrossTenantVaultClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, jobID string, options *armdataprotection.JobFromDPPCrossTenantVaultClientGetOptions) (resp azfake.Responder[armdataprotection.JobFromDPPCrossTenantVaultClientGetResponse], errResp azfake.ErrorResponder)
 }
 
-// NewJobFromDppCrossTenantVaultServerTransport creates a new instance of JobFromDppCrossTenantVaultServerTransport with the provided implementation.
-// The returned JobFromDppCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.JobFromDppCrossTenantVaultClient via the
+// NewJobFromDPPCrossTenantVaultServerTransport creates a new instance of JobFromDPPCrossTenantVaultServerTransport with the provided implementation.
+// The returned JobFromDPPCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.JobFromDPPCrossTenantVaultClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewJobFromDppCrossTenantVaultServerTransport(srv *JobFromDppCrossTenantVaultServer) *JobFromDppCrossTenantVaultServerTransport {
-	return &JobFromDppCrossTenantVaultServerTransport{srv: srv}
+func NewJobFromDPPCrossTenantVaultServerTransport(srv *JobFromDPPCrossTenantVaultServer) *JobFromDPPCrossTenantVaultServerTransport {
+	return &JobFromDPPCrossTenantVaultServerTransport{srv: srv}
 }
 
-// JobFromDppCrossTenantVaultServerTransport connects instances of armdataprotection.JobFromDppCrossTenantVaultClient to instances of JobFromDppCrossTenantVaultServer.
-// Don't use this type directly, use NewJobFromDppCrossTenantVaultServerTransport instead.
-type JobFromDppCrossTenantVaultServerTransport struct {
-	srv *JobFromDppCrossTenantVaultServer
+// JobFromDPPCrossTenantVaultServerTransport connects instances of armdataprotection.JobFromDPPCrossTenantVaultClient to instances of JobFromDPPCrossTenantVaultServer.
+// Don't use this type directly, use NewJobFromDPPCrossTenantVaultServerTransport instead.
+type JobFromDPPCrossTenantVaultServerTransport struct {
+	srv *JobFromDPPCrossTenantVaultServer
 }
 
-// Do implements the policy.Transporter interface for JobFromDppCrossTenantVaultServerTransport.
-func (j *JobFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for JobFromDPPCrossTenantVaultServerTransport.
+func (j *JobFromDPPCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -49,7 +49,7 @@ func (j *JobFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (*http
 	return j.dispatchToMethodFake(req, method)
 }
 
-func (j *JobFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (j *JobFromDPPCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -59,7 +59,7 @@ func (j *JobFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *ht
 		}
 		if !intercepted {
 			switch method {
-			case "JobFromDppCrossTenantVaultClient.Get":
+			case "JobFromDPPCrossTenantVaultClient.Get":
 				res.resp, res.err = j.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -77,7 +77,7 @@ func (j *JobFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *ht
 	}
 }
 
-func (j *JobFromDppCrossTenantVaultServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (j *JobFromDPPCrossTenantVaultServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if j.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -118,7 +118,7 @@ func (j *JobFromDppCrossTenantVaultServerTransport) dispatchGet(req *http.Reques
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to JobFromDppCrossTenantVaultServerTransport
+// set this to conditionally intercept incoming requests to JobFromDPPCrossTenantVaultServerTransport
 var jobFromDppCrossTenantVaultServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

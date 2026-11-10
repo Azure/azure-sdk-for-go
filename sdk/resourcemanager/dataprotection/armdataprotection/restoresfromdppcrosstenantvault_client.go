@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// RestoresFromDppCrossTenantVaultClient contains the methods for the RestoresFromDppCrossTenantVault group.
-// Don't use this type directly, use NewRestoresFromDppCrossTenantVaultClient() instead.
+// RestoresFromDPPCrossTenantVaultClient contains the methods for the RestoresFromDPPCrossTenantVault group.
+// Don't use this type directly, use NewRestoresFromDPPCrossTenantVaultClient() instead.
 //
 // Generated from API version 2026-08-31-preview
-type RestoresFromDppCrossTenantVaultClient struct {
+type RestoresFromDPPCrossTenantVaultClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewRestoresFromDppCrossTenantVaultClient creates a new instance of RestoresFromDppCrossTenantVaultClient with the specified values.
+// NewRestoresFromDPPCrossTenantVaultClient creates a new instance of RestoresFromDPPCrossTenantVaultClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewRestoresFromDppCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestoresFromDppCrossTenantVaultClient, error) {
+func NewRestoresFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestoresFromDPPCrossTenantVaultClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewRestoresFromDppCrossTenantVaultClient(subscriptionID string, credential 
 	if err != nil {
 		return nil, err
 	}
-	client := &RestoresFromDppCrossTenantVaultClient{
+	client := &RestoresFromDPPCrossTenantVaultClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -51,20 +51,20 @@ func NewRestoresFromDppCrossTenantVaultClient(subscriptionID string, credential 
 //   - mappingName - The name of the CrossTenantVaultMapping
 //   - backupInstanceName - The name of the BackupInstanceResource
 //   - body - Request body for operation
-//   - options - RestoresFromDppCrossTenantVaultClientBeginTriggerOptions contains the optional parameters for the RestoresFromDppCrossTenantVaultClient.BeginTrigger
+//   - options - RestoresFromDPPCrossTenantVaultClientBeginTriggerOptions contains the optional parameters for the RestoresFromDPPCrossTenantVaultClient.BeginTrigger
 //     method.
-func (client *RestoresFromDppCrossTenantVaultClient) BeginTrigger(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupRestoreRequestClassification, options *RestoresFromDppCrossTenantVaultClientBeginTriggerOptions) (*runtime.Poller[RestoresFromDppCrossTenantVaultClientTriggerResponse], error) {
+func (client *RestoresFromDPPCrossTenantVaultClient) BeginTrigger(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupRestoreRequestClassification, options *RestoresFromDPPCrossTenantVaultClientBeginTriggerOptions) (*runtime.Poller[RestoresFromDPPCrossTenantVaultClientTriggerResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.trigger(ctx, resourceGroupName, vaultName, mappingName, backupInstanceName, body, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RestoresFromDppCrossTenantVaultClientTriggerResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[RestoresFromDPPCrossTenantVaultClientTriggerResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RestoresFromDppCrossTenantVaultClientTriggerResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[RestoresFromDPPCrossTenantVaultClientTriggerResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -72,9 +72,9 @@ func (client *RestoresFromDppCrossTenantVaultClient) BeginTrigger(ctx context.Co
 
 // trigger - Triggers restore for a backup instance of the mapped source vault in a different tenant.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RestoresFromDppCrossTenantVaultClient) trigger(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupRestoreRequestClassification, options *RestoresFromDppCrossTenantVaultClientBeginTriggerOptions) (*http.Response, error) {
+func (client *RestoresFromDPPCrossTenantVaultClient) trigger(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupRestoreRequestClassification, options *RestoresFromDPPCrossTenantVaultClientBeginTriggerOptions) (*http.Response, error) {
 	var err error
-	const operationName = "RestoresFromDppCrossTenantVaultClient.BeginTrigger"
+	const operationName = "RestoresFromDPPCrossTenantVaultClient.BeginTrigger"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -94,7 +94,7 @@ func (client *RestoresFromDppCrossTenantVaultClient) trigger(ctx context.Context
 }
 
 // triggerCreateRequest creates the trigger request.
-func (client *RestoresFromDppCrossTenantVaultClient) triggerCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupRestoreRequestClassification, _ *RestoresFromDppCrossTenantVaultClientBeginTriggerOptions) (*policy.Request, error) {
+func (client *RestoresFromDPPCrossTenantVaultClient) triggerCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupRestoreRequestClassification, _ *RestoresFromDPPCrossTenantVaultClientBeginTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/crossTenantVaultMappings/{mappingName}/backupInstances/{backupInstanceName}/restore"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")

@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// DppCrossTenantVaultMappingStatusClient contains the methods for the DppCrossTenantVaultMappingStatus group.
-// Don't use this type directly, use NewDppCrossTenantVaultMappingStatusClient() instead.
+// DPPCrossTenantVaultMappingStatusClient contains the methods for the DPPCrossTenantVaultMappingStatus group.
+// Don't use this type directly, use NewDPPCrossTenantVaultMappingStatusClient() instead.
 //
 // Generated from API version 2026-08-31-preview
-type DppCrossTenantVaultMappingStatusClient struct {
+type DPPCrossTenantVaultMappingStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewDppCrossTenantVaultMappingStatusClient creates a new instance of DppCrossTenantVaultMappingStatusClient with the specified values.
+// NewDPPCrossTenantVaultMappingStatusClient creates a new instance of DPPCrossTenantVaultMappingStatusClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewDppCrossTenantVaultMappingStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DppCrossTenantVaultMappingStatusClient, error) {
+func NewDPPCrossTenantVaultMappingStatusClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DPPCrossTenantVaultMappingStatusClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewDppCrossTenantVaultMappingStatusClient(subscriptionID string, credential
 	if err != nil {
 		return nil, err
 	}
-	client := &DppCrossTenantVaultMappingStatusClient{
+	client := &DPPCrossTenantVaultMappingStatusClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -48,28 +48,28 @@ func NewDppCrossTenantVaultMappingStatusClient(subscriptionID string, credential
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - vaultName - The name of the backup vault.
-//   - options - DppCrossTenantVaultMappingStatusClientCheckOptions contains the optional parameters for the DppCrossTenantVaultMappingStatusClient.Check
+//   - options - DPPCrossTenantVaultMappingStatusClientCheckOptions contains the optional parameters for the DPPCrossTenantVaultMappingStatusClient.Check
 //     method.
-func (client *DppCrossTenantVaultMappingStatusClient) Check(ctx context.Context, resourceGroupName string, vaultName string, options *DppCrossTenantVaultMappingStatusClientCheckOptions) (DppCrossTenantVaultMappingStatusClientCheckResponse, error) {
+func (client *DPPCrossTenantVaultMappingStatusClient) Check(ctx context.Context, resourceGroupName string, vaultName string, options *DPPCrossTenantVaultMappingStatusClientCheckOptions) (DPPCrossTenantVaultMappingStatusClientCheckResponse, error) {
 	var err error
-	const operationName = "DppCrossTenantVaultMappingStatusClient.Check"
+	const operationName = "DPPCrossTenantVaultMappingStatusClient.Check"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.checkCreateRequest(ctx, resourceGroupName, vaultName, options)
 	if err != nil {
-		return DppCrossTenantVaultMappingStatusClientCheckResponse{}, err
+		return DPPCrossTenantVaultMappingStatusClientCheckResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return DppCrossTenantVaultMappingStatusClientCheckResponse{}, err
+		return DPPCrossTenantVaultMappingStatusClientCheckResponse{}, err
 	}
 	resp, err := client.checkHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // checkCreateRequest creates the Check request.
-func (client *DppCrossTenantVaultMappingStatusClient) checkCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, _ *DppCrossTenantVaultMappingStatusClientCheckOptions) (*policy.Request, error) {
+func (client *DPPCrossTenantVaultMappingStatusClient) checkCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, _ *DPPCrossTenantVaultMappingStatusClientCheckOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/crossTenantVaultMappingStatus"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -95,13 +95,13 @@ func (client *DppCrossTenantVaultMappingStatusClient) checkCreateRequest(ctx con
 }
 
 // checkHandleResponse handles the Check response.
-func (client *DppCrossTenantVaultMappingStatusClient) checkHandleResponse(resp *http.Response, successCodes ...int) (DppCrossTenantVaultMappingStatusClientCheckResponse, error) {
-	result := DppCrossTenantVaultMappingStatusClientCheckResponse{}
+func (client *DPPCrossTenantVaultMappingStatusClient) checkHandleResponse(resp *http.Response, successCodes ...int) (DPPCrossTenantVaultMappingStatusClientCheckResponse, error) {
+	result := DPPCrossTenantVaultMappingStatusClientCheckResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CrossTenantVaultMappingStatusResponse); err != nil {
-		return DppCrossTenantVaultMappingStatusClientCheckResponse{}, err
+		return DPPCrossTenantVaultMappingStatusClientCheckResponse{}, err
 	}
 	return result, nil
 }

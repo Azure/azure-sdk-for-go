@@ -18,32 +18,32 @@ import (
 	"slices"
 )
 
-// RestoresFromDppCrossTenantVaultServer is a fake server for instances of the armdataprotection.RestoresFromDppCrossTenantVaultClient type.
-type RestoresFromDppCrossTenantVaultServer struct {
-	// BeginTrigger is the fake for method RestoresFromDppCrossTenantVaultClient.BeginTrigger
+// RestoresFromDPPCrossTenantVaultServer is a fake server for instances of the armdataprotection.RestoresFromDPPCrossTenantVaultClient type.
+type RestoresFromDPPCrossTenantVaultServer struct {
+	// BeginTrigger is the fake for method RestoresFromDPPCrossTenantVaultClient.BeginTrigger
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginTrigger func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body armdataprotection.AzureBackupRestoreRequestClassification, options *armdataprotection.RestoresFromDppCrossTenantVaultClientBeginTriggerOptions) (resp azfake.PollerResponder[armdataprotection.RestoresFromDppCrossTenantVaultClientTriggerResponse], errResp azfake.ErrorResponder)
+	BeginTrigger func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body armdataprotection.AzureBackupRestoreRequestClassification, options *armdataprotection.RestoresFromDPPCrossTenantVaultClientBeginTriggerOptions) (resp azfake.PollerResponder[armdataprotection.RestoresFromDPPCrossTenantVaultClientTriggerResponse], errResp azfake.ErrorResponder)
 }
 
-// NewRestoresFromDppCrossTenantVaultServerTransport creates a new instance of RestoresFromDppCrossTenantVaultServerTransport with the provided implementation.
-// The returned RestoresFromDppCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.RestoresFromDppCrossTenantVaultClient via the
+// NewRestoresFromDPPCrossTenantVaultServerTransport creates a new instance of RestoresFromDPPCrossTenantVaultServerTransport with the provided implementation.
+// The returned RestoresFromDPPCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.RestoresFromDPPCrossTenantVaultClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewRestoresFromDppCrossTenantVaultServerTransport(srv *RestoresFromDppCrossTenantVaultServer) *RestoresFromDppCrossTenantVaultServerTransport {
-	return &RestoresFromDppCrossTenantVaultServerTransport{
+func NewRestoresFromDPPCrossTenantVaultServerTransport(srv *RestoresFromDPPCrossTenantVaultServer) *RestoresFromDPPCrossTenantVaultServerTransport {
+	return &RestoresFromDPPCrossTenantVaultServerTransport{
 		srv:          srv,
-		beginTrigger: newTracker[azfake.PollerResponder[armdataprotection.RestoresFromDppCrossTenantVaultClientTriggerResponse]](),
+		beginTrigger: newTracker[azfake.PollerResponder[armdataprotection.RestoresFromDPPCrossTenantVaultClientTriggerResponse]](),
 	}
 }
 
-// RestoresFromDppCrossTenantVaultServerTransport connects instances of armdataprotection.RestoresFromDppCrossTenantVaultClient to instances of RestoresFromDppCrossTenantVaultServer.
-// Don't use this type directly, use NewRestoresFromDppCrossTenantVaultServerTransport instead.
-type RestoresFromDppCrossTenantVaultServerTransport struct {
-	srv          *RestoresFromDppCrossTenantVaultServer
-	beginTrigger *tracker[azfake.PollerResponder[armdataprotection.RestoresFromDppCrossTenantVaultClientTriggerResponse]]
+// RestoresFromDPPCrossTenantVaultServerTransport connects instances of armdataprotection.RestoresFromDPPCrossTenantVaultClient to instances of RestoresFromDPPCrossTenantVaultServer.
+// Don't use this type directly, use NewRestoresFromDPPCrossTenantVaultServerTransport instead.
+type RestoresFromDPPCrossTenantVaultServerTransport struct {
+	srv          *RestoresFromDPPCrossTenantVaultServer
+	beginTrigger *tracker[azfake.PollerResponder[armdataprotection.RestoresFromDPPCrossTenantVaultClientTriggerResponse]]
 }
 
-// Do implements the policy.Transporter interface for RestoresFromDppCrossTenantVaultServerTransport.
-func (r *RestoresFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for RestoresFromDPPCrossTenantVaultServerTransport.
+func (r *RestoresFromDPPCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -53,7 +53,7 @@ func (r *RestoresFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (
 	return r.dispatchToMethodFake(req, method)
 }
 
-func (r *RestoresFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (r *RestoresFromDPPCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -63,7 +63,7 @@ func (r *RestoresFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(re
 		}
 		if !intercepted {
 			switch method {
-			case "RestoresFromDppCrossTenantVaultClient.BeginTrigger":
+			case "RestoresFromDPPCrossTenantVaultClient.BeginTrigger":
 				res.resp, res.err = r.dispatchBeginTrigger(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -81,7 +81,7 @@ func (r *RestoresFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(re
 	}
 }
 
-func (r *RestoresFromDppCrossTenantVaultServerTransport) dispatchBeginTrigger(req *http.Request) (*http.Response, error) {
+func (r *RestoresFromDPPCrossTenantVaultServerTransport) dispatchBeginTrigger(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginTrigger == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginTrigger not implemented")}
 	}
@@ -141,7 +141,7 @@ func (r *RestoresFromDppCrossTenantVaultServerTransport) dispatchBeginTrigger(re
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to RestoresFromDppCrossTenantVaultServerTransport
+// set this to conditionally intercept incoming requests to RestoresFromDPPCrossTenantVaultServerTransport
 var restoresFromDppCrossTenantVaultServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

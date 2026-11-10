@@ -18,32 +18,32 @@ import (
 	"slices"
 )
 
-// ValidateRestoreFromDppCrossTenantVaultServer is a fake server for instances of the armdataprotection.ValidateRestoreFromDppCrossTenantVaultClient type.
-type ValidateRestoreFromDppCrossTenantVaultServer struct {
-	// BeginTrigger is the fake for method ValidateRestoreFromDppCrossTenantVaultClient.BeginTrigger
+// ValidateRestoreFromDPPCrossTenantVaultServer is a fake server for instances of the armdataprotection.ValidateRestoreFromDPPCrossTenantVaultClient type.
+type ValidateRestoreFromDPPCrossTenantVaultServer struct {
+	// BeginTrigger is the fake for method ValidateRestoreFromDPPCrossTenantVaultClient.BeginTrigger
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginTrigger func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body armdataprotection.ValidateRestoreRequestObject, options *armdataprotection.ValidateRestoreFromDppCrossTenantVaultClientBeginTriggerOptions) (resp azfake.PollerResponder[armdataprotection.ValidateRestoreFromDppCrossTenantVaultClientTriggerResponse], errResp azfake.ErrorResponder)
+	BeginTrigger func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body armdataprotection.ValidateRestoreRequestObject, options *armdataprotection.ValidateRestoreFromDPPCrossTenantVaultClientBeginTriggerOptions) (resp azfake.PollerResponder[armdataprotection.ValidateRestoreFromDPPCrossTenantVaultClientTriggerResponse], errResp azfake.ErrorResponder)
 }
 
-// NewValidateRestoreFromDppCrossTenantVaultServerTransport creates a new instance of ValidateRestoreFromDppCrossTenantVaultServerTransport with the provided implementation.
-// The returned ValidateRestoreFromDppCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.ValidateRestoreFromDppCrossTenantVaultClient via the
+// NewValidateRestoreFromDPPCrossTenantVaultServerTransport creates a new instance of ValidateRestoreFromDPPCrossTenantVaultServerTransport with the provided implementation.
+// The returned ValidateRestoreFromDPPCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.ValidateRestoreFromDPPCrossTenantVaultClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewValidateRestoreFromDppCrossTenantVaultServerTransport(srv *ValidateRestoreFromDppCrossTenantVaultServer) *ValidateRestoreFromDppCrossTenantVaultServerTransport {
-	return &ValidateRestoreFromDppCrossTenantVaultServerTransport{
+func NewValidateRestoreFromDPPCrossTenantVaultServerTransport(srv *ValidateRestoreFromDPPCrossTenantVaultServer) *ValidateRestoreFromDPPCrossTenantVaultServerTransport {
+	return &ValidateRestoreFromDPPCrossTenantVaultServerTransport{
 		srv:          srv,
-		beginTrigger: newTracker[azfake.PollerResponder[armdataprotection.ValidateRestoreFromDppCrossTenantVaultClientTriggerResponse]](),
+		beginTrigger: newTracker[azfake.PollerResponder[armdataprotection.ValidateRestoreFromDPPCrossTenantVaultClientTriggerResponse]](),
 	}
 }
 
-// ValidateRestoreFromDppCrossTenantVaultServerTransport connects instances of armdataprotection.ValidateRestoreFromDppCrossTenantVaultClient to instances of ValidateRestoreFromDppCrossTenantVaultServer.
-// Don't use this type directly, use NewValidateRestoreFromDppCrossTenantVaultServerTransport instead.
-type ValidateRestoreFromDppCrossTenantVaultServerTransport struct {
-	srv          *ValidateRestoreFromDppCrossTenantVaultServer
-	beginTrigger *tracker[azfake.PollerResponder[armdataprotection.ValidateRestoreFromDppCrossTenantVaultClientTriggerResponse]]
+// ValidateRestoreFromDPPCrossTenantVaultServerTransport connects instances of armdataprotection.ValidateRestoreFromDPPCrossTenantVaultClient to instances of ValidateRestoreFromDPPCrossTenantVaultServer.
+// Don't use this type directly, use NewValidateRestoreFromDPPCrossTenantVaultServerTransport instead.
+type ValidateRestoreFromDPPCrossTenantVaultServerTransport struct {
+	srv          *ValidateRestoreFromDPPCrossTenantVaultServer
+	beginTrigger *tracker[azfake.PollerResponder[armdataprotection.ValidateRestoreFromDPPCrossTenantVaultClientTriggerResponse]]
 }
 
-// Do implements the policy.Transporter interface for ValidateRestoreFromDppCrossTenantVaultServerTransport.
-func (v *ValidateRestoreFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for ValidateRestoreFromDPPCrossTenantVaultServerTransport.
+func (v *ValidateRestoreFromDPPCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -53,7 +53,7 @@ func (v *ValidateRestoreFromDppCrossTenantVaultServerTransport) Do(req *http.Req
 	return v.dispatchToMethodFake(req, method)
 }
 
-func (v *ValidateRestoreFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (v *ValidateRestoreFromDPPCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -63,7 +63,7 @@ func (v *ValidateRestoreFromDppCrossTenantVaultServerTransport) dispatchToMethod
 		}
 		if !intercepted {
 			switch method {
-			case "ValidateRestoreFromDppCrossTenantVaultClient.BeginTrigger":
+			case "ValidateRestoreFromDPPCrossTenantVaultClient.BeginTrigger":
 				res.resp, res.err = v.dispatchBeginTrigger(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -81,7 +81,7 @@ func (v *ValidateRestoreFromDppCrossTenantVaultServerTransport) dispatchToMethod
 	}
 }
 
-func (v *ValidateRestoreFromDppCrossTenantVaultServerTransport) dispatchBeginTrigger(req *http.Request) (*http.Response, error) {
+func (v *ValidateRestoreFromDPPCrossTenantVaultServerTransport) dispatchBeginTrigger(req *http.Request) (*http.Response, error) {
 	if v.srv.BeginTrigger == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginTrigger not implemented")}
 	}
@@ -137,7 +137,7 @@ func (v *ValidateRestoreFromDppCrossTenantVaultServerTransport) dispatchBeginTri
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to ValidateRestoreFromDppCrossTenantVaultServerTransport
+// set this to conditionally intercept incoming requests to ValidateRestoreFromDPPCrossTenantVaultServerTransport
 var validateRestoreFromDppCrossTenantVaultServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

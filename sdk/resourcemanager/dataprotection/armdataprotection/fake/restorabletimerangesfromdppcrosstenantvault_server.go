@@ -18,28 +18,28 @@ import (
 	"slices"
 )
 
-// RestorableTimeRangesFromDppCrossTenantVaultServer is a fake server for instances of the armdataprotection.RestorableTimeRangesFromDppCrossTenantVaultClient type.
-type RestorableTimeRangesFromDppCrossTenantVaultServer struct {
-	// Find is the fake for method RestorableTimeRangesFromDppCrossTenantVaultClient.Find
+// RestorableTimeRangesFromDPPCrossTenantVaultServer is a fake server for instances of the armdataprotection.RestorableTimeRangesFromDPPCrossTenantVaultClient type.
+type RestorableTimeRangesFromDPPCrossTenantVaultServer struct {
+	// Find is the fake for method RestorableTimeRangesFromDPPCrossTenantVaultClient.Find
 	// HTTP status codes to indicate success: http.StatusOK
-	Find func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body armdataprotection.AzureBackupFindRestorableTimeRangesRequest, options *armdataprotection.RestorableTimeRangesFromDppCrossTenantVaultClientFindOptions) (resp azfake.Responder[armdataprotection.RestorableTimeRangesFromDppCrossTenantVaultClientFindResponse], errResp azfake.ErrorResponder)
+	Find func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body armdataprotection.AzureBackupFindRestorableTimeRangesRequest, options *armdataprotection.RestorableTimeRangesFromDPPCrossTenantVaultClientFindOptions) (resp azfake.Responder[armdataprotection.RestorableTimeRangesFromDPPCrossTenantVaultClientFindResponse], errResp azfake.ErrorResponder)
 }
 
-// NewRestorableTimeRangesFromDppCrossTenantVaultServerTransport creates a new instance of RestorableTimeRangesFromDppCrossTenantVaultServerTransport with the provided implementation.
-// The returned RestorableTimeRangesFromDppCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.RestorableTimeRangesFromDppCrossTenantVaultClient via the
+// NewRestorableTimeRangesFromDPPCrossTenantVaultServerTransport creates a new instance of RestorableTimeRangesFromDPPCrossTenantVaultServerTransport with the provided implementation.
+// The returned RestorableTimeRangesFromDPPCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.RestorableTimeRangesFromDPPCrossTenantVaultClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewRestorableTimeRangesFromDppCrossTenantVaultServerTransport(srv *RestorableTimeRangesFromDppCrossTenantVaultServer) *RestorableTimeRangesFromDppCrossTenantVaultServerTransport {
-	return &RestorableTimeRangesFromDppCrossTenantVaultServerTransport{srv: srv}
+func NewRestorableTimeRangesFromDPPCrossTenantVaultServerTransport(srv *RestorableTimeRangesFromDPPCrossTenantVaultServer) *RestorableTimeRangesFromDPPCrossTenantVaultServerTransport {
+	return &RestorableTimeRangesFromDPPCrossTenantVaultServerTransport{srv: srv}
 }
 
-// RestorableTimeRangesFromDppCrossTenantVaultServerTransport connects instances of armdataprotection.RestorableTimeRangesFromDppCrossTenantVaultClient to instances of RestorableTimeRangesFromDppCrossTenantVaultServer.
-// Don't use this type directly, use NewRestorableTimeRangesFromDppCrossTenantVaultServerTransport instead.
-type RestorableTimeRangesFromDppCrossTenantVaultServerTransport struct {
-	srv *RestorableTimeRangesFromDppCrossTenantVaultServer
+// RestorableTimeRangesFromDPPCrossTenantVaultServerTransport connects instances of armdataprotection.RestorableTimeRangesFromDPPCrossTenantVaultClient to instances of RestorableTimeRangesFromDPPCrossTenantVaultServer.
+// Don't use this type directly, use NewRestorableTimeRangesFromDPPCrossTenantVaultServerTransport instead.
+type RestorableTimeRangesFromDPPCrossTenantVaultServerTransport struct {
+	srv *RestorableTimeRangesFromDPPCrossTenantVaultServer
 }
 
-// Do implements the policy.Transporter interface for RestorableTimeRangesFromDppCrossTenantVaultServerTransport.
-func (r *RestorableTimeRangesFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for RestorableTimeRangesFromDPPCrossTenantVaultServerTransport.
+func (r *RestorableTimeRangesFromDPPCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -49,7 +49,7 @@ func (r *RestorableTimeRangesFromDppCrossTenantVaultServerTransport) Do(req *htt
 	return r.dispatchToMethodFake(req, method)
 }
 
-func (r *RestorableTimeRangesFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (r *RestorableTimeRangesFromDPPCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -59,7 +59,7 @@ func (r *RestorableTimeRangesFromDppCrossTenantVaultServerTransport) dispatchToM
 		}
 		if !intercepted {
 			switch method {
-			case "RestorableTimeRangesFromDppCrossTenantVaultClient.Find":
+			case "RestorableTimeRangesFromDPPCrossTenantVaultClient.Find":
 				res.resp, res.err = r.dispatchFind(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -77,7 +77,7 @@ func (r *RestorableTimeRangesFromDppCrossTenantVaultServerTransport) dispatchToM
 	}
 }
 
-func (r *RestorableTimeRangesFromDppCrossTenantVaultServerTransport) dispatchFind(req *http.Request) (*http.Response, error) {
+func (r *RestorableTimeRangesFromDPPCrossTenantVaultServerTransport) dispatchFind(req *http.Request) (*http.Response, error) {
 	if r.srv.Find == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Find not implemented")}
 	}
@@ -122,7 +122,7 @@ func (r *RestorableTimeRangesFromDppCrossTenantVaultServerTransport) dispatchFin
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to RestorableTimeRangesFromDppCrossTenantVaultServerTransport
+// set this to conditionally intercept incoming requests to RestorableTimeRangesFromDPPCrossTenantVaultServerTransport
 var restorableTimeRangesFromDppCrossTenantVaultServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

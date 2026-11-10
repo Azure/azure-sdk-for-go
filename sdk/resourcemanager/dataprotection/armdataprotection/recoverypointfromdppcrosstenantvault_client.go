@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// RecoveryPointFromDppCrossTenantVaultClient contains the methods for the RecoveryPointFromDppCrossTenantVault group.
-// Don't use this type directly, use NewRecoveryPointFromDppCrossTenantVaultClient() instead.
+// RecoveryPointFromDPPCrossTenantVaultClient contains the methods for the RecoveryPointFromDPPCrossTenantVault group.
+// Don't use this type directly, use NewRecoveryPointFromDPPCrossTenantVaultClient() instead.
 //
 // Generated from API version 2026-08-31-preview
-type RecoveryPointFromDppCrossTenantVaultClient struct {
+type RecoveryPointFromDPPCrossTenantVaultClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewRecoveryPointFromDppCrossTenantVaultClient creates a new instance of RecoveryPointFromDppCrossTenantVaultClient with the specified values.
+// NewRecoveryPointFromDPPCrossTenantVaultClient creates a new instance of RecoveryPointFromDPPCrossTenantVaultClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewRecoveryPointFromDppCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryPointFromDppCrossTenantVaultClient, error) {
+func NewRecoveryPointFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryPointFromDPPCrossTenantVaultClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewRecoveryPointFromDppCrossTenantVaultClient(subscriptionID string, creden
 	if err != nil {
 		return nil, err
 	}
-	client := &RecoveryPointFromDppCrossTenantVaultClient{
+	client := &RecoveryPointFromDPPCrossTenantVaultClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -51,28 +51,28 @@ func NewRecoveryPointFromDppCrossTenantVaultClient(subscriptionID string, creden
 //   - mappingName - The name of the CrossTenantVaultMapping
 //   - backupInstanceName - The name of the BackupInstanceResource
 //   - recoveryPointID - The name of the AzureBackupRecoveryPointResource
-//   - options - RecoveryPointFromDppCrossTenantVaultClientGetOptions contains the optional parameters for the RecoveryPointFromDppCrossTenantVaultClient.Get
+//   - options - RecoveryPointFromDPPCrossTenantVaultClientGetOptions contains the optional parameters for the RecoveryPointFromDPPCrossTenantVaultClient.Get
 //     method.
-func (client *RecoveryPointFromDppCrossTenantVaultClient) Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, recoveryPointID string, options *RecoveryPointFromDppCrossTenantVaultClientGetOptions) (RecoveryPointFromDppCrossTenantVaultClientGetResponse, error) {
+func (client *RecoveryPointFromDPPCrossTenantVaultClient) Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, recoveryPointID string, options *RecoveryPointFromDPPCrossTenantVaultClientGetOptions) (RecoveryPointFromDPPCrossTenantVaultClientGetResponse, error) {
 	var err error
-	const operationName = "RecoveryPointFromDppCrossTenantVaultClient.Get"
+	const operationName = "RecoveryPointFromDPPCrossTenantVaultClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, mappingName, backupInstanceName, recoveryPointID, options)
 	if err != nil {
-		return RecoveryPointFromDppCrossTenantVaultClientGetResponse{}, err
+		return RecoveryPointFromDPPCrossTenantVaultClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return RecoveryPointFromDppCrossTenantVaultClientGetResponse{}, err
+		return RecoveryPointFromDPPCrossTenantVaultClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *RecoveryPointFromDppCrossTenantVaultClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, recoveryPointID string, _ *RecoveryPointFromDppCrossTenantVaultClientGetOptions) (*policy.Request, error) {
+func (client *RecoveryPointFromDPPCrossTenantVaultClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, recoveryPointID string, _ *RecoveryPointFromDPPCrossTenantVaultClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/crossTenantVaultMappings/{mappingName}/backupInstances/{backupInstanceName}/recoveryPoints/{recoveryPointId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -110,13 +110,13 @@ func (client *RecoveryPointFromDppCrossTenantVaultClient) getCreateRequest(ctx c
 }
 
 // getHandleResponse handles the Get response.
-func (client *RecoveryPointFromDppCrossTenantVaultClient) getHandleResponse(resp *http.Response, successCodes ...int) (RecoveryPointFromDppCrossTenantVaultClientGetResponse, error) {
-	result := RecoveryPointFromDppCrossTenantVaultClientGetResponse{}
+func (client *RecoveryPointFromDPPCrossTenantVaultClient) getHandleResponse(resp *http.Response, successCodes ...int) (RecoveryPointFromDPPCrossTenantVaultClientGetResponse, error) {
+	result := RecoveryPointFromDPPCrossTenantVaultClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBackupRecoveryPointResource); err != nil {
-		return RecoveryPointFromDppCrossTenantVaultClientGetResponse{}, err
+		return RecoveryPointFromDPPCrossTenantVaultClientGetResponse{}, err
 	}
 	return result, nil
 }

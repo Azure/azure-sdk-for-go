@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/DppCrossTenantVaultMappingStatus_Check.json
-func ExampleDppCrossTenantVaultMappingStatusClient_Check() {
+func ExampleDPPCrossTenantVaultMappingStatusClient_Check() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,14 +22,14 @@ func ExampleDppCrossTenantVaultMappingStatusClient_Check() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDppCrossTenantVaultMappingStatusClient().Check(ctx, "000pikumar", "PratikPrivatePreviewVault1", nil)
+	res, err := clientFactory.NewDPPCrossTenantVaultMappingStatusClient().Check(ctx, "000pikumar", "PratikPrivatePreviewVault1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.DppCrossTenantVaultMappingStatusClientCheckResponse{
+	// res = armdataprotection.DPPCrossTenantVaultMappingStatusClientCheckResponse{
 	// 	CrossTenantVaultMappingStatusResponse: armdataprotection.CrossTenantVaultMappingStatusResponse{
 	// 		MappingName: to.Ptr("sampleCrossTenantMapping"),
 	// 		MappingState: to.Ptr(armdataprotection.VaultMappingStateActive),

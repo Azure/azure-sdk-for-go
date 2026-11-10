@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/RestorableTimeRangesFromDppCrossTenantVault_Find.json
-func ExampleRestorableTimeRangesFromDppCrossTenantVaultClient_Find() {
+func ExampleRestorableTimeRangesFromDPPCrossTenantVaultClient_Find() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleRestorableTimeRangesFromDppCrossTenantVaultClient_Find() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRestorableTimeRangesFromDppCrossTenantVaultClient().Find(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", armdataprotection.AzureBackupFindRestorableTimeRangesRequest{
+	res, err := clientFactory.NewRestorableTimeRangesFromDPPCrossTenantVaultClient().Find(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", armdataprotection.AzureBackupFindRestorableTimeRangesRequest{
 		EndTime:             to.Ptr("2021-02-24T00:35:17.6829685Z"),
 		SourceDataStoreType: to.Ptr(armdataprotection.RestoreSourceDataStoreTypeOperationalStore),
 		StartTime:           to.Ptr("2020-10-17T23:28:17.6829685Z"),
@@ -34,7 +34,7 @@ func ExampleRestorableTimeRangesFromDppCrossTenantVaultClient_Find() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.RestorableTimeRangesFromDppCrossTenantVaultClientFindResponse{
+	// res = armdataprotection.RestorableTimeRangesFromDPPCrossTenantVaultClientFindResponse{
 	// 	AzureBackupFindRestorableTimeRangesResponseResource: armdataprotection.AzureBackupFindRestorableTimeRangesResponseResource{
 	// 		Type: to.Ptr("Microsoft.DataProtection/backupVaults/backupInstances/findRestorableTimeRanges"),
 	// 		ID: to.Ptr("zblobbackuptestsa58"),

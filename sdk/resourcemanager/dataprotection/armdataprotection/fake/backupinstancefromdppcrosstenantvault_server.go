@@ -18,28 +18,28 @@ import (
 	"slices"
 )
 
-// BackupInstanceFromDppCrossTenantVaultServer is a fake server for instances of the armdataprotection.BackupInstanceFromDppCrossTenantVaultClient type.
-type BackupInstanceFromDppCrossTenantVaultServer struct {
-	// Get is the fake for method BackupInstanceFromDppCrossTenantVaultClient.Get
+// BackupInstanceFromDPPCrossTenantVaultServer is a fake server for instances of the armdataprotection.BackupInstanceFromDPPCrossTenantVaultClient type.
+type BackupInstanceFromDPPCrossTenantVaultServer struct {
+	// Get is the fake for method BackupInstanceFromDPPCrossTenantVaultClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, options *armdataprotection.BackupInstanceFromDppCrossTenantVaultClientGetOptions) (resp azfake.Responder[armdataprotection.BackupInstanceFromDppCrossTenantVaultClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, options *armdataprotection.BackupInstanceFromDPPCrossTenantVaultClientGetOptions) (resp azfake.Responder[armdataprotection.BackupInstanceFromDPPCrossTenantVaultClientGetResponse], errResp azfake.ErrorResponder)
 }
 
-// NewBackupInstanceFromDppCrossTenantVaultServerTransport creates a new instance of BackupInstanceFromDppCrossTenantVaultServerTransport with the provided implementation.
-// The returned BackupInstanceFromDppCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.BackupInstanceFromDppCrossTenantVaultClient via the
+// NewBackupInstanceFromDPPCrossTenantVaultServerTransport creates a new instance of BackupInstanceFromDPPCrossTenantVaultServerTransport with the provided implementation.
+// The returned BackupInstanceFromDPPCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.BackupInstanceFromDPPCrossTenantVaultClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewBackupInstanceFromDppCrossTenantVaultServerTransport(srv *BackupInstanceFromDppCrossTenantVaultServer) *BackupInstanceFromDppCrossTenantVaultServerTransport {
-	return &BackupInstanceFromDppCrossTenantVaultServerTransport{srv: srv}
+func NewBackupInstanceFromDPPCrossTenantVaultServerTransport(srv *BackupInstanceFromDPPCrossTenantVaultServer) *BackupInstanceFromDPPCrossTenantVaultServerTransport {
+	return &BackupInstanceFromDPPCrossTenantVaultServerTransport{srv: srv}
 }
 
-// BackupInstanceFromDppCrossTenantVaultServerTransport connects instances of armdataprotection.BackupInstanceFromDppCrossTenantVaultClient to instances of BackupInstanceFromDppCrossTenantVaultServer.
-// Don't use this type directly, use NewBackupInstanceFromDppCrossTenantVaultServerTransport instead.
-type BackupInstanceFromDppCrossTenantVaultServerTransport struct {
-	srv *BackupInstanceFromDppCrossTenantVaultServer
+// BackupInstanceFromDPPCrossTenantVaultServerTransport connects instances of armdataprotection.BackupInstanceFromDPPCrossTenantVaultClient to instances of BackupInstanceFromDPPCrossTenantVaultServer.
+// Don't use this type directly, use NewBackupInstanceFromDPPCrossTenantVaultServerTransport instead.
+type BackupInstanceFromDPPCrossTenantVaultServerTransport struct {
+	srv *BackupInstanceFromDPPCrossTenantVaultServer
 }
 
-// Do implements the policy.Transporter interface for BackupInstanceFromDppCrossTenantVaultServerTransport.
-func (b *BackupInstanceFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for BackupInstanceFromDPPCrossTenantVaultServerTransport.
+func (b *BackupInstanceFromDPPCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -49,7 +49,7 @@ func (b *BackupInstanceFromDppCrossTenantVaultServerTransport) Do(req *http.Requ
 	return b.dispatchToMethodFake(req, method)
 }
 
-func (b *BackupInstanceFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (b *BackupInstanceFromDPPCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -59,7 +59,7 @@ func (b *BackupInstanceFromDppCrossTenantVaultServerTransport) dispatchToMethodF
 		}
 		if !intercepted {
 			switch method {
-			case "BackupInstanceFromDppCrossTenantVaultClient.Get":
+			case "BackupInstanceFromDPPCrossTenantVaultClient.Get":
 				res.resp, res.err = b.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -77,7 +77,7 @@ func (b *BackupInstanceFromDppCrossTenantVaultServerTransport) dispatchToMethodF
 	}
 }
 
-func (b *BackupInstanceFromDppCrossTenantVaultServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (b *BackupInstanceFromDPPCrossTenantVaultServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -118,7 +118,7 @@ func (b *BackupInstanceFromDppCrossTenantVaultServerTransport) dispatchGet(req *
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to BackupInstanceFromDppCrossTenantVaultServerTransport
+// set this to conditionally intercept incoming requests to BackupInstanceFromDPPCrossTenantVaultServerTransport
 var backupInstanceFromDppCrossTenantVaultServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

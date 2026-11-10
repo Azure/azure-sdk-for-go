@@ -4,21 +4,21 @@
 
 package armdataprotection
 
-// BackupInstanceFromDppCrossTenantVaultClientGetOptions contains the optional parameters for the BackupInstanceFromDppCrossTenantVaultClient.Get
+// BackupInstanceFromDPPCrossTenantVaultClientGetOptions contains the optional parameters for the BackupInstanceFromDPPCrossTenantVaultClient.Get
 // method.
-type BackupInstanceFromDppCrossTenantVaultClientGetOptions struct {
+type BackupInstanceFromDPPCrossTenantVaultClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupInstanceOperationResultFromDppCrossTenantVaultClientGetOptions contains the optional parameters for the BackupInstanceOperationResultFromDppCrossTenantVaultClient.Get
+// BackupInstanceOperationResultFromDPPCrossTenantVaultClientGetOptions contains the optional parameters for the BackupInstanceOperationResultFromDPPCrossTenantVaultClient.Get
 // method.
-type BackupInstanceOperationResultFromDppCrossTenantVaultClientGetOptions struct {
+type BackupInstanceOperationResultFromDPPCrossTenantVaultClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupInstanceOperationStatusFromDppCrossTenantVaultClientGetOptions contains the optional parameters for the BackupInstanceOperationStatusFromDppCrossTenantVaultClient.Get
+// BackupInstanceOperationStatusFromDPPCrossTenantVaultClientGetOptions contains the optional parameters for the BackupInstanceOperationStatusFromDPPCrossTenantVaultClient.Get
 // method.
-type BackupInstanceOperationStatusFromDppCrossTenantVaultClientGetOptions struct {
+type BackupInstanceOperationStatusFromDPPCrossTenantVaultClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -159,15 +159,15 @@ type BackupInstancesExtensionRoutingClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupInstancesFromDppCrossTenantVaultClientListOptions contains the optional parameters for the BackupInstancesFromDppCrossTenantVaultClient.NewListPager
+// BackupInstancesFromDPPCrossTenantVaultClientListOptions contains the optional parameters for the BackupInstancesFromDPPCrossTenantVaultClient.NewListPager
 // method.
-type BackupInstancesFromDppCrossTenantVaultClientListOptions struct {
+type BackupInstancesFromDPPCrossTenantVaultClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// BackupJobsFromDppCrossTenantVaultClientListOptions contains the optional parameters for the BackupJobsFromDppCrossTenantVaultClient.NewListPager
+// BackupJobsFromDPPCrossTenantVaultClientListOptions contains the optional parameters for the BackupJobsFromDPPCrossTenantVaultClient.NewListPager
 // method.
-type BackupJobsFromDppCrossTenantVaultClientListOptions struct {
+type BackupJobsFromDPPCrossTenantVaultClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -250,6 +250,37 @@ type ClientCheckFeatureSupportOptions struct {
 	// placeholder for future optional parameters
 }
 
+// DPPCrossTenantVaultMappingStatusClientCheckOptions contains the optional parameters for the DPPCrossTenantVaultMappingStatusClient.Check
+// method.
+type DPPCrossTenantVaultMappingStatusClientCheckOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DPPCrossTenantVaultMappingsClientCreateOrUpdateOptions contains the optional parameters for the DPPCrossTenantVaultMappingsClient.CreateOrUpdate
+// method.
+type DPPCrossTenantVaultMappingsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DPPCrossTenantVaultMappingsClientGetOptions contains the optional parameters for the DPPCrossTenantVaultMappingsClient.Get
+// method.
+type DPPCrossTenantVaultMappingsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DPPCrossTenantVaultMappingsClientListOptions contains the optional parameters for the DPPCrossTenantVaultMappingsClient.NewListPager
+// method.
+type DPPCrossTenantVaultMappingsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// DPPCrossTenantVaultMappingsClientRemoveOptions contains the optional parameters for the DPPCrossTenantVaultMappingsClient.Remove
+// method.
+type DPPCrossTenantVaultMappingsClientRemoveOptions struct {
+	// The content of the action request
+	Body *CrossTenantVaultMappingRemoveRequest
+}
+
 // DeletedBackupInstancesClientBeginUndeleteOptions contains the optional parameters for the DeletedBackupInstancesClient.BeginUndelete
 // method.
 type DeletedBackupInstancesClientBeginUndeleteOptions struct {
@@ -277,37 +308,6 @@ type DeletedBackupVaultsClientGetOptions struct {
 // method.
 type DeletedBackupVaultsClientListByLocationOptions struct {
 	// placeholder for future optional parameters
-}
-
-// DppCrossTenantVaultMappingStatusClientCheckOptions contains the optional parameters for the DppCrossTenantVaultMappingStatusClient.Check
-// method.
-type DppCrossTenantVaultMappingStatusClientCheckOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DppCrossTenantVaultMappingsClientCreateOrUpdateOptions contains the optional parameters for the DppCrossTenantVaultMappingsClient.CreateOrUpdate
-// method.
-type DppCrossTenantVaultMappingsClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DppCrossTenantVaultMappingsClientGetOptions contains the optional parameters for the DppCrossTenantVaultMappingsClient.Get
-// method.
-type DppCrossTenantVaultMappingsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DppCrossTenantVaultMappingsClientListOptions contains the optional parameters for the DppCrossTenantVaultMappingsClient.NewListPager
-// method.
-type DppCrossTenantVaultMappingsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// DppCrossTenantVaultMappingsClientRemoveOptions contains the optional parameters for the DppCrossTenantVaultMappingsClient.Remove
-// method.
-type DppCrossTenantVaultMappingsClientRemoveOptions struct {
-	// The content of the action request
-	Body *CrossTenantVaultMappingRemoveRequest
 }
 
 // DppResourceGuardProxyClientCreateOrUpdateOptions contains the optional parameters for the DppResourceGuardProxyClient.CreateOrUpdate
@@ -373,9 +373,9 @@ type FetchSecondaryRecoveryPointsClientListOptions struct {
 	SkipToken *string
 }
 
-// JobFromDppCrossTenantVaultClientGetOptions contains the optional parameters for the JobFromDppCrossTenantVaultClient.Get
+// JobFromDPPCrossTenantVaultClientGetOptions contains the optional parameters for the JobFromDPPCrossTenantVaultClient.Get
 // method.
-type JobFromDppCrossTenantVaultClientGetOptions struct {
+type JobFromDPPCrossTenantVaultClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -416,9 +416,9 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RecoveryPointFromDppCrossTenantVaultClientGetOptions contains the optional parameters for the RecoveryPointFromDppCrossTenantVaultClient.Get
+// RecoveryPointFromDPPCrossTenantVaultClientGetOptions contains the optional parameters for the RecoveryPointFromDPPCrossTenantVaultClient.Get
 // method.
-type RecoveryPointFromDppCrossTenantVaultClientGetOptions struct {
+type RecoveryPointFromDPPCrossTenantVaultClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -436,9 +436,9 @@ type RecoveryPointsClientListOptions struct {
 	SkipToken *string
 }
 
-// RecoveryPointsFromDppCrossTenantVaultClientListOptions contains the optional parameters for the RecoveryPointsFromDppCrossTenantVaultClient.NewListPager
+// RecoveryPointsFromDPPCrossTenantVaultClientListOptions contains the optional parameters for the RecoveryPointsFromDPPCrossTenantVaultClient.NewListPager
 // method.
-type RecoveryPointsFromDppCrossTenantVaultClientListOptions struct {
+type RecoveryPointsFromDPPCrossTenantVaultClientListOptions struct {
 	// OData filter options.
 	Filter *string
 }
@@ -552,22 +552,22 @@ type RestorableTimeRangesClientFindOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RestorableTimeRangesFromDppCrossTenantVaultClientFindOptions contains the optional parameters for the RestorableTimeRangesFromDppCrossTenantVaultClient.Find
+// RestorableTimeRangesFromDPPCrossTenantVaultClientFindOptions contains the optional parameters for the RestorableTimeRangesFromDPPCrossTenantVaultClient.Find
 // method.
-type RestorableTimeRangesFromDppCrossTenantVaultClientFindOptions struct {
+type RestorableTimeRangesFromDPPCrossTenantVaultClientFindOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RestoresFromDppCrossTenantVaultClientBeginTriggerOptions contains the optional parameters for the RestoresFromDppCrossTenantVaultClient.BeginTrigger
+// RestoresFromDPPCrossTenantVaultClientBeginTriggerOptions contains the optional parameters for the RestoresFromDPPCrossTenantVaultClient.BeginTrigger
 // method.
-type RestoresFromDppCrossTenantVaultClientBeginTriggerOptions struct {
+type RestoresFromDPPCrossTenantVaultClientBeginTriggerOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// ValidateRestoreFromDppCrossTenantVaultClientBeginTriggerOptions contains the optional parameters for the ValidateRestoreFromDppCrossTenantVaultClient.BeginTrigger
+// ValidateRestoreFromDPPCrossTenantVaultClientBeginTriggerOptions contains the optional parameters for the ValidateRestoreFromDPPCrossTenantVaultClient.BeginTrigger
 // method.
-type ValidateRestoreFromDppCrossTenantVaultClientBeginTriggerOptions struct {
+type ValidateRestoreFromDPPCrossTenantVaultClientBeginTriggerOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

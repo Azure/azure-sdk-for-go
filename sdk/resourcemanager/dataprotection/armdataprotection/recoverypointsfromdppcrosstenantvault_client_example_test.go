@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/RecoveryPointsFromDppCrossTenantVault_List.json
-func ExampleRecoveryPointsFromDppCrossTenantVaultClient_NewListPager() {
+func ExampleRecoveryPointsFromDPPCrossTenantVaultClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,7 +22,7 @@ func ExampleRecoveryPointsFromDppCrossTenantVaultClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewRecoveryPointsFromDppCrossTenantVaultClient().NewListPager("000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", nil)
+	pager := clientFactory.NewRecoveryPointsFromDPPCrossTenantVaultClient().NewListPager("000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -33,7 +33,7 @@ func ExampleRecoveryPointsFromDppCrossTenantVaultClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdataprotection.RecoveryPointsFromDppCrossTenantVaultClientListResponse{
+		// page = armdataprotection.RecoveryPointsFromDPPCrossTenantVaultClientListResponse{
 		// 	AzureBackupRecoveryPointResourceList: armdataprotection.AzureBackupRecoveryPointResourceList{
 		// 		Value: []*armdataprotection.AzureBackupRecoveryPointResource{
 		// 			{

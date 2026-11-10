@@ -16,21 +16,21 @@ import (
 	"strings"
 )
 
-// RestorableTimeRangesFromDppCrossTenantVaultClient contains the methods for the RestorableTimeRangesFromDppCrossTenantVault
+// RestorableTimeRangesFromDPPCrossTenantVaultClient contains the methods for the RestorableTimeRangesFromDPPCrossTenantVault
 // group.
-// Don't use this type directly, use NewRestorableTimeRangesFromDppCrossTenantVaultClient() instead.
+// Don't use this type directly, use NewRestorableTimeRangesFromDPPCrossTenantVaultClient() instead.
 //
 // Generated from API version 2026-08-31-preview
-type RestorableTimeRangesFromDppCrossTenantVaultClient struct {
+type RestorableTimeRangesFromDPPCrossTenantVaultClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewRestorableTimeRangesFromDppCrossTenantVaultClient creates a new instance of RestorableTimeRangesFromDppCrossTenantVaultClient with the specified values.
+// NewRestorableTimeRangesFromDPPCrossTenantVaultClient creates a new instance of RestorableTimeRangesFromDPPCrossTenantVaultClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewRestorableTimeRangesFromDppCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableTimeRangesFromDppCrossTenantVaultClient, error) {
+func NewRestorableTimeRangesFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RestorableTimeRangesFromDPPCrossTenantVaultClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -38,7 +38,7 @@ func NewRestorableTimeRangesFromDppCrossTenantVaultClient(subscriptionID string,
 	if err != nil {
 		return nil, err
 	}
-	client := &RestorableTimeRangesFromDppCrossTenantVaultClient{
+	client := &RestorableTimeRangesFromDPPCrossTenantVaultClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -52,28 +52,28 @@ func NewRestorableTimeRangesFromDppCrossTenantVaultClient(subscriptionID string,
 //   - mappingName - The name of the CrossTenantVaultMapping
 //   - backupInstanceName - The name of the BackupInstanceResource
 //   - body - Request body for operation
-//   - options - RestorableTimeRangesFromDppCrossTenantVaultClientFindOptions contains the optional parameters for the RestorableTimeRangesFromDppCrossTenantVaultClient.Find
+//   - options - RestorableTimeRangesFromDPPCrossTenantVaultClientFindOptions contains the optional parameters for the RestorableTimeRangesFromDPPCrossTenantVaultClient.Find
 //     method.
-func (client *RestorableTimeRangesFromDppCrossTenantVaultClient) Find(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupFindRestorableTimeRangesRequest, options *RestorableTimeRangesFromDppCrossTenantVaultClientFindOptions) (RestorableTimeRangesFromDppCrossTenantVaultClientFindResponse, error) {
+func (client *RestorableTimeRangesFromDPPCrossTenantVaultClient) Find(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupFindRestorableTimeRangesRequest, options *RestorableTimeRangesFromDPPCrossTenantVaultClientFindOptions) (RestorableTimeRangesFromDPPCrossTenantVaultClientFindResponse, error) {
 	var err error
-	const operationName = "RestorableTimeRangesFromDppCrossTenantVaultClient.Find"
+	const operationName = "RestorableTimeRangesFromDPPCrossTenantVaultClient.Find"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.findCreateRequest(ctx, resourceGroupName, vaultName, mappingName, backupInstanceName, body, options)
 	if err != nil {
-		return RestorableTimeRangesFromDppCrossTenantVaultClientFindResponse{}, err
+		return RestorableTimeRangesFromDPPCrossTenantVaultClientFindResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return RestorableTimeRangesFromDppCrossTenantVaultClientFindResponse{}, err
+		return RestorableTimeRangesFromDPPCrossTenantVaultClientFindResponse{}, err
 	}
 	resp, err := client.findHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // findCreateRequest creates the Find request.
-func (client *RestorableTimeRangesFromDppCrossTenantVaultClient) findCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupFindRestorableTimeRangesRequest, _ *RestorableTimeRangesFromDppCrossTenantVaultClientFindOptions) (*policy.Request, error) {
+func (client *RestorableTimeRangesFromDPPCrossTenantVaultClient) findCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, body AzureBackupFindRestorableTimeRangesRequest, _ *RestorableTimeRangesFromDPPCrossTenantVaultClientFindOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/crossTenantVaultMappings/{mappingName}/backupInstances/{backupInstanceName}/findRestorableTimeRanges"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -111,13 +111,13 @@ func (client *RestorableTimeRangesFromDppCrossTenantVaultClient) findCreateReque
 }
 
 // findHandleResponse handles the Find response.
-func (client *RestorableTimeRangesFromDppCrossTenantVaultClient) findHandleResponse(resp *http.Response, successCodes ...int) (RestorableTimeRangesFromDppCrossTenantVaultClientFindResponse, error) {
-	result := RestorableTimeRangesFromDppCrossTenantVaultClientFindResponse{}
+func (client *RestorableTimeRangesFromDPPCrossTenantVaultClient) findHandleResponse(resp *http.Response, successCodes ...int) (RestorableTimeRangesFromDPPCrossTenantVaultClientFindResponse, error) {
+	result := RestorableTimeRangesFromDPPCrossTenantVaultClientFindResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBackupFindRestorableTimeRangesResponseResource); err != nil {
-		return RestorableTimeRangesFromDppCrossTenantVaultClientFindResponse{}, err
+		return RestorableTimeRangesFromDPPCrossTenantVaultClientFindResponse{}, err
 	}
 	return result, nil
 }

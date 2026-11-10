@@ -20,44 +20,44 @@ import (
 	"slices"
 )
 
-// DppCrossTenantVaultMappingsServer is a fake server for instances of the armdataprotection.DppCrossTenantVaultMappingsClient type.
-type DppCrossTenantVaultMappingsServer struct {
-	// CreateOrUpdate is the fake for method DppCrossTenantVaultMappingsClient.CreateOrUpdate
+// DPPCrossTenantVaultMappingsServer is a fake server for instances of the armdataprotection.DPPCrossTenantVaultMappingsClient type.
+type DPPCrossTenantVaultMappingsServer struct {
+	// CreateOrUpdate is the fake for method DPPCrossTenantVaultMappingsClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, resource armdataprotection.CrossTenantVaultMapping, options *armdataprotection.DppCrossTenantVaultMappingsClientCreateOrUpdateOptions) (resp azfake.Responder[armdataprotection.DppCrossTenantVaultMappingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, resource armdataprotection.CrossTenantVaultMapping, options *armdataprotection.DPPCrossTenantVaultMappingsClientCreateOrUpdateOptions) (resp azfake.Responder[armdataprotection.DPPCrossTenantVaultMappingsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method DppCrossTenantVaultMappingsClient.Get
+	// Get is the fake for method DPPCrossTenantVaultMappingsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *armdataprotection.DppCrossTenantVaultMappingsClientGetOptions) (resp azfake.Responder[armdataprotection.DppCrossTenantVaultMappingsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *armdataprotection.DPPCrossTenantVaultMappingsClientGetOptions) (resp azfake.Responder[armdataprotection.DPPCrossTenantVaultMappingsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DppCrossTenantVaultMappingsClient.NewListPager
+	// NewListPager is the fake for method DPPCrossTenantVaultMappingsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, vaultName string, options *armdataprotection.DppCrossTenantVaultMappingsClientListOptions) (resp azfake.PagerResponder[armdataprotection.DppCrossTenantVaultMappingsClientListResponse])
+	NewListPager func(resourceGroupName string, vaultName string, options *armdataprotection.DPPCrossTenantVaultMappingsClientListOptions) (resp azfake.PagerResponder[armdataprotection.DPPCrossTenantVaultMappingsClientListResponse])
 
-	// Remove is the fake for method DppCrossTenantVaultMappingsClient.Remove
+	// Remove is the fake for method DPPCrossTenantVaultMappingsClient.Remove
 	// HTTP status codes to indicate success: http.StatusNoContent
-	Remove func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *armdataprotection.DppCrossTenantVaultMappingsClientRemoveOptions) (resp azfake.Responder[armdataprotection.DppCrossTenantVaultMappingsClientRemoveResponse], errResp azfake.ErrorResponder)
+	Remove func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, options *armdataprotection.DPPCrossTenantVaultMappingsClientRemoveOptions) (resp azfake.Responder[armdataprotection.DPPCrossTenantVaultMappingsClientRemoveResponse], errResp azfake.ErrorResponder)
 }
 
-// NewDppCrossTenantVaultMappingsServerTransport creates a new instance of DppCrossTenantVaultMappingsServerTransport with the provided implementation.
-// The returned DppCrossTenantVaultMappingsServerTransport instance is connected to an instance of armdataprotection.DppCrossTenantVaultMappingsClient via the
+// NewDPPCrossTenantVaultMappingsServerTransport creates a new instance of DPPCrossTenantVaultMappingsServerTransport with the provided implementation.
+// The returned DPPCrossTenantVaultMappingsServerTransport instance is connected to an instance of armdataprotection.DPPCrossTenantVaultMappingsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewDppCrossTenantVaultMappingsServerTransport(srv *DppCrossTenantVaultMappingsServer) *DppCrossTenantVaultMappingsServerTransport {
-	return &DppCrossTenantVaultMappingsServerTransport{
+func NewDPPCrossTenantVaultMappingsServerTransport(srv *DPPCrossTenantVaultMappingsServer) *DPPCrossTenantVaultMappingsServerTransport {
+	return &DPPCrossTenantVaultMappingsServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armdataprotection.DppCrossTenantVaultMappingsClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armdataprotection.DPPCrossTenantVaultMappingsClientListResponse]](),
 	}
 }
 
-// DppCrossTenantVaultMappingsServerTransport connects instances of armdataprotection.DppCrossTenantVaultMappingsClient to instances of DppCrossTenantVaultMappingsServer.
-// Don't use this type directly, use NewDppCrossTenantVaultMappingsServerTransport instead.
-type DppCrossTenantVaultMappingsServerTransport struct {
-	srv          *DppCrossTenantVaultMappingsServer
-	newListPager *tracker[azfake.PagerResponder[armdataprotection.DppCrossTenantVaultMappingsClientListResponse]]
+// DPPCrossTenantVaultMappingsServerTransport connects instances of armdataprotection.DPPCrossTenantVaultMappingsClient to instances of DPPCrossTenantVaultMappingsServer.
+// Don't use this type directly, use NewDPPCrossTenantVaultMappingsServerTransport instead.
+type DPPCrossTenantVaultMappingsServerTransport struct {
+	srv          *DPPCrossTenantVaultMappingsServer
+	newListPager *tracker[azfake.PagerResponder[armdataprotection.DPPCrossTenantVaultMappingsClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for DppCrossTenantVaultMappingsServerTransport.
-func (d *DppCrossTenantVaultMappingsServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for DPPCrossTenantVaultMappingsServerTransport.
+func (d *DPPCrossTenantVaultMappingsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -67,7 +67,7 @@ func (d *DppCrossTenantVaultMappingsServerTransport) Do(req *http.Request) (*htt
 	return d.dispatchToMethodFake(req, method)
 }
 
-func (d *DppCrossTenantVaultMappingsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (d *DPPCrossTenantVaultMappingsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -77,13 +77,13 @@ func (d *DppCrossTenantVaultMappingsServerTransport) dispatchToMethodFake(req *h
 		}
 		if !intercepted {
 			switch method {
-			case "DppCrossTenantVaultMappingsClient.CreateOrUpdate":
+			case "DPPCrossTenantVaultMappingsClient.CreateOrUpdate":
 				res.resp, res.err = d.dispatchCreateOrUpdate(req)
-			case "DppCrossTenantVaultMappingsClient.Get":
+			case "DPPCrossTenantVaultMappingsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DppCrossTenantVaultMappingsClient.NewListPager":
+			case "DPPCrossTenantVaultMappingsClient.NewListPager":
 				res.resp, res.err = d.dispatchNewListPager(req)
-			case "DppCrossTenantVaultMappingsClient.Remove":
+			case "DPPCrossTenantVaultMappingsClient.Remove":
 				res.resp, res.err = d.dispatchRemove(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -101,7 +101,7 @@ func (d *DppCrossTenantVaultMappingsServerTransport) dispatchToMethodFake(req *h
 	}
 }
 
-func (d *DppCrossTenantVaultMappingsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+func (d *DPPCrossTenantVaultMappingsServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if d.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
@@ -142,7 +142,7 @@ func (d *DppCrossTenantVaultMappingsServerTransport) dispatchCreateOrUpdate(req 
 	return resp, nil
 }
 
-func (d *DppCrossTenantVaultMappingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (d *DPPCrossTenantVaultMappingsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -179,7 +179,7 @@ func (d *DppCrossTenantVaultMappingsServerTransport) dispatchGet(req *http.Reque
 	return resp, nil
 }
 
-func (d *DppCrossTenantVaultMappingsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (d *DPPCrossTenantVaultMappingsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
@@ -202,7 +202,7 @@ func (d *DppCrossTenantVaultMappingsServerTransport) dispatchNewListPager(req *h
 		resp := d.srv.NewListPager(resourceGroupNameParam, vaultNameParam, nil)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdataprotection.DppCrossTenantVaultMappingsClientListResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdataprotection.DPPCrossTenantVaultMappingsClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -220,7 +220,7 @@ func (d *DppCrossTenantVaultMappingsServerTransport) dispatchNewListPager(req *h
 	return resp, nil
 }
 
-func (d *DppCrossTenantVaultMappingsServerTransport) dispatchRemove(req *http.Request) (*http.Response, error) {
+func (d *DPPCrossTenantVaultMappingsServerTransport) dispatchRemove(req *http.Request) (*http.Response, error) {
 	if d.srv.Remove == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Remove not implemented")}
 	}
@@ -246,9 +246,9 @@ func (d *DppCrossTenantVaultMappingsServerTransport) dispatchRemove(req *http.Re
 	if err != nil {
 		return nil, err
 	}
-	var options *armdataprotection.DppCrossTenantVaultMappingsClientRemoveOptions
+	var options *armdataprotection.DPPCrossTenantVaultMappingsClientRemoveOptions
 	if !reflect.ValueOf(body).IsZero() {
-		options = &armdataprotection.DppCrossTenantVaultMappingsClientRemoveOptions{
+		options = &armdataprotection.DPPCrossTenantVaultMappingsClientRemoveOptions{
 			Body: &body,
 		}
 	}
@@ -267,7 +267,7 @@ func (d *DppCrossTenantVaultMappingsServerTransport) dispatchRemove(req *http.Re
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to DppCrossTenantVaultMappingsServerTransport
+// set this to conditionally intercept incoming requests to DPPCrossTenantVaultMappingsServerTransport
 var dppCrossTenantVaultMappingsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

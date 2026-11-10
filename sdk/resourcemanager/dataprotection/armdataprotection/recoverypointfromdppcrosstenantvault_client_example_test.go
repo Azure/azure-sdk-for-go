@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/RecoveryPointFromDppCrossTenantVault_Get.json
-func ExampleRecoveryPointFromDppCrossTenantVaultClient_Get() {
+func ExampleRecoveryPointFromDPPCrossTenantVaultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,14 +22,14 @@ func ExampleRecoveryPointFromDppCrossTenantVaultClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewRecoveryPointFromDppCrossTenantVaultClient().Get(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", "hardcodedRP", nil)
+	res, err := clientFactory.NewRecoveryPointFromDPPCrossTenantVaultClient().Get(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", "hardcodedRP", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.RecoveryPointFromDppCrossTenantVaultClientGetResponse{
+	// res = armdataprotection.RecoveryPointFromDPPCrossTenantVaultClientGetResponse{
 	// 	AzureBackupRecoveryPointResource: armdataprotection.AzureBackupRecoveryPointResource{
 	// 		Name: to.Ptr("7fb2cddd-c5b3-44f6-a0d9-db3c4f9d5f25"),
 	// 		Type: to.Ptr("microsoft.dataprotection/backupvaults/backupInstances/recoveryPoints"),

@@ -12,7 +12,7 @@ import (
 )
 
 // Generated from example definition: 2026-08-31-preview/CrossTenantVaultMappingOperations/BackupInstanceOperationStatusFromDppCrossTenantVault_Get.json
-func ExampleBackupInstanceOperationStatusFromDppCrossTenantVaultClient_Get() {
+func ExampleBackupInstanceOperationStatusFromDPPCrossTenantVaultClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -22,14 +22,14 @@ func ExampleBackupInstanceOperationStatusFromDppCrossTenantVaultClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewBackupInstanceOperationStatusFromDppCrossTenantVaultClient().Get(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", "YWUzNDFkMzQtZmM5Yy00OGE4LWE5ZDgtY2VhMDAwMDAwMDAw", nil)
+	res, err := clientFactory.NewBackupInstanceOperationStatusFromDPPCrossTenantVaultClient().Get(ctx, "000pikumar", "PratikPrivatePreviewVault1", "sampleCrossTenantMapping", "testInstance1", "YWUzNDFkMzQtZmM5Yy00OGE4LWE5ZDgtY2VhMDAwMDAwMDAw", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataprotection.BackupInstanceOperationStatusFromDppCrossTenantVaultClientGetResponse{
+	// res = armdataprotection.BackupInstanceOperationStatusFromDPPCrossTenantVaultClientGetResponse{
 	// 	OperationResource: armdataprotection.OperationResource{
 	// 		Name: to.Ptr("MjkxOTMyODMtYTE3My00YzJjLTg5NjctN2E4MDIxNDA3NjA2OzdjNGE2ZWRjLWJjMmItNDRkYi1hYzMzLWY1YzEwNzk5Y2EyOA=="),
 	// 		EndTime: to.Ptr(time.Date(2019, time.November, 20, 9, 49, 46, 0, time.UTC)),

@@ -18,32 +18,32 @@ import (
 	"slices"
 )
 
-// RecoveryPointsFromDppCrossTenantVaultServer is a fake server for instances of the armdataprotection.RecoveryPointsFromDppCrossTenantVaultClient type.
-type RecoveryPointsFromDppCrossTenantVaultServer struct {
-	// NewListPager is the fake for method RecoveryPointsFromDppCrossTenantVaultClient.NewListPager
+// RecoveryPointsFromDPPCrossTenantVaultServer is a fake server for instances of the armdataprotection.RecoveryPointsFromDPPCrossTenantVaultClient type.
+type RecoveryPointsFromDPPCrossTenantVaultServer struct {
+	// NewListPager is the fake for method RecoveryPointsFromDPPCrossTenantVaultClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, options *armdataprotection.RecoveryPointsFromDppCrossTenantVaultClientListOptions) (resp azfake.PagerResponder[armdataprotection.RecoveryPointsFromDppCrossTenantVaultClientListResponse])
+	NewListPager func(resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, options *armdataprotection.RecoveryPointsFromDPPCrossTenantVaultClientListOptions) (resp azfake.PagerResponder[armdataprotection.RecoveryPointsFromDPPCrossTenantVaultClientListResponse])
 }
 
-// NewRecoveryPointsFromDppCrossTenantVaultServerTransport creates a new instance of RecoveryPointsFromDppCrossTenantVaultServerTransport with the provided implementation.
-// The returned RecoveryPointsFromDppCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.RecoveryPointsFromDppCrossTenantVaultClient via the
+// NewRecoveryPointsFromDPPCrossTenantVaultServerTransport creates a new instance of RecoveryPointsFromDPPCrossTenantVaultServerTransport with the provided implementation.
+// The returned RecoveryPointsFromDPPCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.RecoveryPointsFromDPPCrossTenantVaultClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewRecoveryPointsFromDppCrossTenantVaultServerTransport(srv *RecoveryPointsFromDppCrossTenantVaultServer) *RecoveryPointsFromDppCrossTenantVaultServerTransport {
-	return &RecoveryPointsFromDppCrossTenantVaultServerTransport{
+func NewRecoveryPointsFromDPPCrossTenantVaultServerTransport(srv *RecoveryPointsFromDPPCrossTenantVaultServer) *RecoveryPointsFromDPPCrossTenantVaultServerTransport {
+	return &RecoveryPointsFromDPPCrossTenantVaultServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armdataprotection.RecoveryPointsFromDppCrossTenantVaultClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armdataprotection.RecoveryPointsFromDPPCrossTenantVaultClientListResponse]](),
 	}
 }
 
-// RecoveryPointsFromDppCrossTenantVaultServerTransport connects instances of armdataprotection.RecoveryPointsFromDppCrossTenantVaultClient to instances of RecoveryPointsFromDppCrossTenantVaultServer.
-// Don't use this type directly, use NewRecoveryPointsFromDppCrossTenantVaultServerTransport instead.
-type RecoveryPointsFromDppCrossTenantVaultServerTransport struct {
-	srv          *RecoveryPointsFromDppCrossTenantVaultServer
-	newListPager *tracker[azfake.PagerResponder[armdataprotection.RecoveryPointsFromDppCrossTenantVaultClientListResponse]]
+// RecoveryPointsFromDPPCrossTenantVaultServerTransport connects instances of armdataprotection.RecoveryPointsFromDPPCrossTenantVaultClient to instances of RecoveryPointsFromDPPCrossTenantVaultServer.
+// Don't use this type directly, use NewRecoveryPointsFromDPPCrossTenantVaultServerTransport instead.
+type RecoveryPointsFromDPPCrossTenantVaultServerTransport struct {
+	srv          *RecoveryPointsFromDPPCrossTenantVaultServer
+	newListPager *tracker[azfake.PagerResponder[armdataprotection.RecoveryPointsFromDPPCrossTenantVaultClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for RecoveryPointsFromDppCrossTenantVaultServerTransport.
-func (r *RecoveryPointsFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for RecoveryPointsFromDPPCrossTenantVaultServerTransport.
+func (r *RecoveryPointsFromDPPCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -53,7 +53,7 @@ func (r *RecoveryPointsFromDppCrossTenantVaultServerTransport) Do(req *http.Requ
 	return r.dispatchToMethodFake(req, method)
 }
 
-func (r *RecoveryPointsFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (r *RecoveryPointsFromDPPCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -63,7 +63,7 @@ func (r *RecoveryPointsFromDppCrossTenantVaultServerTransport) dispatchToMethodF
 		}
 		if !intercepted {
 			switch method {
-			case "RecoveryPointsFromDppCrossTenantVaultClient.NewListPager":
+			case "RecoveryPointsFromDPPCrossTenantVaultClient.NewListPager":
 				res.resp, res.err = r.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -81,7 +81,7 @@ func (r *RecoveryPointsFromDppCrossTenantVaultServerTransport) dispatchToMethodF
 	}
 }
 
-func (r *RecoveryPointsFromDppCrossTenantVaultServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (r *RecoveryPointsFromDPPCrossTenantVaultServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if r.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
@@ -111,16 +111,16 @@ func (r *RecoveryPointsFromDppCrossTenantVaultServerTransport) dispatchNewListPa
 			return nil, err
 		}
 		filterParam := getOptional(qp.Get("$filter"))
-		var options *armdataprotection.RecoveryPointsFromDppCrossTenantVaultClientListOptions
+		var options *armdataprotection.RecoveryPointsFromDPPCrossTenantVaultClientListOptions
 		if filterParam != nil {
-			options = &armdataprotection.RecoveryPointsFromDppCrossTenantVaultClientListOptions{
+			options = &armdataprotection.RecoveryPointsFromDPPCrossTenantVaultClientListOptions{
 				Filter: filterParam,
 			}
 		}
 		resp := r.srv.NewListPager(resourceGroupNameParam, vaultNameParam, mappingNameParam, backupInstanceNameParam, options)
 		newListPager = &resp
 		r.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdataprotection.RecoveryPointsFromDppCrossTenantVaultClientListResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armdataprotection.RecoveryPointsFromDPPCrossTenantVaultClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -138,7 +138,7 @@ func (r *RecoveryPointsFromDppCrossTenantVaultServerTransport) dispatchNewListPa
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to RecoveryPointsFromDppCrossTenantVaultServerTransport
+// set this to conditionally intercept incoming requests to RecoveryPointsFromDPPCrossTenantVaultServerTransport
 var recoveryPointsFromDppCrossTenantVaultServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

@@ -18,28 +18,28 @@ import (
 	"slices"
 )
 
-// DppCrossTenantVaultMappingStatusServer is a fake server for instances of the armdataprotection.DppCrossTenantVaultMappingStatusClient type.
-type DppCrossTenantVaultMappingStatusServer struct {
-	// Check is the fake for method DppCrossTenantVaultMappingStatusClient.Check
+// DPPCrossTenantVaultMappingStatusServer is a fake server for instances of the armdataprotection.DPPCrossTenantVaultMappingStatusClient type.
+type DPPCrossTenantVaultMappingStatusServer struct {
+	// Check is the fake for method DPPCrossTenantVaultMappingStatusClient.Check
 	// HTTP status codes to indicate success: http.StatusOK
-	Check func(ctx context.Context, resourceGroupName string, vaultName string, options *armdataprotection.DppCrossTenantVaultMappingStatusClientCheckOptions) (resp azfake.Responder[armdataprotection.DppCrossTenantVaultMappingStatusClientCheckResponse], errResp azfake.ErrorResponder)
+	Check func(ctx context.Context, resourceGroupName string, vaultName string, options *armdataprotection.DPPCrossTenantVaultMappingStatusClientCheckOptions) (resp azfake.Responder[armdataprotection.DPPCrossTenantVaultMappingStatusClientCheckResponse], errResp azfake.ErrorResponder)
 }
 
-// NewDppCrossTenantVaultMappingStatusServerTransport creates a new instance of DppCrossTenantVaultMappingStatusServerTransport with the provided implementation.
-// The returned DppCrossTenantVaultMappingStatusServerTransport instance is connected to an instance of armdataprotection.DppCrossTenantVaultMappingStatusClient via the
+// NewDPPCrossTenantVaultMappingStatusServerTransport creates a new instance of DPPCrossTenantVaultMappingStatusServerTransport with the provided implementation.
+// The returned DPPCrossTenantVaultMappingStatusServerTransport instance is connected to an instance of armdataprotection.DPPCrossTenantVaultMappingStatusClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewDppCrossTenantVaultMappingStatusServerTransport(srv *DppCrossTenantVaultMappingStatusServer) *DppCrossTenantVaultMappingStatusServerTransport {
-	return &DppCrossTenantVaultMappingStatusServerTransport{srv: srv}
+func NewDPPCrossTenantVaultMappingStatusServerTransport(srv *DPPCrossTenantVaultMappingStatusServer) *DPPCrossTenantVaultMappingStatusServerTransport {
+	return &DPPCrossTenantVaultMappingStatusServerTransport{srv: srv}
 }
 
-// DppCrossTenantVaultMappingStatusServerTransport connects instances of armdataprotection.DppCrossTenantVaultMappingStatusClient to instances of DppCrossTenantVaultMappingStatusServer.
-// Don't use this type directly, use NewDppCrossTenantVaultMappingStatusServerTransport instead.
-type DppCrossTenantVaultMappingStatusServerTransport struct {
-	srv *DppCrossTenantVaultMappingStatusServer
+// DPPCrossTenantVaultMappingStatusServerTransport connects instances of armdataprotection.DPPCrossTenantVaultMappingStatusClient to instances of DPPCrossTenantVaultMappingStatusServer.
+// Don't use this type directly, use NewDPPCrossTenantVaultMappingStatusServerTransport instead.
+type DPPCrossTenantVaultMappingStatusServerTransport struct {
+	srv *DPPCrossTenantVaultMappingStatusServer
 }
 
-// Do implements the policy.Transporter interface for DppCrossTenantVaultMappingStatusServerTransport.
-func (d *DppCrossTenantVaultMappingStatusServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for DPPCrossTenantVaultMappingStatusServerTransport.
+func (d *DPPCrossTenantVaultMappingStatusServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -49,7 +49,7 @@ func (d *DppCrossTenantVaultMappingStatusServerTransport) Do(req *http.Request) 
 	return d.dispatchToMethodFake(req, method)
 }
 
-func (d *DppCrossTenantVaultMappingStatusServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (d *DPPCrossTenantVaultMappingStatusServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -59,7 +59,7 @@ func (d *DppCrossTenantVaultMappingStatusServerTransport) dispatchToMethodFake(r
 		}
 		if !intercepted {
 			switch method {
-			case "DppCrossTenantVaultMappingStatusClient.Check":
+			case "DPPCrossTenantVaultMappingStatusClient.Check":
 				res.resp, res.err = d.dispatchCheck(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -77,7 +77,7 @@ func (d *DppCrossTenantVaultMappingStatusServerTransport) dispatchToMethodFake(r
 	}
 }
 
-func (d *DppCrossTenantVaultMappingStatusServerTransport) dispatchCheck(req *http.Request) (*http.Response, error) {
+func (d *DPPCrossTenantVaultMappingStatusServerTransport) dispatchCheck(req *http.Request) (*http.Response, error) {
 	if d.srv.Check == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Check not implemented")}
 	}
@@ -110,7 +110,7 @@ func (d *DppCrossTenantVaultMappingStatusServerTransport) dispatchCheck(req *htt
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to DppCrossTenantVaultMappingStatusServerTransport
+// set this to conditionally intercept incoming requests to DPPCrossTenantVaultMappingStatusServerTransport
 var dppCrossTenantVaultMappingStatusServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

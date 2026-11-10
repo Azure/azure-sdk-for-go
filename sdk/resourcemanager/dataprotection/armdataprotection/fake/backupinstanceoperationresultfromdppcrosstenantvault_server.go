@@ -19,28 +19,28 @@ import (
 	"strconv"
 )
 
-// BackupInstanceOperationResultFromDppCrossTenantVaultServer is a fake server for instances of the armdataprotection.BackupInstanceOperationResultFromDppCrossTenantVaultClient type.
-type BackupInstanceOperationResultFromDppCrossTenantVaultServer struct {
-	// Get is the fake for method BackupInstanceOperationResultFromDppCrossTenantVaultClient.Get
+// BackupInstanceOperationResultFromDPPCrossTenantVaultServer is a fake server for instances of the armdataprotection.BackupInstanceOperationResultFromDPPCrossTenantVaultClient type.
+type BackupInstanceOperationResultFromDPPCrossTenantVaultServer struct {
+	// Get is the fake for method BackupInstanceOperationResultFromDPPCrossTenantVaultClient.Get
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	Get func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, operationID string, options *armdataprotection.BackupInstanceOperationResultFromDppCrossTenantVaultClientGetOptions) (resp azfake.Responder[armdataprotection.BackupInstanceOperationResultFromDppCrossTenantVaultClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, operationID string, options *armdataprotection.BackupInstanceOperationResultFromDPPCrossTenantVaultClientGetOptions) (resp azfake.Responder[armdataprotection.BackupInstanceOperationResultFromDPPCrossTenantVaultClientGetResponse], errResp azfake.ErrorResponder)
 }
 
-// NewBackupInstanceOperationResultFromDppCrossTenantVaultServerTransport creates a new instance of BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport with the provided implementation.
-// The returned BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.BackupInstanceOperationResultFromDppCrossTenantVaultClient via the
+// NewBackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport creates a new instance of BackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport with the provided implementation.
+// The returned BackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport instance is connected to an instance of armdataprotection.BackupInstanceOperationResultFromDPPCrossTenantVaultClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewBackupInstanceOperationResultFromDppCrossTenantVaultServerTransport(srv *BackupInstanceOperationResultFromDppCrossTenantVaultServer) *BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport {
-	return &BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport{srv: srv}
+func NewBackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport(srv *BackupInstanceOperationResultFromDPPCrossTenantVaultServer) *BackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport {
+	return &BackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport{srv: srv}
 }
 
-// BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport connects instances of armdataprotection.BackupInstanceOperationResultFromDppCrossTenantVaultClient to instances of BackupInstanceOperationResultFromDppCrossTenantVaultServer.
-// Don't use this type directly, use NewBackupInstanceOperationResultFromDppCrossTenantVaultServerTransport instead.
-type BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport struct {
-	srv *BackupInstanceOperationResultFromDppCrossTenantVaultServer
+// BackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport connects instances of armdataprotection.BackupInstanceOperationResultFromDPPCrossTenantVaultClient to instances of BackupInstanceOperationResultFromDPPCrossTenantVaultServer.
+// Don't use this type directly, use NewBackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport instead.
+type BackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport struct {
+	srv *BackupInstanceOperationResultFromDPPCrossTenantVaultServer
 }
 
-// Do implements the policy.Transporter interface for BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport.
-func (b *BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for BackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport.
+func (b *BackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -50,7 +50,7 @@ func (b *BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport) Do
 	return b.dispatchToMethodFake(req, method)
 }
 
-func (b *BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (b *BackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -60,7 +60,7 @@ func (b *BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport) di
 		}
 		if !intercepted {
 			switch method {
-			case "BackupInstanceOperationResultFromDppCrossTenantVaultClient.Get":
+			case "BackupInstanceOperationResultFromDPPCrossTenantVaultClient.Get":
 				res.resp, res.err = b.dispatchGet(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -78,7 +78,7 @@ func (b *BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport) di
 	}
 }
 
-func (b *BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (b *BackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if b.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -129,7 +129,7 @@ func (b *BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport) di
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to BackupInstanceOperationResultFromDppCrossTenantVaultServerTransport
+// set this to conditionally intercept incoming requests to BackupInstanceOperationResultFromDPPCrossTenantVaultServerTransport
 var backupInstanceOperationResultFromDppCrossTenantVaultServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

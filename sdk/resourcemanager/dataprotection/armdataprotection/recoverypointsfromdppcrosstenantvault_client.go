@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// RecoveryPointsFromDppCrossTenantVaultClient contains the methods for the RecoveryPointsFromDppCrossTenantVault group.
-// Don't use this type directly, use NewRecoveryPointsFromDppCrossTenantVaultClient() instead.
+// RecoveryPointsFromDPPCrossTenantVaultClient contains the methods for the RecoveryPointsFromDPPCrossTenantVault group.
+// Don't use this type directly, use NewRecoveryPointsFromDPPCrossTenantVaultClient() instead.
 //
 // Generated from API version 2026-08-31-preview
-type RecoveryPointsFromDppCrossTenantVaultClient struct {
+type RecoveryPointsFromDPPCrossTenantVaultClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewRecoveryPointsFromDppCrossTenantVaultClient creates a new instance of RecoveryPointsFromDppCrossTenantVaultClient with the specified values.
+// NewRecoveryPointsFromDPPCrossTenantVaultClient creates a new instance of RecoveryPointsFromDPPCrossTenantVaultClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewRecoveryPointsFromDppCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryPointsFromDppCrossTenantVaultClient, error) {
+func NewRecoveryPointsFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryPointsFromDPPCrossTenantVaultClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewRecoveryPointsFromDppCrossTenantVaultClient(subscriptionID string, crede
 	if err != nil {
 		return nil, err
 	}
-	client := &RecoveryPointsFromDppCrossTenantVaultClient{
+	client := &RecoveryPointsFromDPPCrossTenantVaultClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -49,26 +49,26 @@ func NewRecoveryPointsFromDppCrossTenantVaultClient(subscriptionID string, crede
 //   - vaultName - The name of the BackupVaultResource
 //   - mappingName - The name of the CrossTenantVaultMapping
 //   - backupInstanceName - The name of the BackupInstanceResource
-//   - options - RecoveryPointsFromDppCrossTenantVaultClientListOptions contains the optional parameters for the RecoveryPointsFromDppCrossTenantVaultClient.NewListPager
+//   - options - RecoveryPointsFromDPPCrossTenantVaultClientListOptions contains the optional parameters for the RecoveryPointsFromDPPCrossTenantVaultClient.NewListPager
 //     method.
-func (client *RecoveryPointsFromDppCrossTenantVaultClient) NewListPager(resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, options *RecoveryPointsFromDppCrossTenantVaultClientListOptions) *runtime.Pager[RecoveryPointsFromDppCrossTenantVaultClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[RecoveryPointsFromDppCrossTenantVaultClientListResponse]{
-		More: func(page RecoveryPointsFromDppCrossTenantVaultClientListResponse) bool {
+func (client *RecoveryPointsFromDPPCrossTenantVaultClient) NewListPager(resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, options *RecoveryPointsFromDPPCrossTenantVaultClientListOptions) *runtime.Pager[RecoveryPointsFromDPPCrossTenantVaultClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RecoveryPointsFromDPPCrossTenantVaultClientListResponse]{
+		More: func(page RecoveryPointsFromDPPCrossTenantVaultClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *RecoveryPointsFromDppCrossTenantVaultClientListResponse) (RecoveryPointsFromDppCrossTenantVaultClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecoveryPointsFromDppCrossTenantVaultClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *RecoveryPointsFromDPPCrossTenantVaultClientListResponse) (RecoveryPointsFromDPPCrossTenantVaultClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecoveryPointsFromDPPCrossTenantVaultClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listCreateRequest(ctx, resourceGroupName, vaultName, mappingName, backupInstanceName, nextLink, options)
 			if err != nil {
-				return RecoveryPointsFromDppCrossTenantVaultClientListResponse{}, err
+				return RecoveryPointsFromDPPCrossTenantVaultClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return RecoveryPointsFromDppCrossTenantVaultClientListResponse{}, err
+				return RecoveryPointsFromDPPCrossTenantVaultClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp, http.StatusOK)
 		},
@@ -77,7 +77,7 @@ func (client *RecoveryPointsFromDppCrossTenantVaultClient) NewListPager(resource
 }
 
 // listCreateRequest creates the List request.
-func (client *RecoveryPointsFromDppCrossTenantVaultClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, nextLink string, options *RecoveryPointsFromDppCrossTenantVaultClientListOptions) (*policy.Request, error) {
+func (client *RecoveryPointsFromDPPCrossTenantVaultClient) listCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, backupInstanceName string, nextLink string, options *RecoveryPointsFromDPPCrossTenantVaultClientListOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -123,13 +123,13 @@ func (client *RecoveryPointsFromDppCrossTenantVaultClient) listCreateRequest(ctx
 }
 
 // listHandleResponse handles the List response.
-func (client *RecoveryPointsFromDppCrossTenantVaultClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecoveryPointsFromDppCrossTenantVaultClientListResponse, error) {
-	result := RecoveryPointsFromDppCrossTenantVaultClientListResponse{}
+func (client *RecoveryPointsFromDPPCrossTenantVaultClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecoveryPointsFromDPPCrossTenantVaultClientListResponse, error) {
+	result := RecoveryPointsFromDPPCrossTenantVaultClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBackupRecoveryPointResourceList); err != nil {
-		return RecoveryPointsFromDppCrossTenantVaultClientListResponse{}, err
+		return RecoveryPointsFromDPPCrossTenantVaultClientListResponse{}, err
 	}
 	return result, nil
 }

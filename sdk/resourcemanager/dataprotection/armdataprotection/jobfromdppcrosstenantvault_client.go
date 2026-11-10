@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// JobFromDppCrossTenantVaultClient contains the methods for the JobFromDppCrossTenantVault group.
-// Don't use this type directly, use NewJobFromDppCrossTenantVaultClient() instead.
+// JobFromDPPCrossTenantVaultClient contains the methods for the JobFromDPPCrossTenantVault group.
+// Don't use this type directly, use NewJobFromDPPCrossTenantVaultClient() instead.
 //
 // Generated from API version 2026-08-31-preview
-type JobFromDppCrossTenantVaultClient struct {
+type JobFromDPPCrossTenantVaultClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewJobFromDppCrossTenantVaultClient creates a new instance of JobFromDppCrossTenantVaultClient with the specified values.
+// NewJobFromDPPCrossTenantVaultClient creates a new instance of JobFromDPPCrossTenantVaultClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewJobFromDppCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobFromDppCrossTenantVaultClient, error) {
+func NewJobFromDPPCrossTenantVaultClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JobFromDPPCrossTenantVaultClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewJobFromDppCrossTenantVaultClient(subscriptionID string, credential azcor
 	if err != nil {
 		return nil, err
 	}
-	client := &JobFromDppCrossTenantVaultClient{
+	client := &JobFromDPPCrossTenantVaultClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -50,28 +50,28 @@ func NewJobFromDppCrossTenantVaultClient(subscriptionID string, credential azcor
 //   - vaultName - The name of the BackupVaultResource
 //   - mappingName - The name of the CrossTenantVaultMapping
 //   - jobID - The name of the AzureBackupJobResource
-//   - options - JobFromDppCrossTenantVaultClientGetOptions contains the optional parameters for the JobFromDppCrossTenantVaultClient.Get
+//   - options - JobFromDPPCrossTenantVaultClientGetOptions contains the optional parameters for the JobFromDPPCrossTenantVaultClient.Get
 //     method.
-func (client *JobFromDppCrossTenantVaultClient) Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, jobID string, options *JobFromDppCrossTenantVaultClientGetOptions) (JobFromDppCrossTenantVaultClientGetResponse, error) {
+func (client *JobFromDPPCrossTenantVaultClient) Get(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, jobID string, options *JobFromDPPCrossTenantVaultClientGetOptions) (JobFromDPPCrossTenantVaultClientGetResponse, error) {
 	var err error
-	const operationName = "JobFromDppCrossTenantVaultClient.Get"
+	const operationName = "JobFromDPPCrossTenantVaultClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, vaultName, mappingName, jobID, options)
 	if err != nil {
-		return JobFromDppCrossTenantVaultClientGetResponse{}, err
+		return JobFromDPPCrossTenantVaultClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return JobFromDppCrossTenantVaultClientGetResponse{}, err
+		return JobFromDPPCrossTenantVaultClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *JobFromDppCrossTenantVaultClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, jobID string, _ *JobFromDppCrossTenantVaultClientGetOptions) (*policy.Request, error) {
+func (client *JobFromDPPCrossTenantVaultClient) getCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, mappingName string, jobID string, _ *JobFromDPPCrossTenantVaultClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/crossTenantVaultMappings/{mappingName}/backupJobs/{jobId}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -105,13 +105,13 @@ func (client *JobFromDppCrossTenantVaultClient) getCreateRequest(ctx context.Con
 }
 
 // getHandleResponse handles the Get response.
-func (client *JobFromDppCrossTenantVaultClient) getHandleResponse(resp *http.Response, successCodes ...int) (JobFromDppCrossTenantVaultClientGetResponse, error) {
-	result := JobFromDppCrossTenantVaultClientGetResponse{}
+func (client *JobFromDPPCrossTenantVaultClient) getHandleResponse(resp *http.Response, successCodes ...int) (JobFromDPPCrossTenantVaultClientGetResponse, error) {
+	result := JobFromDPPCrossTenantVaultClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AzureBackupJobResource); err != nil {
-		return JobFromDppCrossTenantVaultClientGetResponse{}, err
+		return JobFromDPPCrossTenantVaultClientGetResponse{}, err
 	}
 	return result, nil
 }

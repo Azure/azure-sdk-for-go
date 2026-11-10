@@ -1,6 +1,6 @@
-# Azure Device Registry Module for Go
+# Azure Device Registry Software Update Module for Go
 
-The `armdeviceregistrysoftwareupdate` module provides operations for working with Azure Device Registry.
+The `armdeviceregistrysoftwareupdate` module provides operations for working with Azure Device Registry Software Update.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/deviceregistry/armdeviceregistrysoftwareupdate)
 
@@ -15,7 +15,7 @@ The `armdeviceregistrysoftwareupdate` module provides operations for working wit
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Device Registry module:
+Install the Azure Device Registry Software Update module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armdeviceregistrysoftwareupdate
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/deviceregistry/armd
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Device Registry.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Device Registry Software Update.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Device Registry module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Device Registry Software Update module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armdeviceregistrysoftwareupdate.NewClientFactory(<subscription ID>, cred, nil)

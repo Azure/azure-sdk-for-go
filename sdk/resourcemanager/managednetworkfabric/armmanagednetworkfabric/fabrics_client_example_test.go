@@ -203,7 +203,7 @@ func ExampleFabricsClient_BeginCreate_fabricsCreateManagedMaximumSetGen() {
 		},
 		Properties: &armmanagednetworkfabric.FabricProperties{
 			ManagementMode:          to.Ptr(armmanagednetworkfabric.ManagementModeManaged),
-			ControllerType:          to.Ptr(armmanagednetworkfabric.ControllerTypeCiscoAci),
+			ControllerType:          to.Ptr(armmanagednetworkfabric.ControllerTypeCiscoACI),
 			OperationPolicy:         to.Ptr(armmanagednetworkfabric.OperationPolicyValidateOnly),
 			ControllerEndpoint:      to.Ptr("https://apic.factory.local"),
 			ControllerCredentialRef: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/fabric-kv/secrets/apic-creds"),
@@ -300,7 +300,7 @@ func ExampleFabricsClient_BeginCreate_fabricsCreateManagedMaximumSetGen() {
 	// 		},
 	// 		Properties: &armmanagednetworkfabric.FabricProperties{
 	// 			ManagementMode: to.Ptr(armmanagednetworkfabric.ManagementModeManaged),
-	// 			ControllerType: to.Ptr(armmanagednetworkfabric.ControllerTypeCiscoAci),
+	// 			ControllerType: to.Ptr(armmanagednetworkfabric.ControllerTypeCiscoACI),
 	// 			OperationPolicy: to.Ptr(armmanagednetworkfabric.OperationPolicyValidateOnly),
 	// 			ControllerEndpoint: to.Ptr("https://apic.factory.local"),
 	// 			ControllerCredentialRef: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/fabric-kv/secrets/apic-creds"),

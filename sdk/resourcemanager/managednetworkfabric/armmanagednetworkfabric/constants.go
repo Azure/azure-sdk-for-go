@@ -641,8 +641,8 @@ type ControllerType string
 const (
 	// ControllerTypeAristaCloudVision - Arista CloudVision API.
 	ControllerTypeAristaCloudVision ControllerType = "aristaCloudVision"
-	// ControllerTypeCiscoAci - Cisco ACI APIC REST API.
-	ControllerTypeCiscoAci ControllerType = "ciscoAci"
+	// ControllerTypeCiscoACI - Cisco ACI APIC REST API.
+	ControllerTypeCiscoACI ControllerType = "ciscoAci"
 	// ControllerTypeDirect - Direct gNMI/SSH.
 	ControllerTypeDirect ControllerType = "direct"
 )
@@ -651,7 +651,7 @@ const (
 func PossibleControllerTypeValues() []ControllerType {
 	return []ControllerType{
 		ControllerTypeAristaCloudVision,
-		ControllerTypeCiscoAci,
+		ControllerTypeCiscoACI,
 		ControllerTypeDirect,
 	}
 }
@@ -1278,8 +1278,8 @@ const (
 	NetworkFabricRefreshDeviceTypesManagementSwitch NetworkFabricRefreshDeviceTypes = "ManagementSwitch"
 	// NetworkFabricRefreshDeviceTypesNPB - DeviceType-NPB(Network Packet Broker)
 	NetworkFabricRefreshDeviceTypesNPB NetworkFabricRefreshDeviceTypes = "NPB"
-	// NetworkFabricRefreshDeviceTypesToR - DeviceType-ToR(top of rack)
-	NetworkFabricRefreshDeviceTypesToR NetworkFabricRefreshDeviceTypes = "ToR"
+	// NetworkFabricRefreshDeviceTypesTOR - DeviceType-ToR(top of rack)
+	NetworkFabricRefreshDeviceTypesTOR NetworkFabricRefreshDeviceTypes = "ToR"
 )
 
 // PossibleNetworkFabricRefreshDeviceTypesValues returns the possible values for the NetworkFabricRefreshDeviceTypes const type.
@@ -1288,7 +1288,7 @@ func PossibleNetworkFabricRefreshDeviceTypesValues() []NetworkFabricRefreshDevic
 		NetworkFabricRefreshDeviceTypesCE,
 		NetworkFabricRefreshDeviceTypesManagementSwitch,
 		NetworkFabricRefreshDeviceTypesNPB,
-		NetworkFabricRefreshDeviceTypesToR,
+		NetworkFabricRefreshDeviceTypesTOR,
 	}
 }
 

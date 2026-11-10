@@ -1,6 +1,6 @@
 # Release History
 
-## 3.0.0-beta.1 (2026-11-09)
+## 3.0.0-beta.1 (2026-11-10)
 ### Breaking Changes
 
 - Struct `ValidateConfigurationResponse` has been removed
@@ -17,10 +17,10 @@
 - New value `DeviceRoleTerminalServer` added to enum type `DeviceRole`
 - New enum type `ConfigurationRegenerationType` with values `ConfigurationRegenerationTypePartial`
 - New enum type `ConnectivityModel` with values `ConnectivityModelArcProxy`, `ConnectivityModelDirect`, `ConnectivityModelExpressRoute`, `ConnectivityModelNone`
-- New enum type `ControllerType` with values `ControllerTypeAristaCloudVision`, `ControllerTypeCiscoAci`, `ControllerTypeDirect`
+- New enum type `ControllerType` with values `ControllerTypeAristaCloudVision`, `ControllerTypeCiscoACI`, `ControllerTypeDirect`
 - New enum type `GenerateBaseConfiguration` with values `GenerateBaseConfigurationDisabled`, `GenerateBaseConfigurationEnabled`
 - New enum type `ManagementMode` with values `ManagementModeManaged`, `ManagementModeUnmanaged`
-- New enum type `NetworkFabricRefreshDeviceTypes` with values `NetworkFabricRefreshDeviceTypesCE`, `NetworkFabricRefreshDeviceTypesManagementSwitch`, `NetworkFabricRefreshDeviceTypesNPB`, `NetworkFabricRefreshDeviceTypesToR`
+- New enum type `NetworkFabricRefreshDeviceTypes` with values `NetworkFabricRefreshDeviceTypesCE`, `NetworkFabricRefreshDeviceTypesManagementSwitch`, `NetworkFabricRefreshDeviceTypesNPB`, `NetworkFabricRefreshDeviceTypesTOR`
 - New enum type `OperationPolicy` with values `OperationPolicyFullControl`, `OperationPolicyValidateOnly`
 - New enum type `OperationalState` with values `OperationalStateDegraded`, `OperationalStateDown`, `OperationalStateUnknown`, `OperationalStateUp`
 - New function `*ClientFactory.NewEdgeConnectorsClient() *EdgeConnectorsClient`

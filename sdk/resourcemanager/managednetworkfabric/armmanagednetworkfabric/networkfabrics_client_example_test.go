@@ -783,7 +783,7 @@ func ExampleNetworkFabricsClient_BeginRefreshConfiguration() {
 			ConfigurationRegenerationType: to.Ptr(armmanagednetworkfabric.ConfigurationRegenerationType("Full")),
 			DeviceTypes: []*armmanagednetworkfabric.NetworkFabricRefreshDeviceTypes{
 				to.Ptr(armmanagednetworkfabric.NetworkFabricRefreshDeviceTypesCE),
-				to.Ptr(armmanagednetworkfabric.NetworkFabricRefreshDeviceTypesToR),
+				to.Ptr(armmanagednetworkfabric.NetworkFabricRefreshDeviceTypesTOR),
 			},
 		}})
 	if err != nil {

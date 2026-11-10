@@ -19,7 +19,7 @@ import (
 // EndpointsClient contains the methods for the Endpoints group.
 // Don't use this type directly, use NewEndpointsClient() instead.
 //
-// Generated from API version 2024-12-01
+// Generated from API version 2027-01-01
 type EndpointsClient struct {
 	internal *arm.Client
 }
@@ -59,7 +59,8 @@ func (client *EndpointsClient) CreateOrUpdate(ctx context.Context, resourceURI s
 	if err != nil {
 		return EndpointsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -78,7 +79,7 @@ func (client *EndpointsClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -120,7 +121,8 @@ func (client *EndpointsClient) Delete(ctx context.Context, resourceURI string, e
 		return EndpointsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return EndpointsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EndpointsClientDeleteResponse{}, err
 	}
 	return EndpointsClientDeleteResponse{}, nil
 }
@@ -141,7 +143,7 @@ func (client *EndpointsClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -165,7 +167,8 @@ func (client *EndpointsClient) Get(ctx context.Context, resourceURI string, endp
 	if err != nil {
 		return EndpointsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -184,7 +187,7 @@ func (client *EndpointsClient) getCreateRequest(ctx context.Context, resourceURI
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -198,6 +201,205 @@ func (client *EndpointsClient) getHandleResponse(resp *http.Response, successCod
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointResource); err != nil {
 		return EndpointsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListCredentials - Gets the endpoint access credentials to the resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - endpointName - The endpoint name.
+//   - options - EndpointsClientListCredentialsOptions contains the optional parameters for the EndpointsClient.ListCredentials
+//     method.
+func (client *EndpointsClient) ListCredentials(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListCredentialsOptions) (EndpointsClientListCredentialsResponse, error) {
+	var err error
+	const operationName = "EndpointsClient.ListCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCredentialsCreateRequest(ctx, resourceURI, endpointName, options)
+	if err != nil {
+		return EndpointsClientListCredentialsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EndpointsClientListCredentialsResponse{}, err
+	}
+	resp, err := client.listCredentialsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listCredentialsCreateRequest creates the ListCredentials request.
+func (client *EndpointsClient) listCredentialsCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListCredentialsOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listCredentials"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20270101)
+	if options != nil && options.Expiresin != nil {
+		reqQP.Set("expiresin", strconv.FormatInt(*options.Expiresin, 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.ListCredentialsRequest != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.ListCredentialsRequest); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// listCredentialsHandleResponse handles the ListCredentials response.
+func (client *EndpointsClient) listCredentialsHandleResponse(resp *http.Response, successCodes ...int) (EndpointsClientListCredentialsResponse, error) {
+	result := EndpointsClientListCredentialsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointAccessResource); err != nil {
+		return EndpointsClientListCredentialsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListIngressGatewayCredentials - Gets the ingress gateway endpoint credentials
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - endpointName - The endpoint name.
+//   - options - EndpointsClientListIngressGatewayCredentialsOptions contains the optional parameters for the EndpointsClient.ListIngressGatewayCredentials
+//     method.
+func (client *EndpointsClient) ListIngressGatewayCredentials(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListIngressGatewayCredentialsOptions) (EndpointsClientListIngressGatewayCredentialsResponse, error) {
+	var err error
+	const operationName = "EndpointsClient.ListIngressGatewayCredentials"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listIngressGatewayCredentialsCreateRequest(ctx, resourceURI, endpointName, options)
+	if err != nil {
+		return EndpointsClientListIngressGatewayCredentialsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EndpointsClientListIngressGatewayCredentialsResponse{}, err
+	}
+	resp, err := client.listIngressGatewayCredentialsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listIngressGatewayCredentialsCreateRequest creates the ListIngressGatewayCredentials request.
+func (client *EndpointsClient) listIngressGatewayCredentialsCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListIngressGatewayCredentialsOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listIngressGatewayCredentials"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20270101)
+	if options != nil && options.Expiresin != nil {
+		reqQP.Set("expiresin", strconv.FormatInt(*options.Expiresin, 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.ListIngressGatewayCredentialsRequest != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.ListIngressGatewayCredentialsRequest); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// listIngressGatewayCredentialsHandleResponse handles the ListIngressGatewayCredentials response.
+func (client *EndpointsClient) listIngressGatewayCredentialsHandleResponse(resp *http.Response, successCodes ...int) (EndpointsClientListIngressGatewayCredentialsResponse, error) {
+	result := EndpointsClientListIngressGatewayCredentialsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.IngressGatewayResource); err != nil {
+		return EndpointsClientListIngressGatewayCredentialsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListManagedProxyDetails - Fetches the managed proxy details
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
+//   - endpointName - The endpoint name.
+//   - managedProxyRequest - Object of type ManagedProxyRequest
+//   - options - EndpointsClientListManagedProxyDetailsOptions contains the optional parameters for the EndpointsClient.ListManagedProxyDetails
+//     method.
+func (client *EndpointsClient) ListManagedProxyDetails(ctx context.Context, resourceURI string, endpointName string, managedProxyRequest ManagedProxyRequest, options *EndpointsClientListManagedProxyDetailsOptions) (EndpointsClientListManagedProxyDetailsResponse, error) {
+	var err error
+	const operationName = "EndpointsClient.ListManagedProxyDetails"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listManagedProxyDetailsCreateRequest(ctx, resourceURI, endpointName, managedProxyRequest, options)
+	if err != nil {
+		return EndpointsClientListManagedProxyDetailsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return EndpointsClientListManagedProxyDetailsResponse{}, err
+	}
+	resp, err := client.listManagedProxyDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listManagedProxyDetailsCreateRequest creates the ListManagedProxyDetails request.
+func (client *EndpointsClient) listManagedProxyDetailsCreateRequest(ctx context.Context, resourceURI string, endpointName string, managedProxyRequest ManagedProxyRequest, _ *EndpointsClientListManagedProxyDetailsOptions) (*policy.Request, error) {
+	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listManagedProxyDetails"
+	if resourceURI == "" {
+		return nil, errors.New("parameter resourceURI cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	if endpointName == "" {
+		return nil, errors.New("parameter endpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20270101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, managedProxyRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// listManagedProxyDetailsHandleResponse handles the ListManagedProxyDetails response.
+func (client *EndpointsClient) listManagedProxyDetailsHandleResponse(resp *http.Response, successCodes ...int) (EndpointsClientListManagedProxyDetailsResponse, error) {
+	result := EndpointsClientListManagedProxyDetailsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedProxyResource); err != nil {
+		return EndpointsClientListManagedProxyDetailsResponse{}, err
 	}
 	return result, nil
 }
@@ -250,7 +452,7 @@ func (client *EndpointsClient) listCreateRequest(ctx context.Context, resourceUR
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20241201)
+		reqQP.Set("api-version", version20270101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -265,202 +467,6 @@ func (client *EndpointsClient) listHandleResponse(resp *http.Response, successCo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointsList); err != nil {
 		return EndpointsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// ListCredentials - Gets the endpoint access credentials to the resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - endpointName - The endpoint name.
-//   - options - EndpointsClientListCredentialsOptions contains the optional parameters for the EndpointsClient.ListCredentials
-//     method.
-func (client *EndpointsClient) ListCredentials(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListCredentialsOptions) (EndpointsClientListCredentialsResponse, error) {
-	var err error
-	const operationName = "EndpointsClient.ListCredentials"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCredentialsCreateRequest(ctx, resourceURI, endpointName, options)
-	if err != nil {
-		return EndpointsClientListCredentialsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return EndpointsClientListCredentialsResponse{}, err
-	}
-	return client.listCredentialsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listCredentialsCreateRequest creates the ListCredentials request.
-func (client *EndpointsClient) listCredentialsCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListCredentialsOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listCredentials"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
-	if options != nil && options.Expiresin != nil {
-		reqQP.Set("expiresin", strconv.FormatInt(*options.Expiresin, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ListCredentialsRequest != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.ListCredentialsRequest); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
-// listCredentialsHandleResponse handles the ListCredentials response.
-func (client *EndpointsClient) listCredentialsHandleResponse(resp *http.Response, successCodes ...int) (EndpointsClientListCredentialsResponse, error) {
-	result := EndpointsClientListCredentialsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointAccessResource); err != nil {
-		return EndpointsClientListCredentialsResponse{}, err
-	}
-	return result, nil
-}
-
-// ListIngressGatewayCredentials - Gets the ingress gateway endpoint credentials
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - endpointName - The endpoint name.
-//   - options - EndpointsClientListIngressGatewayCredentialsOptions contains the optional parameters for the EndpointsClient.ListIngressGatewayCredentials
-//     method.
-func (client *EndpointsClient) ListIngressGatewayCredentials(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListIngressGatewayCredentialsOptions) (EndpointsClientListIngressGatewayCredentialsResponse, error) {
-	var err error
-	const operationName = "EndpointsClient.ListIngressGatewayCredentials"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listIngressGatewayCredentialsCreateRequest(ctx, resourceURI, endpointName, options)
-	if err != nil {
-		return EndpointsClientListIngressGatewayCredentialsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return EndpointsClientListIngressGatewayCredentialsResponse{}, err
-	}
-	return client.listIngressGatewayCredentialsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listIngressGatewayCredentialsCreateRequest creates the ListIngressGatewayCredentials request.
-func (client *EndpointsClient) listIngressGatewayCredentialsCreateRequest(ctx context.Context, resourceURI string, endpointName string, options *EndpointsClientListIngressGatewayCredentialsOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listIngressGatewayCredentials"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
-	if options != nil && options.Expiresin != nil {
-		reqQP.Set("expiresin", strconv.FormatInt(*options.Expiresin, 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.ListIngressGatewayCredentialsRequest != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.ListIngressGatewayCredentialsRequest); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
-// listIngressGatewayCredentialsHandleResponse handles the ListIngressGatewayCredentials response.
-func (client *EndpointsClient) listIngressGatewayCredentialsHandleResponse(resp *http.Response, successCodes ...int) (EndpointsClientListIngressGatewayCredentialsResponse, error) {
-	result := EndpointsClientListIngressGatewayCredentialsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.IngressGatewayResource); err != nil {
-		return EndpointsClientListIngressGatewayCredentialsResponse{}, err
-	}
-	return result, nil
-}
-
-// ListManagedProxyDetails - Fetches the managed proxy details
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
-//   - endpointName - The endpoint name.
-//   - managedProxyRequest - Object of type ManagedProxyRequest
-//   - options - EndpointsClientListManagedProxyDetailsOptions contains the optional parameters for the EndpointsClient.ListManagedProxyDetails
-//     method.
-func (client *EndpointsClient) ListManagedProxyDetails(ctx context.Context, resourceURI string, endpointName string, managedProxyRequest ManagedProxyRequest, options *EndpointsClientListManagedProxyDetailsOptions) (EndpointsClientListManagedProxyDetailsResponse, error) {
-	var err error
-	const operationName = "EndpointsClient.ListManagedProxyDetails"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listManagedProxyDetailsCreateRequest(ctx, resourceURI, endpointName, managedProxyRequest, options)
-	if err != nil {
-		return EndpointsClientListManagedProxyDetailsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return EndpointsClientListManagedProxyDetailsResponse{}, err
-	}
-	return client.listManagedProxyDetailsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listManagedProxyDetailsCreateRequest creates the ListManagedProxyDetails request.
-func (client *EndpointsClient) listManagedProxyDetailsCreateRequest(ctx context.Context, resourceURI string, endpointName string, managedProxyRequest ManagedProxyRequest, _ *EndpointsClientListManagedProxyDetailsOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.HybridConnectivity/endpoints/{endpointName}/listManagedProxyDetails"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
-	if endpointName == "" {
-		return nil, errors.New("parameter endpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{endpointName}", endpointName)
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, managedProxyRequest); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// listManagedProxyDetailsHandleResponse handles the ListManagedProxyDetails response.
-func (client *EndpointsClient) listManagedProxyDetailsHandleResponse(resp *http.Response, successCodes ...int) (EndpointsClientListManagedProxyDetailsResponse, error) {
-	result := EndpointsClientListManagedProxyDetailsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ManagedProxyResource); err != nil {
-		return EndpointsClientListManagedProxyDetailsResponse{}, err
 	}
 	return result, nil
 }
@@ -485,7 +491,8 @@ func (client *EndpointsClient) Update(ctx context.Context, resourceURI string, e
 	if err != nil {
 		return EndpointsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -504,7 +511,7 @@ func (client *EndpointsClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

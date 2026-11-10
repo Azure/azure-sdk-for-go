@@ -12,66 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/communicationServices/checkNameAvailabilityAvailable.json
-func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityAvailable() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcommunication.NewClientFactory("11112222-3333-4444-5555-666677778888", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, armcommunication.NameAvailabilityParameters{
-		Name: to.Ptr("MyCommunicationService"),
-		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcommunication.ServicesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResponse: armcommunication.CheckNameAvailabilityResponse{
-	// 		Message: to.Ptr("Requested name is available for the requested type"),
-	// 		NameAvailable: to.Ptr(true),
-	// 		Reason: to.Ptr(armcommunication.CheckNameAvailabilityReason("NameAvailable")),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01/communicationServices/checkNameAvailabilityUnavailable.json
-func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityUnavailable() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcommunication.NewClientFactory("11112222-3333-4444-5555-666677778888", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, armcommunication.NameAvailabilityParameters{
-		Name: to.Ptr("MyCommunicationService"),
-		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcommunication.ServicesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResponse: armcommunication.CheckNameAvailabilityResponse{
-	// 		Message: to.Ptr("Requested name is unavailable for the requested type"),
-	// 		NameAvailable: to.Ptr(false),
-	// 		Reason: to.Ptr(armcommunication.CheckNameAvailabilityReasonAlreadyExists),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-09-01/communicationServices/createOrUpdate.json
 func ExampleServicesClient_BeginCreateOrUpdate_createOrUpdateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -287,6 +227,66 @@ func ExampleServicesClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-09-01/communicationServices/checkNameAvailabilityAvailable.json
+func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityAvailable() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcommunication.NewClientFactory("11112222-3333-4444-5555-666677778888", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, armcommunication.NameAvailabilityParameters{
+		Name: to.Ptr("MyCommunicationService"),
+		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcommunication.ServicesClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResponse: armcommunication.CheckNameAvailabilityResponse{
+	// 		Message: to.Ptr("Requested name is available for the requested type"),
+	// 		NameAvailable: to.Ptr(true),
+	// 		Reason: to.Ptr(armcommunication.CheckNameAvailabilityReason("NameAvailable")),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/communicationServices/checkNameAvailabilityUnavailable.json
+func ExampleServicesClient_CheckNameAvailability_checkNameAvailabilityUnavailable() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcommunication.NewClientFactory("11112222-3333-4444-5555-666677778888", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, armcommunication.NameAvailabilityParameters{
+		Name: to.Ptr("MyCommunicationService"),
+		Type: to.Ptr("Microsoft.Communication/CommunicationServices"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcommunication.ServicesClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResponse: armcommunication.CheckNameAvailabilityResponse{
+	// 		Message: to.Ptr("Requested name is unavailable for the requested type"),
+	// 		NameAvailable: to.Ptr(false),
+	// 		Reason: to.Ptr(armcommunication.CheckNameAvailabilityReasonAlreadyExists),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-09-01/communicationServices/get.json
 func ExampleServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -353,6 +353,32 @@ func ExampleServicesClient_LinkNotificationHub() {
 	// res = armcommunication.ServicesClientLinkNotificationHubResponse{
 	// 	LinkedNotificationHub: armcommunication.LinkedNotificationHub{
 	// 		ResourceID: to.Ptr("/subscriptions/11112222-3333-4444-5555-666677778888/resourceGroups/MyOtherResourceGroup/providers/Microsoft.NotificationHubs/namespaces/MyNamespace/notificationHubs/MyHub"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01/communicationServices/listKeys.json
+func ExampleServicesClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcommunication.NewClientFactory("11112222-3333-4444-5555-666677778888", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().ListKeys(ctx, "MyResourceGroup", "MyCommunicationResource", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcommunication.ServicesClientListKeysResponse{
+	// 	ServiceKeys: armcommunication.ServiceKeys{
+	// 		PrimaryKey: to.Ptr("<primaryKey>"),
+	// 		SecondaryKey: to.Ptr("<secondaryKey>"),
 	// 	},
 	// }
 }
@@ -441,32 +467,6 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-09-01/communicationServices/listKeys.json
-func ExampleServicesClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcommunication.NewClientFactory("11112222-3333-4444-5555-666677778888", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServicesClient().ListKeys(ctx, "MyResourceGroup", "MyCommunicationResource", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcommunication.ServicesClientListKeysResponse{
-	// 	ServiceKeys: armcommunication.ServiceKeys{
-	// 		PrimaryKey: to.Ptr("<primaryKey>"),
-	// 		SecondaryKey: to.Ptr("<secondaryKey>"),
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2025-09-01/communicationServices/regenerateKey.json

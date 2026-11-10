@@ -68,7 +68,8 @@ func (client *ProtectionContainerRefreshOperationResultsClient) Get(ctx context.
 		return ProtectionContainerRefreshOperationResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return ProtectionContainerRefreshOperationResultsClientGetResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ProtectionContainerRefreshOperationResultsClientGetResponse{}, err
 	}
 	return ProtectionContainerRefreshOperationResultsClientGetResponse{}, nil
 }

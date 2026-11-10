@@ -66,7 +66,8 @@ func (client *TopicsClient) CreateOrUpdate(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return TopicsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -138,7 +139,8 @@ func (client *TopicsClient) CreateOrUpdateAuthorizationRule(ctx context.Context,
 	if err != nil {
 		return TopicsClientCreateOrUpdateAuthorizationRuleResponse{}, err
 	}
-	return client.createOrUpdateAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateAuthorizationRuleCreateRequest creates the CreateOrUpdateAuthorizationRule request.
@@ -212,7 +214,8 @@ func (client *TopicsClient) Delete(ctx context.Context, resourceGroupName string
 		return TopicsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return TopicsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TopicsClientDeleteResponse{}, err
 	}
 	return TopicsClientDeleteResponse{}, nil
 }
@@ -269,7 +272,8 @@ func (client *TopicsClient) DeleteAuthorizationRule(ctx context.Context, resourc
 		return TopicsClientDeleteAuthorizationRuleResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return TopicsClientDeleteAuthorizationRuleResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TopicsClientDeleteAuthorizationRuleResponse{}, err
 	}
 	return TopicsClientDeleteAuthorizationRuleResponse{}, nil
 }
@@ -327,7 +331,8 @@ func (client *TopicsClient) Get(ctx context.Context, resourceGroupName string, n
 	if err != nil {
 		return TopicsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -394,7 +399,8 @@ func (client *TopicsClient) GetAuthorizationRule(ctx context.Context, resourceGr
 	if err != nil {
 		return TopicsClientGetAuthorizationRuleResponse{}, err
 	}
-	return client.getAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAuthorizationRuleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAuthorizationRuleCreateRequest creates the GetAuthorizationRule request.
@@ -439,6 +445,77 @@ func (client *TopicsClient) getAuthorizationRuleHandleResponse(resp *http.Respon
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SBAuthorizationRule); err != nil {
 		return TopicsClientGetAuthorizationRuleResponse{}, err
+	}
+	return result, nil
+}
+
+// ListKeys - Gets the primary and secondary connection strings for the topic.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - namespaceName - The namespace name
+//   - topicName - The topic name.
+//   - authorizationRuleName - The authorization rule name.
+//   - options - TopicsClientListKeysOptions contains the optional parameters for the TopicsClient.ListKeys method.
+func (client *TopicsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string, options *TopicsClientListKeysOptions) (TopicsClientListKeysResponse, error) {
+	var err error
+	const operationName = "TopicsClient.ListKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, topicName, authorizationRuleName, options)
+	if err != nil {
+		return TopicsClientListKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return TopicsClientListKeysResponse{}, err
+	}
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listKeysCreateRequest creates the ListKeys request.
+func (client *TopicsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string, _ *TopicsClientListKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/authorizationRules/{authorizationRuleName}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if topicName == "" {
+		return nil, errors.New("parameter topicName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
+	if authorizationRuleName == "" {
+		return nil, errors.New("parameter authorizationRuleName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listKeysHandleResponse handles the ListKeys response.
+func (client *TopicsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (TopicsClientListKeysResponse, error) {
+	result := TopicsClientListKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
+		return TopicsClientListKeysResponse{}, err
 	}
 	return result, nil
 }
@@ -608,76 +685,6 @@ func (client *TopicsClient) listByNamespaceHandleResponse(resp *http.Response, s
 	return result, nil
 }
 
-// ListKeys - Gets the primary and secondary connection strings for the topic.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - namespaceName - The namespace name
-//   - topicName - The topic name.
-//   - authorizationRuleName - The authorization rule name.
-//   - options - TopicsClientListKeysOptions contains the optional parameters for the TopicsClient.ListKeys method.
-func (client *TopicsClient) ListKeys(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string, options *TopicsClientListKeysOptions) (TopicsClientListKeysResponse, error) {
-	var err error
-	const operationName = "TopicsClient.ListKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listKeysCreateRequest(ctx, resourceGroupName, namespaceName, topicName, authorizationRuleName, options)
-	if err != nil {
-		return TopicsClientListKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return TopicsClientListKeysResponse{}, err
-	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listKeysCreateRequest creates the ListKeys request.
-func (client *TopicsClient) listKeysCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, topicName string, authorizationRuleName string, _ *TopicsClientListKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceBus/namespaces/{namespaceName}/topics/{topicName}/authorizationRules/{authorizationRuleName}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if topicName == "" {
-		return nil, errors.New("parameter topicName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{topicName}", url.PathEscape(topicName))
-	if authorizationRuleName == "" {
-		return nil, errors.New("parameter authorizationRuleName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{authorizationRuleName}", url.PathEscape(authorizationRuleName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listKeysHandleResponse handles the ListKeys response.
-func (client *TopicsClient) listKeysHandleResponse(resp *http.Response, successCodes ...int) (TopicsClientListKeysResponse, error) {
-	result := TopicsClientListKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AccessKeys); err != nil {
-		return TopicsClientListKeysResponse{}, err
-	}
-	return result, nil
-}
-
 // RegenerateKeys - Regenerates primary or secondary connection strings for the topic.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -700,7 +707,8 @@ func (client *TopicsClient) RegenerateKeys(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return TopicsClientRegenerateKeysResponse{}, err
 	}
-	return client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.

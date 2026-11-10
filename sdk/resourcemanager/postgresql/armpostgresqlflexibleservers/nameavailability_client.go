@@ -19,7 +19,7 @@ import (
 // NameAvailabilityClient contains the methods for the NameAvailability group.
 // Don't use this type directly, use NewNameAvailabilityClient() instead.
 //
-// Generated from API version 2026-07-01-preview
+// Generated from API version 2026-10-01
 type NameAvailabilityClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,7 +64,8 @@ func (client *NameAvailabilityClient) CheckGlobally(ctx context.Context, paramet
 	if err != nil {
 		return NameAvailabilityClientCheckGloballyResponse{}, err
 	}
-	return client.checkGloballyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkGloballyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkGloballyCreateRequest creates the CheckGlobally request.
@@ -79,7 +80,7 @@ func (client *NameAvailabilityClient) checkGloballyCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -121,7 +122,8 @@ func (client *NameAvailabilityClient) CheckWithLocation(ctx context.Context, loc
 	if err != nil {
 		return NameAvailabilityClientCheckWithLocationResponse{}, err
 	}
-	return client.checkWithLocationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkWithLocationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkWithLocationCreateRequest creates the CheckWithLocation request.
@@ -140,7 +142,7 @@ func (client *NameAvailabilityClient) checkWithLocationCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

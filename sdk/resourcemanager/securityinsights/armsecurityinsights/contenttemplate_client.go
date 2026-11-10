@@ -65,7 +65,8 @@ func (client *ContentTemplateClient) Delete(ctx context.Context, resourceGroupNa
 		return ContentTemplateClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ContentTemplateClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ContentTemplateClientDeleteResponse{}, err
 	}
 	return ContentTemplateClientDeleteResponse{}, nil
 }
@@ -124,7 +125,8 @@ func (client *ContentTemplateClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ContentTemplateClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -190,7 +192,8 @@ func (client *ContentTemplateClient) Install(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ContentTemplateClientInstallResponse{}, err
 	}
-	return client.installHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.installHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // installCreateRequest creates the Install request.

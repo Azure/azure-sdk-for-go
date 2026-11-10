@@ -12,36 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-02-14/KustoScriptsCheckNameAvailability.json
-func ExampleScriptsClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewScriptsClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", "db", armkusto.ScriptCheckNameRequest{
-		Name: to.Ptr("kustoScriptName1"),
-		Type: to.Ptr("Microsoft.Kusto/clusters/databases/scripts"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.ScriptsClientCheckNameAvailabilityResponse{
-	// 	CheckNameResult: armkusto.CheckNameResult{
-	// 		Name: to.Ptr("kustoScriptName1"),
-	// 		Message: to.Ptr("Name 'kustoScriptName1' is already taken. Please specify a different name"),
-	// 		NameAvailable: to.Ptr(false),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-02-14/KustoScriptsCreateOrUpdate.json
 func ExampleScriptsClient_BeginCreateOrUpdate_kustoScriptsCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -176,6 +146,91 @@ func ExampleScriptsClient_BeginDelete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkusto.ScriptsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoScriptsUpdate.json
+func ExampleScriptsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewScriptsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "kustoScript", armkusto.Script{
+		Properties: &armkusto.ScriptProperties{
+			ContinueOnErrors:           to.Ptr(true),
+			ForceUpdateTag:             to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
+			PrincipalPermissionsAction: to.Ptr(armkusto.PrincipalPermissionsActionRemovePermissionOnScriptCompletion),
+			ScriptLevel:                to.Ptr(armkusto.ScriptLevelDatabase),
+			ScriptURL:                  to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
+			ScriptURLSasToken:          to.Ptr("?sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=********************************"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.ScriptsClientUpdateResponse{
+	// 	Script: armkusto.Script{
+	// 		Name: to.Ptr("kustoCluster/KustoDatabase8/kustoScript"),
+	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/Scripts"),
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8/Scripts/kustoScript"),
+	// 		Properties: &armkusto.ScriptProperties{
+	// 			ContinueOnErrors: to.Ptr(true),
+	// 			ForceUpdateTag: to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
+	// 			PrincipalPermissionsAction: to.Ptr(armkusto.PrincipalPermissionsActionRemovePermissionOnScriptCompletion),
+	// 			ScriptLevel: to.Ptr(armkusto.ScriptLevelDatabase),
+	// 			ScriptURL: to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
+	// 		},
+	// 		SystemData: &armkusto.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.June, 29, 15, 6, 54, 275790600, time.UTC)),
+	// 			CreatedBy: to.Ptr("user@microsoft.com"),
+	// 			CreatedByType: to.Ptr(armkusto.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 17, 16, 24, 364412600, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user2@microsoft.com"),
+	// 			LastModifiedByType: to.Ptr(armkusto.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoScriptsCheckNameAvailability.json
+func ExampleScriptsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewScriptsClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", "db", armkusto.ScriptCheckNameRequest{
+		Name: to.Ptr("kustoScriptName1"),
+		Type: to.Ptr("Microsoft.Kusto/clusters/databases/scripts"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.ScriptsClientCheckNameAvailabilityResponse{
+	// 	CheckNameResult: armkusto.CheckNameResult{
+	// 		Name: to.Ptr("kustoScriptName1"),
+	// 		Message: to.Ptr("Name 'kustoScriptName1' is already taken. Please specify a different name"),
+	// 		NameAvailable: to.Ptr(false),
+	// 	},
 	// }
 }
 
@@ -333,59 +388,4 @@ func ExampleScriptsClient_NewListByDatabasePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-02-14/KustoScriptsUpdate.json
-func ExampleScriptsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewScriptsClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", "kustoScript", armkusto.Script{
-		Properties: &armkusto.ScriptProperties{
-			ContinueOnErrors:           to.Ptr(true),
-			ForceUpdateTag:             to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
-			PrincipalPermissionsAction: to.Ptr(armkusto.PrincipalPermissionsActionRemovePermissionOnScriptCompletion),
-			ScriptLevel:                to.Ptr(armkusto.ScriptLevelDatabase),
-			ScriptURL:                  to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
-			ScriptURLSasToken:          to.Ptr("?sv=2019-02-02&st=2019-04-29T22%3A18%3A26Z&se=2019-04-30T02%3A23%3A26Z&sr=b&sp=rw&sip=168.1.5.60-168.1.5.70&spr=https&sig=********************************"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.ScriptsClientUpdateResponse{
-	// 	Script: armkusto.Script{
-	// 		Name: to.Ptr("kustoCluster/KustoDatabase8/kustoScript"),
-	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases/Scripts"),
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8/Scripts/kustoScript"),
-	// 		Properties: &armkusto.ScriptProperties{
-	// 			ContinueOnErrors: to.Ptr(true),
-	// 			ForceUpdateTag: to.Ptr("2bcf3c21-ffd1-4444-b9dd-e52e00ee53fe"),
-	// 			PrincipalPermissionsAction: to.Ptr(armkusto.PrincipalPermissionsActionRemovePermissionOnScriptCompletion),
-	// 			ScriptLevel: to.Ptr(armkusto.ScriptLevelDatabase),
-	// 			ScriptURL: to.Ptr("https://mysa.blob.core.windows.net/container/script.txt"),
-	// 		},
-	// 		SystemData: &armkusto.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.June, 29, 15, 6, 54, 275790600, time.UTC)),
-	// 			CreatedBy: to.Ptr("user@microsoft.com"),
-	// 			CreatedByType: to.Ptr(armkusto.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 17, 16, 24, 364412600, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user2@microsoft.com"),
-	// 			LastModifiedByType: to.Ptr(armkusto.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
 }

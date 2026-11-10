@@ -21,6 +21,9 @@ type ServerFactory struct {
 	// Server contains the fakes for client Client
 	Server Server
 
+	// ClustersServer contains the fakes for client ClustersClient
+	ClustersServer ClustersServer
+
 	// DatabasesServer contains the fakes for client DatabasesClient
 	DatabasesServer DatabasesServer
 
@@ -56,6 +59,7 @@ type ServerFactoryTransport struct {
 	trMu                               sync.Mutex
 	trAccessPolicyAssignmentServer     *AccessPolicyAssignmentServerTransport
 	trServer                           *ServerTransport
+	trClustersServer                   *ClustersServerTransport
 	trDatabasesServer                  *DatabasesServerTransport
 	trMigrationsServer                 *MigrationsServerTransport
 	trOperationsServer                 *OperationsServerTransport
@@ -69,7 +73,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	client := method[:strings.Index(method, ".")]
@@ -85,6 +89,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "Client":
 		initServer(&s.trMu, &s.trServer, func() *ServerTransport { return NewServerTransport(&s.srv.Server) })
 		resp, err = s.trServer.Do(req)
+	case "ClustersClient":
+		initServer(&s.trMu, &s.trClustersServer, func() *ClustersServerTransport { return NewClustersServerTransport(&s.srv.ClustersServer) })
+		resp, err = s.trClustersServer.Do(req)
 	case "DatabasesClient":
 		initServer(&s.trMu, &s.trDatabasesServer, func() *DatabasesServerTransport { return NewDatabasesServerTransport(&s.srv.DatabasesServer) })
 		resp, err = s.trDatabasesServer.Do(req)

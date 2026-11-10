@@ -19,7 +19,7 @@ import (
 // VirtualNetworkSubnetUsageClient contains the methods for the VirtualNetworkSubnetUsage group.
 // Don't use this type directly, use NewVirtualNetworkSubnetUsageClient() instead.
 //
-// Generated from API version 2026-07-01-preview
+// Generated from API version 2026-10-01
 type VirtualNetworkSubnetUsageClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,7 +64,8 @@ func (client *VirtualNetworkSubnetUsageClient) List(ctx context.Context, locatio
 	if err != nil {
 		return VirtualNetworkSubnetUsageClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -83,7 +84,7 @@ func (client *VirtualNetworkSubnetUsageClient) listCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

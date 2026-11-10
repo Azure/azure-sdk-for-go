@@ -19,7 +19,7 @@ import (
 // StorageMoversClient contains the methods for the StorageMovers group.
 // Don't use this type directly, use NewStorageMoversClient() instead.
 //
-// Generated from API version 2025-12-01
+// Generated from API version 2026-05-01
 type StorageMoversClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -42,71 +42,6 @@ func NewStorageMoversClient(subscriptionID string, credential azcore.TokenCreden
 		internal:       cl,
 	}
 	return client, nil
-}
-
-// CreateOrUpdate - Creates or updates a top-level Storage Mover resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storageMoverName - The name of the Storage Mover resource.
-//   - options - StorageMoversClientCreateOrUpdateOptions contains the optional parameters for the StorageMoversClient.CreateOrUpdate
-//     method.
-func (client *StorageMoversClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover StorageMover, options *StorageMoversClientCreateOrUpdateOptions) (StorageMoversClientCreateOrUpdateResponse, error) {
-	var err error
-	const operationName = "StorageMoversClient.CreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, storageMoverName, storageMover, options)
-	if err != nil {
-		return StorageMoversClientCreateOrUpdateResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return StorageMoversClientCreateOrUpdateResponse{}, err
-	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *StorageMoversClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover StorageMover, _ *StorageMoversClientCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storageMoverName == "" {
-		return nil, errors.New("parameter storageMoverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageMoverName}", url.PathEscape(storageMoverName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, storageMover); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *StorageMoversClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (StorageMoversClientCreateOrUpdateResponse, error) {
-	result := StorageMoversClientCreateOrUpdateResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.StorageMover); err != nil {
-		return StorageMoversClientCreateOrUpdateResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginDelete - Deletes a Storage Mover resource.
@@ -132,7 +67,7 @@ func (client *StorageMoversClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Deletes a Storage Mover resource.
+// deleteOperation - Deletes a Storage Mover resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageMoversClient) deleteOperation(ctx context.Context, resourceGroupName string, storageMoverName string, options *StorageMoversClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -149,12 +84,13 @@ func (client *StorageMoversClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StorageMoversClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageMoverName string, _ *StorageMoversClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}"
 	if client.subscriptionID == "" {
@@ -174,9 +110,75 @@ func (client *StorageMoversClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
+}
+
+// CreateOrUpdate - Creates or updates a top-level Storage Mover resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storageMoverName - The name of the Storage Mover resource.
+//   - options - StorageMoversClientCreateOrUpdateOptions contains the optional parameters for the StorageMoversClient.CreateOrUpdate
+//     method.
+func (client *StorageMoversClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover StorageMover, options *StorageMoversClientCreateOrUpdateOptions) (StorageMoversClientCreateOrUpdateResponse, error) {
+	var err error
+	const operationName = "StorageMoversClient.CreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, storageMoverName, storageMover, options)
+	if err != nil {
+		return StorageMoversClientCreateOrUpdateResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return StorageMoversClientCreateOrUpdateResponse{}, err
+	}
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+func (client *StorageMoversClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, storageMoverName string, storageMover StorageMover, _ *StorageMoversClientCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storageMoverName == "" {
+		return nil, errors.New("parameter storageMoverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageMoverName}", url.PathEscape(storageMoverName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, storageMover); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createOrUpdateHandleResponse handles the CreateOrUpdate response.
+func (client *StorageMoversClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (StorageMoversClientCreateOrUpdateResponse, error) {
+	result := StorageMoversClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.StorageMover); err != nil {
+		return StorageMoversClientCreateOrUpdateResponse{}, err
+	}
+	return result, nil
 }
 
 // Get - Gets a Storage Mover resource.
@@ -198,7 +200,8 @@ func (client *StorageMoversClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return StorageMoversClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -221,7 +224,7 @@ func (client *StorageMoversClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -235,6 +238,73 @@ func (client *StorageMoversClient) getHandleResponse(resp *http.Response, succes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.StorageMover); err != nil {
 		return StorageMoversClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListBySubscriptionPager - Lists all Storage Movers in a subscription.
+//   - options - StorageMoversClientListBySubscriptionOptions contains the optional parameters for the StorageMoversClient.NewListBySubscriptionPager
+//     method.
+func (client *StorageMoversClient) NewListBySubscriptionPager(options *StorageMoversClientListBySubscriptionOptions) *runtime.Pager[StorageMoversClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[StorageMoversClientListBySubscriptionResponse]{
+		More: func(page StorageMoversClientListBySubscriptionResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *StorageMoversClientListBySubscriptionResponse) (StorageMoversClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageMoversClient.NewListBySubscriptionPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return StorageMoversClientListBySubscriptionResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return StorageMoversClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listBySubscriptionCreateRequest creates the ListBySubscription request.
+func (client *StorageMoversClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *StorageMoversClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageMover/storageMovers"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listBySubscriptionHandleResponse handles the ListBySubscription response.
+func (client *StorageMoversClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (StorageMoversClientListBySubscriptionResponse, error) {
+	result := StorageMoversClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
+		return StorageMoversClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
@@ -291,7 +361,7 @@ func (client *StorageMoversClient) listCreateRequest(ctx context.Context, resour
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251201)
+		reqQP.Set("api-version", version20260501)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -306,73 +376,6 @@ func (client *StorageMoversClient) listHandleResponse(resp *http.Response, succe
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
 		return StorageMoversClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListBySubscriptionPager - Lists all Storage Movers in a subscription.
-//   - options - StorageMoversClientListBySubscriptionOptions contains the optional parameters for the StorageMoversClient.NewListBySubscriptionPager
-//     method.
-func (client *StorageMoversClient) NewListBySubscriptionPager(options *StorageMoversClientListBySubscriptionOptions) *runtime.Pager[StorageMoversClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[StorageMoversClientListBySubscriptionResponse]{
-		More: func(page StorageMoversClientListBySubscriptionResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *StorageMoversClientListBySubscriptionResponse) (StorageMoversClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "StorageMoversClient.NewListBySubscriptionPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return StorageMoversClientListBySubscriptionResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return StorageMoversClientListBySubscriptionResponse{}, err
-			}
-			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *StorageMoversClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *StorageMoversClientListBySubscriptionOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.StorageMover/storageMovers"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251201)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *StorageMoversClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (StorageMoversClientListBySubscriptionResponse, error) {
-	result := StorageMoversClientListBySubscriptionResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.List); err != nil {
-		return StorageMoversClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
@@ -396,7 +399,8 @@ func (client *StorageMoversClient) Update(ctx context.Context, resourceGroupName
 	if err != nil {
 		return StorageMoversClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -419,7 +423,7 @@ func (client *StorageMoversClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201)
+	reqQP.Set("api-version", version20260501)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

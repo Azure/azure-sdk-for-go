@@ -86,7 +86,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcile(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -142,7 +143,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) Get(ctx context.Cont
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -31,10 +31,6 @@ func ExamplePoolsClient_BeginCreateOrReplace() {
 				ComputeGeneration: to.Ptr[int32](3),
 				VCores:            to.Ptr[int32](2),
 			},
-			ParameterGroup: &armhorizondb.PoolParameterGroupReference{
-				ParameterGroupResourceID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/providers/Microsoft.HorizonDb/locations/eastus2/parameterGroups/default-postgresql-17-provisioned"),
-				ApplyMethod:              to.Ptr(armhorizondb.ParameterApplyMethodImmediate),
-			},
 			ScheduledMaintenance: &armhorizondb.SystemScheduledMaintenanceProperties{
 				MaintenanceManagementType: to.Ptr(armhorizondb.ScheduledMaintenanceManagementTypeSystem),
 			},

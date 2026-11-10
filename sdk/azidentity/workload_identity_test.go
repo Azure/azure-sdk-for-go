@@ -184,7 +184,7 @@ func TestWorkloadIdentityCredential_Expiration(t *testing.T) {
 		// tokenReqs counts requests, and its latest value is the expected client assertion and the requested scope.
 		// Each iteration of this loop therefore sends a token request with a unique assertion.
 		s := fmt.Sprint(tokenReqs)
-		if err = os.WriteFile(tempFile, []byte(fmt.Sprint(s)), os.ModePerm); err != nil {
+		if err = os.WriteFile(tempFile, fmt.Append(nil, s), os.ModePerm); err != nil {
 			t.Fatalf("failed to write token file: %v", err)
 		}
 		if _, err = cred.GetToken(context.Background(), policy.TokenRequestOptions{Scopes: []string{s}}); err != nil {

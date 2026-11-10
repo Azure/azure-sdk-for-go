@@ -19,7 +19,7 @@ import (
 // GenerateAwsTemplateClient contains the methods for the GenerateAwsTemplate group.
 // Don't use this type directly, use NewGenerateAwsTemplateClient() instead.
 //
-// Generated from API version 2024-12-01
+// Generated from API version 2027-01-01
 type GenerateAwsTemplateClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,7 +63,8 @@ func (client *GenerateAwsTemplateClient) Post(ctx context.Context, generateAwsTe
 	if err != nil {
 		return GenerateAwsTemplateClientPostResponse{}, err
 	}
-	return client.postHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.postHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // postCreateRequest creates the Post request.
@@ -78,7 +79,7 @@ func (client *GenerateAwsTemplateClient) postCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241201)
+	reqQP.Set("api-version", version20270101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

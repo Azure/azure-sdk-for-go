@@ -57,7 +57,8 @@ func (client *AzureDataTransferClient) ListApprovedSchemas(ctx context.Context, 
 	if err != nil {
 		return AzureDataTransferClientListApprovedSchemasResponse{}, err
 	}
-	return client.listApprovedSchemasHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listApprovedSchemasHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listApprovedSchemasCreateRequest creates the ListApprovedSchemas request.
@@ -109,7 +110,8 @@ func (client *AzureDataTransferClient) ListFlowProfiles(ctx context.Context, bod
 	if err != nil {
 		return AzureDataTransferClientListFlowProfilesResponse{}, err
 	}
-	return client.listFlowProfilesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listFlowProfilesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listFlowProfilesCreateRequest creates the ListFlowProfiles request.
@@ -161,7 +163,8 @@ func (client *AzureDataTransferClient) ListPipelineMetadata(ctx context.Context,
 	if err != nil {
 		return AzureDataTransferClientListPipelineMetadataResponse{}, err
 	}
-	return client.listPipelineMetadataHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listPipelineMetadataHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listPipelineMetadataCreateRequest creates the ListPipelineMetadata request.
@@ -214,7 +217,8 @@ func (client *AzureDataTransferClient) ValidateSchema(ctx context.Context, schem
 	if err != nil {
 		return AzureDataTransferClientValidateSchemaResponse{}, err
 	}
-	return client.validateSchemaHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateSchemaHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateSchemaCreateRequest creates the ValidateSchema request.

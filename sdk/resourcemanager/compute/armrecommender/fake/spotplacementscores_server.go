@@ -47,7 +47,7 @@ func (s *SpotPlacementScoresServerTransport) Do(req *http.Request) (*http.Respon
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return s.dispatchToMethodFake(req, method)
@@ -105,7 +105,7 @@ func (s *SpotPlacementScoresServerTransport) dispatchGet(req *http.Request) (*ht
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ComputeDiagnosticBase, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).SpotPlacementScoresBase, req)
 	if err != nil {
 		return nil, err
 	}

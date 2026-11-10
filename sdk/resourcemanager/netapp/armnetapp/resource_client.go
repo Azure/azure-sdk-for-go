@@ -19,7 +19,7 @@ import (
 // ResourceClient contains the methods for the Resource group.
 // Don't use this type directly, use NewResourceClient() instead.
 //
-// Generated from API version 2026-08-01
+// Generated from API version 2026-08-15-preview
 type ResourceClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -88,7 +88,8 @@ func (client *ResourceClient) updateNetworkSiblingSet(ctx context.Context, locat
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -109,7 +110,7 @@ func (client *ResourceClient) updateNetworkSiblingSetCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20260815Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -141,7 +142,8 @@ func (client *ResourceClient) CheckFilePathAvailability(ctx context.Context, loc
 	if err != nil {
 		return ResourceClientCheckFilePathAvailabilityResponse{}, err
 	}
-	return client.checkFilePathAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkFilePathAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkFilePathAvailabilityCreateRequest creates the CheckFilePathAvailability request.
@@ -160,7 +162,7 @@ func (client *ResourceClient) checkFilePathAvailabilityCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20260815Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -204,7 +206,8 @@ func (client *ResourceClient) CheckNameAvailability(ctx context.Context, locatio
 	if err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -223,7 +226,7 @@ func (client *ResourceClient) checkNameAvailabilityCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20260815Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -267,7 +270,8 @@ func (client *ResourceClient) CheckQuotaAvailability(ctx context.Context, locati
 	if err != nil {
 		return ResourceClientCheckQuotaAvailabilityResponse{}, err
 	}
-	return client.checkQuotaAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkQuotaAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkQuotaAvailabilityCreateRequest creates the CheckQuotaAvailability request.
@@ -286,7 +290,7 @@ func (client *ResourceClient) checkQuotaAvailabilityCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20260815Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -330,7 +334,8 @@ func (client *ResourceClient) QueryNetworkSiblingSet(ctx context.Context, locati
 	if err != nil {
 		return ResourceClientQueryNetworkSiblingSetResponse{}, err
 	}
-	return client.queryNetworkSiblingSetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryNetworkSiblingSetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryNetworkSiblingSetCreateRequest creates the QueryNetworkSiblingSet request.
@@ -349,7 +354,7 @@ func (client *ResourceClient) queryNetworkSiblingSetCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20260815Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -392,7 +397,8 @@ func (client *ResourceClient) QueryRegionInfo(ctx context.Context, location stri
 	if err != nil {
 		return ResourceClientQueryRegionInfoResponse{}, err
 	}
-	return client.queryRegionInfoHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryRegionInfoHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryRegionInfoCreateRequest creates the QueryRegionInfo request.
@@ -411,7 +417,7 @@ func (client *ResourceClient) queryRegionInfoCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
+	reqQP.Set("api-version", version20260815Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

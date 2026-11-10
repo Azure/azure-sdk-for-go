@@ -4,15 +4,17 @@
 package armstoragemover_test
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/internal/v3/testutil"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storagemover/armstoragemover/v2"
 	"github.com/stretchr/testify/suite"
 )
 
-// EndpointScenarioSuite mirrors .NET EndpointTests. All 16 endpoint scenario tests share a single
+// EndpointScenarioSuite mirrors .NET EndpointTests. The endpoint scenario tests share a single
 // resource group and Storage Mover; each test uses a uniquely-named endpoint so tests are
 // order-independent. All names are pre-generated in SetupSuite (under the suite's test name) so
 // playback can resolve them deterministically — `recording.GenerateAlphaNumericID` is keyed on
@@ -28,21 +30,23 @@ type EndpointScenarioSuite struct {
 	crudSmbName       string
 	crudFsName        string
 
-	mccCRUDName      string
-	s3HmacName       string
-	nfsSrcName       string
-	smbSrcName       string
-	mccSrcName       string
-	blobSrcName      string
-	blobTgtName      string
-	smbFsTgtName     string
-	nfsFsTgtName     string
-	nfsTgtFailName   string
-	smbTgtFailName   string
-	mccTgtFailName   string
-	smbFsSrcFailName string
-	nfsFsSrcFailName string
-	nfsFsCRUDName    string
+	mccCRUDName            string
+	s3HmacName             string
+	nfsSrcName             string
+	smbSrcName             string
+	mccSrcName             string
+	blobSrcName            string
+	blobTgtName            string
+	smbFsTgtName           string
+	smbFsSrcName           string
+	nfsFsTgtName           string
+	nfsTgtFailName         string
+	smbTgtFailName         string
+	mccTgtFailName         string
+	nfsFsSrcFailName       string
+	nfsFsCRUDName          string
+	crossTenantDefaultName string
+	crossTenantName        string
 }
 
 func TestEndpointScenarioSuite(t *testing.T) {
@@ -68,9 +72,11 @@ func (s *EndpointScenarioSuite) SetupSuite() {
 	s.nfsTgtFailName = s.generateName("nfstgt")
 	s.smbTgtFailName = s.generateName("smbtgt")
 	s.mccTgtFailName = s.generateName("mcctgt")
-	s.smbFsSrcFailName = s.generateName("smbfssrc")
+	s.smbFsSrcName = s.generateName("smbfssrc")
 	s.nfsFsSrcFailName = s.generateName("nfsfssrc")
 	s.nfsFsCRUDName = s.generateName("nfsfs")
+	s.crossTenantDefaultName = s.generateName("blobxtdefault")
+	s.crossTenantName = s.generateName("blobxt")
 	s.createStorageMover(s.storageMoverName, nil, "")
 }
 
@@ -276,7 +282,7 @@ func (s *EndpointScenarioSuite) TestS3WithHmacEndpointCreateGetDelete() {
 	s.expectResponseError(err)
 }
 
-// ------------------------- EndpointKind valid (7 tests) ---------------------------
+// ------------------------- EndpointKind valid (8 tests) ---------------------------
 
 // TestNfsMountEndpointKindSourceSucceeds mirrors .NET NfsMountEndpointKindSource_Succeeds.
 func (s *EndpointScenarioSuite) TestNfsMountEndpointKindSourceSucceeds() {
@@ -363,6 +369,22 @@ func (s *EndpointScenarioSuite) TestBlobContainerEndpointKindTargetSucceeds() {
 	s.deleteEndpoint(client, s.blobTgtName)
 }
 
+func (s *EndpointScenarioSuite) TestSmbFileShareEndpointKindSourceSucceeds() {
+	client := s.endpointsClient()
+	resp, err := client.CreateOrUpdate(s.ctx, s.resourceGroupName, s.storageMoverName, s.smbFsSrcName, armstoragemover.Endpoint{
+		Properties: &armstoragemover.AzureStorageSmbFileShareEndpointProperties{
+			StorageAccountResourceID: to.Ptr(s.placeholderStorageAccountResourceID()),
+			FileShareName:            to.Ptr(scenarioFileShareName),
+			EndpointKind:             to.Ptr(armstoragemover.EndpointKindSource),
+		},
+	}, nil)
+	s.Require().NoError(err)
+	props, ok := resp.Properties.(*armstoragemover.AzureStorageSmbFileShareEndpointProperties)
+	s.Require().True(ok)
+	s.Require().Equal(to.Ptr(armstoragemover.EndpointKindSource), props.EndpointKind)
+	s.deleteEndpoint(client, s.smbFsSrcName)
+}
+
 // TestSmbFileShareEndpointKindTargetSucceeds mirrors .NET SmbFileShareEndpointKindTarget_Succeeds.
 func (s *EndpointScenarioSuite) TestSmbFileShareEndpointKindTargetSucceeds() {
 	client := s.endpointsClient()
@@ -397,7 +419,7 @@ func (s *EndpointScenarioSuite) TestNfsFileShareEndpointKindTargetSucceeds() {
 	s.deleteEndpoint(client, s.nfsFsTgtName)
 }
 
-// ------------------------- EndpointKind invalid (5 tests) ---------------------------
+// ------------------------- EndpointKind invalid (4 tests) ---------------------------
 
 // TestNfsMountEndpointKindTargetFails mirrors .NET NfsMountEndpointKindTarget_Fails.
 func (s *EndpointScenarioSuite) TestNfsMountEndpointKindTargetFails() {
@@ -433,19 +455,6 @@ func (s *EndpointScenarioSuite) TestMultiCloudConnectorEndpointKindTargetFails()
 			MultiCloudConnectorID: to.Ptr(scenarioMultiCloudConnectorID),
 			AwsS3BucketID:         to.Ptr(scenarioAwsS3BucketID),
 			EndpointKind:          to.Ptr(armstoragemover.EndpointKindTarget),
-		},
-	}, nil)
-	s.expectResponseError(err)
-}
-
-// TestSmbFileShareEndpointKindSourceFails mirrors .NET SmbFileShareEndpointKindSource_Fails.
-func (s *EndpointScenarioSuite) TestSmbFileShareEndpointKindSourceFails() {
-	client := s.endpointsClient()
-	_, err := client.CreateOrUpdate(s.ctx, s.resourceGroupName, s.storageMoverName, s.smbFsSrcFailName, armstoragemover.Endpoint{
-		Properties: &armstoragemover.AzureStorageSmbFileShareEndpointProperties{
-			StorageAccountResourceID: to.Ptr(s.placeholderStorageAccountResourceID()),
-			FileShareName:            to.Ptr(scenarioFileShareName),
-			EndpointKind:             to.Ptr(armstoragemover.EndpointKindSource),
 		},
 	}, nil)
 	s.expectResponseError(err)
@@ -490,4 +499,86 @@ func (s *EndpointScenarioSuite) TestNfsFileShareEndpointCreateGetDelete() {
 	s.deleteEndpoint(client, s.nfsFsCRUDName)
 	_, err = client.Get(s.ctx, s.resourceGroupName, s.storageMoverName, s.nfsFsCRUDName, nil)
 	s.expectResponseError(err)
+}
+
+func (s *EndpointScenarioSuite) TestBlobContainerCrossTenantSettings() {
+	client := s.endpointsClient()
+	accountIDPrefix := scenarioPartnerStorageAccountIDPrefix
+	if recording.GetRecordMode() == recording.PlaybackMode {
+		// ARM recording sanitizes synthetic subscription IDs along with real ones.
+		accountIDPrefix = strings.ReplaceAll(accountIDPrefix, scenarioPartnerSubscriptionID, "00000000-0000-0000-0000-000000000000")
+	}
+	accounts := []*string{
+		to.Ptr(accountIDPrefix + "1"),
+		to.Ptr(accountIDPrefix + "2"),
+		to.Ptr(accountIDPrefix + "3"),
+	}
+	assertSettings := func(endpoint armstoragemover.Endpoint, enabled bool, allowed []*string) *armstoragemover.AzureStorageBlobContainerEndpointProperties {
+		properties, ok := endpoint.Properties.(*armstoragemover.AzureStorageBlobContainerEndpointProperties)
+		s.Require().True(ok, "expected blob container endpoint properties")
+		s.Require().Equal(to.Ptr(enabled), properties.EnableCrossTenantTransfer)
+		if len(allowed) == 0 {
+			s.Require().Empty(properties.AllowedStorageAccounts)
+		} else {
+			s.Require().Equal(allowed, properties.AllowedStorageAccounts)
+		}
+		return properties
+	}
+
+	defaultResponse, err := client.CreateOrUpdate(s.ctx, s.resourceGroupName, s.storageMoverName, s.crossTenantDefaultName,
+		armstoragemover.Endpoint{Properties: &armstoragemover.AzureStorageBlobContainerEndpointProperties{
+			StorageAccountResourceID: to.Ptr(s.placeholderStorageAccountResourceID()),
+			BlobContainerName:        to.Ptr(scenarioContainerName),
+		}}, nil)
+	s.Require().NoError(err)
+	assertSettings(defaultResponse.Endpoint, false, nil)
+
+	properties := &armstoragemover.AzureStorageBlobContainerEndpointProperties{
+		StorageAccountResourceID:  to.Ptr(s.placeholderStorageAccountResourceID()),
+		BlobContainerName:         to.Ptr(scenarioContainerName),
+		EnableCrossTenantTransfer: to.Ptr(true),
+	}
+	_, err = client.CreateOrUpdate(s.ctx, s.resourceGroupName, s.storageMoverName, s.crossTenantName,
+		armstoragemover.Endpoint{Properties: properties}, nil)
+	s.expectInvalidRequestPropertyValue(err)
+
+	properties.AllowedStorageAccounts = accounts[:2]
+	createResponse, err := client.CreateOrUpdate(s.ctx, s.resourceGroupName, s.storageMoverName, s.crossTenantName,
+		armstoragemover.Endpoint{Properties: properties}, nil)
+	s.Require().NoError(err)
+	assertSettings(createResponse.Endpoint, true, accounts[:2])
+
+	getResponse, err := client.Get(s.ctx, s.resourceGroupName, s.storageMoverName, s.crossTenantName, nil)
+	s.Require().NoError(err)
+	assertSettings(getResponse.Endpoint, true, accounts[:2])
+
+	patch := func(update *armstoragemover.AzureStorageBlobContainerEndpointUpdateProperties) armstoragemover.Endpoint {
+		response, updateErr := client.Update(s.ctx, s.resourceGroupName, s.storageMoverName, s.crossTenantName,
+			armstoragemover.EndpointBaseUpdateParameters{
+				Identity:   &armstoragemover.ManagedServiceIdentity{Type: to.Ptr(armstoragemover.ManagedServiceIdentityTypeNone)},
+				Properties: update,
+			}, nil)
+		s.Require().NoError(updateErr)
+		return response.Endpoint
+	}
+
+	assertSettings(patch(&armstoragemover.AzureStorageBlobContainerEndpointUpdateProperties{
+		AllowedStorageAccounts: accounts[2:],
+	}), true, accounts[2:])
+
+	updatedProperties := assertSettings(patch(&armstoragemover.AzureStorageBlobContainerEndpointUpdateProperties{
+		Description: to.Ptr("Cross-tenant endpoint"),
+	}), true, accounts[2:])
+	s.Require().Equal(to.Ptr("Cross-tenant endpoint"), updatedProperties.Description)
+
+	assertSettings(patch(&armstoragemover.AzureStorageBlobContainerEndpointUpdateProperties{
+		EnableCrossTenantTransfer: to.Ptr(false),
+		AllowedStorageAccounts:    []*string{},
+	}), false, nil)
+
+	getResponse, err = client.Get(s.ctx, s.resourceGroupName, s.storageMoverName, s.crossTenantName, nil)
+	s.Require().NoError(err)
+	assertSettings(getResponse.Endpoint, false, nil)
+	s.deleteEndpoint(client, s.crossTenantName)
+	s.deleteEndpoint(client, s.crossTenantDefaultName)
 }

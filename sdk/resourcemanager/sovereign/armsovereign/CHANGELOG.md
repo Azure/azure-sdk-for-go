@@ -1,5 +1,12 @@
 # Release History
 
+## Unreleased
+
+### Bugs Fixed
+
+- Preserve the public remediation ID when a completed remediation poll returns
+  the result inside `properties` instead of at the top level.
+
 ## 0.1.0 (2026-11-09)
 ### Other Changes
 

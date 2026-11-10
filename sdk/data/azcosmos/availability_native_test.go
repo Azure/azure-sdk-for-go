@@ -3,7 +3,7 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
-// cSpell:ignore Failf PPAF PPCB ppaf ppcb
+// cSpell:ignore colls documentdb Failf PPAF PPCB ppaf ppcb
 
 package azcosmos
 
@@ -55,13 +55,14 @@ func nativeAvailabilityContainer(
 
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
-	client, err := NewClientWithKey(endpoint, cred, &options)
+	// Install fault rules before eager initialization captures the driver options.
+	client, err := newTestClientWithKey(endpoint, cred, &options)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	client.driver.faultRules = rules
-	require.NoError(t, client.Initialize(t.Context()))
+	require.NoError(t, client.initialize(t.Context()))
 
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	return client, container
 }
@@ -88,7 +89,7 @@ func seedAvailabilityReadItems(t *testing.T, count int) []availabilityReadItem {
 		body, err := json.Marshal(map[string]string{"id": id, "pk": pkValue})
 		require.NoError(t, err)
 		trackEmulatorItem(t, writer, pk, id)
-		_, err = writer.CreateItem(t.Context(), pk, id, body, nil)
+		_, err = writer.CreateItem(t.Context(), pk, id, json.RawMessage(body), nil)
 		require.NoError(t, err)
 		items[i] = availabilityReadItem{id: id, pk: pk}
 	}
@@ -597,7 +598,7 @@ func TestNativePPAFDiscoversWriteRegionPerPartition(t *testing.T) {
 		body, err := json.Marshal(map[string]string{"id": id, "pk": pkValue})
 		require.NoError(t, err)
 		trackEmulatorItem(t, container, pk, id)
-		response, err := container.CreateItem(t.Context(), pk, id, body, nil)
+		response, err := container.CreateItem(t.Context(), pk, id, json.RawMessage(body), nil)
 		require.NoError(t, err)
 		require.Equal(t, http.StatusCreated, response.StatusCode)
 		items = append(items, storedItem{id: id, pk: pkValue})
@@ -681,7 +682,7 @@ func TestNativePPAFDiscardsUnprovenWriteRegion(t *testing.T) {
 	failedID := uniqueItemID(t)
 	failedBody, err := json.Marshal(map[string]string{"id": failedID, "pk": pkValue})
 	require.NoError(t, err)
-	response, err := container.CreateItem(t.Context(), pk, failedID, failedBody, nil)
+	response, err := container.CreateItem(t.Context(), pk, failedID, json.RawMessage(failedBody), nil)
 	require.Equal(t, ItemResponse{}, response)
 	cosmosErr := requireAvailabilityStatusError(t, err, CodeServiceUnavailable, http.StatusServiceUnavailable)
 	require.NotNil(t, cosmosErr.Diagnostics)
@@ -693,7 +694,7 @@ func TestNativePPAFDiscardsUnprovenWriteRegion(t *testing.T) {
 	nextBody, err := json.Marshal(map[string]string{"id": nextID, "pk": pkValue})
 	require.NoError(t, err)
 	trackEmulatorItem(t, container, pk, nextID)
-	next, err := container.CreateItem(t.Context(), pk, nextID, nextBody, nil)
+	next, err := container.CreateItem(t.Context(), pk, nextID, json.RawMessage(nextBody), nil)
 	require.NoError(t, err)
 	requireSingleRegionAttempt(t, next.Diagnostics, emulatorEastUS, http.StatusCreated)
 }

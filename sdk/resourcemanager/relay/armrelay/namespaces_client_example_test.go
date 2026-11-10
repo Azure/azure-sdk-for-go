@@ -12,35 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceCheckNameAvailability.json
-func ExampleNamespacesClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrelay.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNamespacesClient().CheckNameAvailability(ctx, armrelay.CheckNameAvailability{
-		Name: to.Ptr("example-RelayNamespace1321"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrelay.NamespacesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: armrelay.CheckNameAvailabilityResult{
-	// 		Message: to.Ptr(""),
-	// 		NameAvailable: to.Ptr(true),
-	// 		Reason: to.Ptr(armrelay.UnavailableReasonNone),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceCreate.json
 func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -96,6 +67,61 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// 			"tag1": to.Ptr("value1"),
 	// 			"tag2": to.Ptr("value2"),
 	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceDelete.json
+func ExampleNamespacesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrelay.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespacesClient().BeginDelete(ctx, "SouthCentralUS", "example-RelayNamespace-5849", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrelay.NamespacesClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceCheckNameAvailability.json
+func ExampleNamespacesClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrelay.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNamespacesClient().CheckNameAvailability(ctx, armrelay.CheckNameAvailability{
+		Name: to.Ptr("example-RelayNamespace1321"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrelay.NamespacesClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResult: armrelay.CheckNameAvailabilityResult{
+	// 		Message: to.Ptr(""),
+	// 		NameAvailable: to.Ptr(true),
+	// 		Reason: to.Ptr(armrelay.UnavailableReasonNone),
 	// 	},
 	// }
 }
@@ -217,32 +243,6 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	// 			TrustedServiceAccessEnabled: to.Ptr(false),
 	// 		},
 	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceDelete.json
-func ExampleNamespacesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrelay.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNamespacesClient().BeginDelete(ctx, "SouthCentralUS", "example-RelayNamespace-5849", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrelay.NamespacesClientDeleteResponse{
 	// }
 }
 
@@ -397,8 +397,8 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceListBySubscription.json
-func ExampleNamespacesClient_NewListPager() {
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListKey.json
+func ExampleNamespacesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -408,68 +408,22 @@ func ExampleNamespacesClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNamespacesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armrelay.NamespacesClientListResponse{
-		// 	NamespaceListResult: armrelay.NamespaceListResult{
-		// 		Value: []*armrelay.Namespace{
-		// 			{
-		// 				Name: to.Ptr("example-RelayRelayNamespace-01"),
-		// 				Type: to.Ptr("Microsoft.Relay/Namespaces"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-01"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armrelay.NamespaceProperties{
-		// 					CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
-		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-RelayRelayNamespace-01"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
-		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 59, 413172400, time.UTC)),
-		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
-		// 				},
-		// 				SKU: &armrelay.SKU{
-		// 					Name: to.Ptr(armrelay.SKUNameStandard),
-		// 					Tier: to.Ptr(armrelay.SKUTierStandard),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"tag1": to.Ptr("value1"),
-		// 					"tag2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("example-RelayRelayNamespace-02"),
-		// 				Type: to.Ptr("Microsoft.Relay/Namespaces"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-02"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armrelay.NamespaceProperties{
-		// 					CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 39, 413172400, time.UTC)),
-		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-RelayRelayNamespace-02"),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-02.servicebus.windows.net:443/"),
-		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
-		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
-		// 				},
-		// 				SKU: &armrelay.SKU{
-		// 					Name: to.Ptr(armrelay.SKUNameStandard),
-		// 					Tier: to.Ptr(armrelay.SKUTierStandard),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"tag1": to.Ptr("value1"),
-		// 					"tag2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewNamespacesClient().ListKeys(ctx, "resourcegroup", "example-RelayNamespace-01", "example-RelayAuthRules-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrelay.NamespacesClientListKeysResponse{
+	// 	AccessKeys: armrelay.AccessKeys{
+	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
+	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
+	// 		PrimaryKey: to.Ptr("############################################"),
+	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
+	// 		SecondaryKey: to.Ptr("############################################"),
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListAll.json
@@ -811,8 +765,8 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleListKey.json
-func ExampleNamespacesClient_ListKeys() {
+// Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceListBySubscription.json
+func ExampleNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -822,22 +776,68 @@ func ExampleNamespacesClient_ListKeys() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNamespacesClient().ListKeys(ctx, "resourcegroup", "example-RelayNamespace-01", "example-RelayAuthRules-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewNamespacesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armrelay.NamespacesClientListResponse{
+		// 	NamespaceListResult: armrelay.NamespaceListResult{
+		// 		Value: []*armrelay.Namespace{
+		// 			{
+		// 				Name: to.Ptr("example-RelayRelayNamespace-01"),
+		// 				Type: to.Ptr("Microsoft.Relay/Namespaces"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-01"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armrelay.NamespaceProperties{
+		// 					CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
+		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-RelayRelayNamespace-01"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-01.servicebus.windows.net:443/"),
+		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 59, 413172400, time.UTC)),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
+		// 				},
+		// 				SKU: &armrelay.SKU{
+		// 					Name: to.Ptr(armrelay.SKUNameStandard),
+		// 					Tier: to.Ptr(armrelay.SKUTierStandard),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"tag1": to.Ptr("value1"),
+		// 					"tag2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("example-RelayRelayNamespace-02"),
+		// 				Type: to.Ptr("Microsoft.Relay/Namespaces"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/RG1-eg/providers/Microsoft.Relay/namespaces/example-RelayRelayNamespace-02"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armrelay.NamespaceProperties{
+		// 					CreatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 39, 413172400, time.UTC)),
+		// 					MetricID: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff:example-RelayRelayNamespace-02"),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					ServiceBusEndpoint: to.Ptr("https://example-RelayRelayNamespace-02.servicebus.windows.net:443/"),
+		// 					UpdatedAt: to.Ptr(time.Date(2017, time.January, 23, 20, 34, 49, 413172400, time.UTC)),
+		// 					MinimumTLSVersion: to.Ptr(armrelay.TLSVersion12),
+		// 				},
+		// 				SKU: &armrelay.SKU{
+		// 					Name: to.Ptr(armrelay.SKUNameStandard),
+		// 					Tier: to.Ptr(armrelay.SKUTierStandard),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"tag1": to.Ptr("value1"),
+		// 					"tag2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrelay.NamespacesClientListKeysResponse{
-	// 	AccessKeys: armrelay.AccessKeys{
-	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
-	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
-	// 		PrimaryKey: to.Ptr("############################################"),
-	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
-	// 		SecondaryKey: to.Ptr("############################################"),
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2026-01-01/NameSpaces/RelayNameSpaceAuthorizationRuleRegenerateKey.json

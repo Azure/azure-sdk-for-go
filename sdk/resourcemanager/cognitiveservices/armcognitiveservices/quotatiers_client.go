@@ -67,7 +67,8 @@ func (client *QuotaTiersClient) CreateOrUpdate(ctx context.Context, defaultParam
 	if err != nil {
 		return QuotaTiersClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -129,7 +130,8 @@ func (client *QuotaTiersClient) Get(ctx context.Context, defaultParam string, op
 	if err != nil {
 		return QuotaTiersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -255,7 +257,8 @@ func (client *QuotaTiersClient) Update(ctx context.Context, defaultParam string,
 	if err != nil {
 		return QuotaTiersClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

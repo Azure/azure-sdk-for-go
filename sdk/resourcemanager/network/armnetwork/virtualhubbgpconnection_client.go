@@ -86,7 +86,8 @@ func (client *VirtualHubBgpConnectionClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -134,7 +135,7 @@ func (client *VirtualHubBgpConnectionClient) createOrUpdateCreateRequest(ctx con
 //     method.
 func (client *VirtualHubBgpConnectionClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *VirtualHubBgpConnectionClientBeginDeleteOptions) (*runtime.Poller[VirtualHubBgpConnectionClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualHubName, connectionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, connectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +150,9 @@ func (client *VirtualHubBgpConnectionClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// delete - Deletes a VirtualHubBgpConnection.
+// deleteOperation - Deletes a VirtualHubBgpConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualHubBgpConnectionClient) delete(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *VirtualHubBgpConnectionClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VirtualHubBgpConnectionClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, connectionName string, options *VirtualHubBgpConnectionClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualHubBgpConnectionClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -166,7 +167,8 @@ func (client *VirtualHubBgpConnectionClient) delete(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -221,7 +223,8 @@ func (client *VirtualHubBgpConnectionClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return VirtualHubBgpConnectionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

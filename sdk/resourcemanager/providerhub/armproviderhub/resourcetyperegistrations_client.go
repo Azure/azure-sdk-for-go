@@ -68,7 +68,7 @@ func (client *ResourceTypeRegistrationsClient) BeginCreateOrUpdate(ctx context.C
 	}
 }
 
-// CreateOrUpdate - Creates or updates a resource type.
+// createOrUpdate - Creates or updates a resource type.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ResourceTypeRegistrationsClient) createOrUpdate(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, options *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *ResourceTypeRegistrationsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ResourceTypeRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, resourceType string, properties ResourceTypeRegistration, _ *ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}"
 	if client.subscriptionID == "" {
@@ -143,7 +144,7 @@ func (client *ResourceTypeRegistrationsClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Deletes a resource type
+// deleteOperation - Deletes a resource type
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ResourceTypeRegistrationsClient) deleteOperation(ctx context.Context, providerNamespace string, resourceType string, options *ResourceTypeRegistrationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,12 +161,13 @@ func (client *ResourceTypeRegistrationsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ResourceTypeRegistrationsClient) deleteCreateRequest(ctx context.Context, providerNamespace string, resourceType string, _ *ResourceTypeRegistrationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/resourcetypeRegistrations/{resourceType}"
 	if client.subscriptionID == "" {
@@ -210,7 +212,8 @@ func (client *ResourceTypeRegistrationsClient) Get(ctx context.Context, provider
 	if err != nil {
 		return ResourceTypeRegistrationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

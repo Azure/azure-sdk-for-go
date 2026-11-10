@@ -44,62 +44,6 @@ func NewWorkspacesClient(subscriptionID string, credential azcore.TokenCredentia
 	return client, nil
 }
 
-// CheckNameAvailability - Checks if a Playwright workspace name is available globally.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - body - The CheckAvailability request
-//   - options - WorkspacesClientCheckNameAvailabilityOptions contains the optional parameters for the WorkspacesClient.CheckNameAvailability
-//     method.
-func (client *WorkspacesClient) CheckNameAvailability(ctx context.Context, body CheckNameAvailabilityRequest, options *WorkspacesClientCheckNameAvailabilityOptions) (WorkspacesClientCheckNameAvailabilityResponse, error) {
-	var err error
-	const operationName = "WorkspacesClient.CheckNameAvailability"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.checkNameAvailabilityCreateRequest(ctx, body, options)
-	if err != nil {
-		return WorkspacesClientCheckNameAvailabilityResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return WorkspacesClientCheckNameAvailabilityResponse{}, err
-	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
-}
-
-// checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
-func (client *WorkspacesClient) checkNameAvailabilityCreateRequest(ctx context.Context, body CheckNameAvailabilityRequest, _ *WorkspacesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/checkNameAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
-func (client *WorkspacesClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientCheckNameAvailabilityResponse, error) {
-	result := WorkspacesClientCheckNameAvailabilityResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponse); err != nil {
-		return WorkspacesClientCheckNameAvailabilityResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginCreateOrUpdate - Create a PlaywrightWorkspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -124,7 +68,7 @@ func (client *WorkspacesClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create a PlaywrightWorkspace
+// createOrUpdate - Create a PlaywrightWorkspace
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGroupName string, playwrightWorkspaceName string, resource Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -141,12 +85,13 @@ func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, playwrightWorkspaceName string, resource Workspace, _ *WorkspacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}"
 	if client.subscriptionID == "" {
@@ -198,7 +143,7 @@ func (client *WorkspacesClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Deletes a Playwright workspace resource asynchronously.
+// deleteOperation - Deletes a Playwright workspace resource asynchronously.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, playwrightWorkspaceName string, options *WorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -215,12 +160,13 @@ func (client *WorkspacesClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, playwrightWorkspaceName string, _ *WorkspacesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.LoadTestService/playwrightWorkspaces/{playwrightWorkspaceName}"
 	if client.subscriptionID == "" {
@@ -245,6 +191,63 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
+// CheckNameAvailability - Checks if a Playwright workspace name is available globally.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - body - The CheckAvailability request
+//   - options - WorkspacesClientCheckNameAvailabilityOptions contains the optional parameters for the WorkspacesClient.CheckNameAvailability
+//     method.
+func (client *WorkspacesClient) CheckNameAvailability(ctx context.Context, body CheckNameAvailabilityRequest, options *WorkspacesClientCheckNameAvailabilityOptions) (WorkspacesClientCheckNameAvailabilityResponse, error) {
+	var err error
+	const operationName = "WorkspacesClient.CheckNameAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkNameAvailabilityCreateRequest(ctx, body, options)
+	if err != nil {
+		return WorkspacesClientCheckNameAvailabilityResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return WorkspacesClientCheckNameAvailabilityResponse{}, err
+	}
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
+func (client *WorkspacesClient) checkNameAvailabilityCreateRequest(ctx context.Context, body CheckNameAvailabilityRequest, _ *WorkspacesClientCheckNameAvailabilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.LoadTestService/checkNameAvailability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkNameAvailabilityHandleResponse handles the CheckNameAvailability response.
+func (client *WorkspacesClient) checkNameAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (WorkspacesClientCheckNameAvailabilityResponse, error) {
+	result := WorkspacesClientCheckNameAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckNameAvailabilityResponse); err != nil {
+		return WorkspacesClientCheckNameAvailabilityResponse{}, err
+	}
+	return result, nil
+}
+
 // Get - Get a PlaywrightWorkspace
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -264,7 +267,8 @@ func (client *WorkspacesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WorkspacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -464,7 +468,8 @@ func (client *WorkspacesClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return WorkspacesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

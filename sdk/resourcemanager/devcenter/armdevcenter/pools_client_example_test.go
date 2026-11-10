@@ -328,6 +328,94 @@ func ExamplePoolsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-01-01-preview/Pools_RunHealthChecks.json
+func ExamplePoolsClient_BeginRunHealthChecks() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPoolsClient().BeginRunHealthChecks(ctx, "rg1", "DevProject", "DevPool", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-01-01-preview/Pools_Patch.json
+func ExamplePoolsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewPoolsClient().BeginUpdate(ctx, "rg1", "DevProject", "DevPool", armdevcenter.PoolUpdate{
+		Properties: &armdevcenter.PoolUpdateProperties{
+			DevBoxDefinitionName: to.Ptr("WebDevBox2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdevcenter.PoolsClientUpdateResponse{
+	// 	Pool: armdevcenter.Pool{
+	// 		Name: to.Ptr("DevPool"),
+	// 		Type: to.Ptr("Microsoft.DevCenter/pools"),
+	// 		ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/projects/DevProject/pools/DevPool"),
+	// 		Location: to.Ptr("centralus"),
+	// 		Properties: &armdevcenter.PoolProperties{
+	// 			DevBoxCount: to.Ptr[int32](1),
+	// 			DevBoxDefinitionName: to.Ptr("WebDevBox2"),
+	// 			DisplayName: to.Ptr("Developer Pool"),
+	// 			HealthStatus: to.Ptr(armdevcenter.HealthStatusHealthy),
+	// 			LicenseType: to.Ptr(armdevcenter.LicenseTypeWindowsClient),
+	// 			LocalAdministrator: to.Ptr(armdevcenter.LocalAdminStatusEnabled),
+	// 			ManagedVirtualNetworkRegions: []*string{
+	// 				to.Ptr("centralus"),
+	// 			},
+	// 			NetworkConnectionName: to.Ptr("Network1-westus2"),
+	// 			ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
+	// 			SingleSignOnStatus: to.Ptr(armdevcenter.SingleSignOnStatusDisabled),
+	// 			StopOnDisconnect: &armdevcenter.StopOnDisconnectConfiguration{
+	// 				GracePeriodMinutes: to.Ptr[int32](60),
+	// 				Status: to.Ptr(armdevcenter.StopOnDisconnectEnableStatusEnabled),
+	// 			},
+	// 			StopOnNoConnect: &armdevcenter.StopOnNoConnectConfiguration{
+	// 				GracePeriodMinutes: to.Ptr[int32](120),
+	// 				Status: to.Ptr(armdevcenter.StopOnNoConnectEnableStatusEnabled),
+	// 			},
+	// 			VirtualNetworkType: to.Ptr(armdevcenter.VirtualNetworkTypeManaged),
+	// 		},
+	// 		SystemData: &armdevcenter.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 0, 36, 993000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("user1"),
+	// 			CreatedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 30, 36, 993000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user1"),
+	// 			LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-01-01-preview/Pools_Get.json
 func ExamplePoolsClient_Get_poolsGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -556,92 +644,4 @@ func ExamplePoolsClient_NewListByProjectPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-01-01-preview/Pools_RunHealthChecks.json
-func ExamplePoolsClient_BeginRunHealthChecks() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPoolsClient().BeginRunHealthChecks(ctx, "rg1", "DevProject", "DevPool", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-01-01-preview/Pools_Patch.json
-func ExamplePoolsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdevcenter.NewClientFactory("0ac520ee-14c0-480f-b6c9-0a90c58fffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewPoolsClient().BeginUpdate(ctx, "rg1", "DevProject", "DevPool", armdevcenter.PoolUpdate{
-		Properties: &armdevcenter.PoolUpdateProperties{
-			DevBoxDefinitionName: to.Ptr("WebDevBox2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdevcenter.PoolsClientUpdateResponse{
-	// 	Pool: armdevcenter.Pool{
-	// 		Name: to.Ptr("DevPool"),
-	// 		Type: to.Ptr("Microsoft.DevCenter/pools"),
-	// 		ID: to.Ptr("/subscriptions/0ac520ee-14c0-480f-b6c9-0a90c58ffff/resourceGroups/rg1/providers/Microsoft.DevCenter/projects/DevProject/pools/DevPool"),
-	// 		Location: to.Ptr("centralus"),
-	// 		Properties: &armdevcenter.PoolProperties{
-	// 			DevBoxCount: to.Ptr[int32](1),
-	// 			DevBoxDefinitionName: to.Ptr("WebDevBox2"),
-	// 			DisplayName: to.Ptr("Developer Pool"),
-	// 			HealthStatus: to.Ptr(armdevcenter.HealthStatusHealthy),
-	// 			LicenseType: to.Ptr(armdevcenter.LicenseTypeWindowsClient),
-	// 			LocalAdministrator: to.Ptr(armdevcenter.LocalAdminStatusEnabled),
-	// 			ManagedVirtualNetworkRegions: []*string{
-	// 				to.Ptr("centralus"),
-	// 			},
-	// 			NetworkConnectionName: to.Ptr("Network1-westus2"),
-	// 			ProvisioningState: to.Ptr(armdevcenter.ProvisioningStateSucceeded),
-	// 			SingleSignOnStatus: to.Ptr(armdevcenter.SingleSignOnStatusDisabled),
-	// 			StopOnDisconnect: &armdevcenter.StopOnDisconnectConfiguration{
-	// 				GracePeriodMinutes: to.Ptr[int32](60),
-	// 				Status: to.Ptr(armdevcenter.StopOnDisconnectEnableStatusEnabled),
-	// 			},
-	// 			StopOnNoConnect: &armdevcenter.StopOnNoConnectConfiguration{
-	// 				GracePeriodMinutes: to.Ptr[int32](120),
-	// 				Status: to.Ptr(armdevcenter.StopOnNoConnectEnableStatusEnabled),
-	// 			},
-	// 			VirtualNetworkType: to.Ptr(armdevcenter.VirtualNetworkTypeManaged),
-	// 		},
-	// 		SystemData: &armdevcenter.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 0, 36, 993000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("user1"),
-	// 			CreatedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.November, 18, 18, 30, 36, 993000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user1"),
-	// 			LastModifiedByType: to.Ptr(armdevcenter.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
 }

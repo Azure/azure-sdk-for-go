@@ -86,7 +86,8 @@ func (client *TrustedAccessRoleBindingsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -166,7 +167,8 @@ func (client *TrustedAccessRoleBindingsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -221,7 +223,8 @@ func (client *TrustedAccessRoleBindingsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return TrustedAccessRoleBindingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

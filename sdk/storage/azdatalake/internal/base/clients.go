@@ -6,6 +6,7 @@ package base
 import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/container"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/service"
@@ -24,6 +25,21 @@ type ClientOptions struct {
 	// Only has an effect when credential is of type TokenCredential. The value could be
 	// https://storage.azure.com/ (default) or https://<account>.blob.core.windows.net.
 	Audience string
+
+	// Session configures session authentication. It applies only to clients authenticated with an
+	// azcore.TokenCredential, and only to the file reads they send to the blob endpoint; requests
+	// to the DFS endpoint always use the bearer token. The default, a nil Session.Enabled,
+	// currently resolves to disabled.
+	Session azblob.SessionOptions
+}
+
+// BlobClientOptions returns the options for the blob client a data lake client uses for the
+// requests it sends to the blob endpoint.
+func BlobClientOptions(clOpts *ClientOptions) azblob.ClientOptions {
+	if clOpts == nil {
+		return azblob.ClientOptions{}
+	}
+	return azblob.ClientOptions{ClientOptions: clOpts.ClientOptions, Session: clOpts.Session}
 }
 
 func GetPipelineOptions(clOpts *ClientOptions) *runtime.PipelineOptions {

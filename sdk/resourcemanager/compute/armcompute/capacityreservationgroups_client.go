@@ -88,7 +88,8 @@ func (client *CapacityReservationGroupsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -140,7 +141,8 @@ func (client *CapacityReservationGroupsClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return CapacityReservationGroupsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -205,7 +207,8 @@ func (client *CapacityReservationGroupsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return CapacityReservationGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -421,7 +424,8 @@ func (client *CapacityReservationGroupsClient) Update(ctx context.Context, resou
 	if err != nil {
 		return CapacityReservationGroupsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

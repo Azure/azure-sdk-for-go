@@ -120,6 +120,88 @@ func ExampleWebAppsClient_ApplySlotConfigToProduction() {
 	// }
 }
 
+// Generated from example definition: 2025-05-01/BackupWebApp.json
+func ExampleWebAppsClient_Backup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWebAppsClient().Backup(ctx, "testrg123", "sitef6141", armappservice.BackupRequest{
+		Properties: &armappservice.BackupRequestProperties{
+			BackupName: to.Ptr("abcdwe"),
+			BackupSchedule: &armappservice.BackupSchedule{
+				FrequencyInterval:     to.Ptr[int32](7),
+				FrequencyUnit:         to.Ptr(armappservice.FrequencyUnitDay),
+				KeepAtLeastOneBackup:  to.Ptr(true),
+				RetentionPeriodInDays: to.Ptr[int32](30),
+				StartTime:             to.Ptr(time.Date(2022, time.September, 2, 17, 33, 11, 641000000, time.UTC)),
+			},
+			Databases: []*armappservice.DatabaseBackupSetting{
+				{
+					Name:                 to.Ptr("backenddb"),
+					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+					ConnectionStringName: to.Ptr("backend"),
+					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
+				},
+				{
+					Name:                 to.Ptr("statsdb"),
+					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+					ConnectionStringName: to.Ptr("stats"),
+					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
+				},
+			},
+			Enabled:           to.Ptr(true),
+			StorageAccountURL: to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientBackupResponse{
+	// 	BackupItem: armappservice.BackupItem{
+	// 		Name: to.Ptr("sitef6141"),
+	// 		Type: to.Ptr("Microsoft.Web/sites"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
+	// 		Properties: &armappservice.BackupItemProperties{
+	// 			Name: to.Ptr("sitef6141_2024-11-01"),
+	// 			BlobName: to.Ptr("sitef6141_2024-11-01"),
+	// 			Created: to.Ptr(time.Date(2022, time.September, 3, 17, 33, 11, 641000000, time.UTC)),
+	// 			Databases: []*armappservice.DatabaseBackupSetting{
+	// 				{
+	// 					Name: to.Ptr("backenddb"),
+	// 					ConnectionString: to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+	// 					ConnectionStringName: to.Ptr("backend"),
+	// 					DatabaseType: to.Ptr(armappservice.DatabaseTypeSQLAzure),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("statsdb"),
+	// 					ConnectionString: to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+	// 					ConnectionStringName: to.Ptr("stats"),
+	// 					DatabaseType: to.Ptr(armappservice.DatabaseTypeSQLAzure),
+	// 				},
+	// 			},
+	// 			FinishedTimeStamp: to.Ptr(time.Date(2022, time.September, 2, 17, 33, 11, 641000000, time.UTC)),
+	// 			BackupID: to.Ptr[int32](12345),
+	// 			LastRestoreTimeStamp: to.Ptr(time.Date(2022, time.September, 4, 17, 33, 11, 641000000, time.UTC)),
+	// 			Log: to.Ptr("Succeeded"),
+	// 			Scheduled: to.Ptr(true),
+	// 			SizeInBytes: to.Ptr[int64](56091883),
+	// 			Status: to.Ptr(armappservice.BackupItemStatusInProgress),
+	// 			StorageAccountURL: to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
+	// 			WebsiteSizeInBytes: to.Ptr[int64](56091883),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-05-01/ApproveRejectSitePrivateEndpointConnection.json
 func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -215,88 +297,6 @@ func ExampleWebAppsClient_BeginApproveOrRejectPrivateEndpointConnectionSlot() {
 	// 				Status: to.Ptr("Approved"),
 	// 			},
 	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/BackupWebApp.json
-func ExampleWebAppsClient_Backup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWebAppsClient().Backup(ctx, "testrg123", "sitef6141", armappservice.BackupRequest{
-		Properties: &armappservice.BackupRequestProperties{
-			BackupName: to.Ptr("abcdwe"),
-			BackupSchedule: &armappservice.BackupSchedule{
-				FrequencyInterval:     to.Ptr[int32](7),
-				FrequencyUnit:         to.Ptr(armappservice.FrequencyUnitDay),
-				KeepAtLeastOneBackup:  to.Ptr(true),
-				RetentionPeriodInDays: to.Ptr[int32](30),
-				StartTime:             to.Ptr(time.Date(2022, time.September, 2, 17, 33, 11, 641000000, time.UTC)),
-			},
-			Databases: []*armappservice.DatabaseBackupSetting{
-				{
-					Name:                 to.Ptr("backenddb"),
-					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-					ConnectionStringName: to.Ptr("backend"),
-					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
-				},
-				{
-					Name:                 to.Ptr("statsdb"),
-					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-					ConnectionStringName: to.Ptr("stats"),
-					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
-				},
-			},
-			Enabled:           to.Ptr(true),
-			StorageAccountURL: to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientBackupResponse{
-	// 	BackupItem: armappservice.BackupItem{
-	// 		Name: to.Ptr("sitef6141"),
-	// 		Type: to.Ptr("Microsoft.Web/sites"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
-	// 		Properties: &armappservice.BackupItemProperties{
-	// 			Name: to.Ptr("sitef6141_2024-11-01"),
-	// 			BlobName: to.Ptr("sitef6141_2024-11-01"),
-	// 			Created: to.Ptr(time.Date(2022, time.September, 3, 17, 33, 11, 641000000, time.UTC)),
-	// 			Databases: []*armappservice.DatabaseBackupSetting{
-	// 				{
-	// 					Name: to.Ptr("backenddb"),
-	// 					ConnectionString: to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-	// 					ConnectionStringName: to.Ptr("backend"),
-	// 					DatabaseType: to.Ptr(armappservice.DatabaseTypeSQLAzure),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("statsdb"),
-	// 					ConnectionString: to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-	// 					ConnectionStringName: to.Ptr("stats"),
-	// 					DatabaseType: to.Ptr(armappservice.DatabaseTypeSQLAzure),
-	// 				},
-	// 			},
-	// 			FinishedTimeStamp: to.Ptr(time.Date(2022, time.September, 2, 17, 33, 11, 641000000, time.UTC)),
-	// 			BackupID: to.Ptr[int32](12345),
-	// 			LastRestoreTimeStamp: to.Ptr(time.Date(2022, time.September, 4, 17, 33, 11, 641000000, time.UTC)),
-	// 			Log: to.Ptr("Succeeded"),
-	// 			Scheduled: to.Ptr(true),
-	// 			SizeInBytes: to.Ptr[int64](56091883),
-	// 			Status: to.Ptr(armappservice.BackupItemStatusInProgress),
-	// 			StorageAccountURL: to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
-	// 			WebsiteSizeInBytes: to.Ptr[int64](56091883),
 	// 		},
 	// 	},
 	// }
@@ -1050,138 +1050,6 @@ func ExampleWebAppsClient_BeginCreateOrUpdate_createOrUpdateWebApp() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/UpdateSiteConfig.json
-func ExampleWebAppsClient_CreateOrUpdateConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWebAppsClient().CreateOrUpdateConfiguration(ctx, "testrg123", "sitef6141", armappservice.SiteConfigResource{
-		Properties: &armappservice.SiteConfig{
-			AcrUseManagedIdentityCreds: to.Ptr(false),
-			AlwaysOn:                   to.Ptr(false),
-			AppCommandLine:             to.Ptr(""),
-			AutoHealEnabled:            to.Ptr(false),
-			AzureStorageAccounts:       map[string]*armappservice.AzureStorageInfoValue{},
-			DefaultDocuments: []*string{
-				to.Ptr("Default.htm"),
-				to.Ptr("Default.html"),
-				to.Ptr("Default.asp"),
-				to.Ptr("index.htm"),
-				to.Ptr("index.html"),
-				to.Ptr("iisstart.htm"),
-				to.Ptr("default.aspx"),
-				to.Ptr("index.php"),
-				to.Ptr("hostingstart.html"),
-			},
-			DetailedErrorLoggingEnabled:            to.Ptr(false),
-			FtpsState:                              to.Ptr(armappservice.FtpsStateAllAllowed),
-			FunctionAppScaleLimit:                  to.Ptr[int32](0),
-			FunctionsRuntimeScaleMonitoringEnabled: to.Ptr(false),
-			Http20Enabled:                          to.Ptr(false),
-			HTTPLoggingEnabled:                     to.Ptr(false),
-			LinuxFxVersion:                         to.Ptr(""),
-			LoadBalancing:                          to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
-			LogsDirectorySizeLimit:                 to.Ptr[int32](35),
-			ManagedPipelineMode:                    to.Ptr(armappservice.ManagedPipelineModeIntegrated),
-			MinTLSVersion:                          to.Ptr(armappservice.SupportedTLSVersionsOne2),
-			MinimumElasticInstanceCount:            to.Ptr[int32](0),
-			NetFrameworkVersion:                    to.Ptr("v4.0"),
-			NodeVersion:                            to.Ptr(""),
-			NumberOfWorkers:                        to.Ptr[int32](1),
-			PhpVersion:                             to.Ptr("5.6"),
-			PowerShellVersion:                      to.Ptr(""),
-			PythonVersion:                          to.Ptr(""),
-			RemoteDebuggingEnabled:                 to.Ptr(false),
-			RequestTracingEnabled:                  to.Ptr(false),
-			ScmMinTLSVersion:                       to.Ptr(armappservice.SupportedTLSVersionsOne2),
-			Use32BitWorkerProcess:                  to.Ptr(true),
-			VirtualApplications: []*armappservice.VirtualApplication{
-				{
-					PhysicalPath:   to.Ptr("site\\wwwroot"),
-					PreloadEnabled: to.Ptr(false),
-					VirtualPath:    to.Ptr("/"),
-				},
-			},
-			VnetName:              to.Ptr(""),
-			VnetPrivatePortsCount: to.Ptr[int32](0),
-			VnetRouteAllEnabled:   to.Ptr(false),
-			WebSocketsEnabled:     to.Ptr(false),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientCreateOrUpdateConfigurationResponse{
-	// 	SiteConfigResource: armappservice.SiteConfigResource{
-	// 		Name: to.Ptr("web"),
-	// 		Type: to.Ptr("Microsoft.Web/sites/config"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/web"),
-	// 		Kind: to.Ptr("app"),
-	// 		Properties: &armappservice.SiteConfig{
-	// 			AcrUseManagedIdentityCreds: to.Ptr(false),
-	// 			AlwaysOn: to.Ptr(false),
-	// 			AppCommandLine: to.Ptr(""),
-	// 			AutoHealEnabled: to.Ptr(false),
-	// 			AzureStorageAccounts: map[string]*armappservice.AzureStorageInfoValue{
-	// 			},
-	// 			DefaultDocuments: []*string{
-	// 				to.Ptr("Default.htm"),
-	// 				to.Ptr("Default.html"),
-	// 				to.Ptr("Default.asp"),
-	// 				to.Ptr("index.htm"),
-	// 				to.Ptr("index.html"),
-	// 				to.Ptr("iisstart.htm"),
-	// 				to.Ptr("default.aspx"),
-	// 				to.Ptr("index.php"),
-	// 				to.Ptr("hostingstart.html"),
-	// 			},
-	// 			DetailedErrorLoggingEnabled: to.Ptr(false),
-	// 			FtpsState: to.Ptr(armappservice.FtpsStateAllAllowed),
-	// 			FunctionAppScaleLimit: to.Ptr[int32](0),
-	// 			FunctionsRuntimeScaleMonitoringEnabled: to.Ptr(false),
-	// 			Http20Enabled: to.Ptr(false),
-	// 			HTTPLoggingEnabled: to.Ptr(false),
-	// 			LinuxFxVersion: to.Ptr(""),
-	// 			LoadBalancing: to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
-	// 			LogsDirectorySizeLimit: to.Ptr[int32](35),
-	// 			ManagedPipelineMode: to.Ptr(armappservice.ManagedPipelineModeIntegrated),
-	// 			MinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
-	// 			MinimumElasticInstanceCount: to.Ptr[int32](0),
-	// 			NetFrameworkVersion: to.Ptr("v4.0"),
-	// 			NodeVersion: to.Ptr(""),
-	// 			NumberOfWorkers: to.Ptr[int32](1),
-	// 			PhpVersion: to.Ptr("5.6"),
-	// 			PowerShellVersion: to.Ptr(""),
-	// 			PythonVersion: to.Ptr(""),
-	// 			RemoteDebuggingEnabled: to.Ptr(false),
-	// 			RequestTracingEnabled: to.Ptr(false),
-	// 			ScmMinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
-	// 			Use32BitWorkerProcess: to.Ptr(true),
-	// 			VirtualApplications: []*armappservice.VirtualApplication{
-	// 				{
-	// 					PhysicalPath: to.Ptr("site\\wwwroot"),
-	// 					PreloadEnabled: to.Ptr(false),
-	// 					VirtualPath: to.Ptr("/"),
-	// 				},
-	// 			},
-	// 			VnetName: to.Ptr(""),
-	// 			VnetPrivatePortsCount: to.Ptr[int32](0),
-	// 			VnetRouteAllEnabled: to.Ptr(false),
-	// 			WebSocketsEnabled: to.Ptr(false),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-05-01/CloneWebAppSlot.json
 func ExampleWebAppsClient_BeginCreateOrUpdateSlot_cloneWebAppSlot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1484,50 +1352,6 @@ func ExampleWebAppsClient_BeginCreateOrUpdateSlot_createOrUpdateWebAppSlot() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/DeleteWebApp.json
-func ExampleWebAppsClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWebAppsClient().Delete(ctx, "testrg123", "sitef6141", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2025-05-01/DeleteWebAppBackup.json
-func ExampleWebAppsClient_DeleteBackup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWebAppsClient().DeleteBackup(ctx, "testrg123", "sitef6141", "12345", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientDeleteBackupResponse{
-	// }
-}
-
 // Generated from example definition: 2025-05-01/DeleteSitePrivateEndpointConnection.json
 func ExampleWebAppsClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1581,6 +1405,444 @@ func ExampleWebAppsClient_BeginDeletePrivateEndpointConnectionSlot() {
 	// res = armappservice.WebAppsClientDeletePrivateEndpointConnectionSlotResponse{
 	// 	Interface: map[string]any{
 	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/GetSiteDeploymentStatus.json
+func ExampleWebAppsClient_BeginGetProductionSiteDeploymentStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWebAppsClient().BeginGetProductionSiteDeploymentStatus(ctx, "rg", "testSite", "eacfd68b-3bbd-4ad9-99c5-98614d89c8e5", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse{
+	// 	CsmDeploymentStatus: armappservice.CsmDeploymentStatus{
+	// 		Name: to.Ptr("eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
+	// 		Type: to.Ptr("Microsoft.Web/sites/deploymentStatus"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/deploymentStatus/eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
+	// 		Properties: &armappservice.CsmDeploymentStatusProperties{
+	// 			DeploymentID: to.Ptr("eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
+	// 			FailedInstancesLogs: []*string{
+	// 			},
+	// 			NumberOfInstancesFailed: to.Ptr[int32](0),
+	// 			NumberOfInstancesInProgress: to.Ptr[int32](0),
+	// 			NumberOfInstancesSuccessful: to.Ptr[int32](1),
+	// 			Status: to.Ptr(armappservice.DeploymentBuildStatusRuntimeSuccessful),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/GetSiteDeploymentStatusSlot.json
+func ExampleWebAppsClient_BeginGetSlotSiteDeploymentStatusSlot() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWebAppsClient().BeginGetSlotSiteDeploymentStatusSlot(ctx, "rg", "testSite", "stage", "eacfd68b-3bbd-4ad9-99c5-98614d89c8e5", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse{
+	// 	CsmDeploymentStatus: armappservice.CsmDeploymentStatus{
+	// 		Name: to.Ptr("eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
+	// 		Type: to.Ptr("Microsoft.Web/sites/slots/deploymentStatus"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/slots/stage/deploymentStatus/eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
+	// 		Properties: &armappservice.CsmDeploymentStatusProperties{
+	// 			DeploymentID: to.Ptr("eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
+	// 			FailedInstancesLogs: []*string{
+	// 			},
+	// 			NumberOfInstancesFailed: to.Ptr[int32](0),
+	// 			NumberOfInstancesInProgress: to.Ptr[int32](0),
+	// 			NumberOfInstancesSuccessful: to.Ptr[int32](1),
+	// 			Status: to.Ptr(armappservice.DeploymentBuildStatusRuntimeSuccessful),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/RestoreWebAppBackup.json
+func ExampleWebAppsClient_BeginRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWebAppsClient().BeginRestore(ctx, "testrg123", "sitef6141", "123244", armappservice.RestoreRequest{
+		Properties: &armappservice.RestoreRequestProperties{
+			Databases: []*armappservice.DatabaseBackupSetting{
+				{
+					Name:                 to.Ptr("backenddb"),
+					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+					ConnectionStringName: to.Ptr("backend"),
+					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
+				},
+				{
+					Name:                 to.Ptr("statsdb"),
+					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
+					ConnectionStringName: to.Ptr("stats"),
+					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
+				},
+			},
+			Overwrite:         to.Ptr(true),
+			SiteName:          to.Ptr("sitef6141"),
+			StorageAccountURL: to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientRestoreResponse{
+	// }
+}
+
+// Generated from example definition: 2025-05-01/StartWebSiteNetworkTraceOperation_StartNetworkTrace.json
+func ExampleWebAppsClient_BeginStartNetworkTrace() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWebAppsClient().BeginStartNetworkTrace(ctx, "testrg123", "SampleApp", &armappservice.WebAppsClientBeginStartNetworkTraceOptions{
+		DurationInSeconds: to.Ptr[int32](60)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientStartNetworkTraceResponse{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
+	// 		{
+	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
+	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
+	// 			Status: to.Ptr("Succeeded"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/StartWebSiteNetworkTraceOperation_StartNetworkTraceSlot.json
+func ExampleWebAppsClient_BeginStartNetworkTraceSlot() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWebAppsClient().BeginStartNetworkTraceSlot(ctx, "testrg123", "SampleApp", "Production", &armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions{
+		DurationInSeconds: to.Ptr[int32](60)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientStartNetworkTraceSlotResponse{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
+	// 		{
+	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
+	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
+	// 			Status: to.Ptr("Succeeded"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/StartWebSiteNetworkTraceOperation.json
+func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperation() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWebAppsClient().BeginStartWebSiteNetworkTraceOperation(ctx, "testrg123", "SampleApp", &armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions{
+		DurationInSeconds: to.Ptr[int32](60)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
+	// 		{
+	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
+	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
+	// 			Status: to.Ptr("Succeeded"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/StartWebSiteNetworkTraceOperation_Slot.json
+func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperationSlot() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewWebAppsClient().BeginStartWebSiteNetworkTraceOperationSlot(ctx, "testrg123", "SampleApp", "Production", &armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions{
+		DurationInSeconds: to.Ptr[int32](60)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse{
+	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
+	// 		{
+	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
+	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
+	// 			Status: to.Ptr("Succeeded"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/UpdateSiteConfig.json
+func ExampleWebAppsClient_CreateOrUpdateConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWebAppsClient().CreateOrUpdateConfiguration(ctx, "testrg123", "sitef6141", armappservice.SiteConfigResource{
+		Properties: &armappservice.SiteConfig{
+			AcrUseManagedIdentityCreds: to.Ptr(false),
+			AlwaysOn:                   to.Ptr(false),
+			AppCommandLine:             to.Ptr(""),
+			AutoHealEnabled:            to.Ptr(false),
+			AzureStorageAccounts:       map[string]*armappservice.AzureStorageInfoValue{},
+			DefaultDocuments: []*string{
+				to.Ptr("Default.htm"),
+				to.Ptr("Default.html"),
+				to.Ptr("Default.asp"),
+				to.Ptr("index.htm"),
+				to.Ptr("index.html"),
+				to.Ptr("iisstart.htm"),
+				to.Ptr("default.aspx"),
+				to.Ptr("index.php"),
+				to.Ptr("hostingstart.html"),
+			},
+			DetailedErrorLoggingEnabled:            to.Ptr(false),
+			FtpsState:                              to.Ptr(armappservice.FtpsStateAllAllowed),
+			FunctionAppScaleLimit:                  to.Ptr[int32](0),
+			FunctionsRuntimeScaleMonitoringEnabled: to.Ptr(false),
+			Http20Enabled:                          to.Ptr(false),
+			HTTPLoggingEnabled:                     to.Ptr(false),
+			LinuxFxVersion:                         to.Ptr(""),
+			LoadBalancing:                          to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
+			LogsDirectorySizeLimit:                 to.Ptr[int32](35),
+			ManagedPipelineMode:                    to.Ptr(armappservice.ManagedPipelineModeIntegrated),
+			MinTLSVersion:                          to.Ptr(armappservice.SupportedTLSVersionsOne2),
+			MinimumElasticInstanceCount:            to.Ptr[int32](0),
+			NetFrameworkVersion:                    to.Ptr("v4.0"),
+			NodeVersion:                            to.Ptr(""),
+			NumberOfWorkers:                        to.Ptr[int32](1),
+			PhpVersion:                             to.Ptr("5.6"),
+			PowerShellVersion:                      to.Ptr(""),
+			PythonVersion:                          to.Ptr(""),
+			RemoteDebuggingEnabled:                 to.Ptr(false),
+			RequestTracingEnabled:                  to.Ptr(false),
+			ScmMinTLSVersion:                       to.Ptr(armappservice.SupportedTLSVersionsOne2),
+			Use32BitWorkerProcess:                  to.Ptr(true),
+			VirtualApplications: []*armappservice.VirtualApplication{
+				{
+					PhysicalPath:   to.Ptr("site\\wwwroot"),
+					PreloadEnabled: to.Ptr(false),
+					VirtualPath:    to.Ptr("/"),
+				},
+			},
+			VnetName:              to.Ptr(""),
+			VnetPrivatePortsCount: to.Ptr[int32](0),
+			VnetRouteAllEnabled:   to.Ptr(false),
+			WebSocketsEnabled:     to.Ptr(false),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientCreateOrUpdateConfigurationResponse{
+	// 	SiteConfigResource: armappservice.SiteConfigResource{
+	// 		Name: to.Ptr("web"),
+	// 		Type: to.Ptr("Microsoft.Web/sites/config"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141/config/web"),
+	// 		Kind: to.Ptr("app"),
+	// 		Properties: &armappservice.SiteConfig{
+	// 			AcrUseManagedIdentityCreds: to.Ptr(false),
+	// 			AlwaysOn: to.Ptr(false),
+	// 			AppCommandLine: to.Ptr(""),
+	// 			AutoHealEnabled: to.Ptr(false),
+	// 			AzureStorageAccounts: map[string]*armappservice.AzureStorageInfoValue{
+	// 			},
+	// 			DefaultDocuments: []*string{
+	// 				to.Ptr("Default.htm"),
+	// 				to.Ptr("Default.html"),
+	// 				to.Ptr("Default.asp"),
+	// 				to.Ptr("index.htm"),
+	// 				to.Ptr("index.html"),
+	// 				to.Ptr("iisstart.htm"),
+	// 				to.Ptr("default.aspx"),
+	// 				to.Ptr("index.php"),
+	// 				to.Ptr("hostingstart.html"),
+	// 			},
+	// 			DetailedErrorLoggingEnabled: to.Ptr(false),
+	// 			FtpsState: to.Ptr(armappservice.FtpsStateAllAllowed),
+	// 			FunctionAppScaleLimit: to.Ptr[int32](0),
+	// 			FunctionsRuntimeScaleMonitoringEnabled: to.Ptr(false),
+	// 			Http20Enabled: to.Ptr(false),
+	// 			HTTPLoggingEnabled: to.Ptr(false),
+	// 			LinuxFxVersion: to.Ptr(""),
+	// 			LoadBalancing: to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
+	// 			LogsDirectorySizeLimit: to.Ptr[int32](35),
+	// 			ManagedPipelineMode: to.Ptr(armappservice.ManagedPipelineModeIntegrated),
+	// 			MinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
+	// 			MinimumElasticInstanceCount: to.Ptr[int32](0),
+	// 			NetFrameworkVersion: to.Ptr("v4.0"),
+	// 			NodeVersion: to.Ptr(""),
+	// 			NumberOfWorkers: to.Ptr[int32](1),
+	// 			PhpVersion: to.Ptr("5.6"),
+	// 			PowerShellVersion: to.Ptr(""),
+	// 			PythonVersion: to.Ptr(""),
+	// 			RemoteDebuggingEnabled: to.Ptr(false),
+	// 			RequestTracingEnabled: to.Ptr(false),
+	// 			ScmMinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
+	// 			Use32BitWorkerProcess: to.Ptr(true),
+	// 			VirtualApplications: []*armappservice.VirtualApplication{
+	// 				{
+	// 					PhysicalPath: to.Ptr("site\\wwwroot"),
+	// 					PreloadEnabled: to.Ptr(false),
+	// 					VirtualPath: to.Ptr("/"),
+	// 				},
+	// 			},
+	// 			VnetName: to.Ptr(""),
+	// 			VnetPrivatePortsCount: to.Ptr[int32](0),
+	// 			VnetRouteAllEnabled: to.Ptr(false),
+	// 			WebSocketsEnabled: to.Ptr(false),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/DeleteWebApp.json
+func ExampleWebAppsClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWebAppsClient().Delete(ctx, "testrg123", "sitef6141", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-05-01/DeleteWebAppBackup.json
+func ExampleWebAppsClient_DeleteBackup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWebAppsClient().DeleteBackup(ctx, "testrg123", "sitef6141", "12345", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientDeleteBackupResponse{
 	// }
 }
 
@@ -1969,100 +2231,6 @@ func ExampleWebAppsClient_GetAppSettingKeyVaultReferenceSlot() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-05-01/GetKeyVaultReferencesForAppSettings.json
-func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWebAppsClient().NewGetAppSettingsKeyVaultReferencesPager("testrg123", "testc6282", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse{
-		// 	APIKVReferenceCollection: armappservice.APIKVReferenceCollection{
-		// 		Value: []*armappservice.APIKVReference{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testc6282/config/configreferences/appsettings/secretName"),
-		// 				Properties: &armappservice.APIKVReferenceProperties{
-		// 					SecretName: to.Ptr("secretName"),
-		// 					SecretVersion: to.Ptr("secretVersion"),
-		// 					VaultName: to.Ptr("keyVaultName"),
-		// 				},
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testc6282/config/configreferences/appsettings/secretName2"),
-		// 				Properties: &armappservice.APIKVReferenceProperties{
-		// 					SecretName: to.Ptr("secretName2"),
-		// 					SecretVersion: to.Ptr("secretVersion2"),
-		// 					VaultName: to.Ptr("keyVaultName"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01/GetKeyVaultReferencesForAppSettingsSlot.json
-func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesSlotPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWebAppsClient().NewGetAppSettingsKeyVaultReferencesSlotPager("testrg123", "testc6282", "stage", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse{
-		// 	APIKVReferenceCollection: armappservice.APIKVReferenceCollection{
-		// 		Value: []*armappservice.APIKVReference{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testc6282/slots/stage/config/configreferences/appsettings/secretName"),
-		// 				Properties: &armappservice.APIKVReferenceProperties{
-		// 					SecretName: to.Ptr("secretName"),
-		// 					SecretVersion: to.Ptr("secretVersion"),
-		// 					VaultName: to.Ptr("keyVaultName"),
-		// 				},
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testc6282/slots/stage/config/configreferences/appsettings/secretName2"),
-		// 				Properties: &armappservice.APIKVReferenceProperties{
-		// 					SecretName: to.Ptr("secretName2"),
-		// 					SecretVersion: to.Ptr("secretVersion2"),
-		// 					VaultName: to.Ptr("keyVaultName"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-05-01/ListAuthSettings.json
@@ -3014,46 +3182,6 @@ func ExampleWebAppsClient_GetPrivateLinkResourcesSlot() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/GetSiteDeploymentStatus.json
-func ExampleWebAppsClient_BeginGetProductionSiteDeploymentStatus() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWebAppsClient().BeginGetProductionSiteDeploymentStatus(ctx, "rg", "testSite", "eacfd68b-3bbd-4ad9-99c5-98614d89c8e5", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientGetProductionSiteDeploymentStatusResponse{
-	// 	CsmDeploymentStatus: armappservice.CsmDeploymentStatus{
-	// 		Name: to.Ptr("eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
-	// 		Type: to.Ptr("Microsoft.Web/sites/deploymentStatus"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/deploymentStatus/eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
-	// 		Properties: &armappservice.CsmDeploymentStatusProperties{
-	// 			DeploymentID: to.Ptr("eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
-	// 			FailedInstancesLogs: []*string{
-	// 			},
-	// 			NumberOfInstancesFailed: to.Ptr[int32](0),
-	// 			NumberOfInstancesInProgress: to.Ptr[int32](0),
-	// 			NumberOfInstancesSuccessful: to.Ptr[int32](1),
-	// 			Status: to.Ptr(armappservice.DeploymentBuildStatusRuntimeSuccessful),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-05-01/GetPublishingCredentialsPolicy.json
 func ExampleWebAppsClient_GetScmAllowed() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -3246,46 +3374,6 @@ func ExampleWebAppsClient_GetSlot() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/GetSiteDeploymentStatusSlot.json
-func ExampleWebAppsClient_BeginGetSlotSiteDeploymentStatusSlot() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWebAppsClient().BeginGetSlotSiteDeploymentStatusSlot(ctx, "rg", "testSite", "stage", "eacfd68b-3bbd-4ad9-99c5-98614d89c8e5", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientGetSlotSiteDeploymentStatusSlotResponse{
-	// 	CsmDeploymentStatus: armappservice.CsmDeploymentStatus{
-	// 		Name: to.Ptr("eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
-	// 		Type: to.Ptr("Microsoft.Web/sites/slots/deploymentStatus"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/slots/stage/deploymentStatus/eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
-	// 		Properties: &armappservice.CsmDeploymentStatusProperties{
-	// 			DeploymentID: to.Ptr("eacfd68b-3bbd-4ad9-99c5-98614d89c8e5"),
-	// 			FailedInstancesLogs: []*string{
-	// 			},
-	// 			NumberOfInstancesFailed: to.Ptr[int32](0),
-	// 			NumberOfInstancesInProgress: to.Ptr[int32](0),
-	// 			NumberOfInstancesSuccessful: to.Ptr[int32](1),
-	// 			Status: to.Ptr(armappservice.DeploymentBuildStatusRuntimeSuccessful),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-05-01/GetWorkflow.json
 func ExampleWebAppsClient_GetWorkflow() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -3353,273 +3441,6 @@ func ExampleWebAppsClient_GetWorkflow() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-05-01/ListWebApps.json
-func ExampleWebAppsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWebAppsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.WebAppsClientListResponse{
-		// 	WebAppCollection: armappservice.WebAppCollection{
-		// 		Value: []*armappservice.Site{
-		// 			{
-		// 				Name: to.Ptr("sitef6141"),
-		// 				Type: to.Ptr("Microsoft.Web/sites"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
-		// 				Kind: to.Ptr("app"),
-		// 				Location: to.Ptr("East US"),
-		// 				Properties: &armappservice.SiteProperties{
-		// 					AvailabilityState: to.Ptr(armappservice.SiteAvailabilityStateNormal),
-		// 					ClientAffinityEnabled: to.Ptr(true),
-		// 					ClientCertEnabled: to.Ptr(false),
-		// 					ClientCertMode: to.Ptr(armappservice.ClientCertModeRequired),
-		// 					ContainerSize: to.Ptr[int32](0),
-		// 					CustomDomainVerificationID: to.Ptr("7F3BB652450EF7AD0B6AA33064586E4A9CE823A46DF0B2EC6443A68086E84153"),
-		// 					DailyMemoryTimeQuota: to.Ptr[int32](0),
-		// 					DefaultHostName: to.Ptr("sitef6141.azurewebsites.net"),
-		// 					Enabled: to.Ptr(true),
-		// 					EnabledHostNames: []*string{
-		// 						to.Ptr("sitef6141.azurewebsites.net"),
-		// 						to.Ptr("sitef6141.scm.azurewebsites.net"),
-		// 					},
-		// 					HostNameSSLStates: []*armappservice.HostNameSSLState{
-		// 						{
-		// 							Name: to.Ptr("sitef6141.azurewebsites.net"),
-		// 							HostType: to.Ptr(armappservice.HostTypeStandard),
-		// 							SSLState: to.Ptr(armappservice.SSLStateDisabled),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("sitef6141.scm.azurewebsites.net"),
-		// 							HostType: to.Ptr(armappservice.HostTypeRepository),
-		// 							SSLState: to.Ptr(armappservice.SSLStateDisabled),
-		// 						},
-		// 					},
-		// 					HostNames: []*string{
-		// 						to.Ptr("sitef6141.azurewebsites.net"),
-		// 					},
-		// 					HostNamesDisabled: to.Ptr(false),
-		// 					HTTPSOnly: to.Ptr(false),
-		// 					HyperV: to.Ptr(false),
-		// 					IsXenon: to.Ptr(false),
-		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-		// 					OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
-		// 					OutboundVnetRouting: &armappservice.OutboundVnetRouting{
-		// 						AllTraffic: to.Ptr(false),
-		// 						ApplicationTraffic: to.Ptr(false),
-		// 						BackupRestoreTraffic: to.Ptr(false),
-		// 						ContentShareTraffic: to.Ptr(false),
-		// 						ImagePullTraffic: to.Ptr(false),
-		// 					},
-		// 					PossibleOutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144,20.225.184.122,20.225.184.188"),
-		// 					RedundancyMode: to.Ptr(armappservice.RedundancyModeNone),
-		// 					RepositorySiteName: to.Ptr("sitef6141"),
-		// 					Reserved: to.Ptr(false),
-		// 					ResourceConfig: &armappservice.ResourceConfig{
-		// 						CPU: to.Ptr[float64](1),
-		// 						Memory: to.Ptr("2.0Gi"),
-		// 					},
-		// 					ResourceGroup: to.Ptr("testrg123"),
-		// 					ScmSiteAlsoStopped: to.Ptr(false),
-		// 					ServerFarmID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
-		// 					SiteConfig: &armappservice.SiteConfig{
-		// 						AcrUseManagedIdentityCreds: to.Ptr(false),
-		// 						AlwaysOn: to.Ptr(false),
-		// 						AppCommandLine: to.Ptr(""),
-		// 						AutoHealEnabled: to.Ptr(false),
-		// 						AzureStorageAccounts: map[string]*armappservice.AzureStorageInfoValue{
-		// 						},
-		// 						DefaultDocuments: []*string{
-		// 							to.Ptr("Default.htm"),
-		// 							to.Ptr("Default.html"),
-		// 							to.Ptr("Default.asp"),
-		// 							to.Ptr("index.htm"),
-		// 							to.Ptr("index.html"),
-		// 							to.Ptr("iisstart.htm"),
-		// 							to.Ptr("default.aspx"),
-		// 							to.Ptr("index.php"),
-		// 							to.Ptr("hostingstart.html"),
-		// 						},
-		// 						DetailedErrorLoggingEnabled: to.Ptr(false),
-		// 						FtpsState: to.Ptr(armappservice.FtpsStateAllAllowed),
-		// 						FunctionAppScaleLimit: to.Ptr[int32](0),
-		// 						FunctionsRuntimeScaleMonitoringEnabled: to.Ptr(false),
-		// 						Http20Enabled: to.Ptr(false),
-		// 						HTTPLoggingEnabled: to.Ptr(false),
-		// 						LinuxFxVersion: to.Ptr(""),
-		// 						LoadBalancing: to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
-		// 						LogsDirectorySizeLimit: to.Ptr[int32](35),
-		// 						ManagedPipelineMode: to.Ptr(armappservice.ManagedPipelineModeIntegrated),
-		// 						MinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
-		// 						MinimumElasticInstanceCount: to.Ptr[int32](0),
-		// 						NetFrameworkVersion: to.Ptr("v4.0"),
-		// 						NodeVersion: to.Ptr(""),
-		// 						NumberOfWorkers: to.Ptr[int32](1),
-		// 						PhpVersion: to.Ptr("5.6"),
-		// 						PowerShellVersion: to.Ptr(""),
-		// 						PythonVersion: to.Ptr(""),
-		// 						RemoteDebuggingEnabled: to.Ptr(false),
-		// 						RequestTracingEnabled: to.Ptr(false),
-		// 						ScmMinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
-		// 						Use32BitWorkerProcess: to.Ptr(true),
-		// 						VirtualApplications: []*armappservice.VirtualApplication{
-		// 							{
-		// 								PhysicalPath: to.Ptr("site\\wwwroot"),
-		// 								PreloadEnabled: to.Ptr(false),
-		// 								VirtualPath: to.Ptr("/"),
-		// 							},
-		// 						},
-		// 						VnetName: to.Ptr(""),
-		// 						VnetPrivatePortsCount: to.Ptr[int32](0),
-		// 						VnetRouteAllEnabled: to.Ptr(false),
-		// 						WebSocketsEnabled: to.Ptr(false),
-		// 					},
-		// 					State: to.Ptr("Running"),
-		// 					StorageAccountRequired: to.Ptr(false),
-		// 					UsageState: to.Ptr(armappservice.UsageStateNormal),
-		// 					WorkloadProfileName: to.Ptr("myd4wp"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("sitef7252"),
-		// 				Type: to.Ptr("Microsoft.Web/sites"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef7252"),
-		// 				Kind: to.Ptr("app"),
-		// 				Location: to.Ptr("East US"),
-		// 				Properties: &armappservice.SiteProperties{
-		// 					AvailabilityState: to.Ptr(armappservice.SiteAvailabilityStateNormal),
-		// 					ClientAffinityEnabled: to.Ptr(true),
-		// 					ClientCertEnabled: to.Ptr(false),
-		// 					ClientCertMode: to.Ptr(armappservice.ClientCertModeRequired),
-		// 					ContainerSize: to.Ptr[int32](0),
-		// 					CustomDomainVerificationID: to.Ptr("7F3BB652450EF7AD0B6AA33064586E4A9CE823A46DF0B2EC6443A68086E84153"),
-		// 					DailyMemoryTimeQuota: to.Ptr[int32](0),
-		// 					DefaultHostName: to.Ptr("sitef7252.azurewebsites.net"),
-		// 					Enabled: to.Ptr(true),
-		// 					EnabledHostNames: []*string{
-		// 						to.Ptr("sitef7252.azurewebsites.net"),
-		// 						to.Ptr("sitef7252.scm.azurewebsites.net"),
-		// 					},
-		// 					HostNameSSLStates: []*armappservice.HostNameSSLState{
-		// 						{
-		// 							Name: to.Ptr("sitef7252.azurewebsites.net"),
-		// 							HostType: to.Ptr(armappservice.HostTypeStandard),
-		// 							SSLState: to.Ptr(armappservice.SSLStateDisabled),
-		// 						},
-		// 						{
-		// 							Name: to.Ptr("sitef7252.scm.azurewebsites.net"),
-		// 							HostType: to.Ptr(armappservice.HostTypeRepository),
-		// 							SSLState: to.Ptr(armappservice.SSLStateDisabled),
-		// 						},
-		// 					},
-		// 					HostNames: []*string{
-		// 						to.Ptr("sitef7252.azurewebsites.net"),
-		// 					},
-		// 					HostNamesDisabled: to.Ptr(false),
-		// 					HTTPSOnly: to.Ptr(false),
-		// 					HyperV: to.Ptr(false),
-		// 					IsXenon: to.Ptr(false),
-		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-		// 					OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
-		// 					OutboundVnetRouting: &armappservice.OutboundVnetRouting{
-		// 						AllTraffic: to.Ptr(false),
-		// 						ApplicationTraffic: to.Ptr(false),
-		// 						BackupRestoreTraffic: to.Ptr(false),
-		// 						ContentShareTraffic: to.Ptr(false),
-		// 						ImagePullTraffic: to.Ptr(false),
-		// 					},
-		// 					PossibleOutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144,20.225.184.122,20.225.184.188"),
-		// 					RedundancyMode: to.Ptr(armappservice.RedundancyModeNone),
-		// 					RepositorySiteName: to.Ptr("sitef7252"),
-		// 					Reserved: to.Ptr(false),
-		// 					ResourceConfig: &armappservice.ResourceConfig{
-		// 						CPU: to.Ptr[float64](1),
-		// 						Memory: to.Ptr("2.0Gi"),
-		// 					},
-		// 					ResourceGroup: to.Ptr("testrg123"),
-		// 					ScmSiteAlsoStopped: to.Ptr(false),
-		// 					ServerFarmID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
-		// 					SiteConfig: &armappservice.SiteConfig{
-		// 						AcrUseManagedIdentityCreds: to.Ptr(false),
-		// 						AlwaysOn: to.Ptr(false),
-		// 						AppCommandLine: to.Ptr(""),
-		// 						AutoHealEnabled: to.Ptr(false),
-		// 						AzureStorageAccounts: map[string]*armappservice.AzureStorageInfoValue{
-		// 						},
-		// 						DefaultDocuments: []*string{
-		// 							to.Ptr("Default.htm"),
-		// 							to.Ptr("Default.html"),
-		// 							to.Ptr("Default.asp"),
-		// 							to.Ptr("index.htm"),
-		// 							to.Ptr("index.html"),
-		// 							to.Ptr("iisstart.htm"),
-		// 							to.Ptr("default.aspx"),
-		// 							to.Ptr("index.php"),
-		// 							to.Ptr("hostingstart.html"),
-		// 						},
-		// 						DetailedErrorLoggingEnabled: to.Ptr(false),
-		// 						FtpsState: to.Ptr(armappservice.FtpsStateAllAllowed),
-		// 						FunctionAppScaleLimit: to.Ptr[int32](0),
-		// 						FunctionsRuntimeScaleMonitoringEnabled: to.Ptr(false),
-		// 						Http20Enabled: to.Ptr(false),
-		// 						HTTPLoggingEnabled: to.Ptr(false),
-		// 						LinuxFxVersion: to.Ptr(""),
-		// 						LoadBalancing: to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
-		// 						LogsDirectorySizeLimit: to.Ptr[int32](35),
-		// 						ManagedPipelineMode: to.Ptr(armappservice.ManagedPipelineModeIntegrated),
-		// 						MinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
-		// 						MinimumElasticInstanceCount: to.Ptr[int32](0),
-		// 						NetFrameworkVersion: to.Ptr("v4.0"),
-		// 						NodeVersion: to.Ptr(""),
-		// 						NumberOfWorkers: to.Ptr[int32](1),
-		// 						PhpVersion: to.Ptr("5.6"),
-		// 						PowerShellVersion: to.Ptr(""),
-		// 						PythonVersion: to.Ptr(""),
-		// 						RemoteDebuggingEnabled: to.Ptr(false),
-		// 						RequestTracingEnabled: to.Ptr(false),
-		// 						ScmMinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
-		// 						Use32BitWorkerProcess: to.Ptr(true),
-		// 						VirtualApplications: []*armappservice.VirtualApplication{
-		// 							{
-		// 								PhysicalPath: to.Ptr("site\\wwwroot"),
-		// 								PreloadEnabled: to.Ptr(false),
-		// 								VirtualPath: to.Ptr("/"),
-		// 							},
-		// 						},
-		// 						VnetName: to.Ptr(""),
-		// 						VnetPrivatePortsCount: to.Ptr[int32](0),
-		// 						VnetRouteAllEnabled: to.Ptr(false),
-		// 						WebSocketsEnabled: to.Ptr(false),
-		// 					},
-		// 					State: to.Ptr("Running"),
-		// 					StorageAccountRequired: to.Ptr(false),
-		// 					UsageState: to.Ptr(armappservice.UsageStateNormal),
-		// 					WorkloadProfileName: to.Ptr("myd4wp"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-05-01/ListAppSettings.json
@@ -3734,6 +3555,206 @@ func ExampleWebAppsClient_ListBackupStatusSecrets() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-05-01/ListWorkflowsConfigurationConnections.json
+func ExampleWebAppsClient_ListWorkflowsConnections() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWebAppsClient().ListWorkflowsConnections(ctx, "testrg123", "testsite2", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientListWorkflowsConnectionsResponse{
+	// 	WorkflowEnvelope: armappservice.WorkflowEnvelope{
+	// 		Name: to.Ptr("testsite2/connections"),
+	// 		Type: to.Ptr("Microsoft.Web/sites/workflowsconfiguration"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testsite2/workflowconfigurations/connections"),
+	// 		Location: to.Ptr("USAAnywhere"),
+	// 		Properties: &armappservice.WorkflowEnvelopeProperties{
+	// 			Files: map[string]any{
+	// 				"connections.json": map[string]any{
+	// 					"managedApiConnections": map[string]any{
+	// 						"office365": map[string]any{
+	// 							"api": map[string]any{
+	// 								"id": "string",
+	// 							},
+	// 							"authentication": map[string]any{
+	// 								"type": "Raw",
+	// 								"parameter": "@appsetting('office365-connectionKey')",
+	// 								"scheme": "Key",
+	// 							},
+	// 							"connection": map[string]any{
+	// 								"id": "string",
+	// 							},
+	// 							"connectionRuntimeUrl": "string",
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			Health: &armappservice.WorkflowHealth{
+	// 				State: to.Ptr(armappservice.WorkflowHealthStateHealthy),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/ListWorkflowsConfigurationConnections_Slot.json
+func ExampleWebAppsClient_ListWorkflowsConnectionsSlot() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWebAppsClient().ListWorkflowsConnectionsSlot(ctx, "testrg123", "testsite2", "staging", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.WebAppsClientListWorkflowsConnectionsSlotResponse{
+	// 	WorkflowEnvelope: armappservice.WorkflowEnvelope{
+	// 		Name: to.Ptr("testsite2/connections"),
+	// 		Type: to.Ptr("Microsoft.Web/sites/workflowsconfiguration"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testsite2/workflowconfigurations/connections"),
+	// 		Location: to.Ptr("USAAnywhere"),
+	// 		Properties: &armappservice.WorkflowEnvelopeProperties{
+	// 			Files: map[string]any{
+	// 				"connections.json": map[string]any{
+	// 					"managedApiConnections": map[string]any{
+	// 						"office365": map[string]any{
+	// 							"api": map[string]any{
+	// 								"id": "string",
+	// 							},
+	// 							"authentication": map[string]any{
+	// 								"type": "Raw",
+	// 								"parameter": "@appsetting('office365-connectionKey')",
+	// 								"scheme": "Key",
+	// 							},
+	// 							"connection": map[string]any{
+	// 								"id": "string",
+	// 							},
+	// 							"connectionRuntimeUrl": "string",
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			Health: &armappservice.WorkflowHealth{
+	// 				State: to.Ptr(armappservice.WorkflowHealthStateHealthy),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/GetKeyVaultReferencesForAppSettings.json
+func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWebAppsClient().NewGetAppSettingsKeyVaultReferencesPager("testrg123", "testc6282", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesResponse{
+		// 	APIKVReferenceCollection: armappservice.APIKVReferenceCollection{
+		// 		Value: []*armappservice.APIKVReference{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testc6282/config/configreferences/appsettings/secretName"),
+		// 				Properties: &armappservice.APIKVReferenceProperties{
+		// 					SecretName: to.Ptr("secretName"),
+		// 					SecretVersion: to.Ptr("secretVersion"),
+		// 					VaultName: to.Ptr("keyVaultName"),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testc6282/config/configreferences/appsettings/secretName2"),
+		// 				Properties: &armappservice.APIKVReferenceProperties{
+		// 					SecretName: to.Ptr("secretName2"),
+		// 					SecretVersion: to.Ptr("secretVersion2"),
+		// 					VaultName: to.Ptr("keyVaultName"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetKeyVaultReferencesForAppSettingsSlot.json
+func ExampleWebAppsClient_NewGetAppSettingsKeyVaultReferencesSlotPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWebAppsClient().NewGetAppSettingsKeyVaultReferencesSlotPager("testrg123", "testc6282", "stage", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.WebAppsClientGetAppSettingsKeyVaultReferencesSlotResponse{
+		// 	APIKVReferenceCollection: armappservice.APIKVReferenceCollection{
+		// 		Value: []*armappservice.APIKVReference{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testc6282/slots/stage/config/configreferences/appsettings/secretName"),
+		// 				Properties: &armappservice.APIKVReferenceProperties{
+		// 					SecretName: to.Ptr("secretName"),
+		// 					SecretVersion: to.Ptr("secretVersion"),
+		// 					VaultName: to.Ptr("keyVaultName"),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testc6282/slots/stage/config/configreferences/appsettings/secretName2"),
+		// 				Properties: &armappservice.APIKVReferenceProperties{
+		// 					SecretName: to.Ptr("secretName2"),
+		// 					SecretVersion: to.Ptr("secretVersion2"),
+		// 					VaultName: to.Ptr("keyVaultName"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }
 
 // Generated from example definition: 2025-05-01/ListWebAppBackups.json
@@ -4311,6 +4332,273 @@ func ExampleWebAppsClient_NewListInstanceWorkflowsSlotPager() {
 	}
 }
 
+// Generated from example definition: 2025-05-01/ListWebApps.json
+func ExampleWebAppsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWebAppsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.WebAppsClientListResponse{
+		// 	WebAppCollection: armappservice.WebAppCollection{
+		// 		Value: []*armappservice.Site{
+		// 			{
+		// 				Name: to.Ptr("sitef6141"),
+		// 				Type: to.Ptr("Microsoft.Web/sites"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef6141"),
+		// 				Kind: to.Ptr("app"),
+		// 				Location: to.Ptr("East US"),
+		// 				Properties: &armappservice.SiteProperties{
+		// 					AvailabilityState: to.Ptr(armappservice.SiteAvailabilityStateNormal),
+		// 					ClientAffinityEnabled: to.Ptr(true),
+		// 					ClientCertEnabled: to.Ptr(false),
+		// 					ClientCertMode: to.Ptr(armappservice.ClientCertModeRequired),
+		// 					ContainerSize: to.Ptr[int32](0),
+		// 					CustomDomainVerificationID: to.Ptr("7F3BB652450EF7AD0B6AA33064586E4A9CE823A46DF0B2EC6443A68086E84153"),
+		// 					DailyMemoryTimeQuota: to.Ptr[int32](0),
+		// 					DefaultHostName: to.Ptr("sitef6141.azurewebsites.net"),
+		// 					Enabled: to.Ptr(true),
+		// 					EnabledHostNames: []*string{
+		// 						to.Ptr("sitef6141.azurewebsites.net"),
+		// 						to.Ptr("sitef6141.scm.azurewebsites.net"),
+		// 					},
+		// 					HostNameSSLStates: []*armappservice.HostNameSSLState{
+		// 						{
+		// 							Name: to.Ptr("sitef6141.azurewebsites.net"),
+		// 							HostType: to.Ptr(armappservice.HostTypeStandard),
+		// 							SSLState: to.Ptr(armappservice.SSLStateDisabled),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("sitef6141.scm.azurewebsites.net"),
+		// 							HostType: to.Ptr(armappservice.HostTypeRepository),
+		// 							SSLState: to.Ptr(armappservice.SSLStateDisabled),
+		// 						},
+		// 					},
+		// 					HostNames: []*string{
+		// 						to.Ptr("sitef6141.azurewebsites.net"),
+		// 					},
+		// 					HostNamesDisabled: to.Ptr(false),
+		// 					HTTPSOnly: to.Ptr(false),
+		// 					HyperV: to.Ptr(false),
+		// 					IsXenon: to.Ptr(false),
+		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+		// 					OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
+		// 					OutboundVnetRouting: &armappservice.OutboundVnetRouting{
+		// 						AllTraffic: to.Ptr(false),
+		// 						ApplicationTraffic: to.Ptr(false),
+		// 						BackupRestoreTraffic: to.Ptr(false),
+		// 						ContentShareTraffic: to.Ptr(false),
+		// 						ImagePullTraffic: to.Ptr(false),
+		// 					},
+		// 					PossibleOutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144,20.225.184.122,20.225.184.188"),
+		// 					RedundancyMode: to.Ptr(armappservice.RedundancyModeNone),
+		// 					RepositorySiteName: to.Ptr("sitef6141"),
+		// 					Reserved: to.Ptr(false),
+		// 					ResourceConfig: &armappservice.ResourceConfig{
+		// 						CPU: to.Ptr[float64](1),
+		// 						Memory: to.Ptr("2.0Gi"),
+		// 					},
+		// 					ResourceGroup: to.Ptr("testrg123"),
+		// 					ScmSiteAlsoStopped: to.Ptr(false),
+		// 					ServerFarmID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
+		// 					SiteConfig: &armappservice.SiteConfig{
+		// 						AcrUseManagedIdentityCreds: to.Ptr(false),
+		// 						AlwaysOn: to.Ptr(false),
+		// 						AppCommandLine: to.Ptr(""),
+		// 						AutoHealEnabled: to.Ptr(false),
+		// 						AzureStorageAccounts: map[string]*armappservice.AzureStorageInfoValue{
+		// 						},
+		// 						DefaultDocuments: []*string{
+		// 							to.Ptr("Default.htm"),
+		// 							to.Ptr("Default.html"),
+		// 							to.Ptr("Default.asp"),
+		// 							to.Ptr("index.htm"),
+		// 							to.Ptr("index.html"),
+		// 							to.Ptr("iisstart.htm"),
+		// 							to.Ptr("default.aspx"),
+		// 							to.Ptr("index.php"),
+		// 							to.Ptr("hostingstart.html"),
+		// 						},
+		// 						DetailedErrorLoggingEnabled: to.Ptr(false),
+		// 						FtpsState: to.Ptr(armappservice.FtpsStateAllAllowed),
+		// 						FunctionAppScaleLimit: to.Ptr[int32](0),
+		// 						FunctionsRuntimeScaleMonitoringEnabled: to.Ptr(false),
+		// 						Http20Enabled: to.Ptr(false),
+		// 						HTTPLoggingEnabled: to.Ptr(false),
+		// 						LinuxFxVersion: to.Ptr(""),
+		// 						LoadBalancing: to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
+		// 						LogsDirectorySizeLimit: to.Ptr[int32](35),
+		// 						ManagedPipelineMode: to.Ptr(armappservice.ManagedPipelineModeIntegrated),
+		// 						MinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
+		// 						MinimumElasticInstanceCount: to.Ptr[int32](0),
+		// 						NetFrameworkVersion: to.Ptr("v4.0"),
+		// 						NodeVersion: to.Ptr(""),
+		// 						NumberOfWorkers: to.Ptr[int32](1),
+		// 						PhpVersion: to.Ptr("5.6"),
+		// 						PowerShellVersion: to.Ptr(""),
+		// 						PythonVersion: to.Ptr(""),
+		// 						RemoteDebuggingEnabled: to.Ptr(false),
+		// 						RequestTracingEnabled: to.Ptr(false),
+		// 						ScmMinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
+		// 						Use32BitWorkerProcess: to.Ptr(true),
+		// 						VirtualApplications: []*armappservice.VirtualApplication{
+		// 							{
+		// 								PhysicalPath: to.Ptr("site\\wwwroot"),
+		// 								PreloadEnabled: to.Ptr(false),
+		// 								VirtualPath: to.Ptr("/"),
+		// 							},
+		// 						},
+		// 						VnetName: to.Ptr(""),
+		// 						VnetPrivatePortsCount: to.Ptr[int32](0),
+		// 						VnetRouteAllEnabled: to.Ptr(false),
+		// 						WebSocketsEnabled: to.Ptr(false),
+		// 					},
+		// 					State: to.Ptr("Running"),
+		// 					StorageAccountRequired: to.Ptr(false),
+		// 					UsageState: to.Ptr(armappservice.UsageStateNormal),
+		// 					WorkloadProfileName: to.Ptr("myd4wp"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("sitef7252"),
+		// 				Type: to.Ptr("Microsoft.Web/sites"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/sitef7252"),
+		// 				Kind: to.Ptr("app"),
+		// 				Location: to.Ptr("East US"),
+		// 				Properties: &armappservice.SiteProperties{
+		// 					AvailabilityState: to.Ptr(armappservice.SiteAvailabilityStateNormal),
+		// 					ClientAffinityEnabled: to.Ptr(true),
+		// 					ClientCertEnabled: to.Ptr(false),
+		// 					ClientCertMode: to.Ptr(armappservice.ClientCertModeRequired),
+		// 					ContainerSize: to.Ptr[int32](0),
+		// 					CustomDomainVerificationID: to.Ptr("7F3BB652450EF7AD0B6AA33064586E4A9CE823A46DF0B2EC6443A68086E84153"),
+		// 					DailyMemoryTimeQuota: to.Ptr[int32](0),
+		// 					DefaultHostName: to.Ptr("sitef7252.azurewebsites.net"),
+		// 					Enabled: to.Ptr(true),
+		// 					EnabledHostNames: []*string{
+		// 						to.Ptr("sitef7252.azurewebsites.net"),
+		// 						to.Ptr("sitef7252.scm.azurewebsites.net"),
+		// 					},
+		// 					HostNameSSLStates: []*armappservice.HostNameSSLState{
+		// 						{
+		// 							Name: to.Ptr("sitef7252.azurewebsites.net"),
+		// 							HostType: to.Ptr(armappservice.HostTypeStandard),
+		// 							SSLState: to.Ptr(armappservice.SSLStateDisabled),
+		// 						},
+		// 						{
+		// 							Name: to.Ptr("sitef7252.scm.azurewebsites.net"),
+		// 							HostType: to.Ptr(armappservice.HostTypeRepository),
+		// 							SSLState: to.Ptr(armappservice.SSLStateDisabled),
+		// 						},
+		// 					},
+		// 					HostNames: []*string{
+		// 						to.Ptr("sitef7252.azurewebsites.net"),
+		// 					},
+		// 					HostNamesDisabled: to.Ptr(false),
+		// 					HTTPSOnly: to.Ptr(false),
+		// 					HyperV: to.Ptr(false),
+		// 					IsXenon: to.Ptr(false),
+		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+		// 					OutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144"),
+		// 					OutboundVnetRouting: &armappservice.OutboundVnetRouting{
+		// 						AllTraffic: to.Ptr(false),
+		// 						ApplicationTraffic: to.Ptr(false),
+		// 						BackupRestoreTraffic: to.Ptr(false),
+		// 						ContentShareTraffic: to.Ptr(false),
+		// 						ImagePullTraffic: to.Ptr(false),
+		// 					},
+		// 					PossibleOutboundIPAddresses: to.Ptr("70.37.102.201,20.225.43.144,20.225.184.122,20.225.184.188"),
+		// 					RedundancyMode: to.Ptr(armappservice.RedundancyModeNone),
+		// 					RepositorySiteName: to.Ptr("sitef7252"),
+		// 					Reserved: to.Ptr(false),
+		// 					ResourceConfig: &armappservice.ResourceConfig{
+		// 						CPU: to.Ptr[float64](1),
+		// 						Memory: to.Ptr("2.0Gi"),
+		// 					},
+		// 					ResourceGroup: to.Ptr("testrg123"),
+		// 					ScmSiteAlsoStopped: to.Ptr(false),
+		// 					ServerFarmID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
+		// 					SiteConfig: &armappservice.SiteConfig{
+		// 						AcrUseManagedIdentityCreds: to.Ptr(false),
+		// 						AlwaysOn: to.Ptr(false),
+		// 						AppCommandLine: to.Ptr(""),
+		// 						AutoHealEnabled: to.Ptr(false),
+		// 						AzureStorageAccounts: map[string]*armappservice.AzureStorageInfoValue{
+		// 						},
+		// 						DefaultDocuments: []*string{
+		// 							to.Ptr("Default.htm"),
+		// 							to.Ptr("Default.html"),
+		// 							to.Ptr("Default.asp"),
+		// 							to.Ptr("index.htm"),
+		// 							to.Ptr("index.html"),
+		// 							to.Ptr("iisstart.htm"),
+		// 							to.Ptr("default.aspx"),
+		// 							to.Ptr("index.php"),
+		// 							to.Ptr("hostingstart.html"),
+		// 						},
+		// 						DetailedErrorLoggingEnabled: to.Ptr(false),
+		// 						FtpsState: to.Ptr(armappservice.FtpsStateAllAllowed),
+		// 						FunctionAppScaleLimit: to.Ptr[int32](0),
+		// 						FunctionsRuntimeScaleMonitoringEnabled: to.Ptr(false),
+		// 						Http20Enabled: to.Ptr(false),
+		// 						HTTPLoggingEnabled: to.Ptr(false),
+		// 						LinuxFxVersion: to.Ptr(""),
+		// 						LoadBalancing: to.Ptr(armappservice.SiteLoadBalancingLeastRequests),
+		// 						LogsDirectorySizeLimit: to.Ptr[int32](35),
+		// 						ManagedPipelineMode: to.Ptr(armappservice.ManagedPipelineModeIntegrated),
+		// 						MinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
+		// 						MinimumElasticInstanceCount: to.Ptr[int32](0),
+		// 						NetFrameworkVersion: to.Ptr("v4.0"),
+		// 						NodeVersion: to.Ptr(""),
+		// 						NumberOfWorkers: to.Ptr[int32](1),
+		// 						PhpVersion: to.Ptr("5.6"),
+		// 						PowerShellVersion: to.Ptr(""),
+		// 						PythonVersion: to.Ptr(""),
+		// 						RemoteDebuggingEnabled: to.Ptr(false),
+		// 						RequestTracingEnabled: to.Ptr(false),
+		// 						ScmMinTLSVersion: to.Ptr(armappservice.SupportedTLSVersionsOne2),
+		// 						Use32BitWorkerProcess: to.Ptr(true),
+		// 						VirtualApplications: []*armappservice.VirtualApplication{
+		// 							{
+		// 								PhysicalPath: to.Ptr("site\\wwwroot"),
+		// 								PreloadEnabled: to.Ptr(false),
+		// 								VirtualPath: to.Ptr("/"),
+		// 							},
+		// 						},
+		// 						VnetName: to.Ptr(""),
+		// 						VnetPrivatePortsCount: to.Ptr[int32](0),
+		// 						VnetRouteAllEnabled: to.Ptr(false),
+		// 						WebSocketsEnabled: to.Ptr(false),
+		// 					},
+		// 					State: to.Ptr("Running"),
+		// 					StorageAccountRequired: to.Ptr(false),
+		// 					UsageState: to.Ptr(armappservice.UsageStateNormal),
+		// 					WorkloadProfileName: to.Ptr("myd4wp"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2025-05-01/ListSiteDeploymentStatus.json
 func ExampleWebAppsClient_NewListProductionSiteDeploymentStatusesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -4771,294 +5059,6 @@ func ExampleWebAppsClient_NewListWorkflowsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-05-01/ListWorkflowsConfigurationConnections.json
-func ExampleWebAppsClient_ListWorkflowsConnections() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWebAppsClient().ListWorkflowsConnections(ctx, "testrg123", "testsite2", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientListWorkflowsConnectionsResponse{
-	// 	WorkflowEnvelope: armappservice.WorkflowEnvelope{
-	// 		Name: to.Ptr("testsite2/connections"),
-	// 		Type: to.Ptr("Microsoft.Web/sites/workflowsconfiguration"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testsite2/workflowconfigurations/connections"),
-	// 		Location: to.Ptr("USAAnywhere"),
-	// 		Properties: &armappservice.WorkflowEnvelopeProperties{
-	// 			Files: map[string]any{
-	// 				"connections.json": map[string]any{
-	// 					"managedApiConnections": map[string]any{
-	// 						"office365": map[string]any{
-	// 							"api": map[string]any{
-	// 								"id": "string",
-	// 							},
-	// 							"authentication": map[string]any{
-	// 								"type": "Raw",
-	// 								"parameter": "@appsetting('office365-connectionKey')",
-	// 								"scheme": "Key",
-	// 							},
-	// 							"connection": map[string]any{
-	// 								"id": "string",
-	// 							},
-	// 							"connectionRuntimeUrl": "string",
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			Health: &armappservice.WorkflowHealth{
-	// 				State: to.Ptr(armappservice.WorkflowHealthStateHealthy),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/ListWorkflowsConfigurationConnections_Slot.json
-func ExampleWebAppsClient_ListWorkflowsConnectionsSlot() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWebAppsClient().ListWorkflowsConnectionsSlot(ctx, "testrg123", "testsite2", "staging", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientListWorkflowsConnectionsSlotResponse{
-	// 	WorkflowEnvelope: armappservice.WorkflowEnvelope{
-	// 		Name: to.Ptr("testsite2/connections"),
-	// 		Type: to.Ptr("Microsoft.Web/sites/workflowsconfiguration"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/sites/testsite2/workflowconfigurations/connections"),
-	// 		Location: to.Ptr("USAAnywhere"),
-	// 		Properties: &armappservice.WorkflowEnvelopeProperties{
-	// 			Files: map[string]any{
-	// 				"connections.json": map[string]any{
-	// 					"managedApiConnections": map[string]any{
-	// 						"office365": map[string]any{
-	// 							"api": map[string]any{
-	// 								"id": "string",
-	// 							},
-	// 							"authentication": map[string]any{
-	// 								"type": "Raw",
-	// 								"parameter": "@appsetting('office365-connectionKey')",
-	// 								"scheme": "Key",
-	// 							},
-	// 							"connection": map[string]any{
-	// 								"id": "string",
-	// 							},
-	// 							"connectionRuntimeUrl": "string",
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			Health: &armappservice.WorkflowHealth{
-	// 				State: to.Ptr(armappservice.WorkflowHealthStateHealthy),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/RestoreWebAppBackup.json
-func ExampleWebAppsClient_BeginRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWebAppsClient().BeginRestore(ctx, "testrg123", "sitef6141", "123244", armappservice.RestoreRequest{
-		Properties: &armappservice.RestoreRequestProperties{
-			Databases: []*armappservice.DatabaseBackupSetting{
-				{
-					Name:                 to.Ptr("backenddb"),
-					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-					ConnectionStringName: to.Ptr("backend"),
-					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
-				},
-				{
-					Name:                 to.Ptr("statsdb"),
-					ConnectionString:     to.Ptr("DSN=data-source-name[;SERVER=value] [;PWD=value] [;UID=value] [;<Attribute>=<value>]"),
-					ConnectionStringName: to.Ptr("stats"),
-					DatabaseType:         to.Ptr(armappservice.DatabaseTypeSQLAzure),
-				},
-			},
-			Overwrite:         to.Ptr(true),
-			SiteName:          to.Ptr("sitef6141"),
-			StorageAccountURL: to.Ptr("DefaultEndpointsProtocol=https;AccountName=storagesample;AccountKey=<account-key>"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientRestoreResponse{
-	// }
-}
-
-// Generated from example definition: 2025-05-01/StartWebSiteNetworkTraceOperation_StartNetworkTrace.json
-func ExampleWebAppsClient_BeginStartNetworkTrace() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWebAppsClient().BeginStartNetworkTrace(ctx, "testrg123", "SampleApp", &armappservice.WebAppsClientBeginStartNetworkTraceOptions{
-		DurationInSeconds: to.Ptr[int32](60)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientStartNetworkTraceResponse{
-	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
-	// 		{
-	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
-	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
-	// 			Status: to.Ptr("Succeeded"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/StartWebSiteNetworkTraceOperation_StartNetworkTraceSlot.json
-func ExampleWebAppsClient_BeginStartNetworkTraceSlot() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWebAppsClient().BeginStartNetworkTraceSlot(ctx, "testrg123", "SampleApp", "Production", &armappservice.WebAppsClientBeginStartNetworkTraceSlotOptions{
-		DurationInSeconds: to.Ptr[int32](60)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientStartNetworkTraceSlotResponse{
-	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
-	// 		{
-	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
-	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
-	// 			Status: to.Ptr("Succeeded"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/StartWebSiteNetworkTraceOperation.json
-func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperation() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWebAppsClient().BeginStartWebSiteNetworkTraceOperation(ctx, "testrg123", "SampleApp", &armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationOptions{
-		DurationInSeconds: to.Ptr[int32](60)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientStartWebSiteNetworkTraceOperationResponse{
-	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
-	// 		{
-	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
-	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
-	// 			Status: to.Ptr("Succeeded"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/StartWebSiteNetworkTraceOperation_Slot.json
-func ExampleWebAppsClient_BeginStartWebSiteNetworkTraceOperationSlot() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewWebAppsClient().BeginStartWebSiteNetworkTraceOperationSlot(ctx, "testrg123", "SampleApp", "Production", &armappservice.WebAppsClientBeginStartWebSiteNetworkTraceOperationSlotOptions{
-		DurationInSeconds: to.Ptr[int32](60)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.WebAppsClientStartWebSiteNetworkTraceOperationSlotResponse{
-	// 	NetworkTraceArray: []*armappservice.NetworkTrace{
-	// 		{
-	// 			Path: to.Ptr("D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
-	// 			Message: to.Ptr("Trace file has been saved as D:\\home\\LogFiles\\networktrace\\10.0.0.1_2018_02_01T00_00_00.zip"),
-	// 			Status: to.Ptr("Succeeded"),
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2025-05-01/StopWebSiteNetworkTrace_StopNetworkTrace.json

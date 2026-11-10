@@ -65,7 +65,8 @@ func (client *WorkspacesClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return WorkspacesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -130,7 +131,8 @@ func (client *WorkspacesClient) Delete(ctx context.Context, resourceGroupName st
 		return WorkspacesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WorkspacesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WorkspacesClientDeleteResponse{}, err
 	}
 	return WorkspacesClientDeleteResponse{}, nil
 }
@@ -179,7 +181,8 @@ func (client *WorkspacesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WorkspacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -379,7 +382,8 @@ func (client *WorkspacesClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return WorkspacesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

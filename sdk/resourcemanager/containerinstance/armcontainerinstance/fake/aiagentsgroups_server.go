@@ -19,64 +19,64 @@ import (
 	"slices"
 )
 
-// AiAgentsGroupsServer is a fake server for instances of the armcontainerinstance.AiAgentsGroupsClient type.
-type AiAgentsGroupsServer struct {
-	// BeginCreateOrUpdate is the fake for method AiAgentsGroupsClient.BeginCreateOrUpdate
+// AIAgentsGroupsServer is a fake server for instances of the armcontainerinstance.AIAgentsGroupsClient type.
+type AIAgentsGroupsServer struct {
+	// BeginCreateOrUpdate is the fake for method AIAgentsGroupsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource armcontainerinstance.AiAgentsGroup, options *armcontainerinstance.AiAgentsGroupsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource armcontainerinstance.AIAgentsGroup, options *armcontainerinstance.AIAgentsGroupsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armcontainerinstance.AIAgentsGroupsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// BeginDelete is the fake for method AiAgentsGroupsClient.BeginDelete
+	// BeginDelete is the fake for method AIAgentsGroupsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *armcontainerinstance.AiAgentsGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *armcontainerinstance.AIAgentsGroupsClientBeginDeleteOptions) (resp azfake.PollerResponder[armcontainerinstance.AIAgentsGroupsClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// BeginUpdate is the fake for method AiAgentsGroupsClient.BeginUpdate
+	// BeginUpdate is the fake for method AIAgentsGroupsClient.BeginUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties armcontainerinstance.AiAgentsGroupTagsUpdate, options *armcontainerinstance.AiAgentsGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
+	BeginUpdate func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties armcontainerinstance.AIAgentsGroupTagsUpdate, options *armcontainerinstance.AIAgentsGroupsClientBeginUpdateOptions) (resp azfake.PollerResponder[armcontainerinstance.AIAgentsGroupsClientUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Connect is the fake for method AiAgentsGroupsClient.Connect
+	// Connect is the fake for method AIAgentsGroupsClient.Connect
 	// HTTP status codes to indicate success: http.StatusOK
-	Connect func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *armcontainerinstance.AiAgentsGroupsClientConnectOptions) (resp azfake.Responder[armcontainerinstance.AiAgentsGroupsClientConnectResponse], errResp azfake.ErrorResponder)
+	Connect func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *armcontainerinstance.AIAgentsGroupsClientConnectOptions) (resp azfake.Responder[armcontainerinstance.AIAgentsGroupsClientConnectResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method AiAgentsGroupsClient.Get
+	// Get is the fake for method AIAgentsGroupsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *armcontainerinstance.AiAgentsGroupsClientGetOptions) (resp azfake.Responder[armcontainerinstance.AiAgentsGroupsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *armcontainerinstance.AIAgentsGroupsClientGetOptions) (resp azfake.Responder[armcontainerinstance.AIAgentsGroupsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceGroupPager is the fake for method AiAgentsGroupsClient.NewListByResourceGroupPager
+	// NewListByResourceGroupPager is the fake for method AIAgentsGroupsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armcontainerinstance.AiAgentsGroupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerinstance.AiAgentsGroupsClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armcontainerinstance.AIAgentsGroupsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armcontainerinstance.AIAgentsGroupsClientListByResourceGroupResponse])
 
-	// NewListBySubscriptionPager is the fake for method AiAgentsGroupsClient.NewListBySubscriptionPager
+	// NewListBySubscriptionPager is the fake for method AIAgentsGroupsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armcontainerinstance.AiAgentsGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcontainerinstance.AiAgentsGroupsClientListBySubscriptionResponse])
+	NewListBySubscriptionPager func(options *armcontainerinstance.AIAgentsGroupsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armcontainerinstance.AIAgentsGroupsClientListBySubscriptionResponse])
 }
 
-// NewAiAgentsGroupsServerTransport creates a new instance of AiAgentsGroupsServerTransport with the provided implementation.
-// The returned AiAgentsGroupsServerTransport instance is connected to an instance of armcontainerinstance.AiAgentsGroupsClient via the
+// NewAIAgentsGroupsServerTransport creates a new instance of AIAgentsGroupsServerTransport with the provided implementation.
+// The returned AIAgentsGroupsServerTransport instance is connected to an instance of armcontainerinstance.AIAgentsGroupsClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewAiAgentsGroupsServerTransport(srv *AiAgentsGroupsServer) *AiAgentsGroupsServerTransport {
-	return &AiAgentsGroupsServerTransport{
+func NewAIAgentsGroupsServerTransport(srv *AIAgentsGroupsServer) *AIAgentsGroupsServerTransport {
+	return &AIAgentsGroupsServerTransport{
 		srv:                         srv,
-		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientCreateOrUpdateResponse]](),
-		beginDelete:                 newTracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientDeleteResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientUpdateResponse]](),
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcontainerinstance.AiAgentsGroupsClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcontainerinstance.AiAgentsGroupsClientListBySubscriptionResponse]](),
+		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armcontainerinstance.AIAgentsGroupsClientCreateOrUpdateResponse]](),
+		beginDelete:                 newTracker[azfake.PollerResponder[armcontainerinstance.AIAgentsGroupsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armcontainerinstance.AIAgentsGroupsClientUpdateResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armcontainerinstance.AIAgentsGroupsClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armcontainerinstance.AIAgentsGroupsClientListBySubscriptionResponse]](),
 	}
 }
 
-// AiAgentsGroupsServerTransport connects instances of armcontainerinstance.AiAgentsGroupsClient to instances of AiAgentsGroupsServer.
-// Don't use this type directly, use NewAiAgentsGroupsServerTransport instead.
-type AiAgentsGroupsServerTransport struct {
-	srv                         *AiAgentsGroupsServer
-	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientCreateOrUpdateResponse]]
-	beginDelete                 *tracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientDeleteResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armcontainerinstance.AiAgentsGroupsClientUpdateResponse]]
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcontainerinstance.AiAgentsGroupsClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcontainerinstance.AiAgentsGroupsClientListBySubscriptionResponse]]
+// AIAgentsGroupsServerTransport connects instances of armcontainerinstance.AIAgentsGroupsClient to instances of AIAgentsGroupsServer.
+// Don't use this type directly, use NewAIAgentsGroupsServerTransport instead.
+type AIAgentsGroupsServerTransport struct {
+	srv                         *AIAgentsGroupsServer
+	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armcontainerinstance.AIAgentsGroupsClientCreateOrUpdateResponse]]
+	beginDelete                 *tracker[azfake.PollerResponder[armcontainerinstance.AIAgentsGroupsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armcontainerinstance.AIAgentsGroupsClientUpdateResponse]]
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armcontainerinstance.AIAgentsGroupsClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armcontainerinstance.AIAgentsGroupsClientListBySubscriptionResponse]]
 }
 
-// Do implements the policy.Transporter interface for AiAgentsGroupsServerTransport.
-func (a *AiAgentsGroupsServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for AIAgentsGroupsServerTransport.
+func (a *AIAgentsGroupsServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -86,7 +86,7 @@ func (a *AiAgentsGroupsServerTransport) Do(req *http.Request) (*http.Response, e
 	return a.dispatchToMethodFake(req, method)
 }
 
-func (a *AiAgentsGroupsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (a *AIAgentsGroupsServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -96,19 +96,19 @@ func (a *AiAgentsGroupsServerTransport) dispatchToMethodFake(req *http.Request, 
 		}
 		if !intercepted {
 			switch method {
-			case "AiAgentsGroupsClient.BeginCreateOrUpdate":
+			case "AIAgentsGroupsClient.BeginCreateOrUpdate":
 				res.resp, res.err = a.dispatchBeginCreateOrUpdate(req)
-			case "AiAgentsGroupsClient.BeginDelete":
+			case "AIAgentsGroupsClient.BeginDelete":
 				res.resp, res.err = a.dispatchBeginDelete(req)
-			case "AiAgentsGroupsClient.BeginUpdate":
+			case "AIAgentsGroupsClient.BeginUpdate":
 				res.resp, res.err = a.dispatchBeginUpdate(req)
-			case "AiAgentsGroupsClient.Connect":
+			case "AIAgentsGroupsClient.Connect":
 				res.resp, res.err = a.dispatchConnect(req)
-			case "AiAgentsGroupsClient.Get":
+			case "AIAgentsGroupsClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "AiAgentsGroupsClient.NewListByResourceGroupPager":
+			case "AIAgentsGroupsClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
-			case "AiAgentsGroupsClient.NewListBySubscriptionPager":
+			case "AIAgentsGroupsClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -126,7 +126,7 @@ func (a *AiAgentsGroupsServerTransport) dispatchToMethodFake(req *http.Request, 
 	}
 }
 
-func (a *AiAgentsGroupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
+func (a *AIAgentsGroupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginCreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdate not implemented")}
 	}
@@ -138,7 +138,7 @@ func (a *AiAgentsGroupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerinstance.AiAgentsGroup](req)
+		body, err := server.UnmarshalRequestAsJSON[armcontainerinstance.AIAgentsGroup](req)
 		if err != nil {
 			return nil, err
 		}
@@ -174,7 +174,7 @@ func (a *AiAgentsGroupsServerTransport) dispatchBeginCreateOrUpdate(req *http.Re
 	return resp, nil
 }
 
-func (a *AiAgentsGroupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
+func (a *AIAgentsGroupsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
 	}
@@ -218,7 +218,7 @@ func (a *AiAgentsGroupsServerTransport) dispatchBeginDelete(req *http.Request) (
 	return resp, nil
 }
 
-func (a *AiAgentsGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
+func (a *AIAgentsGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
 	}
@@ -230,7 +230,7 @@ func (a *AiAgentsGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		body, err := server.UnmarshalRequestAsJSON[armcontainerinstance.AiAgentsGroupTagsUpdate](req)
+		body, err := server.UnmarshalRequestAsJSON[armcontainerinstance.AIAgentsGroupTagsUpdate](req)
 		if err != nil {
 			return nil, err
 		}
@@ -266,7 +266,7 @@ func (a *AiAgentsGroupsServerTransport) dispatchBeginUpdate(req *http.Request) (
 	return resp, nil
 }
 
-func (a *AiAgentsGroupsServerTransport) dispatchConnect(req *http.Request) (*http.Response, error) {
+func (a *AIAgentsGroupsServerTransport) dispatchConnect(req *http.Request) (*http.Response, error) {
 	if a.srv.Connect == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Connect not implemented")}
 	}
@@ -292,14 +292,14 @@ func (a *AiAgentsGroupsServerTransport) dispatchConnect(req *http.Request) (*htt
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AiAgentsGroupAccessToken, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AIAgentsGroupAccessToken, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (a *AiAgentsGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (a *AIAgentsGroupsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -325,14 +325,14 @@ func (a *AiAgentsGroupsServerTransport) dispatchGet(req *http.Request) (*http.Re
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AiAgentsGroup, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AIAgentsGroup, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (a *AiAgentsGroupsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+func (a *AIAgentsGroupsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
@@ -351,7 +351,7 @@ func (a *AiAgentsGroupsServerTransport) dispatchNewListByResourceGroupPager(req 
 		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
 		newListByResourceGroupPager = &resp
 		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcontainerinstance.AiAgentsGroupsClientListByResourceGroupResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armcontainerinstance.AIAgentsGroupsClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -369,7 +369,7 @@ func (a *AiAgentsGroupsServerTransport) dispatchNewListByResourceGroupPager(req 
 	return resp, nil
 }
 
-func (a *AiAgentsGroupsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+func (a *AIAgentsGroupsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
@@ -384,7 +384,7 @@ func (a *AiAgentsGroupsServerTransport) dispatchNewListBySubscriptionPager(req *
 		resp := a.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armcontainerinstance.AiAgentsGroupsClientListBySubscriptionResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armcontainerinstance.AIAgentsGroupsClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -402,7 +402,7 @@ func (a *AiAgentsGroupsServerTransport) dispatchNewListBySubscriptionPager(req *
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to AiAgentsGroupsServerTransport
+// set this to conditionally intercept incoming requests to AIAgentsGroupsServerTransport
 var aiAgentsGroupsServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

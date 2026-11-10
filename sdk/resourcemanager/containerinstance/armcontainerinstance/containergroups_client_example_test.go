@@ -895,9 +895,9 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 				{
 					Name: to.Ptr("volume1"),
 					AzureFile: &armcontainerinstance.AzureFileVolume{
-						ShareName:                    to.Ptr("shareName"),
-						StorageAccountName:           to.Ptr("accountName"),
-						UserAssignedIdentityClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+						ShareName:                   to.Ptr("shareName"),
+						StorageAccountName:          to.Ptr("accountName"),
+						UserManagedIdentityClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 					},
 				},
 				{
@@ -1011,7 +1011,7 @@ func ExampleContainerGroupsClient_BeginCreateOrUpdate_containerGroupsCreateOrUpd
 	// 					AzureFile: &armcontainerinstance.AzureFileVolume{
 	// 						ShareName: to.Ptr("shareName"),
 	// 						StorageAccountName: to.Ptr("accountName"),
-	// 						UserAssignedIdentityClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 						UserManagedIdentityClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 					},
 	// 				},
 	// 				{

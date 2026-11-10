@@ -8,33 +8,33 @@ const (
 	version20260901Preview string = "2026-09-01-preview"
 )
 
-// AiAgentsGroupProvisioningState - The provisioning state of an AiAgentsGroup resource.
-type AiAgentsGroupProvisioningState string
+// AIAgentsGroupProvisioningState - The provisioning state of an AiAgentsGroup resource.
+type AIAgentsGroupProvisioningState string
 
 const (
-	// AiAgentsGroupProvisioningStateAccepted - The resource provisioning request was accepted but not yet started.
-	AiAgentsGroupProvisioningStateAccepted AiAgentsGroupProvisioningState = "Accepted"
-	// AiAgentsGroupProvisioningStateCanceled - Resource creation was canceled.
-	AiAgentsGroupProvisioningStateCanceled AiAgentsGroupProvisioningState = "Canceled"
-	// AiAgentsGroupProvisioningStateDeleting - The resource is being deleted.
-	AiAgentsGroupProvisioningStateDeleting AiAgentsGroupProvisioningState = "Deleting"
-	// AiAgentsGroupProvisioningStateFailed - Resource creation failed.
-	AiAgentsGroupProvisioningStateFailed AiAgentsGroupProvisioningState = "Failed"
-	// AiAgentsGroupProvisioningStateSucceeded - Resource has been created.
-	AiAgentsGroupProvisioningStateSucceeded AiAgentsGroupProvisioningState = "Succeeded"
-	// AiAgentsGroupProvisioningStateUpdating - The resource is being updated.
-	AiAgentsGroupProvisioningStateUpdating AiAgentsGroupProvisioningState = "Updating"
+	// AIAgentsGroupProvisioningStateAccepted - The resource provisioning request was accepted but not yet started.
+	AIAgentsGroupProvisioningStateAccepted AIAgentsGroupProvisioningState = "Accepted"
+	// AIAgentsGroupProvisioningStateCanceled - Resource creation was canceled.
+	AIAgentsGroupProvisioningStateCanceled AIAgentsGroupProvisioningState = "Canceled"
+	// AIAgentsGroupProvisioningStateDeleting - The resource is being deleted.
+	AIAgentsGroupProvisioningStateDeleting AIAgentsGroupProvisioningState = "Deleting"
+	// AIAgentsGroupProvisioningStateFailed - Resource creation failed.
+	AIAgentsGroupProvisioningStateFailed AIAgentsGroupProvisioningState = "Failed"
+	// AIAgentsGroupProvisioningStateSucceeded - Resource has been created.
+	AIAgentsGroupProvisioningStateSucceeded AIAgentsGroupProvisioningState = "Succeeded"
+	// AIAgentsGroupProvisioningStateUpdating - The resource is being updated.
+	AIAgentsGroupProvisioningStateUpdating AIAgentsGroupProvisioningState = "Updating"
 )
 
-// PossibleAiAgentsGroupProvisioningStateValues returns the possible values for the AiAgentsGroupProvisioningState const type.
-func PossibleAiAgentsGroupProvisioningStateValues() []AiAgentsGroupProvisioningState {
-	return []AiAgentsGroupProvisioningState{
-		AiAgentsGroupProvisioningStateAccepted,
-		AiAgentsGroupProvisioningStateCanceled,
-		AiAgentsGroupProvisioningStateDeleting,
-		AiAgentsGroupProvisioningStateFailed,
-		AiAgentsGroupProvisioningStateSucceeded,
-		AiAgentsGroupProvisioningStateUpdating,
+// PossibleAIAgentsGroupProvisioningStateValues returns the possible values for the AIAgentsGroupProvisioningState const type.
+func PossibleAIAgentsGroupProvisioningStateValues() []AIAgentsGroupProvisioningState {
+	return []AIAgentsGroupProvisioningState{
+		AIAgentsGroupProvisioningStateAccepted,
+		AIAgentsGroupProvisioningStateCanceled,
+		AIAgentsGroupProvisioningStateDeleting,
+		AIAgentsGroupProvisioningStateFailed,
+		AIAgentsGroupProvisioningStateSucceeded,
+		AIAgentsGroupProvisioningStateUpdating,
 	}
 }
 

@@ -1,20 +1,20 @@
 # Release History
 
-## 3.0.0-beta.2 (2026-11-09)
+## 3.0.0-beta.2 (2026-11-10)
 ### Features Added
 
-- New enum type `AiAgentsGroupProvisioningState` with values `AiAgentsGroupProvisioningStateAccepted`, `AiAgentsGroupProvisioningStateCanceled`, `AiAgentsGroupProvisioningStateDeleting`, `AiAgentsGroupProvisioningStateFailed`, `AiAgentsGroupProvisioningStateSucceeded`, `AiAgentsGroupProvisioningStateUpdating`
+- New enum type `AIAgentsGroupProvisioningState` with values `AIAgentsGroupProvisioningStateAccepted`, `AIAgentsGroupProvisioningStateCanceled`, `AIAgentsGroupProvisioningStateDeleting`, `AIAgentsGroupProvisioningStateFailed`, `AIAgentsGroupProvisioningStateSucceeded`, `AIAgentsGroupProvisioningStateUpdating`
 - New enum type `ManagedServiceIdentityType` with values `ManagedServiceIdentityTypeNone`, `ManagedServiceIdentityTypeSystemAssigned`, `ManagedServiceIdentityTypeSystemAssignedUserAssigned`, `ManagedServiceIdentityTypeUserAssigned`
 - New enum type `ManagedVirtualNodePoolProvisioningState` with values `ManagedVirtualNodePoolProvisioningStateAccepted`, `ManagedVirtualNodePoolProvisioningStateCanceled`, `ManagedVirtualNodePoolProvisioningStateDeleting`, `ManagedVirtualNodePoolProvisioningStateFailed`, `ManagedVirtualNodePoolProvisioningStateSucceeded`, `ManagedVirtualNodePoolProvisioningStateUpdating`
-- New function `NewAiAgentsGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AiAgentsGroupsClient, error)`
-- New function `*AiAgentsGroupsClient.Connect(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AiAgentsGroupsClientConnectOptions) (AiAgentsGroupsClientConnectResponse, error)`
-- New function `*AiAgentsGroupsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource AiAgentsGroup, options *AiAgentsGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AiAgentsGroupsClientCreateOrUpdateResponse], error)`
-- New function `*AiAgentsGroupsClient.BeginDelete(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AiAgentsGroupsClientBeginDeleteOptions) (*runtime.Poller[AiAgentsGroupsClientDeleteResponse], error)`
-- New function `*AiAgentsGroupsClient.Get(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AiAgentsGroupsClientGetOptions) (AiAgentsGroupsClientGetResponse, error)`
-- New function `*AiAgentsGroupsClient.NewListByResourceGroupPager(resourceGroupName string, options *AiAgentsGroupsClientListByResourceGroupOptions) *runtime.Pager[AiAgentsGroupsClientListByResourceGroupResponse]`
-- New function `*AiAgentsGroupsClient.NewListBySubscriptionPager(options *AiAgentsGroupsClientListBySubscriptionOptions) *runtime.Pager[AiAgentsGroupsClientListBySubscriptionResponse]`
-- New function `*AiAgentsGroupsClient.BeginUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties AiAgentsGroupTagsUpdate, options *AiAgentsGroupsClientBeginUpdateOptions) (*runtime.Poller[AiAgentsGroupsClientUpdateResponse], error)`
-- New function `*ClientFactory.NewAiAgentsGroupsClient() *AiAgentsGroupsClient`
+- New function `NewAIAgentsGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AIAgentsGroupsClient, error)`
+- New function `*AIAgentsGroupsClient.Connect(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AIAgentsGroupsClientConnectOptions) (AIAgentsGroupsClientConnectResponse, error)`
+- New function `*AIAgentsGroupsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource AIAgentsGroup, options *AIAgentsGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AIAgentsGroupsClientCreateOrUpdateResponse], error)`
+- New function `*AIAgentsGroupsClient.BeginDelete(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AIAgentsGroupsClientBeginDeleteOptions) (*runtime.Poller[AIAgentsGroupsClientDeleteResponse], error)`
+- New function `*AIAgentsGroupsClient.Get(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AIAgentsGroupsClientGetOptions) (AIAgentsGroupsClientGetResponse, error)`
+- New function `*AIAgentsGroupsClient.NewListByResourceGroupPager(resourceGroupName string, options *AIAgentsGroupsClientListByResourceGroupOptions) *runtime.Pager[AIAgentsGroupsClientListByResourceGroupResponse]`
+- New function `*AIAgentsGroupsClient.NewListBySubscriptionPager(options *AIAgentsGroupsClientListBySubscriptionOptions) *runtime.Pager[AIAgentsGroupsClientListBySubscriptionResponse]`
+- New function `*AIAgentsGroupsClient.BeginUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties AIAgentsGroupTagsUpdate, options *AIAgentsGroupsClientBeginUpdateOptions) (*runtime.Poller[AIAgentsGroupsClientUpdateResponse], error)`
+- New function `*ClientFactory.NewAIAgentsGroupsClient() *AIAgentsGroupsClient`
 - New function `*ClientFactory.NewManagedVirtualNodePoolsClient() *ManagedVirtualNodePoolsClient`
 - New function `NewManagedVirtualNodePoolsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedVirtualNodePoolsClient, error)`
 - New function `*ManagedVirtualNodePoolsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, resource ManagedVirtualNodePool, options *ManagedVirtualNodePoolsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedVirtualNodePoolsClientCreateOrUpdateResponse], error)`
@@ -23,12 +23,12 @@
 - New function `*ManagedVirtualNodePoolsClient.NewListByResourceGroupPager(resourceGroupName string, options *ManagedVirtualNodePoolsClientListByResourceGroupOptions) *runtime.Pager[ManagedVirtualNodePoolsClientListByResourceGroupResponse]`
 - New function `*ManagedVirtualNodePoolsClient.NewListBySubscriptionPager(options *ManagedVirtualNodePoolsClientListBySubscriptionOptions) *runtime.Pager[ManagedVirtualNodePoolsClientListBySubscriptionResponse]`
 - New function `*ManagedVirtualNodePoolsClient.BeginUpdate(ctx context.Context, resourceGroupName string, managedVirtualNodePoolName string, properties ManagedVirtualNodePoolUpdate, options *ManagedVirtualNodePoolsClientBeginUpdateOptions) (*runtime.Poller[ManagedVirtualNodePoolsClientUpdateResponse], error)`
-- New struct `AiAgentsGroup`
-- New struct `AiAgentsGroupAccessToken`
+- New struct `AIAgentsGroup`
+- New struct `AIAgentsGroupAccessToken`
+- New struct `AIAgentsGroupNetworkProfile`
+- New struct `AIAgentsGroupProperties`
+- New struct `AIAgentsGroupTagsUpdate`
 - New struct `AiAgentsGroupListResult`
-- New struct `AiAgentsGroupNetworkProfile`
-- New struct `AiAgentsGroupProperties`
-- New struct `AiAgentsGroupTagsUpdate`
 - New struct `ManagedServiceIdentity`
 - New struct `ManagedVirtualNodePool`
 - New struct `ManagedVirtualNodePoolContainerGroup`
@@ -38,7 +38,7 @@
 - New struct `ManagedVirtualNodePoolUpdate`
 - New struct `SubnetReference`
 - New struct `UserAssignedIdentity`
-- New field `UserAssignedIdentityClientID` in struct `AzureFileVolume`
+- New field `UserManagedIdentityClientID` in struct `AzureFileVolume`
 
 
 ## 3.0.0-beta.1 (2026-05-20)

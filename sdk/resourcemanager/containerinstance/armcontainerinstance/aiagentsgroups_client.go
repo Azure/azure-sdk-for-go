@@ -16,20 +16,20 @@ import (
 	"strings"
 )
 
-// AiAgentsGroupsClient contains the methods for the AiAgentsGroups group.
-// Don't use this type directly, use NewAiAgentsGroupsClient() instead.
+// AIAgentsGroupsClient contains the methods for the AIAgentsGroups group.
+// Don't use this type directly, use NewAIAgentsGroupsClient() instead.
 //
 // Generated from API version 2026-09-01-preview
-type AiAgentsGroupsClient struct {
+type AIAgentsGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAiAgentsGroupsClient creates a new instance of AiAgentsGroupsClient with the specified values.
+// NewAIAgentsGroupsClient creates a new instance of AIAgentsGroupsClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewAiAgentsGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AiAgentsGroupsClient, error) {
+func NewAIAgentsGroupsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AIAgentsGroupsClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -37,7 +37,7 @@ func NewAiAgentsGroupsClient(subscriptionID string, credential azcore.TokenCrede
 	if err != nil {
 		return nil, err
 	}
-	client := &AiAgentsGroupsClient{
+	client := &AIAgentsGroupsClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -51,20 +51,20 @@ func NewAiAgentsGroupsClient(subscriptionID string, credential azcore.TokenCrede
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - aiAgentsGroupName - The name of the AiAgentsGroup.
 //   - resource - Resource create parameters.
-//   - options - AiAgentsGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the AiAgentsGroupsClient.BeginCreateOrUpdate
+//   - options - AIAgentsGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the AIAgentsGroupsClient.BeginCreateOrUpdate
 //     method.
-func (client *AiAgentsGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource AiAgentsGroup, options *AiAgentsGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AiAgentsGroupsClientCreateOrUpdateResponse], error) {
+func (client *AIAgentsGroupsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource AIAgentsGroup, options *AIAgentsGroupsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AIAgentsGroupsClientCreateOrUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.createOrUpdate(ctx, resourceGroupName, aiAgentsGroupName, resource, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AiAgentsGroupsClientCreateOrUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AIAgentsGroupsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AiAgentsGroupsClientCreateOrUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AIAgentsGroupsClientCreateOrUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -74,9 +74,9 @@ func (client *AiAgentsGroupsClient) BeginCreateOrUpdate(ctx context.Context, res
 //
 // Create an AiAgentsGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AiAgentsGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource AiAgentsGroup, options *AiAgentsGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+func (client *AIAgentsGroupsClient) createOrUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource AIAgentsGroup, options *AIAgentsGroupsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AiAgentsGroupsClient.BeginCreateOrUpdate"
+	const operationName = "AIAgentsGroupsClient.BeginCreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -96,7 +96,7 @@ func (client *AiAgentsGroupsClient) createOrUpdate(ctx context.Context, resource
 }
 
 // createOrUpdateCreateRequest creates the createOrUpdate request.
-func (client *AiAgentsGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource AiAgentsGroup, _ *AiAgentsGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AIAgentsGroupsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, resource AIAgentsGroup, _ *AIAgentsGroupsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups/{aiAgentsGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -131,20 +131,20 @@ func (client *AiAgentsGroupsClient) createOrUpdateCreateRequest(ctx context.Cont
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - aiAgentsGroupName - The name of the AiAgentsGroup.
-//   - options - AiAgentsGroupsClientBeginDeleteOptions contains the optional parameters for the AiAgentsGroupsClient.BeginDelete
+//   - options - AIAgentsGroupsClientBeginDeleteOptions contains the optional parameters for the AIAgentsGroupsClient.BeginDelete
 //     method.
-func (client *AiAgentsGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AiAgentsGroupsClientBeginDeleteOptions) (*runtime.Poller[AiAgentsGroupsClientDeleteResponse], error) {
+func (client *AIAgentsGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AIAgentsGroupsClientBeginDeleteOptions) (*runtime.Poller[AIAgentsGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.deleteOperation(ctx, resourceGroupName, aiAgentsGroupName, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AiAgentsGroupsClientDeleteResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AIAgentsGroupsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AiAgentsGroupsClientDeleteResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AIAgentsGroupsClientDeleteResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -154,9 +154,9 @@ func (client *AiAgentsGroupsClient) BeginDelete(ctx context.Context, resourceGro
 //
 // Delete an AiAgentsGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AiAgentsGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AiAgentsGroupsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AIAgentsGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AIAgentsGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AiAgentsGroupsClient.BeginDelete"
+	const operationName = "AIAgentsGroupsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -176,7 +176,7 @@ func (client *AiAgentsGroupsClient) deleteOperation(ctx context.Context, resourc
 }
 
 // deleteCreateRequest creates the delete request.
-func (client *AiAgentsGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, _ *AiAgentsGroupsClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *AIAgentsGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, _ *AIAgentsGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups/{aiAgentsGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -207,20 +207,20 @@ func (client *AiAgentsGroupsClient) deleteCreateRequest(ctx context.Context, res
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - aiAgentsGroupName - The name of the AiAgentsGroup.
 //   - properties - The resource properties to be updated.
-//   - options - AiAgentsGroupsClientBeginUpdateOptions contains the optional parameters for the AiAgentsGroupsClient.BeginUpdate
+//   - options - AIAgentsGroupsClientBeginUpdateOptions contains the optional parameters for the AIAgentsGroupsClient.BeginUpdate
 //     method.
-func (client *AiAgentsGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties AiAgentsGroupTagsUpdate, options *AiAgentsGroupsClientBeginUpdateOptions) (*runtime.Poller[AiAgentsGroupsClientUpdateResponse], error) {
+func (client *AIAgentsGroupsClient) BeginUpdate(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties AIAgentsGroupTagsUpdate, options *AIAgentsGroupsClientBeginUpdateOptions) (*runtime.Poller[AIAgentsGroupsClientUpdateResponse], error) {
 	if options == nil || options.ResumeToken == "" {
 		resp, err := client.update(ctx, resourceGroupName, aiAgentsGroupName, properties, options)
 		if err != nil {
 			return nil, err
 		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AiAgentsGroupsClientUpdateResponse]{
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AIAgentsGroupsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 		return poller, err
 	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AiAgentsGroupsClientUpdateResponse]{
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AIAgentsGroupsClientUpdateResponse]{
 			Tracer: client.internal.Tracer(),
 		})
 	}
@@ -230,9 +230,9 @@ func (client *AiAgentsGroupsClient) BeginUpdate(ctx context.Context, resourceGro
 //
 // Update an AiAgentsGroup
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AiAgentsGroupsClient) update(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties AiAgentsGroupTagsUpdate, options *AiAgentsGroupsClientBeginUpdateOptions) (*http.Response, error) {
+func (client *AIAgentsGroupsClient) update(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties AIAgentsGroupTagsUpdate, options *AIAgentsGroupsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
-	const operationName = "AiAgentsGroupsClient.BeginUpdate"
+	const operationName = "AIAgentsGroupsClient.BeginUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
@@ -252,7 +252,7 @@ func (client *AiAgentsGroupsClient) update(ctx context.Context, resourceGroupNam
 }
 
 // updateCreateRequest creates the update request.
-func (client *AiAgentsGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties AiAgentsGroupTagsUpdate, _ *AiAgentsGroupsClientBeginUpdateOptions) (*policy.Request, error) {
+func (client *AIAgentsGroupsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, properties AIAgentsGroupTagsUpdate, _ *AIAgentsGroupsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups/{aiAgentsGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -287,27 +287,27 @@ func (client *AiAgentsGroupsClient) updateCreateRequest(ctx context.Context, res
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - aiAgentsGroupName - The name of the AiAgentsGroup.
-//   - options - AiAgentsGroupsClientConnectOptions contains the optional parameters for the AiAgentsGroupsClient.Connect method.
-func (client *AiAgentsGroupsClient) Connect(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AiAgentsGroupsClientConnectOptions) (AiAgentsGroupsClientConnectResponse, error) {
+//   - options - AIAgentsGroupsClientConnectOptions contains the optional parameters for the AIAgentsGroupsClient.Connect method.
+func (client *AIAgentsGroupsClient) Connect(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AIAgentsGroupsClientConnectOptions) (AIAgentsGroupsClientConnectResponse, error) {
 	var err error
-	const operationName = "AiAgentsGroupsClient.Connect"
+	const operationName = "AIAgentsGroupsClient.Connect"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.connectCreateRequest(ctx, resourceGroupName, aiAgentsGroupName, options)
 	if err != nil {
-		return AiAgentsGroupsClientConnectResponse{}, err
+		return AIAgentsGroupsClientConnectResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AiAgentsGroupsClientConnectResponse{}, err
+		return AIAgentsGroupsClientConnectResponse{}, err
 	}
 	resp, err := client.connectHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // connectCreateRequest creates the Connect request.
-func (client *AiAgentsGroupsClient) connectCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, _ *AiAgentsGroupsClientConnectOptions) (*policy.Request, error) {
+func (client *AIAgentsGroupsClient) connectCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, _ *AIAgentsGroupsClientConnectOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups/{aiAgentsGroupName}/connect"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -333,13 +333,13 @@ func (client *AiAgentsGroupsClient) connectCreateRequest(ctx context.Context, re
 }
 
 // connectHandleResponse handles the Connect response.
-func (client *AiAgentsGroupsClient) connectHandleResponse(resp *http.Response, successCodes ...int) (AiAgentsGroupsClientConnectResponse, error) {
-	result := AiAgentsGroupsClientConnectResponse{}
+func (client *AIAgentsGroupsClient) connectHandleResponse(resp *http.Response, successCodes ...int) (AIAgentsGroupsClientConnectResponse, error) {
+	result := AIAgentsGroupsClientConnectResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AiAgentsGroupAccessToken); err != nil {
-		return AiAgentsGroupsClientConnectResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.AIAgentsGroupAccessToken); err != nil {
+		return AIAgentsGroupsClientConnectResponse{}, err
 	}
 	return result, nil
 }
@@ -350,27 +350,27 @@ func (client *AiAgentsGroupsClient) connectHandleResponse(resp *http.Response, s
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - aiAgentsGroupName - The name of the AiAgentsGroup.
-//   - options - AiAgentsGroupsClientGetOptions contains the optional parameters for the AiAgentsGroupsClient.Get method.
-func (client *AiAgentsGroupsClient) Get(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AiAgentsGroupsClientGetOptions) (AiAgentsGroupsClientGetResponse, error) {
+//   - options - AIAgentsGroupsClientGetOptions contains the optional parameters for the AIAgentsGroupsClient.Get method.
+func (client *AIAgentsGroupsClient) Get(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, options *AIAgentsGroupsClientGetOptions) (AIAgentsGroupsClientGetResponse, error) {
 	var err error
-	const operationName = "AiAgentsGroupsClient.Get"
+	const operationName = "AIAgentsGroupsClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, aiAgentsGroupName, options)
 	if err != nil {
-		return AiAgentsGroupsClientGetResponse{}, err
+		return AIAgentsGroupsClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AiAgentsGroupsClientGetResponse{}, err
+		return AIAgentsGroupsClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *AiAgentsGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, _ *AiAgentsGroupsClientGetOptions) (*policy.Request, error) {
+func (client *AIAgentsGroupsClient) getCreateRequest(ctx context.Context, resourceGroupName string, aiAgentsGroupName string, _ *AIAgentsGroupsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerInstance/aiAgentsGroups/{aiAgentsGroupName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -396,13 +396,13 @@ func (client *AiAgentsGroupsClient) getCreateRequest(ctx context.Context, resour
 }
 
 // getHandleResponse handles the Get response.
-func (client *AiAgentsGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AiAgentsGroupsClientGetResponse, error) {
-	result := AiAgentsGroupsClientGetResponse{}
+func (client *AIAgentsGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AIAgentsGroupsClientGetResponse, error) {
+	result := AIAgentsGroupsClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AiAgentsGroup); err != nil {
-		return AiAgentsGroupsClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.AIAgentsGroup); err != nil {
+		return AIAgentsGroupsClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -411,26 +411,26 @@ func (client *AiAgentsGroupsClient) getHandleResponse(resp *http.Response, succe
 //
 // List AiAgentsGroup resources by resource group
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - AiAgentsGroupsClientListByResourceGroupOptions contains the optional parameters for the AiAgentsGroupsClient.NewListByResourceGroupPager
+//   - options - AIAgentsGroupsClientListByResourceGroupOptions contains the optional parameters for the AIAgentsGroupsClient.NewListByResourceGroupPager
 //     method.
-func (client *AiAgentsGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *AiAgentsGroupsClientListByResourceGroupOptions) *runtime.Pager[AiAgentsGroupsClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AiAgentsGroupsClientListByResourceGroupResponse]{
-		More: func(page AiAgentsGroupsClientListByResourceGroupResponse) bool {
+func (client *AIAgentsGroupsClient) NewListByResourceGroupPager(resourceGroupName string, options *AIAgentsGroupsClientListByResourceGroupOptions) *runtime.Pager[AIAgentsGroupsClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AIAgentsGroupsClientListByResourceGroupResponse]{
+		More: func(page AIAgentsGroupsClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AiAgentsGroupsClientListByResourceGroupResponse) (AiAgentsGroupsClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AiAgentsGroupsClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *AIAgentsGroupsClientListByResourceGroupResponse) (AIAgentsGroupsClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AIAgentsGroupsClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
-				return AiAgentsGroupsClientListByResourceGroupResponse{}, err
+				return AIAgentsGroupsClientListByResourceGroupResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return AiAgentsGroupsClientListByResourceGroupResponse{}, err
+				return AIAgentsGroupsClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
@@ -439,7 +439,7 @@ func (client *AiAgentsGroupsClient) NewListByResourceGroupPager(resourceGroupNam
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AiAgentsGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AiAgentsGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AIAgentsGroupsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AIAgentsGroupsClientListByResourceGroupOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -470,13 +470,13 @@ func (client *AiAgentsGroupsClient) listByResourceGroupCreateRequest(ctx context
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AiAgentsGroupsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AiAgentsGroupsClientListByResourceGroupResponse, error) {
-	result := AiAgentsGroupsClientListByResourceGroupResponse{}
+func (client *AIAgentsGroupsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AIAgentsGroupsClientListByResourceGroupResponse, error) {
+	result := AIAgentsGroupsClientListByResourceGroupResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AiAgentsGroupListResult); err != nil {
-		return AiAgentsGroupsClientListByResourceGroupResponse{}, err
+		return AIAgentsGroupsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -484,26 +484,26 @@ func (client *AiAgentsGroupsClient) listByResourceGroupHandleResponse(resp *http
 // NewListBySubscriptionPager - List AiAgentsGroup resources by subscription ID
 //
 // List AiAgentsGroup resources by subscription ID
-//   - options - AiAgentsGroupsClientListBySubscriptionOptions contains the optional parameters for the AiAgentsGroupsClient.NewListBySubscriptionPager
+//   - options - AIAgentsGroupsClientListBySubscriptionOptions contains the optional parameters for the AIAgentsGroupsClient.NewListBySubscriptionPager
 //     method.
-func (client *AiAgentsGroupsClient) NewListBySubscriptionPager(options *AiAgentsGroupsClientListBySubscriptionOptions) *runtime.Pager[AiAgentsGroupsClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AiAgentsGroupsClientListBySubscriptionResponse]{
-		More: func(page AiAgentsGroupsClientListBySubscriptionResponse) bool {
+func (client *AIAgentsGroupsClient) NewListBySubscriptionPager(options *AIAgentsGroupsClientListBySubscriptionOptions) *runtime.Pager[AIAgentsGroupsClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AIAgentsGroupsClientListBySubscriptionResponse]{
+		More: func(page AIAgentsGroupsClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AiAgentsGroupsClientListBySubscriptionResponse) (AiAgentsGroupsClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AiAgentsGroupsClient.NewListBySubscriptionPager")
+		Fetcher: func(ctx context.Context, page *AIAgentsGroupsClientListBySubscriptionResponse) (AIAgentsGroupsClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AIAgentsGroupsClient.NewListBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
-				return AiAgentsGroupsClientListBySubscriptionResponse{}, err
+				return AIAgentsGroupsClientListBySubscriptionResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return AiAgentsGroupsClientListBySubscriptionResponse{}, err
+				return AIAgentsGroupsClientListBySubscriptionResponse{}, err
 			}
 			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
@@ -512,7 +512,7 @@ func (client *AiAgentsGroupsClient) NewListBySubscriptionPager(options *AiAgents
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AiAgentsGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *AiAgentsGroupsClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *AIAgentsGroupsClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *AIAgentsGroupsClientListBySubscriptionOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -539,13 +539,13 @@ func (client *AiAgentsGroupsClient) listBySubscriptionCreateRequest(ctx context.
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AiAgentsGroupsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AiAgentsGroupsClientListBySubscriptionResponse, error) {
-	result := AiAgentsGroupsClientListBySubscriptionResponse{}
+func (client *AIAgentsGroupsClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AIAgentsGroupsClientListBySubscriptionResponse, error) {
+	result := AIAgentsGroupsClientListBySubscriptionResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AiAgentsGroupListResult); err != nil {
-		return AiAgentsGroupsClientListBySubscriptionResponse{}, err
+		return AIAgentsGroupsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }

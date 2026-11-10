@@ -13,35 +13,8 @@ import (
 	"time"
 )
 
-// MarshalJSON implements the json.Marshaller interface for type APIEntityReference.
-func (a APIEntityReference) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "id", a.ID)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type APIEntityReference.
-func (a *APIEntityReference) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "id":
-			err = unpopulate(val, "ID", &a.ID)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AiAgentsGroup.
-func (a AiAgentsGroup) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AIAgentsGroup.
+func (a AIAgentsGroup) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "id", a.ID)
 	populate(objectMap, "identity", a.Identity)
@@ -54,8 +27,8 @@ func (a AiAgentsGroup) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AiAgentsGroup.
-func (a *AiAgentsGroup) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AIAgentsGroup.
+func (a *AIAgentsGroup) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
@@ -95,8 +68,8 @@ func (a *AiAgentsGroup) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type AiAgentsGroupAccessToken.
-func (a AiAgentsGroupAccessToken) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type AIAgentsGroupAccessToken.
+func (a AIAgentsGroupAccessToken) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accessToken", a.AccessToken)
 	populate(objectMap, "endpoint", a.Endpoint)
@@ -104,8 +77,8 @@ func (a AiAgentsGroupAccessToken) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type AiAgentsGroupAccessToken.
-func (a *AiAgentsGroupAccessToken) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type AIAgentsGroupAccessToken.
+func (a *AIAgentsGroupAccessToken) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
@@ -121,6 +94,126 @@ func (a *AiAgentsGroupAccessToken) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "notAfter":
 			err = unpopulateTime[datetime.RFC3339](val, "NotAfter", &a.NotAfter)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AIAgentsGroupNetworkProfile.
+func (a AIAgentsGroupNetworkProfile) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "subnets", a.Subnets)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AIAgentsGroupNetworkProfile.
+func (a *AIAgentsGroupNetworkProfile) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "subnets":
+			err = unpopulate(val, "Subnets", &a.Subnets)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AIAgentsGroupProperties.
+func (a AIAgentsGroupProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "managementResourceGroupId", a.ManagementResourceGroupID)
+	populate(objectMap, "networkProfile", a.NetworkProfile)
+	populate(objectMap, "provisioningState", a.ProvisioningState)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AIAgentsGroupProperties.
+func (a *AIAgentsGroupProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "managementResourceGroupId":
+			err = unpopulate(val, "ManagementResourceGroupID", &a.ManagementResourceGroupID)
+			delete(rawMsg, key)
+		case "networkProfile":
+			err = unpopulate(val, "NetworkProfile", &a.NetworkProfile)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type AIAgentsGroupTagsUpdate.
+func (a AIAgentsGroupTagsUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "identity", a.Identity)
+	populate(objectMap, "tags", a.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type AIAgentsGroupTagsUpdate.
+func (a *AIAgentsGroupTagsUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "identity":
+			err = unpopulate(val, "Identity", &a.Identity)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &a.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type APIEntityReference.
+func (a APIEntityReference) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", a.ID)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type APIEntityReference.
+func (a *APIEntityReference) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &a.ID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -152,99 +245,6 @@ func (a *AiAgentsGroupListResult) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "value":
 			err = unpopulate(val, "Value", &a.Value)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AiAgentsGroupNetworkProfile.
-func (a AiAgentsGroupNetworkProfile) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "subnets", a.Subnets)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AiAgentsGroupNetworkProfile.
-func (a *AiAgentsGroupNetworkProfile) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "subnets":
-			err = unpopulate(val, "Subnets", &a.Subnets)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AiAgentsGroupProperties.
-func (a AiAgentsGroupProperties) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "managementResourceGroupId", a.ManagementResourceGroupID)
-	populate(objectMap, "networkProfile", a.NetworkProfile)
-	populate(objectMap, "provisioningState", a.ProvisioningState)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AiAgentsGroupProperties.
-func (a *AiAgentsGroupProperties) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "managementResourceGroupId":
-			err = unpopulate(val, "ManagementResourceGroupID", &a.ManagementResourceGroupID)
-			delete(rawMsg, key)
-		case "networkProfile":
-			err = unpopulate(val, "NetworkProfile", &a.NetworkProfile)
-			delete(rawMsg, key)
-		case "provisioningState":
-			err = unpopulate(val, "ProvisioningState", &a.ProvisioningState)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type AiAgentsGroupTagsUpdate.
-func (a AiAgentsGroupTagsUpdate) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populate(objectMap, "identity", a.Identity)
-	populate(objectMap, "tags", a.Tags)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type AiAgentsGroupTagsUpdate.
-func (a *AiAgentsGroupTagsUpdate) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", a, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "identity":
-			err = unpopulate(val, "Identity", &a.Identity)
-			delete(rawMsg, key)
-		case "tags":
-			err = unpopulate(val, "Tags", &a.Tags)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -320,7 +320,7 @@ func (a AzureFileVolume) MarshalJSON() ([]byte, error) {
 	populate(objectMap, "storageAccountKey", a.StorageAccountKey)
 	populate(objectMap, "storageAccountKeyReference", a.StorageAccountKeyReference)
 	populate(objectMap, "storageAccountName", a.StorageAccountName)
-	populate(objectMap, "userAssignedIdentityClientId", a.UserAssignedIdentityClientID)
+	populate(objectMap, "userManagedIdentityClientId", a.UserManagedIdentityClientID)
 	return json.Marshal(objectMap)
 }
 
@@ -348,8 +348,8 @@ func (a *AzureFileVolume) UnmarshalJSON(data []byte) error {
 		case "storageAccountName":
 			err = unpopulate(val, "StorageAccountName", &a.StorageAccountName)
 			delete(rawMsg, key)
-		case "userAssignedIdentityClientId":
-			err = unpopulate(val, "UserAssignedIdentityClientID", &a.UserAssignedIdentityClientID)
+		case "userManagedIdentityClientId":
+			err = unpopulate(val, "UserManagedIdentityClientID", &a.UserManagedIdentityClientID)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2732,8 +2732,8 @@ func (m *ManagedVirtualNodePoolPatchProperties) UnmarshalJSON(data []byte) error
 // MarshalJSON implements the json.Marshaller interface for type ManagedVirtualNodePoolProperties.
 func (m ManagedVirtualNodePoolProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "aiAgentGroupResourceId", m.AiAgentGroupResourceID)
-	populate(objectMap, "aksClusterResourceId", m.AksClusterResourceID)
+	populate(objectMap, "aiAgentGroupResourceId", m.AIAgentGroupResourceID)
+	populate(objectMap, "aksClusterResourceId", m.AKSClusterResourceID)
 	populate(objectMap, "containerGroups", m.ContainerGroups)
 	populate(objectMap, "managedIdentityResourceId", m.ManagedIdentityResourceID)
 	populate(objectMap, "maxNodes", m.MaxNodes)
@@ -2755,10 +2755,10 @@ func (m *ManagedVirtualNodePoolProperties) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "aiAgentGroupResourceId":
-			err = unpopulate(val, "AiAgentGroupResourceID", &m.AiAgentGroupResourceID)
+			err = unpopulate(val, "AIAgentGroupResourceID", &m.AIAgentGroupResourceID)
 			delete(rawMsg, key)
 		case "aksClusterResourceId":
-			err = unpopulate(val, "AksClusterResourceID", &m.AksClusterResourceID)
+			err = unpopulate(val, "AKSClusterResourceID", &m.AKSClusterResourceID)
 			delete(rawMsg, key)
 		case "containerGroups":
 			err = unpopulate(val, "ContainerGroups", &m.ContainerGroups)

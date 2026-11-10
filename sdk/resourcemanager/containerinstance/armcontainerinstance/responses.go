@@ -4,45 +4,45 @@
 
 package armcontainerinstance
 
-// AiAgentsGroupsClientConnectResponse contains the response from method AiAgentsGroupsClient.Connect.
-type AiAgentsGroupsClientConnectResponse struct {
+// AIAgentsGroupsClientConnectResponse contains the response from method AIAgentsGroupsClient.Connect.
+type AIAgentsGroupsClientConnectResponse struct {
 	// The result of getting an access token for an AiAgentsGroup.
-	AiAgentsGroupAccessToken
+	AIAgentsGroupAccessToken
 }
 
-// AiAgentsGroupsClientCreateOrUpdateResponse contains the response from method AiAgentsGroupsClient.BeginCreateOrUpdate.
-type AiAgentsGroupsClientCreateOrUpdateResponse struct {
+// AIAgentsGroupsClientCreateOrUpdateResponse contains the response from method AIAgentsGroupsClient.BeginCreateOrUpdate.
+type AIAgentsGroupsClientCreateOrUpdateResponse struct {
 	// An AiAgentsGroup tracked resource.
-	AiAgentsGroup
+	AIAgentsGroup
 }
 
-// AiAgentsGroupsClientDeleteResponse contains the response from method AiAgentsGroupsClient.BeginDelete.
-type AiAgentsGroupsClientDeleteResponse struct {
+// AIAgentsGroupsClientDeleteResponse contains the response from method AIAgentsGroupsClient.BeginDelete.
+type AIAgentsGroupsClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// AiAgentsGroupsClientGetResponse contains the response from method AiAgentsGroupsClient.Get.
-type AiAgentsGroupsClientGetResponse struct {
+// AIAgentsGroupsClientGetResponse contains the response from method AIAgentsGroupsClient.Get.
+type AIAgentsGroupsClientGetResponse struct {
 	// An AiAgentsGroup tracked resource.
-	AiAgentsGroup
+	AIAgentsGroup
 }
 
-// AiAgentsGroupsClientListByResourceGroupResponse contains the response from method AiAgentsGroupsClient.NewListByResourceGroupPager.
-type AiAgentsGroupsClientListByResourceGroupResponse struct {
+// AIAgentsGroupsClientListByResourceGroupResponse contains the response from method AIAgentsGroupsClient.NewListByResourceGroupPager.
+type AIAgentsGroupsClientListByResourceGroupResponse struct {
 	// The response of a AiAgentsGroup list operation.
 	AiAgentsGroupListResult
 }
 
-// AiAgentsGroupsClientListBySubscriptionResponse contains the response from method AiAgentsGroupsClient.NewListBySubscriptionPager.
-type AiAgentsGroupsClientListBySubscriptionResponse struct {
+// AIAgentsGroupsClientListBySubscriptionResponse contains the response from method AIAgentsGroupsClient.NewListBySubscriptionPager.
+type AIAgentsGroupsClientListBySubscriptionResponse struct {
 	// The response of a AiAgentsGroup list operation.
 	AiAgentsGroupListResult
 }
 
-// AiAgentsGroupsClientUpdateResponse contains the response from method AiAgentsGroupsClient.BeginUpdate.
-type AiAgentsGroupsClientUpdateResponse struct {
+// AIAgentsGroupsClientUpdateResponse contains the response from method AIAgentsGroupsClient.BeginUpdate.
+type AIAgentsGroupsClientUpdateResponse struct {
 	// An AiAgentsGroup tracked resource.
-	AiAgentsGroup
+	AIAgentsGroup
 }
 
 // CGProfileClientCreateOrUpdateResponse contains the response from method CGProfileClient.CreateOrUpdate.

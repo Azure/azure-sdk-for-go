@@ -4,44 +4,44 @@
 
 package armcontainerinstance
 
-// AiAgentsGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the AiAgentsGroupsClient.BeginCreateOrUpdate
+// AIAgentsGroupsClientBeginCreateOrUpdateOptions contains the optional parameters for the AIAgentsGroupsClient.BeginCreateOrUpdate
 // method.
-type AiAgentsGroupsClientBeginCreateOrUpdateOptions struct {
+type AIAgentsGroupsClientBeginCreateOrUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// AiAgentsGroupsClientBeginDeleteOptions contains the optional parameters for the AiAgentsGroupsClient.BeginDelete method.
-type AiAgentsGroupsClientBeginDeleteOptions struct {
+// AIAgentsGroupsClientBeginDeleteOptions contains the optional parameters for the AIAgentsGroupsClient.BeginDelete method.
+type AIAgentsGroupsClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// AiAgentsGroupsClientBeginUpdateOptions contains the optional parameters for the AiAgentsGroupsClient.BeginUpdate method.
-type AiAgentsGroupsClientBeginUpdateOptions struct {
+// AIAgentsGroupsClientBeginUpdateOptions contains the optional parameters for the AIAgentsGroupsClient.BeginUpdate method.
+type AIAgentsGroupsClientBeginUpdateOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
-// AiAgentsGroupsClientConnectOptions contains the optional parameters for the AiAgentsGroupsClient.Connect method.
-type AiAgentsGroupsClientConnectOptions struct {
+// AIAgentsGroupsClientConnectOptions contains the optional parameters for the AIAgentsGroupsClient.Connect method.
+type AIAgentsGroupsClientConnectOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AiAgentsGroupsClientGetOptions contains the optional parameters for the AiAgentsGroupsClient.Get method.
-type AiAgentsGroupsClientGetOptions struct {
+// AIAgentsGroupsClientGetOptions contains the optional parameters for the AIAgentsGroupsClient.Get method.
+type AIAgentsGroupsClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AiAgentsGroupsClientListByResourceGroupOptions contains the optional parameters for the AiAgentsGroupsClient.NewListByResourceGroupPager
+// AIAgentsGroupsClientListByResourceGroupOptions contains the optional parameters for the AIAgentsGroupsClient.NewListByResourceGroupPager
 // method.
-type AiAgentsGroupsClientListByResourceGroupOptions struct {
+type AIAgentsGroupsClientListByResourceGroupOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AiAgentsGroupsClientListBySubscriptionOptions contains the optional parameters for the AiAgentsGroupsClient.NewListBySubscriptionPager
+// AIAgentsGroupsClientListBySubscriptionOptions contains the optional parameters for the AIAgentsGroupsClient.NewListBySubscriptionPager
 // method.
-type AiAgentsGroupsClientListBySubscriptionOptions struct {
+type AIAgentsGroupsClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 

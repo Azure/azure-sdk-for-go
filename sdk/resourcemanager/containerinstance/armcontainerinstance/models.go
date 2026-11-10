@@ -6,14 +6,8 @@ package armcontainerinstance
 
 import "time"
 
-// APIEntityReference - The API entity reference.
-type APIEntityReference struct {
-	// The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
-	ID *string
-}
-
-// AiAgentsGroup - An AiAgentsGroup tracked resource.
-type AiAgentsGroup struct {
+// AIAgentsGroup - An AiAgentsGroup tracked resource.
+type AIAgentsGroup struct {
 	// REQUIRED; The geo-location where the resource lives
 	Location *string
 
@@ -21,7 +15,7 @@ type AiAgentsGroup struct {
 	Identity *ManagedServiceIdentity
 
 	// The resource-specific properties for this resource.
-	Properties *AiAgentsGroupProperties
+	Properties *AIAgentsGroupProperties
 
 	// Resource tags.
 	Tags map[string]*string
@@ -39,8 +33,8 @@ type AiAgentsGroup struct {
 	Type *string
 }
 
-// AiAgentsGroupAccessToken - The result of getting an access token for an AiAgentsGroup.
-type AiAgentsGroupAccessToken struct {
+// AIAgentsGroupAccessToken - The result of getting an access token for an AiAgentsGroup.
+type AIAgentsGroupAccessToken struct {
 	// REQUIRED; The access token used to authenticate against the endpoint.
 	AccessToken *string
 
@@ -51,40 +45,46 @@ type AiAgentsGroupAccessToken struct {
 	NotAfter *time.Time
 }
 
-// AiAgentsGroupListResult - The response of a AiAgentsGroup list operation.
-type AiAgentsGroupListResult struct {
-	// REQUIRED; The AiAgentsGroup items on this page
-	Value []*AiAgentsGroup
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// AiAgentsGroupNetworkProfile - The network profile for an AiAgentsGroup.
-type AiAgentsGroupNetworkProfile struct {
+// AIAgentsGroupNetworkProfile - The network profile for an AiAgentsGroup.
+type AIAgentsGroupNetworkProfile struct {
 	// The list of subnets associated with the AiAgentsGroup.
 	Subnets []*SubnetReference
 }
 
-// AiAgentsGroupProperties - Properties of an AiAgentsGroup.
-type AiAgentsGroupProperties struct {
+// AIAgentsGroupProperties - Properties of an AiAgentsGroup.
+type AIAgentsGroupProperties struct {
 	// The network profile of the AiAgentsGroup.
-	NetworkProfile *AiAgentsGroupNetworkProfile
+	NetworkProfile *AIAgentsGroupNetworkProfile
 
 	// READ-ONLY; The ARM resource ID of the management resource group associated with this AiAgentsGroup.
 	ManagementResourceGroupID *string
 
 	// READ-ONLY; The status of the last operation.
-	ProvisioningState *AiAgentsGroupProvisioningState
+	ProvisioningState *AIAgentsGroupProvisioningState
 }
 
-// AiAgentsGroupTagsUpdate - The type used for updating an AiAgentsGroup resource.
-type AiAgentsGroupTagsUpdate struct {
+// AIAgentsGroupTagsUpdate - The type used for updating an AiAgentsGroup resource.
+type AIAgentsGroupTagsUpdate struct {
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// APIEntityReference - The API entity reference.
+type APIEntityReference struct {
+	// The ARM resource id in the form of /subscriptions/{SubscriptionId}/resourceGroups/{ResourceGroupName}/...
+	ID *string
+}
+
+// AiAgentsGroupListResult - The response of a AiAgentsGroup list operation.
+type AiAgentsGroupListResult struct {
+	// REQUIRED; The AiAgentsGroup items on this page
+	Value []*AIAgentsGroup
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 // ApplicationGateway - Application Gateway the CG profile will use to interact with CGs in a backend pool
@@ -120,7 +120,7 @@ type AzureFileVolume struct {
 	StorageAccountKeyReference *string
 
 	// The client id of the user-assigned managed identity that has access to the Azure File share.
-	UserAssignedIdentityClientID *string
+	UserManagedIdentityClientID *string
 }
 
 // CachedImages - The cached image and OS type.
@@ -1034,10 +1034,10 @@ type ManagedVirtualNodePoolPatchProperties struct {
 type ManagedVirtualNodePoolProperties struct {
 	// REQUIRED; The Azure resource ID of the AI agents group associated with the node pool. Set at create time and immutable
 	// thereafter.
-	AiAgentGroupResourceID *string
+	AIAgentGroupResourceID *string
 
 	// REQUIRED; The Azure resource ID of the backing AKS managed cluster. Set at create time and immutable thereafter.
-	AksClusterResourceID *string
+	AKSClusterResourceID *string
 
 	// REQUIRED; The Azure resource ID of the user-assigned managed identity used by the node pool. Set at create time and immutable
 	// thereafter.

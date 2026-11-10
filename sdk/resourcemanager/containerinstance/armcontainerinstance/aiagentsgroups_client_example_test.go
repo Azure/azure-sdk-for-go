@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2026-09-01-preview/AiAgentsGroupsCreateOrUpdate.json
-func ExampleAiAgentsGroupsClient_BeginCreateOrUpdate() {
+func ExampleAIAgentsGroupsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,13 +23,13 @@ func ExampleAiAgentsGroupsClient_BeginCreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAiAgentsGroupsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myAiAgentsGroup", armcontainerinstance.AiAgentsGroup{
+	poller, err := clientFactory.NewAIAgentsGroupsClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "myAiAgentsGroup", armcontainerinstance.AIAgentsGroup{
 		Location: to.Ptr("eastus"),
 		Tags: map[string]*string{
 			"environment": to.Ptr("test"),
 		},
-		Properties: &armcontainerinstance.AiAgentsGroupProperties{
-			NetworkProfile: &armcontainerinstance.AiAgentsGroupNetworkProfile{
+		Properties: &armcontainerinstance.AIAgentsGroupProperties{
+			NetworkProfile: &armcontainerinstance.AIAgentsGroupNetworkProfile{
 				Subnets: []*armcontainerinstance.SubnetReference{
 					{
 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
@@ -48,8 +48,8 @@ func ExampleAiAgentsGroupsClient_BeginCreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerinstance.AiAgentsGroupsClientCreateOrUpdateResponse{
-	// 	AiAgentsGroup: armcontainerinstance.AiAgentsGroup{
+	// res = armcontainerinstance.AIAgentsGroupsClientCreateOrUpdateResponse{
+	// 	AIAgentsGroup: armcontainerinstance.AIAgentsGroup{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerInstance/aiAgentsGroups/myAiAgentsGroup"),
 	// 		Name: to.Ptr("myAiAgentsGroup"),
 	// 		Type: to.Ptr("Microsoft.ContainerInstance/aiAgentsGroups"),
@@ -57,9 +57,9 @@ func ExampleAiAgentsGroupsClient_BeginCreateOrUpdate() {
 	// 		Tags: map[string]*string{
 	// 			"environment": to.Ptr("test"),
 	// 		},
-	// 		Properties: &armcontainerinstance.AiAgentsGroupProperties{
-	// 			ProvisioningState: to.Ptr(armcontainerinstance.AiAgentsGroupProvisioningStateSucceeded),
-	// 			NetworkProfile: &armcontainerinstance.AiAgentsGroupNetworkProfile{
+	// 		Properties: &armcontainerinstance.AIAgentsGroupProperties{
+	// 			ProvisioningState: to.Ptr(armcontainerinstance.AIAgentsGroupProvisioningStateSucceeded),
+	// 			NetworkProfile: &armcontainerinstance.AIAgentsGroupNetworkProfile{
 	// 				Subnets: []*armcontainerinstance.SubnetReference{
 	// 					{
 	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
@@ -73,7 +73,7 @@ func ExampleAiAgentsGroupsClient_BeginCreateOrUpdate() {
 }
 
 // Generated from example definition: 2026-09-01-preview/AiAgentsGroupsDelete.json
-func ExampleAiAgentsGroupsClient_BeginDelete() {
+func ExampleAIAgentsGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -83,7 +83,7 @@ func ExampleAiAgentsGroupsClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAiAgentsGroupsClient().BeginDelete(ctx, "myResourceGroup", "myAiAgentsGroup", nil)
+	poller, err := clientFactory.NewAIAgentsGroupsClient().BeginDelete(ctx, "myResourceGroup", "myAiAgentsGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -94,7 +94,7 @@ func ExampleAiAgentsGroupsClient_BeginDelete() {
 }
 
 // Generated from example definition: 2026-09-01-preview/AiAgentsGroupsUpdate.json
-func ExampleAiAgentsGroupsClient_BeginUpdate() {
+func ExampleAIAgentsGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -104,7 +104,7 @@ func ExampleAiAgentsGroupsClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewAiAgentsGroupsClient().BeginUpdate(ctx, "myResourceGroup", "myAiAgentsGroup", armcontainerinstance.AiAgentsGroupTagsUpdate{
+	poller, err := clientFactory.NewAIAgentsGroupsClient().BeginUpdate(ctx, "myResourceGroup", "myAiAgentsGroup", armcontainerinstance.AIAgentsGroupTagsUpdate{
 		Tags: map[string]*string{
 			"environment": to.Ptr("production"),
 		},
@@ -119,8 +119,8 @@ func ExampleAiAgentsGroupsClient_BeginUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerinstance.AiAgentsGroupsClientUpdateResponse{
-	// 	AiAgentsGroup: armcontainerinstance.AiAgentsGroup{
+	// res = armcontainerinstance.AIAgentsGroupsClientUpdateResponse{
+	// 	AIAgentsGroup: armcontainerinstance.AIAgentsGroup{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerInstance/aiAgentsGroups/myAiAgentsGroup"),
 	// 		Name: to.Ptr("myAiAgentsGroup"),
 	// 		Type: to.Ptr("Microsoft.ContainerInstance/aiAgentsGroups"),
@@ -128,9 +128,9 @@ func ExampleAiAgentsGroupsClient_BeginUpdate() {
 	// 		Tags: map[string]*string{
 	// 			"environment": to.Ptr("production"),
 	// 		},
-	// 		Properties: &armcontainerinstance.AiAgentsGroupProperties{
-	// 			ProvisioningState: to.Ptr(armcontainerinstance.AiAgentsGroupProvisioningStateSucceeded),
-	// 			NetworkProfile: &armcontainerinstance.AiAgentsGroupNetworkProfile{
+	// 		Properties: &armcontainerinstance.AIAgentsGroupProperties{
+	// 			ProvisioningState: to.Ptr(armcontainerinstance.AIAgentsGroupProvisioningStateSucceeded),
+	// 			NetworkProfile: &armcontainerinstance.AIAgentsGroupNetworkProfile{
 	// 				Subnets: []*armcontainerinstance.SubnetReference{
 	// 					{
 	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
@@ -144,7 +144,7 @@ func ExampleAiAgentsGroupsClient_BeginUpdate() {
 }
 
 // Generated from example definition: 2026-09-01-preview/AiAgentsGroupsConnect.json
-func ExampleAiAgentsGroupsClient_Connect() {
+func ExampleAIAgentsGroupsClient_Connect() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -154,15 +154,15 @@ func ExampleAiAgentsGroupsClient_Connect() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAiAgentsGroupsClient().Connect(ctx, "myResourceGroup", "myAiAgentsGroup", nil)
+	res, err := clientFactory.NewAIAgentsGroupsClient().Connect(ctx, "myResourceGroup", "myAiAgentsGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerinstance.AiAgentsGroupsClientConnectResponse{
-	// 	AiAgentsGroupAccessToken: armcontainerinstance.AiAgentsGroupAccessToken{
+	// res = armcontainerinstance.AIAgentsGroupsClientConnectResponse{
+	// 	AIAgentsGroupAccessToken: armcontainerinstance.AIAgentsGroupAccessToken{
 	// 		Endpoint: to.Ptr("https://sandbox-endpoint.eastus.containerinstance.azure.com"),
 	// 		AccessToken: to.Ptr("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."),
 	// 		NotAfter: to.Ptr(time.Date(2026, time.June, 1, 12, 0, 0, 0, time.UTC)),
@@ -171,7 +171,7 @@ func ExampleAiAgentsGroupsClient_Connect() {
 }
 
 // Generated from example definition: 2026-09-01-preview/AiAgentsGroupsGet.json
-func ExampleAiAgentsGroupsClient_Get() {
+func ExampleAIAgentsGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -181,15 +181,15 @@ func ExampleAiAgentsGroupsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAiAgentsGroupsClient().Get(ctx, "myResourceGroup", "myAiAgentsGroup", nil)
+	res, err := clientFactory.NewAIAgentsGroupsClient().Get(ctx, "myResourceGroup", "myAiAgentsGroup", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerinstance.AiAgentsGroupsClientGetResponse{
-	// 	AiAgentsGroup: armcontainerinstance.AiAgentsGroup{
+	// res = armcontainerinstance.AIAgentsGroupsClientGetResponse{
+	// 	AIAgentsGroup: armcontainerinstance.AIAgentsGroup{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerInstance/aiAgentsGroups/myAiAgentsGroup"),
 	// 		Name: to.Ptr("myAiAgentsGroup"),
 	// 		Type: to.Ptr("Microsoft.ContainerInstance/aiAgentsGroups"),
@@ -197,9 +197,9 @@ func ExampleAiAgentsGroupsClient_Get() {
 	// 		Tags: map[string]*string{
 	// 			"environment": to.Ptr("test"),
 	// 		},
-	// 		Properties: &armcontainerinstance.AiAgentsGroupProperties{
-	// 			ProvisioningState: to.Ptr(armcontainerinstance.AiAgentsGroupProvisioningStateSucceeded),
-	// 			NetworkProfile: &armcontainerinstance.AiAgentsGroupNetworkProfile{
+	// 		Properties: &armcontainerinstance.AIAgentsGroupProperties{
+	// 			ProvisioningState: to.Ptr(armcontainerinstance.AIAgentsGroupProvisioningStateSucceeded),
+	// 			NetworkProfile: &armcontainerinstance.AIAgentsGroupNetworkProfile{
 	// 				Subnets: []*armcontainerinstance.SubnetReference{
 	// 					{
 	// 						ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
@@ -213,7 +213,7 @@ func ExampleAiAgentsGroupsClient_Get() {
 }
 
 // Generated from example definition: 2026-09-01-preview/AiAgentsGroupsListByResourceGroup.json
-func ExampleAiAgentsGroupsClient_NewListByResourceGroupPager() {
+func ExampleAIAgentsGroupsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -223,7 +223,7 @@ func ExampleAiAgentsGroupsClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAiAgentsGroupsClient().NewListByResourceGroupPager("myResourceGroup", nil)
+	pager := clientFactory.NewAIAgentsGroupsClient().NewListByResourceGroupPager("myResourceGroup", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -234,9 +234,9 @@ func ExampleAiAgentsGroupsClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerinstance.AiAgentsGroupsClientListByResourceGroupResponse{
+		// page = armcontainerinstance.AIAgentsGroupsClientListByResourceGroupResponse{
 		// 	AiAgentsGroupListResult: armcontainerinstance.AiAgentsGroupListResult{
-		// 		Value: []*armcontainerinstance.AiAgentsGroup{
+		// 		Value: []*armcontainerinstance.AIAgentsGroup{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerInstance/aiAgentsGroups/myAiAgentsGroup"),
 		// 				Name: to.Ptr("myAiAgentsGroup"),
@@ -245,9 +245,9 @@ func ExampleAiAgentsGroupsClient_NewListByResourceGroupPager() {
 		// 				Tags: map[string]*string{
 		// 					"environment": to.Ptr("test"),
 		// 				},
-		// 				Properties: &armcontainerinstance.AiAgentsGroupProperties{
-		// 					ProvisioningState: to.Ptr(armcontainerinstance.AiAgentsGroupProvisioningStateSucceeded),
-		// 					NetworkProfile: &armcontainerinstance.AiAgentsGroupNetworkProfile{
+		// 				Properties: &armcontainerinstance.AIAgentsGroupProperties{
+		// 					ProvisioningState: to.Ptr(armcontainerinstance.AIAgentsGroupProvisioningStateSucceeded),
+		// 					NetworkProfile: &armcontainerinstance.AIAgentsGroupNetworkProfile{
 		// 						Subnets: []*armcontainerinstance.SubnetReference{
 		// 							{
 		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),
@@ -264,7 +264,7 @@ func ExampleAiAgentsGroupsClient_NewListByResourceGroupPager() {
 }
 
 // Generated from example definition: 2026-09-01-preview/AiAgentsGroupsListBySubscription.json
-func ExampleAiAgentsGroupsClient_NewListBySubscriptionPager() {
+func ExampleAIAgentsGroupsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -274,7 +274,7 @@ func ExampleAiAgentsGroupsClient_NewListBySubscriptionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAiAgentsGroupsClient().NewListBySubscriptionPager(nil)
+	pager := clientFactory.NewAIAgentsGroupsClient().NewListBySubscriptionPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -285,9 +285,9 @@ func ExampleAiAgentsGroupsClient_NewListBySubscriptionPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerinstance.AiAgentsGroupsClientListBySubscriptionResponse{
+		// page = armcontainerinstance.AIAgentsGroupsClientListBySubscriptionResponse{
 		// 	AiAgentsGroupListResult: armcontainerinstance.AiAgentsGroupListResult{
-		// 		Value: []*armcontainerinstance.AiAgentsGroup{
+		// 		Value: []*armcontainerinstance.AIAgentsGroup{
 		// 			{
 		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerInstance/aiAgentsGroups/myAiAgentsGroup1"),
 		// 				Name: to.Ptr("myAiAgentsGroup1"),
@@ -296,9 +296,9 @@ func ExampleAiAgentsGroupsClient_NewListBySubscriptionPager() {
 		// 				Tags: map[string]*string{
 		// 					"environment": to.Ptr("test"),
 		// 				},
-		// 				Properties: &armcontainerinstance.AiAgentsGroupProperties{
-		// 					ProvisioningState: to.Ptr(armcontainerinstance.AiAgentsGroupProvisioningStateSucceeded),
-		// 					NetworkProfile: &armcontainerinstance.AiAgentsGroupNetworkProfile{
+		// 				Properties: &armcontainerinstance.AIAgentsGroupProperties{
+		// 					ProvisioningState: to.Ptr(armcontainerinstance.AIAgentsGroupProvisioningStateSucceeded),
+		// 					NetworkProfile: &armcontainerinstance.AIAgentsGroupNetworkProfile{
 		// 						Subnets: []*armcontainerinstance.SubnetReference{
 		// 							{
 		// 								ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVNet/subnets/mySubnet"),

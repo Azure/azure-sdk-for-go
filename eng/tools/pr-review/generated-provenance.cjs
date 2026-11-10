@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-const { execFileSync } = require("node:child_process");
 const { createHash } = require("node:crypto");
 
 function requireSHA(value) {
@@ -61,31 +60,14 @@ async function previousBlob(github, repo, parent, filename) {
   return blob(github, repo, data.sha);
 }
 
-function compareFile(tokensPath, file, before, after) {
-  if (file.filename.endsWith(".go") || file.previous_filename?.endsWith(".go")) {
-    const decoder = new TextDecoder("utf-8", { fatal: true });
-    const output = execFileSync(tokensPath, [], {
-      input: JSON.stringify({
-        before: before === null ? null : decoder.decode(before),
-        after: after === null ? null : decoder.decode(after),
-      }),
-      encoding: "utf8",
-      timeout: 30000,
-      stdio: ["pipe", "pipe", "pipe"],
-    });
-    const result = JSON.parse(output);
-    if (typeof result.generated !== "boolean" || typeof result.changed !== "boolean") {
-      throw new Error("Invalid Go token-comparison result.");
-    }
-    return result.generated && (result.changed || file.status === "renamed" || file.status === "copied");
-  }
+function compareFile(file, before, after) {
   const generated = [before, after].some((content) =>
-    content !== null && /(?:\/\/|\/\*|#|<!--)[^\n]*DO NOT EDIT/.test(content.toString("utf8").slice(0, 4096)));
+    content !== null && /^[ \t]*(?:\/\/|\/\*|\*|#|<!--)[^\r\n]*\bDO NOT EDIT\b/im.test(content.toString("utf8")));
   return generated && (before === null || after === null || !before.equals(after) ||
     file.status === "renamed" || file.status === "copied");
 }
 
-async function checkProvenance({ github, context, core }, { prNumber, headSHA, tokensPath }) {
+async function checkProvenance({ github, context, core }, { prNumber, headSHA }) {
   const result = {
     status: "unverifiable",
     pr_number: prNumber,
@@ -129,7 +111,7 @@ async function checkProvenance({ github, context, core }, { prNumber, headSHA, t
         const before = file.status === "added" ? null :
           await previousBlob(github, repo, parent, file.previous_filename || file.filename);
         const after = file.status === "removed" ? null : await blob(github, repo, file.sha);
-        if (compareFile(tokensPath, file, before, after)) {
+        if (compareFile(file, before, after)) {
           result.findings.push({ file: file.filename, sha, author });
         }
       }
@@ -155,7 +137,7 @@ function renderProvenance(result) {
   const lines = ["<!-- gh-aw-workflow-id: mgmt-review -->"];
   if (result.findings.length > 0) {
     lines.push("## Manual Edits to Auto-Generated Files Detected", "",
-      "Non-automation commits changed generated source beyond allowed formatting and copyright-header changes:", "");
+      "Non-automation commits changed files marked DO NOT EDIT:", "");
     for (const finding of result.findings) {
       lines.push(`- ${markdown(finding.file)} - commit ${markdown(finding.sha.slice(0, 12))}, author ${markdown(finding.author)}`);
     }

@@ -43,26 +43,18 @@ jobs:
           ref: ${{ github.sha }}
           persist-credentials: false
           sparse-checkout: eng/tools/pr-review
-      - uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
-        with:
-          go-version: '1.26.x'
-          cache: false
-      - name: Build trusted Go token comparator
-        run: go build -o "$RUNNER_TEMP/generated-provenance-tokens" ./eng/tools/pr-review/gotokens.go
       - name: Check generated-file provenance
         id: provenance
         uses: actions/github-script@v9.0.0
         env:
           REVIEW_PR_NUMBER: ${{ needs.validate_request.outputs.pr_number }}
           REVIEW_HEAD_SHA: ${{ needs.validate_request.outputs.head_sha }}
-          PROVENANCE_TOKENS: ${{ runner.temp }}/generated-provenance-tokens
         with:
           script: |
             const { checkProvenance } = require('./eng/tools/pr-review/generated-provenance.cjs');
             const result = await checkProvenance({ github, context, core }, {
               prNumber: Number(process.env.REVIEW_PR_NUMBER),
               headSHA: process.env.REVIEW_HEAD_SHA,
-              tokensPath: process.env.PROVENANCE_TOKENS,
             });
             core.setOutput('result', JSON.stringify(result));
   validate_request:
@@ -261,7 +253,7 @@ Use the **trusted deterministic result** below. Do not repeat the diff check wit
 ${{ needs.provenance.outputs.result }}
 ```
 
-The checker uses complete GitHub API commit/file lists and full blobs, never executes PR code, and exempts only commits linked by GitHub to the `azure-sdk` login. It checks generated markers on both sides of each non-automation commit. Go token comparison ignores formatting and recognized Microsoft copyright headers, but preserves string literals, other comments, and compiler-directive placement. Generated-file additions, deletions, renames, and non-Go generated-file changes are conservatively flagged. Merge commits, cgo preambles, incomplete data, and parsing failures require manual review.
+The checker uses complete GitHub API commit/file lists and full blobs, never executes PR code, and exempts only commits linked by GitHub to the `azure-sdk` login. It checks for a `DO NOT EDIT` comment on either side of each non-automation commit and compares the file contents byte for byte, without parsing Go or any other language. Any content change, including whitespace or copyright-header changes, is flagged; marked-file additions, deletions, renames, and copies are also flagged. Merge commits and incomplete data require manual review.
 
 - **`pass`**: generated-file provenance passed; continue with the other checks.
 - **`manual-edits`**: the findings identify blocking non-automation edits.
@@ -343,7 +335,7 @@ The `go - pullrequest` pipeline checks have not completed yet. Analysis cannot p
 
 Manual edits to generated files could not be verified: <actual verification failure>.
 
-**Action required:** A maintainer must review the complete changed-file and commit lists and the relevant diffs to confirm that no non-azure-sdk commit made logic changes to `DO NOT EDIT` files. Resolve the data-access issue and re-run this workflow to obtain automated merge guidance.
+**Action required:** A maintainer must review the complete changed-file and commit lists and the relevant diffs to confirm that no non-azure-sdk commit changed `DO NOT EDIT` files. Resolve the data-access issue and re-run this workflow to obtain automated merge guidance.
 ```
 
 For a non-passing provenance result, publish only the generated-file blockers; the publisher enforces this deterministically. If the changed-file list was incomplete, affected modules and onboarding requirements could not be fully determined.

@@ -10,11 +10,6 @@
       "version": "v9.0.0",
       "sha": "d746ffe35508b1917358783b479e04febd2b8f71"
     },
-    "actions/setup-go@v6": {
-      "repo": "actions/setup-go",
-      "version": "v6",
-      "sha": "924ae3a1cded613372ab5595356fb5720e22ba16"
-    },
     "github/gh-aw-actions/setup@v1.0.1": {
       "repo": "github/gh-aw-actions/setup",
       "version": "v1.0.1",

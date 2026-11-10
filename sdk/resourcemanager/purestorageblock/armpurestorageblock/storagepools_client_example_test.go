@@ -12,39 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_ConfigurePlatformConsoleAuth_MaximumSet_Gen.json
-func ExampleStoragePoolsClient_ConfigurePlatformConsoleAuth() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewStoragePoolsClient().ConfigurePlatformConsoleAuth(ctx, "rgpurestorage", "storagepool-01", &armpurestorageblock.SSHPlatformConsoleAuthConfig{
-		AuthType:  to.Ptr(armpurestorageblock.PlatformConsoleAuthTypeSSH),
-		Username:  to.Ptr("alice"),
-		PublicKey: to.Ptr("ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl alice@example.com"),
-		Role:      to.Ptr(armpurestorageblock.PlatformConsoleRoleStorageAdmin),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.StoragePoolsClientConfigurePlatformConsoleAuthResponse{
-	// 	PlatformConsoleAuthResultClassification: &armpurestorageblock.SSHPlatformConsoleAuthResult{
-	// 		AuthType: to.Ptr(armpurestorageblock.PlatformConsoleAuthTypeSSH),
-	// 		Username: to.Ptr("alice"),
-	// 		Role: to.Ptr(armpurestorageblock.PlatformConsoleRoleStorageAdmin),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/StoragePools_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_Create_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +107,7 @@ func ExampleStoragePoolsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_Delete_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +128,7 @@ func ExampleStoragePoolsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_DisableAvsConnection_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_DisableAvsConnection_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginDisableAvsConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -181,7 +149,7 @@ func ExampleStoragePoolsClient_BeginDisableAvsConnection() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_EnableAvsConnection_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginEnableAvsConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,7 +172,7 @@ func ExampleStoragePoolsClient_BeginEnableAvsConnection() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_FinalizeAvsConnection_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginFinalizeAvsConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,363 +201,7 @@ func ExampleStoragePoolsClient_BeginFinalizeAvsConnection() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_Get_MaximumSet_Gen.json
-func ExampleStoragePoolsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewStoragePoolsClient().Get(ctx, "rgpurestorage", "storagepool-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.StoragePoolsClientGetResponse{
-	// 	StoragePool: armpurestorageblock.StoragePool{
-	// 		Properties: &armpurestorageblock.StoragePoolProperties{
-	// 			StoragePoolInternalID: to.Ptr("pool-abc123"),
-	// 			AvailabilityZone: to.Ptr("1"),
-	// 			VnetInjection: &armpurestorageblock.VnetInjection{
-	// 				SubnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01/subnets/subnet-01"),
-	// 				VnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01"),
-	// 			},
-	// 			DataRetentionPeriod: to.Ptr[int64](23),
-	// 			ProvisionedBandwidthMbPerSec: to.Ptr[int64](17),
-	// 			ProvisionedIops: to.Ptr[int64](3),
-	// 			Avs: &armpurestorageblock.AzureVmwareService{
-	// 				AvsEnabled: to.Ptr(true),
-	// 				ClusterResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.AVS/privateClouds/avs-cloud-01"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
-	// 			ReservationResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/reservations/reservation-01"),
-	// 		},
-	// 		Identity: &armpurestorageblock.ManagedServiceIdentity{
-	// 			PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 			Type: to.Ptr(armpurestorageblock.ManagedServiceIdentityTypeNone),
-	// 			UserAssignedIdentities: map[string]*armpurestorageblock.UserAssignedIdentity{
-	// 				"identity-01": &armpurestorageblock.UserAssignedIdentity{
-	// 					PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 					ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("storagepool-01"),
-	// 		Type: to.Ptr("PureStorage.Block/storagePools"),
-	// 		SystemData: &armpurestorageblock.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
-	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/StoragePools_GetAvsConnection_MaximumSet_Gen.json
-func ExampleStoragePoolsClient_GetAvsConnection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewStoragePoolsClient().GetAvsConnection(ctx, "rgpurestorage", "storagepool-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.StoragePoolsClientGetAvsConnectionResponse{
-	// 	AvsConnection: armpurestorageblock.AvsConnection{
-	// 		ServiceInitializationCompleted: to.Ptr(true),
-	// 		ServiceInitializationHandleEnc: to.Ptr("kvidtocmjciflvtwql"),
-	// 		ServiceInitializationHandle: &armpurestorageblock.ServiceInitializationHandle{
-	// 			ClusterResourceID: to.Ptr("aqgnpie"),
-	// 			ServiceAccountUsername: to.Ptr("xcu"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/StoragePools_GetAvsStatus_MaximumSet_Gen.json
-func ExampleStoragePoolsClient_GetAvsStatus() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewStoragePoolsClient().GetAvsStatus(ctx, "rgpurestorage", "storagepool-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.StoragePoolsClientGetAvsStatusResponse{
-	// 	AvsStatus: armpurestorageblock.AvsStatus{
-	// 		AvsEnabled: to.Ptr(true),
-	// 		CurrentConnectionStatus: to.Ptr("vfirgp"),
-	// 		ClusterResourceID: to.Ptr("zxkvzrdjzwpk"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/StoragePools_GetHealthStatus_MaximumSet_Gen.json
-func ExampleStoragePoolsClient_GetHealthStatus() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewStoragePoolsClient().GetHealthStatus(ctx, "rgpurestorage", "storagepool-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.StoragePoolsClientGetHealthStatusResponse{
-	// 	StoragePoolHealthInfo: armpurestorageblock.StoragePoolHealthInfo{
-	// 		Health: &armpurestorageblock.HealthDetails{
-	// 			UsedCapacityPercentage: to.Ptr[float64](21),
-	// 			BandwidthUsage: &armpurestorageblock.BandwidthUsage{
-	// 				Current: to.Ptr[int64](15),
-	// 				Provisioned: to.Ptr[int64](23),
-	// 				Max: to.Ptr[int64](21),
-	// 			},
-	// 			IopsUsage: &armpurestorageblock.IopsUsage{
-	// 				Current: to.Ptr[int64](5),
-	// 				Provisioned: to.Ptr[int64](19),
-	// 				Max: to.Ptr[int64](15),
-	// 			},
-	// 			Space: &armpurestorageblock.Space{
-	// 				TotalUsed: to.Ptr[int64](1073741824),
-	// 				Unique: to.Ptr[int64](268435456),
-	// 				Snapshots: to.Ptr[int64](53687091236870910),
-	// 				Shared: to.Ptr[int64](268435456),
-	// 			},
-	// 			DataReductionRatio: to.Ptr[float64](28),
-	// 			EstimatedMaxCapacity: to.Ptr[int64](1),
-	// 		},
-	// 		Alerts: []*armpurestorageblock.Alert{
-	// 			{
-	// 				Level: to.Ptr(armpurestorageblock.AlertLevelInfo),
-	// 				Message: to.Ptr("uasvakccxihgmdz"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/StoragePools_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleStoragePoolsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStoragePoolsClient().NewListByResourceGroupPager("rgpurestorage", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armpurestorageblock.StoragePoolsClientListByResourceGroupResponse{
-		// 	StoragePoolListResult: armpurestorageblock.StoragePoolListResult{
-		// 		Value: []*armpurestorageblock.StoragePool{
-		// 			{
-		// 				Properties: &armpurestorageblock.StoragePoolProperties{
-		// 					StoragePoolInternalID: to.Ptr("pool-abc123"),
-		// 					AvailabilityZone: to.Ptr("1"),
-		// 					VnetInjection: &armpurestorageblock.VnetInjection{
-		// 						SubnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01/subnets/subnet-01"),
-		// 						VnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01"),
-		// 					},
-		// 					DataRetentionPeriod: to.Ptr[int64](23),
-		// 					ProvisionedBandwidthMbPerSec: to.Ptr[int64](17),
-		// 					ProvisionedIops: to.Ptr[int64](3),
-		// 					Avs: &armpurestorageblock.AzureVmwareService{
-		// 						AvsEnabled: to.Ptr(true),
-		// 						ClusterResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.AVS/privateClouds/avs-cloud-01"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
-		// 					ReservationResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/reservations/reservation-01"),
-		// 				},
-		// 				Identity: &armpurestorageblock.ManagedServiceIdentity{
-		// 					PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-		// 					TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-		// 					Type: to.Ptr(armpurestorageblock.ManagedServiceIdentityTypeNone),
-		// 					UserAssignedIdentities: map[string]*armpurestorageblock.UserAssignedIdentity{
-		// 						"identity-01": &armpurestorageblock.UserAssignedIdentity{
-		// 							PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-		// 							ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("storagepool-01"),
-		// 				Type: to.Ptr("PureStorage.Block/storagePools"),
-		// 				SystemData: &armpurestorageblock.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123hd"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/StoragePools_ListBySubscription_MaximumSet_Gen.json
-func ExampleStoragePoolsClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStoragePoolsClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armpurestorageblock.StoragePoolsClientListBySubscriptionResponse{
-		// 	StoragePoolListResult: armpurestorageblock.StoragePoolListResult{
-		// 		Value: []*armpurestorageblock.StoragePool{
-		// 			{
-		// 				Properties: &armpurestorageblock.StoragePoolProperties{
-		// 					StoragePoolInternalID: to.Ptr("pool-abc123"),
-		// 					AvailabilityZone: to.Ptr("1"),
-		// 					VnetInjection: &armpurestorageblock.VnetInjection{
-		// 						SubnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01/subnets/subnet-01"),
-		// 						VnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01"),
-		// 					},
-		// 					DataRetentionPeriod: to.Ptr[int64](23),
-		// 					ProvisionedBandwidthMbPerSec: to.Ptr[int64](17),
-		// 					ProvisionedIops: to.Ptr[int64](3),
-		// 					Avs: &armpurestorageblock.AzureVmwareService{
-		// 						AvsEnabled: to.Ptr(true),
-		// 						ClusterResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.AVS/privateClouds/avs-cloud-01"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
-		// 					ReservationResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/reservations/reservation-01"),
-		// 				},
-		// 				Identity: &armpurestorageblock.ManagedServiceIdentity{
-		// 					PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-		// 					TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-		// 					Type: to.Ptr(armpurestorageblock.ManagedServiceIdentityTypeNone),
-		// 					UserAssignedIdentities: map[string]*armpurestorageblock.UserAssignedIdentity{
-		// 						"identity-01": &armpurestorageblock.UserAssignedIdentity{
-		// 							PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-		// 							ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("storagepool-01"),
-		// 				Type: to.Ptr("PureStorage.Block/storagePools"),
-		// 				SystemData: &armpurestorageblock.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123hd"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/StoragePools_ListPlatformConsoleActivationCode_MaximumSet_Gen.json
-func ExampleStoragePoolsClient_ListPlatformConsoleActivationCode() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewStoragePoolsClient().ListPlatformConsoleActivationCode(ctx, "rgpurestorage", "storagepool-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.StoragePoolsClientListPlatformConsoleActivationCodeResponse{
-	// 	PlatformConsoleActivationCode: armpurestorageblock.PlatformConsoleActivationCode{
-	// 		Username: to.Ptr("cloudadmin"),
-	// 		ActivationCode: to.Ptr("OTC-A1B2C3D4E5F6G7H8I9J0"),
-	// 		ExpiresAt: to.Ptr(time.Date(2026, time.June, 4, 13, 0, 0, 0, time.UTC)),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/StoragePools_RepairAvsConnection_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_RepairAvsConnection_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginRepairAvsConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -610,7 +222,7 @@ func ExampleStoragePoolsClient_BeginRepairAvsConnection() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/StoragePools_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/StoragePools_Update_MaximumSet_Gen.json
 func ExampleStoragePoolsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -692,4 +304,392 @@ func ExampleStoragePoolsClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-10-01/StoragePools_ConfigurePlatformConsoleAuth_MaximumSet_Gen.json
+func ExampleStoragePoolsClient_ConfigurePlatformConsoleAuth() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewStoragePoolsClient().ConfigurePlatformConsoleAuth(ctx, "rgpurestorage", "storagepool-01", &armpurestorageblock.SSHPlatformConsoleAuthConfig{
+		AuthType:  to.Ptr(armpurestorageblock.PlatformConsoleAuthTypeSSH),
+		Username:  to.Ptr("alice"),
+		PublicKey: to.Ptr("ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl alice@example.com"),
+		Role:      to.Ptr(armpurestorageblock.PlatformConsoleRoleStorageAdmin),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.StoragePoolsClientConfigurePlatformConsoleAuthResponse{
+	// 	PlatformConsoleAuthResultClassification: &armpurestorageblock.SSHPlatformConsoleAuthResult{
+	// 		AuthType: to.Ptr(armpurestorageblock.PlatformConsoleAuthTypeSSH),
+	// 		Username: to.Ptr("alice"),
+	// 		Role: to.Ptr(armpurestorageblock.PlatformConsoleRoleStorageAdmin),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/StoragePools_Get_MaximumSet_Gen.json
+func ExampleStoragePoolsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewStoragePoolsClient().Get(ctx, "rgpurestorage", "storagepool-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.StoragePoolsClientGetResponse{
+	// 	StoragePool: armpurestorageblock.StoragePool{
+	// 		Properties: &armpurestorageblock.StoragePoolProperties{
+	// 			StoragePoolInternalID: to.Ptr("pool-abc123"),
+	// 			AvailabilityZone: to.Ptr("1"),
+	// 			VnetInjection: &armpurestorageblock.VnetInjection{
+	// 				SubnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01/subnets/subnet-01"),
+	// 				VnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01"),
+	// 			},
+	// 			DataRetentionPeriod: to.Ptr[int64](23),
+	// 			ProvisionedBandwidthMbPerSec: to.Ptr[int64](17),
+	// 			ProvisionedIops: to.Ptr[int64](3),
+	// 			Avs: &armpurestorageblock.AzureVmwareService{
+	// 				AvsEnabled: to.Ptr(true),
+	// 				ClusterResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.AVS/privateClouds/avs-cloud-01"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+	// 			ReservationResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/reservations/reservation-01"),
+	// 		},
+	// 		Identity: &armpurestorageblock.ManagedServiceIdentity{
+	// 			PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 			TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 			Type: to.Ptr(armpurestorageblock.ManagedServiceIdentityTypeNone),
+	// 			UserAssignedIdentities: map[string]*armpurestorageblock.UserAssignedIdentity{
+	// 				"identity-01": &armpurestorageblock.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 					ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+	// 		Name: to.Ptr("storagepool-01"),
+	// 		Type: to.Ptr("PureStorage.Block/storagePools"),
+	// 		SystemData: &armpurestorageblock.SystemData{
+	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/StoragePools_GetAvsConnection_MaximumSet_Gen.json
+func ExampleStoragePoolsClient_GetAvsConnection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewStoragePoolsClient().GetAvsConnection(ctx, "rgpurestorage", "storagepool-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.StoragePoolsClientGetAvsConnectionResponse{
+	// 	AvsConnection: armpurestorageblock.AvsConnection{
+	// 		ServiceInitializationCompleted: to.Ptr(true),
+	// 		ServiceInitializationHandleEnc: to.Ptr("kvidtocmjciflvtwql"),
+	// 		ServiceInitializationHandle: &armpurestorageblock.ServiceInitializationHandle{
+	// 			ClusterResourceID: to.Ptr("aqgnpie"),
+	// 			ServiceAccountUsername: to.Ptr("xcu"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/StoragePools_GetAvsStatus_MaximumSet_Gen.json
+func ExampleStoragePoolsClient_GetAvsStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewStoragePoolsClient().GetAvsStatus(ctx, "rgpurestorage", "storagepool-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.StoragePoolsClientGetAvsStatusResponse{
+	// 	AvsStatus: armpurestorageblock.AvsStatus{
+	// 		AvsEnabled: to.Ptr(true),
+	// 		CurrentConnectionStatus: to.Ptr("vfirgp"),
+	// 		ClusterResourceID: to.Ptr("zxkvzrdjzwpk"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/StoragePools_GetHealthStatus_MaximumSet_Gen.json
+func ExampleStoragePoolsClient_GetHealthStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewStoragePoolsClient().GetHealthStatus(ctx, "rgpurestorage", "storagepool-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.StoragePoolsClientGetHealthStatusResponse{
+	// 	StoragePoolHealthInfo: armpurestorageblock.StoragePoolHealthInfo{
+	// 		Health: &armpurestorageblock.HealthDetails{
+	// 			UsedCapacityPercentage: to.Ptr[float64](21),
+	// 			BandwidthUsage: &armpurestorageblock.BandwidthUsage{
+	// 				Current: to.Ptr[int64](15),
+	// 				Provisioned: to.Ptr[int64](23),
+	// 				Max: to.Ptr[int64](21),
+	// 			},
+	// 			IopsUsage: &armpurestorageblock.IopsUsage{
+	// 				Current: to.Ptr[int64](5),
+	// 				Provisioned: to.Ptr[int64](19),
+	// 				Max: to.Ptr[int64](15),
+	// 			},
+	// 			Space: &armpurestorageblock.Space{
+	// 				TotalUsed: to.Ptr[int64](1073741824),
+	// 				Unique: to.Ptr[int64](268435456),
+	// 				Snapshots: to.Ptr[int64](53687091236870910),
+	// 				Shared: to.Ptr[int64](268435456),
+	// 			},
+	// 			DataReductionRatio: to.Ptr[float64](28),
+	// 			EstimatedMaxCapacity: to.Ptr[int64](1),
+	// 		},
+	// 		Alerts: []*armpurestorageblock.Alert{
+	// 			{
+	// 				Level: to.Ptr(armpurestorageblock.AlertLevelInfo),
+	// 				Message: to.Ptr("uasvakccxihgmdz"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/StoragePools_ListPlatformConsoleActivationCode_MaximumSet_Gen.json
+func ExampleStoragePoolsClient_ListPlatformConsoleActivationCode() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewStoragePoolsClient().ListPlatformConsoleActivationCode(ctx, "rgpurestorage", "storagepool-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.StoragePoolsClientListPlatformConsoleActivationCodeResponse{
+	// 	PlatformConsoleActivationCode: armpurestorageblock.PlatformConsoleActivationCode{
+	// 		Username: to.Ptr("cloudadmin"),
+	// 		ActivationCode: to.Ptr("OTC-A1B2C3D4E5F6G7H8I9J0"),
+	// 		ExpiresAt: to.Ptr(time.Date(2026, time.June, 4, 13, 0, 0, 0, time.UTC)),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/StoragePools_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleStoragePoolsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStoragePoolsClient().NewListByResourceGroupPager("rgpurestorage", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armpurestorageblock.StoragePoolsClientListByResourceGroupResponse{
+		// 	StoragePoolListResult: armpurestorageblock.StoragePoolListResult{
+		// 		Value: []*armpurestorageblock.StoragePool{
+		// 			{
+		// 				Properties: &armpurestorageblock.StoragePoolProperties{
+		// 					StoragePoolInternalID: to.Ptr("pool-abc123"),
+		// 					AvailabilityZone: to.Ptr("1"),
+		// 					VnetInjection: &armpurestorageblock.VnetInjection{
+		// 						SubnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01/subnets/subnet-01"),
+		// 						VnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01"),
+		// 					},
+		// 					DataRetentionPeriod: to.Ptr[int64](23),
+		// 					ProvisionedBandwidthMbPerSec: to.Ptr[int64](17),
+		// 					ProvisionedIops: to.Ptr[int64](3),
+		// 					Avs: &armpurestorageblock.AzureVmwareService{
+		// 						AvsEnabled: to.Ptr(true),
+		// 						ClusterResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.AVS/privateClouds/avs-cloud-01"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+		// 					ReservationResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/reservations/reservation-01"),
+		// 				},
+		// 				Identity: &armpurestorageblock.ManagedServiceIdentity{
+		// 					PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 					TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 					Type: to.Ptr(armpurestorageblock.ManagedServiceIdentityTypeNone),
+		// 					UserAssignedIdentities: map[string]*armpurestorageblock.UserAssignedIdentity{
+		// 						"identity-01": &armpurestorageblock.UserAssignedIdentity{
+		// 							PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 							ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+		// 				Name: to.Ptr("storagepool-01"),
+		// 				Type: to.Ptr("PureStorage.Block/storagePools"),
+		// 				SystemData: &armpurestorageblock.SystemData{
+		// 					CreatedBy: to.Ptr("user@contoso.com"),
+		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123hd"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-10-01/StoragePools_ListBySubscription_MaximumSet_Gen.json
+func ExampleStoragePoolsClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStoragePoolsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armpurestorageblock.StoragePoolsClientListBySubscriptionResponse{
+		// 	StoragePoolListResult: armpurestorageblock.StoragePoolListResult{
+		// 		Value: []*armpurestorageblock.StoragePool{
+		// 			{
+		// 				Properties: &armpurestorageblock.StoragePoolProperties{
+		// 					StoragePoolInternalID: to.Ptr("pool-abc123"),
+		// 					AvailabilityZone: to.Ptr("1"),
+		// 					VnetInjection: &armpurestorageblock.VnetInjection{
+		// 						SubnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01/subnets/subnet-01"),
+		// 						VnetID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.Network/virtualNetworks/vnet-01"),
+		// 					},
+		// 					DataRetentionPeriod: to.Ptr[int64](23),
+		// 					ProvisionedBandwidthMbPerSec: to.Ptr[int64](17),
+		// 					ProvisionedIops: to.Ptr[int64](3),
+		// 					Avs: &armpurestorageblock.AzureVmwareService{
+		// 						AvsEnabled: to.Ptr(true),
+		// 						ClusterResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.AVS/privateClouds/avs-cloud-01"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+		// 					ReservationResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/reservations/reservation-01"),
+		// 				},
+		// 				Identity: &armpurestorageblock.ManagedServiceIdentity{
+		// 					PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 					TenantID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 					Type: to.Ptr(armpurestorageblock.ManagedServiceIdentityTypeNone),
+		// 					UserAssignedIdentities: map[string]*armpurestorageblock.UserAssignedIdentity{
+		// 						"identity-01": &armpurestorageblock.UserAssignedIdentity{
+		// 							PrincipalID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 							ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+		// 				Name: to.Ptr("storagepool-01"),
+		// 				Type: to.Ptr("PureStorage.Block/storagePools"),
+		// 				SystemData: &armpurestorageblock.SystemData{
+		// 					CreatedBy: to.Ptr("user@contoso.com"),
+		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123hd"),
+		// 	},
+		// }
+	}
 }

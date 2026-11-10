@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/Reservations_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_Create_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleReservationsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_Delete_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,245 +146,7 @@ func ExampleReservationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_Get_MaximumSet_Gen.json
-func ExampleReservationsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewReservationsClient().Get(ctx, "rgpurestorage", "storagepool-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.ReservationsClientGetResponse{
-	// 	Reservation: armpurestorageblock.Reservation{
-	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
-	// 			ReservationInternalID: to.Ptr("res-abc123-xyz789"),
-	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{
-	// 				SubscriptionID: to.Ptr("Read Storage Poolst-sub-123"),
-	// 				SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-	// 				OfferDetails: &armpurestorageblock.OfferDetails{
-	// 					PublisherID: to.Ptr("pure_storage"),
-	// 					OfferID: to.Ptr("purestorage-block-offer"),
-	// 					PlanID: to.Ptr("standard-plan"),
-	// 					PlanName: to.Ptr("Standard Plan"),
-	// 					TermUnit: to.Ptr("month"),
-	// 					TermID: to.Ptr("12-month-term"),
-	// 				},
-	// 			},
-	// 			User: &armpurestorageblock.UserDetails{
-	// 				FirstName: to.Ptr("John"),
-	// 				LastName: to.Ptr("Doe"),
-	// 				EmailAddress: to.Ptr("john.doe@contoso.com"),
-	// 				Upn: to.Ptr("john.doe@contoso.com"),
-	// 				PhoneNumber: to.Ptr("+1-425-555-1234"),
-	// 				CompanyDetails: &armpurestorageblock.CompanyDetails{
-	// 					CompanyName: to.Ptr("Contoso Ltd."),
-	// 					Address: &armpurestorageblock.Address{
-	// 						AddressLine1: to.Ptr("f"),
-	// 						AddressLine2: to.Ptr("Suite 100"),
-	// 						City: to.Ptr("Redmond"),
-	// 						State: to.Ptr("Washington"),
-	// 						Country: to.Ptr("United States"),
-	// 						PostalCode: to.Ptr("98052"),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("reservation-01"),
-	// 		Type: to.Ptr("PureStorage.Block/reservations"),
-	// 		SystemData: &armpurestorageblock.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
-	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/Reservations_GetBillingReport_MaximumSet_Gen.json
-func ExampleReservationsClient_GetBillingReport() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewReservationsClient().GetBillingReport(ctx, "rgpurestorage", "reservationname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.ReservationsClientGetBillingReportResponse{
-	// 	ReservationBillingUsageReport: armpurestorageblock.ReservationBillingUsageReport{
-	// 		Timestamp: to.Ptr("2026-01-16T07:25:56.721Z"),
-	// 		BillingUsageProperties: []*armpurestorageblock.BillingUsageProperty{
-	// 			{
-	// 				PropertyID: to.Ptr("fknpxmzbrocjevhnuxohiwl"),
-	// 				PropertyName: to.Ptr("rznqcuwmulhtvp"),
-	// 				CurrentValue: to.Ptr("ndiuedcwtwpedirqdq"),
-	// 				PreviousValue: to.Ptr("fqnvq"),
-	// 				Severity: to.Ptr(armpurestorageblock.UsageSeverityALERT),
-	// 				StatusMessage: to.Ptr("vkce"),
-	// 				SubProperties: []*armpurestorageblock.BillingUsageProperty{
-	// 				},
-	// 			},
-	// 		},
-	// 		OverallStatusMessage: to.Ptr("aurwogtwwsxjoocpsobslpv"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/Reservations_GetBillingStatus_MaximumSet_Gen.json
-func ExampleReservationsClient_GetBillingStatus() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewReservationsClient().GetBillingStatus(ctx, "rgpurestorage", "reservationname", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.ReservationsClientGetBillingStatusResponse{
-	// 	ReservationBillingStatus: armpurestorageblock.ReservationBillingStatus{
-	// 		Timestamp: to.Ptr("2026-01-16T07:25:56.721Z"),
-	// 		TotalUsedCapacityReported: to.Ptr[int64](8),
-	// 		LowDrrPoolCount: to.Ptr[int32](5),
-	// 		DrrWeightedAverage: to.Ptr[float64](15),
-	// 		TotalNonReducibleReported: to.Ptr[int64](9),
-	// 		ExtraUsedCapacityNonReducible: to.Ptr[int64](12),
-	// 		ExtraUsedCapacityLowUsageRounding: to.Ptr[int64](9),
-	// 		ExtraUsedCapacityNonReduciblePlanDiscount: to.Ptr[int64](19),
-	// 		TotalUsedCapacityBilled: to.Ptr[int64](7),
-	// 		TotalUsedCapacityIncludedPlan: to.Ptr[int64](18),
-	// 		TotalUsedCapacityOverage: to.Ptr[int64](28),
-	// 		TotalPerformanceReported: to.Ptr[int64](29),
-	// 		TotalPerformanceIncludedPlan: to.Ptr[int64](23),
-	// 		TotalPerformanceOverage: to.Ptr[int64](16),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/Reservations_GetResourceLimits_MaximumSet_Gen.json
-func ExampleReservationsClient_GetResourceLimits() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewReservationsClient().GetResourceLimits(ctx, "rgpurestorage", "storagepool-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.ReservationsClientGetResourceLimitsResponse{
-	// 	LimitDetails: armpurestorageblock.LimitDetails{
-	// 		StoragePool: &armpurestorageblock.StoragePoolLimits{
-	// 			ProvisionedBandwidthMbPerSec: &armpurestorageblock.RangeLimits{
-	// 				Min: to.Ptr[int64](26),
-	// 				Max: to.Ptr[int64](2),
-	// 			},
-	// 			ProvisionedIops: &armpurestorageblock.RangeLimits{
-	// 				Min: to.Ptr[int64](26),
-	// 				Max: to.Ptr[int64](2),
-	// 			},
-	// 			PhysicalAvailabilityZones: []*string{
-	// 				to.Ptr("bhcreafgubemvymffktiojnkblw"),
-	// 			},
-	// 		},
-	// 		Volume: &armpurestorageblock.VolumeLimits{
-	// 			ProvisionedSize: &armpurestorageblock.RangeLimits{
-	// 				Min: to.Ptr[int64](26),
-	// 				Max: to.Ptr[int64](2),
-	// 			},
-	// 		},
-	// 		ProtectionPolicy: &armpurestorageblock.ProtectionPolicyLimits{
-	// 			Frequency: &armpurestorageblock.RangeLimits{
-	// 				Min: to.Ptr[int64](26),
-	// 				Max: to.Ptr[int64](2),
-	// 			},
-	// 			Retention: &armpurestorageblock.RangeLimits{
-	// 				Min: to.Ptr[int64](26),
-	// 				Max: to.Ptr[int64](2),
-	// 			},
-	// 		},
-	// 		PerformancePolicy: &armpurestorageblock.PerformancePolicyLimits{
-	// 			IopsLimit: &armpurestorageblock.RangeLimits{
-	// 				Min: to.Ptr[int64](26),
-	// 				Max: to.Ptr[int64](2),
-	// 			},
-	// 			BandwidthLimit: &armpurestorageblock.RangeLimits{
-	// 				Min: to.Ptr[int64](26),
-	// 				Max: to.Ptr[int64](2),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/Reservations_LatestLinkedSaaS_MaximumSet_Gen.json
-func ExampleReservationsClient_LatestLinkedSaaS() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewReservationsClient().LatestLinkedSaaS(ctx, "rgpurestorage", "reservation-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.ReservationsClientLatestLinkedSaaSResponse{
-	// 	LatestLinkedSaaSResponse: armpurestorageblock.LatestLinkedSaaSResponse{
-	// 		SaaSResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.SaaS/resources/saas-resource-01"),
-	// 		IsHiddenSaaS: to.Ptr(false),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/Reservations_LinkSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_LinkSaaS_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginLinkSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -463,173 +225,7 @@ func ExampleReservationsClient_BeginLinkSaaS() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/Reservations_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleReservationsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReservationsClient().NewListByResourceGroupPager("rgpurestorage", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armpurestorageblock.ReservationsClientListByResourceGroupResponse{
-		// 	ReservationListResult: armpurestorageblock.ReservationListResult{
-		// 		Value: []*armpurestorageblock.Reservation{
-		// 			{
-		// 				Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
-		// 					ReservationInternalID: to.Ptr("res-abc123-xyz789"),
-		// 					Marketplace: &armpurestorageblock.MarketplaceDetails{
-		// 						SubscriptionID: to.Ptr("Read Storage Poolst-sub-123"),
-		// 						SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-		// 						OfferDetails: &armpurestorageblock.OfferDetails{
-		// 							PublisherID: to.Ptr("pure_storage"),
-		// 							OfferID: to.Ptr("purestorage-block-offer"),
-		// 							PlanID: to.Ptr("standard-plan"),
-		// 							PlanName: to.Ptr("Standard Plan"),
-		// 							TermUnit: to.Ptr("month"),
-		// 							TermID: to.Ptr("12-month-term"),
-		// 						},
-		// 					},
-		// 					User: &armpurestorageblock.UserDetails{
-		// 						FirstName: to.Ptr("John"),
-		// 						LastName: to.Ptr("Doe"),
-		// 						EmailAddress: to.Ptr("john.doe@contoso.com"),
-		// 						Upn: to.Ptr("john.doe@contoso.com"),
-		// 						PhoneNumber: to.Ptr("+1-425-555-1234"),
-		// 						CompanyDetails: &armpurestorageblock.CompanyDetails{
-		// 							CompanyName: to.Ptr("Contoso Ltd."),
-		// 							Address: &armpurestorageblock.Address{
-		// 								AddressLine1: to.Ptr("f"),
-		// 								AddressLine2: to.Ptr("Suite 100"),
-		// 								City: to.Ptr("Redmond"),
-		// 								State: to.Ptr("Washington"),
-		// 								Country: to.Ptr("United States"),
-		// 								PostalCode: to.Ptr("98052"),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("reservation-01"),
-		// 				Type: to.Ptr("PureStorage.Block/reservations"),
-		// 				SystemData: &armpurestorageblock.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Reservations_ListBySubscription_MaximumSet_Gen.json
-func ExampleReservationsClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReservationsClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armpurestorageblock.ReservationsClientListBySubscriptionResponse{
-		// 	ReservationListResult: armpurestorageblock.ReservationListResult{
-		// 		Value: []*armpurestorageblock.Reservation{
-		// 			{
-		// 				Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
-		// 					ReservationInternalID: to.Ptr("res-abc123-xyz789"),
-		// 					Marketplace: &armpurestorageblock.MarketplaceDetails{
-		// 						SubscriptionID: to.Ptr("Read Storage Poolst-sub-123"),
-		// 						SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-		// 						OfferDetails: &armpurestorageblock.OfferDetails{
-		// 							PublisherID: to.Ptr("pure_storage"),
-		// 							OfferID: to.Ptr("purestorage-block-offer"),
-		// 							PlanID: to.Ptr("standard-plan"),
-		// 							PlanName: to.Ptr("Standard Plan"),
-		// 							TermUnit: to.Ptr("month"),
-		// 							TermID: to.Ptr("12-month-term"),
-		// 						},
-		// 					},
-		// 					User: &armpurestorageblock.UserDetails{
-		// 						FirstName: to.Ptr("John"),
-		// 						LastName: to.Ptr("Doe"),
-		// 						EmailAddress: to.Ptr("john.doe@contoso.com"),
-		// 						Upn: to.Ptr("john.doe@contoso.com"),
-		// 						PhoneNumber: to.Ptr("+1-425-555-1234"),
-		// 						CompanyDetails: &armpurestorageblock.CompanyDetails{
-		// 							CompanyName: to.Ptr("Contoso Ltd."),
-		// 							Address: &armpurestorageblock.Address{
-		// 								AddressLine1: to.Ptr("f"),
-		// 								AddressLine2: to.Ptr("Suite 100"),
-		// 								City: to.Ptr("Redmond"),
-		// 								State: to.Ptr("Washington"),
-		// 								Country: to.Ptr("United States"),
-		// 								PostalCode: to.Ptr("98052"),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("reservation-01"),
-		// 				Type: to.Ptr("PureStorage.Block/reservations"),
-		// 				SystemData: &armpurestorageblock.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Reservations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Reservations_Update_MaximumSet_Gen.json
 func ExampleReservationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -728,4 +324,408 @@ func ExampleReservationsClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-10-01/Reservations_Get_MaximumSet_Gen.json
+func ExampleReservationsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationsClient().Get(ctx, "rgpurestorage", "storagepool-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.ReservationsClientGetResponse{
+	// 	Reservation: armpurestorageblock.Reservation{
+	// 		Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
+	// 			ReservationInternalID: to.Ptr("res-abc123-xyz789"),
+	// 			Marketplace: &armpurestorageblock.MarketplaceDetails{
+	// 				SubscriptionID: to.Ptr("Read Storage Poolst-sub-123"),
+	// 				SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+	// 				OfferDetails: &armpurestorageblock.OfferDetails{
+	// 					PublisherID: to.Ptr("pure_storage"),
+	// 					OfferID: to.Ptr("purestorage-block-offer"),
+	// 					PlanID: to.Ptr("standard-plan"),
+	// 					PlanName: to.Ptr("Standard Plan"),
+	// 					TermUnit: to.Ptr("month"),
+	// 					TermID: to.Ptr("12-month-term"),
+	// 				},
+	// 			},
+	// 			User: &armpurestorageblock.UserDetails{
+	// 				FirstName: to.Ptr("John"),
+	// 				LastName: to.Ptr("Doe"),
+	// 				EmailAddress: to.Ptr("john.doe@contoso.com"),
+	// 				Upn: to.Ptr("john.doe@contoso.com"),
+	// 				PhoneNumber: to.Ptr("+1-425-555-1234"),
+	// 				CompanyDetails: &armpurestorageblock.CompanyDetails{
+	// 					CompanyName: to.Ptr("Contoso Ltd."),
+	// 					Address: &armpurestorageblock.Address{
+	// 						AddressLine1: to.Ptr("f"),
+	// 						AddressLine2: to.Ptr("Suite 100"),
+	// 						City: to.Ptr("Redmond"),
+	// 						State: to.Ptr("Washington"),
+	// 						Country: to.Ptr("United States"),
+	// 						PostalCode: to.Ptr("98052"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+	// 		Name: to.Ptr("reservation-01"),
+	// 		Type: to.Ptr("PureStorage.Block/reservations"),
+	// 		SystemData: &armpurestorageblock.SystemData{
+	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Reservations_GetBillingReport_MaximumSet_Gen.json
+func ExampleReservationsClient_GetBillingReport() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationsClient().GetBillingReport(ctx, "rgpurestorage", "reservationname", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.ReservationsClientGetBillingReportResponse{
+	// 	ReservationBillingUsageReport: armpurestorageblock.ReservationBillingUsageReport{
+	// 		Timestamp: to.Ptr("2026-01-16T07:25:56.721Z"),
+	// 		BillingUsageProperties: []*armpurestorageblock.BillingUsageProperty{
+	// 			{
+	// 				PropertyID: to.Ptr("fknpxmzbrocjevhnuxohiwl"),
+	// 				PropertyName: to.Ptr("rznqcuwmulhtvp"),
+	// 				CurrentValue: to.Ptr("ndiuedcwtwpedirqdq"),
+	// 				PreviousValue: to.Ptr("fqnvq"),
+	// 				Severity: to.Ptr(armpurestorageblock.UsageSeverityALERT),
+	// 				StatusMessage: to.Ptr("vkce"),
+	// 				SubProperties: []*armpurestorageblock.BillingUsageProperty{
+	// 				},
+	// 			},
+	// 		},
+	// 		OverallStatusMessage: to.Ptr("aurwogtwwsxjoocpsobslpv"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Reservations_GetBillingStatus_MaximumSet_Gen.json
+func ExampleReservationsClient_GetBillingStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationsClient().GetBillingStatus(ctx, "rgpurestorage", "reservationname", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.ReservationsClientGetBillingStatusResponse{
+	// 	ReservationBillingStatus: armpurestorageblock.ReservationBillingStatus{
+	// 		Timestamp: to.Ptr("2026-01-16T07:25:56.721Z"),
+	// 		TotalUsedCapacityReported: to.Ptr[int64](8),
+	// 		LowDrrPoolCount: to.Ptr[int32](5),
+	// 		DrrWeightedAverage: to.Ptr[float64](15),
+	// 		TotalNonReducibleReported: to.Ptr[int64](9),
+	// 		ExtraUsedCapacityNonReducible: to.Ptr[int64](12),
+	// 		ExtraUsedCapacityLowUsageRounding: to.Ptr[int64](9),
+	// 		ExtraUsedCapacityNonReduciblePlanDiscount: to.Ptr[int64](19),
+	// 		TotalUsedCapacityBilled: to.Ptr[int64](7),
+	// 		TotalUsedCapacityIncludedPlan: to.Ptr[int64](18),
+	// 		TotalUsedCapacityOverage: to.Ptr[int64](28),
+	// 		TotalPerformanceReported: to.Ptr[int64](29),
+	// 		TotalPerformanceIncludedPlan: to.Ptr[int64](23),
+	// 		TotalPerformanceOverage: to.Ptr[int64](16),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Reservations_GetResourceLimits_MaximumSet_Gen.json
+func ExampleReservationsClient_GetResourceLimits() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationsClient().GetResourceLimits(ctx, "rgpurestorage", "storagepool-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.ReservationsClientGetResourceLimitsResponse{
+	// 	LimitDetails: armpurestorageblock.LimitDetails{
+	// 		StoragePool: &armpurestorageblock.StoragePoolLimits{
+	// 			ProvisionedBandwidthMbPerSec: &armpurestorageblock.RangeLimits{
+	// 				Min: to.Ptr[int64](26),
+	// 				Max: to.Ptr[int64](2),
+	// 			},
+	// 			ProvisionedIops: &armpurestorageblock.RangeLimits{
+	// 				Min: to.Ptr[int64](26),
+	// 				Max: to.Ptr[int64](2),
+	// 			},
+	// 			PhysicalAvailabilityZones: []*string{
+	// 				to.Ptr("bhcreafgubemvymffktiojnkblw"),
+	// 			},
+	// 		},
+	// 		Volume: &armpurestorageblock.VolumeLimits{
+	// 			ProvisionedSize: &armpurestorageblock.RangeLimits{
+	// 				Min: to.Ptr[int64](26),
+	// 				Max: to.Ptr[int64](2),
+	// 			},
+	// 		},
+	// 		ProtectionPolicy: &armpurestorageblock.ProtectionPolicyLimits{
+	// 			Frequency: &armpurestorageblock.RangeLimits{
+	// 				Min: to.Ptr[int64](26),
+	// 				Max: to.Ptr[int64](2),
+	// 			},
+	// 			Retention: &armpurestorageblock.RangeLimits{
+	// 				Min: to.Ptr[int64](26),
+	// 				Max: to.Ptr[int64](2),
+	// 			},
+	// 		},
+	// 		PerformancePolicy: &armpurestorageblock.PerformancePolicyLimits{
+	// 			IopsLimit: &armpurestorageblock.RangeLimits{
+	// 				Min: to.Ptr[int64](26),
+	// 				Max: to.Ptr[int64](2),
+	// 			},
+	// 			BandwidthLimit: &armpurestorageblock.RangeLimits{
+	// 				Min: to.Ptr[int64](26),
+	// 				Max: to.Ptr[int64](2),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Reservations_LatestLinkedSaaS_MaximumSet_Gen.json
+func ExampleReservationsClient_LatestLinkedSaaS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewReservationsClient().LatestLinkedSaaS(ctx, "rgpurestorage", "reservation-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.ReservationsClientLatestLinkedSaaSResponse{
+	// 	LatestLinkedSaaSResponse: armpurestorageblock.LatestLinkedSaaSResponse{
+	// 		SaaSResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/Microsoft.SaaS/resources/saas-resource-01"),
+	// 		IsHiddenSaaS: to.Ptr(false),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/Reservations_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleReservationsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsClient().NewListByResourceGroupPager("rgpurestorage", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armpurestorageblock.ReservationsClientListByResourceGroupResponse{
+		// 	ReservationListResult: armpurestorageblock.ReservationListResult{
+		// 		Value: []*armpurestorageblock.Reservation{
+		// 			{
+		// 				Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
+		// 					ReservationInternalID: to.Ptr("res-abc123-xyz789"),
+		// 					Marketplace: &armpurestorageblock.MarketplaceDetails{
+		// 						SubscriptionID: to.Ptr("Read Storage Poolst-sub-123"),
+		// 						SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+		// 						OfferDetails: &armpurestorageblock.OfferDetails{
+		// 							PublisherID: to.Ptr("pure_storage"),
+		// 							OfferID: to.Ptr("purestorage-block-offer"),
+		// 							PlanID: to.Ptr("standard-plan"),
+		// 							PlanName: to.Ptr("Standard Plan"),
+		// 							TermUnit: to.Ptr("month"),
+		// 							TermID: to.Ptr("12-month-term"),
+		// 						},
+		// 					},
+		// 					User: &armpurestorageblock.UserDetails{
+		// 						FirstName: to.Ptr("John"),
+		// 						LastName: to.Ptr("Doe"),
+		// 						EmailAddress: to.Ptr("john.doe@contoso.com"),
+		// 						Upn: to.Ptr("john.doe@contoso.com"),
+		// 						PhoneNumber: to.Ptr("+1-425-555-1234"),
+		// 						CompanyDetails: &armpurestorageblock.CompanyDetails{
+		// 							CompanyName: to.Ptr("Contoso Ltd."),
+		// 							Address: &armpurestorageblock.Address{
+		// 								AddressLine1: to.Ptr("f"),
+		// 								AddressLine2: to.Ptr("Suite 100"),
+		// 								City: to.Ptr("Redmond"),
+		// 								State: to.Ptr("Washington"),
+		// 								Country: to.Ptr("United States"),
+		// 								PostalCode: to.Ptr("98052"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+		// 				Name: to.Ptr("reservation-01"),
+		// 				Type: to.Ptr("PureStorage.Block/reservations"),
+		// 				SystemData: &armpurestorageblock.SystemData{
+		// 					CreatedBy: to.Ptr("user@contoso.com"),
+		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-10-01/Reservations_ListBySubscription_MaximumSet_Gen.json
+func ExampleReservationsClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armpurestorageblock.ReservationsClientListBySubscriptionResponse{
+		// 	ReservationListResult: armpurestorageblock.ReservationListResult{
+		// 		Value: []*armpurestorageblock.Reservation{
+		// 			{
+		// 				Properties: &armpurestorageblock.ReservationPropertiesBaseResourceProperties{
+		// 					ReservationInternalID: to.Ptr("res-abc123-xyz789"),
+		// 					Marketplace: &armpurestorageblock.MarketplaceDetails{
+		// 						SubscriptionID: to.Ptr("Read Storage Poolst-sub-123"),
+		// 						SubscriptionStatus: to.Ptr(armpurestorageblock.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+		// 						OfferDetails: &armpurestorageblock.OfferDetails{
+		// 							PublisherID: to.Ptr("pure_storage"),
+		// 							OfferID: to.Ptr("purestorage-block-offer"),
+		// 							PlanID: to.Ptr("standard-plan"),
+		// 							PlanName: to.Ptr("Standard Plan"),
+		// 							TermUnit: to.Ptr("month"),
+		// 							TermID: to.Ptr("12-month-term"),
+		// 						},
+		// 					},
+		// 					User: &armpurestorageblock.UserDetails{
+		// 						FirstName: to.Ptr("John"),
+		// 						LastName: to.Ptr("Doe"),
+		// 						EmailAddress: to.Ptr("john.doe@contoso.com"),
+		// 						Upn: to.Ptr("john.doe@contoso.com"),
+		// 						PhoneNumber: to.Ptr("+1-425-555-1234"),
+		// 						CompanyDetails: &armpurestorageblock.CompanyDetails{
+		// 							CompanyName: to.Ptr("Contoso Ltd."),
+		// 							Address: &armpurestorageblock.Address{
+		// 								AddressLine1: to.Ptr("f"),
+		// 								AddressLine2: to.Ptr("Suite 100"),
+		// 								City: to.Ptr("Redmond"),
+		// 								State: to.Ptr("Washington"),
+		// 								Country: to.Ptr("United States"),
+		// 								PostalCode: to.Ptr("98052"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
+		// 				Name: to.Ptr("reservation-01"),
+		// 				Type: to.Ptr("PureStorage.Block/reservations"),
+		// 				SystemData: &armpurestorageblock.SystemData{
+		// 					CreatedBy: to.Ptr("user@contoso.com"),
+		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("admin@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/PureStorage.Block/operations?api-version=2026-01-01-preview&$skiptoken=abc123"),
+		// 	},
+		// }
+	}
 }

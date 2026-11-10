@@ -19,7 +19,7 @@ import (
 // RecoverableVolumeGroupsClient contains the methods for the RecoverableVolumeGroups group.
 // Don't use this type directly, use NewRecoverableVolumeGroupsClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-10-01
 type RecoverableVolumeGroupsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *RecoverableVolumeGroupsClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Eradicate a recoverable volume group
+// deleteOperation - Eradicate a recoverable volume group
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RecoverableVolumeGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, recoverableVolumeGroupName string, options *RecoverableVolumeGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *RecoverableVolumeGroupsClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RecoverableVolumeGroupsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, recoverableVolumeGroupName string, _ *RecoverableVolumeGroupsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/recoverableVolumeGroups/{recoverableVolumeGroupName}"
 	if client.subscriptionID == "" {
@@ -114,7 +115,7 @@ func (client *RecoverableVolumeGroupsClient) deleteCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -140,7 +141,8 @@ func (client *RecoverableVolumeGroupsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return RecoverableVolumeGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -167,7 +169,7 @@ func (client *RecoverableVolumeGroupsClient) getCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -243,7 +245,7 @@ func (client *RecoverableVolumeGroupsClient) listByStoragePoolCreateRequest(ctx 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260501Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

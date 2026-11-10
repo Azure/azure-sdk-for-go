@@ -20,7 +20,7 @@ import (
 // VolumeGroupSnapshotsClient contains the methods for the VolumeGroupSnapshots group.
 // Don't use this type directly, use NewVolumeGroupSnapshotsClient() instead.
 //
-// Generated from API version 2026-05-01-preview
+// Generated from API version 2026-10-01
 type VolumeGroupSnapshotsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -71,7 +71,7 @@ func (client *VolumeGroupSnapshotsClient) BeginCreate(ctx context.Context, resou
 	}
 }
 
-// Create - Create a manual snapshot of a volume group, or recover from an existing snapshot by providing sourceSnapshotResourceId
+// create - Create a manual snapshot of a volume group, or recover from an existing snapshot by providing sourceSnapshotResourceId
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumeGroupSnapshotsClient) create(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, snapshotName string, resource VolumeGroupSnapshot, options *VolumeGroupSnapshotsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -88,12 +88,13 @@ func (client *VolumeGroupSnapshotsClient) create(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *VolumeGroupSnapshotsClient) createCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, snapshotName string, resource VolumeGroupSnapshot, _ *VolumeGroupSnapshotsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/snapshots/{snapshotName}"
 	if client.subscriptionID == "" {
@@ -121,7 +122,7 @@ func (client *VolumeGroupSnapshotsClient) createCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -156,7 +157,7 @@ func (client *VolumeGroupSnapshotsClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// Delete - Delete a volume group snapshot
+// deleteOperation - Delete a volume group snapshot
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *VolumeGroupSnapshotsClient) deleteOperation(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, snapshotName string, options *VolumeGroupSnapshotsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -173,12 +174,13 @@ func (client *VolumeGroupSnapshotsClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *VolumeGroupSnapshotsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, snapshotName string, _ *VolumeGroupSnapshotsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/snapshots/{snapshotName}"
 	if client.subscriptionID == "" {
@@ -206,7 +208,7 @@ func (client *VolumeGroupSnapshotsClient) deleteCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -233,7 +235,8 @@ func (client *VolumeGroupSnapshotsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return VolumeGroupSnapshotsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -264,7 +267,7 @@ func (client *VolumeGroupSnapshotsClient) getCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -278,6 +281,78 @@ func (client *VolumeGroupSnapshotsClient) getHandleResponse(resp *http.Response,
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeGroupSnapshot); err != nil {
 		return VolumeGroupSnapshotsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListSnapshots - List all snapshots for a given volume group using POST with the same request and response contract
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storagePoolName - Name of the storage pool
+//   - volumeGroupName - Name of the volume group
+//   - properties - Snapshot list request payload
+//   - options - VolumeGroupSnapshotsClientListSnapshotsOptions contains the optional parameters for the VolumeGroupSnapshotsClient.ListSnapshots
+//     method.
+func (client *VolumeGroupSnapshotsClient) ListSnapshots(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupSnapshotListRequest, options *VolumeGroupSnapshotsClientListSnapshotsOptions) (VolumeGroupSnapshotsClientListSnapshotsResponse, error) {
+	var err error
+	const operationName = "VolumeGroupSnapshotsClient.ListSnapshots"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSnapshotsCreateRequest(ctx, resourceGroupName, storagePoolName, volumeGroupName, properties, options)
+	if err != nil {
+		return VolumeGroupSnapshotsClientListSnapshotsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return VolumeGroupSnapshotsClientListSnapshotsResponse{}, err
+	}
+	resp, err := client.listSnapshotsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listSnapshotsCreateRequest creates the ListSnapshots request.
+func (client *VolumeGroupSnapshotsClient) listSnapshotsCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupSnapshotListRequest, _ *VolumeGroupSnapshotsClientListSnapshotsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/listSnapshots"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storagePoolName == "" {
+		return nil, errors.New("parameter storagePoolName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
+	if volumeGroupName == "" {
+		return nil, errors.New("parameter volumeGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// listSnapshotsHandleResponse handles the ListSnapshots response.
+func (client *VolumeGroupSnapshotsClient) listSnapshotsHandleResponse(resp *http.Response, successCodes ...int) (VolumeGroupSnapshotsClientListSnapshotsResponse, error) {
+	result := VolumeGroupSnapshotsClientListSnapshotsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeGroupSnapshotPostListResult); err != nil {
+		return VolumeGroupSnapshotsClientListSnapshotsResponse{}, err
 	}
 	return result, nil
 }
@@ -357,7 +432,7 @@ func (client *VolumeGroupSnapshotsClient) listByVolumeGroupCreateRequest(ctx con
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20260501Preview)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -372,77 +447,6 @@ func (client *VolumeGroupSnapshotsClient) listByVolumeGroupHandleResponse(resp *
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeGroupSnapshotListResult); err != nil {
 		return VolumeGroupSnapshotsClientListByVolumeGroupResponse{}, err
-	}
-	return result, nil
-}
-
-// ListSnapshots - List all snapshots for a given volume group using POST with the same request and response contract
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storagePoolName - Name of the storage pool
-//   - volumeGroupName - Name of the volume group
-//   - properties - Snapshot list request payload
-//   - options - VolumeGroupSnapshotsClientListSnapshotsOptions contains the optional parameters for the VolumeGroupSnapshotsClient.ListSnapshots
-//     method.
-func (client *VolumeGroupSnapshotsClient) ListSnapshots(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupSnapshotListRequest, options *VolumeGroupSnapshotsClientListSnapshotsOptions) (VolumeGroupSnapshotsClientListSnapshotsResponse, error) {
-	var err error
-	const operationName = "VolumeGroupSnapshotsClient.ListSnapshots"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listSnapshotsCreateRequest(ctx, resourceGroupName, storagePoolName, volumeGroupName, properties, options)
-	if err != nil {
-		return VolumeGroupSnapshotsClientListSnapshotsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return VolumeGroupSnapshotsClientListSnapshotsResponse{}, err
-	}
-	return client.listSnapshotsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listSnapshotsCreateRequest creates the ListSnapshots request.
-func (client *VolumeGroupSnapshotsClient) listSnapshotsCreateRequest(ctx context.Context, resourceGroupName string, storagePoolName string, volumeGroupName string, properties VolumeGroupSnapshotListRequest, _ *VolumeGroupSnapshotsClientListSnapshotsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/storagePools/{storagePoolName}/volumeGroups/{volumeGroupName}/listSnapshots"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storagePoolName == "" {
-		return nil, errors.New("parameter storagePoolName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storagePoolName}", url.PathEscape(storagePoolName))
-	if volumeGroupName == "" {
-		return nil, errors.New("parameter volumeGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{volumeGroupName}", url.PathEscape(volumeGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// listSnapshotsHandleResponse handles the ListSnapshots response.
-func (client *VolumeGroupSnapshotsClient) listSnapshotsHandleResponse(resp *http.Response, successCodes ...int) (VolumeGroupSnapshotsClientListSnapshotsResponse, error) {
-	result := VolumeGroupSnapshotsClientListSnapshotsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VolumeGroupSnapshotPostListResult); err != nil {
-		return VolumeGroupSnapshotsClientListSnapshotsResponse{}, err
 	}
 	return result, nil
 }

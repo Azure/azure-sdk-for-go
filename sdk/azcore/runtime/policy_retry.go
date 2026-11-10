@@ -57,6 +57,10 @@ func setDefaults(o *policy.RetryOptions) {
 }
 
 func calcDelay(o policy.RetryOptions, try int32) time.Duration { // try is >=1; never 0
+	if o.RetryDelay == 0 {
+		return 0
+	}
+
 	// avoid overflow when shifting left
 	factor := time.Duration(math.MaxInt64)
 	if try < 63 {

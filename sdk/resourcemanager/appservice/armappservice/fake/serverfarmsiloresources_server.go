@@ -33,9 +33,9 @@ type ServerFarmSiloResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	GetServerFarmSilo func(ctx context.Context, resourceGroupName string, name string, siloName string, options *armappservice.ServerFarmSiloResourcesClientGetServerFarmSiloOptions) (resp azfake.Responder[armappservice.ServerFarmSiloResourcesClientGetServerFarmSiloResponse], errResp azfake.ErrorResponder)
 
-	// GetServerFarmSiloVnetIntegrations is the fake for method ServerFarmSiloResourcesClient.GetServerFarmSiloVnetIntegrations
+	// GetServerFarmSiloVNETIntegrations is the fake for method ServerFarmSiloResourcesClient.GetServerFarmSiloVNETIntegrations
 	// HTTP status codes to indicate success: http.StatusOK
-	GetServerFarmSiloVnetIntegrations func(ctx context.Context, resourceGroupName string, name string, siloName string, options *armappservice.ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsOptions) (resp azfake.Responder[armappservice.ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse], errResp azfake.ErrorResponder)
+	GetServerFarmSiloVNETIntegrations func(ctx context.Context, resourceGroupName string, name string, siloName string, options *armappservice.ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsOptions) (resp azfake.Responder[armappservice.ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse], errResp azfake.ErrorResponder)
 
 	// NewListServerFarmSilosPager is the fake for method ServerFarmSiloResourcesClient.NewListServerFarmSilosPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -94,8 +94,8 @@ func (s *ServerFarmSiloResourcesServerTransport) dispatchToMethodFake(req *http.
 				res.resp, res.err = s.dispatchBeginDeleteServerFarmSilo(req)
 			case "ServerFarmSiloResourcesClient.GetServerFarmSilo":
 				res.resp, res.err = s.dispatchGetServerFarmSilo(req)
-			case "ServerFarmSiloResourcesClient.GetServerFarmSiloVnetIntegrations":
-				res.resp, res.err = s.dispatchGetServerFarmSiloVnetIntegrations(req)
+			case "ServerFarmSiloResourcesClient.GetServerFarmSiloVNETIntegrations":
+				res.resp, res.err = s.dispatchGetServerFarmSiloVNETIntegrations(req)
 			case "ServerFarmSiloResourcesClient.NewListServerFarmSilosPager":
 				res.resp, res.err = s.dispatchNewListServerFarmSilosPager(req)
 			case "ServerFarmSiloResourcesClient.UpdateServerFarmSilo":
@@ -253,9 +253,9 @@ func (s *ServerFarmSiloResourcesServerTransport) dispatchGetServerFarmSilo(req *
 	return resp, nil
 }
 
-func (s *ServerFarmSiloResourcesServerTransport) dispatchGetServerFarmSiloVnetIntegrations(req *http.Request) (*http.Response, error) {
-	if s.srv.GetServerFarmSiloVnetIntegrations == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetServerFarmSiloVnetIntegrations not implemented")}
+func (s *ServerFarmSiloResourcesServerTransport) dispatchGetServerFarmSiloVNETIntegrations(req *http.Request) (*http.Response, error) {
+	if s.srv.GetServerFarmSiloVNETIntegrations == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetServerFarmSiloVNETIntegrations not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/silos/(?P<siloName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/virtualNetworkIntegrations`
 	regex := regexp.MustCompile(regexStr)
@@ -275,7 +275,7 @@ func (s *ServerFarmSiloResourcesServerTransport) dispatchGetServerFarmSiloVnetIn
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.GetServerFarmSiloVnetIntegrations(req.Context(), resourceGroupNameParam, nameParam, siloNameParam, nil)
+	respr, errRespr := s.srv.GetServerFarmSiloVNETIntegrations(req.Context(), resourceGroupNameParam, nameParam, siloNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -283,7 +283,7 @@ func (s *ServerFarmSiloResourcesServerTransport) dispatchGetServerFarmSiloVnetIn
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServerFarmSiloVnetIntegrationsResult, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ServerFarmSiloVNETIntegrationsResult, req)
 	if err != nil {
 		return nil, err
 	}

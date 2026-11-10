@@ -6,24 +6,24 @@ package armappservice
 
 import "time"
 
-// AiGatewaysClientCreateOrUpdateOptions contains the optional parameters for the AiGatewaysClient.CreateOrUpdate method.
-type AiGatewaysClientCreateOrUpdateOptions struct {
+// AIGatewaysClientCreateOrUpdateOptions contains the optional parameters for the AIGatewaysClient.CreateOrUpdate method.
+type AIGatewaysClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AiGatewaysClientDeleteOptions contains the optional parameters for the AiGatewaysClient.Delete method.
-type AiGatewaysClientDeleteOptions struct {
+// AIGatewaysClientDeleteOptions contains the optional parameters for the AIGatewaysClient.Delete method.
+type AIGatewaysClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AiGatewaysClientGetOptions contains the optional parameters for the AiGatewaysClient.Get method.
-type AiGatewaysClientGetOptions struct {
+// AIGatewaysClientGetOptions contains the optional parameters for the AIGatewaysClient.Get method.
+type AIGatewaysClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AiGatewaysClientListByResourceGroupOptions contains the optional parameters for the AiGatewaysClient.NewListByResourceGroupPager
+// AIGatewaysClientListByResourceGroupOptions contains the optional parameters for the AIGatewaysClient.NewListByResourceGroupPager
 // method.
-type AiGatewaysClientListByResourceGroupOptions struct {
+type AIGatewaysClientListByResourceGroupOptions struct {
 	// Expand the indicated resources into the response.
 	Expand []string
 
@@ -46,14 +46,14 @@ type AiGatewaysClientListByResourceGroupOptions struct {
 	Top *int32
 }
 
-// AiGatewaysClientListBySubscriptionOptions contains the optional parameters for the AiGatewaysClient.NewListBySubscriptionPager
+// AIGatewaysClientListBySubscriptionOptions contains the optional parameters for the AIGatewaysClient.NewListBySubscriptionPager
 // method.
-type AiGatewaysClientListBySubscriptionOptions struct {
+type AIGatewaysClientListBySubscriptionOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AiGatewaysClientPatchOptions contains the optional parameters for the AiGatewaysClient.Patch method.
-type AiGatewaysClientPatchOptions struct {
+// AIGatewaysClientPatchOptions contains the optional parameters for the AIGatewaysClient.Patch method.
+type AIGatewaysClientPatchOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -1083,9 +1083,9 @@ type ServerFarmSiloResourcesClientGetServerFarmSiloOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsOptions contains the optional parameters for the ServerFarmSiloResourcesClient.GetServerFarmSiloVnetIntegrations
+// ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsOptions contains the optional parameters for the ServerFarmSiloResourcesClient.GetServerFarmSiloVNETIntegrations
 // method.
-type ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsOptions struct {
+type ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsOptions struct {
 	// placeholder for future optional parameters
 }
 

@@ -6,39 +6,39 @@ package armappservice
 
 import "io"
 
-// AiGatewaysClientCreateOrUpdateResponse contains the response from method AiGatewaysClient.CreateOrUpdate.
-type AiGatewaysClientCreateOrUpdateResponse struct {
+// AIGatewaysClientCreateOrUpdateResponse contains the response from method AIGatewaysClient.CreateOrUpdate.
+type AIGatewaysClientCreateOrUpdateResponse struct {
 	// An AI gateway resource.
-	AiGateway
+	AIGateway
 }
 
-// AiGatewaysClientDeleteResponse contains the response from method AiGatewaysClient.Delete.
-type AiGatewaysClientDeleteResponse struct {
+// AIGatewaysClientDeleteResponse contains the response from method AIGatewaysClient.Delete.
+type AIGatewaysClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// AiGatewaysClientGetResponse contains the response from method AiGatewaysClient.Get.
-type AiGatewaysClientGetResponse struct {
+// AIGatewaysClientGetResponse contains the response from method AIGatewaysClient.Get.
+type AIGatewaysClientGetResponse struct {
 	// An AI gateway resource.
-	AiGateway
+	AIGateway
 }
 
-// AiGatewaysClientListByResourceGroupResponse contains the response from method AiGatewaysClient.NewListByResourceGroupPager.
-type AiGatewaysClientListByResourceGroupResponse struct {
+// AIGatewaysClientListByResourceGroupResponse contains the response from method AIGatewaysClient.NewListByResourceGroupPager.
+type AIGatewaysClientListByResourceGroupResponse struct {
 	// The response of a AiGateway list operation.
 	AiGatewayListResult
 }
 
-// AiGatewaysClientListBySubscriptionResponse contains the response from method AiGatewaysClient.NewListBySubscriptionPager.
-type AiGatewaysClientListBySubscriptionResponse struct {
+// AIGatewaysClientListBySubscriptionResponse contains the response from method AIGatewaysClient.NewListBySubscriptionPager.
+type AIGatewaysClientListBySubscriptionResponse struct {
 	// The response of a AiGateway list operation.
 	AiGatewayListResult
 }
 
-// AiGatewaysClientPatchResponse contains the response from method AiGatewaysClient.Patch.
-type AiGatewaysClientPatchResponse struct {
+// AIGatewaysClientPatchResponse contains the response from method AIGatewaysClient.Patch.
+type AIGatewaysClientPatchResponse struct {
 	// An AI gateway resource.
-	AiGateway
+	AIGateway
 }
 
 // CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.CreateOrUpdate.
@@ -956,10 +956,10 @@ type ServerFarmSiloResourcesClientGetServerFarmSiloResponse struct {
 	ServerFarmSilo
 }
 
-// ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse contains the response from method ServerFarmSiloResourcesClient.GetServerFarmSiloVnetIntegrations.
-type ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse struct {
+// ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse contains the response from method ServerFarmSiloResourcesClient.GetServerFarmSiloVNETIntegrations.
+type ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse struct {
 	// Nonpaged virtual network inspection response for an App Service plan silo.
-	ServerFarmSiloVnetIntegrationsResult
+	ServerFarmSiloVNETIntegrationsResult
 }
 
 // ServerFarmSiloResourcesClientListServerFarmSilosResponse contains the response from method ServerFarmSiloResourcesClient.NewListServerFarmSilosPager.

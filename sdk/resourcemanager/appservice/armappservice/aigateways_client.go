@@ -17,20 +17,20 @@ import (
 	"strings"
 )
 
-// AiGatewaysClient - The operations of AI gateways.
-// Don't use this type directly, use NewAiGatewaysClient() instead.
+// AIGatewaysClient - The operations of AI gateways.
+// Don't use this type directly, use NewAIGatewaysClient() instead.
 //
 // Generated from API version 2026-08-01
-type AiGatewaysClient struct {
+type AIGatewaysClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAiGatewaysClient creates a new instance of AiGatewaysClient with the specified values.
+// NewAIGatewaysClient creates a new instance of AIGatewaysClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewAiGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AiGatewaysClient, error) {
+func NewAIGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AIGatewaysClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -38,7 +38,7 @@ func NewAiGatewaysClient(subscriptionID string, credential azcore.TokenCredentia
 	if err != nil {
 		return nil, err
 	}
-	client := &AiGatewaysClient{
+	client := &AIGatewaysClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -50,28 +50,28 @@ func NewAiGatewaysClient(subscriptionID string, credential azcore.TokenCredentia
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the AI gateway
 //   - resource - Resource create parameters.
-//   - options - AiGatewaysClientCreateOrUpdateOptions contains the optional parameters for the AiGatewaysClient.CreateOrUpdate
+//   - options - AIGatewaysClientCreateOrUpdateOptions contains the optional parameters for the AIGatewaysClient.CreateOrUpdate
 //     method.
-func (client *AiGatewaysClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, resource AiGateway, options *AiGatewaysClientCreateOrUpdateOptions) (AiGatewaysClientCreateOrUpdateResponse, error) {
+func (client *AIGatewaysClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, resource AIGateway, options *AIGatewaysClientCreateOrUpdateOptions) (AIGatewaysClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "AiGatewaysClient.CreateOrUpdate"
+	const operationName = "AIGatewaysClient.CreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, name, resource, options)
 	if err != nil {
-		return AiGatewaysClientCreateOrUpdateResponse{}, err
+		return AIGatewaysClientCreateOrUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AiGatewaysClientCreateOrUpdateResponse{}, err
+		return AIGatewaysClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AiGatewaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, resource AiGateway, _ *AiGatewaysClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AIGatewaysClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, resource AIGateway, _ *AIGatewaysClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/aigateways/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -101,13 +101,13 @@ func (client *AiGatewaysClient) createOrUpdateCreateRequest(ctx context.Context,
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AiGatewaysClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AiGatewaysClientCreateOrUpdateResponse, error) {
-	result := AiGatewaysClientCreateOrUpdateResponse{}
+func (client *AIGatewaysClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AIGatewaysClientCreateOrUpdateResponse, error) {
+	result := AIGatewaysClientCreateOrUpdateResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AiGateway); err != nil {
-		return AiGatewaysClientCreateOrUpdateResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.AIGateway); err != nil {
+		return AIGatewaysClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
@@ -116,30 +116,30 @@ func (client *AiGatewaysClient) createOrUpdateHandleResponse(resp *http.Response
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the AI gateway
-//   - options - AiGatewaysClientDeleteOptions contains the optional parameters for the AiGatewaysClient.Delete method.
-func (client *AiGatewaysClient) Delete(ctx context.Context, resourceGroupName string, name string, options *AiGatewaysClientDeleteOptions) (AiGatewaysClientDeleteResponse, error) {
+//   - options - AIGatewaysClientDeleteOptions contains the optional parameters for the AIGatewaysClient.Delete method.
+func (client *AIGatewaysClient) Delete(ctx context.Context, resourceGroupName string, name string, options *AIGatewaysClientDeleteOptions) (AIGatewaysClientDeleteResponse, error) {
 	var err error
-	const operationName = "AiGatewaysClient.Delete"
+	const operationName = "AIGatewaysClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AiGatewaysClientDeleteResponse{}, err
+		return AIGatewaysClientDeleteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AiGatewaysClientDeleteResponse{}, err
+		return AIGatewaysClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
 		err = runtime.NewResponseError(httpResp)
-		return AiGatewaysClientDeleteResponse{}, err
+		return AIGatewaysClientDeleteResponse{}, err
 	}
-	return AiGatewaysClientDeleteResponse{}, nil
+	return AIGatewaysClientDeleteResponse{}, nil
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AiGatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *AiGatewaysClientDeleteOptions) (*policy.Request, error) {
+func (client *AIGatewaysClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *AIGatewaysClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/aigateways/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -167,27 +167,27 @@ func (client *AiGatewaysClient) deleteCreateRequest(ctx context.Context, resourc
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the AI gateway
-//   - options - AiGatewaysClientGetOptions contains the optional parameters for the AiGatewaysClient.Get method.
-func (client *AiGatewaysClient) Get(ctx context.Context, resourceGroupName string, name string, options *AiGatewaysClientGetOptions) (AiGatewaysClientGetResponse, error) {
+//   - options - AIGatewaysClientGetOptions contains the optional parameters for the AIGatewaysClient.Get method.
+func (client *AIGatewaysClient) Get(ctx context.Context, resourceGroupName string, name string, options *AIGatewaysClientGetOptions) (AIGatewaysClientGetResponse, error) {
 	var err error
-	const operationName = "AiGatewaysClient.Get"
+	const operationName = "AIGatewaysClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, name, options)
 	if err != nil {
-		return AiGatewaysClientGetResponse{}, err
+		return AIGatewaysClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AiGatewaysClientGetResponse{}, err
+		return AIGatewaysClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *AiGatewaysClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *AiGatewaysClientGetOptions) (*policy.Request, error) {
+func (client *AIGatewaysClient) getCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *AIGatewaysClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/aigateways/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -213,39 +213,39 @@ func (client *AiGatewaysClient) getCreateRequest(ctx context.Context, resourceGr
 }
 
 // getHandleResponse handles the Get response.
-func (client *AiGatewaysClient) getHandleResponse(resp *http.Response, successCodes ...int) (AiGatewaysClientGetResponse, error) {
-	result := AiGatewaysClientGetResponse{}
+func (client *AIGatewaysClient) getHandleResponse(resp *http.Response, successCodes ...int) (AIGatewaysClientGetResponse, error) {
+	result := AIGatewaysClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AiGateway); err != nil {
-		return AiGatewaysClientGetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.AIGateway); err != nil {
+		return AIGatewaysClientGetResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListByResourceGroupPager - List AiGateway resources by resource group
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - AiGatewaysClientListByResourceGroupOptions contains the optional parameters for the AiGatewaysClient.NewListByResourceGroupPager
+//   - options - AIGatewaysClientListByResourceGroupOptions contains the optional parameters for the AIGatewaysClient.NewListByResourceGroupPager
 //     method.
-func (client *AiGatewaysClient) NewListByResourceGroupPager(resourceGroupName string, options *AiGatewaysClientListByResourceGroupOptions) *runtime.Pager[AiGatewaysClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AiGatewaysClientListByResourceGroupResponse]{
-		More: func(page AiGatewaysClientListByResourceGroupResponse) bool {
+func (client *AIGatewaysClient) NewListByResourceGroupPager(resourceGroupName string, options *AIGatewaysClientListByResourceGroupOptions) *runtime.Pager[AIGatewaysClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AIGatewaysClientListByResourceGroupResponse]{
+		More: func(page AIGatewaysClientListByResourceGroupResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AiGatewaysClientListByResourceGroupResponse) (AiGatewaysClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AiGatewaysClient.NewListByResourceGroupPager")
+		Fetcher: func(ctx context.Context, page *AIGatewaysClientListByResourceGroupResponse) (AIGatewaysClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AIGatewaysClient.NewListByResourceGroupPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
-				return AiGatewaysClientListByResourceGroupResponse{}, err
+				return AIGatewaysClientListByResourceGroupResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return AiGatewaysClientListByResourceGroupResponse{}, err
+				return AIGatewaysClientListByResourceGroupResponse{}, err
 			}
 			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
@@ -254,7 +254,7 @@ func (client *AiGatewaysClient) NewListByResourceGroupPager(resourceGroupName st
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AiGatewaysClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *AiGatewaysClientListByResourceGroupOptions) (*policy.Request, error) {
+func (client *AIGatewaysClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, options *AIGatewaysClientListByResourceGroupOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -312,38 +312,38 @@ func (client *AiGatewaysClient) listByResourceGroupCreateRequest(ctx context.Con
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AiGatewaysClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AiGatewaysClientListByResourceGroupResponse, error) {
-	result := AiGatewaysClientListByResourceGroupResponse{}
+func (client *AIGatewaysClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AIGatewaysClientListByResourceGroupResponse, error) {
+	result := AIGatewaysClientListByResourceGroupResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AiGatewayListResult); err != nil {
-		return AiGatewaysClientListByResourceGroupResponse{}, err
+		return AIGatewaysClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
 
 // NewListBySubscriptionPager - List AiGateway resources by subscription ID
-//   - options - AiGatewaysClientListBySubscriptionOptions contains the optional parameters for the AiGatewaysClient.NewListBySubscriptionPager
+//   - options - AIGatewaysClientListBySubscriptionOptions contains the optional parameters for the AIGatewaysClient.NewListBySubscriptionPager
 //     method.
-func (client *AiGatewaysClient) NewListBySubscriptionPager(options *AiGatewaysClientListBySubscriptionOptions) *runtime.Pager[AiGatewaysClientListBySubscriptionResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AiGatewaysClientListBySubscriptionResponse]{
-		More: func(page AiGatewaysClientListBySubscriptionResponse) bool {
+func (client *AIGatewaysClient) NewListBySubscriptionPager(options *AIGatewaysClientListBySubscriptionOptions) *runtime.Pager[AIGatewaysClientListBySubscriptionResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AIGatewaysClientListBySubscriptionResponse]{
+		More: func(page AIGatewaysClientListBySubscriptionResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AiGatewaysClientListBySubscriptionResponse) (AiGatewaysClientListBySubscriptionResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AiGatewaysClient.NewListBySubscriptionPager")
+		Fetcher: func(ctx context.Context, page *AIGatewaysClientListBySubscriptionResponse) (AIGatewaysClientListBySubscriptionResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AIGatewaysClient.NewListBySubscriptionPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
-				return AiGatewaysClientListBySubscriptionResponse{}, err
+				return AIGatewaysClientListBySubscriptionResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return AiGatewaysClientListBySubscriptionResponse{}, err
+				return AIGatewaysClientListBySubscriptionResponse{}, err
 			}
 			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
@@ -352,7 +352,7 @@ func (client *AiGatewaysClient) NewListBySubscriptionPager(options *AiGatewaysCl
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AiGatewaysClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *AiGatewaysClientListBySubscriptionOptions) (*policy.Request, error) {
+func (client *AIGatewaysClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *AIGatewaysClientListBySubscriptionOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -379,13 +379,13 @@ func (client *AiGatewaysClient) listBySubscriptionCreateRequest(ctx context.Cont
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AiGatewaysClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AiGatewaysClientListBySubscriptionResponse, error) {
-	result := AiGatewaysClientListBySubscriptionResponse{}
+func (client *AIGatewaysClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AIGatewaysClientListBySubscriptionResponse, error) {
+	result := AIGatewaysClientListBySubscriptionResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AiGatewayListResult); err != nil {
-		return AiGatewaysClientListBySubscriptionResponse{}, err
+		return AIGatewaysClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
 }
@@ -395,27 +395,27 @@ func (client *AiGatewaysClient) listBySubscriptionHandleResponse(resp *http.Resp
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - The name of the AI gateway
 //   - properties - The resource properties to be updated.
-//   - options - AiGatewaysClientPatchOptions contains the optional parameters for the AiGatewaysClient.Patch method.
-func (client *AiGatewaysClient) Patch(ctx context.Context, resourceGroupName string, name string, properties AiGatewayTagsUpdate, options *AiGatewaysClientPatchOptions) (AiGatewaysClientPatchResponse, error) {
+//   - options - AIGatewaysClientPatchOptions contains the optional parameters for the AIGatewaysClient.Patch method.
+func (client *AIGatewaysClient) Patch(ctx context.Context, resourceGroupName string, name string, properties AiGatewayTagsUpdate, options *AIGatewaysClientPatchOptions) (AIGatewaysClientPatchResponse, error) {
 	var err error
-	const operationName = "AiGatewaysClient.Patch"
+	const operationName = "AIGatewaysClient.Patch"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.patchCreateRequest(ctx, resourceGroupName, name, properties, options)
 	if err != nil {
-		return AiGatewaysClientPatchResponse{}, err
+		return AIGatewaysClientPatchResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AiGatewaysClientPatchResponse{}, err
+		return AIGatewaysClientPatchResponse{}, err
 	}
 	resp, err := client.patchHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // patchCreateRequest creates the Patch request.
-func (client *AiGatewaysClient) patchCreateRequest(ctx context.Context, resourceGroupName string, name string, properties AiGatewayTagsUpdate, _ *AiGatewaysClientPatchOptions) (*policy.Request, error) {
+func (client *AIGatewaysClient) patchCreateRequest(ctx context.Context, resourceGroupName string, name string, properties AiGatewayTagsUpdate, _ *AIGatewaysClientPatchOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/aigateways/{name}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -445,13 +445,13 @@ func (client *AiGatewaysClient) patchCreateRequest(ctx context.Context, resource
 }
 
 // patchHandleResponse handles the Patch response.
-func (client *AiGatewaysClient) patchHandleResponse(resp *http.Response, successCodes ...int) (AiGatewaysClientPatchResponse, error) {
-	result := AiGatewaysClientPatchResponse{}
+func (client *AIGatewaysClient) patchHandleResponse(resp *http.Response, successCodes ...int) (AIGatewaysClientPatchResponse, error) {
+	result := AIGatewaysClientPatchResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AiGateway); err != nil {
-		return AiGatewaysClientPatchResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.AIGateway); err != nil {
+		return AIGatewaysClientPatchResponse{}, err
 	}
 	return result, nil
 }

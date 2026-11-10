@@ -1,6 +1,6 @@
 # Release History
 
-## 6.1.0 (2026-11-09)
+## 6.1.0 (2026-11-10)
 ### Features Added
 
 - New value `RuntimeNameGo` added to enum type `RuntimeName`
@@ -8,14 +8,14 @@
 - New enum type `PlatformReleaseChannel` with values `PlatformReleaseChannelExtended`, `PlatformReleaseChannelLatest`, `PlatformReleaseChannelStandard`
 - New enum type `SiloFailOverMode` with values `SiloFailOverModeActive`, `SiloFailOverModePassive`, `SiloFailOverModeUnknown`
 - New enum type `SiloProvisioningState` with values `SiloProvisioningStateCanceled`, `SiloProvisioningStateDegraded`, `SiloProvisioningStateDeleting`, `SiloProvisioningStateFailed`, `SiloProvisioningStateInProgress`, `SiloProvisioningStateSucceeded`
-- New function `NewAiGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AiGatewaysClient, error)`
-- New function `*AiGatewaysClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, resource AiGateway, options *AiGatewaysClientCreateOrUpdateOptions) (AiGatewaysClientCreateOrUpdateResponse, error)`
-- New function `*AiGatewaysClient.Delete(ctx context.Context, resourceGroupName string, name string, options *AiGatewaysClientDeleteOptions) (AiGatewaysClientDeleteResponse, error)`
-- New function `*AiGatewaysClient.Get(ctx context.Context, resourceGroupName string, name string, options *AiGatewaysClientGetOptions) (AiGatewaysClientGetResponse, error)`
-- New function `*AiGatewaysClient.NewListByResourceGroupPager(resourceGroupName string, options *AiGatewaysClientListByResourceGroupOptions) *runtime.Pager[AiGatewaysClientListByResourceGroupResponse]`
-- New function `*AiGatewaysClient.NewListBySubscriptionPager(options *AiGatewaysClientListBySubscriptionOptions) *runtime.Pager[AiGatewaysClientListBySubscriptionResponse]`
-- New function `*AiGatewaysClient.Patch(ctx context.Context, resourceGroupName string, name string, properties AiGatewayTagsUpdate, options *AiGatewaysClientPatchOptions) (AiGatewaysClientPatchResponse, error)`
-- New function `*ClientFactory.NewAiGatewaysClient() *AiGatewaysClient`
+- New function `NewAIGatewaysClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AIGatewaysClient, error)`
+- New function `*AIGatewaysClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, name string, resource AIGateway, options *AIGatewaysClientCreateOrUpdateOptions) (AIGatewaysClientCreateOrUpdateResponse, error)`
+- New function `*AIGatewaysClient.Delete(ctx context.Context, resourceGroupName string, name string, options *AIGatewaysClientDeleteOptions) (AIGatewaysClientDeleteResponse, error)`
+- New function `*AIGatewaysClient.Get(ctx context.Context, resourceGroupName string, name string, options *AIGatewaysClientGetOptions) (AIGatewaysClientGetResponse, error)`
+- New function `*AIGatewaysClient.NewListByResourceGroupPager(resourceGroupName string, options *AIGatewaysClientListByResourceGroupOptions) *runtime.Pager[AIGatewaysClientListByResourceGroupResponse]`
+- New function `*AIGatewaysClient.NewListBySubscriptionPager(options *AIGatewaysClientListBySubscriptionOptions) *runtime.Pager[AIGatewaysClientListBySubscriptionResponse]`
+- New function `*AIGatewaysClient.Patch(ctx context.Context, resourceGroupName string, name string, properties AiGatewayTagsUpdate, options *AIGatewaysClientPatchOptions) (AIGatewaysClientPatchResponse, error)`
+- New function `*ClientFactory.NewAIGatewaysClient() *AIGatewaysClient`
 - New function `*ClientFactory.NewLastKnownGoodResourcesClient() *LastKnownGoodResourcesClient`
 - New function `*ClientFactory.NewManagedTrafficConfigResourcesClient() *ManagedTrafficConfigResourcesClient`
 - New function `*ClientFactory.NewServerFarmSiloResourcesClient() *ServerFarmSiloResourcesClient`
@@ -37,7 +37,7 @@
 - New function `*ServerFarmSiloResourcesClient.BeginCreateOrUpdateServerFarmSilo(ctx context.Context, resourceGroupName string, name string, siloName string, resource ServerFarmSilo, options *ServerFarmSiloResourcesClientBeginCreateOrUpdateServerFarmSiloOptions) (*runtime.Poller[ServerFarmSiloResourcesClientCreateOrUpdateServerFarmSiloResponse], error)`
 - New function `*ServerFarmSiloResourcesClient.BeginDeleteServerFarmSilo(ctx context.Context, resourceGroupName string, name string, siloName string, options *ServerFarmSiloResourcesClientBeginDeleteServerFarmSiloOptions) (*runtime.Poller[ServerFarmSiloResourcesClientDeleteServerFarmSiloResponse], error)`
 - New function `*ServerFarmSiloResourcesClient.GetServerFarmSilo(ctx context.Context, resourceGroupName string, name string, siloName string, options *ServerFarmSiloResourcesClientGetServerFarmSiloOptions) (ServerFarmSiloResourcesClientGetServerFarmSiloResponse, error)`
-- New function `*ServerFarmSiloResourcesClient.GetServerFarmSiloVnetIntegrations(ctx context.Context, resourceGroupName string, name string, siloName string, options *ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsOptions) (ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse, error)`
+- New function `*ServerFarmSiloResourcesClient.GetServerFarmSiloVNETIntegrations(ctx context.Context, resourceGroupName string, name string, siloName string, options *ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsOptions) (ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse, error)`
 - New function `*ServerFarmSiloResourcesClient.NewListServerFarmSilosPager(resourceGroupName string, name string, options *ServerFarmSiloResourcesClientListServerFarmSilosOptions) *runtime.Pager[ServerFarmSiloResourcesClientListServerFarmSilosResponse]`
 - New function `*ServerFarmSiloResourcesClient.UpdateServerFarmSilo(ctx context.Context, resourceGroupName string, name string, siloName string, properties ServerFarmSiloTagsUpdate, options *ServerFarmSiloResourcesClientUpdateServerFarmSiloOptions) (ServerFarmSiloResourcesClientUpdateServerFarmSiloResponse, error)`
 - New function `NewSiteSiloResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*SiteSiloResourcesClient, error)`
@@ -59,9 +59,9 @@
 - New function `NewStaticSitesAsyncOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*StaticSitesAsyncOperationsClient, error)`
 - New function `*StaticSitesAsyncOperationsClient.BeginGetOperationResult(ctx context.Context, location string, operationID string, options *StaticSitesAsyncOperationsClientBeginGetOperationResultOptions) (*runtime.Poller[StaticSitesAsyncOperationsClientGetOperationResultResponse], error)`
 - New function `*StaticSitesAsyncOperationsClient.GetOperationStatus(ctx context.Context, location string, operationID string, options *StaticSitesAsyncOperationsClientGetOperationStatusOptions) (StaticSitesAsyncOperationsClientGetOperationStatusResponse, error)`
-- New struct `AiGateway`
+- New struct `AIGateway`
+- New struct `AIGatewayProperties`
 - New struct `AiGatewayListResult`
-- New struct `AiGatewayProperties`
 - New struct `AiGatewayTagsUpdate`
 - New struct `AiIntegration`
 - New struct `EndpointTrafficConfig`
@@ -91,8 +91,8 @@
 - New struct `ServerFarmSiloResourceAllocation`
 - New struct `ServerFarmSiloSubnetIPAllocation`
 - New struct `ServerFarmSiloTagsUpdate`
-- New struct `ServerFarmSiloVnetIntegration`
-- New struct `ServerFarmSiloVnetIntegrationsResult`
+- New struct `ServerFarmSiloVNETIntegration`
+- New struct `ServerFarmSiloVNETIntegrationsResult`
 - New struct `SiloNetworkingOverride`
 - New struct `SiteAuthInfo`
 - New struct `SiteSilo`

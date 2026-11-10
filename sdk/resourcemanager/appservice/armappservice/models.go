@@ -6,6 +6,36 @@ package armappservice
 
 import "time"
 
+// AIGateway - An AI gateway resource.
+type AIGateway struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The resource-specific properties for this resource.
+	Properties *AIGatewayProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AIGatewayProperties - The properties of an AI gateway.
+type AIGatewayProperties struct {
+	// READ-ONLY; The description of the resource.
+	AIGatewayID *string
+}
+
 // APIDefinitionInfo - Information about the formal API definition for the app.
 type APIDefinitionInfo struct {
 	// The URL of the API definition.
@@ -116,43 +146,13 @@ type AddressResponseProperties struct {
 	VipMappings []*VirtualIPMapping
 }
 
-// AiGateway - An AI gateway resource.
-type AiGateway struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// The resource-specific properties for this resource.
-	Properties *AiGatewayProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
 // AiGatewayListResult - The response of a AiGateway list operation.
 type AiGatewayListResult struct {
 	// REQUIRED; The AiGateway items on this page
-	Value []*AiGateway
+	Value []*AIGateway
 
 	// The link to the next page of items
 	NextLink *string
-}
-
-// AiGatewayProperties - The properties of an AI gateway.
-type AiGatewayProperties struct {
-	// READ-ONLY; The description of the resource.
-	AiGatewayID *string
 }
 
 // AiGatewayTagsUpdate - The type used for updating tags in AiGateway resources.
@@ -6616,8 +6616,8 @@ type ServerFarmSiloTagsUpdate struct {
 	Tags map[string]*string
 }
 
-// ServerFarmSiloVnetIntegration - Subnet integration and allocation information for an App Service plan silo.
-type ServerFarmSiloVnetIntegration struct {
+// ServerFarmSiloVNETIntegration - Subnet integration and allocation information for an App Service plan silo.
+type ServerFarmSiloVNETIntegration struct {
 	// READ-ONLY; Resources connected to the subnet.
 	ResourceAllocation *ServerFarmSiloResourceAllocation
 
@@ -6628,8 +6628,8 @@ type ServerFarmSiloVnetIntegration struct {
 	SubnetResourceID *string
 }
 
-// ServerFarmSiloVnetIntegrationsResult - Nonpaged virtual network inspection response for an App Service plan silo.
-type ServerFarmSiloVnetIntegrationsResult struct {
+// ServerFarmSiloVNETIntegrationsResult - Nonpaged virtual network inspection response for an App Service plan silo.
+type ServerFarmSiloVNETIntegrationsResult struct {
 	// READ-ONLY; Identifier returned by the service for the backing plan's virtual network integrations, not the customer-facing
 	// silo.
 	ID *string
@@ -6641,7 +6641,7 @@ type ServerFarmSiloVnetIntegrationsResult struct {
 	Name *string
 
 	// READ-ONLY; Subnet integrations and their allocation metadata. An empty array indicates no integrations.
-	Properties []*ServerFarmSiloVnetIntegration
+	Properties []*ServerFarmSiloVNETIntegration
 
 	// READ-ONLY; Resource type returned by the service for the backing plan's virtual network integrations.
 	Type *string

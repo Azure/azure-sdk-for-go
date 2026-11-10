@@ -20,54 +20,54 @@ import (
 	"strconv"
 )
 
-// AiGatewaysServer is a fake server for instances of the armappservice.AiGatewaysClient type.
-type AiGatewaysServer struct {
-	// CreateOrUpdate is the fake for method AiGatewaysClient.CreateOrUpdate
+// AIGatewaysServer is a fake server for instances of the armappservice.AIGatewaysClient type.
+type AIGatewaysServer struct {
+	// CreateOrUpdate is the fake for method AIGatewaysClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, name string, resource armappservice.AiGateway, options *armappservice.AiGatewaysClientCreateOrUpdateOptions) (resp azfake.Responder[armappservice.AiGatewaysClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, name string, resource armappservice.AIGateway, options *armappservice.AIGatewaysClientCreateOrUpdateOptions) (resp azfake.Responder[armappservice.AIGatewaysClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method AiGatewaysClient.Delete
+	// Delete is the fake for method AIGatewaysClient.Delete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, name string, options *armappservice.AiGatewaysClientDeleteOptions) (resp azfake.Responder[armappservice.AiGatewaysClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete func(ctx context.Context, resourceGroupName string, name string, options *armappservice.AIGatewaysClientDeleteOptions) (resp azfake.Responder[armappservice.AIGatewaysClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method AiGatewaysClient.Get
+	// Get is the fake for method AIGatewaysClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, name string, options *armappservice.AiGatewaysClientGetOptions) (resp azfake.Responder[armappservice.AiGatewaysClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, name string, options *armappservice.AIGatewaysClientGetOptions) (resp azfake.Responder[armappservice.AIGatewaysClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListByResourceGroupPager is the fake for method AiGatewaysClient.NewListByResourceGroupPager
+	// NewListByResourceGroupPager is the fake for method AIGatewaysClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupPager func(resourceGroupName string, options *armappservice.AiGatewaysClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.AiGatewaysClientListByResourceGroupResponse])
+	NewListByResourceGroupPager func(resourceGroupName string, options *armappservice.AIGatewaysClientListByResourceGroupOptions) (resp azfake.PagerResponder[armappservice.AIGatewaysClientListByResourceGroupResponse])
 
-	// NewListBySubscriptionPager is the fake for method AiGatewaysClient.NewListBySubscriptionPager
+	// NewListBySubscriptionPager is the fake for method AIGatewaysClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListBySubscriptionPager func(options *armappservice.AiGatewaysClientListBySubscriptionOptions) (resp azfake.PagerResponder[armappservice.AiGatewaysClientListBySubscriptionResponse])
+	NewListBySubscriptionPager func(options *armappservice.AIGatewaysClientListBySubscriptionOptions) (resp azfake.PagerResponder[armappservice.AIGatewaysClientListBySubscriptionResponse])
 
-	// Patch is the fake for method AiGatewaysClient.Patch
+	// Patch is the fake for method AIGatewaysClient.Patch
 	// HTTP status codes to indicate success: http.StatusOK
-	Patch func(ctx context.Context, resourceGroupName string, name string, properties armappservice.AiGatewayTagsUpdate, options *armappservice.AiGatewaysClientPatchOptions) (resp azfake.Responder[armappservice.AiGatewaysClientPatchResponse], errResp azfake.ErrorResponder)
+	Patch func(ctx context.Context, resourceGroupName string, name string, properties armappservice.AiGatewayTagsUpdate, options *armappservice.AIGatewaysClientPatchOptions) (resp azfake.Responder[armappservice.AIGatewaysClientPatchResponse], errResp azfake.ErrorResponder)
 }
 
-// NewAiGatewaysServerTransport creates a new instance of AiGatewaysServerTransport with the provided implementation.
-// The returned AiGatewaysServerTransport instance is connected to an instance of armappservice.AiGatewaysClient via the
+// NewAIGatewaysServerTransport creates a new instance of AIGatewaysServerTransport with the provided implementation.
+// The returned AIGatewaysServerTransport instance is connected to an instance of armappservice.AIGatewaysClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewAiGatewaysServerTransport(srv *AiGatewaysServer) *AiGatewaysServerTransport {
-	return &AiGatewaysServerTransport{
+func NewAIGatewaysServerTransport(srv *AIGatewaysServer) *AIGatewaysServerTransport {
+	return &AIGatewaysServerTransport{
 		srv:                         srv,
-		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappservice.AiGatewaysClientListByResourceGroupResponse]](),
-		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armappservice.AiGatewaysClientListBySubscriptionResponse]](),
+		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armappservice.AIGatewaysClientListByResourceGroupResponse]](),
+		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armappservice.AIGatewaysClientListBySubscriptionResponse]](),
 	}
 }
 
-// AiGatewaysServerTransport connects instances of armappservice.AiGatewaysClient to instances of AiGatewaysServer.
-// Don't use this type directly, use NewAiGatewaysServerTransport instead.
-type AiGatewaysServerTransport struct {
-	srv                         *AiGatewaysServer
-	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappservice.AiGatewaysClientListByResourceGroupResponse]]
-	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armappservice.AiGatewaysClientListBySubscriptionResponse]]
+// AIGatewaysServerTransport connects instances of armappservice.AIGatewaysClient to instances of AIGatewaysServer.
+// Don't use this type directly, use NewAIGatewaysServerTransport instead.
+type AIGatewaysServerTransport struct {
+	srv                         *AIGatewaysServer
+	newListByResourceGroupPager *tracker[azfake.PagerResponder[armappservice.AIGatewaysClientListByResourceGroupResponse]]
+	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armappservice.AIGatewaysClientListBySubscriptionResponse]]
 }
 
-// Do implements the policy.Transporter interface for AiGatewaysServerTransport.
-func (a *AiGatewaysServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for AIGatewaysServerTransport.
+func (a *AIGatewaysServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -77,7 +77,7 @@ func (a *AiGatewaysServerTransport) Do(req *http.Request) (*http.Response, error
 	return a.dispatchToMethodFake(req, method)
 }
 
-func (a *AiGatewaysServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (a *AIGatewaysServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -87,17 +87,17 @@ func (a *AiGatewaysServerTransport) dispatchToMethodFake(req *http.Request, meth
 		}
 		if !intercepted {
 			switch method {
-			case "AiGatewaysClient.CreateOrUpdate":
+			case "AIGatewaysClient.CreateOrUpdate":
 				res.resp, res.err = a.dispatchCreateOrUpdate(req)
-			case "AiGatewaysClient.Delete":
+			case "AIGatewaysClient.Delete":
 				res.resp, res.err = a.dispatchDelete(req)
-			case "AiGatewaysClient.Get":
+			case "AIGatewaysClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "AiGatewaysClient.NewListByResourceGroupPager":
+			case "AIGatewaysClient.NewListByResourceGroupPager":
 				res.resp, res.err = a.dispatchNewListByResourceGroupPager(req)
-			case "AiGatewaysClient.NewListBySubscriptionPager":
+			case "AIGatewaysClient.NewListBySubscriptionPager":
 				res.resp, res.err = a.dispatchNewListBySubscriptionPager(req)
-			case "AiGatewaysClient.Patch":
+			case "AIGatewaysClient.Patch":
 				res.resp, res.err = a.dispatchPatch(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -115,7 +115,7 @@ func (a *AiGatewaysServerTransport) dispatchToMethodFake(req *http.Request, meth
 	}
 }
 
-func (a *AiGatewaysServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+func (a *AIGatewaysServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
@@ -125,7 +125,7 @@ func (a *AiGatewaysServerTransport) dispatchCreateOrUpdate(req *http.Request) (*
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	body, err := server.UnmarshalRequestAsJSON[armappservice.AiGateway](req)
+	body, err := server.UnmarshalRequestAsJSON[armappservice.AIGateway](req)
 	if err != nil {
 		return nil, err
 	}
@@ -145,14 +145,14 @@ func (a *AiGatewaysServerTransport) dispatchCreateOrUpdate(req *http.Request) (*
 	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AiGateway, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AIGateway, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (a *AiGatewaysServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
+func (a *AIGatewaysServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if a.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
@@ -185,7 +185,7 @@ func (a *AiGatewaysServerTransport) dispatchDelete(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (a *AiGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (a *AIGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -211,14 +211,14 @@ func (a *AiGatewaysServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AiGateway, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AIGateway, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-func (a *AiGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+func (a *AIGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListByResourceGroupPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
 	}
@@ -266,9 +266,9 @@ func (a *AiGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *htt
 			return nil, err
 		}
 		filterParam := getOptional(qp.Get("filter"))
-		var options *armappservice.AiGatewaysClientListByResourceGroupOptions
+		var options *armappservice.AIGatewaysClientListByResourceGroupOptions
 		if topParam != nil || skipParam != nil || maxpagesizeParam != nil || filterParam != nil || len(qp["select"]) > 0 || len(qp["expand"]) > 0 || len(qp["orderby"]) > 0 {
-			options = &armappservice.AiGatewaysClientListByResourceGroupOptions{
+			options = &armappservice.AIGatewaysClientListByResourceGroupOptions{
 				Top:         topParam,
 				Skip:        skipParam,
 				Maxpagesize: maxpagesizeParam,
@@ -281,7 +281,7 @@ func (a *AiGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *htt
 		resp := a.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
 		newListByResourceGroupPager = &resp
 		a.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armappservice.AiGatewaysClientListByResourceGroupResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armappservice.AIGatewaysClientListByResourceGroupResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -299,7 +299,7 @@ func (a *AiGatewaysServerTransport) dispatchNewListByResourceGroupPager(req *htt
 	return resp, nil
 }
 
-func (a *AiGatewaysServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+func (a *AIGatewaysServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListBySubscriptionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
 	}
@@ -314,7 +314,7 @@ func (a *AiGatewaysServerTransport) dispatchNewListBySubscriptionPager(req *http
 		resp := a.srv.NewListBySubscriptionPager(nil)
 		newListBySubscriptionPager = &resp
 		a.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armappservice.AiGatewaysClientListBySubscriptionResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armappservice.AIGatewaysClientListBySubscriptionResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -332,7 +332,7 @@ func (a *AiGatewaysServerTransport) dispatchNewListBySubscriptionPager(req *http
 	return resp, nil
 }
 
-func (a *AiGatewaysServerTransport) dispatchPatch(req *http.Request) (*http.Response, error) {
+func (a *AIGatewaysServerTransport) dispatchPatch(req *http.Request) (*http.Response, error) {
 	if a.srv.Patch == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Patch not implemented")}
 	}
@@ -362,14 +362,14 @@ func (a *AiGatewaysServerTransport) dispatchPatch(req *http.Request) (*http.Resp
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AiGateway, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).AIGateway, req)
 	if err != nil {
 		return nil, err
 	}
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to AiGatewaysServerTransport
+// set this to conditionally intercept incoming requests to AIGatewaysServerTransport
 var aiGatewaysServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

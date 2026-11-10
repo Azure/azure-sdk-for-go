@@ -123,7 +123,7 @@ func ExampleServerFarmSiloResourcesClient_GetServerFarmSilo() {
 }
 
 // Generated from example definition: 2026-08-01/ServerFarmSiloResources_GetServerFarmSiloVnetIntegrations.json
-func ExampleServerFarmSiloResourcesClient_GetServerFarmSiloVnetIntegrations_getTheVirtualNetworkIntegrationsOfAnAppServicePlanSilo() {
+func ExampleServerFarmSiloResourcesClient_GetServerFarmSiloVNETIntegrations_getTheVirtualNetworkIntegrationsOfAnAppServicePlanSilo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -133,19 +133,19 @@ func ExampleServerFarmSiloResourcesClient_GetServerFarmSiloVnetIntegrations_getT
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServerFarmSiloResourcesClient().GetServerFarmSiloVnetIntegrations(ctx, "testrg123", "testsf6141", "silo1", nil)
+	res, err := clientFactory.NewServerFarmSiloResourcesClient().GetServerFarmSiloVNETIntegrations(ctx, "testrg123", "testsf6141", "silo1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse{
-	// 	ServerFarmSiloVnetIntegrationsResult: armappservice.ServerFarmSiloVnetIntegrationsResult{
+	// res = armappservice.ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse{
+	// 	ServerFarmSiloVNETIntegrationsResult: armappservice.ServerFarmSiloVNETIntegrationsResult{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/testsf6141-silo1/virtualNetworkIntegrations"),
 	// 		Type: to.Ptr("Microsoft.Web/serverfarms/virtualNetworkIntegrations"),
 	// 		Location: to.Ptr("West US 2"),
-	// 		Properties: []*armappservice.ServerFarmSiloVnetIntegration{
+	// 		Properties: []*armappservice.ServerFarmSiloVNETIntegration{
 	// 			{
 	// 				SubnetResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Network/virtualNetworks/vnet1/subnets/silo-subnet"),
 	// 				SubnetIPAllocation: &armappservice.ServerFarmSiloSubnetIPAllocation{
@@ -167,7 +167,7 @@ func ExampleServerFarmSiloResourcesClient_GetServerFarmSiloVnetIntegrations_getT
 }
 
 // Generated from example definition: 2026-08-01/ServerFarmSiloResources_GetServerFarmSiloVnetIntegrations_Empty.json
-func ExampleServerFarmSiloResourcesClient_GetServerFarmSiloVnetIntegrations_getTheVirtualNetworkIntegrationsOfAnAppServicePlanSiloWithNoIntegrations() {
+func ExampleServerFarmSiloResourcesClient_GetServerFarmSiloVNETIntegrations_getTheVirtualNetworkIntegrationsOfAnAppServicePlanSiloWithNoIntegrations() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -177,19 +177,19 @@ func ExampleServerFarmSiloResourcesClient_GetServerFarmSiloVnetIntegrations_getT
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewServerFarmSiloResourcesClient().GetServerFarmSiloVnetIntegrations(ctx, "testrg123", "testsf6141", "silo1", nil)
+	res, err := clientFactory.NewServerFarmSiloResourcesClient().GetServerFarmSiloVNETIntegrations(ctx, "testrg123", "testsf6141", "silo1", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse{
-	// 	ServerFarmSiloVnetIntegrationsResult: armappservice.ServerFarmSiloVnetIntegrationsResult{
+	// res = armappservice.ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse{
+	// 	ServerFarmSiloVNETIntegrationsResult: armappservice.ServerFarmSiloVNETIntegrationsResult{
 	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/testsf6141-silo1/virtualNetworkIntegrations"),
 	// 		Type: to.Ptr("Microsoft.Web/serverfarms/virtualNetworkIntegrations"),
 	// 		Location: to.Ptr("West US 2"),
-	// 		Properties: []*armappservice.ServerFarmSiloVnetIntegration{
+	// 		Properties: []*armappservice.ServerFarmSiloVNETIntegration{
 	// 		},
 	// 	},
 	// }

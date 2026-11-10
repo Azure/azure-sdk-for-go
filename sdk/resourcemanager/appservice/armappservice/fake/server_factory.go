@@ -15,8 +15,8 @@ import (
 
 // ServerFactory is a fake server for instances of the armappservice.ClientFactory type.
 type ServerFactory struct {
-	// AiGatewaysServer contains the fakes for client AiGatewaysClient
-	AiGatewaysServer AiGatewaysServer
+	// AIGatewaysServer contains the fakes for client AIGatewaysClient
+	AIGatewaysServer AIGatewaysServer
 
 	// CertificatesServer contains the fakes for client CertificatesClient
 	CertificatesServer CertificatesServer
@@ -126,7 +126,7 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                                  *ServerFactory
 	trMu                                                 sync.Mutex
-	trAiGatewaysServer                                   *AiGatewaysServerTransport
+	trAIGatewaysServer                                   *AIGatewaysServerTransport
 	trCertificatesServer                                 *CertificatesServerTransport
 	trDeletedWebAppsServer                               *DeletedWebAppsServerTransport
 	trDiagnosticsServer                                  *DiagnosticsServerTransport
@@ -173,9 +173,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
-	case "AiGatewaysClient":
-		initServer(&s.trMu, &s.trAiGatewaysServer, func() *AiGatewaysServerTransport { return NewAiGatewaysServerTransport(&s.srv.AiGatewaysServer) })
-		resp, err = s.trAiGatewaysServer.Do(req)
+	case "AIGatewaysClient":
+		initServer(&s.trMu, &s.trAIGatewaysServer, func() *AIGatewaysServerTransport { return NewAIGatewaysServerTransport(&s.srv.AIGatewaysServer) })
+		resp, err = s.trAIGatewaysServer.Do(req)
 	case "CertificatesClient":
 		initServer(&s.trMu, &s.trCertificatesServer, func() *CertificatesServerTransport { return NewCertificatesServerTransport(&s.srv.CertificatesServer) })
 		resp, err = s.trCertificatesServer.Do(req)

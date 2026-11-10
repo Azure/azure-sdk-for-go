@@ -272,33 +272,33 @@ func (client *ServerFarmSiloResourcesClient) getServerFarmSiloHandleResponse(res
 	return result, nil
 }
 
-// GetServerFarmSiloVnetIntegrations - Gets the virtual network integrations associated with an App Service plan silo.
+// GetServerFarmSiloVNETIntegrations - Gets the virtual network integrations associated with an App Service plan silo.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - name - Name of the App Service plan.
 //   - siloName - The name of the ServerFarmSilo
-//   - options - ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsOptions contains the optional parameters for the
-//     ServerFarmSiloResourcesClient.GetServerFarmSiloVnetIntegrations method.
-func (client *ServerFarmSiloResourcesClient) GetServerFarmSiloVnetIntegrations(ctx context.Context, resourceGroupName string, name string, siloName string, options *ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsOptions) (ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse, error) {
+//   - options - ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsOptions contains the optional parameters for the
+//     ServerFarmSiloResourcesClient.GetServerFarmSiloVNETIntegrations method.
+func (client *ServerFarmSiloResourcesClient) GetServerFarmSiloVNETIntegrations(ctx context.Context, resourceGroupName string, name string, siloName string, options *ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsOptions) (ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse, error) {
 	var err error
-	const operationName = "ServerFarmSiloResourcesClient.GetServerFarmSiloVnetIntegrations"
+	const operationName = "ServerFarmSiloResourcesClient.GetServerFarmSiloVNETIntegrations"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getServerFarmSiloVnetIntegrationsCreateRequest(ctx, resourceGroupName, name, siloName, options)
+	req, err := client.getServerFarmSiloVNETIntegrationsCreateRequest(ctx, resourceGroupName, name, siloName, options)
 	if err != nil {
-		return ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse{}, err
+		return ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse{}, err
+		return ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse{}, err
 	}
-	resp, err := client.getServerFarmSiloVnetIntegrationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getServerFarmSiloVNETIntegrationsHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
-// getServerFarmSiloVnetIntegrationsCreateRequest creates the GetServerFarmSiloVnetIntegrations request.
-func (client *ServerFarmSiloResourcesClient) getServerFarmSiloVnetIntegrationsCreateRequest(ctx context.Context, resourceGroupName string, name string, siloName string, _ *ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsOptions) (*policy.Request, error) {
+// getServerFarmSiloVNETIntegrationsCreateRequest creates the GetServerFarmSiloVNETIntegrations request.
+func (client *ServerFarmSiloResourcesClient) getServerFarmSiloVNETIntegrationsCreateRequest(ctx context.Context, resourceGroupName string, name string, siloName string, _ *ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/silos/{siloName}/virtualNetworkIntegrations"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -327,14 +327,14 @@ func (client *ServerFarmSiloResourcesClient) getServerFarmSiloVnetIntegrationsCr
 	return req, nil
 }
 
-// getServerFarmSiloVnetIntegrationsHandleResponse handles the GetServerFarmSiloVnetIntegrations response.
-func (client *ServerFarmSiloResourcesClient) getServerFarmSiloVnetIntegrationsHandleResponse(resp *http.Response, successCodes ...int) (ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse, error) {
-	result := ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse{}
+// getServerFarmSiloVNETIntegrationsHandleResponse handles the GetServerFarmSiloVNETIntegrations response.
+func (client *ServerFarmSiloResourcesClient) getServerFarmSiloVNETIntegrationsHandleResponse(resp *http.Response, successCodes ...int) (ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse, error) {
+	result := ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ServerFarmSiloVnetIntegrationsResult); err != nil {
-		return ServerFarmSiloResourcesClientGetServerFarmSiloVnetIntegrationsResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ServerFarmSiloVNETIntegrationsResult); err != nil {
+		return ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse{}, err
 	}
 	return result, nil
 }

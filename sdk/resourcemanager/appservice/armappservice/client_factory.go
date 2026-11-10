@@ -32,9 +32,9 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
-// NewAiGatewaysClient creates a new instance of AiGatewaysClient.
-func (c *ClientFactory) NewAiGatewaysClient() *AiGatewaysClient {
-	return &AiGatewaysClient{
+// NewAIGatewaysClient creates a new instance of AIGatewaysClient.
+func (c *ClientFactory) NewAIGatewaysClient() *AIGatewaysClient {
+	return &AIGatewaysClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

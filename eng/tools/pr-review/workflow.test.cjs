@@ -387,6 +387,20 @@ test("compiled reviewer retains validated targets in both agent and publisher co
   assert.ok(safeOutputs.indexOf("Reject stale review outputs") < safeOutputs.indexOf("Process Safe Outputs"));
 });
 
+test("reviewer can read PR content without allowing private repository data", () => {
+  const source = text("mgmt-review.md");
+  const github = source.match(/^tools:\n  github:\n((?:    [^\n]*\n)+)/m)?.[1];
+  assert.ok(github, "source configures GitHub tools");
+  assert.match(github, /^    min-integrity: none$/m);
+  assert.match(github, /^    allowed-repos: public$/m);
+  const compiled = text("mgmt-review.lock.yml");
+  const config = compiled.match(/"guard-policies": \{\s*"allow-only": (\{[\s\S]*?\n\s+\})/);
+  assert.ok(config, "compiled reviewer configures a GitHub guard policy");
+  const policy = JSON.parse(config[1].replace(/\$\{GH_AW_GUARD_[A-Z_]+\}/g, "[]"));
+  assert.equal(policy["min-integrity"], "none", "PR files and diffs must not be filtered");
+  assert.equal(policy.repos, "public", "private repository content stays inaccessible");
+});
+
 test("collector credentials stay outside the agent and detection environments", () => {
   const source = text("mgmt-review.md");
   const compiled = text("mgmt-review.lock.yml");

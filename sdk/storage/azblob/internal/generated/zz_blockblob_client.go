@@ -22,7 +22,7 @@ import (
 // BlockBlobClient contains the methods for the BlockBlob group.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-12-06
+// Generated from API version 2027-03-07
 type BlockBlobClient struct {
 	internal *azcore.Client
 	url      string
@@ -137,7 +137,7 @@ func (client *BlockBlobClient) commitBlockListCreateRequest(ctx context.Context,
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, blocks); err != nil {
 		return nil, err
@@ -253,7 +253,7 @@ func (client *BlockBlobClient) getBlockListCreateRequest(ctx context.Context, li
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -369,7 +369,7 @@ func (client *BlockBlobClient) queryCreateRequest(ctx context.Context, queryRequ
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	req.Raw().Header["Content-Type"] = []string{"application/xml"}
 	if err := runtime.MarshalAsXML(req, queryRequest); err != nil {
 		return nil, err
@@ -596,7 +596,7 @@ func (client *BlockBlobClient) stageBlockCreateRequest(ctx context.Context, bloc
 	if options != nil && options.StructuredContentLength != nil {
 		req.Raw().Header["x-ms-structured-content-length"] = []string{strconv.FormatInt(*options.StructuredContentLength, 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	req.Raw().Header["Content-Type"] = []string{"application/octet-stream"}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
@@ -749,7 +749,7 @@ func (client *BlockBlobClient) stageBlockFromURLCreateRequest(ctx context.Contex
 	if options != nil && options.SourceRange != nil {
 		req.Raw().Header["x-ms-source-range"] = []string{*options.SourceRange}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -922,7 +922,7 @@ func (client *BlockBlobClient) uploadCreateRequest(ctx context.Context, body io.
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	req.Raw().Header["Content-Type"] = []string{"application/octet-stream"}
 	if err := req.SetBody(body, "application/octet-stream"); err != nil {
 		return nil, err
@@ -1138,7 +1138,7 @@ func (client *BlockBlobClient) uploadBlobFromURLCreateRequest(ctx context.Contex
 	if options != nil && options.BlobTagsString != nil {
 		req.Raw().Header["x-ms-tags"] = []string{*options.BlobTagsString}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 

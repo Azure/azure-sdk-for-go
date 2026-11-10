@@ -15,7 +15,6 @@ import (
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/streaming"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -41,15 +40,9 @@ type Client base.CompositeClient[generated.BlobClient, generated.BlockBlobClient
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
-	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(blobURL, cred, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -62,12 +55,8 @@ func NewClient(blobURL string, cred azcore.TokenCredential, options *ClientOptio
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(blobURL, nil, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -80,14 +69,9 @@ func NewClientWithNoCredential(blobURL string, options *ClientOptions) (*Client,
 //   - cred - a SharedKeyCredential created with the matching blob's storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(blobURL string, cred *blob.SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(blobURL, nil, cred, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -394,24 +378,21 @@ func (bb *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o
 
 // uploadFromReader uploads a buffer in blocks to a block blob.
 func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actualSize int64, o *uploadFromReaderOptions) (uploadFromReaderResponse, error) {
+	if o.BlockSize < 0 {
+		return uploadFromReaderResponse{}, errors.New("BlockSize must not be negative")
+	}
 	if o.BlockSize == 0 {
 		// If bufferSize > (MaxStageBlockBytes * MaxBlocks), then error
 		if actualSize > MaxStageBlockBytes*MaxBlocks {
 			return uploadFromReaderResponse{}, errors.New("buffer is too large to upload to a block blob")
 		}
-		// If bufferSize <= MaxUploadBlobBytes, then Upload should be used with just 1 I/O request
-		if actualSize <= MaxUploadBlobBytes {
-			o.BlockSize = MaxUploadBlobBytes // Default if unspecified
-		} else {
-			o.BlockSize = int64(math.Ceil(float64(actualSize) / MaxBlocks)) // ceil(buffer / max blocks) = block size to use all 50,000 blocks
-			if o.BlockSize < blob.DefaultDownloadBlockSize {                // If the block size is smaller than 4MB, round up to 4MB
-				o.BlockSize = blob.DefaultDownloadBlockSize
-			}
-			// StageBlock will be called with blockSize blocks and a Concurrency of (BufferSize / BlockSize).
+		o.BlockSize = int64(math.Ceil(float64(actualSize) / MaxBlocks)) // ceil(buffer / max blocks) = block size to use all 50,000 blocks
+		if o.BlockSize < blob.DefaultDownloadBlockSize {                // If the block size is smaller than 4MB, round up to 4MB
+			o.BlockSize = blob.DefaultDownloadBlockSize
 		}
 	}
 
-	if actualSize <= MaxUploadBlobBytes {
+	if actualSize <= o.BlockSize {
 		// If the size can fit in 1 Upload call, do it this way
 		var body io.ReadSeeker = io.NewSectionReader(reader, 0, actualSize)
 		if o.Progress != nil {
@@ -424,7 +405,8 @@ func (bb *Client) uploadFromReader(ctx context.Context, reader io.ReaderAt, actu
 		return toUploadReaderAtResponseFromUploadResponse(resp), err
 	}
 
-	var numBlocks = uint16(((actualSize - 1) / o.BlockSize) + 1)
+	// numBlocks stays int64 until it is checked, so that a large count can't wrap around and pass.
+	numBlocks := ((actualSize - 1) / o.BlockSize) + 1
 	if numBlocks > MaxBlocks {
 		// prevent any math bugs from attempting to upload too many blocks which will always fail
 		return uploadFromReaderResponse{}, errors.New("block limit exceeded")

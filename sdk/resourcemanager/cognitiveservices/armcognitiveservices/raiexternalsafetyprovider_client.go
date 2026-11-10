@@ -51,7 +51,7 @@ func NewRaiExternalSafetyProviderClient(subscriptionID string, credential azcore
 //     method.
 func (client *RaiExternalSafetyProviderClient) BeginDelete(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*runtime.Poller[RaiExternalSafetyProviderClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, safetyProviderName, options)
+		resp, err := client.deleteOperation(ctx, safetyProviderName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -66,9 +66,9 @@ func (client *RaiExternalSafetyProviderClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// delete - Deletes the specified custom topic associated with the subscription.
+// deleteOperation - Deletes the specified custom topic associated with the subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RaiExternalSafetyProviderClient) delete(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RaiExternalSafetyProviderClient) deleteOperation(ctx context.Context, safetyProviderName string, options *RaiExternalSafetyProviderClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RaiExternalSafetyProviderClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -83,7 +83,8 @@ func (client *RaiExternalSafetyProviderClient) delete(ctx context.Context, safet
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -129,7 +130,8 @@ func (client *RaiExternalSafetyProviderClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return RaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -189,7 +191,8 @@ func (client *RaiExternalSafetyProviderClient) Get(ctx context.Context, safetyPr
 	if err != nil {
 		return RaiExternalSafetyProviderClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

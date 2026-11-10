@@ -67,7 +67,8 @@ func (client *MaintenanceConfigurationsClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return MaintenanceConfigurationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -139,7 +140,8 @@ func (client *MaintenanceConfigurationsClient) Delete(ctx context.Context, resou
 		return MaintenanceConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return MaintenanceConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return MaintenanceConfigurationsClientDeleteResponse{}, err
 	}
 	return MaintenanceConfigurationsClientDeleteResponse{}, nil
 }
@@ -195,7 +197,8 @@ func (client *MaintenanceConfigurationsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return MaintenanceConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

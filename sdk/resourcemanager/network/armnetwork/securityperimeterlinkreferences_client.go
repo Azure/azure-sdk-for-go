@@ -54,7 +54,7 @@ func NewSecurityPerimeterLinkReferencesClient(subscriptionID string, credential 
 //     method.
 func (client *SecurityPerimeterLinkReferencesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkReferenceName string, options *SecurityPerimeterLinkReferencesClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimeterLinkReferencesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkSecurityPerimeterName, linkReferenceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkSecurityPerimeterName, linkReferenceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -69,9 +69,9 @@ func (client *SecurityPerimeterLinkReferencesClient) BeginDelete(ctx context.Con
 	}
 }
 
-// delete - Deletes an NSP LinkReference resource.
+// deleteOperation - Deletes an NSP LinkReference resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityPerimeterLinkReferencesClient) delete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkReferenceName string, options *SecurityPerimeterLinkReferencesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityPerimeterLinkReferencesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, linkReferenceName string, options *SecurityPerimeterLinkReferencesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPerimeterLinkReferencesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -86,7 +86,8 @@ func (client *SecurityPerimeterLinkReferencesClient) delete(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,8 @@ func (client *SecurityPerimeterLinkReferencesClient) Get(ctx context.Context, re
 	if err != nil {
 		return SecurityPerimeterLinkReferencesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

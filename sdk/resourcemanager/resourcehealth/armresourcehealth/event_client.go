@@ -64,7 +64,8 @@ func (client *EventClient) FetchBilllingCommunicationDetailsBySubscriptionIDAndT
 	if err != nil {
 		return EventClientFetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDResponse{}, err
 	}
-	return client.fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // fetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingIDCreateRequest creates the FetchBilllingCommunicationDetailsBySubscriptionIDAndTrackingID request.
@@ -121,7 +122,8 @@ func (client *EventClient) FetchDetailsBySubscriptionIDAndTrackingID(ctx context
 	if err != nil {
 		return EventClientFetchDetailsBySubscriptionIDAndTrackingIDResponse{}, err
 	}
-	return client.fetchDetailsBySubscriptionIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.fetchDetailsBySubscriptionIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // fetchDetailsBySubscriptionIDAndTrackingIDCreateRequest creates the FetchDetailsBySubscriptionIDAndTrackingID request.
@@ -178,7 +180,8 @@ func (client *EventClient) FetchDetailsByTenantIDAndTrackingID(ctx context.Conte
 	if err != nil {
 		return EventClientFetchDetailsByTenantIDAndTrackingIDResponse{}, err
 	}
-	return client.fetchDetailsByTenantIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.fetchDetailsByTenantIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // fetchDetailsByTenantIDAndTrackingIDCreateRequest creates the FetchDetailsByTenantIDAndTrackingID request.
@@ -230,7 +233,8 @@ func (client *EventClient) GetBySubscriptionIDAndTrackingID(ctx context.Context,
 	if err != nil {
 		return EventClientGetBySubscriptionIDAndTrackingIDResponse{}, err
 	}
-	return client.getBySubscriptionIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBySubscriptionIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBySubscriptionIDAndTrackingIDCreateRequest creates the GetBySubscriptionIDAndTrackingID request.
@@ -292,7 +296,8 @@ func (client *EventClient) GetByTenantIDAndTrackingID(ctx context.Context, event
 	if err != nil {
 		return EventClientGetByTenantIDAndTrackingIDResponse{}, err
 	}
-	return client.getByTenantIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByTenantIDAndTrackingIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByTenantIDAndTrackingIDCreateRequest creates the GetByTenantIDAndTrackingID request.

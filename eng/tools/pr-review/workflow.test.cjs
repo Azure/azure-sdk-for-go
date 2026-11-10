@@ -385,6 +385,10 @@ test("compiled reviewer retains validated targets in both agent and publisher co
   assert.deepEqual(agent.remove_labels.allowed, ["mgmt-review-in-progress"]);
   const safeOutputs = compiled.slice(compiled.indexOf("\n  safe_outputs:\n"));
   assert.ok(safeOutputs.indexOf("Reject stale review outputs") < safeOutputs.indexOf("Process Safe Outputs"));
+  assert.match(safeOutputs, /needs:\n(?:      - [\w-]+\n)*      - provenance\n/);
+  assert.ok(safeOutputs.indexOf("Checkout trusted provenance publisher") < safeOutputs.indexOf("Enforce generated-file provenance"));
+  assert.ok(safeOutputs.indexOf("Enforce generated-file provenance") < safeOutputs.indexOf("Process Safe Outputs"));
+  assert.match(compiled, /^  agent:\n(?:    name:[^\n]*\n)?    needs:\n(?:      - [\w-]+\n)*      - provenance\n/m);
 });
 
 test("reviewer can read PR content without allowing private repository data", () => {
@@ -421,7 +425,7 @@ test("collector credentials stay outside the agent and detection environments", 
 test("the actual safe-output guard cleans up rejected reviews without consuming new requests", async (t) => {
   const source = text("mgmt-review.md");
   const script = source.split("    - name: Reject stale review outputs\n")[1]
-    .split("  threat-detection:")[0].split("        script: |\n")[1]
+    .split("\n    - name: ")[0].split("        script: |\n")[1]
     .split("\n").map((line) => line.slice(10)).join("\n");
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
   const guard = new AsyncFunction("github", "context", "process", "core", script);

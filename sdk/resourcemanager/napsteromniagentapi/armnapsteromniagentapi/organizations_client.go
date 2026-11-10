@@ -19,7 +19,7 @@ import (
 // OrganizationsClient contains the methods for the Organizations group.
 // Don't use this type directly, use NewOrganizationsClient() instead.
 //
-// Generated from API version 2025-12-24-preview
+// Generated from API version 2026-08-11
 type OrganizationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -68,7 +68,7 @@ func (client *OrganizationsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Create a OrganizationResource
+// createOrUpdate - Create a OrganizationResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OrganizationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, organizationname string, resource OrganizationResource, options *OrganizationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *OrganizationsClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *OrganizationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, organizationname string, resource OrganizationResource, _ *OrganizationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Napster.CompanionAPI/organizations/{organizationname}"
 	if client.subscriptionID == "" {
@@ -110,7 +111,7 @@ func (client *OrganizationsClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251224Preview)
+	reqQP.Set("api-version", version20260811)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -143,7 +144,7 @@ func (client *OrganizationsClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// Delete - Delete a OrganizationResource
+// deleteOperation - Delete a OrganizationResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OrganizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, organizationname string, options *OrganizationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,12 +161,13 @@ func (client *OrganizationsClient) deleteOperation(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OrganizationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, organizationname string, _ *OrganizationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Napster.CompanionAPI/organizations/{organizationname}"
 	if client.subscriptionID == "" {
@@ -185,8 +187,167 @@ func (client *OrganizationsClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251224Preview)
+	reqQP.Set("api-version", version20260811)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginLinkSaaS - Links a new SaaS to the Napster organization of the underlying monitor.
+//
+// Links a new SaaS to the Napster organization of the underlying monitor.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationname - Name of the Organization resource
+//   - body - The content of the action request
+//   - options - OrganizationsClientBeginLinkSaaSOptions contains the optional parameters for the OrganizationsClient.BeginLinkSaaS
+//     method.
+func (client *OrganizationsClient) BeginLinkSaaS(ctx context.Context, resourceGroupName string, organizationname string, body SaaSData, options *OrganizationsClientBeginLinkSaaSOptions) (*runtime.Poller[OrganizationsClientLinkSaaSResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.linkSaaS(ctx, resourceGroupName, organizationname, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrganizationsClientLinkSaaSResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrganizationsClientLinkSaaSResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// linkSaaS - Links a new SaaS to the Napster organization of the underlying monitor.
+//
+// Links a new SaaS to the Napster organization of the underlying monitor.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OrganizationsClient) linkSaaS(ctx context.Context, resourceGroupName string, organizationname string, body SaaSData, options *OrganizationsClientBeginLinkSaaSOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OrganizationsClient.BeginLinkSaaS"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.linkSaaSCreateRequest(ctx, resourceGroupName, organizationname, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// linkSaaSCreateRequest creates the linkSaaS request.
+func (client *OrganizationsClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, organizationname string, body SaaSData, _ *OrganizationsClientBeginLinkSaaSOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Napster.CompanionAPI/organizations/{organizationname}/linkSaaS"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationname == "" {
+		return nil, errors.New("parameter organizationname cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationname}", url.PathEscape(organizationname))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260811)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a OrganizationResource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationname - Name of the Organization resource
+//   - properties - The resource properties to be updated.
+//   - options - OrganizationsClientBeginUpdateOptions contains the optional parameters for the OrganizationsClient.BeginUpdate
+//     method.
+func (client *OrganizationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, organizationname string, properties OrganizationResourceUpdate, options *OrganizationsClientBeginUpdateOptions) (*runtime.Poller[OrganizationsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, organizationname, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrganizationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrganizationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a OrganizationResource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OrganizationsClient) update(ctx context.Context, resourceGroupName string, organizationname string, properties OrganizationResourceUpdate, options *OrganizationsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OrganizationsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, organizationname, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *OrganizationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, organizationname string, properties OrganizationResourceUpdate, _ *OrganizationsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Napster.CompanionAPI/organizations/{organizationname}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationname == "" {
+		return nil, errors.New("parameter organizationname cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationname}", url.PathEscape(organizationname))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260811)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
 	return req, nil
 }
 
@@ -209,7 +370,8 @@ func (client *OrganizationsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return OrganizationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -232,7 +394,7 @@ func (client *OrganizationsClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251224Preview)
+	reqQP.Set("api-version", version20260811)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -270,7 +432,8 @@ func (client *OrganizationsClient) LatestLinkedSaaS(ctx context.Context, resourc
 	if err != nil {
 		return OrganizationsClientLatestLinkedSaaSResponse{}, err
 	}
-	return client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // latestLinkedSaaSCreateRequest creates the LatestLinkedSaaS request.
@@ -293,7 +456,7 @@ func (client *OrganizationsClient) latestLinkedSaaSCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251224Preview)
+	reqQP.Set("api-version", version20260811)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -309,87 +472,6 @@ func (client *OrganizationsClient) latestLinkedSaaSHandleResponse(resp *http.Res
 		return OrganizationsClientLatestLinkedSaaSResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginLinkSaaS - Links a new SaaS to the Napster organization of the underlying monitor.
-//
-// Links a new SaaS to the Napster organization of the underlying monitor.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - organizationname - Name of the Organization resource
-//   - body - The content of the action request
-//   - options - OrganizationsClientBeginLinkSaaSOptions contains the optional parameters for the OrganizationsClient.BeginLinkSaaS
-//     method.
-func (client *OrganizationsClient) BeginLinkSaaS(ctx context.Context, resourceGroupName string, organizationname string, body SaaSData, options *OrganizationsClientBeginLinkSaaSOptions) (*runtime.Poller[OrganizationsClientLinkSaaSResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.linkSaaS(ctx, resourceGroupName, organizationname, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrganizationsClientLinkSaaSResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrganizationsClientLinkSaaSResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// LinkSaaS - Links a new SaaS to the Napster organization of the underlying monitor.
-//
-// Links a new SaaS to the Napster organization of the underlying monitor.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OrganizationsClient) linkSaaS(ctx context.Context, resourceGroupName string, organizationname string, body SaaSData, options *OrganizationsClientBeginLinkSaaSOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OrganizationsClient.BeginLinkSaaS"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.linkSaaSCreateRequest(ctx, resourceGroupName, organizationname, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// linkSaaSCreateRequest creates the LinkSaaS request.
-func (client *OrganizationsClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, organizationname string, body SaaSData, _ *OrganizationsClientBeginLinkSaaSOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Napster.CompanionAPI/organizations/{organizationname}/linkSaaS"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if organizationname == "" {
-		return nil, errors.New("parameter organizationname cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{organizationname}", url.PathEscape(organizationname))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251224Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListByResourceGroupPager - List OrganizationResource resources by resource group
@@ -445,7 +527,7 @@ func (client *OrganizationsClient) listByResourceGroupCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251224Preview)
+		reqQP.Set("api-version", version20260811)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -512,7 +594,7 @@ func (client *OrganizationsClient) listBySubscriptionCreateRequest(ctx context.C
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20251224Preview)
+		reqQP.Set("api-version", version20260811)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -529,80 +611,4 @@ func (client *OrganizationsClient) listBySubscriptionHandleResponse(resp *http.R
 		return OrganizationsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a OrganizationResource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - organizationname - Name of the Organization resource
-//   - properties - The resource properties to be updated.
-//   - options - OrganizationsClientBeginUpdateOptions contains the optional parameters for the OrganizationsClient.BeginUpdate
-//     method.
-func (client *OrganizationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, organizationname string, properties OrganizationResourceUpdate, options *OrganizationsClientBeginUpdateOptions) (*runtime.Poller[OrganizationsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, organizationname, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrganizationsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrganizationsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a OrganizationResource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OrganizationsClient) update(ctx context.Context, resourceGroupName string, organizationname string, properties OrganizationResourceUpdate, options *OrganizationsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OrganizationsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, organizationname, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *OrganizationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, organizationname string, properties OrganizationResourceUpdate, _ *OrganizationsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Napster.CompanionAPI/organizations/{organizationname}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if organizationname == "" {
-		return nil, errors.New("parameter organizationname cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{organizationname}", url.PathEscape(organizationname))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251224Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

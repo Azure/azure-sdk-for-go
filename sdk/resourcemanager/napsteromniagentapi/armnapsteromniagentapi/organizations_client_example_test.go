@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-24-preview/Organizations_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleOrganizationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_Delete_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,113 +158,7 @@ func ExampleOrganizationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_Get_MaximumSet_Gen.json
-func ExampleOrganizationsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOrganizationsClient().Get(ctx, "rgopenapi", "contosoOrg", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnapsteromniagentapi.OrganizationsClientGetResponse{
-	// 	OrganizationResource: armnapsteromniagentapi.OrganizationResource{
-	// 		Properties: &armnapsteromniagentapi.OrganizationProperties{
-	// 			Marketplace: &armnapsteromniagentapi.MarketplaceDetails{
-	// 				SubscriptionID: to.Ptr("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
-	// 				SubscriptionStatus: to.Ptr(armnapsteromniagentapi.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-	// 				OfferDetails: &armnapsteromniagentapi.OfferDetails{
-	// 					PublisherID: to.Ptr("contoso"),
-	// 					OfferID: to.Ptr("contoso-saas-app"),
-	// 					PlanID: to.Ptr("standard-plan"),
-	// 					PlanName: to.Ptr("Standard Plan"),
-	// 					TermUnit: to.Ptr("P1M"),
-	// 					TermID: to.Ptr("monthly-term-001"),
-	// 				},
-	// 				SaasResourceID: to.Ptr("/subscriptions/a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d/resourceGroups/rgopenapi/providers/Microsoft.SaaS/resources/contosoSaaS"),
-	// 			},
-	// 			User: &armnapsteromniagentapi.UserDetails{
-	// 				FirstName: to.Ptr("John"),
-	// 				LastName: to.Ptr("Doe"),
-	// 				EmailAddress: to.Ptr("john.doe@contoso.com"),
-	// 				Upn: to.Ptr("john.doe@contoso.com"),
-	// 				PhoneNumber: to.Ptr("+1-425-555-1234"),
-	// 			},
-	// 			PartnerProperties: &armnapsteromniagentapi.PartnerProperties{
-	// 				Application: to.Ptr("Contoso App"),
-	// 			},
-	// 			SingleSignOnProperties: &armnapsteromniagentapi.SingleSignOnPropertiesV2{
-	// 				Type: to.Ptr(armnapsteromniagentapi.SingleSignOnTypeSaml),
-	// 				State: to.Ptr(armnapsteromniagentapi.SingleSignOnStatesInitial),
-	// 				EnterpriseAppID: to.Ptr("b2c3d4e5-f6a7-4b5c-8d9e-0f1a2b3c4d5e"),
-	// 				URL: to.Ptr("https://login.contoso.com"),
-	// 				AADDomains: []*string{
-	// 					to.Ptr("contoso.com"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnapsteromniagentapi.ResourceProvisioningStateSucceeded),
-	// 		},
-	// 		Identity: &armnapsteromniagentapi.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armnapsteromniagentapi.ManagedServiceIdentityTypeNone),
-	// 			UserAssignedIdentities: map[string]*armnapsteromniagentapi.UserAssignedIdentity{
-	// 			},
-	// 			PrincipalID: to.Ptr("c3d4e5f6-a7b8-4c5d-9e0f-1a2b3c4d5e6f"),
-	// 			TenantID: to.Ptr("d4e5f6a7-b8c9-4d5e-0f1a-2b3c4d5e6f7a"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Napster.CompanionAPI/organizations/contosoOrg"),
-	// 		Name: to.Ptr("contosoOrg"),
-	// 		Type: to.Ptr("Napster.CompanionAPI/organizations"),
-	// 		SystemData: &armnapsteromniagentapi.SystemData{
-	// 			CreatedBy: to.Ptr("john.doe@contoso.com"),
-	// 			CreatedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("jane.smith@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-24-preview/Organizations_LatestLinkedSaaS_MaximumSet_Gen.json
-func ExampleOrganizationsClient_LatestLinkedSaaS() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOrganizationsClient().LatestLinkedSaaS(ctx, "rgopenapi", "contosoOrg", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnapsteromniagentapi.OrganizationsClientLatestLinkedSaaSResponse{
-	// 	LatestLinkedSaaSResponse: armnapsteromniagentapi.LatestLinkedSaaSResponse{
-	// 		SaaSResourceID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Microsoft.SaaS/resources/contosoSaaS"),
-	// 		IsHiddenSaaS: to.Ptr(true),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-24-preview/Organizations_LinkSaaS_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_LinkSaaS_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginLinkSaaS() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,257 +244,7 @@ func ExampleOrganizationsClient_BeginLinkSaaS() {
 	// }
 }
 
-// Generated from example definition: 2025-12-24-preview/Organizations_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroupMaximumSetGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewOrganizationsClient().NewListByResourceGroupPager("rgopenapi", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnapsteromniagentapi.OrganizationsClientListByResourceGroupResponse{
-		// 	OrganizationResourceListResult: armnapsteromniagentapi.OrganizationResourceListResult{
-		// 		Value: []*armnapsteromniagentapi.OrganizationResource{
-		// 			{
-		// 				Properties: &armnapsteromniagentapi.OrganizationProperties{
-		// 					Marketplace: &armnapsteromniagentapi.MarketplaceDetails{
-		// 						SubscriptionID: to.Ptr("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
-		// 						SubscriptionStatus: to.Ptr(armnapsteromniagentapi.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-		// 						OfferDetails: &armnapsteromniagentapi.OfferDetails{
-		// 							PublisherID: to.Ptr("contoso"),
-		// 							OfferID: to.Ptr("contoso-saas-app"),
-		// 							PlanID: to.Ptr("standard-plan"),
-		// 							PlanName: to.Ptr("Standard Plan"),
-		// 							TermUnit: to.Ptr("P1M"),
-		// 							TermID: to.Ptr("monthly-term-001"),
-		// 						},
-		// 						SaasResourceID: to.Ptr("/subscriptions/a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d/resourceGroups/rgopenapi/providers/Microsoft.SaaS/resources/contosoSaaS"),
-		// 					},
-		// 					User: &armnapsteromniagentapi.UserDetails{
-		// 						FirstName: to.Ptr("John"),
-		// 						LastName: to.Ptr("Doe"),
-		// 						EmailAddress: to.Ptr("john.doe@contoso.com"),
-		// 						Upn: to.Ptr("john.doe@contoso.com"),
-		// 						PhoneNumber: to.Ptr("+1-425-555-1234"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnapsteromniagentapi.ResourceProvisioningStateSucceeded),
-		// 					PartnerProperties: &armnapsteromniagentapi.PartnerProperties{
-		// 						Application: to.Ptr("Contoso App"),
-		// 					},
-		// 					SingleSignOnProperties: &armnapsteromniagentapi.SingleSignOnPropertiesV2{
-		// 						Type: to.Ptr(armnapsteromniagentapi.SingleSignOnTypeSaml),
-		// 						State: to.Ptr(armnapsteromniagentapi.SingleSignOnStatesInitial),
-		// 						EnterpriseAppID: to.Ptr("b2c3d4e5-f6a7-4b5c-8d9e-0f1a2b3c4d5e"),
-		// 						URL: to.Ptr("https://login.contoso.com"),
-		// 						AADDomains: []*string{
-		// 							to.Ptr("contoso.com"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Identity: &armnapsteromniagentapi.ManagedServiceIdentity{
-		// 					PrincipalID: to.Ptr("c3d4e5f6-a7b8-4c5d-9e0f-1a2b3c4d5e6f"),
-		// 					TenantID: to.Ptr("d4e5f6a7-b8c9-4d5e-0f1a-2b3c4d5e6f7a"),
-		// 					Type: to.Ptr(armnapsteromniagentapi.ManagedServiceIdentityTypeNone),
-		// 					UserAssignedIdentities: map[string]*armnapsteromniagentapi.UserAssignedIdentity{
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Napster.CompanionAPI/organizations/contosoOrg"),
-		// 				Name: to.Ptr("contosoOrg"),
-		// 				Type: to.Ptr("Napster.CompanionAPI/organizations"),
-		// 				SystemData: &armnapsteromniagentapi.SystemData{
-		// 					CreatedBy: to.Ptr("john.doe@contoso.com"),
-		// 					CreatedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("jane.smith@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/providers/Napster.CompanionAPI/organizations?api-version=2025-12-24-preview&$skiptoken=X'12345'"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-12-24-preview/Organizations_ListByResourceGroup_MinimumSet_Gen.json
-func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroupMinimumSetGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewOrganizationsClient().NewListByResourceGroupPager("rgopenapi", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnapsteromniagentapi.OrganizationsClientListByResourceGroupResponse{
-		// 	OrganizationResourceListResult: armnapsteromniagentapi.OrganizationResourceListResult{
-		// 		Value: []*armnapsteromniagentapi.OrganizationResource{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Napster.CompanionAPI/organizations/contosoOrg"),
-		// 				Location: to.Ptr("eastus"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-12-24-preview/Organizations_ListBySubscription_MaximumSet_Gen.json
-func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscriptionMaximumSetGeneratedByMaximumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewOrganizationsClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnapsteromniagentapi.OrganizationsClientListBySubscriptionResponse{
-		// 	OrganizationResourceListResult: armnapsteromniagentapi.OrganizationResourceListResult{
-		// 		Value: []*armnapsteromniagentapi.OrganizationResource{
-		// 			{
-		// 				Properties: &armnapsteromniagentapi.OrganizationProperties{
-		// 					Marketplace: &armnapsteromniagentapi.MarketplaceDetails{
-		// 						SubscriptionID: to.Ptr("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
-		// 						SubscriptionStatus: to.Ptr(armnapsteromniagentapi.MarketplaceSubscriptionStatusPendingFulfillmentStart),
-		// 						OfferDetails: &armnapsteromniagentapi.OfferDetails{
-		// 							PublisherID: to.Ptr("contoso"),
-		// 							OfferID: to.Ptr("contoso-saas-app"),
-		// 							PlanID: to.Ptr("standard-plan"),
-		// 							PlanName: to.Ptr("Standard Plan"),
-		// 							TermUnit: to.Ptr("P1M"),
-		// 							TermID: to.Ptr("monthly-term-001"),
-		// 						},
-		// 						SaasResourceID: to.Ptr("/subscriptions/a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d/resourceGroups/rgopenapi/providers/Microsoft.SaaS/resources/contosoSaaS"),
-		// 					},
-		// 					User: &armnapsteromniagentapi.UserDetails{
-		// 						FirstName: to.Ptr("John"),
-		// 						LastName: to.Ptr("Doe"),
-		// 						EmailAddress: to.Ptr("john.doe@contoso.com"),
-		// 						Upn: to.Ptr("john.doe@contoso.com"),
-		// 						PhoneNumber: to.Ptr("+1-425-555-1234"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armnapsteromniagentapi.ResourceProvisioningStateSucceeded),
-		// 					PartnerProperties: &armnapsteromniagentapi.PartnerProperties{
-		// 						Application: to.Ptr("Contoso App"),
-		// 					},
-		// 					SingleSignOnProperties: &armnapsteromniagentapi.SingleSignOnPropertiesV2{
-		// 						Type: to.Ptr(armnapsteromniagentapi.SingleSignOnTypeSaml),
-		// 						State: to.Ptr(armnapsteromniagentapi.SingleSignOnStatesInitial),
-		// 						EnterpriseAppID: to.Ptr("b2c3d4e5-f6a7-4b5c-8d9e-0f1a2b3c4d5e"),
-		// 						URL: to.Ptr("https://login.contoso.com"),
-		// 						AADDomains: []*string{
-		// 							to.Ptr("contoso.com"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Identity: &armnapsteromniagentapi.ManagedServiceIdentity{
-		// 					PrincipalID: to.Ptr("c3d4e5f6-a7b8-4c5d-9e0f-1a2b3c4d5e6f"),
-		// 					TenantID: to.Ptr("d4e5f6a7-b8c9-4d5e-0f1a-2b3c4d5e6f7a"),
-		// 					Type: to.Ptr(armnapsteromniagentapi.ManagedServiceIdentityTypeNone),
-		// 					UserAssignedIdentities: map[string]*armnapsteromniagentapi.UserAssignedIdentity{
-		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Napster.CompanionAPI/organizations/contosoOrg"),
-		// 				Name: to.Ptr("contosoOrg"),
-		// 				Type: to.Ptr("Napster.CompanionAPI/organizations"),
-		// 				SystemData: &armnapsteromniagentapi.SystemData{
-		// 					CreatedBy: to.Ptr("john.doe@contoso.com"),
-		// 					CreatedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("jane.smith@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/providers/Napster.CompanionAPI/organizations?api-version=2025-12-24-preview&$skiptoken=X'12345'"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-12-24-preview/Organizations_ListBySubscription_MinimumSet_Gen.json
-func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscriptionMinimumSetGeneratedByMinimumSetRule() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewOrganizationsClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnapsteromniagentapi.OrganizationsClientListBySubscriptionResponse{
-		// 	OrganizationResourceListResult: armnapsteromniagentapi.OrganizationResourceListResult{
-		// 		Value: []*armnapsteromniagentapi.OrganizationResource{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Napster.CompanionAPI/organizations/contosoOrg"),
-		// 				Location: to.Ptr("eastus"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-12-24-preview/Organizations_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-08-11/Organizations_Update_MaximumSet_Gen.json
 func ExampleOrganizationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -688,4 +332,360 @@ func ExampleOrganizationsClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-08-11/Organizations_Get_MaximumSet_Gen.json
+func ExampleOrganizationsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationsClient().Get(ctx, "rgopenapi", "contosoOrg", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnapsteromniagentapi.OrganizationsClientGetResponse{
+	// 	OrganizationResource: armnapsteromniagentapi.OrganizationResource{
+	// 		Properties: &armnapsteromniagentapi.OrganizationProperties{
+	// 			Marketplace: &armnapsteromniagentapi.MarketplaceDetails{
+	// 				SubscriptionID: to.Ptr("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+	// 				SubscriptionStatus: to.Ptr(armnapsteromniagentapi.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+	// 				OfferDetails: &armnapsteromniagentapi.OfferDetails{
+	// 					PublisherID: to.Ptr("contoso"),
+	// 					OfferID: to.Ptr("contoso-saas-app"),
+	// 					PlanID: to.Ptr("standard-plan"),
+	// 					PlanName: to.Ptr("Standard Plan"),
+	// 					TermUnit: to.Ptr("P1M"),
+	// 					TermID: to.Ptr("monthly-term-001"),
+	// 				},
+	// 				SaasResourceID: to.Ptr("/subscriptions/a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d/resourceGroups/rgopenapi/providers/Microsoft.SaaS/resources/contosoSaaS"),
+	// 			},
+	// 			User: &armnapsteromniagentapi.UserDetails{
+	// 				FirstName: to.Ptr("John"),
+	// 				LastName: to.Ptr("Doe"),
+	// 				EmailAddress: to.Ptr("john.doe@contoso.com"),
+	// 				Upn: to.Ptr("john.doe@contoso.com"),
+	// 				PhoneNumber: to.Ptr("+1-425-555-1234"),
+	// 			},
+	// 			PartnerProperties: &armnapsteromniagentapi.PartnerProperties{
+	// 				Application: to.Ptr("Contoso App"),
+	// 			},
+	// 			SingleSignOnProperties: &armnapsteromniagentapi.SingleSignOnPropertiesV2{
+	// 				Type: to.Ptr(armnapsteromniagentapi.SingleSignOnTypeSaml),
+	// 				State: to.Ptr(armnapsteromniagentapi.SingleSignOnStatesInitial),
+	// 				EnterpriseAppID: to.Ptr("b2c3d4e5-f6a7-4b5c-8d9e-0f1a2b3c4d5e"),
+	// 				URL: to.Ptr("https://login.contoso.com"),
+	// 				AADDomains: []*string{
+	// 					to.Ptr("contoso.com"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnapsteromniagentapi.ResourceProvisioningStateSucceeded),
+	// 		},
+	// 		Identity: &armnapsteromniagentapi.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armnapsteromniagentapi.ManagedServiceIdentityTypeNone),
+	// 			UserAssignedIdentities: map[string]*armnapsteromniagentapi.UserAssignedIdentity{
+	// 			},
+	// 			PrincipalID: to.Ptr("c3d4e5f6-a7b8-4c5d-9e0f-1a2b3c4d5e6f"),
+	// 			TenantID: to.Ptr("d4e5f6a7-b8c9-4d5e-0f1a-2b3c4d5e6f7a"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Napster.CompanionAPI/organizations/contosoOrg"),
+	// 		Name: to.Ptr("contosoOrg"),
+	// 		Type: to.Ptr("Napster.CompanionAPI/organizations"),
+	// 		SystemData: &armnapsteromniagentapi.SystemData{
+	// 			CreatedBy: to.Ptr("john.doe@contoso.com"),
+	// 			CreatedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("jane.smith@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-11/Organizations_LatestLinkedSaaS_MaximumSet_Gen.json
+func ExampleOrganizationsClient_LatestLinkedSaaS() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOrganizationsClient().LatestLinkedSaaS(ctx, "rgopenapi", "contosoOrg", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnapsteromniagentapi.OrganizationsClientLatestLinkedSaaSResponse{
+	// 	LatestLinkedSaaSResponse: armnapsteromniagentapi.LatestLinkedSaaSResponse{
+	// 		SaaSResourceID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Microsoft.SaaS/resources/contosoSaaS"),
+	// 		IsHiddenSaaS: to.Ptr(true),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-11/Organizations_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroupMaximumSetGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOrganizationsClient().NewListByResourceGroupPager("rgopenapi", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnapsteromniagentapi.OrganizationsClientListByResourceGroupResponse{
+		// 	OrganizationResourceListResult: armnapsteromniagentapi.OrganizationResourceListResult{
+		// 		Value: []*armnapsteromniagentapi.OrganizationResource{
+		// 			{
+		// 				Properties: &armnapsteromniagentapi.OrganizationProperties{
+		// 					Marketplace: &armnapsteromniagentapi.MarketplaceDetails{
+		// 						SubscriptionID: to.Ptr("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+		// 						SubscriptionStatus: to.Ptr(armnapsteromniagentapi.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+		// 						OfferDetails: &armnapsteromniagentapi.OfferDetails{
+		// 							PublisherID: to.Ptr("contoso"),
+		// 							OfferID: to.Ptr("contoso-saas-app"),
+		// 							PlanID: to.Ptr("standard-plan"),
+		// 							PlanName: to.Ptr("Standard Plan"),
+		// 							TermUnit: to.Ptr("P1M"),
+		// 							TermID: to.Ptr("monthly-term-001"),
+		// 						},
+		// 						SaasResourceID: to.Ptr("/subscriptions/a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d/resourceGroups/rgopenapi/providers/Microsoft.SaaS/resources/contosoSaaS"),
+		// 					},
+		// 					User: &armnapsteromniagentapi.UserDetails{
+		// 						FirstName: to.Ptr("John"),
+		// 						LastName: to.Ptr("Doe"),
+		// 						EmailAddress: to.Ptr("john.doe@contoso.com"),
+		// 						Upn: to.Ptr("john.doe@contoso.com"),
+		// 						PhoneNumber: to.Ptr("+1-425-555-1234"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnapsteromniagentapi.ResourceProvisioningStateSucceeded),
+		// 					PartnerProperties: &armnapsteromniagentapi.PartnerProperties{
+		// 						Application: to.Ptr("Contoso App"),
+		// 					},
+		// 					SingleSignOnProperties: &armnapsteromniagentapi.SingleSignOnPropertiesV2{
+		// 						Type: to.Ptr(armnapsteromniagentapi.SingleSignOnTypeSaml),
+		// 						State: to.Ptr(armnapsteromniagentapi.SingleSignOnStatesInitial),
+		// 						EnterpriseAppID: to.Ptr("b2c3d4e5-f6a7-4b5c-8d9e-0f1a2b3c4d5e"),
+		// 						URL: to.Ptr("https://login.contoso.com"),
+		// 						AADDomains: []*string{
+		// 							to.Ptr("contoso.com"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Identity: &armnapsteromniagentapi.ManagedServiceIdentity{
+		// 					PrincipalID: to.Ptr("c3d4e5f6-a7b8-4c5d-9e0f-1a2b3c4d5e6f"),
+		// 					TenantID: to.Ptr("d4e5f6a7-b8c9-4d5e-0f1a-2b3c4d5e6f7a"),
+		// 					Type: to.Ptr(armnapsteromniagentapi.ManagedServiceIdentityTypeNone),
+		// 					UserAssignedIdentities: map[string]*armnapsteromniagentapi.UserAssignedIdentity{
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Napster.CompanionAPI/organizations/contosoOrg"),
+		// 				Name: to.Ptr("contosoOrg"),
+		// 				Type: to.Ptr("Napster.CompanionAPI/organizations"),
+		// 				SystemData: &armnapsteromniagentapi.SystemData{
+		// 					CreatedBy: to.Ptr("john.doe@contoso.com"),
+		// 					CreatedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("jane.smith@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/providers/Napster.CompanionAPI/organizations?api-version=2026-08-11&$skiptoken=X'12345'"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-11/Organizations_ListByResourceGroup_MinimumSet_Gen.json
+func ExampleOrganizationsClient_NewListByResourceGroupPager_organizationsListByResourceGroupMinimumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOrganizationsClient().NewListByResourceGroupPager("rgopenapi", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnapsteromniagentapi.OrganizationsClientListByResourceGroupResponse{
+		// 	OrganizationResourceListResult: armnapsteromniagentapi.OrganizationResourceListResult{
+		// 		Value: []*armnapsteromniagentapi.OrganizationResource{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Napster.CompanionAPI/organizations/contosoOrg"),
+		// 				Location: to.Ptr("eastus"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-11/Organizations_ListBySubscription_MaximumSet_Gen.json
+func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscriptionMaximumSetGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOrganizationsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnapsteromniagentapi.OrganizationsClientListBySubscriptionResponse{
+		// 	OrganizationResourceListResult: armnapsteromniagentapi.OrganizationResourceListResult{
+		// 		Value: []*armnapsteromniagentapi.OrganizationResource{
+		// 			{
+		// 				Properties: &armnapsteromniagentapi.OrganizationProperties{
+		// 					Marketplace: &armnapsteromniagentapi.MarketplaceDetails{
+		// 						SubscriptionID: to.Ptr("a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d"),
+		// 						SubscriptionStatus: to.Ptr(armnapsteromniagentapi.MarketplaceSubscriptionStatusPendingFulfillmentStart),
+		// 						OfferDetails: &armnapsteromniagentapi.OfferDetails{
+		// 							PublisherID: to.Ptr("contoso"),
+		// 							OfferID: to.Ptr("contoso-saas-app"),
+		// 							PlanID: to.Ptr("standard-plan"),
+		// 							PlanName: to.Ptr("Standard Plan"),
+		// 							TermUnit: to.Ptr("P1M"),
+		// 							TermID: to.Ptr("monthly-term-001"),
+		// 						},
+		// 						SaasResourceID: to.Ptr("/subscriptions/a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d/resourceGroups/rgopenapi/providers/Microsoft.SaaS/resources/contosoSaaS"),
+		// 					},
+		// 					User: &armnapsteromniagentapi.UserDetails{
+		// 						FirstName: to.Ptr("John"),
+		// 						LastName: to.Ptr("Doe"),
+		// 						EmailAddress: to.Ptr("john.doe@contoso.com"),
+		// 						Upn: to.Ptr("john.doe@contoso.com"),
+		// 						PhoneNumber: to.Ptr("+1-425-555-1234"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armnapsteromniagentapi.ResourceProvisioningStateSucceeded),
+		// 					PartnerProperties: &armnapsteromniagentapi.PartnerProperties{
+		// 						Application: to.Ptr("Contoso App"),
+		// 					},
+		// 					SingleSignOnProperties: &armnapsteromniagentapi.SingleSignOnPropertiesV2{
+		// 						Type: to.Ptr(armnapsteromniagentapi.SingleSignOnTypeSaml),
+		// 						State: to.Ptr(armnapsteromniagentapi.SingleSignOnStatesInitial),
+		// 						EnterpriseAppID: to.Ptr("b2c3d4e5-f6a7-4b5c-8d9e-0f1a2b3c4d5e"),
+		// 						URL: to.Ptr("https://login.contoso.com"),
+		// 						AADDomains: []*string{
+		// 							to.Ptr("contoso.com"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Identity: &armnapsteromniagentapi.ManagedServiceIdentity{
+		// 					PrincipalID: to.Ptr("c3d4e5f6-a7b8-4c5d-9e0f-1a2b3c4d5e6f"),
+		// 					TenantID: to.Ptr("d4e5f6a7-b8c9-4d5e-0f1a-2b3c4d5e6f7a"),
+		// 					Type: to.Ptr(armnapsteromniagentapi.ManagedServiceIdentityTypeNone),
+		// 					UserAssignedIdentities: map[string]*armnapsteromniagentapi.UserAssignedIdentity{
+		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Napster.CompanionAPI/organizations/contosoOrg"),
+		// 				Name: to.Ptr("contosoOrg"),
+		// 				Type: to.Ptr("Napster.CompanionAPI/organizations"),
+		// 				SystemData: &armnapsteromniagentapi.SystemData{
+		// 					CreatedBy: to.Ptr("john.doe@contoso.com"),
+		// 					CreatedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("jane.smith@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armnapsteromniagentapi.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.December, 24, 15, 55, 17, 787000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/providers/Napster.CompanionAPI/organizations?api-version=2026-08-11&$skiptoken=X'12345'"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-11/Organizations_ListBySubscription_MinimumSet_Gen.json
+func ExampleOrganizationsClient_NewListBySubscriptionPager_organizationsListBySubscriptionMinimumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnapsteromniagentapi.NewClientFactory("0F0FBCF9-8374-47FC-B189-B79B84033EA3", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewOrganizationsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnapsteromniagentapi.OrganizationsClientListBySubscriptionResponse{
+		// 	OrganizationResourceListResult: armnapsteromniagentapi.OrganizationResourceListResult{
+		// 		Value: []*armnapsteromniagentapi.OrganizationResource{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/0F0FBCF9-8374-47FC-B189-B79B84033EA3/resourceGroups/rgopenapi/providers/Napster.CompanionAPI/organizations/contosoOrg"),
+		// 				Location: to.Ptr("eastus"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

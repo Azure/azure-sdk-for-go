@@ -648,6 +648,7 @@ type pipelineRequestOptions struct {
 	resourceAddress       string
 	isRidBased            bool
 	isWriteOperation      bool
+	replaySafe            bool
 }
 
 func addDefaultHeaders(req *policy.Request) {

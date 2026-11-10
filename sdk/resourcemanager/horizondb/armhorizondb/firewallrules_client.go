@@ -49,7 +49,9 @@ func NewFirewallRulesClient(subscriptionID string, credential azcore.TokenCreden
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
 //   - poolName - The name of the HorizonDB pool.
-//   - firewallRuleName - The name of the HorizonDB pool firewall rule.
+//   - firewallRuleName - The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters, contain only
+//     ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with a letter, digit, or
+//     underscore.
 //   - resource - Resource create parameters.
 //   - options - FirewallRulesClientBeginCreateOrReplaceOptions contains the optional parameters for the FirewallRulesClient.BeginCreateOrReplace
 //     method.
@@ -137,7 +139,9 @@ func (client *FirewallRulesClient) createOrReplaceCreateRequest(ctx context.Cont
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
 //   - poolName - The name of the HorizonDB pool.
-//   - firewallRuleName - The name of the HorizonDB pool firewall rule.
+//   - firewallRuleName - The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters, contain only
+//     ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with a letter, digit, or
+//     underscore.
 //   - options - FirewallRulesClientBeginDeleteOptions contains the optional parameters for the FirewallRulesClient.BeginDelete
 //     method.
 func (client *FirewallRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, options *FirewallRulesClientBeginDeleteOptions) (*runtime.Poller[FirewallRulesClientDeleteResponse], error) {
@@ -218,7 +222,9 @@ func (client *FirewallRulesClient) deleteCreateRequest(ctx context.Context, reso
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
 //   - poolName - The name of the HorizonDB pool.
-//   - firewallRuleName - The name of the HorizonDB pool firewall rule.
+//   - firewallRuleName - The name of the HorizonDB pool firewall rule. The name must be 1 through 80 characters, contain only
+//     ASCII letters, digits, underscores, periods, and hyphens, start with a letter or digit, and end with a letter, digit, or
+//     underscore.
 //   - options - FirewallRulesClientGetOptions contains the optional parameters for the FirewallRulesClient.Get method.
 func (client *FirewallRulesClient) Get(ctx context.Context, resourceGroupName string, clusterName string, poolName string, firewallRuleName string, options *FirewallRulesClientGetOptions) (FirewallRulesClientGetResponse, error) {
 	var err error

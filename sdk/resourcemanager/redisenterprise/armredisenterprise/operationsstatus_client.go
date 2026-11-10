@@ -19,7 +19,7 @@ import (
 // OperationsStatusClient contains the methods for the OperationsStatus group.
 // Don't use this type directly, use NewOperationsStatusClient() instead.
 //
-// Generated from API version 2026-09-01
+// Generated from API version 2026-10-01-preview
 type OperationsStatusClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -87,7 +87,7 @@ func (client *OperationsStatusClient) getCreateRequest(ctx context.Context, loca
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20261001Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

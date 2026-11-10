@@ -6,6 +6,7 @@ const { readFileSync } = require("node:fs");
 const path = require("node:path");
 const { test } = require("node:test");
 const { routeReviewRequest, prepareReview } = require("./review-request.cjs");
+const { assertReviewCurrent } = require("./generated-provenance.cjs");
 
 const sha = "a".repeat(40);
 const nextSha = "b".repeat(40);
@@ -45,7 +46,7 @@ function fixture() {
     pr: {
       number: 42,
       state: "open",
-      base: { repo: { id: 1 } },
+      base: { repo: { id: 1 }, sha: nextSha, ref: "main" },
       head: { repo: { id: 2 }, sha },
       labels: [{ name: needed }],
     },
@@ -386,9 +387,45 @@ test("compiled reviewer retains validated targets in both agent and publisher co
   const safeOutputs = compiled.slice(compiled.indexOf("\n  safe_outputs:\n"));
   assert.ok(safeOutputs.indexOf("Reject stale review outputs") < safeOutputs.indexOf("Process Safe Outputs"));
   assert.match(safeOutputs, /needs:\n(?:      - [\w-]+\n)*      - provenance\n/);
-  assert.ok(safeOutputs.indexOf("Checkout trusted provenance publisher") < safeOutputs.indexOf("Enforce generated-file provenance"));
-  assert.ok(safeOutputs.indexOf("Enforce generated-file provenance") < safeOutputs.indexOf("Process Safe Outputs"));
+  assert.ok(safeOutputs.indexOf("Checkout trusted provenance publisher") < safeOutputs.indexOf("Reject stale review outputs"));
+  assert.match(safeOutputs, /assertReviewCurrent/);
+  assert.match(safeOutputs, /if \(result.status !== 'pass'\)/);
   assert.match(compiled, /^  agent:\n(?:    name:[^\n]*\n)?    needs:\n(?:      - [\w-]+\n)*      - provenance\n/m);
+});
+
+test("compiled blocker reporting is independent of the agent and threat detection", () => {
+  const source = text("mgmt-review.md");
+  const compiled = text("mgmt-review.lock.yml");
+  assert.match(source, /^if: .*needs\.provenance\.outputs\.status == 'pass'"?$/m);
+  assert.match(compiled, /^  activation:\n(?:    name:[^\n]*\n)?    needs:\n(?:      - [\w-]+\n)*      - provenance\n/m);
+  const agent = compiled.split("\n  agent:\n")[1].split("\n  conclusion:\n")[0];
+  const condition = (job) => job.match(/^    if: ([^\n]*(?:\n      [^\n]+)*)/m)[1]
+    .replace(/^>\s*/, "").replace(/\n\s+/g, " ").trim();
+  const agentCondition = condition(agent);
+  assert.match(agentCondition, /needs\.provenance\.outputs\.status == 'pass'/);
+  assert.match(agentCondition, /!cancelled\(\) && !failure\(\)/);
+  const eligible = new Function("needs", "failure", "cancelled", `return ${agentCondition};`);
+  const needs = {
+    activation: { outputs: { daily_ai_credits_exceeded: "false" } },
+    validate_request: { outputs: { ready: "true" } },
+    provenance: { outputs: { status: "pass" } },
+    provenance_report: { result: "skipped" },
+  };
+  assert.equal(eligible(needs, () => false, () => false), true, "skipping the blocker reporter must not skip the agent");
+  assert.equal(eligible(needs, () => true, () => false), false, "upstream failures must still block the agent");
+  assert.equal(eligible(needs, () => false, () => true), false, "cancellation must still block the agent");
+  needs.provenance.outputs.status = "manual-edits";
+  assert.equal(eligible(needs, () => false, () => false), false, "non-passing results must not run the agent");
+  const report = compiled.split("\n  provenance_report:\n")[1]?.split(/\n  [\w-]+:\n/)[0];
+  assert.ok(report, "compiled workflow has a separate trusted reporting job");
+  const dependencies = report.match(/^    needs:\n((?:      - [\w-]+\n)+)/m)?.[1];
+  assert.ok(dependencies);
+  assert.deepEqual([...dependencies.matchAll(/- ([\w-]+)/g)].map((match) => match[1]).sort(),
+    ["provenance", "validate_request"]);
+  assert.match(condition(report), /needs\.provenance\.outputs\.status != 'pass'/);
+  assert.match(report, /publishProvenance/);
+  assert.match(report, /ref: \$\{\{ github.sha \}\}/);
+  assert.doesNotMatch(report, /needs\.(agent|activation|detection)|GH_AW_AGENT_OUTPUT|GH_AW_DETECTION/);
 });
 
 test("reviewer can read PR content without allowing private repository data", () => {
@@ -425,12 +462,20 @@ test("collector credentials stay outside the agent and detection environments", 
 test("the actual safe-output guard cleans up rejected reviews without consuming new requests", async (t) => {
   const source = text("mgmt-review.md");
   const script = source.split("    - name: Reject stale review outputs\n")[1]
-    .split("\n    - name: ")[0].split("        script: |\n")[1]
+    .split("\n  threat-detection:")[0].split("        script: |\n")[1]
     .split("\n").map((line) => line.slice(10)).join("\n");
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
-  const guard = new AsyncFunction("github", "context", "process", "core", script);
-  const process = { env: { REVIEW_PR_NUMBER: "42", REVIEW_HEAD_SHA: sha } };
-  const run = (state) => guard(state.github, state.context, process, state.core);
+  const guard = new AsyncFunction("require", "github", "context", "process", "core", script);
+  const provenance = {
+    status: "pass", pr_number: 42, head_sha: sha, base_sha: nextSha, base_ref: "main", findings: [], errors: [],
+  };
+  const mockRequire = (name) => {
+    assert.equal(name, "./eng/tools/pr-review/generated-provenance.cjs");
+    return { assertReviewCurrent };
+  };
+  const run = (state, result = provenance) => guard(mockRequire, state.github, state.context, { env: {
+    REVIEW_PR_NUMBER: "42", REVIEW_HEAD_SHA: sha, REVIEW_PROVENANCE: JSON.stringify(result),
+  } }, state.core);
 
   await t.test("current head proceeds without removing labels", async () => {
     const state = fixture();
@@ -442,6 +487,8 @@ test("the actual safe-output guard cleans up rejected reviews without consuming 
 
   for (const [name, mutate] of [
     ["changed head", (state) => state.pr.head.sha = nextSha],
+    ["changed base SHA", (state) => state.pr.base.sha = "c".repeat(40)],
+    ["retargeted base ref at the same SHA", (state) => state.pr.base.ref = "release"],
     ["closed PR", (state) => state.pr.state = "closed"],
   ]) {
     await t.test(name, async () => {
@@ -457,6 +504,12 @@ test("the actual safe-output guard cleans up rejected reviews without consuming 
       }]);
     });
   }
+
+  await t.test("non-passing results cannot publish agent outputs", async () => {
+    const state = fixture();
+    await assert.rejects(run(state, { ...provenance, status: "unverifiable", errors: ["API unavailable"] }),
+      /Non-passing provenance/);
+  });
 
   await t.test("already-absent in-progress label still rejects stale output", async () => {
     const state = fixture();

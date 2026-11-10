@@ -6,7 +6,7 @@ const { createHash } = require("node:crypto");
 const { readFileSync } = require("node:fs");
 const path = require("node:path");
 const { test } = require("node:test");
-const { checkProvenance, applyProvenanceGate } = require("./generated-provenance.cjs");
+const { checkProvenance, assertReviewCurrent, publishProvenance } = require("./generated-provenance.cjs");
 
 const headSHA = "a".repeat(40);
 const parentSHA = "b".repeat(40);
@@ -15,13 +15,14 @@ const source = `${header}package generated\n\nconst Value = "a b"\n`;
 
 function fixture(changes = [{ filename: "generated.go", before: source, after: source.replace('"a b"', '"ab"') }]) {
   const state = {
-    pr: { number: 42, state: "open", head: { sha: headSHA }, base: { sha: parentSHA }, changed_files: changes.length, commits: 1 },
+    pr: { number: 42, state: "open", head: { sha: headSHA }, base: { sha: parentSHA, ref: "main" }, changed_files: changes.length, commits: 1 },
     commits: [{ sha: headSHA, author: { login: "developer" }, commit: { author: { name: "azure-sdk" } } }],
     files: [],
     blobs: new Map(),
     previous: new Map(),
     errors: [],
     pages: [],
+    writes: [],
   };
   function addBlob(value) {
     const data = Buffer.isBuffer(value) ? value : Buffer.from(value);
@@ -75,17 +76,24 @@ function fixture(changes = [{ filename: "generated.go", before: source, after: s
           return { data };
         },
       },
+      issues: {
+        createComment: async (request) => state.writes.push({ operation: "comment", ...request }),
+        removeLabel: async (request) => state.writes.push({ operation: "remove-label", ...request }),
+        addLabels: async (request) => state.writes.push({ operation: "add-labels", ...request }),
+      },
     },
     paginate: async (method, options) => {
       assert.equal(options.per_page, 100);
       return (await method(options)).data;
     },
   };
-  state.run = () => checkProvenance({
+  state.api = {
     github: state.github,
     context: { repo: { owner: "Azure", repo: "azure-sdk-for-go" } },
     core: { info: () => {}, error: (message) => state.errors.push(message) },
-  }, { prNumber: 42, headSHA });
+  };
+  state.run = () => checkProvenance(state.api, { prNumber: 42, headSHA });
+  state.publish = (result) => publishProvenance(state.api, { result, prNumber: 42, headSHA });
   return state;
 }
 
@@ -136,12 +144,15 @@ test("non-generated files, quoted marker text, and binary data are ignored", asy
   const state = fixture([
     { filename: "handwritten.go", before: "package p\n", after: "incomplete code" },
     { filename: "marker.go", before: 'const marker = "// DO NOT EDIT"\n', after: 'const marker = "// do not edit"\n' },
+    { filename: "block.go", before: '/* header */\nconst marker = "DO NOT EDIT"\n', after: '/* header */\nconst marker = "do not edit"\n' },
+    { filename: "comment.html", before: '<!-- header -->\nDO NOT EDIT\n', after: '<!-- header -->\ndo not edit\n' },
     { filename: "image.png", before: Buffer.from([255, 0]), after: Buffer.from([255, 1]) },
   ]);
   assert.equal((await state.run()).status, "pass");
 });
 
-for (const marker of ["# DO NOT EDIT", "/*\n * DO NOT EDIT\n */", "<!-- do not edit -->"]) {
+for (const marker of ["# DO NOT EDIT", "/*\n * DO NOT EDIT\n */", "/*\nDO NOT EDIT\n*/",
+  "<!-- do not edit -->", "<!--\nDO NOT EDIT\n-->"]) {
   test(`generated-file marker ${JSON.stringify(marker)} is checked without a language dependency`, async () => {
     const state = fixture([{ filename: "generated.txt", before: `${marker}\nold`, after: `${marker}\nnew` }]);
     assert.equal((await state.run()).status, "manual-edits");
@@ -181,16 +192,24 @@ for (const [name, mutate] of [
   });
 }
 
-test("a PR changed during verification cannot receive a pass", async () => {
-  const state = fixture([{ filename: "handwritten.go", before: "package p\n", after: "package p\n" }]);
-  let calls = 0;
-  state.github.rest.pulls.get = async () => {
-    const pr = structuredClone(state.pr);
-    if (++calls > 1) pr.base.sha = "c".repeat(40);
-    return { data: pr };
-  };
-  assert.equal((await state.run()).status, "unverifiable");
-});
+for (const [name, mutate] of [
+  ["base SHA", (pr) => pr.base.sha = "c".repeat(40)],
+  ["base ref at the same SHA", (pr) => pr.base.ref = "release"],
+]) {
+  test(`a changed ${name} during verification cannot receive a pass`, async () => {
+    const state = fixture([{ filename: "handwritten.go", before: "package p\n", after: "package p\n" }]);
+    let calls = 0;
+    state.github.rest.pulls.get = async () => {
+      const pr = structuredClone(state.pr);
+      if (++calls > 1) mutate(pr);
+      return { data: pr };
+    };
+    const result = await state.run();
+    assert.equal(result.status, "unverifiable");
+    assert.equal(result.base_sha, parentSHA);
+    assert.equal(result.base_ref, "main");
+  });
+}
 
 test("an edit reverted later in the PR is still detected in its original commit", async () => {
   const state = fixture();
@@ -218,78 +237,103 @@ test("an edit reverted later in the PR is still detected in its original commit"
   assert.deepEqual(result.findings.map((finding) => finding.sha), [firstSHA, headSHA]);
 });
 
-test("the publisher replaces every AI-authored comment when provenance does not pass", async () => {
-  const result = await fixture().run();
-  const label = { type: "add_labels", labels: ["mgmt-review-analyzed"] };
-  const output = { items: [
-    { type: "add_comment", body: "## PR is ready to merge" },
-    { type: "add_comment", body: "Safe to squash now; skip manual review." },
-    { type: "add-comment", body: "Alternate spellings must not bypass the gate." },
-    label,
-  ] };
-  const gated = applyProvenanceGate(result, output, 42, headSHA);
-  assert.deepEqual(gated.items.slice(1), [
-    { type: "remove_labels", item_number: 42, labels: ["mgmt-review-in-progress"] },
-    { type: "add_labels", item_number: 42, labels: ["mgmt-review-analyzed"] },
-  ]);
-  assert.equal(gated.items.length, 3);
-  const comments = gated.items.filter((item) => item.type === "add_comment");
-  assert.equal(comments.length, 1);
-  assert.equal(comments[0].item_number, 42);
-  assert.match(comments[0].body, /generated\.go/);
-  assert.match(comments[0].body, /not ready to merge/);
-  assert.doesNotMatch(comments[0].body, /## PR is ready to merge|Safe to squash/);
-});
-
-test("unverifiable results produce a deterministic warning even without an agent comment", async () => {
-  const state = fixture();
-  state.pr.commits++;
-  const result = await state.run();
-  const gated = applyProvenanceGate(result, { items: [] }, 42, headSHA);
-  assert.match(gated.items[0].body, /Manual Review Required/);
-  assert.match(gated.items[0].body, /commit list is incomplete/);
-});
-
-test("only a consistent pass bound to the reviewed PR and head preserves agent guidance", async () => {
+test("only consistent results bound to the reviewed PR, head, and base can be published", async () => {
   const state = fixture();
   state.commits[0].author.login = "azure-sdk";
   const result = await state.run();
-  const output = { items: [{ type: "add_comment", body: "## PR is ready to merge" }] };
-  assert.equal(applyProvenanceGate(result, output, 42, headSHA), output);
+  await assertReviewCurrent(state.api, result, 42, headSHA);
   for (const invalid of [
     undefined,
     { ...result, pr_number: 43 },
     { ...result, head_sha: parentSHA },
+    { ...result, base_sha: undefined },
+    { ...result, base_ref: "" },
+    { ...result, base_sha: null, base_ref: null },
     { ...result, findings: [{ file: "generated.go" }] },
     { ...result, errors: ["API failure"] },
     { ...result, status: "unverifiable" },
   ]) {
-    assert.throws(() => applyProvenanceGate(invalid, output, 42, headSHA), /provenance result/);
+    await assert.rejects(assertReviewCurrent(state.api, invalid, 42, headSHA), /provenance result/);
   }
+  await assert.rejects(state.publish(result), /normal review publisher/);
+  assert.deepEqual(state.writes, []);
 });
 
-test("the workflow publisher executes the provenance gate before processing safe outputs", async () => {
+for (const [name, mutate] of [
+  ["head", (pr) => pr.head.sha = parentSHA],
+  ["base SHA", (pr) => pr.base.sha = "c".repeat(40)],
+  ["base ref at the same SHA", (pr) => pr.base.ref = "release"],
+  ["open state", (pr) => pr.state = "closed"],
+]) {
+  test(`the trusted reporter rejects a changed ${name} and only cleans up the in-progress label`, async () => {
+    const state = fixture();
+    const result = await state.run();
+    mutate(state.pr);
+    await assert.rejects(state.publish(result), /No review outputs/);
+    assert.deepEqual(state.writes, [{
+      operation: "remove-label", ...state.api.context.repo, issue_number: 42, name: "mgmt-review-in-progress",
+    }]);
+  });
+}
+
+test("failure to read the initial base can only produce an unverifiable report", async () => {
+  const state = fixture();
+  const get = state.github.rest.pulls.get;
+  state.github.rest.pulls.get = async () => {
+    state.github.rest.pulls.get = get;
+    throw new Error("PR API temporarily unavailable.");
+  };
+  const result = await state.run();
+  assert.equal(result.status, "unverifiable");
+  assert.equal(result.base_sha, null);
+  assert.equal(result.base_ref, null);
+  await state.publish(result);
+  assert.match(state.writes[0].body, /PR API temporarily unavailable/);
+  assert.match(state.writes[0].body, /not ready to merge/);
+});
+
+test("report publication errors surface without applying completion labels", async () => {
+  const state = fixture();
+  const result = await state.run();
+  state.github.rest.issues.createComment = async () => { throw new Error("Comment publication denied."); };
+  await assert.rejects(state.publish(result), /Comment publication denied/);
+  assert.deepEqual(state.writes, []);
+});
+
+test("the actual trusted reporter publishes blockers and labels regardless of detection verdict", async (t) => {
   const workflow = path.resolve(__dirname, "..", "..", "..", ".github", "workflows", "mgmt-review.md");
   const source = readFileSync(workflow, "utf8").replace(/\r\n/g, "\n");
-  const step = source.split("    - name: Enforce generated-file provenance\n")[1].split("  threat-detection:")[0];
+  const step = source.split("      - name: Publish generated-file blockers\n")[1].split("\n  validate_request:")[0];
   assert.match(step, /REVIEW_PROVENANCE: \$\{\{ needs.provenance.outputs.result \}\}/);
-  const script = step.split("        script: |\n")[1].split("\n").map((line) => line.slice(10)).join("\n");
+  const script = step.split("          script: |\n")[1].split("\n").map((line) => line.slice(12)).join("\n");
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
-  const guard = new AsyncFunction("require", "process", script);
-  const result = await fixture().run();
-  let written;
+  const reporter = new AsyncFunction("require", "github", "context", "core", "process", script);
   const mockRequire = (name) => {
-    if (name === "./eng/tools/pr-review/generated-provenance.cjs") return { applyProvenanceGate };
-    assert.equal(name, "node:fs");
-    return {
-      readFileSync: () => JSON.stringify({ items: [{ type: "add_comment", body: "Ready to merge!" }] }),
-      writeFileSync: (file, content) => { written = JSON.parse(content); },
-    };
+    assert.equal(name, "./eng/tools/pr-review/generated-provenance.cjs");
+    return { publishProvenance };
   };
-  await guard(mockRequire, { env: {
-    REVIEW_PR_NUMBER: "42", REVIEW_HEAD_SHA: headSHA, REVIEW_PROVENANCE: JSON.stringify(result),
-    GH_AW_AGENT_OUTPUT: "agent_output.json",
-  } });
-  assert.match(written.items[0].body, /not ready to merge/);
-  assert.doesNotMatch(written.items[0].body, /Ready to merge!/);
+  for (const status of ["manual-edits", "unverifiable"]) {
+    for (const verdict of ["warning", "failure"]) {
+      await t.test(`${status} with ${verdict}`, async () => {
+        const state = fixture();
+        if (status === "unverifiable") state.pr.commits++;
+        const result = await state.run();
+        assert.equal(result.status, status);
+        await reporter(mockRequire, state.github, state.api.context, state.api.core, { env: {
+          REVIEW_PR_NUMBER: "42", REVIEW_HEAD_SHA: headSHA, REVIEW_PROVENANCE: JSON.stringify(result),
+          GH_AW_DETECTION_CONCLUSION: verdict,
+        } });
+        assert.equal(state.writes.length, 3);
+        assert.deepEqual(state.writes[0], {
+          operation: "comment", ...state.api.context.repo, issue_number: 42, body: state.writes[0].body,
+        });
+        assert.match(state.writes[0].body, /not ready to merge/);
+        assert.match(state.writes[0].body, status === "manual-edits" ? /generated\.go/ : /commit list is incomplete/);
+        assert.deepEqual(state.writes.slice(1), [
+          { operation: "remove-label", ...state.api.context.repo, issue_number: 42, name: "mgmt-review-in-progress" },
+          { operation: "add-labels", ...state.api.context.repo, issue_number: 42, labels: ["mgmt-review-analyzed"] },
+        ]);
+      });
+    }
+  }
 });

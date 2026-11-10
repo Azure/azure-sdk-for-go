@@ -20,6 +20,8 @@ on:
         type: string
   bots: [github-actions]
 jobs:
+  activation:
+    needs: [validate_request, provenance]
   safe_outputs:
     needs: [validate_request, provenance]
     permissions:
@@ -36,6 +38,7 @@ jobs:
       pull-requests: read
     outputs:
       result: ${{ steps.provenance.outputs.result }}
+      status: ${{ steps.provenance.outputs.status }}
     steps:
       - name: Checkout trusted provenance checker
         uses: actions/checkout@v7.0.1
@@ -57,6 +60,37 @@ jobs:
               headSHA: process.env.REVIEW_HEAD_SHA,
             });
             core.setOutput('result', JSON.stringify(result));
+            core.setOutput('status', result.status);
+  provenance_report:
+    needs: [validate_request, provenance]
+    if: needs.validate_request.outputs.ready == 'true' && needs.provenance.outputs.status != 'pass'
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Checkout trusted provenance reporter
+        uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          sparse-checkout: eng/tools/pr-review
+      - name: Publish generated-file blockers
+        uses: actions/github-script@v9.0.0
+        env:
+          REVIEW_PR_NUMBER: ${{ needs.validate_request.outputs.pr_number }}
+          REVIEW_HEAD_SHA: ${{ needs.validate_request.outputs.head_sha }}
+          REVIEW_PROVENANCE: ${{ needs.provenance.outputs.result }}
+        with:
+          script: |
+            const { publishProvenance } = require('./eng/tools/pr-review/generated-provenance.cjs');
+            await publishProvenance({ github, context, core }, {
+              result: JSON.parse(process.env.REVIEW_PROVENANCE),
+              prNumber: Number(process.env.REVIEW_PR_NUMBER),
+              headSHA: process.env.REVIEW_HEAD_SHA,
+            });
   validate_request:
     if: github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-slim
@@ -89,7 +123,8 @@ jobs:
               core.setOutput('head_sha', request.headSha);
             }
 labels: [mgmt-review-needed]
-if: needs.validate_request.outputs.ready == 'true'
+# The compiler adds the reporter as an agent dependency, but it is skipped on pass.
+if: "!cancelled() && !failure() && needs.validate_request.outputs.ready == 'true' && needs.provenance.outputs.status == 'pass'"
 description: "Analyze a management-plane Go SDK pull request and provide next-step merge guidance"
 checkout: false
 permissions:
@@ -127,41 +162,16 @@ safe-outputs:
       env:
         REVIEW_PR_NUMBER: ${{ needs.validate_request.outputs.pr_number }}
         REVIEW_HEAD_SHA: ${{ needs.validate_request.outputs.head_sha }}
-      with:
-        script: |
-          const { data: pr } = await github.rest.pulls.get({
-            ...context.repo,
-            pull_number: Number(process.env.REVIEW_PR_NUMBER),
-          });
-          if (pr.state !== 'open' || pr.head.sha !== process.env.REVIEW_HEAD_SHA) {
-            try {
-              await github.rest.issues.removeLabel({
-                ...context.repo,
-                issue_number: pr.number,
-                name: 'mgmt-review-in-progress',
-              });
-            } catch (error) {
-              if (error.status !== 404) throw error;
-              core.info('The in-progress label was already removed.');
-            }
-            throw new Error('The PR changed or closed during review. No review outputs were published; request a new review.');
-          }
-    - name: Enforce generated-file provenance
-      uses: actions/github-script@v9.0.0
-      env:
-        REVIEW_PR_NUMBER: ${{ needs.validate_request.outputs.pr_number }}
-        REVIEW_HEAD_SHA: ${{ needs.validate_request.outputs.head_sha }}
         REVIEW_PROVENANCE: ${{ needs.provenance.outputs.result }}
-        GH_AW_AGENT_OUTPUT: ${{ steps.setup-agent-output-env.outputs.GH_AW_AGENT_OUTPUT }}
       with:
         script: |
-          const fs = require('node:fs');
-          const { applyProvenanceGate } = require('./eng/tools/pr-review/generated-provenance.cjs');
-          const outputPath = process.env.GH_AW_AGENT_OUTPUT;
-          const output = JSON.parse(fs.readFileSync(outputPath, 'utf8'));
-          const gated = applyProvenanceGate(JSON.parse(process.env.REVIEW_PROVENANCE), output,
+          const { assertReviewCurrent } = require('./eng/tools/pr-review/generated-provenance.cjs');
+          const result = JSON.parse(process.env.REVIEW_PROVENANCE);
+          await assertReviewCurrent({ github, context, core }, result,
             Number(process.env.REVIEW_PR_NUMBER), process.env.REVIEW_HEAD_SHA);
-          fs.writeFileSync(outputPath, JSON.stringify(gated));
+          if (result.status !== 'pass') {
+            throw new Error('Non-passing provenance must be published by the trusted reporter, not the agent.');
+          }
   threat-detection:
     engine:
       id: copilot
@@ -259,7 +269,7 @@ The checker uses complete GitHub API commit/file lists and full blobs, never exe
 - **`manual-edits`**: the findings identify blocking non-automation edits.
 - **`unverifiable`**, missing, or invalid results: provenance could not be verified and manual review is required.
 
-For either non-passing status, do not claim readiness even when CI succeeds or GitHub allows merging. The publisher replaces agent outputs with a deterministic blocking report and completion-label updates whenever provenance does not pass.
+The agent runs only for a `pass` result. A separate trusted job publishes non-passing results and updates completion labels directly, without running the agent or depending on its threat-detection outcome. Both publishing paths revalidate the PR head and the recorded base SHA/ref before publishing; stale reviews are rejected and their in-progress label is removed.
 
 ### Step 4 — Review breaking-change approvals
 
@@ -338,7 +348,7 @@ Manual edits to generated files could not be verified: <actual verification fail
 **Action required:** A maintainer must review the complete changed-file and commit lists and the relevant diffs to confirm that no non-azure-sdk commit changed `DO NOT EDIT` files. Resolve the data-access issue and re-run this workflow to obtain automated merge guidance.
 ```
 
-For a non-passing provenance result, publish only the generated-file blockers; the publisher enforces this deterministically. If the changed-file list was incomplete, affected modules and onboarding requirements could not be fully determined.
+Non-passing provenance is handled only by the trusted reporter, not the agent. If the changed-file list was incomplete, affected modules and onboarding requirements could not be fully determined.
 
 **If all checks completed and nothing blocks** (Step 3 verified there are no manual edits to generated files, with no unverifiable generated-file provenance, unapproved breaking changes, or approval verification failures):
 

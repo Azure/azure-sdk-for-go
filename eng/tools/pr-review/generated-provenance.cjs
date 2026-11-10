@@ -61,8 +61,13 @@ async function previousBlob(github, repo, parent, filename) {
 }
 
 function compareFile(file, before, after) {
-  const generated = [before, after].some((content) =>
-    content !== null && /^[ \t]*(?:\/\/|\/\*|\*|#|<!--)[^\r\n]*\bDO NOT EDIT\b/im.test(content.toString("utf8")));
+  const generated = [before, after].some((content) => {
+    if (content === null) return false;
+    const text = content.toString("utf8");
+    return /^[ \t]*(?:\/\/|#)[^\r\n]*\bDO NOT EDIT\b/im.test(text) ||
+      /^[ \t]*\/\*(?:(?!\*\/)[\s\S])*?\bDO NOT EDIT\b/im.test(text) ||
+      /^[ \t]*<!--(?:(?!-->)[\s\S])*?\bDO NOT EDIT\b/im.test(text);
+  });
   return generated && (before === null || after === null || !before.equals(after) ||
     file.status === "renamed" || file.status === "copied");
 }
@@ -72,6 +77,8 @@ async function checkProvenance({ github, context, core }, { prNumber, headSHA })
     status: "unverifiable",
     pr_number: prNumber,
     head_sha: headSHA,
+    base_sha: null,
+    base_ref: null,
     findings: [],
     errors: [],
   };
@@ -81,7 +88,10 @@ async function checkProvenance({ github, context, core }, { prNumber, headSHA })
     const repo = context.repo;
     const { data: pr } = await github.rest.pulls.get({ ...repo, pull_number: prNumber });
     if (pr.state !== "open" || pr.head.sha !== headSHA) throw new Error("The PR head changed or the PR closed.");
-    requireSHA(pr.base.sha);
+    const baseSHA = requireSHA(pr.base.sha);
+    if (typeof pr.base.ref !== "string" || pr.base.ref.length === 0) throw new Error("Missing PR base ref.");
+    result.base_sha = baseSHA;
+    result.base_ref = pr.base.ref;
     const files = await github.paginate(github.rest.pulls.listFiles, { ...repo, pull_number: prNumber, per_page: 100 });
     if (files.length !== requireCount(pr.changed_files, "PR changed-file count") ||
         files.some((file) => typeof file.filename !== "string" || file.filename.length === 0) ||
@@ -117,7 +127,8 @@ async function checkProvenance({ github, context, core }, { prNumber, headSHA })
       }
     }
     const { data: current } = await github.rest.pulls.get({ ...repo, pull_number: prNumber });
-    if (current.state !== "open" || current.head.sha !== headSHA || current.base.sha !== pr.base.sha) {
+    if (current.state !== "open" || current.head.sha !== headSHA ||
+        current.base.sha !== result.base_sha || current.base.ref !== result.base_ref) {
       throw new Error("The PR head or base changed, or the PR closed during verification.");
     }
     result.status = result.findings.length === 0 ? "pass" : "manual-edits";
@@ -152,25 +163,54 @@ function renderProvenance(result) {
   return lines.join("\n");
 }
 
-function applyProvenanceGate(result, output, prNumber, headSHA) {
-  if (result?.pr_number !== prNumber || result.head_sha !== headSHA ||
+function validateResult(result, prNumber, headSHA) {
+  requireSHA(headSHA);
+  const unknownBase = result?.base_sha === null && result.base_ref === null;
+  if (!Number.isSafeInteger(prNumber) || prNumber <= 0 ||
+      result?.pr_number !== prNumber || result.head_sha !== headSHA ||
       !["pass", "manual-edits", "unverifiable"].includes(result.status) ||
-      !Array.isArray(result.findings) || !Array.isArray(result.errors) || !Array.isArray(output?.items) ||
+      !Array.isArray(result.findings) || !Array.isArray(result.errors) ||
+      (unknownBase && result.status !== "unverifiable") ||
+      (!unknownBase && (typeof result.base_sha !== "string" || !/^[a-f0-9]{40}$/i.test(result.base_sha) ||
+        typeof result.base_ref !== "string" || result.base_ref.length === 0)) ||
       (result.status === "pass" && (result.findings.length > 0 || result.errors.length > 0)) ||
       (result.status === "manual-edits" && (result.findings.length === 0 || result.errors.length > 0)) ||
       (result.status === "unverifiable" && result.errors.length === 0)) {
     throw new Error("Missing, inconsistent, or stale deterministic provenance result; no review outputs may be published.");
   }
-  if (result.status === "pass") return output;
-  // Do not try to recognize every possible AI-authored claim of merge readiness.
-  return {
-    ...output,
-    items: [
-      { type: "add_comment", item_number: prNumber, body: renderProvenance(result) },
-      { type: "remove_labels", item_number: prNumber, labels: ["mgmt-review-in-progress"] },
-      { type: "add_labels", item_number: prNumber, labels: ["mgmt-review-analyzed"] },
-    ],
-  };
 }
 
-module.exports = { checkProvenance, applyProvenanceGate, renderProvenance };
+async function removeInProgress({ github, context, core }, prNumber) {
+  try {
+    await github.rest.issues.removeLabel({
+      ...context.repo, issue_number: prNumber, name: "mgmt-review-in-progress",
+    });
+  } catch (error) {
+    if (error.status !== 404) throw error;
+    core.info("The in-progress label was already removed.");
+  }
+}
+
+async function assertReviewCurrent(api, result, prNumber, headSHA) {
+  validateResult(result, prNumber, headSHA);
+  const { data: pr } = await api.github.rest.pulls.get({ ...api.context.repo, pull_number: prNumber });
+  if (pr.state !== "open" || pr.head.sha !== headSHA ||
+      (result.base_sha !== null && (pr.base?.sha !== result.base_sha || pr.base?.ref !== result.base_ref))) {
+    await removeInProgress(api, prNumber);
+    throw new Error("The PR head or base changed or the PR closed during review. No review outputs were published; request a new review.");
+  }
+}
+
+async function publishProvenance(api, { result, prNumber, headSHA }) {
+  await assertReviewCurrent(api, result, prNumber, headSHA);
+  if (result.status === "pass") throw new Error("Passing provenance must use the normal review publisher.");
+  await api.github.rest.issues.createComment({
+    ...api.context.repo, issue_number: prNumber, body: renderProvenance(result),
+  });
+  await removeInProgress(api, prNumber);
+  await api.github.rest.issues.addLabels({
+    ...api.context.repo, issue_number: prNumber, labels: ["mgmt-review-analyzed"],
+  });
+}
+
+module.exports = { checkProvenance, assertReviewCurrent, publishProvenance, renderProvenance };

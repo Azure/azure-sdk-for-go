@@ -13,7 +13,7 @@ func TestLiveSelection(t *testing.T) {
 	catalog, err := LoadCatalog()
 	require.NoError(t, err)
 	require.NoError(t, ValidateLiveSelection(catalog, LiveScenarios, LiveRegion))
-	for _, region := range []string{"", "eastus", "East US 2", "westus3"} {
+	for _, region := range []string{"", "eastus", "East US 2", "unknown"} {
 		t.Run("unsupported region "+region, func(t *testing.T) {
 			require.ErrorContains(t, ValidateLiveSelection(catalog, LiveScenarios, region), "live region")
 		})

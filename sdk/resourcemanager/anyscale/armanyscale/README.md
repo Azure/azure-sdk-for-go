@@ -1,6 +1,6 @@
-# Azure Anyscale Module for Go
+# Azure Anyscale.Platform Module for Go
 
-The `armanyscale` module provides operations for working with Azure Anyscale.
+The `armanyscale` module provides operations for working with Azure Anyscale.Platform.
 
 [Source code](https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/anyscale/armanyscale)
 
@@ -15,7 +15,7 @@ The `armanyscale` module provides operations for working with Azure Anyscale.
 
 This project uses [Go modules](https://github.com/golang/go/wiki/Modules) for versioning and dependency management.
 
-Install the Azure Anyscale module:
+Install the Azure Anyscale.Platform module:
 
 ```sh
 go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/anyscale/armanyscale
@@ -23,7 +23,7 @@ go get github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/anyscale/armanyscal
 
 ## Authorization
 
-When creating a client, you will need to provide a credential for authenticating with Azure Anyscale.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
+When creating a client, you will need to provide a credential for authenticating with Azure Anyscale.Platform.  The `azidentity` module provides facilities for various ways of authenticating with Azure including client/secret, certificate, managed identity, and more.
 
 ```go
 cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -33,7 +33,7 @@ For more information on authentication, please see the documentation for `aziden
 
 ## Client Factory
 
-Azure Anyscale module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
+Azure Anyscale.Platform module consists of one or more clients. We provide a client factory which could be used to create any client in this module.
 
 ```go
 clientFactory, err := armanyscale.NewClientFactory(<subscription ID>, cred, nil)

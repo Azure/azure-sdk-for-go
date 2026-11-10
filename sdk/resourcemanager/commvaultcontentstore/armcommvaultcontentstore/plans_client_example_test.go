@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-09-30/Plans_CreateOrupdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Plans_CreateOrupdate_MaximumSet_Gen.json
 func ExamplePlansClient_BeginCreateOrupdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -385,7 +385,7 @@ func ExamplePlansClient_BeginCreateOrupdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/Plans_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Plans_Delete_MaximumSet_Gen.json
 func ExamplePlansClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -406,7 +406,7 @@ func ExamplePlansClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-30/Plans_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Plans_Get_MaximumSet_Gen.json
 func ExamplePlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -608,7 +608,7 @@ func ExamplePlansClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-30/Plans_ListByCloudAccount_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Plans_ListByCloudAccount_MaximumSet_Gen.json
 func ExamplePlansClient_NewListByCloudAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

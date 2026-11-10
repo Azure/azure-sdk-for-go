@@ -68,7 +68,8 @@ func (client *SecurityPerimeterAccessRulesClient) CreateOrUpdate(ctx context.Con
 	if err != nil {
 		return SecurityPerimeterAccessRulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -144,7 +145,8 @@ func (client *SecurityPerimeterAccessRulesClient) Delete(ctx context.Context, re
 		return SecurityPerimeterAccessRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SecurityPerimeterAccessRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SecurityPerimeterAccessRulesClientDeleteResponse{}, err
 	}
 	return SecurityPerimeterAccessRulesClientDeleteResponse{}, nil
 }
@@ -204,7 +206,8 @@ func (client *SecurityPerimeterAccessRulesClient) Get(ctx context.Context, resou
 	if err != nil {
 		return SecurityPerimeterAccessRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -364,7 +367,8 @@ func (client *SecurityPerimeterAccessRulesClient) Reconcile(ctx context.Context,
 	if err != nil {
 		return SecurityPerimeterAccessRulesClientReconcileResponse{}, err
 	}
-	return client.reconcileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.reconcileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // reconcileCreateRequest creates the Reconcile request.

@@ -65,7 +65,8 @@ func (client *SyncGroupsClient) Create(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return SyncGroupsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -140,7 +141,8 @@ func (client *SyncGroupsClient) Delete(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return SyncGroupsClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -207,7 +209,8 @@ func (client *SyncGroupsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SyncGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

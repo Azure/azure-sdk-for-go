@@ -105,6 +105,77 @@ func ExampleKubernetesClusterFeaturesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-07-01/KubernetesClusterFeatures_Patch.json
+func ExampleKubernetesClusterFeaturesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewKubernetesClusterFeaturesClient().BeginUpdate(ctx, "resourceGroupName", "kubernetesClusterName", "featureName", armnetworkcloud.KubernetesClusterFeaturePatchParameters{
+		Properties: &armnetworkcloud.KubernetesClusterFeaturePatchProperties{
+			Options: []*armnetworkcloud.StringKeyValuePair{
+				{
+					Key:   to.Ptr("featureOptionName"),
+					Value: to.Ptr("featureOptionValue"),
+				},
+			},
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("myvalue1"),
+			"key2": to.Ptr("myvalue2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetworkcloud.KubernetesClusterFeaturesClientUpdateResponse{
+	// 	KubernetesClusterFeature: armnetworkcloud.KubernetesClusterFeature{
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesClusters/kubernetesClusterName/features/featureName"),
+	// 		Location: to.Ptr("location"),
+	// 		Name: to.Ptr("featureName"),
+	// 		Properties: &armnetworkcloud.KubernetesClusterFeatureProperties{
+	// 			AvailabilityLifecycle: to.Ptr(armnetworkcloud.KubernetesClusterFeatureAvailabilityLifecycleGenerallyAvailable),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.KubernetesClusterFeatureDetailedStatusInstalled),
+	// 			DetailedStatusMessage: to.Ptr("The feature is successfully installed."),
+	// 			Options: []*armnetworkcloud.StringKeyValuePair{
+	// 				{
+	// 					Key: to.Ptr("featureOptionName"),
+	// 					Value: to.Ptr("featureOptionValue"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.KubernetesClusterFeatureProvisioningStateSucceeded),
+	// 			Required: to.Ptr(armnetworkcloud.KubernetesClusterFeatureRequiredTrue),
+	// 			Version: to.Ptr("1.2.3"),
+	// 		},
+	// 		SystemData: &armnetworkcloud.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("identityA"),
+	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("identityB"),
+	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("myvalue1"),
+	// 			"key2": to.Ptr("myvalue2"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/kubernetesClusters/features"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-07-01/KubernetesClusterFeatures_Get.json
 func ExampleKubernetesClusterFeaturesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -220,75 +291,4 @@ func ExampleKubernetesClusterFeaturesClient_NewListByKubernetesClusterPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01/KubernetesClusterFeatures_Patch.json
-func ExampleKubernetesClusterFeaturesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewKubernetesClusterFeaturesClient().BeginUpdate(ctx, "resourceGroupName", "kubernetesClusterName", "featureName", armnetworkcloud.KubernetesClusterFeaturePatchParameters{
-		Properties: &armnetworkcloud.KubernetesClusterFeaturePatchProperties{
-			Options: []*armnetworkcloud.StringKeyValuePair{
-				{
-					Key:   to.Ptr("featureOptionName"),
-					Value: to.Ptr("featureOptionValue"),
-				},
-			},
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("myvalue1"),
-			"key2": to.Ptr("myvalue2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetworkcloud.KubernetesClusterFeaturesClientUpdateResponse{
-	// 	KubernetesClusterFeature: armnetworkcloud.KubernetesClusterFeature{
-	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesClusters/kubernetesClusterName/features/featureName"),
-	// 		Location: to.Ptr("location"),
-	// 		Name: to.Ptr("featureName"),
-	// 		Properties: &armnetworkcloud.KubernetesClusterFeatureProperties{
-	// 			AvailabilityLifecycle: to.Ptr(armnetworkcloud.KubernetesClusterFeatureAvailabilityLifecycleGenerallyAvailable),
-	// 			DetailedStatus: to.Ptr(armnetworkcloud.KubernetesClusterFeatureDetailedStatusInstalled),
-	// 			DetailedStatusMessage: to.Ptr("The feature is successfully installed."),
-	// 			Options: []*armnetworkcloud.StringKeyValuePair{
-	// 				{
-	// 					Key: to.Ptr("featureOptionName"),
-	// 					Value: to.Ptr("featureOptionValue"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnetworkcloud.KubernetesClusterFeatureProvisioningStateSucceeded),
-	// 			Required: to.Ptr(armnetworkcloud.KubernetesClusterFeatureRequiredTrue),
-	// 			Version: to.Ptr("1.2.3"),
-	// 		},
-	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("identityA"),
-	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("identityB"),
-	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("myvalue1"),
-	// 			"key2": to.Ptr("myvalue2"),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.NetworkCloud/kubernetesClusters/features"),
-	// 	},
-	// }
 }

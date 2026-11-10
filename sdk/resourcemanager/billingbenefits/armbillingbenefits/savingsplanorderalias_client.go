@@ -61,7 +61,7 @@ func (client *SavingsPlanOrderAliasClient) BeginCreate(ctx context.Context, savi
 	}
 }
 
-// Create - Create a savings plan. Learn more about permissions needed at https://go.microsoft.com/fwlink/?linkid=2215851
+// create - Create a savings plan. Learn more about permissions needed at https://go.microsoft.com/fwlink/?linkid=2215851
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SavingsPlanOrderAliasClient) create(ctx context.Context, savingsPlanOrderAliasName string, body SavingsPlanOrderAliasModel, options *SavingsPlanOrderAliasClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -78,12 +78,13 @@ func (client *SavingsPlanOrderAliasClient) create(ctx context.Context, savingsPl
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *SavingsPlanOrderAliasClient) createCreateRequest(ctx context.Context, savingsPlanOrderAliasName string, body SavingsPlanOrderAliasModel, _ *SavingsPlanOrderAliasClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.BillingBenefits/savingsPlanOrderAliases/{savingsPlanOrderAliasName}"
 	if savingsPlanOrderAliasName == "" {
@@ -124,7 +125,8 @@ func (client *SavingsPlanOrderAliasClient) Get(ctx context.Context, savingsPlanO
 	if err != nil {
 		return SavingsPlanOrderAliasClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

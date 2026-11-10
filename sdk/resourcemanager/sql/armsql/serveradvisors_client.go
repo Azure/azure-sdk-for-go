@@ -64,7 +64,8 @@ func (client *ServerAdvisorsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ServerAdvisorsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -129,7 +130,8 @@ func (client *ServerAdvisorsClient) ListByServer(ctx context.Context, resourceGr
 	if err != nil {
 		return ServerAdvisorsClientListByServerResponse{}, err
 	}
-	return client.listByServerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByServerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByServerCreateRequest creates the ListByServer request.
@@ -194,7 +196,8 @@ func (client *ServerAdvisorsClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ServerAdvisorsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

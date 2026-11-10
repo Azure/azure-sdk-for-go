@@ -64,7 +64,8 @@ func (client *BillingMetersClient) Get(ctx context.Context, location string, opt
 	if err != nil {
 		return BillingMetersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

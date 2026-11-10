@@ -58,7 +58,8 @@ func (client *GenerateDetailedCostReportOperationStatusClient) Get(ctx context.C
 	if err != nil {
 		return GenerateDetailedCostReportOperationStatusClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

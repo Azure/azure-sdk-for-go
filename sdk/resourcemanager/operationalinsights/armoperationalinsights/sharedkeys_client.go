@@ -64,7 +64,8 @@ func (client *SharedKeysClient) GetSharedKeys(ctx context.Context, resourceGroup
 	if err != nil {
 		return SharedKeysClientGetSharedKeysResponse{}, err
 	}
-	return client.getSharedKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSharedKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSharedKeysCreateRequest creates the GetSharedKeys request.
@@ -125,7 +126,8 @@ func (client *SharedKeysClient) Regenerate(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return SharedKeysClientRegenerateResponse{}, err
 	}
-	return client.regenerateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regenerateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regenerateCreateRequest creates the Regenerate request.

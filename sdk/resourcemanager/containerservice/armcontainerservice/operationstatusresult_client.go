@@ -66,7 +66,8 @@ func (client *OperationStatusResultClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return OperationStatusResultClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -133,7 +134,8 @@ func (client *OperationStatusResultClient) GetByAgentPool(ctx context.Context, r
 	if err != nil {
 		return OperationStatusResultClientGetByAgentPoolResponse{}, err
 	}
-	return client.getByAgentPoolHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByAgentPoolHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByAgentPoolCreateRequest creates the GetByAgentPool request.

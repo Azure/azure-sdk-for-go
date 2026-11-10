@@ -68,7 +68,7 @@ func (client *DbNodesClient) BeginAction(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Action - VM actions on DbNode of VM Cluster by the provided filter
+// action - VM actions on DbNode of VM Cluster by the provided filter
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DbNodesClient) action(ctx context.Context, resourceGroupName string, cloudvmclustername string, dbnodeocid string, body DbNodeAction, options *DbNodesClientBeginActionOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *DbNodesClient) action(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// actionCreateRequest creates the Action request.
+// actionCreateRequest creates the action request.
 func (client *DbNodesClient) actionCreateRequest(ctx context.Context, resourceGroupName string, cloudvmclustername string, dbnodeocid string, body DbNodeAction, _ *DbNodesClientBeginActionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/cloudVmClusters/{cloudvmclustername}/dbNodes/{dbnodeocid}/action"
 	if client.subscriptionID == "" {
@@ -144,7 +145,8 @@ func (client *DbNodesClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return DbNodesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

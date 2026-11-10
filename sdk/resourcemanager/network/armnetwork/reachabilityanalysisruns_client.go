@@ -57,7 +57,7 @@ func NewReachabilityAnalysisRunsClient(subscriptionID string, credential azcore.
 //     method.
 func (client *ReachabilityAnalysisRunsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, reachabilityAnalysisRunName string, options *ReachabilityAnalysisRunsClientBeginDeleteOptions) (*runtime.Poller[ReachabilityAnalysisRunsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, workspaceName, reachabilityAnalysisRunName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, workspaceName, reachabilityAnalysisRunName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -72,11 +72,11 @@ func (client *ReachabilityAnalysisRunsClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// delete - Deletes Reachability Analysis Run.
+// deleteOperation - Deletes Reachability Analysis Run.
 //
 // Deletes Reachability Analysis Run.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReachabilityAnalysisRunsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, reachabilityAnalysisRunName string, options *ReachabilityAnalysisRunsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ReachabilityAnalysisRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, reachabilityAnalysisRunName string, options *ReachabilityAnalysisRunsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ReachabilityAnalysisRunsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -91,7 +91,8 @@ func (client *ReachabilityAnalysisRunsClient) delete(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -154,7 +155,8 @@ func (client *ReachabilityAnalysisRunsClient) Create(ctx context.Context, resour
 	if err != nil {
 		return ReachabilityAnalysisRunsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -231,7 +233,8 @@ func (client *ReachabilityAnalysisRunsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return ReachabilityAnalysisRunsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

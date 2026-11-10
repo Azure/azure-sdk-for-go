@@ -66,7 +66,8 @@ func (client *ConnectedVMwarevSphereAssignmentsClient) CreateOrUpdate(ctx contex
 	if err != nil {
 		return ConnectedVMwarevSphereAssignmentsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *ConnectedVMwarevSphereAssignmentsClient) Delete(ctx context.Contex
 		return ConnectedVMwarevSphereAssignmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ConnectedVMwarevSphereAssignmentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ConnectedVMwarevSphereAssignmentsClientDeleteResponse{}, err
 	}
 	return ConnectedVMwarevSphereAssignmentsClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *ConnectedVMwarevSphereAssignmentsClient) Get(ctx context.Context, 
 	if err != nil {
 		return ConnectedVMwarevSphereAssignmentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -125,7 +125,7 @@ func unmarshalWorkspaceDiscoveryWarningClassification(rawMsg json.RawMessage) (W
 	switch m["reason"] {
 	case string(WorkspaceDiscoveryWarningReasonAccessIndeterminate):
 		b = &WorkspaceDiscoveryAccessWarning{}
-	case string(WorkspaceDiscoveryWarningReasonRbacValidationFailed):
+	case string(WorkspaceDiscoveryWarningReasonRBACValidationFailed):
 		b = &WorkspaceDiscoveryPermissionWarning{}
 	case string(WorkspaceDiscoveryWarningReasonTargetNotFound):
 		b = &WorkspaceDiscoveryResourceWarning{}

@@ -4643,7 +4643,7 @@ func (w WorkspaceDiscoveryPermissionWarning) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "message", w.Message)
 	populate(objectMap, "permission", w.Permission)
-	objectMap["reason"] = WorkspaceDiscoveryWarningReasonRbacValidationFailed
+	objectMap["reason"] = WorkspaceDiscoveryWarningReasonRBACValidationFailed
 	populate(objectMap, "scopeId", w.ScopeID)
 	populate(objectMap, "scopeKind", w.ScopeKind)
 	return json.Marshal(objectMap)

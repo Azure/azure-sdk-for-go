@@ -743,9 +743,9 @@ const (
 	// WorkspaceDiscoveryWarningReasonAccessIndeterminate - Access versus absence could not be determined; guidance must state
 	// both possibilities.
 	WorkspaceDiscoveryWarningReasonAccessIndeterminate WorkspaceDiscoveryWarningReason = "AccessIndeterminate"
-	// WorkspaceDiscoveryWarningReasonRbacValidationFailed - The affected resource could not be read because of a confirmed authorization
+	// WorkspaceDiscoveryWarningReasonRBACValidationFailed - The affected resource could not be read because of a confirmed authorization
 	// denial.
-	WorkspaceDiscoveryWarningReasonRbacValidationFailed WorkspaceDiscoveryWarningReason = "RbacValidationFailed"
+	WorkspaceDiscoveryWarningReasonRBACValidationFailed WorkspaceDiscoveryWarningReason = "RbacValidationFailed"
 	// WorkspaceDiscoveryWarningReasonTargetNotFound - The affected resource or configured membership was confirmed missing.
 	WorkspaceDiscoveryWarningReasonTargetNotFound WorkspaceDiscoveryWarningReason = "TargetNotFound"
 )
@@ -754,7 +754,7 @@ const (
 func PossibleWorkspaceDiscoveryWarningReasonValues() []WorkspaceDiscoveryWarningReason {
 	return []WorkspaceDiscoveryWarningReason{
 		WorkspaceDiscoveryWarningReasonAccessIndeterminate,
-		WorkspaceDiscoveryWarningReasonRbacValidationFailed,
+		WorkspaceDiscoveryWarningReasonRBACValidationFailed,
 		WorkspaceDiscoveryWarningReasonTargetNotFound,
 	}
 }

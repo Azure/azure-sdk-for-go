@@ -352,7 +352,7 @@ func ExampleWorkspaceDiscoveriesClient_Get_getAPartiallySucceededResultWithClass
 	// 				&armchaos.WorkspaceDiscoveryPermissionWarning{
 	// 					ScopeID: to.Ptr("/providers/Microsoft.Management/serviceGroups/exampleGroup"),
 	// 					ScopeKind: to.Ptr("ServiceGroup"),
-	// 					Reason: to.Ptr(armchaos.WorkspaceDiscoveryWarningReasonRbacValidationFailed),
+	// 					Reason: to.Ptr(armchaos.WorkspaceDiscoveryWarningReasonRBACValidationFailed),
 	// 					Message: to.Ptr("Grant the required read permission, wait for propagation, and retry discovery."),
 	// 					Permission: &armchaos.PermissionError{
 	// 						ResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/targets/providers/Microsoft.Compute/virtualMachines/deniedVm"),

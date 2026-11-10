@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0 (2026-11-09)
+## 2.1.0 (2026-11-10)
 ### Features Added
 
 - New value `ProvisioningStateRunning` added to enum type `ProvisioningState`
@@ -23,7 +23,7 @@
 - New enum type `ScenarioValidationState` with values `ScenarioValidationStateAccepted`, `ScenarioValidationStateGenerating`, `ScenarioValidationStateNoResolvedResources`, `ScenarioValidationStateNotStarted`, `ScenarioValidationStateRequiresAttention`, `ScenarioValidationStateResolving`, `ScenarioValidationStateSucceeded`, `ScenarioValidationStateValidating`
 - New enum type `WorkspaceDiscoveryCompleteness` with values `WorkspaceDiscoveryCompletenessBaselineUnknown`, `WorkspaceDiscoveryCompletenessEstablished`, `WorkspaceDiscoveryCompletenessKnownPartial`, `WorkspaceDiscoveryCompletenessVerificationIncomplete`
 - New enum type `WorkspaceDiscoveryStatus` with values `WorkspaceDiscoveryStatusCanceled`, `WorkspaceDiscoveryStatusFailed`, `WorkspaceDiscoveryStatusInProgress`, `WorkspaceDiscoveryStatusPartiallySucceeded`, `WorkspaceDiscoveryStatusPending`, `WorkspaceDiscoveryStatusQueued`, `WorkspaceDiscoveryStatusSucceeded`
-- New enum type `WorkspaceDiscoveryWarningReason` with values `WorkspaceDiscoveryWarningReasonAccessIndeterminate`, `WorkspaceDiscoveryWarningReasonRbacValidationFailed`, `WorkspaceDiscoveryWarningReasonTargetNotFound`
+- New enum type `WorkspaceDiscoveryWarningReason` with values `WorkspaceDiscoveryWarningReasonAccessIndeterminate`, `WorkspaceDiscoveryWarningReasonRBACValidationFailed`, `WorkspaceDiscoveryWarningReasonTargetNotFound`
 - New enum type `WorkspaceEncryptionProtection` with values `WorkspaceEncryptionProtectionCustomerManaged`, `WorkspaceEncryptionProtectionMicrosoftManaged`
 - New enum type `WorkspaceEncryptionState` with values `WorkspaceEncryptionStateApplied`, `WorkspaceEncryptionStateFailed`, `WorkspaceEncryptionStateNotConfigured`, `WorkspaceEncryptionStatePending`, `WorkspaceEncryptionStateUnknown`
 - New enum type `WorkspaceEvaluationStatus` with values `WorkspaceEvaluationStatusCanceled`, `WorkspaceEvaluationStatusFailed`, `WorkspaceEvaluationStatusInProgress`, `WorkspaceEvaluationStatusPartiallySucceeded`, `WorkspaceEvaluationStatusPending`, `WorkspaceEvaluationStatusQueued`, `WorkspaceEvaluationStatusSucceeded`

@@ -69,7 +69,7 @@ func (client *PureStoragePoliciesClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create a PureStoragePolicy
+// createOrUpdate - Create a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PureStoragePoliciesClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, resource PureStoragePolicy, options *PureStoragePoliciesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *PureStoragePoliciesClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PureStoragePoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, resource PureStoragePolicy, _ *PureStoragePoliciesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/pureStoragePolicies/{storagePolicyName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *PureStoragePoliciesClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a PureStoragePolicy
+// deleteOperation - Delete a PureStoragePolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PureStoragePoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, options *PureStoragePoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *PureStoragePoliciesClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PureStoragePoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, storagePolicyName string, _ *PureStoragePoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/pureStoragePolicies/{storagePolicyName}"
 	if client.subscriptionID == "" {
@@ -220,7 +222,8 @@ func (client *PureStoragePoliciesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PureStoragePoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

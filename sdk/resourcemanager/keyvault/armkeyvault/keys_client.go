@@ -67,7 +67,8 @@ func (client *KeysClient) CreateIfNotExist(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return KeysClientCreateIfNotExistResponse{}, err
 	}
-	return client.createIfNotExistHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createIfNotExistHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createIfNotExistCreateRequest creates the CreateIfNotExist request.
@@ -136,7 +137,8 @@ func (client *KeysClient) Get(ctx context.Context, resourceGroupName string, vau
 	if err != nil {
 		return KeysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -202,7 +204,8 @@ func (client *KeysClient) GetVersion(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return KeysClientGetVersionResponse{}, err
 	}
-	return client.getVersionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVersionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVersionCreateRequest creates the GetVersion request.

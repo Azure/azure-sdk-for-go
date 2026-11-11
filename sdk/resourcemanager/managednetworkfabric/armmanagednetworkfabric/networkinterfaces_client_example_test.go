@@ -91,6 +91,111 @@ func ExampleNetworkInterfacesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2025-07-15/NetworkInterfaces_Update.json
+func ExampleNetworkInterfacesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkInterfacesClient().BeginUpdate(ctx, "example-rg", "example-device", "example-interface", armmanagednetworkfabric.NetworkInterfacePatch{
+		Properties: &armmanagednetworkfabric.NetworkInterfacePatchProperties{
+			Annotation:            to.Ptr("annotation"),
+			AdditionalDescription: to.Ptr("device 1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkInterfacesClientUpdateResponse{
+	// 	NetworkInterface: armmanagednetworkfabric.NetworkInterface{
+	// 		Properties: &armmanagednetworkfabric.NetworkInterfaceProperties{
+	// 			Annotation: to.Ptr("annotation"),
+	// 			PhysicalIdentifier: to.Ptr("Id"),
+	// 			ConnectedTo: to.Ptr("external-interface"),
+	// 			InterfaceType: to.Ptr(armmanagednetworkfabric.InterfaceTypeManagement),
+	// 			IPv4Address: to.Ptr("10.2.2.8"),
+	// 			IPv6Address: to.Ptr("10:2:0:0::"),
+	// 			Description: to.Ptr("device 1"),
+	// 			AdditionalDescription: to.Ptr("device 1"),
+	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
+	// 		Name: to.Ptr("example-interface"),
+	// 		Type: to.Ptr("microsoft.managednetworkfabric/networkdevices/networkinterfaces"),
+	// 		SystemData: &armmanagednetworkfabric.SystemData{
+	// 			CreatedBy: to.Ptr("email@address.com"),
+	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("UserId"),
+	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-07-15/NetworkInterfaces_UpdateAdministrativeState.json
+func ExampleNetworkInterfacesClient_BeginUpdateAdministrativeState() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkInterfacesClient().BeginUpdateAdministrativeState(ctx, "example-rg", "example-device", "example-interface", armmanagednetworkfabric.UpdateAdministrativeState{
+		ResourceIDs: []*string{
+			to.Ptr(""),
+		},
+		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmanagednetworkfabric.NetworkInterfacesClientUpdateAdministrativeStateResponse{
+	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
+	// 		Status: to.Ptr("Failed"),
+	// 		Error: &armmanagednetworkfabric.ErrorDetail{
+	// 			Code: to.Ptr(""),
+	// 			Message: to.Ptr(""),
+	// 			Target: to.Ptr(""),
+	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
+	// 			},
+	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
+	// 				{
+	// 					Type: to.Ptr(""),
+	// 					Info: map[string]any{
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-07-15/NetworkInterfaces_Get.json
 func ExampleNetworkInterfacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -203,109 +308,4 @@ func ExampleNetworkInterfacesClient_NewListByNetworkDevicePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-07-15/NetworkInterfaces_Update.json
-func ExampleNetworkInterfacesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkInterfacesClient().BeginUpdate(ctx, "example-rg", "example-device", "example-interface", armmanagednetworkfabric.NetworkInterfacePatch{
-		Properties: &armmanagednetworkfabric.NetworkInterfacePatchProperties{
-			Annotation:            to.Ptr("annotation"),
-			AdditionalDescription: to.Ptr("device 1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkInterfacesClientUpdateResponse{
-	// 	NetworkInterface: armmanagednetworkfabric.NetworkInterface{
-	// 		Properties: &armmanagednetworkfabric.NetworkInterfaceProperties{
-	// 			Annotation: to.Ptr("annotation"),
-	// 			PhysicalIdentifier: to.Ptr("Id"),
-	// 			ConnectedTo: to.Ptr("external-interface"),
-	// 			InterfaceType: to.Ptr(armmanagednetworkfabric.InterfaceTypeManagement),
-	// 			IPv4Address: to.Ptr("10.2.2.8"),
-	// 			IPv6Address: to.Ptr("10:2:0:0::"),
-	// 			Description: to.Ptr("device 1"),
-	// 			AdditionalDescription: to.Ptr("device 1"),
-	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
-	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
-	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
-	// 		Name: to.Ptr("example-interface"),
-	// 		Type: to.Ptr("microsoft.managednetworkfabric/networkdevices/networkinterfaces"),
-	// 		SystemData: &armmanagednetworkfabric.SystemData{
-	// 			CreatedBy: to.Ptr("email@address.com"),
-	// 			CreatedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("UserId"),
-	// 			LastModifiedByType: to.Ptr(armmanagednetworkfabric.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.June, 9, 4, 51, 41, 251000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-07-15/NetworkInterfaces_UpdateAdministrativeState.json
-func ExampleNetworkInterfacesClient_BeginUpdateAdministrativeState() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmanagednetworkfabric.NewClientFactory("0000ABCD-0A0B-0000-0000-000000ABCDEF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNetworkInterfacesClient().BeginUpdateAdministrativeState(ctx, "example-rg", "example-device", "example-interface", armmanagednetworkfabric.UpdateAdministrativeState{
-		ResourceIDs: []*string{
-			to.Ptr(""),
-		},
-		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmanagednetworkfabric.NetworkInterfacesClientUpdateAdministrativeStateResponse{
-	// 	UpdateAdministrativeStateResponse: armmanagednetworkfabric.UpdateAdministrativeStateResponse{
-	// 		Status: to.Ptr("Failed"),
-	// 		Error: &armmanagednetworkfabric.ErrorDetail{
-	// 			Code: to.Ptr(""),
-	// 			Message: to.Ptr(""),
-	// 			Target: to.Ptr(""),
-	// 			Details: []*armmanagednetworkfabric.ErrorDetail{
-	// 			},
-	// 			AdditionalInfo: []*armmanagednetworkfabric.ErrorAdditionalInfo{
-	// 				{
-	// 					Type: to.Ptr(""),
-	// 					Info: map[string]any{
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
 }

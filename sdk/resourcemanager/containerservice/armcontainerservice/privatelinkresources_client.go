@@ -66,7 +66,8 @@ func (client *PrivateLinkResourcesClient) List(ctx context.Context, resourceGrou
 	if err != nil {
 		return PrivateLinkResourcesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

@@ -65,7 +65,8 @@ func (client *DefaultParameterGroupsClient) Get(ctx context.Context, location st
 	if err != nil {
 		return DefaultParameterGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

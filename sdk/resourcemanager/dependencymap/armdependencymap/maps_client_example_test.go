@@ -137,47 +137,6 @@ func ExampleMapsClient_BeginExportDependencies() {
 	// }
 }
 
-// Generated from example definition: 2025-01-31-preview/Maps_Get.json
-func ExampleMapsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdependencymap.NewClientFactory("D6E58BDB-45F1-41EC-A884-1FC945058848", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewMapsClient().Get(ctx, "rgdependencyMap", "mapsTest1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdependencymap.MapsClientGetResponse{
-	// 	MapsResource: armdependencymap.MapsResource{
-	// 		Properties: &armdependencymap.MapsResourceProperties{
-	// 			ProvisioningState: to.Ptr(armdependencymap.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Location: to.Ptr("wjtzelgfcmswfeflfltwxqveo"),
-	// 		ID: to.Ptr("oiaolujazzjebav"),
-	// 		Name: to.Ptr("pwkdwgji"),
-	// 		Type: to.Ptr("cxtymeelrjudiduuwi"),
-	// 		SystemData: &armdependencymap.SystemData{
-	// 			CreatedBy: to.Ptr("dgycvdwmcmlllzqi"),
-	// 			CreatedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("wfntygzyylkddshm"),
-	// 			LastModifiedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-01-31-preview/Maps_GetConnectionsForProcessOnFocusedMachine.json
 func ExampleMapsClient_BeginGetConnectionsForProcessOnFocusedMachine() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -285,6 +244,94 @@ func ExampleMapsClient_BeginGetDependencyViewForFocusedMachine() {
 	}
 }
 
+// Generated from example definition: 2025-01-31-preview/Maps_Update.json
+func ExampleMapsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdependencymap.NewClientFactory("D6E58BDB-45F1-41EC-A884-1FC945058848", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMapsClient().BeginUpdate(ctx, "rgdependencyMap", "mapsTest1", armdependencymap.MapsResourceTagsUpdate{
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdependencymap.MapsClientUpdateResponse{
+	// 	MapsResource: armdependencymap.MapsResource{
+	// 		Properties: &armdependencymap.MapsResourceProperties{
+	// 			ProvisioningState: to.Ptr(armdependencymap.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("wjtzelgfcmswfeflfltwxqveo"),
+	// 		ID: to.Ptr("oiaolujazzjebav"),
+	// 		Name: to.Ptr("pwkdwgji"),
+	// 		Type: to.Ptr("cxtymeelrjudiduuwi"),
+	// 		SystemData: &armdependencymap.SystemData{
+	// 			CreatedBy: to.Ptr("dgycvdwmcmlllzqi"),
+	// 			CreatedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("wfntygzyylkddshm"),
+	// 			LastModifiedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-01-31-preview/Maps_Get.json
+func ExampleMapsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdependencymap.NewClientFactory("D6E58BDB-45F1-41EC-A884-1FC945058848", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewMapsClient().Get(ctx, "rgdependencyMap", "mapsTest1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdependencymap.MapsClientGetResponse{
+	// 	MapsResource: armdependencymap.MapsResource{
+	// 		Properties: &armdependencymap.MapsResourceProperties{
+	// 			ProvisioningState: to.Ptr(armdependencymap.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("wjtzelgfcmswfeflfltwxqveo"),
+	// 		ID: to.Ptr("oiaolujazzjebav"),
+	// 		Name: to.Ptr("pwkdwgji"),
+	// 		Type: to.Ptr("cxtymeelrjudiduuwi"),
+	// 		SystemData: &armdependencymap.SystemData{
+	// 			CreatedBy: to.Ptr("dgycvdwmcmlllzqi"),
+	// 			CreatedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("wfntygzyylkddshm"),
+	// 			LastModifiedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-01-31-preview/Maps_ListByResourceGroup.json
 func ExampleMapsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -385,51 +432,4 @@ func ExampleMapsClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-01-31-preview/Maps_Update.json
-func ExampleMapsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdependencymap.NewClientFactory("D6E58BDB-45F1-41EC-A884-1FC945058848", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMapsClient().BeginUpdate(ctx, "rgdependencyMap", "mapsTest1", armdependencymap.MapsResourceTagsUpdate{
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdependencymap.MapsClientUpdateResponse{
-	// 	MapsResource: armdependencymap.MapsResource{
-	// 		Properties: &armdependencymap.MapsResourceProperties{
-	// 			ProvisioningState: to.Ptr(armdependencymap.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Location: to.Ptr("wjtzelgfcmswfeflfltwxqveo"),
-	// 		ID: to.Ptr("oiaolujazzjebav"),
-	// 		Name: to.Ptr("pwkdwgji"),
-	// 		Type: to.Ptr("cxtymeelrjudiduuwi"),
-	// 		SystemData: &armdependencymap.SystemData{
-	// 			CreatedBy: to.Ptr("dgycvdwmcmlllzqi"),
-	// 			CreatedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("wfntygzyylkddshm"),
-	// 			LastModifiedByType: to.Ptr(armdependencymap.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2024, time.March, 29, 7, 35, 13, 318000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

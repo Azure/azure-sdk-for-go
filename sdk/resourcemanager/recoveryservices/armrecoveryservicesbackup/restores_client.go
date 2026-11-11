@@ -67,7 +67,7 @@ func (client *RestoresClient) BeginTrigger(ctx context.Context, vaultName string
 	}
 }
 
-// Trigger - Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
+// trigger - Restores the specified backed up data. This is an asynchronous operation. To know the status of this API call,
 // use
 // GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -86,12 +86,13 @@ func (client *RestoresClient) trigger(ctx context.Context, vaultName string, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// triggerCreateRequest creates the Trigger request.
+// triggerCreateRequest creates the trigger request.
 func (client *RestoresClient) triggerCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, recoveryPointID string, parameters RestoreRequestResource, options *RestoresClientBeginTriggerOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPoints/{recoveryPointId}/restore"
 	if client.subscriptionID == "" {

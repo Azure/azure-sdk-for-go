@@ -60,7 +60,8 @@ func (client *TroubleshootersClient) Continue(ctx context.Context, scope string,
 	if err != nil {
 		return TroubleshootersClientContinueResponse{}, err
 	}
-	return client.continueHandleResponse(httpResp, http.StatusNoContent)
+	resp, err := client.continueHandleResponse(httpResp, http.StatusNoContent)
+	return resp, err
 }
 
 // continueCreateRequest creates the Continue request.
@@ -129,7 +130,8 @@ func (client *TroubleshootersClient) Create(ctx context.Context, scope string, t
 	if err != nil {
 		return TroubleshootersClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -189,7 +191,8 @@ func (client *TroubleshootersClient) End(ctx context.Context, scope string, trou
 	if err != nil {
 		return TroubleshootersClientEndResponse{}, err
 	}
-	return client.endHandleResponse(httpResp, http.StatusNoContent)
+	resp, err := client.endHandleResponse(httpResp, http.StatusNoContent)
+	return resp, err
 }
 
 // endCreateRequest creates the End request.
@@ -247,7 +250,8 @@ func (client *TroubleshootersClient) Get(ctx context.Context, scope string, trou
 	if err != nil {
 		return TroubleshootersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -304,7 +308,8 @@ func (client *TroubleshootersClient) Restart(ctx context.Context, scope string, 
 	if err != nil {
 		return TroubleshootersClientRestartResponse{}, err
 	}
-	return client.restartHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.restartHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // restartCreateRequest creates the Restart request.

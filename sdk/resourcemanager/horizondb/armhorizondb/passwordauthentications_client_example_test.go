@@ -47,6 +47,7 @@ func ExamplePasswordAuthenticationsClient_BeginCreateOrReplace() {
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/authentications"),
 	// 		Properties: &armhorizondb.PasswordAuthenticationProperties{
 	// 			State: to.Ptr(armhorizondb.AuthenticationStateEnabled),
+	// 			AdministratorLogin: to.Ptr("adminlogin1"),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
@@ -86,6 +87,7 @@ func ExamplePasswordAuthenticationsClient_BeginUpdate_disablePasswordAuthenticat
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/authentications"),
 	// 		Properties: &armhorizondb.PasswordAuthenticationProperties{
 	// 			State: to.Ptr(armhorizondb.AuthenticationStateDisabled),
+	// 			AdministratorLogin: to.Ptr("adminlogin1"),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
@@ -126,6 +128,7 @@ func ExamplePasswordAuthenticationsClient_BeginUpdate_enablePasswordAuthenticati
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/authentications"),
 	// 		Properties: &armhorizondb.PasswordAuthenticationProperties{
 	// 			State: to.Ptr(armhorizondb.AuthenticationStateEnabled),
+	// 			AdministratorLogin: to.Ptr("adminlogin1"),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
@@ -165,6 +168,7 @@ func ExamplePasswordAuthenticationsClient_BeginUpdate_resetTheSolePostgreSqlAdmi
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/authentications"),
 	// 		Properties: &armhorizondb.PasswordAuthenticationProperties{
 	// 			State: to.Ptr(armhorizondb.AuthenticationStateEnabled),
+	// 			AdministratorLogin: to.Ptr("adminlogin1"),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
@@ -196,6 +200,7 @@ func ExamplePasswordAuthenticationsClient_Get() {
 	// 		Type: to.Ptr("Microsoft.HorizonDb/clusters/authentications"),
 	// 		Properties: &armhorizondb.PasswordAuthenticationProperties{
 	// 			State: to.Ptr(armhorizondb.AuthenticationStateEnabled),
+	// 			AdministratorLogin: to.Ptr("adminlogin1"),
 	// 			ProvisioningState: to.Ptr(armhorizondb.ProvisioningStateSucceeded),
 	// 		},
 	// 	},

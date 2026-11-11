@@ -57,7 +57,8 @@ func (client *AgreementsClient) Get(ctx context.Context, billingAccountName stri
 	if err != nil {
 		return AgreementsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

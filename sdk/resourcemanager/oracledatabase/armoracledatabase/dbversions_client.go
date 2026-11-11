@@ -64,7 +64,8 @@ func (client *DbVersionsClient) Get(ctx context.Context, location string, dbvers
 	if err != nil {
 		return DbVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

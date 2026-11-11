@@ -498,30 +498,27 @@ func ExampleRegistriesClient_BeginImportImage_importImageByManifestDigest() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRegistriesClient().BeginImportImage(ctx, "myResourceGroup", "myRegistry", armcontainerregistry.ImportImageParameters{
-		Source: &armcontainerregistry.ImportSource{
-			ResourceID:  to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/sourceResourceGroup/providers/Microsoft.ContainerRegistry/registries/sourceRegistry"),
-			SourceImage: to.Ptr("sourceRepository@sha256:0000000000000000000000000000000000000000000000000000000000000000"),
-		},
-		TargetTags: []*string{
-			to.Ptr("targetRepository:targetTag"),
-		},
-		UntaggedTargetRepositories: []*string{
-			to.Ptr("targetRepository1"),
-		},
-		Mode: to.Ptr(armcontainerregistry.ImportModeForce),
-	}, nil)
+	res, err := clientFactory.NewRegistriesClient().ListCredentials(ctx, "myResourceGroup", "myRegistry", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerregistry.RegistriesClientImportImageResponse{
+	// res = armcontainerregistry.RegistriesClientListCredentialsResponse{
+	// 	RegistryListCredentialsResult: armcontainerregistry.RegistryListCredentialsResult{
+	// 		Username: to.Ptr("myRegistry"),
+	// 		Passwords: []*armcontainerregistry.RegistryPassword{
+	// 			{
+	// 				Name: to.Ptr(armcontainerregistry.PasswordNamePassword),
+	// 				Value: to.Ptr("00000000000000000000000000000000"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr(armcontainerregistry.PasswordNamePassword2),
+	// 				Value: to.Ptr("00000000000000000000000000000000"),
+	// 			},
+	// 		},
+	// 	},
 	// }
 }
 
@@ -536,30 +533,30 @@ func ExampleRegistriesClient_BeginImportImage_importImageByTag() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRegistriesClient().BeginImportImage(ctx, "myResourceGroup", "myRegistry", armcontainerregistry.ImportImageParameters{
-		Source: &armcontainerregistry.ImportSource{
-			ResourceID:  to.Ptr("/subscriptions/10000000-0000-0000-0000-000000000000/resourceGroups/sourceResourceGroup/providers/Microsoft.ContainerRegistry/registries/sourceRegistry"),
-			SourceImage: to.Ptr("sourceRepository:sourceTag"),
-		},
-		TargetTags: []*string{
-			to.Ptr("targetRepository:targetTag"),
-		},
-		UntaggedTargetRepositories: []*string{
-			to.Ptr("targetRepository1"),
-		},
-		Mode: to.Ptr(armcontainerregistry.ImportModeForce),
-	}, nil)
+	res, err := clientFactory.NewRegistriesClient().ListUsages(ctx, "myResourceGroup", "myRegistry", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerregistry.RegistriesClientImportImageResponse{
+	// res = armcontainerregistry.RegistriesClientListUsagesResponse{
+	// 	RegistryUsageListResult: armcontainerregistry.RegistryUsageListResult{
+	// 		Value: []*armcontainerregistry.RegistryUsage{
+	// 			{
+	// 				Name: to.Ptr("Size"),
+	// 				Limit: to.Ptr[int64](107374182400),
+	// 				CurrentValue: to.Ptr[int64](12345678),
+	// 				Unit: to.Ptr(armcontainerregistry.RegistryUsageUnitBytes),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("Webhooks"),
+	// 				Limit: to.Ptr[int64](10),
+	// 				CurrentValue: to.Ptr[int64](2),
+	// 				Unit: to.Ptr(armcontainerregistry.RegistryUsageUnitCount),
+	// 			},
+	// 		},
+	// 	},
 	// }
 }
 

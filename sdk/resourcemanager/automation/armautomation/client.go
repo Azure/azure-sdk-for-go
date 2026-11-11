@@ -65,7 +65,8 @@ func (client *Client) ConvertGraphRunbookContent(ctx context.Context, resourceGr
 	if err != nil {
 		return ClientConvertGraphRunbookContentResponse{}, err
 	}
-	return client.convertGraphRunbookContentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.convertGraphRunbookContentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // convertGraphRunbookContentCreateRequest creates the ConvertGraphRunbookContent request.

@@ -66,7 +66,8 @@ func (client *ValidationTestRunsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ValidationTestRunsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

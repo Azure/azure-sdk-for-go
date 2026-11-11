@@ -67,7 +67,8 @@ func (client *RateCardClient) Get(ctx context.Context, filter string, options *R
 	if err != nil {
 		return RateCardClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

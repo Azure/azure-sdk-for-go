@@ -67,7 +67,8 @@ func (client *ContainerAppPrivateLinkResourcesClient) Get(ctx context.Context, r
 	if err != nil {
 		return ContainerAppPrivateLinkResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

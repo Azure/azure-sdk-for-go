@@ -70,7 +70,7 @@ func (client *OuContainerClient) BeginCreate(ctx context.Context, resourceGroupN
 	}
 }
 
-// Create - Create OuContainer
+// create - Create OuContainer
 //
 // The Create OuContainer operation creates a new OuContainer under the specified Domain Service instance.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -89,12 +89,13 @@ func (client *OuContainerClient) create(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *OuContainerClient) createCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, _ *OuContainerClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
 	if client.subscriptionID == "" {
@@ -153,7 +154,7 @@ func (client *OuContainerClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Delete OuContainer
+// deleteOperation - Delete OuContainer
 //
 // The Delete OuContainer operation deletes specified OuContainer.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -172,12 +173,13 @@ func (client *OuContainerClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *OuContainerClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, _ *OuContainerClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
 	if client.subscriptionID == "" {
@@ -206,6 +208,91 @@ func (client *OuContainerClient) deleteCreateRequest(ctx context.Context, resour
 	return req, nil
 }
 
+// BeginUpdate - Update OuContainer (PATCH Resource)
+//
+// The Update OuContainer operation can be used to update the existing OuContainers.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - domainServiceName - The name of the domain service.
+//   - ouContainerName - The name of the OuContainer.
+//   - containerAccount - Container Account Description.
+//   - options - OuContainerClientBeginUpdateOptions contains the optional parameters for the OuContainerClient.BeginUpdate method.
+func (client *OuContainerClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*runtime.Poller[OuContainerClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OuContainerClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OuContainerClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update OuContainer (PATCH Resource)
+//
+// The Update OuContainer operation can be used to update the existing OuContainers.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OuContainerClient) update(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OuContainerClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *OuContainerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, _ *OuContainerClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if domainServiceName == "" {
+		return nil, errors.New("parameter domainServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{domainServiceName}", url.PathEscape(domainServiceName))
+	if ouContainerName == "" {
+		return nil, errors.New("parameter ouContainerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{ouContainerName}", url.PathEscape(ouContainerName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, containerAccount); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get particular OuContainer in DomainService instance
 //
 // Get OuContainer in DomainService instance.
@@ -228,7 +315,8 @@ func (client *OuContainerClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return OuContainerClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -349,88 +437,4 @@ func (client *OuContainerClient) listHandleResponse(resp *http.Response, success
 		return OuContainerClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update OuContainer (PATCH Resource)
-//
-// The Update OuContainer operation can be used to update the existing OuContainers.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - domainServiceName - The name of the domain service.
-//   - ouContainerName - The name of the OuContainer.
-//   - containerAccount - Container Account Description.
-//   - options - OuContainerClientBeginUpdateOptions contains the optional parameters for the OuContainerClient.BeginUpdate method.
-func (client *OuContainerClient) BeginUpdate(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*runtime.Poller[OuContainerClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OuContainerClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OuContainerClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update OuContainer (PATCH Resource)
-//
-// The Update OuContainer operation can be used to update the existing OuContainers.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OuContainerClient) update(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, options *OuContainerClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OuContainerClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, domainServiceName, ouContainerName, containerAccount, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *OuContainerClient) updateCreateRequest(ctx context.Context, resourceGroupName string, domainServiceName string, ouContainerName string, containerAccount ContainerAccount, _ *OuContainerClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AAD/domainServices/{domainServiceName}/ouContainer/{ouContainerName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if domainServiceName == "" {
-		return nil, errors.New("parameter domainServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{domainServiceName}", url.PathEscape(domainServiceName))
-	if ouContainerName == "" {
-		return nil, errors.New("parameter ouContainerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ouContainerName}", url.PathEscape(ouContainerName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, containerAccount); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

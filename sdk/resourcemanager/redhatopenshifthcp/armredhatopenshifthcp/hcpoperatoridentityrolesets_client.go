@@ -64,7 +64,8 @@ func (client *HcpOperatorIdentityRoleSetsClient) Get(ctx context.Context, locati
 	if err != nil {
 		return HcpOperatorIdentityRoleSetsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

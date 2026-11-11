@@ -64,7 +64,8 @@ func (client *DeviceCapacityInfoClient) GetDeviceCapacityInfo(ctx context.Contex
 	if err != nil {
 		return DeviceCapacityInfoClientGetDeviceCapacityInfoResponse{}, err
 	}
-	return client.getDeviceCapacityInfoHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeviceCapacityInfoHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeviceCapacityInfoCreateRequest creates the GetDeviceCapacityInfo request.

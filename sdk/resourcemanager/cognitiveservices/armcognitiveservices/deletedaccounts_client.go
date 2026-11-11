@@ -85,7 +85,8 @@ func (client *DeletedAccountsClient) purge(ctx context.Context, location string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -139,7 +140,8 @@ func (client *DeletedAccountsClient) Get(ctx context.Context, location string, r
 	if err != nil {
 		return DeletedAccountsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

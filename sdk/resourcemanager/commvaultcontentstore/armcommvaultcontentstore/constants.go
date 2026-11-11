@@ -5,7 +5,7 @@
 package armcommvaultcontentstore
 
 const (
-	version20260930 string = "2026-09-30"
+	version20261103 string = "2026-11-03"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -559,8 +559,11 @@ func PossibleRulePropertyValues() []RuleProperty {
 type StorageClassType string
 
 const (
-	// StorageClassTypeCool - Cold storage class
-	StorageClassTypeCool StorageClassType = "COLD"
+	// StorageClassTypeCold - Cold storage class. Requests that use COLD are rejected during validation; use COOL for the infrequent-access
+	// tier.
+	StorageClassTypeCold StorageClassType = "COLD"
+	// StorageClassTypeCool - Cool (infrequent-access) storage class
+	StorageClassTypeCool StorageClassType = "COOL"
 	// StorageClassTypeHot - Hot storage class
 	StorageClassTypeHot StorageClassType = "HOT"
 )
@@ -568,6 +571,7 @@ const (
 // PossibleStorageClassTypeValues returns the possible values for the StorageClassType const type.
 func PossibleStorageClassTypeValues() []StorageClassType {
 	return []StorageClassType{
+		StorageClassTypeCold,
 		StorageClassTypeCool,
 		StorageClassTypeHot,
 	}

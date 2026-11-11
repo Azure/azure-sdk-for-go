@@ -65,7 +65,8 @@ func (client *WebhookClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WebhookClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -135,7 +136,8 @@ func (client *WebhookClient) Delete(ctx context.Context, resourceGroupName strin
 		return WebhookClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WebhookClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WebhookClientDeleteResponse{}, err
 	}
 	return WebhookClientDeleteResponse{}, nil
 }
@@ -188,7 +190,8 @@ func (client *WebhookClient) GenerateURI(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WebhookClientGenerateURIResponse{}, err
 	}
-	return client.generateURIHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateURIHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateURICreateRequest creates the GenerateURI request.
@@ -252,7 +255,8 @@ func (client *WebhookClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return WebhookClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -398,7 +402,8 @@ func (client *WebhookClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WebhookClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

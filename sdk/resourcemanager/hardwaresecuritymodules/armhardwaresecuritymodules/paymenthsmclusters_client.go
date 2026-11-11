@@ -70,7 +70,7 @@ func (client *PaymentHsmClustersClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create or Update a Payment HSM Cluster in the specified subscription.
+// createOrUpdate - Create or Update a Payment HSM Cluster in the specified subscription.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PaymentHsmClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, body PaymentHsmCluster, options *PaymentHsmClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *PaymentHsmClustersClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PaymentHsmClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, body PaymentHsmCluster, _ *PaymentHsmClustersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}"
 	if client.subscriptionID == "" {
@@ -146,7 +147,7 @@ func (client *PaymentHsmClustersClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Deletes the specified Payment HSM Cluster
+// deleteOperation - Deletes the specified Payment HSM Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PaymentHsmClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, options *PaymentHsmClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -163,12 +164,13 @@ func (client *PaymentHsmClustersClient) deleteOperation(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PaymentHsmClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, _ *PaymentHsmClustersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}"
 	if client.subscriptionID == "" {
@@ -193,6 +195,84 @@ func (client *PaymentHsmClustersClient) deleteCreateRequest(ctx context.Context,
 	return req, nil
 }
 
+// BeginUpdate - Update a Payment HSM Cluster in the specified subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - paymentHsmClusterName - The name of the Payment HSM Cluster within the specified resource group. Payment HSM Cluster names
+//     must be between 3 and 23 characters in length.
+//   - body - Parameters to create Payment HSM Cluster
+//   - options - PaymentHsmClustersClientBeginUpdateOptions contains the optional parameters for the PaymentHsmClustersClient.BeginUpdate
+//     method.
+func (client *PaymentHsmClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, body PaymentHsmClusterPatchParameters, options *PaymentHsmClustersClientBeginUpdateOptions) (*runtime.Poller[PaymentHsmClustersClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, paymentHsmClusterName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PaymentHsmClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PaymentHsmClustersClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a Payment HSM Cluster in the specified subscription.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PaymentHsmClustersClient) update(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, body PaymentHsmClusterPatchParameters, options *PaymentHsmClustersClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PaymentHsmClustersClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, paymentHsmClusterName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *PaymentHsmClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, body PaymentHsmClusterPatchParameters, _ *PaymentHsmClustersClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if paymentHsmClusterName == "" {
+		return nil, errors.New("parameter paymentHsmClusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{paymentHsmClusterName}", url.PathEscape(paymentHsmClusterName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Gets the specified Payment HSM Cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -213,7 +293,8 @@ func (client *PaymentHsmClustersClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return PaymentHsmClustersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -398,81 +479,4 @@ func (client *PaymentHsmClustersClient) listBySubscriptionHandleResponse(resp *h
 		return PaymentHsmClustersClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a Payment HSM Cluster in the specified subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - paymentHsmClusterName - The name of the Payment HSM Cluster within the specified resource group. Payment HSM Cluster names
-//     must be between 3 and 23 characters in length.
-//   - body - Parameters to create Payment HSM Cluster
-//   - options - PaymentHsmClustersClientBeginUpdateOptions contains the optional parameters for the PaymentHsmClustersClient.BeginUpdate
-//     method.
-func (client *PaymentHsmClustersClient) BeginUpdate(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, body PaymentHsmClusterPatchParameters, options *PaymentHsmClustersClientBeginUpdateOptions) (*runtime.Poller[PaymentHsmClustersClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, paymentHsmClusterName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PaymentHsmClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PaymentHsmClustersClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a Payment HSM Cluster in the specified subscription.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *PaymentHsmClustersClient) update(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, body PaymentHsmClusterPatchParameters, options *PaymentHsmClustersClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "PaymentHsmClustersClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, paymentHsmClusterName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *PaymentHsmClustersClient) updateCreateRequest(ctx context.Context, resourceGroupName string, paymentHsmClusterName string, body PaymentHsmClusterPatchParameters, _ *PaymentHsmClustersClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/paymentHsmClusters/{paymentHsmClusterName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if paymentHsmClusterName == "" {
-		return nil, errors.New("parameter paymentHsmClusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{paymentHsmClusterName}", url.PathEscape(paymentHsmClusterName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -86,7 +86,8 @@ func (client *ManagedComputeDeploymentsClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -134,7 +135,7 @@ func (client *ManagedComputeDeploymentsClient) createOrUpdateCreateRequest(ctx c
 //     method.
 func (client *ManagedComputeDeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientBeginDeleteOptions) (*runtime.Poller[ManagedComputeDeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, deploymentName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, deploymentName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +150,9 @@ func (client *ManagedComputeDeploymentsClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// delete - Deletes the specified managed compute deployment associated with the Cognitive Services account.
+// deleteOperation - Deletes the specified managed compute deployment associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedComputeDeploymentsClient) delete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ManagedComputeDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedComputeDeploymentsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -166,7 +167,8 @@ func (client *ManagedComputeDeploymentsClient) delete(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -242,7 +244,8 @@ func (client *ManagedComputeDeploymentsClient) update(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -302,7 +305,8 @@ func (client *ManagedComputeDeploymentsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ManagedComputeDeploymentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -65,7 +65,8 @@ func (client *OwnershipVouchersClient) Validate(ctx context.Context, resourceGro
 	if err != nil {
 		return OwnershipVouchersClientValidateResponse{}, err
 	}
-	return client.validateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCreateRequest creates the Validate request.

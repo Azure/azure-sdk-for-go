@@ -62,7 +62,7 @@ func (client *PreRulesClient) BeginCreateOrUpdate(ctx context.Context, globalRul
 	}
 }
 
-// CreateOrUpdate - Create a PreRulesResource
+// createOrUpdate - Create a PreRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PreRulesClient) createOrUpdate(ctx context.Context, globalRulestackName string, priority string, resource PreRulesResource, options *PreRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -79,12 +79,13 @@ func (client *PreRulesClient) createOrUpdate(ctx context.Context, globalRulestac
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PreRulesClient) createOrUpdateCreateRequest(ctx context.Context, globalRulestackName string, priority string, resource PreRulesResource, _ *PreRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/preRules/{priority}"
 	if globalRulestackName == "" {
@@ -132,7 +133,7 @@ func (client *PreRulesClient) BeginDelete(ctx context.Context, globalRulestackNa
 	}
 }
 
-// Delete - Delete a PreRulesResource
+// deleteOperation - Delete a PreRulesResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PreRulesClient) deleteOperation(ctx context.Context, globalRulestackName string, priority string, options *PreRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -149,12 +150,13 @@ func (client *PreRulesClient) deleteOperation(ctx context.Context, globalRulesta
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PreRulesClient) deleteCreateRequest(ctx context.Context, globalRulestackName string, priority string, _ *PreRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/preRules/{priority}"
 	if globalRulestackName == "" {
@@ -194,7 +196,8 @@ func (client *PreRulesClient) Get(ctx context.Context, globalRulestackName strin
 	if err != nil {
 		return PreRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -250,7 +253,8 @@ func (client *PreRulesClient) GetCounters(ctx context.Context, globalRulestackNa
 	if err != nil {
 		return PreRulesClientGetCountersResponse{}, err
 	}
-	return client.getCountersHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCountersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCountersCreateRequest creates the GetCounters request.
@@ -378,7 +382,8 @@ func (client *PreRulesClient) RefreshCounters(ctx context.Context, globalRulesta
 		return PreRulesClientRefreshCountersResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return PreRulesClientRefreshCountersResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PreRulesClientRefreshCountersResponse{}, err
 	}
 	return PreRulesClientRefreshCountersResponse{}, nil
 }
@@ -426,7 +431,8 @@ func (client *PreRulesClient) ResetCounters(ctx context.Context, globalRulestack
 	if err != nil {
 		return PreRulesClientResetCountersResponse{}, err
 	}
-	return client.resetCountersHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.resetCountersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // resetCountersCreateRequest creates the ResetCounters request.

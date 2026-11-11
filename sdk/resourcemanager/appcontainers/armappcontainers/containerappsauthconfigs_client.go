@@ -68,7 +68,8 @@ func (client *ContainerAppsAuthConfigsClient) CreateOrUpdate(ctx context.Context
 	if err != nil {
 		return ContainerAppsAuthConfigsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -141,7 +142,8 @@ func (client *ContainerAppsAuthConfigsClient) Delete(ctx context.Context, resour
 		return ContainerAppsAuthConfigsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ContainerAppsAuthConfigsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ContainerAppsAuthConfigsClientDeleteResponse{}, err
 	}
 	return ContainerAppsAuthConfigsClientDeleteResponse{}, nil
 }
@@ -198,7 +200,8 @@ func (client *ContainerAppsAuthConfigsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return ContainerAppsAuthConfigsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

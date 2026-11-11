@@ -64,7 +64,8 @@ func (client *ResourceGuardsClient) Delete(ctx context.Context, resourceGroupNam
 		return ResourceGuardsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ResourceGuardsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ResourceGuardsClientDeleteResponse{}, err
 	}
 	return ResourceGuardsClientDeleteResponse{}, nil
 }
@@ -113,7 +114,8 @@ func (client *ResourceGuardsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ResourceGuardsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -150,6 +152,414 @@ func (client *ResourceGuardsClient) getHandleResponse(resp *http.Response, succe
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceGuardResource); err != nil {
 		return ResourceGuardsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// GetDefaultBackupSecurityPINRequestsObject - Returns collection of operation request objects for a critical operation protected
+// by the given ResourceGuard resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceGuardsName - The name of the ResourceGuardResource
+//   - requestName - The name of the DppBaseResource
+//   - options - ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectOptions contains the optional parameters for the
+//     ResourceGuardsClient.GetDefaultBackupSecurityPINRequestsObject method.
+func (client *ResourceGuardsClient) GetDefaultBackupSecurityPINRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectOptions) (ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse, error) {
+	var err error
+	const operationName = "ResourceGuardsClient.GetDefaultBackupSecurityPINRequestsObject"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getDefaultBackupSecurityPINRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{}, err
+	}
+	resp, err := client.getDefaultBackupSecurityPINRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getDefaultBackupSecurityPINRequestsObjectCreateRequest creates the GetDefaultBackupSecurityPINRequestsObject request.
+func (client *ResourceGuardsClient) getDefaultBackupSecurityPINRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/getBackupSecurityPINRequests/{requestName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceGuardsName == "" {
+		return nil, errors.New("parameter resourceGuardsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
+	if requestName == "" {
+		return nil, errors.New("parameter requestName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getDefaultBackupSecurityPINRequestsObjectHandleResponse handles the GetDefaultBackupSecurityPINRequestsObject response.
+func (client *ResourceGuardsClient) getDefaultBackupSecurityPINRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse, error) {
+	result := ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
+		return ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{}, err
+	}
+	return result, nil
+}
+
+// GetDefaultDeleteProtectedItemRequestsObject - Returns collection of operation request objects for a critical operation
+// protected by the given ResourceGuard resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceGuardsName - The name of the ResourceGuardResource
+//   - requestName - The name of the DppBaseResource
+//   - options - ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectOptions contains the optional parameters for the
+//     ResourceGuardsClient.GetDefaultDeleteProtectedItemRequestsObject method.
+func (client *ResourceGuardsClient) GetDefaultDeleteProtectedItemRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectOptions) (ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse, error) {
+	var err error
+	const operationName = "ResourceGuardsClient.GetDefaultDeleteProtectedItemRequestsObject"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getDefaultDeleteProtectedItemRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{}, err
+	}
+	resp, err := client.getDefaultDeleteProtectedItemRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getDefaultDeleteProtectedItemRequestsObjectCreateRequest creates the GetDefaultDeleteProtectedItemRequestsObject request.
+func (client *ResourceGuardsClient) getDefaultDeleteProtectedItemRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/deleteProtectedItemRequests/{requestName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceGuardsName == "" {
+		return nil, errors.New("parameter resourceGuardsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
+	if requestName == "" {
+		return nil, errors.New("parameter requestName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getDefaultDeleteProtectedItemRequestsObjectHandleResponse handles the GetDefaultDeleteProtectedItemRequestsObject response.
+func (client *ResourceGuardsClient) getDefaultDeleteProtectedItemRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse, error) {
+	result := ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
+		return ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{}, err
+	}
+	return result, nil
+}
+
+// GetDefaultDeleteResourceGuardProxyRequestsObject - Returns collection of operation request objects for a critical operation
+// protected by the given ResourceGuard resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceGuardsName - The name of the ResourceGuardResource
+//   - requestName - The name of the DppBaseResource
+//   - options - ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectOptions contains the optional parameters
+//     for the ResourceGuardsClient.GetDefaultDeleteResourceGuardProxyRequestsObject method.
+func (client *ResourceGuardsClient) GetDefaultDeleteResourceGuardProxyRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectOptions) (ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse, error) {
+	var err error
+	const operationName = "ResourceGuardsClient.GetDefaultDeleteResourceGuardProxyRequestsObject"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getDefaultDeleteResourceGuardProxyRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{}, err
+	}
+	resp, err := client.getDefaultDeleteResourceGuardProxyRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getDefaultDeleteResourceGuardProxyRequestsObjectCreateRequest creates the GetDefaultDeleteResourceGuardProxyRequestsObject request.
+func (client *ResourceGuardsClient) getDefaultDeleteResourceGuardProxyRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/deleteResourceGuardProxyRequests/{requestName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceGuardsName == "" {
+		return nil, errors.New("parameter resourceGuardsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
+	if requestName == "" {
+		return nil, errors.New("parameter requestName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getDefaultDeleteResourceGuardProxyRequestsObjectHandleResponse handles the GetDefaultDeleteResourceGuardProxyRequestsObject response.
+func (client *ResourceGuardsClient) getDefaultDeleteResourceGuardProxyRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse, error) {
+	result := ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
+		return ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{}, err
+	}
+	return result, nil
+}
+
+// GetDefaultDisableSoftDeleteRequestsObject - Returns collection of operation request objects for a critical operation protected
+// by the given ResourceGuard resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceGuardsName - The name of the ResourceGuardResource
+//   - requestName - The name of the DppBaseResource
+//   - options - ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectOptions contains the optional parameters for the
+//     ResourceGuardsClient.GetDefaultDisableSoftDeleteRequestsObject method.
+func (client *ResourceGuardsClient) GetDefaultDisableSoftDeleteRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectOptions) (ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse, error) {
+	var err error
+	const operationName = "ResourceGuardsClient.GetDefaultDisableSoftDeleteRequestsObject"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getDefaultDisableSoftDeleteRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{}, err
+	}
+	resp, err := client.getDefaultDisableSoftDeleteRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getDefaultDisableSoftDeleteRequestsObjectCreateRequest creates the GetDefaultDisableSoftDeleteRequestsObject request.
+func (client *ResourceGuardsClient) getDefaultDisableSoftDeleteRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/disableSoftDeleteRequests/{requestName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceGuardsName == "" {
+		return nil, errors.New("parameter resourceGuardsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
+	if requestName == "" {
+		return nil, errors.New("parameter requestName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getDefaultDisableSoftDeleteRequestsObjectHandleResponse handles the GetDefaultDisableSoftDeleteRequestsObject response.
+func (client *ResourceGuardsClient) getDefaultDisableSoftDeleteRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse, error) {
+	result := ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
+		return ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{}, err
+	}
+	return result, nil
+}
+
+// GetDefaultUpdateProtectedItemRequestsObject - Returns collection of operation request objects for a critical operation
+// protected by the given ResourceGuard resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceGuardsName - The name of the ResourceGuardResource
+//   - requestName - The name of the DppBaseResource
+//   - options - ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectOptions contains the optional parameters for the
+//     ResourceGuardsClient.GetDefaultUpdateProtectedItemRequestsObject method.
+func (client *ResourceGuardsClient) GetDefaultUpdateProtectedItemRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectOptions) (ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse, error) {
+	var err error
+	const operationName = "ResourceGuardsClient.GetDefaultUpdateProtectedItemRequestsObject"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getDefaultUpdateProtectedItemRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{}, err
+	}
+	resp, err := client.getDefaultUpdateProtectedItemRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getDefaultUpdateProtectedItemRequestsObjectCreateRequest creates the GetDefaultUpdateProtectedItemRequestsObject request.
+func (client *ResourceGuardsClient) getDefaultUpdateProtectedItemRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/updateProtectedItemRequests/{requestName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceGuardsName == "" {
+		return nil, errors.New("parameter resourceGuardsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
+	if requestName == "" {
+		return nil, errors.New("parameter requestName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getDefaultUpdateProtectedItemRequestsObjectHandleResponse handles the GetDefaultUpdateProtectedItemRequestsObject response.
+func (client *ResourceGuardsClient) getDefaultUpdateProtectedItemRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse, error) {
+	result := ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
+		return ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{}, err
+	}
+	return result, nil
+}
+
+// GetDefaultUpdateProtectionPolicyRequestsObject - Returns collection of operation request objects for a critical operation
+// protected by the given ResourceGuard resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceGuardsName - The name of the ResourceGuardResource
+//   - requestName - The name of the DppBaseResource
+//   - options - ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectOptions contains the optional parameters for
+//     the ResourceGuardsClient.GetDefaultUpdateProtectionPolicyRequestsObject method.
+func (client *ResourceGuardsClient) GetDefaultUpdateProtectionPolicyRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectOptions) (ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse, error) {
+	var err error
+	const operationName = "ResourceGuardsClient.GetDefaultUpdateProtectionPolicyRequestsObject"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getDefaultUpdateProtectionPolicyRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}, err
+	}
+	resp, err := client.getDefaultUpdateProtectionPolicyRequestsObjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getDefaultUpdateProtectionPolicyRequestsObjectCreateRequest creates the GetDefaultUpdateProtectionPolicyRequestsObject request.
+func (client *ResourceGuardsClient) getDefaultUpdateProtectionPolicyRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/updateProtectionPolicyRequests/{requestName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceGuardsName == "" {
+		return nil, errors.New("parameter resourceGuardsName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
+	if requestName == "" {
+		return nil, errors.New("parameter requestName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getDefaultUpdateProtectionPolicyRequestsObjectHandleResponse handles the GetDefaultUpdateProtectionPolicyRequestsObject response.
+func (client *ResourceGuardsClient) getDefaultUpdateProtectionPolicyRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse, error) {
+	result := ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
+		return ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}, err
 	}
 	return result, nil
 }
@@ -228,408 +638,6 @@ func (client *ResourceGuardsClient) getBackupSecurityPINRequestsObjectsHandleRes
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResourceList); err != nil {
 		return ResourceGuardsClientGetBackupSecurityPINRequestsObjectsResponse{}, err
-	}
-	return result, nil
-}
-
-// GetDefaultBackupSecurityPINRequestsObject - Returns collection of operation request objects for a critical operation protected
-// by the given ResourceGuard resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceGuardsName - The name of the ResourceGuardResource
-//   - requestName - The name of the DppBaseResource
-//   - options - ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectOptions contains the optional parameters for the
-//     ResourceGuardsClient.GetDefaultBackupSecurityPINRequestsObject method.
-func (client *ResourceGuardsClient) GetDefaultBackupSecurityPINRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectOptions) (ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse, error) {
-	var err error
-	const operationName = "ResourceGuardsClient.GetDefaultBackupSecurityPINRequestsObject"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getDefaultBackupSecurityPINRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{}, err
-	}
-	return client.getDefaultBackupSecurityPINRequestsObjectHandleResponse(httpResp, http.StatusOK)
-}
-
-// getDefaultBackupSecurityPINRequestsObjectCreateRequest creates the GetDefaultBackupSecurityPINRequestsObject request.
-func (client *ResourceGuardsClient) getDefaultBackupSecurityPINRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/getBackupSecurityPINRequests/{requestName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceGuardsName == "" {
-		return nil, errors.New("parameter resourceGuardsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
-	if requestName == "" {
-		return nil, errors.New("parameter requestName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getDefaultBackupSecurityPINRequestsObjectHandleResponse handles the GetDefaultBackupSecurityPINRequestsObject response.
-func (client *ResourceGuardsClient) getDefaultBackupSecurityPINRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
-		return ResourceGuardsClientGetDefaultBackupSecurityPINRequestsObjectResponse{}, err
-	}
-	return result, nil
-}
-
-// GetDefaultDeleteProtectedItemRequestsObject - Returns collection of operation request objects for a critical operation
-// protected by the given ResourceGuard resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceGuardsName - The name of the ResourceGuardResource
-//   - requestName - The name of the DppBaseResource
-//   - options - ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectOptions contains the optional parameters for the
-//     ResourceGuardsClient.GetDefaultDeleteProtectedItemRequestsObject method.
-func (client *ResourceGuardsClient) GetDefaultDeleteProtectedItemRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectOptions) (ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse, error) {
-	var err error
-	const operationName = "ResourceGuardsClient.GetDefaultDeleteProtectedItemRequestsObject"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getDefaultDeleteProtectedItemRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{}, err
-	}
-	return client.getDefaultDeleteProtectedItemRequestsObjectHandleResponse(httpResp, http.StatusOK)
-}
-
-// getDefaultDeleteProtectedItemRequestsObjectCreateRequest creates the GetDefaultDeleteProtectedItemRequestsObject request.
-func (client *ResourceGuardsClient) getDefaultDeleteProtectedItemRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/deleteProtectedItemRequests/{requestName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceGuardsName == "" {
-		return nil, errors.New("parameter resourceGuardsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
-	if requestName == "" {
-		return nil, errors.New("parameter requestName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getDefaultDeleteProtectedItemRequestsObjectHandleResponse handles the GetDefaultDeleteProtectedItemRequestsObject response.
-func (client *ResourceGuardsClient) getDefaultDeleteProtectedItemRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
-		return ResourceGuardsClientGetDefaultDeleteProtectedItemRequestsObjectResponse{}, err
-	}
-	return result, nil
-}
-
-// GetDefaultDeleteResourceGuardProxyRequestsObject - Returns collection of operation request objects for a critical operation
-// protected by the given ResourceGuard resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceGuardsName - The name of the ResourceGuardResource
-//   - requestName - The name of the DppBaseResource
-//   - options - ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectOptions contains the optional parameters
-//     for the ResourceGuardsClient.GetDefaultDeleteResourceGuardProxyRequestsObject method.
-func (client *ResourceGuardsClient) GetDefaultDeleteResourceGuardProxyRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectOptions) (ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse, error) {
-	var err error
-	const operationName = "ResourceGuardsClient.GetDefaultDeleteResourceGuardProxyRequestsObject"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getDefaultDeleteResourceGuardProxyRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{}, err
-	}
-	return client.getDefaultDeleteResourceGuardProxyRequestsObjectHandleResponse(httpResp, http.StatusOK)
-}
-
-// getDefaultDeleteResourceGuardProxyRequestsObjectCreateRequest creates the GetDefaultDeleteResourceGuardProxyRequestsObject request.
-func (client *ResourceGuardsClient) getDefaultDeleteResourceGuardProxyRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/deleteResourceGuardProxyRequests/{requestName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceGuardsName == "" {
-		return nil, errors.New("parameter resourceGuardsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
-	if requestName == "" {
-		return nil, errors.New("parameter requestName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getDefaultDeleteResourceGuardProxyRequestsObjectHandleResponse handles the GetDefaultDeleteResourceGuardProxyRequestsObject response.
-func (client *ResourceGuardsClient) getDefaultDeleteResourceGuardProxyRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
-		return ResourceGuardsClientGetDefaultDeleteResourceGuardProxyRequestsObjectResponse{}, err
-	}
-	return result, nil
-}
-
-// GetDefaultDisableSoftDeleteRequestsObject - Returns collection of operation request objects for a critical operation protected
-// by the given ResourceGuard resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceGuardsName - The name of the ResourceGuardResource
-//   - requestName - The name of the DppBaseResource
-//   - options - ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectOptions contains the optional parameters for the
-//     ResourceGuardsClient.GetDefaultDisableSoftDeleteRequestsObject method.
-func (client *ResourceGuardsClient) GetDefaultDisableSoftDeleteRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectOptions) (ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse, error) {
-	var err error
-	const operationName = "ResourceGuardsClient.GetDefaultDisableSoftDeleteRequestsObject"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getDefaultDisableSoftDeleteRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{}, err
-	}
-	return client.getDefaultDisableSoftDeleteRequestsObjectHandleResponse(httpResp, http.StatusOK)
-}
-
-// getDefaultDisableSoftDeleteRequestsObjectCreateRequest creates the GetDefaultDisableSoftDeleteRequestsObject request.
-func (client *ResourceGuardsClient) getDefaultDisableSoftDeleteRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/disableSoftDeleteRequests/{requestName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceGuardsName == "" {
-		return nil, errors.New("parameter resourceGuardsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
-	if requestName == "" {
-		return nil, errors.New("parameter requestName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getDefaultDisableSoftDeleteRequestsObjectHandleResponse handles the GetDefaultDisableSoftDeleteRequestsObject response.
-func (client *ResourceGuardsClient) getDefaultDisableSoftDeleteRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
-		return ResourceGuardsClientGetDefaultDisableSoftDeleteRequestsObjectResponse{}, err
-	}
-	return result, nil
-}
-
-// GetDefaultUpdateProtectedItemRequestsObject - Returns collection of operation request objects for a critical operation
-// protected by the given ResourceGuard resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceGuardsName - The name of the ResourceGuardResource
-//   - requestName - The name of the DppBaseResource
-//   - options - ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectOptions contains the optional parameters for the
-//     ResourceGuardsClient.GetDefaultUpdateProtectedItemRequestsObject method.
-func (client *ResourceGuardsClient) GetDefaultUpdateProtectedItemRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectOptions) (ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse, error) {
-	var err error
-	const operationName = "ResourceGuardsClient.GetDefaultUpdateProtectedItemRequestsObject"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getDefaultUpdateProtectedItemRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{}, err
-	}
-	return client.getDefaultUpdateProtectedItemRequestsObjectHandleResponse(httpResp, http.StatusOK)
-}
-
-// getDefaultUpdateProtectedItemRequestsObjectCreateRequest creates the GetDefaultUpdateProtectedItemRequestsObject request.
-func (client *ResourceGuardsClient) getDefaultUpdateProtectedItemRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/updateProtectedItemRequests/{requestName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceGuardsName == "" {
-		return nil, errors.New("parameter resourceGuardsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
-	if requestName == "" {
-		return nil, errors.New("parameter requestName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getDefaultUpdateProtectedItemRequestsObjectHandleResponse handles the GetDefaultUpdateProtectedItemRequestsObject response.
-func (client *ResourceGuardsClient) getDefaultUpdateProtectedItemRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
-		return ResourceGuardsClientGetDefaultUpdateProtectedItemRequestsObjectResponse{}, err
-	}
-	return result, nil
-}
-
-// GetDefaultUpdateProtectionPolicyRequestsObject - Returns collection of operation request objects for a critical operation
-// protected by the given ResourceGuard resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceGuardsName - The name of the ResourceGuardResource
-//   - requestName - The name of the DppBaseResource
-//   - options - ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectOptions contains the optional parameters for
-//     the ResourceGuardsClient.GetDefaultUpdateProtectionPolicyRequestsObject method.
-func (client *ResourceGuardsClient) GetDefaultUpdateProtectionPolicyRequestsObject(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, options *ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectOptions) (ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse, error) {
-	var err error
-	const operationName = "ResourceGuardsClient.GetDefaultUpdateProtectionPolicyRequestsObject"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getDefaultUpdateProtectionPolicyRequestsObjectCreateRequest(ctx, resourceGroupName, resourceGuardsName, requestName, options)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}, err
-	}
-	return client.getDefaultUpdateProtectionPolicyRequestsObjectHandleResponse(httpResp, http.StatusOK)
-}
-
-// getDefaultUpdateProtectionPolicyRequestsObjectCreateRequest creates the GetDefaultUpdateProtectionPolicyRequestsObject request.
-func (client *ResourceGuardsClient) getDefaultUpdateProtectionPolicyRequestsObjectCreateRequest(ctx context.Context, resourceGroupName string, resourceGuardsName string, requestName string, _ *ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/resourceGuards/{resourceGuardsName}/updateProtectionPolicyRequests/{requestName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceGuardsName == "" {
-		return nil, errors.New("parameter resourceGuardsName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGuardsName}", url.PathEscape(resourceGuardsName))
-	if requestName == "" {
-		return nil, errors.New("parameter requestName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{requestName}", url.PathEscape(requestName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getDefaultUpdateProtectionPolicyRequestsObjectHandleResponse handles the GetDefaultUpdateProtectionPolicyRequestsObject response.
-func (client *ResourceGuardsClient) getDefaultUpdateProtectionPolicyRequestsObjectHandleResponse(resp *http.Response, successCodes ...int) (ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse, error) {
-	result := ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DppBaseResource); err != nil {
-		return ResourceGuardsClientGetDefaultUpdateProtectionPolicyRequestsObjectResponse{}, err
 	}
 	return result, nil
 }
@@ -1183,7 +1191,8 @@ func (client *ResourceGuardsClient) Patch(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ResourceGuardsClientPatchResponse{}, err
 	}
-	return client.patchHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.patchHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // patchCreateRequest creates the Patch request.
@@ -1248,7 +1257,8 @@ func (client *ResourceGuardsClient) Put(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ResourceGuardsClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.

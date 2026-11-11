@@ -68,7 +68,8 @@ func (client *TrustedHostSubscriptionsClient) Create(ctx context.Context, locati
 	if err != nil {
 		return TrustedHostSubscriptionsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -134,7 +135,8 @@ func (client *TrustedHostSubscriptionsClient) Delete(ctx context.Context, locati
 		return TrustedHostSubscriptionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return TrustedHostSubscriptionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TrustedHostSubscriptionsClientDeleteResponse{}, err
 	}
 	return TrustedHostSubscriptionsClientDeleteResponse{}, nil
 }
@@ -184,7 +186,8 @@ func (client *TrustedHostSubscriptionsClient) Get(ctx context.Context, location 
 	if err != nil {
 		return TrustedHostSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

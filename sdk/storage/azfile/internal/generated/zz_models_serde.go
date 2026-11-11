@@ -149,6 +149,22 @@ func (f FilesAndDirectoriesListSegment) MarshalXML(enc *xml.Encoder, start xml.S
 	return enc.EncodeElement(aux, start)
 }
 
+// MarshalXML implements the xml.Marshaller interface for type HardLinkList.
+func (h HardLinkList) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
+	start.Name.Local = "HardLinks"
+	type alias HardLinkList
+	aux := &struct {
+		*alias
+		HardLinks *[]*HardLink `xml:"HardLink"`
+	}{
+		alias: (*alias)(&h),
+	}
+	if h.HardLinks != nil {
+		aux.HardLinks = &h.HardLinks
+	}
+	return enc.EncodeElement(aux, start)
+}
+
 // MarshalXML implements the xml.Marshaller interface for type ListFilesAndDirectoriesSegmentResponse.
 func (l ListFilesAndDirectoriesSegmentResponse) MarshalXML(enc *xml.Encoder, start xml.StartElement) error {
 	start.Name.Local = "EnumerationResults"
@@ -360,6 +376,7 @@ func (s ShareProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) er
 	aux := &struct {
 		*alias
 		AccessTierChangeTime                         *datetime.RFC7231 `xml:"AccessTierChangeTime"`
+		CreationTime                                 *datetime.RFC7231 `xml:"Creation-Time"`
 		DeletedTime                                  *datetime.RFC7231 `xml:"DeletedTime"`
 		LastModified                                 *datetime.RFC7231 `xml:"Last-Modified"`
 		NextAllowedProvisionedBandwidthDowngradeTime *datetime.RFC7231 `xml:"NextAllowedProvisionedBandwidthDowngradeTime"`
@@ -368,6 +385,7 @@ func (s ShareProperties) MarshalXML(enc *xml.Encoder, start xml.StartElement) er
 	}{
 		alias:                (*alias)(&s),
 		AccessTierChangeTime: (*datetime.RFC7231)(s.AccessTierChangeTime),
+		CreationTime:         (*datetime.RFC7231)(s.CreationTime),
 		DeletedTime:          (*datetime.RFC7231)(s.DeletedTime),
 		LastModified:         (*datetime.RFC7231)(s.LastModified),
 		NextAllowedProvisionedBandwidthDowngradeTime: (*datetime.RFC7231)(s.NextAllowedProvisionedBandwidthDowngradeTime),
@@ -383,6 +401,7 @@ func (s *ShareProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement)
 	aux := &struct {
 		*alias
 		AccessTierChangeTime                         *datetime.RFC7231 `xml:"AccessTierChangeTime"`
+		CreationTime                                 *datetime.RFC7231 `xml:"Creation-Time"`
 		DeletedTime                                  *datetime.RFC7231 `xml:"DeletedTime"`
 		LastModified                                 *datetime.RFC7231 `xml:"Last-Modified"`
 		NextAllowedProvisionedBandwidthDowngradeTime *datetime.RFC7231 `xml:"NextAllowedProvisionedBandwidthDowngradeTime"`
@@ -396,6 +415,9 @@ func (s *ShareProperties) UnmarshalXML(dec *xml.Decoder, start xml.StartElement)
 	}
 	if aux.AccessTierChangeTime != nil && !(*time.Time)(aux.AccessTierChangeTime).IsZero() {
 		s.AccessTierChangeTime = (*time.Time)(aux.AccessTierChangeTime)
+	}
+	if aux.CreationTime != nil && !(*time.Time)(aux.CreationTime).IsZero() {
+		s.CreationTime = (*time.Time)(aux.CreationTime)
 	}
 	if aux.DeletedTime != nil && !(*time.Time)(aux.DeletedTime).IsZero() {
 		s.DeletedTime = (*time.Time)(aux.DeletedTime)
@@ -482,7 +504,7 @@ func unpopulate(data json.RawMessage, fn string, v any) error {
 		return nil
 	}
 	if err := json.Unmarshal(data, v); err != nil {
-		return fmt.Errorf("struct field %s: %v", fn, err)
+		return fmt.Errorf("struct field %s: %s", fn, err.Error())
 	}
 	return nil
 }

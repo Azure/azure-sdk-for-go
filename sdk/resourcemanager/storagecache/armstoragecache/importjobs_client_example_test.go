@@ -101,6 +101,72 @@ func ExampleImportJobsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-08-01/importJob_Update.json
+func ExampleImportJobsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewImportJobsClient().BeginUpdate(ctx, "scgroup", "fs1", "job1", armstoragecache.ImportJobUpdate{
+		Tags: map[string]*string{
+			"Dept": to.Ptr("ContosoAds"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstoragecache.ImportJobsClientUpdateResponse{
+	// 	ImportJob: armstoragecache.ImportJob{
+	// 		Name: to.Ptr("job1"),
+	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/importJob"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/importJobs/job1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armstoragecache.ImportJobProperties{
+	// 			AdminStatus: to.Ptr(armstoragecache.ImportJobAdminStatusActive),
+	// 			ConflictResolutionMode: to.Ptr(armstoragecache.ConflictResolutionModeOverwriteAlways),
+	// 			ImportPrefixes: []*string{
+	// 				to.Ptr("/"),
+	// 			},
+	// 			MaximumErrors: to.Ptr[int32](0),
+	// 			ProvisioningState: to.Ptr(armstoragecache.ImportJobProvisioningStateTypeSucceeded),
+	// 			Status: &armstoragecache.ImportJobPropertiesStatus{
+	// 				BlobsImportedPerSecond: to.Ptr[int64](4000),
+	// 				BlobsWalkedPerSecond: to.Ptr[int64](10000),
+	// 				ImportedDirectories: to.Ptr[int64](500),
+	// 				ImportedFiles: to.Ptr[int64](1000),
+	// 				ImportedSymlinks: to.Ptr[int64](1000),
+	// 				LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
+	// 				PreexistingDirectories: to.Ptr[int64](100),
+	// 				PreexistingFiles: to.Ptr[int64](500),
+	// 				PreexistingSymlinks: to.Ptr[int64](200),
+	// 				State: to.Ptr(armstoragecache.ImportStatusTypeCompleted),
+	// 				StatusMessage: to.Ptr("Import job completed successfully"),
+	// 				TotalBlobsImported: to.Ptr[int64](1000000),
+	// 				TotalBlobsWalked: to.Ptr[int64](1000000),
+	// 				TotalConflicts: to.Ptr[int32](1),
+	// 				TotalErrors: to.Ptr[int32](1),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Dept": to.Ptr("ContosoAds"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-08-01/importJobs_Get.json
 func ExampleImportJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -251,70 +317,4 @@ func ExampleImportJobsClient_NewListByAmlFilesystemPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-08-01/importJob_Update.json
-func ExampleImportJobsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewImportJobsClient().BeginUpdate(ctx, "scgroup", "fs1", "job1", armstoragecache.ImportJobUpdate{
-		Tags: map[string]*string{
-			"Dept": to.Ptr("ContosoAds"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstoragecache.ImportJobsClientUpdateResponse{
-	// 	ImportJob: armstoragecache.ImportJob{
-	// 		Name: to.Ptr("job1"),
-	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/importJob"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/importJobs/job1"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armstoragecache.ImportJobProperties{
-	// 			AdminStatus: to.Ptr(armstoragecache.ImportJobAdminStatusActive),
-	// 			ConflictResolutionMode: to.Ptr(armstoragecache.ConflictResolutionModeOverwriteAlways),
-	// 			ImportPrefixes: []*string{
-	// 				to.Ptr("/"),
-	// 			},
-	// 			MaximumErrors: to.Ptr[int32](0),
-	// 			ProvisioningState: to.Ptr(armstoragecache.ImportJobProvisioningStateTypeSucceeded),
-	// 			Status: &armstoragecache.ImportJobPropertiesStatus{
-	// 				BlobsImportedPerSecond: to.Ptr[int64](4000),
-	// 				BlobsWalkedPerSecond: to.Ptr[int64](10000),
-	// 				ImportedDirectories: to.Ptr[int64](500),
-	// 				ImportedFiles: to.Ptr[int64](1000),
-	// 				ImportedSymlinks: to.Ptr[int64](1000),
-	// 				LastCompletionTime: to.Ptr(time.Date(2019, time.April, 21, 18, 25, 43, 511000000, time.UTC)),
-	// 				LastStartedTime: to.Ptr(time.Date(2019, time.April, 21, 17, 25, 43, 511000000, time.UTC)),
-	// 				PreexistingDirectories: to.Ptr[int64](100),
-	// 				PreexistingFiles: to.Ptr[int64](500),
-	// 				PreexistingSymlinks: to.Ptr[int64](200),
-	// 				State: to.Ptr(armstoragecache.ImportStatusTypeCompleted),
-	// 				StatusMessage: to.Ptr("Import job completed successfully"),
-	// 				TotalBlobsImported: to.Ptr[int64](1000000),
-	// 				TotalBlobsWalked: to.Ptr[int64](1000000),
-	// 				TotalConflicts: to.Ptr[int32](1),
-	// 				TotalErrors: to.Ptr[int32](1),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"Dept": to.Ptr("ContosoAds"),
-	// 		},
-	// 	},
-	// }
 }

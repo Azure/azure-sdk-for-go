@@ -63,7 +63,8 @@ func (client *OperatorAPIPlansClient) Get(ctx context.Context, operatorAPIPlanNa
 	if err != nil {
 		return OperatorAPIPlansClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

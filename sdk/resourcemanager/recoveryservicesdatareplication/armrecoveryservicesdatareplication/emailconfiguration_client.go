@@ -66,7 +66,8 @@ func (client *EmailConfigurationClient) Create(ctx context.Context, resourceGrou
 	if err != nil {
 		return EmailConfigurationClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -135,7 +136,8 @@ func (client *EmailConfigurationClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return EmailConfigurationClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

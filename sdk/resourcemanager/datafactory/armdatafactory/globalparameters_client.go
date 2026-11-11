@@ -66,7 +66,8 @@ func (client *GlobalParametersClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return GlobalParametersClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *GlobalParametersClient) Delete(ctx context.Context, resourceGroupN
 		return GlobalParametersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return GlobalParametersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return GlobalParametersClientDeleteResponse{}, err
 	}
 	return GlobalParametersClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *GlobalParametersClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return GlobalParametersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

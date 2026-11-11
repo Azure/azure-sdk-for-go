@@ -88,7 +88,8 @@ func (s ReadManySelection) WithParameter(name string, value any) (ReadManySelect
 			return s, nil
 		}
 	}
-	s.parameters = append(parameters, queryParameter{Name: name, Value: encoded})
+	parameters = append(parameters, queryParameter{Name: name, Value: encoded})
+	s.parameters = parameters
 	return s, nil
 }
 

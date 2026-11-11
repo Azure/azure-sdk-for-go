@@ -62,7 +62,8 @@ func (client *ImpactCategoriesClient) Get(ctx context.Context, impactCategoryNam
 	if err != nil {
 		return ImpactCategoriesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -30,6 +30,9 @@ type CopyJobsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewCopyJobsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*CopyJobsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,14 +64,15 @@ func (client *CopyJobsClient) Cancel(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return CopyJobsClientCancelResponse{}, err
 	}
-	return client.cancelHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.cancelHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // cancelCreateRequest creates the Cancel request.
 func (client *CopyJobsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, _ *CopyJobsClientCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/copyJobs/{jobName}/cancel"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -126,14 +130,15 @@ func (client *CopyJobsClient) Complete(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return CopyJobsClientCompleteResponse{}, err
 	}
-	return client.completeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.completeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // completeCreateRequest creates the Complete request.
 func (client *CopyJobsClient) completeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, _ *CopyJobsClientCompleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/copyJobs/{jobName}/complete"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -191,14 +196,15 @@ func (client *CopyJobsClient) Create(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return CopyJobsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
 func (client *CopyJobsClient) createCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, jobCreateParameters CopyJobGetResults, _ *CopyJobsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/copyJobs/{jobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -260,14 +266,15 @@ func (client *CopyJobsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return CopyJobsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
 func (client *CopyJobsClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, _ *CopyJobsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/copyJobs/{jobName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -343,7 +350,7 @@ func (client *CopyJobsClient) listByDatabaseAccountCreateRequest(ctx context.Con
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/copyJobs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {
@@ -402,14 +409,15 @@ func (client *CopyJobsClient) Pause(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return CopyJobsClientPauseResponse{}, err
 	}
-	return client.pauseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.pauseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // pauseCreateRequest creates the Pause request.
 func (client *CopyJobsClient) pauseCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, _ *CopyJobsClientPauseOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/copyJobs/{jobName}/pause"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -467,14 +475,15 @@ func (client *CopyJobsClient) Resume(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return CopyJobsClientResumeResponse{}, err
 	}
-	return client.resumeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.resumeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // resumeCreateRequest creates the Resume request.
 func (client *CopyJobsClient) resumeCreateRequest(ctx context.Context, resourceGroupName string, accountName string, jobName string, _ *CopyJobsClientResumeOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/copyJobs/{jobName}/resume"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

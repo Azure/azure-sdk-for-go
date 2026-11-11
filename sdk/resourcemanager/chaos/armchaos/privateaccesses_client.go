@@ -69,7 +69,7 @@ func (client *PrivateAccessesClient) BeginCreateOrUpdate(ctx context.Context, re
 	}
 }
 
-// CreateOrUpdate - Create or update a private access
+// createOrUpdate - Create or update a private access
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateAccessesClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateAccessName string, resource PrivateAccess, options *PrivateAccessesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *PrivateAccessesClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PrivateAccessesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateAccessName string, resource PrivateAccess, _ *PrivateAccessesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/privateAccesses/{privateAccessName}"
 	if client.subscriptionID == "" {
@@ -145,7 +146,7 @@ func (client *PrivateAccessesClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete a private access
+// deleteOperation - Delete a private access
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateAccessesClient) deleteOperation(ctx context.Context, resourceGroupName string, privateAccessName string, options *PrivateAccessesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -162,12 +163,13 @@ func (client *PrivateAccessesClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PrivateAccessesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateAccessName string, _ *PrivateAccessesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/privateAccesses/{privateAccessName}"
 	if client.subscriptionID == "" {
@@ -217,7 +219,7 @@ func (client *PrivateAccessesClient) BeginDeleteAPrivateEndpointConnection(ctx c
 	}
 }
 
-// DeleteAPrivateEndpointConnection - Deletes a private endpoint connection under a private access resource.
+// deleteAPrivateEndpointConnection - Deletes a private endpoint connection under a private access resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateAccessesClient) deleteAPrivateEndpointConnection(ctx context.Context, resourceGroupName string, privateAccessName string, privateEndpointConnectionName string, options *PrivateAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (*http.Response, error) {
 	var err error
@@ -234,12 +236,13 @@ func (client *PrivateAccessesClient) deleteAPrivateEndpointConnection(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteAPrivateEndpointConnectionCreateRequest creates the DeleteAPrivateEndpointConnection request.
+// deleteAPrivateEndpointConnectionCreateRequest creates the deleteAPrivateEndpointConnection request.
 func (client *PrivateAccessesClient) deleteAPrivateEndpointConnectionCreateRequest(ctx context.Context, resourceGroupName string, privateAccessName string, privateEndpointConnectionName string, _ *PrivateAccessesClientBeginDeleteAPrivateEndpointConnectionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/privateAccesses/{privateAccessName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -268,6 +271,84 @@ func (client *PrivateAccessesClient) deleteAPrivateEndpointConnectionCreateReque
 	return req, nil
 }
 
+// BeginUpdate - Patch a private access tags
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - privateAccessName - The name of the private access resource that is being created. Supported characters for the name are
+//     a-z, A-Z, 0-9, _ and -. The maximum name length is 80 characters.
+//   - properties - private access resource's tags to be updated.
+//   - options - PrivateAccessesClientBeginUpdateOptions contains the optional parameters for the PrivateAccessesClient.BeginUpdate
+//     method.
+func (client *PrivateAccessesClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateAccessName string, properties PrivateAccessPatch, options *PrivateAccessesClientBeginUpdateOptions) (*runtime.Poller[PrivateAccessesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, privateAccessName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateAccessesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateAccessesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Patch a private access tags
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateAccessesClient) update(ctx context.Context, resourceGroupName string, privateAccessName string, properties PrivateAccessPatch, options *PrivateAccessesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PrivateAccessesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateAccessName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *PrivateAccessesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateAccessName string, properties PrivateAccessPatch, _ *PrivateAccessesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/privateAccesses/{privateAccessName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if privateAccessName == "" {
+		return nil, errors.New("parameter privateAccessName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{privateAccessName}", url.PathEscape(privateAccessName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get a private access resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -288,7 +369,8 @@ func (client *PrivateAccessesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return PrivateAccessesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -351,7 +433,8 @@ func (client *PrivateAccessesClient) GetAPrivateEndpointConnection(ctx context.C
 	if err != nil {
 		return PrivateAccessesClientGetAPrivateEndpointConnectionResponse{}, err
 	}
-	return client.getAPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAPrivateEndpointConnectionCreateRequest creates the GetAPrivateEndpointConnection request.
@@ -417,7 +500,8 @@ func (client *PrivateAccessesClient) GetPrivateLinkResources(ctx context.Context
 	if err != nil {
 		return PrivateAccessesClientGetPrivateLinkResourcesResponse{}, err
 	}
-	return client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
@@ -454,6 +538,76 @@ func (client *PrivateAccessesClient) getPrivateLinkResourcesHandleResponse(resp 
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkResourceListResult); err != nil {
 		return PrivateAccessesClientGetPrivateLinkResourcesResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListAllPager - Get a list of private access resources in a subscription.
+//   - options - PrivateAccessesClientListAllOptions contains the optional parameters for the PrivateAccessesClient.NewListAllPager
+//     method.
+func (client *PrivateAccessesClient) NewListAllPager(options *PrivateAccessesClientListAllOptions) *runtime.Pager[PrivateAccessesClientListAllResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PrivateAccessesClientListAllResponse]{
+		More: func(page PrivateAccessesClientListAllResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PrivateAccessesClientListAllResponse) (PrivateAccessesClientListAllResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateAccessesClient.NewListAllPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listAllCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return PrivateAccessesClientListAllResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateAccessesClientListAllResponse{}, err
+			}
+			return client.listAllHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listAllCreateRequest creates the ListAll request.
+func (client *PrivateAccessesClient) listAllCreateRequest(ctx context.Context, nextLink string, options *PrivateAccessesClientListAllOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/privateAccesses"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260801Preview)
+		if options != nil && options.ContinuationToken != nil {
+			reqQP.Set("continuationToken", *options.ContinuationToken)
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listAllHandleResponse handles the ListAll response.
+func (client *PrivateAccessesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (PrivateAccessesClientListAllResponse, error) {
+	result := PrivateAccessesClientListAllResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateAccessListResult); err != nil {
+		return PrivateAccessesClientListAllResponse{}, err
 	}
 	return result, nil
 }
@@ -529,76 +683,6 @@ func (client *PrivateAccessesClient) listHandleResponse(resp *http.Response, suc
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateAccessListResult); err != nil {
 		return PrivateAccessesClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListAllPager - Get a list of private access resources in a subscription.
-//   - options - PrivateAccessesClientListAllOptions contains the optional parameters for the PrivateAccessesClient.NewListAllPager
-//     method.
-func (client *PrivateAccessesClient) NewListAllPager(options *PrivateAccessesClientListAllOptions) *runtime.Pager[PrivateAccessesClientListAllResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PrivateAccessesClientListAllResponse]{
-		More: func(page PrivateAccessesClientListAllResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *PrivateAccessesClientListAllResponse) (PrivateAccessesClientListAllResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateAccessesClient.NewListAllPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listAllCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return PrivateAccessesClientListAllResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateAccessesClientListAllResponse{}, err
-			}
-			return client.listAllHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listAllCreateRequest creates the ListAll request.
-func (client *PrivateAccessesClient) listAllCreateRequest(ctx context.Context, nextLink string, options *PrivateAccessesClientListAllOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Chaos/privateAccesses"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260801Preview)
-		if options != nil && options.ContinuationToken != nil {
-			reqQP.Set("continuationToken", *options.ContinuationToken)
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listAllHandleResponse handles the ListAll response.
-func (client *PrivateAccessesClient) listAllHandleResponse(resp *http.Response, successCodes ...int) (PrivateAccessesClientListAllResponse, error) {
-	result := PrivateAccessesClientListAllResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateAccessListResult); err != nil {
-		return PrivateAccessesClientListAllResponse{}, err
 	}
 	return result, nil
 }
@@ -679,81 +763,4 @@ func (client *PrivateAccessesClient) listPrivateEndpointConnectionsHandleRespons
 		return PrivateAccessesClientListPrivateEndpointConnectionsResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Patch a private access tags
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - privateAccessName - The name of the private access resource that is being created. Supported characters for the name are
-//     a-z, A-Z, 0-9, _ and -. The maximum name length is 80 characters.
-//   - properties - private access resource's tags to be updated.
-//   - options - PrivateAccessesClientBeginUpdateOptions contains the optional parameters for the PrivateAccessesClient.BeginUpdate
-//     method.
-func (client *PrivateAccessesClient) BeginUpdate(ctx context.Context, resourceGroupName string, privateAccessName string, properties PrivateAccessPatch, options *PrivateAccessesClientBeginUpdateOptions) (*runtime.Poller[PrivateAccessesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, privateAccessName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateAccessesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateAccessesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Patch a private access tags
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *PrivateAccessesClient) update(ctx context.Context, resourceGroupName string, privateAccessName string, properties PrivateAccessPatch, options *PrivateAccessesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "PrivateAccessesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, privateAccessName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *PrivateAccessesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, privateAccessName string, properties PrivateAccessPatch, _ *PrivateAccessesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/privateAccesses/{privateAccessName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if privateAccessName == "" {
-		return nil, errors.New("parameter privateAccessName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{privateAccessName}", url.PathEscape(privateAccessName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

@@ -23,7 +23,7 @@ import (
 // ContainerClient contains the methods for the Container group.
 // Don't use this type directly, use a constructor function instead.
 //
-// Generated from API version 2026-12-06
+// Generated from API version 2027-03-07
 type ContainerClient struct {
 	internal *azcore.Client
 	url      string
@@ -73,7 +73,7 @@ func (client *ContainerClient) acquireLeaseCreateRequest(ctx context.Context, du
 	if options != nil && options.ProposedLeaseID != nil {
 		req.Raw().Header["x-ms-proposed-lease-id"] = []string{*options.ProposedLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -157,7 +157,7 @@ func (client *ContainerClient) breakLeaseCreateRequest(ctx context.Context, opti
 	if options != nil && options.BreakPeriod != nil {
 		req.Raw().Header["x-ms-lease-break-period"] = []string{strconv.FormatInt(int64(*options.BreakPeriod), 10)}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -246,7 +246,7 @@ func (client *ContainerClient) changeLeaseCreateRequest(ctx context.Context, lea
 	req.Raw().Header["x-ms-lease-action"] = []string{"change"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
 	req.Raw().Header["x-ms-proposed-lease-id"] = []string{proposedLeaseID}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -336,7 +336,7 @@ func (client *ContainerClient) createCreateRequest(ctx context.Context, options 
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -371,6 +371,78 @@ func (client *ContainerClient) createHandleResponse(resp *http.Response, success
 	}
 	if val := resp.Header.Get("X-Ms-Version"); val != "" {
 		result.Version = &val
+	}
+	return result, nil
+}
+
+// CreateSession - The Create Session operation enables users to create a session scoped to a container.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - createSessionConfiguration - The configuration used to create the session.
+//   - options - ContainerClientCreateSessionOptions contains the optional parameters for the ContainerClient.CreateSession method.
+func (client *ContainerClient) CreateSession(ctx context.Context, createSessionConfiguration CreateSessionConfiguration, options *ContainerClientCreateSessionOptions) (ContainerClientCreateSessionResponse, error) {
+	var err error
+	req, err := client.createSessionCreateRequest(ctx, createSessionConfiguration, options)
+	if err != nil {
+		return ContainerClientCreateSessionResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ContainerClientCreateSessionResponse{}, err
+	}
+	return client.createSessionHandleResponse(httpResp, http.StatusCreated)
+}
+
+// createSessionCreateRequest creates the CreateSession request.
+func (client *ContainerClient) createSessionCreateRequest(ctx context.Context, createSessionConfiguration CreateSessionConfiguration, options *ContainerClientCreateSessionOptions) (*policy.Request, error) {
+	urlPath := "?restype=container&comp=session"
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.url, urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.Timeout != nil {
+		reqQP.Set("timeout", strconv.FormatInt(int64(*options.Timeout), 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/xml"}
+	if options != nil && options.ClientRequestID != nil {
+		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
+	}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
+	req.Raw().Header["Content-Type"] = []string{"application/xml"}
+	if err := runtime.MarshalAsXML(req, createSessionConfiguration); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// createSessionHandleResponse handles the CreateSession response.
+func (client *ContainerClient) createSessionHandleResponse(resp *http.Response, successCodes ...int) (ContainerClientCreateSessionResponse, error) {
+	result := ContainerClientCreateSessionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if val := resp.Header.Get("X-Ms-Client-Request-Id"); val != "" {
+		result.ClientRequestID = &val
+	}
+	if val := resp.Header.Get("Content-Type"); val != "" {
+		result.ContentType = &val
+	}
+	if val := resp.Header.Get("Date"); val != "" {
+		date, err := time.Parse(time.RFC1123, val)
+		if err != nil {
+			return ContainerClientCreateSessionResponse{}, err
+		}
+		result.Date = &date
+	}
+	if val := resp.Header.Get("X-Ms-Request-Id"); val != "" {
+		result.RequestID = &val
+	}
+	if val := resp.Header.Get("X-Ms-Version"); val != "" {
+		result.Version = &val
+	}
+	if err := runtime.UnmarshalAsXML(resp, &result.CreateSessionResponse); err != nil {
+		return ContainerClientCreateSessionResponse{}, err
 	}
 	return result, nil
 }
@@ -415,7 +487,7 @@ func (client *ContainerClient) deleteCreateRequest(ctx context.Context, options 
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -487,7 +559,7 @@ func (client *ContainerClient) filterBlobsCreateRequest(ctx context.Context, fil
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -558,7 +630,7 @@ func (client *ContainerClient) getAccessPolicyCreateRequest(ctx context.Context,
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -638,7 +710,7 @@ func (client *ContainerClient) getAccountInfoCreateRequest(ctx context.Context, 
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -715,7 +787,7 @@ func (client *ContainerClient) getPropertiesCreateRequest(ctx context.Context, o
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -853,7 +925,7 @@ func (client *ContainerClient) listBlobFlatSegmentCreateRequest(ctx context.Cont
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -941,7 +1013,7 @@ func (client *ContainerClient) listBlobFlatSegmentApacheArrowCreateRequest(ctx c
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -1039,7 +1111,7 @@ func (client *ContainerClient) listBlobHierarchySegmentCreateRequest(ctx context
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -1131,7 +1203,7 @@ func (client *ContainerClient) listBlobHierarchySegmentApacheArrowCreateRequest(
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -1205,7 +1277,7 @@ func (client *ContainerClient) releaseLeaseCreateRequest(ctx context.Context, le
 	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"release"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -1280,7 +1352,7 @@ func (client *ContainerClient) renameCreateRequest(ctx context.Context, sourceCo
 	if options != nil && options.SourceLeaseID != nil {
 		req.Raw().Header["x-ms-source-lease-id"] = []string{*options.SourceLeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -1349,7 +1421,7 @@ func (client *ContainerClient) renewLeaseCreateRequest(ctx context.Context, leas
 	}
 	req.Raw().Header["x-ms-lease-action"] = []string{"renew"}
 	req.Raw().Header["x-ms-lease-id"] = []string{leaseID}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -1428,7 +1500,7 @@ func (client *ContainerClient) restoreCreateRequest(ctx context.Context, options
 	if options != nil && options.DeletedContainerVersion != nil {
 		req.Raw().Header["x-ms-deleted-container-version"] = []string{*options.DeletedContainerVersion}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -1502,7 +1574,7 @@ func (client *ContainerClient) setAccessPolicyCreateRequest(ctx context.Context,
 	if options != nil && options.LeaseID != nil {
 		req.Raw().Header["x-ms-lease-id"] = []string{*options.LeaseID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	type wrapper struct {
 		XMLName      xml.Name             `xml:"SignedIdentifiers"`
 		ContainerACL *[]*SignedIdentifier `xml:"SignedIdentifier"`
@@ -1593,7 +1665,7 @@ func (client *ContainerClient) setMetadataCreateRequest(ctx context.Context, opt
 			}
 		}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	return req, nil
 }
 
@@ -1670,7 +1742,7 @@ func (client *ContainerClient) submitBatchCreateRequest(ctx context.Context, mul
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
 	}
-	req.Raw().Header["x-ms-version"] = []string{version20261206}
+	req.Raw().Header["x-ms-version"] = []string{version20270307}
 	if err := req.SetBody(body, multipartContentType); err != nil {
 		return nil, err
 	}

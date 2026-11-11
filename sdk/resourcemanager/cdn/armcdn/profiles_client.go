@@ -84,7 +84,8 @@ func (client *ProfilesClient) canMigrate(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -156,7 +157,8 @@ func (client *ProfilesClient) cdnCanMigrateToAfd(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -231,7 +233,8 @@ func (client *ProfilesClient) cdnMigrateToAfd(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -309,7 +312,8 @@ func (client *ProfilesClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -388,7 +392,8 @@ func (client *ProfilesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -458,7 +463,8 @@ func (client *ProfilesClient) migrate(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -530,7 +536,8 @@ func (client *ProfilesClient) migrationAbort(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -602,7 +609,8 @@ func (client *ProfilesClient) migrationCommit(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -675,7 +683,8 @@ func (client *ProfilesClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -733,7 +742,8 @@ func (client *ProfilesClient) GenerateSsoURI(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ProfilesClientGenerateSsoURIResponse{}, err
 	}
-	return client.generateSsoURIHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateSsoURIHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateSsoURICreateRequest creates the GenerateSsoURI request.
@@ -795,7 +805,8 @@ func (client *ProfilesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ProfilesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -858,7 +869,8 @@ func (client *ProfilesClient) ListSupportedOptimizationTypes(ctx context.Context
 	if err != nil {
 		return ProfilesClientListSupportedOptimizationTypesResponse{}, err
 	}
-	return client.listSupportedOptimizationTypesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSupportedOptimizationTypesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSupportedOptimizationTypesCreateRequest creates the ListSupportedOptimizationTypes request.

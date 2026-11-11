@@ -86,7 +86,8 @@ func (client *ArcSettingsClient) createIdentity(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -161,7 +162,8 @@ func (client *ArcSettingsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -237,7 +239,8 @@ func (client *ArcSettingsClient) initializeDisableProcess(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -314,7 +317,8 @@ func (client *ArcSettingsClient) reconcile(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -374,7 +378,8 @@ func (client *ArcSettingsClient) ConsentAndInstallDefaultExtensions(ctx context.
 	if err != nil {
 		return ArcSettingsClientConsentAndInstallDefaultExtensionsResponse{}, err
 	}
-	return client.consentAndInstallDefaultExtensionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.consentAndInstallDefaultExtensionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // consentAndInstallDefaultExtensionsCreateRequest creates the ConsentAndInstallDefaultExtensions request.
@@ -440,7 +445,8 @@ func (client *ArcSettingsClient) Create(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ArcSettingsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -510,7 +516,8 @@ func (client *ArcSettingsClient) GeneratePassword(ctx context.Context, resourceG
 	if err != nil {
 		return ArcSettingsClientGeneratePasswordResponse{}, err
 	}
-	return client.generatePasswordHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generatePasswordHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generatePasswordCreateRequest creates the GeneratePassword request.
@@ -575,7 +582,8 @@ func (client *ArcSettingsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ArcSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -718,7 +726,8 @@ func (client *ArcSettingsClient) Update(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ArcSettingsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

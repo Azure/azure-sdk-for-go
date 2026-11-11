@@ -259,41 +259,41 @@ func (client *ProviderClient) getFunctionAppStacksForLocationHandleResponse(resp
 
 // NewGetFunctionAppStacksPager - Get available Function app frameworks and their versions
 //
-// Description for Get available Function app frameworks and their versions
-//   - options - ProviderClientGetFunctionAppStacksOptions contains the optional parameters for the ProviderClient.NewGetFunctionAppStacksPager
+// Description for Get available application frameworks and their versions
+//   - options - ProviderClientGetAvailableStacksOptions contains the optional parameters for the ProviderClient.NewGetAvailableStacksPager
 //     method.
-func (client *ProviderClient) NewGetFunctionAppStacksPager(options *ProviderClientGetFunctionAppStacksOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetFunctionAppStacksResponse]{
-		More: func(page ProviderClientGetFunctionAppStacksResponse) bool {
+func (client *ProviderClient) NewGetAvailableStacksPager(options *ProviderClientGetAvailableStacksOptions) *runtime.Pager[ProviderClientGetAvailableStacksResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetAvailableStacksResponse]{
+		More: func(page ProviderClientGetAvailableStacksResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ProviderClientGetFunctionAppStacksResponse) (ProviderClientGetFunctionAppStacksResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderClient.NewGetFunctionAppStacksPager")
+		Fetcher: func(ctx context.Context, page *ProviderClientGetAvailableStacksResponse) (ProviderClientGetAvailableStacksResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderClient.NewGetAvailableStacksPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.getFunctionAppStacksCreateRequest(ctx, nextLink, options)
+			req, err := client.getAvailableStacksCreateRequest(ctx, nextLink, options)
 			if err != nil {
-				return ProviderClientGetFunctionAppStacksResponse{}, err
+				return ProviderClientGetAvailableStacksResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ProviderClientGetFunctionAppStacksResponse{}, err
+				return ProviderClientGetAvailableStacksResponse{}, err
 			}
-			return client.getFunctionAppStacksHandleResponse(resp, http.StatusOK)
+			return client.getAvailableStacksHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// getFunctionAppStacksCreateRequest creates the GetFunctionAppStacks request.
-func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Context, nextLink string, options *ProviderClientGetFunctionAppStacksOptions) (*policy.Request, error) {
+// getAvailableStacksCreateRequest creates the GetAvailableStacks request.
+func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Context, nextLink string, options *ProviderClientGetAvailableStacksOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/providers/Microsoft.Web/functionAppStacks"
+		urlPath := "/providers/Microsoft.Web/availableStacks"
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
 		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
@@ -313,14 +313,14 @@ func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Cont
 	return req, nil
 }
 
-// getFunctionAppStacksHandleResponse handles the GetFunctionAppStacks response.
-func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetFunctionAppStacksResponse, error) {
-	result := ProviderClientGetFunctionAppStacksResponse{}
+// getAvailableStacksHandleResponse handles the GetAvailableStacks response.
+func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetAvailableStacksResponse, error) {
+	result := ProviderClientGetAvailableStacksResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionAppStackCollection); err != nil {
-		return ProviderClientGetFunctionAppStacksResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ApplicationStackCollection); err != nil {
+		return ProviderClientGetAvailableStacksResponse{}, err
 	}
 	return result, nil
 }
@@ -398,43 +398,43 @@ func (client *ProviderClient) getWebAppStacksForLocationHandleResponse(resp *htt
 	return result, nil
 }
 
-// NewGetWebAppStacksPager - Get available Web app frameworks and their versions
+// NewGetFunctionAppStacksPager - Get available Function app frameworks and their versions
 //
-// Description for Get available Web app frameworks and their versions
-//   - options - ProviderClientGetWebAppStacksOptions contains the optional parameters for the ProviderClient.NewGetWebAppStacksPager
+// Description for Get available Function app frameworks and their versions
+//   - options - ProviderClientGetFunctionAppStacksOptions contains the optional parameters for the ProviderClient.NewGetFunctionAppStacksPager
 //     method.
-func (client *ProviderClient) NewGetWebAppStacksPager(options *ProviderClientGetWebAppStacksOptions) *runtime.Pager[ProviderClientGetWebAppStacksResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetWebAppStacksResponse]{
-		More: func(page ProviderClientGetWebAppStacksResponse) bool {
+func (client *ProviderClient) NewGetFunctionAppStacksPager(options *ProviderClientGetFunctionAppStacksOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ProviderClientGetFunctionAppStacksResponse]{
+		More: func(page ProviderClientGetFunctionAppStacksResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *ProviderClientGetWebAppStacksResponse) (ProviderClientGetWebAppStacksResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderClient.NewGetWebAppStacksPager")
+		Fetcher: func(ctx context.Context, page *ProviderClientGetFunctionAppStacksResponse) (ProviderClientGetFunctionAppStacksResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ProviderClient.NewGetFunctionAppStacksPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			req, err := client.getWebAppStacksCreateRequest(ctx, nextLink, options)
+			req, err := client.getFunctionAppStacksCreateRequest(ctx, nextLink, options)
 			if err != nil {
-				return ProviderClientGetWebAppStacksResponse{}, err
+				return ProviderClientGetFunctionAppStacksResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return ProviderClientGetWebAppStacksResponse{}, err
+				return ProviderClientGetFunctionAppStacksResponse{}, err
 			}
-			return client.getWebAppStacksHandleResponse(resp, http.StatusOK)
+			return client.getFunctionAppStacksHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
-// getWebAppStacksCreateRequest creates the GetWebAppStacks request.
-func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, nextLink string, options *ProviderClientGetWebAppStacksOptions) (*policy.Request, error) {
+// getFunctionAppStacksCreateRequest creates the GetFunctionAppStacks request.
+func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Context, nextLink string, options *ProviderClientGetFunctionAppStacksOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
 	if firstPage {
-		urlPath := "/providers/Microsoft.Web/webAppStacks"
+		urlPath := "/providers/Microsoft.Web/functionAppStacks"
 		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	} else {
 		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
@@ -454,14 +454,14 @@ func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, 
 	return req, nil
 }
 
-// getWebAppStacksHandleResponse handles the GetWebAppStacks response.
-func (client *ProviderClient) getWebAppStacksHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetWebAppStacksResponse, error) {
-	result := ProviderClientGetWebAppStacksResponse{}
+// getFunctionAppStacksHandleResponse handles the GetFunctionAppStacks response.
+func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *http.Response, successCodes ...int) (ProviderClientGetFunctionAppStacksResponse, error) {
+	result := ProviderClientGetFunctionAppStacksResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppStackCollection); err != nil {
-		return ProviderClientGetWebAppStacksResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.FunctionAppStackCollection); err != nil {
+		return ProviderClientGetFunctionAppStacksResponse{}, err
 	}
 	return result, nil
 }

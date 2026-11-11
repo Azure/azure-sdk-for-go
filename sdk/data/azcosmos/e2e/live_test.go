@@ -11,10 +11,12 @@ import (
 	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"net/url"
 	"os"
 	"runtime"
 	"runtime/debug"
+	"strings"
 	"testing"
 	"time"
 
@@ -147,13 +149,120 @@ func liveNoError(t *testing.T, operation string, err error) {
 	if err == nil {
 		return
 	}
+	t.Fatalf("%s: %s", operation, liveErrorSummary(err))
+}
+
+func liveErrorSummary(err error) string {
 	var serviceErr *azcosmos.Error
 	if errors.As(err, &serviceErr) {
-		t.Fatalf("%s: code=%s status=%d substatus=%d attempts=%d fromWire=%v",
-			operation, serviceErr.Code, serviceErr.StatusCode, serviceErr.SubStatus,
-			serviceErr.AttemptCount, serviceErr.FromWire)
+		hints := "suppressed"
+		if !serviceErr.FromWire && serviceErr.Code == azcosmos.CodeTransportFailure {
+			hints = liveTransportCauseHints(serviceErr.Message)
+		}
+		return fmt.Sprintf("code=%s status=%d substatus=%d attempts=%d fromWire=%v causeHints=%s",
+			serviceErr.Code, serviceErr.StatusCode, serviceErr.SubStatus,
+			serviceErr.AttemptCount, serviceErr.FromWire, hints)
 	}
-	t.Fatalf("%s: %T (details suppressed)", operation, err)
+	return fmt.Sprintf("%T (details suppressed)", err)
+}
+
+// Reconstruct hints from fixed labels; replacing known secrets in raw text can miss new formats.
+// These are diagnostic hints, not a stable classification of the driver's unstructured message.
+func liveTransportCauseHints(message string) string {
+	message = strings.ToLower(message)
+	var hints []string
+	for _, rule := range []struct {
+		label   string
+		matches []string
+	}{
+		{"connect", []string{"error trying to connect", "tcp connect error", "client error (connect)"}},
+		{"permission-denied", []string{"permission denied", "(os error 13)"}},
+		{"operation-not-permitted", []string{"operation not permitted", "(os error 1)"}},
+		{"connection-refused", []string{"connection refused", "(os error 111)", "(os error 61)"}},
+		{"connection-reset", []string{"connection reset", "(os error 104)", "(os error 54)"}},
+		{"network-unreachable", []string{"network is unreachable", "(os error 101)"}},
+		{"host-unreachable", []string{"host is unreachable", "no route to host", "(os error 113)"}},
+		{"dns", []string{"dns error", "dns lookup", "failed to lookup address", "name or service not known", "temporary failure in name resolution", "no such host"}},
+		{"tls-certificate", []string{"invalid peer certificate", "invalid certificate", "certificate verify failed", "certificate verification failed", "unknownissuer", "certificatenotvalidforname"}},
+		{"tls-handshake", []string{"tls handshake", "tls error", "received fatal alert"}},
+		{"timeout", []string{"timed out", "timeout", "deadline has elapsed"}},
+		{"unexpected-eof", []string{"unexpected eof", "unexpected end of file"}},
+	} {
+		for _, match := range rule.matches {
+			if strings.Contains(message, match) {
+				hints = append(hints, rule.label)
+				break
+			}
+		}
+	}
+	if len(hints) == 0 {
+		return "unclassified"
+	}
+	return strings.Join(hints, ",")
+}
+
+func TestLiveErrorSummaryTransportHints(t *testing.T) {
+	const sensitive = `url=https://synthetic-user:synthetic-password@synthetic-account.documents.azure.com/dbs/private-db?sig=synthetic-signature
+Authorization: Bearer synthetic-token-do-not-log
+AccountKey=synthetic-key-do-not-log; client_secret=synthetic-client-secret
+address=203.0.113.47 tenant=00000000-1111-2222-3333-444444444444
+##vso[task.logissue type=error]synthetic-log-injection`
+	for _, tc := range []struct {
+		name    string
+		message string
+		want    string
+	}{
+		{"blocked connect", "error trying to connect: tcp connect error: Operation not permitted (os error 1)", "connect,operation-not-permitted"},
+		{"permission", "client error (Connect): Permission denied (os error 13)", "connect,permission-denied"},
+		{"refused", "Connection refused (os error 111)", "connection-refused"},
+		{"reset", "Connection reset by peer (os error 104)", "connection-reset"},
+		{"network", "Network is unreachable (os error 101)", "network-unreachable"},
+		{"host", "No route to host (os error 113)", "host-unreachable"},
+		{"dns", "DNS error: failed to lookup address: Temporary failure in name resolution", "dns"},
+		{"certificate", `invalid peer certificate: NotValidForName; UnknownIssuer; subject="synthetic-subject"`, "tls-certificate"},
+		{"tls", "TLS handshake failed: received fatal alert", "tls-handshake"},
+		{"timeout", "operation timed out: deadline has elapsed", "timeout"},
+		{"eof", "unexpected EOF", "unexpected-eof"},
+		{"unknown", "unrecognized native failure", "unclassified"},
+		{"empty", "", "unclassified"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			message := tc.message + "\n" + sensitive + "\nencoded=" + url.QueryEscape(sensitive)
+			nativeErr := &azcosmos.Error{
+				Code: azcosmos.CodeTransportFailure, StatusCode: 503, SubStatus: 20010,
+				AttemptCount: 3, Message: message,
+				Body: []byte(sensitive), SessionToken: azcosmos.SessionToken(sensitive),
+				ActivityID: sensitive, Diagnostics: &azcosmos.Diagnostics{JSON: sensitive},
+			}
+			err := fmt.Errorf("%s: %w", sensitive, nativeErr)
+			require.Equal(t, "code=TransportFailure status=503 substatus=20010 attempts=3 fromWire=false causeHints="+tc.want,
+				liveErrorSummary(err), "only fixed hints and existing status fields may be logged")
+		})
+	}
+}
+
+func TestLiveErrorSummarySuppressesOtherDetails(t *testing.T) {
+	const message = "connection refused; Authorization: Bearer synthetic-secret-do-not-log"
+	for _, tc := range []struct {
+		name string
+		err  error
+		want string
+	}{
+		{"service", &azcosmos.Error{Code: azcosmos.CodeServiceUnavailable, StatusCode: 503, FromWire: true, Message: message},
+			"code=ServiceUnavailable status=503 substatus=0 attempts=0 fromWire=true causeHints=suppressed"},
+		{"wire transport classification", &azcosmos.Error{Code: azcosmos.CodeTransportFailure, StatusCode: 503, FromWire: true, Message: message},
+			"code=TransportFailure status=503 substatus=0 attempts=0 fromWire=true causeHints=suppressed"},
+		{"credential", &azcosmos.Error{Code: azcosmos.CodeAuthenticationFailed, StatusCode: 401, Message: message},
+			"code=AuthenticationFailed status=401 substatus=0 attempts=0 fromWire=false causeHints=suppressed"},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			require.Equal(t, tc.want, liveErrorSummary(tc.err))
+		})
+	}
+	summary := liveErrorSummary(errors.New(message))
+	require.Contains(t, summary, "(details suppressed)")
+	require.NotContains(t, summary, message)
+	require.NotContains(t, summary, "synthetic-secret")
 }
 
 func (f *liveFixture) create(t *testing.T, suffix string, value int64) azcosmos.ItemResponse {

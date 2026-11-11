@@ -556,6 +556,14 @@ and both the expected (not independently measured) account configuration and ori
 catalog region. Never enable
 credential/body logging or publish `.env` files, tokens, or raw native diagnostics.
 
+For client-generated transport failures, the live helper also logs `causeHints` reconstructed
+from a fixed vocabulary: connection setup/refusal/reset, permission denial, unreachable
+network/host, DNS, TLS/certificate, timeout, and unexpected end-of-file hints. No original
+message text, URLs, addresses, headers, credentials, or diagnostic payloads are copied.
+Unrecognized transport messages produce `causeHints=unclassified`; service and authentication
+details remain suppressed. These hints aid debugging but are not a stable error contract
+or proof of a particular root cause.
+
 Each scenario uses an isolated runtime and random item IDs/partition keys. Cleanup is
 registered before writes with independent timeouts. Setup retries only newly deployed
 RBAC's 403/5302 for at most 90 seconds; scenarios are not retried. Explicit session-token

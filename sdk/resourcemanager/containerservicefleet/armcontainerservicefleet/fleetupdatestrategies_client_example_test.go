@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/UpdateStrategies_CreateOrUpdate.json
+// Generated from example definition: 2026-11-01/UpdateStrategies_CreateOrUpdate.json
 func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateStrategies_Delete.json
+// Generated from example definition: 2026-11-01/UpdateStrategies_Delete.json
 func ExampleFleetUpdateStrategiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleFleetUpdateStrategiesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateStrategies_Get.json
+// Generated from example definition: 2026-11-01/UpdateStrategies_Get.json
 func ExampleFleetUpdateStrategiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +273,7 @@ func ExampleFleetUpdateStrategiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateStrategies_ListByFleet.json
+// Generated from example definition: 2026-11-01/UpdateStrategies_ListByFleet.json
 func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

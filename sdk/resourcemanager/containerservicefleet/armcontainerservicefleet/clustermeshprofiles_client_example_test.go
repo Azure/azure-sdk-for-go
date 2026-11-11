@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/ClusterMeshProfiles_Apply.json
+// Generated from example definition: 2026-11-01/ClusterMeshProfiles_Apply.json
 func ExampleClusterMeshProfilesClient_BeginApply() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +65,7 @@ func ExampleClusterMeshProfilesClient_BeginApply() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/ClusterMeshProfiles_CreateOrUpdate.json
+// Generated from example definition: 2026-11-01/ClusterMeshProfiles_CreateOrUpdate.json
 func ExampleClusterMeshProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +125,7 @@ func ExampleClusterMeshProfilesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/ClusterMeshProfiles_Delete.json
+// Generated from example definition: 2026-11-01/ClusterMeshProfiles_Delete.json
 func ExampleClusterMeshProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleClusterMeshProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/ClusterMeshProfiles_Get.json
+// Generated from example definition: 2026-11-01/ClusterMeshProfiles_Get.json
 func ExampleClusterMeshProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -195,7 +195,7 @@ func ExampleClusterMeshProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/ClusterMeshProfiles_ListByFleet.json
+// Generated from example definition: 2026-11-01/ClusterMeshProfiles_ListByFleet.json
 func ExampleClusterMeshProfilesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

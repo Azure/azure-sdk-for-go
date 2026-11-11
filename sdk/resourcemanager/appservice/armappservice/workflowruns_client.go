@@ -67,7 +67,8 @@ func (client *WorkflowRunsClient) Cancel(ctx context.Context, resourceGroupName 
 		return WorkflowRunsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WorkflowRunsClientCancelResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WorkflowRunsClientCancelResponse{}, err
 	}
 	return WorkflowRunsClientCancelResponse{}, nil
 }
@@ -126,7 +127,8 @@ func (client *WorkflowRunsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return WorkflowRunsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

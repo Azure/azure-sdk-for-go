@@ -85,7 +85,8 @@ func (client *DeletedVaultsClient) undelete(ctx context.Context, location string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -139,7 +140,8 @@ func (client *DeletedVaultsClient) Get(ctx context.Context, location string, del
 	if err != nil {
 		return DeletedVaultsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -200,7 +202,8 @@ func (client *DeletedVaultsClient) GetOperationStatus(ctx context.Context, locat
 	if err != nil {
 		return DeletedVaultsClientGetOperationStatusResponse{}, err
 	}
-	return client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getOperationStatusCreateRequest creates the GetOperationStatus request.

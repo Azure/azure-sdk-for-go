@@ -69,7 +69,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) BeginCreateOrUpdate(ctx c
 	}
 }
 
-// CreateOrUpdate - This api creates an ispCacheNode with the specified create parameters
+// createOrUpdate - This api creates an ispCacheNode with the specified create parameters
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnterpriseMccCacheNodesOperationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, resource EnterpriseMccCacheNodeResource, options *EnterpriseMccCacheNodesOperationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *EnterpriseMccCacheNodesOperationsClient) createOrUpdate(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EnterpriseMccCacheNodesOperationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, resource EnterpriseMccCacheNodeResource, _ *EnterpriseMccCacheNodesOperationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *EnterpriseMccCacheNodesOperationsClient) BeginDelete(ctx context.C
 	}
 }
 
-// Delete - This api deletes an existing ispCacheNode resource
+// deleteOperation - This api deletes an existing ispCacheNode resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EnterpriseMccCacheNodesOperationsClient) deleteOperation(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, options *EnterpriseMccCacheNodesOperationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *EnterpriseMccCacheNodesOperationsClient) deleteOperation(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EnterpriseMccCacheNodesOperationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, customerResourceName string, cacheNodeResourceName string, _ *EnterpriseMccCacheNodesOperationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedCache/enterpriseMccCustomers/{customerResourceName}/enterpriseMccCacheNodes/{cacheNodeResourceName}"
 	if client.subscriptionID == "" {
@@ -221,7 +223,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) Get(ctx context.Context, 
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -287,7 +290,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeAutoUpdateHis
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeAutoUpdateHistoryResponse{}, err
 	}
-	return client.getCacheNodeAutoUpdateHistoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCacheNodeAutoUpdateHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCacheNodeAutoUpdateHistoryCreateRequest creates the GetCacheNodeAutoUpdateHistory request.
@@ -353,7 +357,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeInstallDetail
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeInstallDetailsResponse{}, err
 	}
-	return client.getCacheNodeInstallDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCacheNodeInstallDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCacheNodeInstallDetailsCreateRequest creates the GetCacheNodeInstallDetails request.
@@ -419,7 +424,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeMccIssueDetai
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeMccIssueDetailsHistoryResponse{}, err
 	}
-	return client.getCacheNodeMccIssueDetailsHistoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCacheNodeMccIssueDetailsHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCacheNodeMccIssueDetailsHistoryCreateRequest creates the GetCacheNodeMccIssueDetailsHistory request.
@@ -485,7 +491,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) GetCacheNodeTLSCertificat
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientGetCacheNodeTLSCertificateHistoryResponse{}, err
 	}
-	return client.getCacheNodeTLSCertificateHistoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCacheNodeTLSCertificateHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCacheNodeTLSCertificateHistoryCreateRequest creates the GetCacheNodeTLSCertificateHistory request.
@@ -630,7 +637,8 @@ func (client *EnterpriseMccCacheNodesOperationsClient) Update(ctx context.Contex
 	if err != nil {
 		return EnterpriseMccCacheNodesOperationsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

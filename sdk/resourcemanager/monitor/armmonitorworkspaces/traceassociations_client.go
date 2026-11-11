@@ -67,7 +67,8 @@ func (client *TraceAssociationsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return TraceAssociationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -143,7 +144,8 @@ func (client *TraceAssociationsClient) Delete(ctx context.Context, resourceGroup
 		return TraceAssociationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return TraceAssociationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TraceAssociationsClientDeleteResponse{}, err
 	}
 	return TraceAssociationsClientDeleteResponse{}, nil
 }
@@ -202,7 +204,8 @@ func (client *TraceAssociationsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return TraceAssociationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

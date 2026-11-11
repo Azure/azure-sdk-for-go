@@ -60,7 +60,8 @@ func (client *RecipientTransfersClient) Accept(ctx context.Context, transferName
 	if err != nil {
 		return RecipientTransfersClientAcceptResponse{}, err
 	}
-	return client.acceptHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.acceptHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // acceptCreateRequest creates the Accept request.
@@ -118,7 +119,8 @@ func (client *RecipientTransfersClient) Decline(ctx context.Context, transferNam
 	if err != nil {
 		return RecipientTransfersClientDeclineResponse{}, err
 	}
-	return client.declineHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.declineHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // declineCreateRequest creates the Decline request.
@@ -171,7 +173,8 @@ func (client *RecipientTransfersClient) Get(ctx context.Context, transferName st
 	if err != nil {
 		return RecipientTransfersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -293,7 +296,8 @@ func (client *RecipientTransfersClient) Validate(ctx context.Context, transferNa
 	if err != nil {
 		return RecipientTransfersClientValidateResponse{}, err
 	}
-	return client.validateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCreateRequest creates the Validate request.

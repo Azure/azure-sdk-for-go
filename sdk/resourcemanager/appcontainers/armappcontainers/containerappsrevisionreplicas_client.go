@@ -68,7 +68,8 @@ func (client *ContainerAppsRevisionReplicasClient) GetReplica(ctx context.Contex
 	if err != nil {
 		return ContainerAppsRevisionReplicasClientGetReplicaResponse{}, err
 	}
-	return client.getReplicaHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getReplicaHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getReplicaCreateRequest creates the GetReplica request.
@@ -140,7 +141,8 @@ func (client *ContainerAppsRevisionReplicasClient) ListReplicas(ctx context.Cont
 	if err != nil {
 		return ContainerAppsRevisionReplicasClientListReplicasResponse{}, err
 	}
-	return client.listReplicasHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listReplicasHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listReplicasCreateRequest creates the ListReplicas request.

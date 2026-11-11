@@ -68,7 +68,8 @@ func (client *SiteCertificatesClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return SiteCertificatesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -142,7 +143,8 @@ func (client *SiteCertificatesClient) CreateOrUpdateSlot(ctx context.Context, re
 	if err != nil {
 		return SiteCertificatesClientCreateOrUpdateSlotResponse{}, err
 	}
-	return client.createOrUpdateSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateSlotHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateSlotCreateRequest creates the CreateOrUpdateSlot request.
@@ -218,7 +220,8 @@ func (client *SiteCertificatesClient) Delete(ctx context.Context, resourceGroupN
 		return SiteCertificatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SiteCertificatesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SiteCertificatesClientDeleteResponse{}, err
 	}
 	return SiteCertificatesClientDeleteResponse{}, nil
 }
@@ -277,7 +280,8 @@ func (client *SiteCertificatesClient) DeleteSlot(ctx context.Context, resourceGr
 		return SiteCertificatesClientDeleteSlotResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SiteCertificatesClientDeleteSlotResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SiteCertificatesClientDeleteSlotResponse{}, err
 	}
 	return SiteCertificatesClientDeleteSlotResponse{}, nil
 }
@@ -337,7 +341,8 @@ func (client *SiteCertificatesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return SiteCertificatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -406,7 +411,8 @@ func (client *SiteCertificatesClient) GetSlot(ctx context.Context, resourceGroup
 	if err != nil {
 		return SiteCertificatesClientGetSlotResponse{}, err
 	}
-	return client.getSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSlotCreateRequest creates the GetSlot request.
@@ -641,7 +647,8 @@ func (client *SiteCertificatesClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return SiteCertificatesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -715,7 +722,8 @@ func (client *SiteCertificatesClient) UpdateSlot(ctx context.Context, resourceGr
 	if err != nil {
 		return SiteCertificatesClientUpdateSlotResponse{}, err
 	}
-	return client.updateSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateSlotCreateRequest creates the UpdateSlot request.

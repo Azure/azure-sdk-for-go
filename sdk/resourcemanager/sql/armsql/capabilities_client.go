@@ -63,7 +63,8 @@ func (client *CapabilitiesClient) ListByLocation(ctx context.Context, locationNa
 	if err != nil {
 		return CapabilitiesClientListByLocationResponse{}, err
 	}
-	return client.listByLocationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByLocationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByLocationCreateRequest creates the ListByLocation request.

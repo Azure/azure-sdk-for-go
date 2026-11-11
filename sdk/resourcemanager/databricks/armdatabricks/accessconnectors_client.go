@@ -68,7 +68,7 @@ func (client *AccessConnectorsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates Azure Databricks Access Connector.
+// createOrUpdate - Creates or updates Azure Databricks Access Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessConnectorsClient) createOrUpdate(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnector, options *AccessConnectorsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *AccessConnectorsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AccessConnectorsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnector, _ *AccessConnectorsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}"
 	if client.subscriptionID == "" {
@@ -143,7 +144,7 @@ func (client *AccessConnectorsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Deletes the Azure Databricks Access Connector.
+// deleteOperation - Deletes the Azure Databricks Access Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessConnectorsClient) deleteOperation(ctx context.Context, resourceGroupName string, connectorName string, options *AccessConnectorsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,12 +161,13 @@ func (client *AccessConnectorsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AccessConnectorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, _ *AccessConnectorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}"
 	if client.subscriptionID == "" {
@@ -190,6 +192,83 @@ func (client *AccessConnectorsClient) deleteCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
+// BeginUpdate - Updates an Azure Databricks Access Connector.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - connectorName - The name of the Azure Databricks Access Connector.
+//   - parameters - The update to the Azure Databricks Access Connector.
+//   - options - AccessConnectorsClientBeginUpdateOptions contains the optional parameters for the AccessConnectorsClient.BeginUpdate
+//     method.
+func (client *AccessConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnectorUpdate, options *AccessConnectorsClientBeginUpdateOptions) (*runtime.Poller[AccessConnectorsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, connectorName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessConnectorsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessConnectorsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates an Azure Databricks Access Connector.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AccessConnectorsClient) update(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnectorUpdate, options *AccessConnectorsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AccessConnectorsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, connectorName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AccessConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnectorUpdate, _ *AccessConnectorsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if connectorName == "" {
+		return nil, errors.New("parameter connectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Gets an Azure Databricks Access Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -209,7 +288,8 @@ func (client *AccessConnectorsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AccessConnectorsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -387,80 +467,4 @@ func (client *AccessConnectorsClient) listBySubscriptionHandleResponse(resp *htt
 		return AccessConnectorsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates an Azure Databricks Access Connector.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - connectorName - The name of the Azure Databricks Access Connector.
-//   - parameters - The update to the Azure Databricks Access Connector.
-//   - options - AccessConnectorsClientBeginUpdateOptions contains the optional parameters for the AccessConnectorsClient.BeginUpdate
-//     method.
-func (client *AccessConnectorsClient) BeginUpdate(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnectorUpdate, options *AccessConnectorsClientBeginUpdateOptions) (*runtime.Poller[AccessConnectorsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, connectorName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AccessConnectorsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AccessConnectorsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates an Azure Databricks Access Connector.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccessConnectorsClient) update(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnectorUpdate, options *AccessConnectorsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AccessConnectorsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, connectorName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AccessConnectorsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, connectorName string, parameters AccessConnectorUpdate, _ *AccessConnectorsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/accessConnectors/{connectorName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if connectorName == "" {
-		return nil, errors.New("parameter connectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{connectorName}", url.PathEscape(connectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

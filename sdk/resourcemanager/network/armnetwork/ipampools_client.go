@@ -90,7 +90,8 @@ func (client *IpamPoolsClient) create(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -142,7 +143,7 @@ func (client *IpamPoolsClient) createCreateRequest(ctx context.Context, resource
 //   - options - IpamPoolsClientBeginDeleteOptions contains the optional parameters for the IpamPoolsClient.BeginDelete method.
 func (client *IpamPoolsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*runtime.Poller[IpamPoolsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, poolName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, poolName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -157,11 +158,11 @@ func (client *IpamPoolsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// delete - Delete the Pool resource.
+// deleteOperation - Delete the Pool resource.
 //
 // Delete the Pool resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *IpamPoolsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *IpamPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, options *IpamPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IpamPoolsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -176,7 +177,8 @@ func (client *IpamPoolsClient) delete(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -235,7 +237,8 @@ func (client *IpamPoolsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return IpamPoolsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -302,7 +305,8 @@ func (client *IpamPoolsClient) GetPoolUsage(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return IpamPoolsClientGetPoolUsageResponse{}, err
 	}
-	return client.getPoolUsageHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPoolUsageHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPoolUsageCreateRequest creates the GetPoolUsage request.
@@ -547,7 +551,8 @@ func (client *IpamPoolsClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return IpamPoolsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

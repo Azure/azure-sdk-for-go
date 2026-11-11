@@ -66,7 +66,8 @@ func (client *CustomizationTasksClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return CustomizationTasksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -137,7 +138,8 @@ func (client *CustomizationTasksClient) GetErrorDetails(ctx context.Context, res
 	if err != nil {
 		return CustomizationTasksClientGetErrorDetailsResponse{}, err
 	}
-	return client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.

@@ -64,7 +64,8 @@ func (client *ResourceGuardProxyClient) Delete(ctx context.Context, vaultName st
 		return ResourceGuardProxyClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ResourceGuardProxyClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ResourceGuardProxyClientDeleteResponse{}, err
 	}
 	return ResourceGuardProxyClientDeleteResponse{}, nil
 }
@@ -116,7 +117,8 @@ func (client *ResourceGuardProxyClient) Get(ctx context.Context, vaultName strin
 	if err != nil {
 		return ResourceGuardProxyClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -180,7 +182,8 @@ func (client *ResourceGuardProxyClient) Put(ctx context.Context, vaultName strin
 	if err != nil {
 		return ResourceGuardProxyClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.
@@ -248,7 +251,8 @@ func (client *ResourceGuardProxyClient) UnlockDelete(ctx context.Context, vaultN
 	if err != nil {
 		return ResourceGuardProxyClientUnlockDeleteResponse{}, err
 	}
-	return client.unlockDeleteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.unlockDeleteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // unlockDeleteCreateRequest creates the UnlockDelete request.

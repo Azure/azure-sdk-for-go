@@ -57,7 +57,8 @@ func (client *RPServiceClient) QueryRules(ctx context.Context, privateStoreID st
 	if err != nil {
 		return RPServiceClientQueryRulesResponse{}, err
 	}
-	return client.queryRulesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryRulesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryRulesCreateRequest creates the QueryRules request.
@@ -113,7 +114,8 @@ func (client *RPServiceClient) QueryUserRules(ctx context.Context, privateStoreI
 	if err != nil {
 		return RPServiceClientQueryUserRulesResponse{}, err
 	}
-	return client.queryUserRulesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryUserRulesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryUserRulesCreateRequest creates the QueryUserRules request.
@@ -174,7 +176,8 @@ func (client *RPServiceClient) SetCollectionRules(ctx context.Context, privateSt
 		return RPServiceClientSetCollectionRulesResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return RPServiceClientSetCollectionRulesResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RPServiceClientSetCollectionRulesResponse{}, err
 	}
 	return RPServiceClientSetCollectionRulesResponse{}, nil
 }

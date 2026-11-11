@@ -125,6 +125,98 @@ func ExampleFabricClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2024-09-01/Fabric_Update.json
+func ExampleFabricClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesdatareplication.NewClientFactory("930CEC23-4430-4513-B855-DBA237E2F3BF", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFabricClient().BeginUpdate(ctx, "rgswagger_2024-09-01", "wPR", armrecoveryservicesdatareplication.FabricModelUpdate{
+		Properties: &armrecoveryservicesdatareplication.FabricModelProperties{
+			CustomProperties: &armrecoveryservicesdatareplication.AzStackHCIFabricModelCustomProperties{
+				InstanceType: to.Ptr("FabricModelCustomProperties"),
+			},
+		},
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicesdatareplication.FabricClientUpdateResponse{
+	// 	FabricModel: armrecoveryservicesdatareplication.FabricModel{
+	// 		Location: to.Ptr("tqygutlpob"),
+	// 		Properties: &armrecoveryservicesdatareplication.FabricModelProperties{
+	// 			CustomProperties: &armrecoveryservicesdatareplication.AzStackHCIFabricModelCustomProperties{
+	// 				InstanceType: to.Ptr("FabricModelCustomProperties"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armrecoveryservicesdatareplication.ProvisioningStateCanceled),
+	// 			ServiceEndpoint: to.Ptr("ilrfl"),
+	// 			ServiceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationFabrics/fabric1"),
+	// 			Health: to.Ptr(armrecoveryservicesdatareplication.HealthStatusNormal),
+	// 			HealthErrors: []*armrecoveryservicesdatareplication.HealthErrorModel{
+	// 				{
+	// 					AffectedResourceType: to.Ptr("scfniv"),
+	// 					AffectedResourceCorrelationIDs: []*string{
+	// 						to.Ptr("fope"),
+	// 					},
+	// 					ChildErrors: []*armrecoveryservicesdatareplication.InnerHealthErrorModel{
+	// 						{
+	// 							Code: to.Ptr("yuxxpblihirpedwkigywgwjjrlzq"),
+	// 							HealthCategory: to.Ptr("mhdgfjqwbikhxmhtomkl"),
+	// 							Category: to.Ptr("lcsdxrqxquke"),
+	// 							Severity: to.Ptr("wqxxiuaqjyagq"),
+	// 							Source: to.Ptr("wevvftugwydzzw"),
+	// 							CreationTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 52, 128000000, time.UTC)),
+	// 							IsCustomerResolvable: to.Ptr(true),
+	// 							Summary: to.Ptr("djsmgrltruljo"),
+	// 							Message: to.Ptr("sskcei"),
+	// 							Causes: to.Ptr("kefaugkpxjkpulimjthjnl"),
+	// 							Recommendation: to.Ptr("kqybwaesqumywtjepi"),
+	// 						},
+	// 					},
+	// 					Code: to.Ptr("dgxkefzmeukd"),
+	// 					HealthCategory: to.Ptr("itc"),
+	// 					Category: to.Ptr("leigw"),
+	// 					Severity: to.Ptr("vvdajssdcypewdyechilxjmuijvdd"),
+	// 					Source: to.Ptr("iy"),
+	// 					CreationTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 52, 128000000, time.UTC)),
+	// 					IsCustomerResolvable: to.Ptr(true),
+	// 					Summary: to.Ptr("jtooblbvaxxrvcwgscbobq"),
+	// 					Message: to.Ptr("lbywtdprdqdekl"),
+	// 					Causes: to.Ptr("xznphqrrmsdzm"),
+	// 					Recommendation: to.Ptr("gmssteizlhjtclyeoo"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationFabrics/fabric1"),
+	// 		Name: to.Ptr("rhojydcwjgvgexpdwswjib"),
+	// 		Type: to.Ptr("toipsryjyqchikyakeiuatshiu"),
+	// 		SystemData: &armrecoveryservicesdatareplication.SystemData{
+	// 			CreatedBy: to.Ptr("ewufpudzcjrljhmmzhfnxoqdqwnya"),
+	// 			CreatedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("zioqm")),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 53, 22000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("rx"),
+	// 			LastModifiedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("tqbvuqoakaaqij")),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 53, 22000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2024-09-01/Fabric_Get.json
 func ExampleFabricClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -205,97 +297,6 @@ func ExampleFabricClient_Get() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2024-09-01/Fabric_List.json
-func ExampleFabricClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicesdatareplication.NewClientFactory("930CEC23-4430-4513-B855-DBA237E2F3BF", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewFabricClient().NewListPager("rgswagger_2024-09-01", &armrecoveryservicesdatareplication.FabricClientListOptions{
-		ContinuationToken: to.Ptr("jw")})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armrecoveryservicesdatareplication.FabricClientListResponse{
-		// 	FabricModelListResult: armrecoveryservicesdatareplication.FabricModelListResult{
-		// 		Value: []*armrecoveryservicesdatareplication.FabricModel{
-		// 			{
-		// 				Location: to.Ptr("tqygutlpob"),
-		// 				Properties: &armrecoveryservicesdatareplication.FabricModelProperties{
-		// 					ProvisioningState: to.Ptr(armrecoveryservicesdatareplication.ProvisioningStateCanceled),
-		// 					ServiceEndpoint: to.Ptr("ilrfl"),
-		// 					ServiceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationFabrics/fabric1"),
-		// 					Health: to.Ptr(armrecoveryservicesdatareplication.HealthStatusNormal),
-		// 					HealthErrors: []*armrecoveryservicesdatareplication.HealthErrorModel{
-		// 						{
-		// 							AffectedResourceType: to.Ptr("scfniv"),
-		// 							AffectedResourceCorrelationIDs: []*string{
-		// 								to.Ptr("fope"),
-		// 							},
-		// 							ChildErrors: []*armrecoveryservicesdatareplication.InnerHealthErrorModel{
-		// 								{
-		// 									Code: to.Ptr("yuxxpblihirpedwkigywgwjjrlzq"),
-		// 									HealthCategory: to.Ptr("mhdgfjqwbikhxmhtomkl"),
-		// 									Category: to.Ptr("lcsdxrqxquke"),
-		// 									Severity: to.Ptr("wqxxiuaqjyagq"),
-		// 									Source: to.Ptr("wevvftugwydzzw"),
-		// 									CreationTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 52, 128000000, time.UTC)),
-		// 									IsCustomerResolvable: to.Ptr(true),
-		// 									Summary: to.Ptr("djsmgrltruljo"),
-		// 									Message: to.Ptr("sskcei"),
-		// 									Causes: to.Ptr("kefaugkpxjkpulimjthjnl"),
-		// 									Recommendation: to.Ptr("kqybwaesqumywtjepi"),
-		// 								},
-		// 							},
-		// 							Code: to.Ptr("dgxkefzmeukd"),
-		// 							HealthCategory: to.Ptr("itc"),
-		// 							Category: to.Ptr("leigw"),
-		// 							Severity: to.Ptr("vvdajssdcypewdyechilxjmuijvdd"),
-		// 							Source: to.Ptr("iy"),
-		// 							CreationTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 52, 128000000, time.UTC)),
-		// 							IsCustomerResolvable: to.Ptr(true),
-		// 							Summary: to.Ptr("jtooblbvaxxrvcwgscbobq"),
-		// 							Message: to.Ptr("lbywtdprdqdekl"),
-		// 							Causes: to.Ptr("xznphqrrmsdzm"),
-		// 							Recommendation: to.Ptr("gmssteizlhjtclyeoo"),
-		// 						},
-		// 					},
-		// 					CustomProperties: &armrecoveryservicesdatareplication.AzStackHCIFabricModelCustomProperties{
-		// 						InstanceType: to.Ptr("FabricModelCustomProperties"),
-		// 					},
-		// 				},
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationFabrics/fabric1"),
-		// 				Name: to.Ptr("rhojydcwjgvgexpdwswjib"),
-		// 				Type: to.Ptr("toipsryjyqchikyakeiuatshiu"),
-		// 				SystemData: &armrecoveryservicesdatareplication.SystemData{
-		// 					CreatedBy: to.Ptr("yhdmbqrsgimuucexvpas"),
-		// 					CreatedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("brnojz")),
-		// 					CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 53, 716000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("balecqnwu"),
-		// 					LastModifiedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("ukvqlncihf")),
-		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 53, 716000000, time.UTC)),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2024-09-01/Fabric_ListBySubscription.json
@@ -388,8 +389,8 @@ func ExampleFabricClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2024-09-01/Fabric_Update.json
-func ExampleFabricClient_BeginUpdate() {
+// Generated from example definition: 2024-09-01/Fabric_List.json
+func ExampleFabricClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -399,83 +400,82 @@ func ExampleFabricClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewFabricClient().BeginUpdate(ctx, "rgswagger_2024-09-01", "wPR", armrecoveryservicesdatareplication.FabricModelUpdate{
-		Properties: &armrecoveryservicesdatareplication.FabricModelProperties{
-			CustomProperties: &armrecoveryservicesdatareplication.AzStackHCIFabricModelCustomProperties{
-				InstanceType: to.Ptr("FabricModelCustomProperties"),
-			},
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewFabricClient().NewListPager("rgswagger_2024-09-01", &armrecoveryservicesdatareplication.FabricClientListOptions{
+		ContinuationToken: to.Ptr("jw")})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armrecoveryservicesdatareplication.FabricClientListResponse{
+		// 	FabricModelListResult: armrecoveryservicesdatareplication.FabricModelListResult{
+		// 		Value: []*armrecoveryservicesdatareplication.FabricModel{
+		// 			{
+		// 				Location: to.Ptr("tqygutlpob"),
+		// 				Properties: &armrecoveryservicesdatareplication.FabricModelProperties{
+		// 					ProvisioningState: to.Ptr(armrecoveryservicesdatareplication.ProvisioningStateCanceled),
+		// 					ServiceEndpoint: to.Ptr("ilrfl"),
+		// 					ServiceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationFabrics/fabric1"),
+		// 					Health: to.Ptr(armrecoveryservicesdatareplication.HealthStatusNormal),
+		// 					HealthErrors: []*armrecoveryservicesdatareplication.HealthErrorModel{
+		// 						{
+		// 							AffectedResourceType: to.Ptr("scfniv"),
+		// 							AffectedResourceCorrelationIDs: []*string{
+		// 								to.Ptr("fope"),
+		// 							},
+		// 							ChildErrors: []*armrecoveryservicesdatareplication.InnerHealthErrorModel{
+		// 								{
+		// 									Code: to.Ptr("yuxxpblihirpedwkigywgwjjrlzq"),
+		// 									HealthCategory: to.Ptr("mhdgfjqwbikhxmhtomkl"),
+		// 									Category: to.Ptr("lcsdxrqxquke"),
+		// 									Severity: to.Ptr("wqxxiuaqjyagq"),
+		// 									Source: to.Ptr("wevvftugwydzzw"),
+		// 									CreationTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 52, 128000000, time.UTC)),
+		// 									IsCustomerResolvable: to.Ptr(true),
+		// 									Summary: to.Ptr("djsmgrltruljo"),
+		// 									Message: to.Ptr("sskcei"),
+		// 									Causes: to.Ptr("kefaugkpxjkpulimjthjnl"),
+		// 									Recommendation: to.Ptr("kqybwaesqumywtjepi"),
+		// 								},
+		// 							},
+		// 							Code: to.Ptr("dgxkefzmeukd"),
+		// 							HealthCategory: to.Ptr("itc"),
+		// 							Category: to.Ptr("leigw"),
+		// 							Severity: to.Ptr("vvdajssdcypewdyechilxjmuijvdd"),
+		// 							Source: to.Ptr("iy"),
+		// 							CreationTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 52, 128000000, time.UTC)),
+		// 							IsCustomerResolvable: to.Ptr(true),
+		// 							Summary: to.Ptr("jtooblbvaxxrvcwgscbobq"),
+		// 							Message: to.Ptr("lbywtdprdqdekl"),
+		// 							Causes: to.Ptr("xznphqrrmsdzm"),
+		// 							Recommendation: to.Ptr("gmssteizlhjtclyeoo"),
+		// 						},
+		// 					},
+		// 					CustomProperties: &armrecoveryservicesdatareplication.AzStackHCIFabricModelCustomProperties{
+		// 						InstanceType: to.Ptr("FabricModelCustomProperties"),
+		// 					},
+		// 				},
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationFabrics/fabric1"),
+		// 				Name: to.Ptr("rhojydcwjgvgexpdwswjib"),
+		// 				Type: to.Ptr("toipsryjyqchikyakeiuatshiu"),
+		// 				SystemData: &armrecoveryservicesdatareplication.SystemData{
+		// 					CreatedBy: to.Ptr("yhdmbqrsgimuucexvpas"),
+		// 					CreatedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("brnojz")),
+		// 					CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 53, 716000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("balecqnwu"),
+		// 					LastModifiedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("ukvqlncihf")),
+		// 					LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 53, 716000000, time.UTC)),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicesdatareplication.FabricClientUpdateResponse{
-	// 	FabricModel: armrecoveryservicesdatareplication.FabricModel{
-	// 		Location: to.Ptr("tqygutlpob"),
-	// 		Properties: &armrecoveryservicesdatareplication.FabricModelProperties{
-	// 			CustomProperties: &armrecoveryservicesdatareplication.AzStackHCIFabricModelCustomProperties{
-	// 				InstanceType: to.Ptr("FabricModelCustomProperties"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armrecoveryservicesdatareplication.ProvisioningStateCanceled),
-	// 			ServiceEndpoint: to.Ptr("ilrfl"),
-	// 			ServiceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationFabrics/fabric1"),
-	// 			Health: to.Ptr(armrecoveryservicesdatareplication.HealthStatusNormal),
-	// 			HealthErrors: []*armrecoveryservicesdatareplication.HealthErrorModel{
-	// 				{
-	// 					AffectedResourceType: to.Ptr("scfniv"),
-	// 					AffectedResourceCorrelationIDs: []*string{
-	// 						to.Ptr("fope"),
-	// 					},
-	// 					ChildErrors: []*armrecoveryservicesdatareplication.InnerHealthErrorModel{
-	// 						{
-	// 							Code: to.Ptr("yuxxpblihirpedwkigywgwjjrlzq"),
-	// 							HealthCategory: to.Ptr("mhdgfjqwbikhxmhtomkl"),
-	// 							Category: to.Ptr("lcsdxrqxquke"),
-	// 							Severity: to.Ptr("wqxxiuaqjyagq"),
-	// 							Source: to.Ptr("wevvftugwydzzw"),
-	// 							CreationTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 52, 128000000, time.UTC)),
-	// 							IsCustomerResolvable: to.Ptr(true),
-	// 							Summary: to.Ptr("djsmgrltruljo"),
-	// 							Message: to.Ptr("sskcei"),
-	// 							Causes: to.Ptr("kefaugkpxjkpulimjthjnl"),
-	// 							Recommendation: to.Ptr("kqybwaesqumywtjepi"),
-	// 						},
-	// 					},
-	// 					Code: to.Ptr("dgxkefzmeukd"),
-	// 					HealthCategory: to.Ptr("itc"),
-	// 					Category: to.Ptr("leigw"),
-	// 					Severity: to.Ptr("vvdajssdcypewdyechilxjmuijvdd"),
-	// 					Source: to.Ptr("iy"),
-	// 					CreationTime: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 52, 128000000, time.UTC)),
-	// 					IsCustomerResolvable: to.Ptr(true),
-	// 					Summary: to.Ptr("jtooblbvaxxrvcwgscbobq"),
-	// 					Message: to.Ptr("lbywtdprdqdekl"),
-	// 					Causes: to.Ptr("xznphqrrmsdzm"),
-	// 					Recommendation: to.Ptr("gmssteizlhjtclyeoo"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/group1/providers/Microsoft.DataReplication/replicationFabrics/fabric1"),
-	// 		Name: to.Ptr("rhojydcwjgvgexpdwswjib"),
-	// 		Type: to.Ptr("toipsryjyqchikyakeiuatshiu"),
-	// 		SystemData: &armrecoveryservicesdatareplication.SystemData{
-	// 			CreatedBy: to.Ptr("ewufpudzcjrljhmmzhfnxoqdqwnya"),
-	// 			CreatedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("zioqm")),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 53, 22000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("rx"),
-	// 			LastModifiedByType: to.Ptr(armrecoveryservicesdatareplication.CreatedByType("tqbvuqoakaaqij")),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.August, 25, 0, 28, 53, 22000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

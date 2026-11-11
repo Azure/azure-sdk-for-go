@@ -92,7 +92,8 @@ func (client *AgentApplicationsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -147,7 +148,7 @@ func (client *AgentApplicationsClient) createOrUpdateCreateRequest(ctx context.C
 //     method.
 func (client *AgentApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientBeginDeleteOptions) (*runtime.Poller[AgentApplicationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, projectName, name, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, projectName, name, options)
 		if err != nil {
 			return nil, err
 		}
@@ -162,11 +163,11 @@ func (client *AgentApplicationsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// delete - Delete Agent Application.
+// deleteOperation - Delete Agent Application.
 //
 // Delete Agent Application.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AgentApplicationsClient) delete(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AgentApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentApplicationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -181,7 +182,8 @@ func (client *AgentApplicationsClient) delete(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -244,7 +246,8 @@ func (client *AgentApplicationsClient) Disable(ctx context.Context, resourceGrou
 		return AgentApplicationsClientDisableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return AgentApplicationsClientDisableResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AgentApplicationsClientDisableResponse{}, err
 	}
 	return AgentApplicationsClientDisableResponse{}, nil
 }
@@ -307,7 +310,8 @@ func (client *AgentApplicationsClient) Enable(ctx context.Context, resourceGroup
 		return AgentApplicationsClientEnableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return AgentApplicationsClientEnableResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AgentApplicationsClientEnableResponse{}, err
 	}
 	return AgentApplicationsClientEnableResponse{}, nil
 }
@@ -368,7 +372,8 @@ func (client *AgentApplicationsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return AgentApplicationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -441,7 +446,8 @@ func (client *AgentApplicationsClient) ListAgents(ctx context.Context, resourceG
 	if err != nil {
 		return AgentApplicationsClientListAgentsResponse{}, err
 	}
-	return client.listAgentsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listAgentsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listAgentsCreateRequest creates the ListAgents request.

@@ -58,7 +58,8 @@ func (client *AlertsClient) Dismiss(ctx context.Context, scope string, alertID s
 	if err != nil {
 		return AlertsClientDismissResponse{}, err
 	}
-	return client.dismissHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.dismissHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // dismissCreateRequest creates the Dismiss request.
@@ -118,7 +119,8 @@ func (client *AlertsClient) Get(ctx context.Context, scope string, alertID strin
 	if err != nil {
 		return AlertsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -181,7 +183,8 @@ func (client *AlertsClient) List(ctx context.Context, scope string, options *Ale
 	if err != nil {
 		return AlertsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -235,7 +238,8 @@ func (client *AlertsClient) ListExternal(ctx context.Context, externalCloudProvi
 	if err != nil {
 		return AlertsClientListExternalResponse{}, err
 	}
-	return client.listExternalHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listExternalHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listExternalCreateRequest creates the ListExternal request.

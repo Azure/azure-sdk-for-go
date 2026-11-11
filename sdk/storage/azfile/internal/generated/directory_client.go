@@ -42,5 +42,5 @@ func (client *DirectoryClient) ListFilesAndDirectoriesSegmentCreateRequest(ctx c
 
 // ListFilesAndDirectoriesSegmentHandleResponse handles the ListFilesAndDirectoriesSegment response.
 func (client *DirectoryClient) ListFilesAndDirectoriesSegmentHandleResponse(resp *http.Response) (DirectoryClientListFilesAndDirectoriesSegmentResponse, error) {
-	return client.listFilesAndDirectoriesSegmentHandleResponse(resp)
+	return client.listFilesAndDirectoriesSegmentHandleResponse(resp, http.StatusOK)
 }

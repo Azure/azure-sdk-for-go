@@ -65,7 +65,8 @@ func (client *ExternalUserClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return ExternalUserClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.

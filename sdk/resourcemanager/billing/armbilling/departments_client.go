@@ -58,7 +58,8 @@ func (client *DepartmentsClient) Get(ctx context.Context, billingAccountName str
 	if err != nil {
 		return DepartmentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -156,6 +156,9 @@ pwsh ../../../eng/common/scripts/check-spelling-in-changed-files.ps1 \
 
 ## Documentation and Comments
 
+- Changelog entries describe only user-visible product changes; omit entries for CI, tests,
+  tooling, and other internal-only changes, including PRs containing only those changes.
+- Write each changelog entry as one sentence with a link to its pull request.
 - Keep inline comments to one or two lines unless they capture a non-obvious ABI, ownership, or
   concurrency invariant.
 - Explain why code exists, not what the code already says.

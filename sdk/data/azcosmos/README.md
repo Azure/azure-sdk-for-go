@@ -49,6 +49,15 @@ this package's cgo files need the ABI declarations in their own include path. Th
 and linked library version must both match the pin in `driver.go` before any struct-sensitive ABI
 call during construction. Mismatched versions can otherwise cause incompatible struct layouts.
 
+Error mapping tests run with `go test ./...`, including without cgo. The header-drift test
+inventories every declared native synthetic substatus and requires an explicit classification
+decision when the header changes. Unknown wire statuses fall back to `CodeServiceError`, and
+unknown synthetic substatuses to `CodeClientError`; both retain their numeric status/substatus.
+Native completion tests additionally check packed signed 32-bit statuses, copied error metadata,
+and diagnostics snapshots using a local HTTP server, without an emulator or live account.
+CI executes the native tests on Linux/amd64 in `DriverEmulator`; `DarwinNativeCompile`
+compiles and links the Darwin/arm64 tests without executing them on the hosted macOS agent.
+
 The v0.2.0 driver owns throttle and session retries; Go submits once and exposes the driver's
 attempt count and final status on responses and errors. When attached by the driver,
 `Response.Diagnostics` and `Error.Diagnostics` contain a Go-owned snapshot of total charge,

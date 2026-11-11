@@ -87,7 +87,8 @@ func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdate(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -136,7 +137,7 @@ func (client *ServiceEndpointPolicyDefinitionsClient) createOrUpdateCreateReques
 //     method.
 func (client *ServiceEndpointPolicyDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsClientBeginDeleteOptions) (*runtime.Poller[ServiceEndpointPolicyDefinitionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceEndpointPolicyName, serviceEndpointPolicyDefinitionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -151,9 +152,9 @@ func (client *ServiceEndpointPolicyDefinitionsClient) BeginDelete(ctx context.Co
 	}
 }
 
-// delete - Deletes the specified ServiceEndpoint policy definitions.
+// deleteOperation - Deletes the specified ServiceEndpoint policy definitions.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ServiceEndpointPolicyDefinitionsClient) delete(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ServiceEndpointPolicyDefinitionsClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceEndpointPolicyName string, serviceEndpointPolicyDefinitionName string, options *ServiceEndpointPolicyDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServiceEndpointPolicyDefinitionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -168,7 +169,8 @@ func (client *ServiceEndpointPolicyDefinitionsClient) delete(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -224,7 +226,8 @@ func (client *ServiceEndpointPolicyDefinitionsClient) Get(ctx context.Context, r
 	if err != nil {
 		return ServiceEndpointPolicyDefinitionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

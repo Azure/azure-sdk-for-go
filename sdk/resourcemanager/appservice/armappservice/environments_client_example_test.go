@@ -274,30 +274,6 @@ func ExampleEnvironmentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/DeleteAseCustomDnsSuffixConfiguration.json
-func ExampleEnvironmentsClient_DeleteAseCustomDNSSuffixConfiguration() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEnvironmentsClient().DeleteAseCustomDNSSuffixConfiguration(ctx, "test-rg", "test-ase", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse{
-	// 	Interface: map[string]any{
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-05-01/AppServiceEnvironments_DeletePrivateEndpointConnection.json
 func ExampleEnvironmentsClient_BeginDeletePrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -321,6 +297,127 @@ func ExampleEnvironmentsClient_BeginDeletePrivateEndpointConnection() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.EnvironmentsClientDeletePrivateEndpointConnectionResponse{
+	// 	Interface: map[string]any{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/AppServiceEnvironments_Resume.json
+func ExampleEnvironmentsClient_BeginResume() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEnvironmentsClient().BeginResume(ctx, "test-rg", "test-ase", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	for res.More() {
+		page, err := res.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.EnvironmentsClientResumeResponse{
+		// 	WebAppCollection: armappservice.WebAppCollection{
+		// 		Value: []*armappservice.Site{
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/AppServiceEnvironments_Suspend.json
+func ExampleEnvironmentsClient_BeginSuspend() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEnvironmentsClient().BeginSuspend(ctx, "test-rg", "test-ase", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	for res.More() {
+		page, err := res.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.EnvironmentsClientSuspendResponse{
+		// 	WebAppCollection: armappservice.WebAppCollection{
+		// 		Value: []*armappservice.Site{
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/AppServiceEnvironments_Upgrade.json
+func ExampleEnvironmentsClient_BeginUpgrade() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewEnvironmentsClient().BeginUpgrade(ctx, "rg", "SampleHostingEnvironment", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-05-01/DeleteAseCustomDnsSuffixConfiguration.json
+func ExampleEnvironmentsClient_DeleteAseCustomDNSSuffixConfiguration() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEnvironmentsClient().DeleteAseCustomDNSSuffixConfiguration(ctx, "test-rg", "test-ase", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.EnvironmentsClientDeleteAseCustomDNSSuffixConfigurationResponse{
 	// 	Interface: map[string]any{
 	// 	},
 	// }
@@ -501,6 +598,242 @@ func ExampleEnvironmentsClient_GetDiagnosticsItem() {
 	// }
 }
 
+// Generated from example definition: 2025-05-01/AppServiceEnvironments_GetMultiRolePool.json
+func ExampleEnvironmentsClient_GetMultiRolePool() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEnvironmentsClient().GetMultiRolePool(ctx, "test-rg", "test-ase", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.EnvironmentsClientGetMultiRolePoolResponse{
+	// 	WorkerPoolResource: armappservice.WorkerPoolResource{
+	// 		Name: to.Ptr("default"),
+	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/multiRolePools"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/multiRolePools/default"),
+	// 		Properties: &armappservice.WorkerPool{
+	// 			InstanceNames: []*string{
+	// 				to.Ptr("10.7.1.8"),
+	// 				to.Ptr("10.7.1.9"),
+	// 			},
+	// 			WorkerCount: to.Ptr[int32](2),
+	// 			WorkerSize: to.Ptr("Standard_D1_V2"),
+	// 		},
+	// 		SKU: &armappservice.SKUDescription{
+	// 			Name: to.Ptr("Q1"),
+	// 			Capacity: to.Ptr[int32](2),
+	// 			Family: to.Ptr("Q"),
+	// 			Size: to.Ptr("Q1"),
+	// 			Tier: to.Ptr("Quantum"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/AppServiceEnvironments_GetPrivateEndpointConnection.json
+func ExampleEnvironmentsClient_GetPrivateEndpointConnection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEnvironmentsClient().GetPrivateEndpointConnection(ctx, "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.EnvironmentsClientGetPrivateEndpointConnectionResponse{
+	// 	RemotePrivateEndpointConnectionARMResource: armappservice.RemotePrivateEndpointConnectionARMResource{
+	// 		Name: to.Ptr("fa38656c-034e-43d8-adce-fe06ce039c98"),
+	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/privateEndpointConnections"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/privateEndpointConnections/fa38656c-034e-43d8-adce-fe06ce039c98"),
+	// 		Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
+	// 			IPAddresses: []*string{
+	// 			},
+	// 			PrivateEndpoint: &armappservice.ArmIDWrapper{
+	// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Network/test-privateEndpoint"),
+	// 			},
+	// 			PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
+	// 				Description: to.Ptr("Please approve my connection, thanks!"),
+	// 				ActionsRequired: to.Ptr("None"),
+	// 				Status: to.Ptr("Disconnecting"),
+	// 			},
+	// 			ProvisioningState: to.Ptr("Pending"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/AppServiceEnvironments_GetPrivateLinkResources.json
+func ExampleEnvironmentsClient_GetPrivateLinkResources() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEnvironmentsClient().GetPrivateLinkResources(ctx, "test-rg", "test-ase", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.EnvironmentsClientGetPrivateLinkResourcesResponse{
+	// 	PrivateLinkResourcesWrapper: armappservice.PrivateLinkResourcesWrapper{
+	// 		Value: []*armappservice.PrivateLinkResource{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/AppServiceEnvironments_GetVipInfo.json
+func ExampleEnvironmentsClient_GetVipInfo() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEnvironmentsClient().GetVipInfo(ctx, "test-rg", "test-ase", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.EnvironmentsClientGetVipInfoResponse{
+	// 	AddressResponse: armappservice.AddressResponse{
+	// 		Name: to.Ptr("test-ase"),
+	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/capacities"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/capacities/virtualip"),
+	// 		Properties: &armappservice.AddressResponseProperties{
+	// 			OutboundIPAddresses: []*string{
+	// 				to.Ptr("20.112.141.120"),
+	// 			},
+	// 			ServiceIPAddress: to.Ptr("20.112.141.120"),
+	// 			VipMappings: []*armappservice.VirtualIPMapping{
+	// 				{
+	// 					InUse: to.Ptr(false),
+	// 					InternalHTTPPort: to.Ptr[int32](20003),
+	// 					InternalHTTPSPort: to.Ptr[int32](20001),
+	// 					VirtualIP: to.Ptr("20.112.141.135"),
+	// 				},
+	// 				{
+	// 					InUse: to.Ptr(false),
+	// 					InternalHTTPPort: to.Ptr[int32](20004),
+	// 					InternalHTTPSPort: to.Ptr[int32](20002),
+	// 					VirtualIP: to.Ptr("20.112.141.150"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/AppServiceEnvironments_GetWorkerPool.json
+func ExampleEnvironmentsClient_GetWorkerPool() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEnvironmentsClient().GetWorkerPool(ctx, "test-rg", "test-ase", "workerPool1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.EnvironmentsClientGetWorkerPoolResponse{
+	// 	WorkerPoolResource: armappservice.WorkerPoolResource{
+	// 		Name: to.Ptr("workerPool1"),
+	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/workerPools"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/workerPools/workerPool1"),
+	// 		Kind: to.Ptr("ASEV1"),
+	// 		Properties: &armappservice.WorkerPool{
+	// 			InstanceNames: []*string{
+	// 			},
+	// 			WorkerCount: to.Ptr[int32](2),
+	// 			WorkerSize: to.Ptr("Small"),
+	// 			WorkerSizeID: to.Ptr[int32](0),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/AppServiceEnvironments_ListDiagnostics.json
+func ExampleEnvironmentsClient_ListDiagnostics() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEnvironmentsClient().ListDiagnostics(ctx, "test-rg", "test-ase", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.EnvironmentsClientListDiagnosticsResponse{
+	// }
+}
+
+// Generated from example definition: 2025-05-01/AppServiceEnvironments_ListOperations.json
+func ExampleEnvironmentsClient_ListOperations() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewEnvironmentsClient().ListOperations(ctx, "test-rg", "test-ase", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.EnvironmentsClientListOperationsResponse{
+	// 	OperationArray: []*armappservice.Operation{
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-05-01/GetInboundNetworkDependenciesEndpoints.json
 func ExampleEnvironmentsClient_NewGetInboundNetworkDependenciesEndpointsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -592,48 +925,6 @@ func ExampleEnvironmentsClient_NewGetInboundNetworkDependenciesEndpointsPager() 
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-05-01/AppServiceEnvironments_GetMultiRolePool.json
-func ExampleEnvironmentsClient_GetMultiRolePool() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEnvironmentsClient().GetMultiRolePool(ctx, "test-rg", "test-ase", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.EnvironmentsClientGetMultiRolePoolResponse{
-	// 	WorkerPoolResource: armappservice.WorkerPoolResource{
-	// 		Name: to.Ptr("default"),
-	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/multiRolePools"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/multiRolePools/default"),
-	// 		Properties: &armappservice.WorkerPool{
-	// 			InstanceNames: []*string{
-	// 				to.Ptr("10.7.1.8"),
-	// 				to.Ptr("10.7.1.9"),
-	// 			},
-	// 			WorkerCount: to.Ptr[int32](2),
-	// 			WorkerSize: to.Ptr("Standard_D1_V2"),
-	// 		},
-	// 		SKU: &armappservice.SKUDescription{
-	// 			Name: to.Ptr("Q1"),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Family: to.Ptr("Q"),
-	// 			Size: to.Ptr("Q1"),
-	// 			Tier: to.Ptr("Quantum"),
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2025-05-01/GetOutboundNetworkDependenciesEndpoints.json
@@ -1452,46 +1743,6 @@ func ExampleEnvironmentsClient_NewGetOutboundNetworkDependenciesEndpointsPager()
 	}
 }
 
-// Generated from example definition: 2025-05-01/AppServiceEnvironments_GetPrivateEndpointConnection.json
-func ExampleEnvironmentsClient_GetPrivateEndpointConnection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEnvironmentsClient().GetPrivateEndpointConnection(ctx, "test-rg", "test-ase", "fa38656c-034e-43d8-adce-fe06ce039c98", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.EnvironmentsClientGetPrivateEndpointConnectionResponse{
-	// 	RemotePrivateEndpointConnectionARMResource: armappservice.RemotePrivateEndpointConnectionARMResource{
-	// 		Name: to.Ptr("fa38656c-034e-43d8-adce-fe06ce039c98"),
-	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/privateEndpointConnections"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/privateEndpointConnections/fa38656c-034e-43d8-adce-fe06ce039c98"),
-	// 		Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
-	// 			IPAddresses: []*string{
-	// 			},
-	// 			PrivateEndpoint: &armappservice.ArmIDWrapper{
-	// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Network/test-privateEndpoint"),
-	// 			},
-	// 			PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
-	// 				Description: to.Ptr("Please approve my connection, thanks!"),
-	// 				ActionsRequired: to.Ptr("None"),
-	// 				Status: to.Ptr("Disconnecting"),
-	// 			},
-	// 			ProvisioningState: to.Ptr("Pending"),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-05-01/AppServiceEnvironments_GetPrivateEndpointConnectionList.json
 func ExampleEnvironmentsClient_NewGetPrivateEndpointConnectionListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1533,195 +1784,6 @@ func ExampleEnvironmentsClient_NewGetPrivateEndpointConnectionListPager() {
 		// 						Status: to.Ptr("Disconnecting"),
 		// 					},
 		// 					ProvisioningState: to.Ptr("Pending"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01/AppServiceEnvironments_GetPrivateLinkResources.json
-func ExampleEnvironmentsClient_GetPrivateLinkResources() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEnvironmentsClient().GetPrivateLinkResources(ctx, "test-rg", "test-ase", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.EnvironmentsClientGetPrivateLinkResourcesResponse{
-	// 	PrivateLinkResourcesWrapper: armappservice.PrivateLinkResourcesWrapper{
-	// 		Value: []*armappservice.PrivateLinkResource{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/AppServiceEnvironments_GetVipInfo.json
-func ExampleEnvironmentsClient_GetVipInfo() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEnvironmentsClient().GetVipInfo(ctx, "test-rg", "test-ase", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.EnvironmentsClientGetVipInfoResponse{
-	// 	AddressResponse: armappservice.AddressResponse{
-	// 		Name: to.Ptr("test-ase"),
-	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/capacities"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/capacities/virtualip"),
-	// 		Properties: &armappservice.AddressResponseProperties{
-	// 			OutboundIPAddresses: []*string{
-	// 				to.Ptr("20.112.141.120"),
-	// 			},
-	// 			ServiceIPAddress: to.Ptr("20.112.141.120"),
-	// 			VipMappings: []*armappservice.VirtualIPMapping{
-	// 				{
-	// 					InUse: to.Ptr(false),
-	// 					InternalHTTPPort: to.Ptr[int32](20003),
-	// 					InternalHTTPSPort: to.Ptr[int32](20001),
-	// 					VirtualIP: to.Ptr("20.112.141.135"),
-	// 				},
-	// 				{
-	// 					InUse: to.Ptr(false),
-	// 					InternalHTTPPort: to.Ptr[int32](20004),
-	// 					InternalHTTPSPort: to.Ptr[int32](20002),
-	// 					VirtualIP: to.Ptr("20.112.141.150"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/AppServiceEnvironments_GetWorkerPool.json
-func ExampleEnvironmentsClient_GetWorkerPool() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEnvironmentsClient().GetWorkerPool(ctx, "test-rg", "test-ase", "workerPool1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.EnvironmentsClientGetWorkerPoolResponse{
-	// 	WorkerPoolResource: armappservice.WorkerPoolResource{
-	// 		Name: to.Ptr("workerPool1"),
-	// 		Type: to.Ptr("Microsoft.Web/hostingEnvironments/workerPools"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/workerPools/workerPool1"),
-	// 		Kind: to.Ptr("ASEV1"),
-	// 		Properties: &armappservice.WorkerPool{
-	// 			InstanceNames: []*string{
-	// 			},
-	// 			WorkerCount: to.Ptr[int32](2),
-	// 			WorkerSize: to.Ptr("Small"),
-	// 			WorkerSizeID: to.Ptr[int32](0),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/AppServiceEnvironments_List.json
-func ExampleEnvironmentsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewEnvironmentsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.EnvironmentsClientListResponse{
-		// 	EnvironmentCollection: armappservice.EnvironmentCollection{
-		// 		Value: []*armappservice.EnvironmentResource{
-		// 			{
-		// 				Name: to.Ptr("test-ase"),
-		// 				Type: to.Ptr("Microsoft.Web/hostingEnvironments"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase"),
-		// 				Kind: to.Ptr("ASEV3"),
-		// 				Location: to.Ptr("South Central US"),
-		// 				Properties: &armappservice.Environment{
-		// 					DedicatedHostCount: to.Ptr[int32](0),
-		// 					DNSSuffix: to.Ptr("test-ase.p.azurewebsites.net"),
-		// 					FrontEndScaleFactor: to.Ptr[int32](15),
-		// 					HasLinuxWorkers: to.Ptr(true),
-		// 					InternalLoadBalancingMode: to.Ptr(armappservice.LoadBalancingModeNone),
-		// 					IpsslAddressCount: to.Ptr[int32](0),
-		// 					MaximumNumberOfMachines: to.Ptr[int32](250),
-		// 					MultiSize: to.Ptr("Standard_D2d_v4"),
-		// 					NetworkingConfiguration: &armappservice.AseV3NetworkingConfiguration{
-		// 						ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/configurations/networking"),
-		// 						Properties: &armappservice.AseV3NetworkingConfigurationProperties{
-		// 							AllowNewPrivateEndpointConnections: to.Ptr(false),
-		// 							ExternalInboundIPAddresses: []*string{
-		// 								to.Ptr("52.153.248.36"),
-		// 							},
-		// 							FtpEnabled: to.Ptr(false),
-		// 							InternalInboundIPAddresses: []*string{
-		// 							},
-		// 							LinuxOutboundIPAddresses: []*string{
-		// 								to.Ptr("20.88.241.56"),
-		// 								to.Ptr("20.88.241.9"),
-		// 							},
-		// 							RemoteDebugEnabled: to.Ptr(false),
-		// 							WindowsOutboundIPAddresses: []*string{
-		// 								to.Ptr("20.88.241.56"),
-		// 								to.Ptr("20.88.241.9"),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armappservice.ProvisioningStateSucceeded),
-		// 					Status: to.Ptr(armappservice.HostingEnvironmentStatusReady),
-		// 					Suspended: to.Ptr(false),
-		// 					VirtualNetwork: &armappservice.VirtualNetworkProfile{
-		// 						Name: to.Ptr("delegated"),
-		// 						Type: to.Ptr("Microsoft.Network/virtualNetworks/subnets"),
-		// 						ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-subnet/subnets/delegated"),
-		// 						Subnet: to.Ptr(""),
-		// 					},
-		// 					ZoneRedundant: to.Ptr(false),
-		// 				},
-		// 				Tags: map[string]*string{
 		// 				},
 		// 			},
 		// 		},
@@ -1937,28 +1999,6 @@ func ExampleEnvironmentsClient_NewListCapacitiesPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-05-01/AppServiceEnvironments_ListDiagnostics.json
-func ExampleEnvironmentsClient_ListDiagnostics() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewEnvironmentsClient().ListDiagnostics(ctx, "test-rg", "test-ase", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.EnvironmentsClientListDiagnosticsResponse{
-	// }
 }
 
 // Generated from example definition: 2025-05-01/AppServiceEnvironments_ListMultiRoleMetricDefinitions.json
@@ -2314,8 +2354,8 @@ func ExampleEnvironmentsClient_NewListMultiRoleUsagesPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/AppServiceEnvironments_ListOperations.json
-func ExampleEnvironmentsClient_ListOperations() {
+// Generated from example definition: 2025-05-01/AppServiceEnvironments_List.json
+func ExampleEnvironmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -2325,17 +2365,74 @@ func ExampleEnvironmentsClient_ListOperations() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewEnvironmentsClient().ListOperations(ctx, "test-rg", "test-ase", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewEnvironmentsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.EnvironmentsClientListResponse{
+		// 	EnvironmentCollection: armappservice.EnvironmentCollection{
+		// 		Value: []*armappservice.EnvironmentResource{
+		// 			{
+		// 				Name: to.Ptr("test-ase"),
+		// 				Type: to.Ptr("Microsoft.Web/hostingEnvironments"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase"),
+		// 				Kind: to.Ptr("ASEV3"),
+		// 				Location: to.Ptr("South Central US"),
+		// 				Properties: &armappservice.Environment{
+		// 					DedicatedHostCount: to.Ptr[int32](0),
+		// 					DNSSuffix: to.Ptr("test-ase.p.azurewebsites.net"),
+		// 					FrontEndScaleFactor: to.Ptr[int32](15),
+		// 					HasLinuxWorkers: to.Ptr(true),
+		// 					InternalLoadBalancingMode: to.Ptr(armappservice.LoadBalancingModeNone),
+		// 					IpsslAddressCount: to.Ptr[int32](0),
+		// 					MaximumNumberOfMachines: to.Ptr[int32](250),
+		// 					MultiSize: to.Ptr("Standard_D2d_v4"),
+		// 					NetworkingConfiguration: &armappservice.AseV3NetworkingConfiguration{
+		// 						ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Web/hostingEnvironments/test-ase/configurations/networking"),
+		// 						Properties: &armappservice.AseV3NetworkingConfigurationProperties{
+		// 							AllowNewPrivateEndpointConnections: to.Ptr(false),
+		// 							ExternalInboundIPAddresses: []*string{
+		// 								to.Ptr("52.153.248.36"),
+		// 							},
+		// 							FtpEnabled: to.Ptr(false),
+		// 							InternalInboundIPAddresses: []*string{
+		// 							},
+		// 							LinuxOutboundIPAddresses: []*string{
+		// 								to.Ptr("20.88.241.56"),
+		// 								to.Ptr("20.88.241.9"),
+		// 							},
+		// 							RemoteDebugEnabled: to.Ptr(false),
+		// 							WindowsOutboundIPAddresses: []*string{
+		// 								to.Ptr("20.88.241.56"),
+		// 								to.Ptr("20.88.241.9"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armappservice.ProvisioningStateSucceeded),
+		// 					Status: to.Ptr(armappservice.HostingEnvironmentStatusReady),
+		// 					Suspended: to.Ptr(false),
+		// 					VirtualNetwork: &armappservice.VirtualNetworkProfile{
+		// 						Name: to.Ptr("delegated"),
+		// 						Type: to.Ptr("Microsoft.Network/virtualNetworks/subnets"),
+		// 						ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/test-subnet/subnets/delegated"),
+		// 						Subnet: to.Ptr(""),
+		// 					},
+		// 					ZoneRedundant: to.Ptr(false),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.EnvironmentsClientListOperationsResponse{
-	// 	OperationArray: []*armappservice.Operation{
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2025-05-01/AppServiceEnvironments_ListUsages.json
@@ -2782,82 +2879,6 @@ func ExampleEnvironmentsClient_Reboot() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/AppServiceEnvironments_Resume.json
-func ExampleEnvironmentsClient_BeginResume() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEnvironmentsClient().BeginResume(ctx, "test-rg", "test-ase", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	for res.More() {
-		page, err := res.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.EnvironmentsClientResumeResponse{
-		// 	WebAppCollection: armappservice.WebAppCollection{
-		// 		Value: []*armappservice.Site{
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01/AppServiceEnvironments_Suspend.json
-func ExampleEnvironmentsClient_BeginSuspend() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEnvironmentsClient().BeginSuspend(ctx, "test-rg", "test-ase", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	for res.More() {
-		page, err := res.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.EnvironmentsClientSuspendResponse{
-		// 	WebAppCollection: armappservice.WebAppCollection{
-		// 		Value: []*armappservice.Site{
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-05-01/AppServiceEnvironments_TestUpgradeAvailableNotification.json
 func ExampleEnvironmentsClient_TestUpgradeAvailableNotification() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -3104,25 +3125,4 @@ func ExampleEnvironmentsClient_UpdateWorkerPool() {
 	// 	WorkerPoolResource: armappservice.WorkerPoolResource{
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-05-01/AppServiceEnvironments_Upgrade.json
-func ExampleEnvironmentsClient_BeginUpgrade() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewEnvironmentsClient().BeginUpgrade(ctx, "rg", "SampleHostingEnvironment", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }

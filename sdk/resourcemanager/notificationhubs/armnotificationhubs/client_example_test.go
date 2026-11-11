@@ -309,8 +309,8 @@ func ExampleClient_GetPnsCredentials() {
 	// }
 }
 
-// Generated from example definition: 2023-10-01-preview/NotificationHubs/List.json
-func ExampleClient_NewListPager() {
+// Generated from example definition: 2023-10-01-preview/NotificationHubs/AuthorizationRuleListKeys.json
+func ExampleClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -320,39 +320,22 @@ func ExampleClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewClient().NewListPager("5ktrial", "nh-sdk-ns", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnotificationhubs.ClientListResponse{
-		// 	NotificationHubListResult: armnotificationhubs.NotificationHubListResult{
-		// 		Value: []*armnotificationhubs.NotificationHubResource{
-		// 			{
-		// 				Name: to.Ptr("test"),
-		// 				Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
-		// 				ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
-		// 				Location: to.Ptr("East US"),
-		// 				Properties: &armnotificationhubs.NotificationHubProperties{
-		// 					Name: to.Ptr("test"),
-		// 					DailyMaxActiveDevices: to.Ptr[int64](0),
-		// 					RegistrationTTL: to.Ptr("10675199.02:48:05.4775807"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"hubTag1": to.Ptr("hubTagValue1"),
-		// 					"hubTag2": to.Ptr("hubTagValue2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewClient().ListKeys(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", "sdk-AuthRules-5800", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnotificationhubs.ClientListKeysResponse{
+	// 	ResourceListKeys: armnotificationhubs.ResourceListKeys{
+	// 		KeyName: to.Ptr("sdk-AuthRules-5800"),
+	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
+	// 		PrimaryKey: to.Ptr("############################################"),
+	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
+	// 		SecondaryKey: to.Ptr("############################################"),
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2023-10-01-preview/NotificationHubs/AuthorizationRuleList.json
@@ -412,8 +395,8 @@ func ExampleClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2023-10-01-preview/NotificationHubs/AuthorizationRuleListKeys.json
-func ExampleClient_ListKeys() {
+// Generated from example definition: 2023-10-01-preview/NotificationHubs/List.json
+func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -423,22 +406,39 @@ func ExampleClient_ListKeys() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewClient().ListKeys(ctx, "5ktrial", "nh-sdk-ns", "nh-sdk-hub", "sdk-AuthRules-5800", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewClient().NewListPager("5ktrial", "nh-sdk-ns", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnotificationhubs.ClientListResponse{
+		// 	NotificationHubListResult: armnotificationhubs.NotificationHubListResult{
+		// 		Value: []*armnotificationhubs.NotificationHubResource{
+		// 			{
+		// 				Name: to.Ptr("test"),
+		// 				Type: to.Ptr("Microsoft.NotificationHubs/namespaces/notificationHubs"),
+		// 				ID: to.Ptr("/subscriptions/29cfa613-cbbc-4512-b1d6-1b3a92c7fa40/resourceGroups/5ktrial/providers/Microsoft.NotificationHubs/namespaces/nh-sdk-ns/notificationHubs/test"),
+		// 				Location: to.Ptr("East US"),
+		// 				Properties: &armnotificationhubs.NotificationHubProperties{
+		// 					Name: to.Ptr("test"),
+		// 					DailyMaxActiveDevices: to.Ptr[int64](0),
+		// 					RegistrationTTL: to.Ptr("10675199.02:48:05.4775807"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"hubTag1": to.Ptr("hubTagValue1"),
+		// 					"hubTag2": to.Ptr("hubTagValue2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnotificationhubs.ClientListKeysResponse{
-	// 	ResourceListKeys: armnotificationhubs.ResourceListKeys{
-	// 		KeyName: to.Ptr("sdk-AuthRules-5800"),
-	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
-	// 		PrimaryKey: to.Ptr("############################################"),
-	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://nh-sdk-ns.servicebus.windows-int.net/;SharedAccessKeyName=sdk-AuthRules-5800;SharedAccessKey=############################################;EntityPath=sdk-notificationHubs-2317"),
-	// 		SecondaryKey: to.Ptr("############################################"),
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2023-10-01-preview/NotificationHubs/AuthorizationRuleRegenerateKey.json

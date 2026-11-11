@@ -67,7 +67,8 @@ func (client *EnvironmentTypesClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return EnvironmentTypesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *EnvironmentTypesClient) Delete(ctx context.Context, resourceGroupN
 		return EnvironmentTypesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return EnvironmentTypesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EnvironmentTypesClientDeleteResponse{}, err
 	}
 	return EnvironmentTypesClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *EnvironmentTypesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return EnvironmentTypesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -337,7 +340,8 @@ func (client *EnvironmentTypesClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return EnvironmentTypesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

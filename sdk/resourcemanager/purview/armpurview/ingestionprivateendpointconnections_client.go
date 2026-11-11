@@ -146,7 +146,8 @@ func (client *IngestionPrivateEndpointConnectionsClient) UpdateStatus(ctx contex
 	if err != nil {
 		return IngestionPrivateEndpointConnectionsClientUpdateStatusResponse{}, err
 	}
-	return client.updateStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateStatusCreateRequest creates the UpdateStatus request.

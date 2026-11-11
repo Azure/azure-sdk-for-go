@@ -67,7 +67,8 @@ func (client *WatchlistItemsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return WatchlistItemsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -142,7 +143,8 @@ func (client *WatchlistItemsClient) Delete(ctx context.Context, resourceGroupNam
 		return WatchlistItemsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WatchlistItemsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WatchlistItemsClientDeleteResponse{}, err
 	}
 	return WatchlistItemsClientDeleteResponse{}, nil
 }
@@ -201,7 +203,8 @@ func (client *WatchlistItemsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return WatchlistItemsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

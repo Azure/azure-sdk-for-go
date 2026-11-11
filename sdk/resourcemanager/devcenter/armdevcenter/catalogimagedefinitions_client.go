@@ -70,7 +70,7 @@ func (client *CatalogImageDefinitionsClient) BeginBuildImage(ctx context.Context
 	}
 }
 
-// BuildImage - Builds an image for the specified Image Definition.
+// buildImage - Builds an image for the specified Image Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CatalogImageDefinitionsClient) buildImage(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, imageDefinitionName string, options *CatalogImageDefinitionsClientBeginBuildImageOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *CatalogImageDefinitionsClient) buildImage(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// buildImageCreateRequest creates the BuildImage request.
+// buildImageCreateRequest creates the buildImage request.
 func (client *CatalogImageDefinitionsClient) buildImageCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, catalogName string, imageDefinitionName string, _ *CatalogImageDefinitionsClientBeginBuildImageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/buildImage"
 	if client.subscriptionID == "" {
@@ -147,7 +148,8 @@ func (client *CatalogImageDefinitionsClient) GetByDevCenterCatalog(ctx context.C
 	if err != nil {
 		return CatalogImageDefinitionsClientGetByDevCenterCatalogResponse{}, err
 	}
-	return client.getByDevCenterCatalogHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByDevCenterCatalogHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByDevCenterCatalogCreateRequest creates the GetByDevCenterCatalog request.
@@ -218,7 +220,8 @@ func (client *CatalogImageDefinitionsClient) GetErrorDetails(ctx context.Context
 	if err != nil {
 		return CatalogImageDefinitionsClientGetErrorDetailsResponse{}, err
 	}
-	return client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.

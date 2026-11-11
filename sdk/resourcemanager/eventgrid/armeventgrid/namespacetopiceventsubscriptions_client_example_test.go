@@ -93,6 +93,61 @@ func ExampleNamespaceTopicEventSubscriptionsClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-07-15-preview/NamespaceTopicEventSubscriptions_Update.json
+func ExampleNamespaceTopicEventSubscriptionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespaceTopicEventSubscriptionsClient().BeginUpdate(ctx, "examplerg", "exampleNamespaceName1", "exampleNamespaceTopicName1", "exampleNamespaceTopicEventSubscriptionName1", armeventgrid.SubscriptionUpdateParameters{
+		Properties: &armeventgrid.SubscriptionUpdateParametersProperties{
+			DeliveryConfiguration: &armeventgrid.DeliveryConfiguration{
+				DeliveryMode: to.Ptr(armeventgrid.DeliveryModeQueue),
+				Queue: &armeventgrid.QueueInfo{
+					EventTimeToLive:              to.Ptr("P1D"),
+					MaxDeliveryCount:             to.Ptr[int32](3),
+					ReceiveLockDurationInSeconds: to.Ptr[int32](60),
+				},
+			},
+			EventDeliverySchema: to.Ptr(armeventgrid.DeliverySchemaCloudEventSchemaV10),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventgrid.NamespaceTopicEventSubscriptionsClientUpdateResponse{
+	// 	Subscription: armeventgrid.Subscription{
+	// 		Name: to.Ptr("exampleNamespaceTopicEventSubscriptionName1"),
+	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/topics/eventsubscriptions"),
+	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/examplenamespace2/topics/exampleNamespaceTopicName1/eventSubscriptions/exampleNamespaceTopicEventSubscriptionName1"),
+	// 		Properties: &armeventgrid.SubscriptionProperties{
+	// 			DeliveryConfiguration: &armeventgrid.DeliveryConfiguration{
+	// 				DeliveryMode: to.Ptr(armeventgrid.DeliveryModeQueue),
+	// 				Queue: &armeventgrid.QueueInfo{
+	// 					EventTimeToLive: to.Ptr("P1D"),
+	// 					MaxDeliveryCount: to.Ptr[int32](3),
+	// 					ReceiveLockDurationInSeconds: to.Ptr[int32](60),
+	// 				},
+	// 			},
+	// 			EventDeliverySchema: to.Ptr(armeventgrid.DeliverySchemaCloudEventSchemaV10),
+	// 			ProvisioningState: to.Ptr(armeventgrid.SubscriptionProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-07-15-preview/NamespaceTopicEventSubscriptions_Get.json
 func ExampleNamespaceTopicEventSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -269,59 +324,4 @@ func ExampleNamespaceTopicEventSubscriptionsClient_NewListByNamespaceTopicPager(
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-07-15-preview/NamespaceTopicEventSubscriptions_Update.json
-func ExampleNamespaceTopicEventSubscriptionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventgrid.NewClientFactory("8f6b6269-84f2-4d09-9e31-1127efcd1e40", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNamespaceTopicEventSubscriptionsClient().BeginUpdate(ctx, "examplerg", "exampleNamespaceName1", "exampleNamespaceTopicName1", "exampleNamespaceTopicEventSubscriptionName1", armeventgrid.SubscriptionUpdateParameters{
-		Properties: &armeventgrid.SubscriptionUpdateParametersProperties{
-			DeliveryConfiguration: &armeventgrid.DeliveryConfiguration{
-				DeliveryMode: to.Ptr(armeventgrid.DeliveryModeQueue),
-				Queue: &armeventgrid.QueueInfo{
-					EventTimeToLive:              to.Ptr("P1D"),
-					MaxDeliveryCount:             to.Ptr[int32](3),
-					ReceiveLockDurationInSeconds: to.Ptr[int32](60),
-				},
-			},
-			EventDeliverySchema: to.Ptr(armeventgrid.DeliverySchemaCloudEventSchemaV10),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventgrid.NamespaceTopicEventSubscriptionsClientUpdateResponse{
-	// 	Subscription: armeventgrid.Subscription{
-	// 		Name: to.Ptr("exampleNamespaceTopicEventSubscriptionName1"),
-	// 		Type: to.Ptr("Microsoft.EventGrid/namespaces/topics/eventsubscriptions"),
-	// 		ID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/namespaces/examplenamespace2/topics/exampleNamespaceTopicName1/eventSubscriptions/exampleNamespaceTopicEventSubscriptionName1"),
-	// 		Properties: &armeventgrid.SubscriptionProperties{
-	// 			DeliveryConfiguration: &armeventgrid.DeliveryConfiguration{
-	// 				DeliveryMode: to.Ptr(armeventgrid.DeliveryModeQueue),
-	// 				Queue: &armeventgrid.QueueInfo{
-	// 					EventTimeToLive: to.Ptr("P1D"),
-	// 					MaxDeliveryCount: to.Ptr[int32](3),
-	// 					ReceiveLockDurationInSeconds: to.Ptr[int32](60),
-	// 				},
-	// 			},
-	// 			EventDeliverySchema: to.Ptr(armeventgrid.DeliverySchemaCloudEventSchemaV10),
-	// 			ProvisioningState: to.Ptr(armeventgrid.SubscriptionProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

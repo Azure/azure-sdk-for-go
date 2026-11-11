@@ -73,7 +73,7 @@ func (client *StorageTasksClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - Asynchronously creates a new storage task resource with the specified parameters. If a storage task is already
+// create - Asynchronously creates a new storage task resource with the specified parameters. If a storage task is already
 // created and a subsequent create request is issued with different properties, the storage task properties will be updated.
 // If a storage task is already created and a subsequent create or update request is issued with the exact same set of properties,
 // the request will succeed.
@@ -93,12 +93,13 @@ func (client *StorageTasksClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *StorageTasksClient) createCreateRequest(ctx context.Context, resourceGroupName string, storageTaskName string, parameters StorageTask, _ *StorageTasksClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}"
 	if client.subscriptionID == "" {
@@ -153,7 +154,7 @@ func (client *StorageTasksClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Delete the storage task resource.
+// deleteOperation - Delete the storage task resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageTasksClient) deleteOperation(ctx context.Context, resourceGroupName string, storageTaskName string, options *StorageTasksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,12 +171,13 @@ func (client *StorageTasksClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StorageTasksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageTaskName string, _ *StorageTasksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}"
 	if client.subscriptionID == "" {
@@ -200,6 +202,84 @@ func (client *StorageTasksClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
+// BeginUpdate - Update storage task properties
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storageTaskName - The name of the storage task within the specified resource group. Storage task names must be between
+//     3 and 18 characters in length and use numbers and lower-case letters only.
+//   - parameters - The parameters to provide to update the storage task resource.
+//   - options - StorageTasksClientBeginUpdateOptions contains the optional parameters for the StorageTasksClient.BeginUpdate
+//     method.
+func (client *StorageTasksClient) BeginUpdate(ctx context.Context, resourceGroupName string, storageTaskName string, parameters StorageTaskUpdateParameters, options *StorageTasksClientBeginUpdateOptions) (*runtime.Poller[StorageTasksClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, storageTaskName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageTasksClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StorageTasksClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update storage task properties
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageTasksClient) update(ctx context.Context, resourceGroupName string, storageTaskName string, parameters StorageTaskUpdateParameters, options *StorageTasksClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "StorageTasksClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, storageTaskName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *StorageTasksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storageTaskName string, parameters StorageTaskUpdateParameters, _ *StorageTasksClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storageTaskName == "" {
+		return nil, errors.New("parameter storageTaskName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageTaskName}", url.PathEscape(storageTaskName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20230101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get the storage task properties
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -220,7 +300,8 @@ func (client *StorageTasksClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return StorageTasksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -419,7 +500,8 @@ func (client *StorageTasksClient) PreviewActions(ctx context.Context, location s
 	if err != nil {
 		return StorageTasksClientPreviewActionsResponse{}, err
 	}
-	return client.previewActionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.previewActionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // previewActionsCreateRequest creates the PreviewActions request.
@@ -458,81 +540,4 @@ func (client *StorageTasksClient) previewActionsHandleResponse(resp *http.Respon
 		return StorageTasksClientPreviewActionsResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update storage task properties
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storageTaskName - The name of the storage task within the specified resource group. Storage task names must be between
-//     3 and 18 characters in length and use numbers and lower-case letters only.
-//   - parameters - The parameters to provide to update the storage task resource.
-//   - options - StorageTasksClientBeginUpdateOptions contains the optional parameters for the StorageTasksClient.BeginUpdate
-//     method.
-func (client *StorageTasksClient) BeginUpdate(ctx context.Context, resourceGroupName string, storageTaskName string, parameters StorageTaskUpdateParameters, options *StorageTasksClientBeginUpdateOptions) (*runtime.Poller[StorageTasksClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, storageTaskName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageTasksClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StorageTasksClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update storage task properties
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *StorageTasksClient) update(ctx context.Context, resourceGroupName string, storageTaskName string, parameters StorageTaskUpdateParameters, options *StorageTasksClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "StorageTasksClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, storageTaskName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *StorageTasksClient) updateCreateRequest(ctx context.Context, resourceGroupName string, storageTaskName string, parameters StorageTaskUpdateParameters, _ *StorageTasksClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageActions/storageTasks/{storageTaskName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storageTaskName == "" {
-		return nil, errors.New("parameter storageTaskName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageTaskName}", url.PathEscape(storageTaskName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20230101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

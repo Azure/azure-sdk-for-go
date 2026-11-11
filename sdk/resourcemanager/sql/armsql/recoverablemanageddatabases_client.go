@@ -64,7 +64,8 @@ func (client *RecoverableManagedDatabasesClient) Get(ctx context.Context, resour
 	if err != nil {
 		return RecoverableManagedDatabasesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

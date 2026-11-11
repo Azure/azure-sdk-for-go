@@ -58,7 +58,8 @@ func (client *ManagementGroupSubscriptionsClient) Create(ctx context.Context, gr
 	if err != nil {
 		return ManagementGroupSubscriptionsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -119,7 +120,8 @@ func (client *ManagementGroupSubscriptionsClient) Delete(ctx context.Context, gr
 		return ManagementGroupSubscriptionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ManagementGroupSubscriptionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagementGroupSubscriptionsClientDeleteResponse{}, err
 	}
 	return ManagementGroupSubscriptionsClientDeleteResponse{}, nil
 }
@@ -168,7 +170,8 @@ func (client *ManagementGroupSubscriptionsClient) GetSubscription(ctx context.Co
 	if err != nil {
 		return ManagementGroupSubscriptionsClientGetSubscriptionResponse{}, err
 	}
-	return client.getSubscriptionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSubscriptionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSubscriptionCreateRequest creates the GetSubscription request.

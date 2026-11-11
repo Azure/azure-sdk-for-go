@@ -67,7 +67,8 @@ func (client *FileServicesClient) GetServiceProperties(ctx context.Context, reso
 	if err != nil {
 		return FileServicesClientGetServicePropertiesResponse{}, err
 	}
-	return client.getServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getServicePropertiesCreateRequest creates the GetServiceProperties request.
@@ -130,7 +131,8 @@ func (client *FileServicesClient) GetServiceUsage(ctx context.Context, resourceG
 	if err != nil {
 		return FileServicesClientGetServiceUsageResponse{}, err
 	}
-	return client.getServiceUsageHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getServiceUsageHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getServiceUsageCreateRequest creates the GetServiceUsage request.
@@ -191,7 +193,8 @@ func (client *FileServicesClient) List(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return FileServicesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -336,7 +339,8 @@ func (client *FileServicesClient) SetServiceProperties(ctx context.Context, reso
 	if err != nil {
 		return FileServicesClientSetServicePropertiesResponse{}, err
 	}
-	return client.setServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.setServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // setServicePropertiesCreateRequest creates the SetServiceProperties request.

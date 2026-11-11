@@ -65,7 +65,8 @@ func (client *ActivityRunsClient) QueryByPipelineRun(ctx context.Context, resour
 	if err != nil {
 		return ActivityRunsClientQueryByPipelineRunResponse{}, err
 	}
-	return client.queryByPipelineRunHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryByPipelineRunHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryByPipelineRunCreateRequest creates the QueryByPipelineRun request.

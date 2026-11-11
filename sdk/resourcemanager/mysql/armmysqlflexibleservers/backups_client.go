@@ -64,7 +64,8 @@ func (client *BackupsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return BackupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -206,7 +207,8 @@ func (client *BackupsClient) Put(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return BackupsClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.

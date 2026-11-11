@@ -68,7 +68,7 @@ func (client *PrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Approve or reject a private endpoint connection with a given name.
+// createOrUpdate - Approve or reject a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *PrivateEndpointConnectionsClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, parameters PrivateEndpointConnection, _ *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -148,7 +149,7 @@ func (client *PrivateEndpointConnectionsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Deletes a private endpoint connection with a given name.
+// deleteOperation - Deletes a private endpoint connection with a given name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,12 +166,13 @@ func (client *PrivateEndpointConnectionsClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, privateEndpointConnectionName string, _ *PrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters/{clusterName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -220,7 +222,8 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

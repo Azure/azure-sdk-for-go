@@ -64,7 +64,8 @@ func (client *DatabaseSystemShapeResourcesClient) Get(ctx context.Context, locat
 	if err != nil {
 		return DatabaseSystemShapeResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

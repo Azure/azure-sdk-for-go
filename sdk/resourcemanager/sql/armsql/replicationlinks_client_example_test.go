@@ -174,6 +174,54 @@ func ExampleReplicationLinksClient_BeginFailoverAllowDataLoss() {
 	// }
 }
 
+// Generated from example definition: 2026-08-01-preview/ReplicationLinkUpdate.json
+func ExampleReplicationLinksClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicationLinksClient().BeginUpdate(ctx, "Default", "sourcesvr", "gamma-db", "00000000-1111-2222-3333-666666666666", armsql.ReplicationLinkUpdate{
+		Properties: &armsql.ReplicationLinkUpdateProperties{
+			LinkType: to.Ptr(armsql.ReplicationLinkTypeSTANDBY),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsql.ReplicationLinksClientUpdateResponse{
+	// 	ReplicationLink: armsql.ReplicationLink{
+	// 		Name: to.Ptr("00000000-1111-2222-3333-666666666666"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sourcesvr/databases/gamma-db/replicationLinks/4891ca10-ebd0-47d7-9182-c722651780fb"),
+	// 		Properties: &armsql.ReplicationLinkProperties{
+	// 			IsTerminationAllowed: to.Ptr(true),
+	// 			LinkType: to.Ptr(armsql.ReplicationLinkTypeSTANDBY),
+	// 			PartnerDatabase: to.Ptr("gamma-db"),
+	// 			PartnerDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-555555555555/resourceGroups/Second-Default/providers/Microsoft.Sql/servers/testsvr/databases/gamma-db"),
+	// 			PartnerLocation: to.Ptr("Japan East"),
+	// 			PartnerRole: to.Ptr(armsql.ReplicationRoleSecondary),
+	// 			PartnerServer: to.Ptr("testsvr"),
+	// 			PercentComplete: to.Ptr[int32](100),
+	// 			ReplicationMode: to.Ptr("ASYNC"),
+	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
+	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
+	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-08-01-preview/ReplicationLinkGet.json
 func ExampleReplicationLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -364,52 +412,4 @@ func ExampleReplicationLinksClient_NewListByServerPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-08-01-preview/ReplicationLinkUpdate.json
-func ExampleReplicationLinksClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsql.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewReplicationLinksClient().BeginUpdate(ctx, "Default", "sourcesvr", "gamma-db", "00000000-1111-2222-3333-666666666666", armsql.ReplicationLinkUpdate{
-		Properties: &armsql.ReplicationLinkUpdateProperties{
-			LinkType: to.Ptr(armsql.ReplicationLinkTypeSTANDBY),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsql.ReplicationLinksClientUpdateResponse{
-	// 	ReplicationLink: armsql.ReplicationLink{
-	// 		Name: to.Ptr("00000000-1111-2222-3333-666666666666"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default/providers/Microsoft.Sql/servers/sourcesvr/databases/gamma-db/replicationLinks/4891ca10-ebd0-47d7-9182-c722651780fb"),
-	// 		Properties: &armsql.ReplicationLinkProperties{
-	// 			IsTerminationAllowed: to.Ptr(true),
-	// 			LinkType: to.Ptr(armsql.ReplicationLinkTypeSTANDBY),
-	// 			PartnerDatabase: to.Ptr("gamma-db"),
-	// 			PartnerDatabaseID: to.Ptr("/subscriptions/00000000-1111-2222-3333-555555555555/resourceGroups/Second-Default/providers/Microsoft.Sql/servers/testsvr/databases/gamma-db"),
-	// 			PartnerLocation: to.Ptr("Japan East"),
-	// 			PartnerRole: to.Ptr(armsql.ReplicationRoleSecondary),
-	// 			PartnerServer: to.Ptr("testsvr"),
-	// 			PercentComplete: to.Ptr[int32](100),
-	// 			ReplicationMode: to.Ptr("ASYNC"),
-	// 			ReplicationState: to.Ptr(armsql.ReplicationStateCATCHUP),
-	// 			Role: to.Ptr(armsql.ReplicationRolePrimary),
-	// 			StartTime: to.Ptr(time.Date(2018, time.June, 21, 8, 12, 43, 783000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

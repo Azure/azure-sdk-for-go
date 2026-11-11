@@ -69,7 +69,7 @@ func (client *StandbyVirtualMachinePoolsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Create a StandbyVirtualMachinePoolResource
+// createOrUpdate - Create a StandbyVirtualMachinePoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StandbyVirtualMachinePoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, standbyVirtualMachinePoolName string, resource StandbyVirtualMachinePoolResource, options *StandbyVirtualMachinePoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *StandbyVirtualMachinePoolsClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *StandbyVirtualMachinePoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, standbyVirtualMachinePoolName string, resource StandbyVirtualMachinePoolResource, _ *StandbyVirtualMachinePoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *StandbyVirtualMachinePoolsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Delete a StandbyVirtualMachinePoolResource
+// deleteOperation - Delete a StandbyVirtualMachinePoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StandbyVirtualMachinePoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, standbyVirtualMachinePoolName string, options *StandbyVirtualMachinePoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *StandbyVirtualMachinePoolsClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StandbyVirtualMachinePoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, standbyVirtualMachinePoolName string, _ *StandbyVirtualMachinePoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyVirtualMachinePools/{standbyVirtualMachinePoolName}"
 	if client.subscriptionID == "" {
@@ -211,7 +213,8 @@ func (client *StandbyVirtualMachinePoolsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return StandbyVirtualMachinePoolsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -412,7 +415,8 @@ func (client *StandbyVirtualMachinePoolsClient) Update(ctx context.Context, reso
 	if err != nil {
 		return StandbyVirtualMachinePoolsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

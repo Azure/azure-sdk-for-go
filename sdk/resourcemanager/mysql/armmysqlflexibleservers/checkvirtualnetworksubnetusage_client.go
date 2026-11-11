@@ -64,7 +64,8 @@ func (client *CheckVirtualNetworkSubnetUsageClient) Execute(ctx context.Context,
 	if err != nil {
 		return CheckVirtualNetworkSubnetUsageClientExecuteResponse{}, err
 	}
-	return client.executeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executeCreateRequest creates the Execute request.

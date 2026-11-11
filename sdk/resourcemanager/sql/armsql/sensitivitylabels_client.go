@@ -70,7 +70,8 @@ func (client *SensitivityLabelsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return SensitivityLabelsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -157,7 +158,8 @@ func (client *SensitivityLabelsClient) Delete(ctx context.Context, resourceGroup
 		return SensitivityLabelsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return SensitivityLabelsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SensitivityLabelsClientDeleteResponse{}, err
 	}
 	return SensitivityLabelsClientDeleteResponse{}, nil
 }
@@ -229,7 +231,8 @@ func (client *SensitivityLabelsClient) DisableRecommendation(ctx context.Context
 		return SensitivityLabelsClientDisableRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return SensitivityLabelsClientDisableRecommendationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SensitivityLabelsClientDisableRecommendationResponse{}, err
 	}
 	return SensitivityLabelsClientDisableRecommendationResponse{}, nil
 }
@@ -302,7 +305,8 @@ func (client *SensitivityLabelsClient) EnableRecommendation(ctx context.Context,
 		return SensitivityLabelsClientEnableRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return SensitivityLabelsClientEnableRecommendationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SensitivityLabelsClientEnableRecommendationResponse{}, err
 	}
 	return SensitivityLabelsClientEnableRecommendationResponse{}, nil
 }
@@ -373,7 +377,8 @@ func (client *SensitivityLabelsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return SensitivityLabelsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -723,7 +728,8 @@ func (client *SensitivityLabelsClient) Update(ctx context.Context, resourceGroup
 		return SensitivityLabelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return SensitivityLabelsClientUpdateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SensitivityLabelsClientUpdateResponse{}, err
 	}
 	return SensitivityLabelsClientUpdateResponse{}, nil
 }

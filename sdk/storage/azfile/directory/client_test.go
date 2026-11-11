@@ -5,13 +5,19 @@ package directory_test
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"io"
+	"net/http"
 	"strconv"
 	"strings"
 	"testing"
 	"time"
 
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/directory"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azfile/file"
@@ -925,6 +931,226 @@ func (d *DirectoryRecordedTestsSuite) TestDirGetPropertiesWithBaseDirectory() {
 	_require.NotNil(gResp.IsServerEncrypted)
 }
 
+func (d *DirectoryRecordedTestsSuite) TestDirGetPropertiesByFileID() {
+	_require := require.New(d.T())
+	testName := d.T().Name()
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(testName), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	dirName := testcommon.GenerateDirectoryName(testName)
+	dirClient := testcommon.CreateNewDirectory(context.Background(), _require, dirName, shareClient)
+
+	pathProps, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Nil(pathProps.FileName)
+
+	dirIDClient := dirClientByFileID(d.T(), shareClient, *pathProps.ID)
+	_require.Equal(*pathProps.ID, fileIDFromURL(d.T(), dirIDClient.URL()))
+
+	resp, err := dirIDClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(*pathProps.ID, *resp.ID)
+	_require.Equal(*pathProps.ParentID, *resp.ParentID)
+	_require.Equal(dirName, *resp.FileName)
+	_require.Equal(*pathProps.FileAttributes, *resp.FileAttributes)
+
+	// unsupported operations fail before a request is sent, so the directory is left untouched
+	_, err = dirIDClient.Delete(context.Background(), nil)
+	_require.ErrorIs(err, fileerror.FileIDNotSupported)
+	_, err = dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+}
+
+func (d *DirectoryRecordedTestsSuite) TestDirGetPropertiesByFileIDError() {
+	_require := require.New(d.T())
+
+	svcClient, err := testcommon.GetServiceClient(d.T(), testcommon.TestAccountDefault, nil)
+	_require.NoError(err)
+	shareClient := testcommon.CreateNewShare(context.Background(), _require, testcommon.GenerateShareName(d.T().Name()), svcClient)
+	defer testcommon.DeleteShare(context.Background(), _require, shareClient)
+
+	_, err = dirClientByFileID(d.T(), shareClient, "11111111111111111111").GetProperties(context.Background(), nil)
+	_require.Error(err)
+}
+
+const (
+	fakeFileID    = "12384898975283830"
+	fakeParentID  = "13835128424026341376"
+	fakeShareURL  = "https://account.file.core.windows.net/share"
+	fakeFileIDURL = fakeShareURL + "?fileid=" + fakeFileID
+)
+
+// fileIDTransport records the requests it handles and answers each with the configured response.
+type fileIDTransport struct {
+	requests []*http.Request
+	status   int
+	header   http.Header
+}
+
+func (f *fileIDTransport) Do(req *http.Request) (*http.Response, error) {
+	f.requests = append(f.requests, req)
+	status := f.status
+	if status == 0 {
+		status = http.StatusOK
+	}
+	header := f.header
+	if header == nil {
+		header = http.Header{}
+	}
+	return &http.Response{
+		Request:    req,
+		StatusCode: status,
+		Status:     http.StatusText(status),
+		Header:     header.Clone(),
+		Body:       io.NopCloser(strings.NewReader("")),
+	}, nil
+}
+
+func fileIDFromURL(t *testing.T, resourceURL string) string {
+	urlParts, err := sas.ParseURL(resourceURL)
+	require.NoError(t, err)
+	return urlParts.FileID
+}
+
+func newFakeShareClient(t *testing.T, transport policy.Transporter) *share.Client {
+	shareClient, err := share.NewClientWithNoCredential(fakeShareURL, &share.ClientOptions{ClientOptions: policy.ClientOptions{
+		Transport: transport,
+		Retry:     policy.RetryOptions{MaxRetries: -1},
+	}})
+	require.NoError(t, err)
+	return shareClient
+}
+
+func dirClientByFileID(t testing.TB, shareClient *share.Client, fileID string) *directory.Client {
+	t.Helper()
+	dirClient, err := shareClient.NewDirectoryClientByFileID(fileID)
+	require.NoError(t, err)
+	return dirClient
+}
+
+// An empty file ID would address the root directory of the share, so it is rejected without a
+// client that could send a request, for example a SetMetadata to the share root.
+func TestNewDirectoryClientByFileIDEmpty(t *testing.T) {
+	transport := &fileIDTransport{}
+	dirClient, err := newFakeShareClient(t, transport).NewDirectoryClientByFileID("")
+	require.ErrorContains(t, err, "fileID must not be empty")
+	require.Nil(t, dirClient)
+	require.Empty(t, transport.requests)
+}
+
+func TestNewDirectoryClientByFileIDURL(t *testing.T) {
+	dirClient := dirClientByFileID(t, newFakeShareClient(t, &fileIDTransport{}), fakeFileID)
+
+	require.Equal(t, fakeFileIDURL, dirClient.URL())
+
+	urlParts, err := sas.ParseURL(dirClient.URL())
+	require.NoError(t, err)
+	require.Equal(t, "share", urlParts.ShareName)
+	require.Equal(t, fakeFileID, urlParts.FileID)
+	require.Empty(t, urlParts.DirectoryOrFilePath)
+}
+
+func TestDirectoryClientFileIDFromConstructorURL(t *testing.T) {
+	dirClient, err := directory.NewClientWithNoCredential(fakeFileIDURL, nil)
+	require.NoError(t, err)
+	require.Equal(t, fakeFileID, fileIDFromURL(t, dirClient.URL()))
+}
+
+func TestDirectoryClientFileIDEmptyForPathBasedClient(t *testing.T) {
+	dirClient, err := directory.NewClientWithNoCredential(fakeShareURL+"/directory", nil)
+	require.NoError(t, err)
+	require.Empty(t, fileIDFromURL(t, dirClient.URL()))
+
+	require.Empty(t, fileIDFromURL(t, newFakeShareClient(t, &fileIDTransport{}).NewRootDirectoryClient().URL()))
+}
+
+func TestDirectoryClientByFileIDGetProperties(t *testing.T) {
+	_require := require.New(t)
+	transport := &fileIDTransport{header: http.Header{
+		"X-Ms-File-Id":        []string{fakeFileID},
+		"X-Ms-File-Parent-Id": []string{fakeParentID},
+		"X-Ms-File-Name":      []string{"directory"},
+	}}
+	dirClient := dirClientByFileID(t, newFakeShareClient(t, transport), fakeFileID)
+
+	resp, err := dirClient.GetProperties(context.Background(), nil)
+	_require.NoError(err)
+	_require.Equal(fakeFileID, *resp.ID)
+	_require.Equal(fakeParentID, *resp.ParentID)
+	_require.Equal("directory", *resp.FileName)
+
+	_require.Len(transport.requests, 1)
+	req := transport.requests[0]
+	_require.Equal("/share", req.URL.Path)
+	_require.Equal(fakeFileID, req.URL.Query().Get("fileid"))
+	_require.Equal("directory", req.URL.Query().Get("restype"))
+}
+
+func TestDirectoryClientByFileIDGetPropertiesError(t *testing.T) {
+	transport := &fileIDTransport{
+		status: http.StatusNotFound,
+		header: http.Header{"X-Ms-Error-Code": []string{string(fileerror.ResourceNotFound)}},
+	}
+	dirClient := dirClientByFileID(t, newFakeShareClient(t, transport), "11111111111111111111")
+
+	_, err := dirClient.GetProperties(context.Background(), nil)
+	require.Error(t, err)
+	require.True(t, fileerror.HasCode(err, fileerror.ResourceNotFound))
+}
+
+func TestDirectoryClientByFileIDUnsupportedOperations(t *testing.T) {
+	ctx := context.Background()
+	transport := &fileIDTransport{}
+	dirClient := dirClientByFileID(t, newFakeShareClient(t, transport), fakeFileID)
+
+	operations := map[string]func() error{
+		"Create":        func() error { _, err := dirClient.Create(ctx, nil); return err },
+		"Delete":        func() error { _, err := dirClient.Delete(ctx, nil); return err },
+		"Rename":        func() error { _, err := dirClient.Rename(ctx, "destination", nil); return err },
+		"SetProperties": func() error { _, err := dirClient.SetProperties(ctx, nil); return err },
+		"SetMetadata":   func() error { _, err := dirClient.SetMetadata(ctx, nil); return err },
+		"ForceCloseHandles": func() error {
+			_, err := dirClient.ForceCloseHandles(ctx, "*", nil)
+			return err
+		},
+		"ListHandles": func() error { _, err := dirClient.ListHandles(ctx, nil); return err },
+		"NewListFilesAndDirectoriesPager": func() error {
+			_, err := dirClient.NewListFilesAndDirectoriesPager(nil).NextPage(ctx)
+			return err
+		},
+	}
+
+	for name, operation := range operations {
+		t.Run(name, func(t *testing.T) {
+			err := operation()
+			require.ErrorIs(t, err, fileerror.FileIDNotSupported)
+			require.Contains(t, err.Error(), "directory.Client."+name)
+		})
+	}
+	require.Empty(t, transport.requests, "unsupported operations must fail before a request is sent")
+}
+
+func TestDirectoryClientByFileIDNavigation(t *testing.T) {
+	// the path of a directory addressed by its file ID is not known, so clients navigated to from it are unusable
+	ctx := context.Background()
+	transport := &fileIDTransport{}
+	dirClient := dirClientByFileID(t, newFakeShareClient(t, transport), fakeFileID)
+
+	_, err := dirClient.NewFileClient("file").GetProperties(ctx, nil)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
+	_, err = dirClient.NewFileClient("file").GetFileLinks(ctx, nil)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
+	_, err = dirClient.NewSubdirectoryClient("subdirectory").GetProperties(ctx, nil)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
+	_, err = dirClient.NewSubdirectoryClient("subdirectory").Create(ctx, nil)
+	require.ErrorIs(t, err, fileerror.FileIDNotSupported)
+
+	require.Empty(t, transport.requests)
+}
+
 func (d *DirectoryRecordedTestsSuite) TestDirGetSetMetadataMergeAndReplace() {
 	_require := require.New(d.T())
 	testName := d.T().Name()
@@ -1138,6 +1364,68 @@ func (d *DirectoryRecordedTestsSuite) TestDirListFilesAndDirsMaxResultsAndMarker
 	}
 	_require.Equal(dirCtr, 10)
 	_require.Equal(fileCtr, 5)
+}
+
+func newMockDirectoryClient(t *testing.T) (*directory.Client, *mock.Server) {
+	srv, clientOptions := testcommon.NewMockServer(t)
+	client, err := directory.NewClientWithNoCredential("https://account.file.core.windows.net/share/dir", &directory.ClientOptions{
+		ClientOptions: clientOptions,
+	})
+	require.NoError(t, err)
+	return client, srv
+}
+
+func TestListFilesAndDirectoriesPagerMocked(t *testing.T) {
+	_require := require.New(t)
+	client, srv := newMockDirectoryClient(t)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?>
+<EnumerationResults ServiceEndpoint="https://account.file.core.windows.net/" ShareName="share" DirectoryPath="dir">
+	<Entries>
+		<File><Name>file.txt</Name><Properties><Content-Length>5</Content-Length></Properties></File>
+	</Entries>
+	<NextMarker>marker1</NextMarker>
+</EnumerationResults>`)))
+	// the second page is only returned for a request that continues from the marker of the first page
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?>
+<EnumerationResults ServiceEndpoint="https://account.file.core.windows.net/" ShareName="share" DirectoryPath="dir">
+	<Entries>
+		<Directory><Name>subdir</Name><Properties /></Directory>
+	</Entries>
+	<NextMarker />
+</EnumerationResults>`)), mock.WithPredicate(func(req *http.Request) bool {
+		return req.URL.Query().Get("marker") == "marker1"
+	}))
+	srv.AppendResponse(mock.WithStatusCode(http.StatusBadRequest))
+
+	var files, dirs []string
+	pager := client.NewListFilesAndDirectoriesPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.Background())
+		_require.NoError(err)
+		for _, f := range page.Segment.Files {
+			files = append(files, *f.Name)
+		}
+		for _, d := range page.Segment.Directories {
+			dirs = append(dirs, *d.Name)
+		}
+	}
+	_require.Equal([]string{"file.txt"}, files)
+	_require.Equal([]string{"subdir"}, dirs)
+	_require.Equal(2, srv.Requests())
+}
+
+func TestListFilesAndDirectoriesPagerErrorMocked(t *testing.T) {
+	_require := require.New(t)
+	client, srv := newMockDirectoryClient(t)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusNotFound),
+		mock.WithHeader("x-ms-error-code", string(fileerror.ParentNotFound)),
+		mock.WithBody([]byte(`<?xml version="1.0" encoding="utf-8"?><Error><Code>ParentNotFound</Code><Message>The specified parent path does not exist.</Message></Error>`)))
+
+	_, err := client.NewListFilesAndDirectoriesPager(nil).NextPage(context.Background())
+	var respErr *azcore.ResponseError
+	_require.True(errors.As(err, &respErr))
+	_require.Equal(http.StatusNotFound, respErr.StatusCode)
+	_require.True(fileerror.HasCode(err, fileerror.ParentNotFound))
 }
 
 func (d *DirectoryRecordedTestsSuite) TestDirListFilesAndDirsWithPrefix() {
@@ -2593,4 +2881,53 @@ func (d *DirectoryRecordedTestsSuite) TestDirCreateDirPropertySemantics() {
 			_require.True(fileAttributes.Directory)
 		}
 	}
+}
+
+// newMockListClient returns a Client whose mock server returns body as a single 200 OK List Directories and Files response.
+func newMockListClient(t *testing.T, body string) (*directory.Client, *mock.Server) {
+	client, srv := newMockDirectoryClient(t)
+	srv.AppendResponse(mock.WithStatusCode(http.StatusOK), mock.WithBody([]byte(body)))
+	return client, srv
+}
+
+func listFirstPage(t *testing.T, client *directory.Client, options *directory.ListFilesAndDirectoriesOptions) directory.ListFilesAndDirectoriesResponse {
+	pager := client.NewListFilesAndDirectoriesPager(options)
+	require.True(t, pager.More())
+	resp, err := pager.NextPage(context.Background())
+	require.NoError(t, err)
+	return resp
+}
+
+func TestListFilesAndDirectoriesSMBMalformedEncodedNameMocked(t *testing.T) {
+	_require := require.New(t)
+	client, _ := newMockListClient(t, `<?xml version="1.0" encoding="utf-8"?>
+<EnumerationResults ServiceEndpoint="https://account.file.core.windows.net/" ShareName="smbshare" DirectoryPath="dir">
+	<Prefix Encoded="true">bad%zzprefix</Prefix>
+	<Entries>
+		<File>
+			<Name Encoded="true">bad%zzfile</Name>
+			<Properties><Content-Length>0</Content-Length></Properties>
+		</File>
+		<Directory>
+			<Name Encoded="true">bad%zzdir</Name>
+			<Properties />
+		</Directory>
+		<File>
+			<Name Encoded="true">file%EF%BF%BF</Name>
+			<Properties><Content-Length>0</Content-Length></Properties>
+		</File>
+	</Entries>
+	<NextMarker />
+</EnumerationResults>`)
+
+	// A malformed encoding does not fail the page; the value is returned as sent.
+	resp := listFirstPage(t, client, nil)
+	_require.Equal("bad%zzprefix", *resp.Prefix)
+	_require.Len(resp.Segment.Files, 2)
+	_require.Equal("bad%zzfile", *resp.Segment.Files[0].Name)
+	_require.Len(resp.Segment.Directories, 1)
+	_require.Equal("bad%zzdir", *resp.Segment.Directories[0].Name)
+
+	// Other items on the page are still decoded.
+	_require.Equal("file￿", *resp.Segment.Files[1].Name)
 }

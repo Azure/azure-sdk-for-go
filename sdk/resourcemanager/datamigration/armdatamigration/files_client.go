@@ -68,7 +68,8 @@ func (client *FilesClient) CreateOrUpdate(ctx context.Context, groupName string,
 	if err != nil {
 		return FilesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -145,7 +146,8 @@ func (client *FilesClient) Delete(ctx context.Context, groupName string, service
 		return FilesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return FilesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FilesClientDeleteResponse{}, err
 	}
 	return FilesClientDeleteResponse{}, nil
 }
@@ -207,7 +209,8 @@ func (client *FilesClient) Get(ctx context.Context, groupName string, serviceNam
 	if err != nil {
 		return FilesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -363,7 +366,8 @@ func (client *FilesClient) Read(ctx context.Context, groupName string, serviceNa
 	if err != nil {
 		return FilesClientReadResponse{}, err
 	}
-	return client.readHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.readHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // readCreateRequest creates the Read request.
@@ -435,7 +439,8 @@ func (client *FilesClient) ReadWrite(ctx context.Context, groupName string, serv
 	if err != nil {
 		return FilesClientReadWriteResponse{}, err
 	}
-	return client.readWriteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.readWriteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // readWriteCreateRequest creates the ReadWrite request.
@@ -508,7 +513,8 @@ func (client *FilesClient) Update(ctx context.Context, groupName string, service
 	if err != nil {
 		return FilesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

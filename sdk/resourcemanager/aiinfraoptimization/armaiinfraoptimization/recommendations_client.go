@@ -64,7 +64,8 @@ func (client *RecommendationsClient) RecommendVMSKU(ctx context.Context, locatio
 	if err != nil {
 		return RecommendationsClientRecommendVMSKUResponse{}, err
 	}
-	return client.recommendVMSKUHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.recommendVMSKUHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // recommendVMSKUCreateRequest creates the RecommendVMSKU request.

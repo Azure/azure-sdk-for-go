@@ -14,4 +14,7 @@ const (
 
 	// EventSubmitBatch is used for logging events related to submit blob batch operation.
 	EventSubmitBatch log.Event = "azblob.SubmitBatch"
+
+	// EventSession is used for logging events related to session-based authentication.
+	EventSession log.Event = "azblob.Session"
 )

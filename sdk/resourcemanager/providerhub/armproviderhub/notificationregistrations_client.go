@@ -65,7 +65,8 @@ func (client *NotificationRegistrationsClient) CreateOrUpdate(ctx context.Contex
 	if err != nil {
 		return NotificationRegistrationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *NotificationRegistrationsClient) Delete(ctx context.Context, provi
 		return NotificationRegistrationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return NotificationRegistrationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return NotificationRegistrationsClientDeleteResponse{}, err
 	}
 	return NotificationRegistrationsClientDeleteResponse{}, nil
 }
@@ -181,7 +183,8 @@ func (client *NotificationRegistrationsClient) Get(ctx context.Context, provider
 	if err != nil {
 		return NotificationRegistrationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

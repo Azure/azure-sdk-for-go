@@ -65,7 +65,8 @@ func (client *ManagedClusterSnapshotsClient) CreateOrUpdate(ctx context.Context,
 	if err != nil {
 		return ManagedClusterSnapshotsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *ManagedClusterSnapshotsClient) Delete(ctx context.Context, resourc
 		return ManagedClusterSnapshotsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ManagedClusterSnapshotsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagedClusterSnapshotsClientDeleteResponse{}, err
 	}
 	return ManagedClusterSnapshotsClientDeleteResponse{}, nil
 }
@@ -181,7 +183,8 @@ func (client *ManagedClusterSnapshotsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return ManagedClusterSnapshotsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -382,7 +385,8 @@ func (client *ManagedClusterSnapshotsClient) UpdateTags(ctx context.Context, res
 	if err != nil {
 		return ManagedClusterSnapshotsClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

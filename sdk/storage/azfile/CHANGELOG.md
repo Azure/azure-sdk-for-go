@@ -1,16 +1,32 @@
 # Release History
 
-## 1.7.1-beta.2 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
 * Exported `ShareNFSSettings` and `ShareNFSSettingsEncryptionInTransit` types.
 * Added structured message (XSM/1.0) CRC64 content validation for `azfile` uploads and downloads via the new `TransferValidationTypeComputeStructuredMessageCRC64` transfer validation option.
 * Added `TransactionalValidation` support on `CreateOptions` for structured message CRC64 content validation when creating a file with initial data.
+* Added support for addressing files and directories by file ID (`?fileid=<FileID>`) for service version 2027-03-07:
+  * Added `NewFileClientByFileID` and `NewDirectoryClientByFileID` methods on share `Client`. They return an error for an empty file ID.
+  * Added `FileID` field on `sas.URLParts`.
+  * Added `GetFileLinks` method on file `Client` that returns the hard links of a file. It is only supported on a file `Client` that addresses the file by file ID.
+  * `GetProperties` on file and directory `Client` returns the name of the resource in `FileName` when it is addressed by file ID.
+  * A file or directory `Client` that addresses the resource by file ID only supports `GetProperties` and `GetFileLinks` (files only). All other operations, including lease operations and `GetSASURL`, return an error wrapping the new `fileerror.FileIDNotSupported` without sending a request. `GetFileLinks` on a path based file `Client` returns an error wrapping the new `fileerror.FileIDRequired`.
+* Added Files Change Feed support on shares: `EnableChangeFeed` and `ChangeFeedRetentionInDays` in share `CreateOptions` and `SetPropertiesOptions`, and `EnableChangeFeed`, `ChangeFeedRetentionInDays` and `ChangeFeedBlobContainerName` in the share `GetProperties` response.
+* Added support for share creation time for service version `2027-03-07`. The creation time of a share is returned in `CreationTime` by `GetProperties` on share `Client` and in `ShareProperties` by `NewListSharesPager` on service `Client`.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 * Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
+* Fixed `NewListFilesAndDirectoriesPager` failing the whole page when the service returned a file name, directory name or prefix with a malformed URL encoding. The value is now returned as sent by the service.
+
+### Other Changes
+* Updated `azcore` version to `1.23.2`
+
+## 1.7.1 (2026-10-05)
+
+### Bugs Fixed
 * Fixed `GetSASURL()` on `share.Client`, `file.Client`, and `service.Client` appending a duplicated `?` to the resulting URL when called on a client whose URL already contained a query string (e.g. a client returned by `WithSnapshot`, a file client derived from a share snapshot, or a custom endpoint with pre-existing query parameters), which produced a malformed SAS URL.
 
 ### Other Changes

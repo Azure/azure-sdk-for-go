@@ -68,7 +68,8 @@ func (client *ContainerAppsRevisionFunctionsClient) Get(ctx context.Context, res
 	if err != nil {
 		return ContainerAppsRevisionFunctionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

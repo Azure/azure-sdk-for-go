@@ -57,7 +57,8 @@ func (client *ExtensionTopicsClient) Get(ctx context.Context, scope string, opti
 	if err != nil {
 		return ExtensionTopicsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

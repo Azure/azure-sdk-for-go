@@ -470,6 +470,14 @@ type DownloadBufferOptions struct {
 	RetryReaderOptionsPerChunk *RetryReaderOptions
 	// TransactionalValidation specifies the transfer validation type to use on download.
 	TransactionalValidation TransferValidationType
+	// LayoutAwareRouting indicates whether the parallel reads should be routed to the endpoint that serves
+	// each range, based on the file's layout. It is a performance optimization only: the data downloaded
+	// is the same either way. When true and the initial read carries the layout download hint, the layout
+	// of the remaining range is fetched and cached (with automatic background refresh), and each remaining
+	// range is read from the endpoint that serves it. When false, every read goes to the client's
+	// configured endpoint. The default, nil, leaves the decision to the client library, which may change
+	// it in a future release; currently it resolves to disabled.
+	LayoutAwareRouting *bool
 }
 
 func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
@@ -494,6 +502,7 @@ func (o *DownloadBufferOptions) format() *blob.DownloadBufferOptions {
 
 	downloadBufferOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
 	downloadBufferOptions.CPKScopeInfo = o.CPKScopeInfo
+	downloadBufferOptions.LayoutAwareRouting = o.LayoutAwareRouting
 	downloadBufferOptions.BlockSize = o.ChunkSize
 	downloadBufferOptions.Progress = o.Progress
 	downloadBufferOptions.Concurrency = o.Concurrency
@@ -532,6 +541,14 @@ type DownloadFileOptions struct {
 	RetryReaderOptionsPerChunk *RetryReaderOptions
 	// TransactionalValidation specifies the transfer validation type to use on download.
 	TransactionalValidation TransferValidationType
+	// LayoutAwareRouting indicates whether the parallel reads should be routed to the endpoint that serves
+	// each range, based on the file's layout. It is a performance optimization only: the data downloaded
+	// is the same either way. When true and the initial read carries the layout download hint, the layout
+	// of the remaining range is fetched and cached (with automatic background refresh), and each remaining
+	// range is read from the endpoint that serves it. When false, every read goes to the client's
+	// configured endpoint. The default, nil, leaves the decision to the client library, which may change
+	// it in a future release; currently it resolves to disabled.
+	LayoutAwareRouting *bool
 }
 
 func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
@@ -556,6 +573,7 @@ func (o *DownloadFileOptions) format() *blob.DownloadFileOptions {
 
 	downloadFileOptions.AccessConditions = exported.FormatBlobAccessConditions(o.AccessConditions)
 	downloadFileOptions.CPKScopeInfo = o.CPKScopeInfo
+	downloadFileOptions.LayoutAwareRouting = o.LayoutAwareRouting
 	downloadFileOptions.BlockSize = o.ChunkSize
 	downloadFileOptions.Progress = o.Progress
 	downloadFileOptions.Concurrency = o.Concurrency

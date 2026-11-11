@@ -69,7 +69,7 @@ func (client *ImportPipelinesClient) BeginCreate(ctx context.Context, resourceGr
 	}
 }
 
-// Create - Creates an import pipeline for a container registry with the specified parameters.
+// create - Creates an import pipeline for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ImportPipelinesClient) create(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, importPipelineCreateParameters ImportPipeline, options *ImportPipelinesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *ImportPipelinesClient) create(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ImportPipelinesClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, importPipelineCreateParameters ImportPipeline, _ *ImportPipelinesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/importPipelines/{importPipelineName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *ImportPipelinesClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Deletes an import pipeline from a container registry.
+// deleteOperation - Deletes an import pipeline from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ImportPipelinesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, options *ImportPipelinesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *ImportPipelinesClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ImportPipelinesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, importPipelineName string, _ *ImportPipelinesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/importPipelines/{importPipelineName}"
 	if client.subscriptionID == "" {
@@ -220,7 +222,8 @@ func (client *ImportPipelinesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ImportPipelinesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

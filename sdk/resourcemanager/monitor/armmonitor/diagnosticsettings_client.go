@@ -59,7 +59,8 @@ func (client *DiagnosticSettingsClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return DiagnosticSettingsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -121,7 +122,8 @@ func (client *DiagnosticSettingsClient) Delete(ctx context.Context, resourceURI 
 		return DiagnosticSettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DiagnosticSettingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DiagnosticSettingsClientDeleteResponse{}, err
 	}
 	return DiagnosticSettingsClientDeleteResponse{}, nil
 }
@@ -166,7 +168,8 @@ func (client *DiagnosticSettingsClient) Get(ctx context.Context, resourceURI str
 	if err != nil {
 		return DiagnosticSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -86,7 +86,8 @@ func (client *AFDProfilesClient) upgrade(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -144,7 +145,8 @@ func (client *AFDProfilesClient) CheckEndpointNameAvailability(ctx context.Conte
 	if err != nil {
 		return AFDProfilesClientCheckEndpointNameAvailabilityResponse{}, err
 	}
-	return client.checkEndpointNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkEndpointNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkEndpointNameAvailabilityCreateRequest creates the CheckEndpointNameAvailability request.
@@ -212,7 +214,8 @@ func (client *AFDProfilesClient) CheckHostNameAvailability(ctx context.Context, 
 	if err != nil {
 		return AFDProfilesClientCheckHostNameAvailabilityResponse{}, err
 	}
-	return client.checkHostNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkHostNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkHostNameAvailabilityCreateRequest creates the CheckHostNameAvailability request.
@@ -357,7 +360,8 @@ func (client *AFDProfilesClient) ValidateSecret(ctx context.Context, resourceGro
 	if err != nil {
 		return AFDProfilesClientValidateSecretResponse{}, err
 	}
-	return client.validateSecretHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateSecretHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateSecretCreateRequest creates the ValidateSecret request.

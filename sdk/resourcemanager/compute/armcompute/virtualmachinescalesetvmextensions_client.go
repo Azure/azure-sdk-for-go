@@ -87,7 +87,8 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) createOrUpdate(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -172,7 +173,8 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) deleteOperation(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -253,7 +255,8 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) update(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -318,7 +321,8 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) Get(ctx context.Context,
 	if err != nil {
 		return VirtualMachineScaleSetVMExtensionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -391,7 +395,8 @@ func (client *VirtualMachineScaleSetVMExtensionsClient) List(ctx context.Context
 	if err != nil {
 		return VirtualMachineScaleSetVMExtensionsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

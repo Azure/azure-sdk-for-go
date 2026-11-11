@@ -312,7 +312,19 @@ func (d *nativeDriver) buildDriverOptions() (*C.cosmos_driver_options_t, error) 
 	if len(d.faultRules) == 0 && d.cfg.options.ResourceNameValidation == nil {
 		status = C.cosmos_driver_options_build(d.account, config, &options) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
 	} else {
-		status = d.buildDriverOptionsV2(config, &options)
+		// The versioned ABI carries settings the flat config cannot: resource name validation and
+		// native fault-injection rules. The driver copies all rule memory before the call returns.
+		rules, releaseRules := nativeFaultInjectionRules(d.faultRules)
+		defer releaseRules()
+		v2 := C.cosmos_driver_options_config_v2_default()
+		v2.preferred_regions = config.preferred_regions
+		v2.preferred_regions_len = config.preferred_regions_len
+		v2.operation_options = config.operation_options
+		v2.fault_injection_rules = rules
+		v2.fault_injection_rules_len = C.uintptr_t(len(d.faultRules))
+		v2.fault_injection_rule_stride = C.uintptr_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))
+		v2.resource_name_validation_enabled = nativeResourceNameValidation(d.cfg.options.ResourceNameValidation)
+		status = C.cosmos_driver_options_build_v2(d.account, &v2, &options) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 	}
 	if err := statusError(status, nil, "building the driver options"); err != nil {
 		return nil, err
@@ -440,26 +452,6 @@ func inspectNativeFaultRule(rule nativeFaultRule) nativeFaultRuleValues {
 		startDelayMS:     int64(nativeRule.start_delay_ms),
 		expireAfterMS:    int64(nativeRule.expire_after_ms),
 	}
-}
-
-// buildDriverOptionsV2 uses the versioned ABI for settings the flat config cannot carry: resource
-// name validation and native fault-injection rules. The driver copies all rule memory before this
-// call returns.
-func (d *nativeDriver) buildDriverOptionsV2(
-	config *C.cosmos_driver_options_config_t,
-	out **C.cosmos_driver_options_t,
-) C.cosmos_status_code_t {
-	rules, releaseRules := nativeFaultInjectionRules(d.faultRules)
-	defer releaseRules()
-	v2 := C.cosmos_driver_options_config_v2_default()
-	v2.preferred_regions = config.preferred_regions
-	v2.preferred_regions_len = config.preferred_regions_len
-	v2.operation_options = config.operation_options
-	v2.fault_injection_rules = rules
-	v2.fault_injection_rules_len = C.uintptr_t(len(d.faultRules))
-	v2.fault_injection_rule_stride = C.uintptr_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))
-	v2.resource_name_validation_enabled = nativeResourceNameValidation(d.cfg.options.ResourceNameValidation)
-	return C.cosmos_driver_options_build_v2(d.account, &v2, out) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 }
 
 // nativeResourceNameValidation encodes the driver's tri-state: 0 keeps the default, 1 disables,

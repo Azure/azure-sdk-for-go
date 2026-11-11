@@ -68,7 +68,7 @@ func (client *FreeServicesClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - This operation creates or updates free services in Azure
+// create - This operation creates or updates free services in Azure
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FreeServicesClient) create(ctx context.Context, resourceGroupName string, freeServiceName string, body FreeServices, options *FreeServicesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *FreeServicesClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *FreeServicesClient) createCreateRequest(ctx context.Context, resourceGroupName string, freeServiceName string, body FreeServices, _ *FreeServicesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/freeServices/{freeServiceName}"
 	if client.subscriptionID == "" {
@@ -144,8 +145,8 @@ func (client *FreeServicesClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - This operation deletes free services from the subscription. Only free services that are in an expired or cancelled
-// states can be deleted.
+// deleteOperation - This operation deletes free services from the subscription. Only free services that are in an expired
+// or cancelled states can be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FreeServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, freeServiceName string, options *FreeServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -162,12 +163,13 @@ func (client *FreeServicesClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FreeServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, freeServiceName string, _ *FreeServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/freeServices/{freeServiceName}"
 	if client.subscriptionID == "" {
@@ -192,6 +194,84 @@ func (client *FreeServicesClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
+// BeginUpdate - This operation updates free services in Azure.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - freeServiceName - Name of the free service
+//   - body - Free services patch request
+//   - options - FreeServicesClientBeginUpdateOptions contains the optional parameters for the FreeServicesClient.BeginUpdate
+//     method.
+func (client *FreeServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, freeServiceName string, body FreeServicesPatchRequest, options *FreeServicesClientBeginUpdateOptions) (*runtime.Poller[FreeServicesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, freeServiceName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FreeServicesClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FreeServicesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - This operation updates free services in Azure.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *FreeServicesClient) update(ctx context.Context, resourceGroupName string, freeServiceName string, body FreeServicesPatchRequest, options *FreeServicesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "FreeServicesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, freeServiceName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *FreeServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, freeServiceName string, body FreeServicesPatchRequest, _ *FreeServicesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/freeServices/{freeServiceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if freeServiceName == "" {
+		return nil, errors.New("parameter freeServiceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{freeServiceName}", url.PathEscape(freeServiceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - This operation retrieves properties for free services.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -211,7 +291,8 @@ func (client *FreeServicesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FreeServicesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -389,81 +470,4 @@ func (client *FreeServicesClient) listBySubscriptionHandleResponse(resp *http.Re
 		return FreeServicesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - This operation updates free services in Azure.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - freeServiceName - Name of the free service
-//   - body - Free services patch request
-//   - options - FreeServicesClientBeginUpdateOptions contains the optional parameters for the FreeServicesClient.BeginUpdate
-//     method.
-func (client *FreeServicesClient) BeginUpdate(ctx context.Context, resourceGroupName string, freeServiceName string, body FreeServicesPatchRequest, options *FreeServicesClientBeginUpdateOptions) (*runtime.Poller[FreeServicesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, freeServiceName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[FreeServicesClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[FreeServicesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - This operation updates free services in Azure.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *FreeServicesClient) update(ctx context.Context, resourceGroupName string, freeServiceName string, body FreeServicesPatchRequest, options *FreeServicesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "FreeServicesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, freeServiceName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *FreeServicesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, freeServiceName string, body FreeServicesPatchRequest, _ *FreeServicesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/freeServices/{freeServiceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if freeServiceName == "" {
-		return nil, errors.New("parameter freeServiceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{freeServiceName}", url.PathEscape(freeServiceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

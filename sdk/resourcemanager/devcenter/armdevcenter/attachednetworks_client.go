@@ -70,7 +70,7 @@ func (client *AttachedNetworksClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates an attached NetworkConnection.
+// createOrUpdate - Creates or updates an attached NetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AttachedNetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, attachedNetworkConnectionName string, body AttachedNetworkConnection, options *AttachedNetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *AttachedNetworksClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AttachedNetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, attachedNetworkConnectionName string, body AttachedNetworkConnection, _ *AttachedNetworksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}"
 	if client.subscriptionID == "" {
@@ -150,7 +151,7 @@ func (client *AttachedNetworksClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Un-attach a NetworkConnection.
+// deleteOperation - Un-attach a NetworkConnection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AttachedNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, attachedNetworkConnectionName string, options *AttachedNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,12 +168,13 @@ func (client *AttachedNetworksClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AttachedNetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, attachedNetworkConnectionName string, _ *AttachedNetworksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/attachednetworks/{attachedNetworkConnectionName}"
 	if client.subscriptionID == "" {
@@ -222,7 +224,8 @@ func (client *AttachedNetworksClient) GetByDevCenter(ctx context.Context, resour
 	if err != nil {
 		return AttachedNetworksClientGetByDevCenterResponse{}, err
 	}
-	return client.getByDevCenterHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByDevCenterHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByDevCenterCreateRequest creates the GetByDevCenter request.
@@ -288,7 +291,8 @@ func (client *AttachedNetworksClient) GetByProject(ctx context.Context, resource
 	if err != nil {
 		return AttachedNetworksClientGetByProjectResponse{}, err
 	}
-	return client.getByProjectHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByProjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByProjectCreateRequest creates the GetByProject request.

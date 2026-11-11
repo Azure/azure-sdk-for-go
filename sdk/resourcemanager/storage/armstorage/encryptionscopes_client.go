@@ -68,7 +68,8 @@ func (client *EncryptionScopesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return EncryptionScopesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -225,7 +226,8 @@ func (client *EncryptionScopesClient) Patch(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return EncryptionScopesClientPatchResponse{}, err
 	}
-	return client.patchHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.patchHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // patchCreateRequest creates the Patch request.
@@ -300,7 +302,8 @@ func (client *EncryptionScopesClient) Put(ctx context.Context, resourceGroupName
 	if err != nil {
 		return EncryptionScopesClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.

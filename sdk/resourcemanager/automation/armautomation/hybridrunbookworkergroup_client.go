@@ -66,7 +66,8 @@ func (client *HybridRunbookWorkerGroupClient) Create(ctx context.Context, resour
 	if err != nil {
 		return HybridRunbookWorkerGroupClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -137,7 +138,8 @@ func (client *HybridRunbookWorkerGroupClient) Delete(ctx context.Context, resour
 		return HybridRunbookWorkerGroupClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return HybridRunbookWorkerGroupClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return HybridRunbookWorkerGroupClientDeleteResponse{}, err
 	}
 	return HybridRunbookWorkerGroupClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *HybridRunbookWorkerGroupClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return HybridRunbookWorkerGroupClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -339,7 +342,8 @@ func (client *HybridRunbookWorkerGroupClient) Update(ctx context.Context, resour
 	if err != nil {
 		return HybridRunbookWorkerGroupClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

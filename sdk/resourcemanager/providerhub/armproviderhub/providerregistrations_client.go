@@ -67,7 +67,7 @@ func (client *ProviderRegistrationsClient) BeginCreateOrUpdate(ctx context.Conte
 	}
 }
 
-// CreateOrUpdate - Creates or updates the provider registration.
+// createOrUpdate - Creates or updates the provider registration.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProviderRegistrationsClient) createOrUpdate(ctx context.Context, providerNamespace string, properties ProviderRegistration, options *ProviderRegistrationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -84,12 +84,13 @@ func (client *ProviderRegistrationsClient) createOrUpdate(ctx context.Context, p
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ProviderRegistrationsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, properties ProviderRegistration, _ *ProviderRegistrationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}"
 	if client.subscriptionID == "" {
@@ -135,7 +136,8 @@ func (client *ProviderRegistrationsClient) Delete(ctx context.Context, providerN
 		return ProviderRegistrationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ProviderRegistrationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ProviderRegistrationsClientDeleteResponse{}, err
 	}
 	return ProviderRegistrationsClientDeleteResponse{}, nil
 }
@@ -180,7 +182,8 @@ func (client *ProviderRegistrationsClient) GenerateOperations(ctx context.Contex
 	if err != nil {
 		return ProviderRegistrationsClientGenerateOperationsResponse{}, err
 	}
-	return client.generateOperationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateOperationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateOperationsCreateRequest creates the GenerateOperations request.
@@ -236,7 +239,8 @@ func (client *ProviderRegistrationsClient) Get(ctx context.Context, providerName
 	if err != nil {
 		return ProviderRegistrationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

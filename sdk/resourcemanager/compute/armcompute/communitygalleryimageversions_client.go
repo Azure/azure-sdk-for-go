@@ -67,7 +67,8 @@ func (client *CommunityGalleryImageVersionsClient) Get(ctx context.Context, loca
 	if err != nil {
 		return CommunityGalleryImageVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

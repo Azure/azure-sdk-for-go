@@ -70,7 +70,7 @@ func (client *ProjectCatalogImageDefinitionsClient) BeginBuildImage(ctx context.
 	}
 }
 
-// BuildImage - Builds an image for the specified Image Definition.
+// buildImage - Builds an image for the specified Image Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ProjectCatalogImageDefinitionsClient) buildImage(ctx context.Context, resourceGroupName string, projectName string, catalogName string, imageDefinitionName string, options *ProjectCatalogImageDefinitionsClientBeginBuildImageOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *ProjectCatalogImageDefinitionsClient) buildImage(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// buildImageCreateRequest creates the BuildImage request.
+// buildImageCreateRequest creates the buildImage request.
 func (client *ProjectCatalogImageDefinitionsClient) buildImageCreateRequest(ctx context.Context, resourceGroupName string, projectName string, catalogName string, imageDefinitionName string, _ *ProjectCatalogImageDefinitionsClientBeginBuildImageOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/catalogs/{catalogName}/imageDefinitions/{imageDefinitionName}/buildImage"
 	if client.subscriptionID == "" {
@@ -147,7 +148,8 @@ func (client *ProjectCatalogImageDefinitionsClient) GetByProjectCatalog(ctx cont
 	if err != nil {
 		return ProjectCatalogImageDefinitionsClientGetByProjectCatalogResponse{}, err
 	}
-	return client.getByProjectCatalogHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByProjectCatalogHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByProjectCatalogCreateRequest creates the GetByProjectCatalog request.
@@ -218,7 +220,8 @@ func (client *ProjectCatalogImageDefinitionsClient) GetErrorDetails(ctx context.
 	if err != nil {
 		return ProjectCatalogImageDefinitionsClientGetErrorDetailsResponse{}, err
 	}
-	return client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.

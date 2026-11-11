@@ -65,7 +65,8 @@ func (client *ConditionalCreditContributorsClient) GetFromPrimary(ctx context.Co
 	if err != nil {
 		return ConditionalCreditContributorsClientGetFromPrimaryResponse{}, err
 	}
-	return client.getFromPrimaryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getFromPrimaryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getFromPrimaryCreateRequest creates the GetFromPrimary request.

@@ -65,7 +65,8 @@ func (client *BackupPoliciesClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return BackupPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -134,7 +135,8 @@ func (client *BackupPoliciesClient) Delete(ctx context.Context, resourceGroupNam
 		return BackupPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return BackupPoliciesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BackupPoliciesClientDeleteResponse{}, err
 	}
 	return BackupPoliciesClientDeleteResponse{}, nil
 }
@@ -187,7 +189,8 @@ func (client *BackupPoliciesClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return BackupPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

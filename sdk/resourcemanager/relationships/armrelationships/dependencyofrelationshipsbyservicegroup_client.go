@@ -62,7 +62,7 @@ func (client *DependencyOfRelationshipsByServiceGroupClient) BeginCreateOrUpdate
 	}
 }
 
-// CreateOrUpdate - Create a DependencyOfRelationship
+// createOrUpdate - Create a DependencyOfRelationship
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DependencyOfRelationshipsByServiceGroupClient) createOrUpdate(ctx context.Context, serviceGroupName string, name string, resource DependencyOfRelationship, options *DependencyOfRelationshipsByServiceGroupClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -79,12 +79,13 @@ func (client *DependencyOfRelationshipsByServiceGroupClient) createOrUpdate(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DependencyOfRelationshipsByServiceGroupClient) createOrUpdateCreateRequest(ctx context.Context, serviceGroupName string, name string, resource DependencyOfRelationship, _ *DependencyOfRelationshipsByServiceGroupClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.Relationships/dependencyOf/{name}"
 	if serviceGroupName == "" {
@@ -133,7 +134,7 @@ func (client *DependencyOfRelationshipsByServiceGroupClient) BeginDelete(ctx con
 	}
 }
 
-// Delete - Delete a DependencyOfRelationship
+// deleteOperation - Delete a DependencyOfRelationship
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DependencyOfRelationshipsByServiceGroupClient) deleteOperation(ctx context.Context, serviceGroupName string, name string, options *DependencyOfRelationshipsByServiceGroupClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -150,12 +151,13 @@ func (client *DependencyOfRelationshipsByServiceGroupClient) deleteOperation(ctx
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DependencyOfRelationshipsByServiceGroupClient) deleteCreateRequest(ctx context.Context, serviceGroupName string, name string, _ *DependencyOfRelationshipsByServiceGroupClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.Relationships/dependencyOf/{name}"
 	if serviceGroupName == "" {
@@ -196,7 +198,8 @@ func (client *DependencyOfRelationshipsByServiceGroupClient) Get(ctx context.Con
 	if err != nil {
 		return DependencyOfRelationshipsByServiceGroupClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -86,7 +86,8 @@ func (client *AccountsClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -128,7 +129,7 @@ func (client *AccountsClient) createCreateRequest(ctx context.Context, resourceG
 //   - options - AccountsClientBeginDeleteOptions contains the optional parameters for the AccountsClient.BeginDelete method.
 func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*runtime.Poller[AccountsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *AccountsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Deletes a Cognitive Services account from the resource group.
+// deleteOperation - Deletes a Cognitive Services account from the resource group.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccountsClient) delete(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AccountsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, options *AccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *AccountsClient) delete(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -230,7 +232,8 @@ func (client *AccountsClient) update(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -286,7 +289,8 @@ func (client *AccountsClient) EvaluateDeploymentPolicies(ctx context.Context, re
 	if err != nil {
 		return AccountsClientEvaluateDeploymentPoliciesResponse{}, err
 	}
-	return client.evaluateDeploymentPoliciesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.evaluateDeploymentPoliciesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // evaluateDeploymentPoliciesCreateRequest creates the EvaluateDeploymentPolicies request.
@@ -350,7 +354,8 @@ func (client *AccountsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return AccountsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -410,7 +415,8 @@ func (client *AccountsClient) ListKeys(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AccountsClientListKeysResponse{}, err
 	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -470,7 +476,8 @@ func (client *AccountsClient) ListSKUs(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AccountsClientListSKUsResponse{}, err
 	}
-	return client.listSKUsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSKUsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
@@ -530,7 +537,8 @@ func (client *AccountsClient) ListUsages(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return AccountsClientListUsagesResponse{}, err
 	}
-	return client.listUsagesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listUsagesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listUsagesCreateRequest creates the ListUsages request.
@@ -808,7 +816,8 @@ func (client *AccountsClient) RegenerateKey(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AccountsClientRegenerateKeyResponse{}, err
 	}
-	return client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.

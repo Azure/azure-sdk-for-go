@@ -67,7 +67,8 @@ func (client *OperationStatusClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return OperationStatusClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

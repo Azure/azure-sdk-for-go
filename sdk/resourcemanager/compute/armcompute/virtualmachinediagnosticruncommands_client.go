@@ -86,7 +86,8 @@ func (client *VirtualMachineDiagnosticRunCommandsClient) createOrUpdate(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -166,7 +167,8 @@ func (client *VirtualMachineDiagnosticRunCommandsClient) deleteOperation(ctx con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -242,7 +244,8 @@ func (client *VirtualMachineDiagnosticRunCommandsClient) update(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -302,7 +305,8 @@ func (client *VirtualMachineDiagnosticRunCommandsClient) GetByVirtualMachine(ctx
 	if err != nil {
 		return VirtualMachineDiagnosticRunCommandsClientGetByVirtualMachineResponse{}, err
 	}
-	return client.getByVirtualMachineHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByVirtualMachineHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByVirtualMachineCreateRequest creates the GetByVirtualMachine request.

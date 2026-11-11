@@ -69,7 +69,8 @@ func (client *DataMaskingRulesClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return DataMaskingRulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.

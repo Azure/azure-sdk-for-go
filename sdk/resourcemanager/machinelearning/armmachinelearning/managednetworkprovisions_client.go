@@ -69,7 +69,7 @@ func (client *ManagedNetworkProvisionsClient) BeginProvisionManagedNetwork(ctx c
 	}
 }
 
-// ProvisionManagedNetwork - Provisions the managed network of a machine learning workspace.
+// provisionManagedNetwork - Provisions the managed network of a machine learning workspace.
 //
 // Provisions the managed network of a machine learning workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -88,12 +88,13 @@ func (client *ManagedNetworkProvisionsClient) provisionManagedNetwork(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// provisionManagedNetworkCreateRequest creates the ProvisionManagedNetwork request.
+// provisionManagedNetworkCreateRequest creates the provisionManagedNetwork request.
 func (client *ManagedNetworkProvisionsClient) provisionManagedNetworkCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, options *ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/provisionManagedNetwork"
 	if client.subscriptionID == "" {

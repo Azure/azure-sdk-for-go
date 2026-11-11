@@ -44,6 +44,87 @@ func NewJobDefinitionsClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
+// BeginDelete - Deletes a Job Definition resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - storageMoverName - The name of the Storage Mover resource.
+//   - projectName - The name of the Project resource.
+//   - jobDefinitionName - The name of the Job Definition resource.
+//   - options - JobDefinitionsClientBeginDeleteOptions contains the optional parameters for the JobDefinitionsClient.BeginDelete
+//     method.
+func (client *JobDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, options *JobDefinitionsClientBeginDeleteOptions) (*runtime.Poller[JobDefinitionsClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, storageMoverName, projectName, jobDefinitionName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobDefinitionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobDefinitionsClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes a Job Definition resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *JobDefinitionsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, options *JobDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "JobDefinitionsClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, jobDefinitionName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *JobDefinitionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, _ *JobDefinitionsClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if storageMoverName == "" {
+		return nil, errors.New("parameter storageMoverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageMoverName}", url.PathEscape(storageMoverName))
+	if projectName == "" {
+		return nil, errors.New("parameter projectName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
+	if jobDefinitionName == "" {
+		return nil, errors.New("parameter jobDefinitionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobDefinitionName}", url.PathEscape(jobDefinitionName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CreateOrUpdate - Creates or updates a Job Definition resource, which contains configuration for a single unit of managed
 // data transfer.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -67,7 +148,8 @@ func (client *JobDefinitionsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return JobDefinitionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,86 +202,6 @@ func (client *JobDefinitionsClient) createOrUpdateHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// BeginDelete - Deletes a Job Definition resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - storageMoverName - The name of the Storage Mover resource.
-//   - projectName - The name of the Project resource.
-//   - jobDefinitionName - The name of the Job Definition resource.
-//   - options - JobDefinitionsClientBeginDeleteOptions contains the optional parameters for the JobDefinitionsClient.BeginDelete
-//     method.
-func (client *JobDefinitionsClient) BeginDelete(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, options *JobDefinitionsClientBeginDeleteOptions) (*runtime.Poller[JobDefinitionsClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, storageMoverName, projectName, jobDefinitionName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[JobDefinitionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[JobDefinitionsClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes a Job Definition resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *JobDefinitionsClient) deleteOperation(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, options *JobDefinitionsClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "JobDefinitionsClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, storageMoverName, projectName, jobDefinitionName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *JobDefinitionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, storageMoverName string, projectName string, jobDefinitionName string, _ *JobDefinitionsClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageMover/storageMovers/{storageMoverName}/projects/{projectName}/jobDefinitions/{jobDefinitionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if storageMoverName == "" {
-		return nil, errors.New("parameter storageMoverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageMoverName}", url.PathEscape(storageMoverName))
-	if projectName == "" {
-		return nil, errors.New("parameter projectName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{projectName}", url.PathEscape(projectName))
-	if jobDefinitionName == "" {
-		return nil, errors.New("parameter jobDefinitionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobDefinitionName}", url.PathEscape(jobDefinitionName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
 // Get - Gets a Job Definition resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -221,7 +223,8 @@ func (client *JobDefinitionsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return JobDefinitionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -373,7 +376,8 @@ func (client *JobDefinitionsClient) ReconcileJob(ctx context.Context, resourceGr
 	if err != nil {
 		return JobDefinitionsClientReconcileJobResponse{}, err
 	}
-	return client.reconcileJobHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.reconcileJobHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // reconcileJobCreateRequest creates the ReconcileJob request.
@@ -443,7 +447,8 @@ func (client *JobDefinitionsClient) StartJob(ctx context.Context, resourceGroupN
 	if err != nil {
 		return JobDefinitionsClientStartJobResponse{}, err
 	}
-	return client.startJobHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.startJobHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // startJobCreateRequest creates the StartJob request.
@@ -513,7 +518,8 @@ func (client *JobDefinitionsClient) StopJob(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return JobDefinitionsClientStopJobResponse{}, err
 	}
-	return client.stopJobHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.stopJobHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // stopJobCreateRequest creates the StopJob request.
@@ -583,7 +589,8 @@ func (client *JobDefinitionsClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return JobDefinitionsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

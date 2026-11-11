@@ -65,7 +65,8 @@ func (client *WorkspacePurgeClient) GetPurgeStatus(ctx context.Context, resource
 	if err != nil {
 		return WorkspacePurgeClientGetPurgeStatusResponse{}, err
 	}
-	return client.getPurgeStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPurgeStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPurgeStatusCreateRequest creates the GetPurgeStatus request.
@@ -137,7 +138,8 @@ func (client *WorkspacePurgeClient) Purge(ctx context.Context, resourceGroupName
 	if err != nil {
 		return WorkspacePurgeClientPurgeResponse{}, err
 	}
-	return client.purgeHandleResponse(httpResp, http.StatusAccepted)
+	resp, err := client.purgeHandleResponse(httpResp, http.StatusAccepted)
+	return resp, err
 }
 
 // purgeCreateRequest creates the Purge request.

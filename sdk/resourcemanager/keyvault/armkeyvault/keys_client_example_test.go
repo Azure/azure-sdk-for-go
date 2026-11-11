@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15/createKey.json
+// Generated from example definition: 2026-10-01-preview/createKey.json
 func ExampleKeysClient_CreateIfNotExist() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,7 +64,7 @@ func ExampleKeysClient_CreateIfNotExist() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/getKey.json
+// Generated from example definition: 2026-10-01-preview/getKey.json
 func ExampleKeysClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleKeysClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/getKeyVersion.json
+// Generated from example definition: 2026-10-01-preview/getKeyVersion.json
 func ExampleKeysClient_GetVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -160,7 +160,7 @@ func ExampleKeysClient_GetVersion() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/listKeys.json
+// Generated from example definition: 2026-10-01-preview/listKeys.json
 func ExampleKeysClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +221,7 @@ func ExampleKeysClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15/listKeyVersions.json
+// Generated from example definition: 2026-10-01-preview/listKeyVersions.json
 func ExampleKeysClient_NewListVersionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

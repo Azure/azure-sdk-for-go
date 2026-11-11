@@ -63,7 +63,7 @@ func (client *AssociatedTenantsClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Create or update an associated tenant for the billing account.
+// createOrUpdate - Create or update an associated tenant for the billing account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AssociatedTenantsClient) createOrUpdate(ctx context.Context, billingAccountName string, associatedTenantName string, parameters AssociatedTenant, options *AssociatedTenantsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -80,12 +80,13 @@ func (client *AssociatedTenantsClient) createOrUpdate(ctx context.Context, billi
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AssociatedTenantsClient) createOrUpdateCreateRequest(ctx context.Context, billingAccountName string, associatedTenantName string, parameters AssociatedTenant, _ *AssociatedTenantsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/associatedTenants/{associatedTenantName}"
 	if billingAccountName == "" {
@@ -134,7 +135,7 @@ func (client *AssociatedTenantsClient) BeginDelete(ctx context.Context, billingA
 	}
 }
 
-// Delete - Deletes an associated tenant for a billing account.
+// deleteOperation - Deletes an associated tenant for a billing account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AssociatedTenantsClient) deleteOperation(ctx context.Context, billingAccountName string, associatedTenantName string, options *AssociatedTenantsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -151,12 +152,13 @@ func (client *AssociatedTenantsClient) deleteOperation(ctx context.Context, bill
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AssociatedTenantsClient) deleteCreateRequest(ctx context.Context, billingAccountName string, associatedTenantName string, _ *AssociatedTenantsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/associatedTenants/{associatedTenantName}"
 	if billingAccountName == "" {
@@ -196,7 +198,8 @@ func (client *AssociatedTenantsClient) Get(ctx context.Context, billingAccountNa
 	if err != nil {
 		return AssociatedTenantsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

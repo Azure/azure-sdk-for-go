@@ -67,7 +67,8 @@ func (client *PipelinesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return PipelinesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -139,7 +140,8 @@ func (client *PipelinesClient) CreateRun(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return PipelinesClientCreateRunResponse{}, err
 	}
-	return client.createRunHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createRunHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createRunCreateRequest creates the CreateRun request.
@@ -224,7 +226,8 @@ func (client *PipelinesClient) Delete(ctx context.Context, resourceGroupName str
 		return PipelinesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PipelinesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PipelinesClientDeleteResponse{}, err
 	}
 	return PipelinesClientDeleteResponse{}, nil
 }
@@ -278,7 +281,8 @@ func (client *PipelinesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return PipelinesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

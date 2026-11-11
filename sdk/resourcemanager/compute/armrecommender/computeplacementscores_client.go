@@ -63,7 +63,8 @@ func (client *ComputePlacementScoresClient) Get(ctx context.Context, location st
 	if err != nil {
 		return ComputePlacementScoresClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -120,7 +121,8 @@ func (client *ComputePlacementScoresClient) Post(ctx context.Context, location s
 	if err != nil {
 		return ComputePlacementScoresClientPostResponse{}, err
 	}
-	return client.postHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.postHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // postCreateRequest creates the Post request.

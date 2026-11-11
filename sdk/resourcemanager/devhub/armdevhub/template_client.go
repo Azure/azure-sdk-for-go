@@ -64,7 +64,8 @@ func (client *TemplateClient) Get(ctx context.Context, templateName string, opti
 	if err != nil {
 		return TemplateClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

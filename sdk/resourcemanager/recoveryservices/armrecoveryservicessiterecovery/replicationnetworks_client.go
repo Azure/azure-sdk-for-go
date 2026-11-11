@@ -67,7 +67,8 @@ func (client *ReplicationNetworksClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ReplicationNetworksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

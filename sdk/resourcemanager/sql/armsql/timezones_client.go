@@ -63,7 +63,8 @@ func (client *TimeZonesClient) Get(ctx context.Context, locationName string, tim
 	if err != nil {
 		return TimeZonesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

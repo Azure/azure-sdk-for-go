@@ -64,7 +64,8 @@ func (client *CreationSupportedClient) Get(ctx context.Context, dynatraceEnviron
 	if err != nil {
 		return CreationSupportedClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -121,7 +122,8 @@ func (client *CreationSupportedClient) List(ctx context.Context, dynatraceEnviro
 	if err != nil {
 		return CreationSupportedClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

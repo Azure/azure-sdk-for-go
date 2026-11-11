@@ -86,7 +86,8 @@ func (client *VPNLinkConnectionsClient) getIkeSas(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -167,7 +168,8 @@ func (client *VPNLinkConnectionsClient) resetConnection(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -250,7 +252,8 @@ func (client *VPNLinkConnectionsClient) setOrInitDefaultSharedKey(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -315,7 +318,8 @@ func (client *VPNLinkConnectionsClient) GetDefaultSharedKey(ctx context.Context,
 	if err != nil {
 		return VPNLinkConnectionsClientGetDefaultSharedKeyResponse{}, err
 	}
-	return client.getDefaultSharedKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDefaultSharedKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDefaultSharedKeyCreateRequest creates the GetDefaultSharedKey request.
@@ -386,7 +390,8 @@ func (client *VPNLinkConnectionsClient) ListDefaultSharedKey(ctx context.Context
 	if err != nil {
 		return VPNLinkConnectionsClientListDefaultSharedKeyResponse{}, err
 	}
-	return client.listDefaultSharedKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listDefaultSharedKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listDefaultSharedKeyCreateRequest creates the ListDefaultSharedKey request.

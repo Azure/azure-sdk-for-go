@@ -65,7 +65,8 @@ func (client *PrivateLinkResourcesClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return PrivateLinkResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -130,7 +131,8 @@ func (client *PrivateLinkResourcesClient) ListByService(ctx context.Context, res
 	if err != nil {
 		return PrivateLinkResourcesClientListByServiceResponse{}, err
 	}
-	return client.listByServiceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByServiceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByServiceCreateRequest creates the ListByService request.

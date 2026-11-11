@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/machinelearning/armmachinelearning/v5"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 	"slices"
 	"strconv"
@@ -56,16 +57,18 @@ type WorkspaceConnectionsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewWorkspaceConnectionsServerTransport(srv *WorkspaceConnectionsServer) *WorkspaceConnectionsServerTransport {
 	return &WorkspaceConnectionsServerTransport{
-		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]](),
+		srv:                 srv,
+		beginTestConnection: newTracker[azfake.PollerResponder[armmachinelearning.WorkspaceConnectionsClientTestConnectionResponse]](),
+		newListPager:        newTracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]](),
 	}
 }
 
 // WorkspaceConnectionsServerTransport connects instances of armmachinelearning.WorkspaceConnectionsClient to instances of WorkspaceConnectionsServer.
 // Don't use this type directly, use NewWorkspaceConnectionsServerTransport instead.
 type WorkspaceConnectionsServerTransport struct {
-	srv          *WorkspaceConnectionsServer
-	newListPager *tracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]]
+	srv                 *WorkspaceConnectionsServer
+	beginTestConnection *tracker[azfake.PollerResponder[armmachinelearning.WorkspaceConnectionsClientTestConnectionResponse]]
+	newListPager        *tracker[azfake.PagerResponder[armmachinelearning.WorkspaceConnectionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkspaceConnectionsServerTransport.

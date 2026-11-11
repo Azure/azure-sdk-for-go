@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01/VirtualMachineSize/list.json
+// Generated from example definition: 2026-09-15-preview/VirtualMachineSize/list.json
 func ExampleVirtualMachineSizesClient_List() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.MachineLearningServices": "2026-09-01"
+    "Microsoft.MachineLearningServices": "2026-09-15-preview"
   },
   "emitterVersion": "0.18.0"
 }

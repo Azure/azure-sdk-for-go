@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01/Workspace/ServerlessEndpoint/createOrUpdate.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/createOrUpdate.json
 func ExampleServerlessEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,6 +35,7 @@ func ExampleServerlessEndpointsClient_BeginCreateOrUpdate() {
 		Properties: &armmachinelearning.ServerlessEndpointProperties{
 			AuthMode: to.Ptr(armmachinelearning.ServerlessInferenceEndpointAuthModeKey),
 			ContentSafety: &armmachinelearning.ContentSafety{
+				ContentSafetyLevel:  to.Ptr(armmachinelearning.ContentSafetyLevelBlocking),
 				ContentSafetyStatus: to.Ptr(armmachinelearning.ContentSafetyStatusEnabled),
 			},
 			ModelSettings: &armmachinelearning.ModelSettings{
@@ -81,6 +82,7 @@ func ExampleServerlessEndpointsClient_BeginCreateOrUpdate() {
 	// 		Properties: &armmachinelearning.ServerlessEndpointProperties{
 	// 			AuthMode: to.Ptr(armmachinelearning.ServerlessInferenceEndpointAuthModeKey),
 	// 			ContentSafety: &armmachinelearning.ContentSafety{
+	// 				ContentSafetyLevel: to.Ptr(armmachinelearning.ContentSafetyLevelDeferred),
 	// 				ContentSafetyStatus: to.Ptr(armmachinelearning.ContentSafetyStatusDisabled),
 	// 			},
 	// 			EndpointState: to.Ptr(armmachinelearning.ServerlessEndpointStateDeleting),
@@ -117,7 +119,7 @@ func ExampleServerlessEndpointsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/Workspace/ServerlessEndpoint/delete.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/delete.json
 func ExampleServerlessEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +140,7 @@ func ExampleServerlessEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/Workspace/ServerlessEndpoint/regenerateKeys.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/regenerateKeys.json
 func ExampleServerlessEndpointsClient_BeginRegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +173,7 @@ func ExampleServerlessEndpointsClient_BeginRegenerateKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/Workspace/ServerlessEndpoint/update.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/update.json
 func ExampleServerlessEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -229,6 +231,7 @@ func ExampleServerlessEndpointsClient_BeginUpdate() {
 	// 		Properties: &armmachinelearning.ServerlessEndpointProperties{
 	// 			AuthMode: to.Ptr(armmachinelearning.ServerlessInferenceEndpointAuthModeKey),
 	// 			ContentSafety: &armmachinelearning.ContentSafety{
+	// 				ContentSafetyLevel: to.Ptr(armmachinelearning.ContentSafetyLevelBlocking),
 	// 				ContentSafetyStatus: to.Ptr(armmachinelearning.ContentSafetyStatusDisabled),
 	// 			},
 	// 			EndpointState: to.Ptr(armmachinelearning.ServerlessEndpointStateSuspended),
@@ -265,7 +268,7 @@ func ExampleServerlessEndpointsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/Workspace/ServerlessEndpoint/get.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/get.json
 func ExampleServerlessEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -304,6 +307,7 @@ func ExampleServerlessEndpointsClient_Get() {
 	// 		Properties: &armmachinelearning.ServerlessEndpointProperties{
 	// 			AuthMode: to.Ptr(armmachinelearning.ServerlessInferenceEndpointAuthModeKey),
 	// 			ContentSafety: &armmachinelearning.ContentSafety{
+	// 				ContentSafetyLevel: to.Ptr(armmachinelearning.ContentSafetyLevelBlocking),
 	// 				ContentSafetyStatus: to.Ptr(armmachinelearning.ContentSafetyStatusEnabled),
 	// 			},
 	// 			EndpointState: to.Ptr(armmachinelearning.ServerlessEndpointStateSuspending),
@@ -340,7 +344,7 @@ func ExampleServerlessEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/Workspace/ServerlessEndpoint/listKeys.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/listKeys.json
 func ExampleServerlessEndpointsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -366,7 +370,7 @@ func ExampleServerlessEndpointsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/Workspace/ServerlessEndpoint/list.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/list.json
 func ExampleServerlessEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -390,7 +394,7 @@ func ExampleServerlessEndpointsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.ServerlessEndpointsClientListResponse{
 		// 	ServerlessEndpointTrackedResourceArmPaginatedResult: armmachinelearning.ServerlessEndpointTrackedResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/serverlessEndpoints?api-version=2026-09-01&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/serverlessEndpoints?api-version=2025-07-01-preview&$skip=2"),
 		// 		Value: []*armmachinelearning.ServerlessEndpoint{
 		// 			{
 		// 				Name: to.Ptr("string"),
@@ -412,6 +416,7 @@ func ExampleServerlessEndpointsClient_NewListPager() {
 		// 				Properties: &armmachinelearning.ServerlessEndpointProperties{
 		// 					AuthMode: to.Ptr(armmachinelearning.ServerlessInferenceEndpointAuthModeKey),
 		// 					ContentSafety: &armmachinelearning.ContentSafety{
+		// 						ContentSafetyLevel: to.Ptr(armmachinelearning.ContentSafetyLevelBlocking),
 		// 						ContentSafetyStatus: to.Ptr(armmachinelearning.ContentSafetyStatusDisabled),
 		// 					},
 		// 					EndpointState: to.Ptr(armmachinelearning.ServerlessEndpointStateReinstating),

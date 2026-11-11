@@ -29,6 +29,10 @@ type ComputeServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, underlyingResourceAction armmachinelearning.UnderlyingResourceAction, options *armmachinelearning.ComputeClientBeginDeleteOptions) (resp azfake.PollerResponder[armmachinelearning.ComputeClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginResize is the fake for method ComputeClient.BeginResize
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginResize func(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters armmachinelearning.ResizeSchema, options *armmachinelearning.ComputeClientBeginResizeOptions) (resp azfake.PollerResponder[armmachinelearning.ComputeClientResizeResponse], errResp azfake.ErrorResponder)
+
 	// BeginRestart is the fake for method ComputeClient.BeginRestart
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginRestart func(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *armmachinelearning.ComputeClientBeginRestartOptions) (resp azfake.PollerResponder[armmachinelearning.ComputeClientRestartResponse], errResp azfake.ErrorResponder)
@@ -49,6 +53,10 @@ type ComputeServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *armmachinelearning.ComputeClientGetOptions) (resp azfake.Responder[armmachinelearning.ComputeClientGetResponse], errResp azfake.ErrorResponder)
 
+	// GetAllowedResizeSizes is the fake for method ComputeClient.GetAllowedResizeSizes
+	// HTTP status codes to indicate success: http.StatusOK
+	GetAllowedResizeSizes func(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *armmachinelearning.ComputeClientGetAllowedResizeSizesOptions) (resp azfake.Responder[armmachinelearning.ComputeClientGetAllowedResizeSizesResponse], errResp azfake.ErrorResponder)
+
 	// ListKeys is the fake for method ComputeClient.ListKeys
 	// HTTP status codes to indicate success: http.StatusOK
 	ListKeys func(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, options *armmachinelearning.ComputeClientListKeysOptions) (resp azfake.Responder[armmachinelearning.ComputeClientListKeysResponse], errResp azfake.ErrorResponder)
@@ -60,6 +68,18 @@ type ComputeServer struct {
 	// NewListPager is the fake for method ComputeClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListPager func(resourceGroupName string, workspaceName string, options *armmachinelearning.ComputeClientListOptions) (resp azfake.PagerResponder[armmachinelearning.ComputeClientListResponse])
+
+	// UpdateCustomServices is the fake for method ComputeClient.UpdateCustomServices
+	// HTTP status codes to indicate success: http.StatusOK
+	UpdateCustomServices func(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, customServices []*armmachinelearning.CustomService, options *armmachinelearning.ComputeClientUpdateCustomServicesOptions) (resp azfake.Responder[armmachinelearning.ComputeClientUpdateCustomServicesResponse], errResp azfake.ErrorResponder)
+
+	// UpdateDataMounts is the fake for method ComputeClient.UpdateDataMounts
+	// HTTP status codes to indicate success: http.StatusOK
+	UpdateDataMounts func(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, dataMounts []*armmachinelearning.ComputeInstanceDataMount, options *armmachinelearning.ComputeClientUpdateDataMountsOptions) (resp azfake.Responder[armmachinelearning.ComputeClientUpdateDataMountsResponse], errResp azfake.ErrorResponder)
+
+	// UpdateIdleShutdownSetting is the fake for method ComputeClient.UpdateIdleShutdownSetting
+	// HTTP status codes to indicate success: http.StatusOK
+	UpdateIdleShutdownSetting func(ctx context.Context, resourceGroupName string, workspaceName string, computeName string, parameters armmachinelearning.IdleShutdownSetting, options *armmachinelearning.ComputeClientUpdateIdleShutdownSettingOptions) (resp azfake.Responder[armmachinelearning.ComputeClientUpdateIdleShutdownSettingResponse], errResp azfake.ErrorResponder)
 }
 
 // NewComputeServerTransport creates a new instance of ComputeServerTransport with the provided implementation.
@@ -70,6 +90,7 @@ func NewComputeServerTransport(srv *ComputeServer) *ComputeServerTransport {
 		srv:                 srv,
 		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armmachinelearning.ComputeClientCreateOrUpdateResponse]](),
 		beginDelete:         newTracker[azfake.PollerResponder[armmachinelearning.ComputeClientDeleteResponse]](),
+		beginResize:         newTracker[azfake.PollerResponder[armmachinelearning.ComputeClientResizeResponse]](),
 		beginRestart:        newTracker[azfake.PollerResponder[armmachinelearning.ComputeClientRestartResponse]](),
 		beginStart:          newTracker[azfake.PollerResponder[armmachinelearning.ComputeClientStartResponse]](),
 		beginStop:           newTracker[azfake.PollerResponder[armmachinelearning.ComputeClientStopResponse]](),
@@ -85,6 +106,7 @@ type ComputeServerTransport struct {
 	srv                 *ComputeServer
 	beginCreateOrUpdate *tracker[azfake.PollerResponder[armmachinelearning.ComputeClientCreateOrUpdateResponse]]
 	beginDelete         *tracker[azfake.PollerResponder[armmachinelearning.ComputeClientDeleteResponse]]
+	beginResize         *tracker[azfake.PollerResponder[armmachinelearning.ComputeClientResizeResponse]]
 	beginRestart        *tracker[azfake.PollerResponder[armmachinelearning.ComputeClientRestartResponse]]
 	beginStart          *tracker[azfake.PollerResponder[armmachinelearning.ComputeClientStartResponse]]
 	beginStop           *tracker[azfake.PollerResponder[armmachinelearning.ComputeClientStopResponse]]
@@ -118,6 +140,8 @@ func (c *ComputeServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = c.dispatchBeginCreateOrUpdate(req)
 			case "ComputeClient.BeginDelete":
 				res.resp, res.err = c.dispatchBeginDelete(req)
+			case "ComputeClient.BeginResize":
+				res.resp, res.err = c.dispatchBeginResize(req)
 			case "ComputeClient.BeginRestart":
 				res.resp, res.err = c.dispatchBeginRestart(req)
 			case "ComputeClient.BeginStart":
@@ -128,12 +152,20 @@ func (c *ComputeServerTransport) dispatchToMethodFake(req *http.Request, method 
 				res.resp, res.err = c.dispatchBeginUpdate(req)
 			case "ComputeClient.Get":
 				res.resp, res.err = c.dispatchGet(req)
+			case "ComputeClient.GetAllowedResizeSizes":
+				res.resp, res.err = c.dispatchGetAllowedResizeSizes(req)
 			case "ComputeClient.ListKeys":
 				res.resp, res.err = c.dispatchListKeys(req)
 			case "ComputeClient.NewListNodesPager":
 				res.resp, res.err = c.dispatchNewListNodesPager(req)
 			case "ComputeClient.NewListPager":
 				res.resp, res.err = c.dispatchNewListPager(req)
+			case "ComputeClient.UpdateCustomServices":
+				res.resp, res.err = c.dispatchUpdateCustomServices(req)
+			case "ComputeClient.UpdateDataMounts":
+				res.resp, res.err = c.dispatchUpdateDataMounts(req)
+			case "ComputeClient.UpdateIdleShutdownSetting":
+				res.resp, res.err = c.dispatchUpdateIdleShutdownSetting(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -246,6 +278,58 @@ func (c *ComputeServerTransport) dispatchBeginDelete(req *http.Request) (*http.R
 	}
 	if !server.PollerResponderMore(beginDelete) {
 		c.beginDelete.remove(req)
+	}
+
+	return resp, nil
+}
+
+func (c *ComputeServerTransport) dispatchBeginResize(req *http.Request) (*http.Response, error) {
+	if c.srv.BeginResize == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginResize not implemented")}
+	}
+	beginResize := c.beginResize.get(req)
+	if beginResize == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resize`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armmachinelearning.ResizeSchema](req)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		computeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("computeName")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := c.srv.BeginResize(req.Context(), resourceGroupNameParam, workspaceNameParam, computeNameParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginResize = &respr
+		c.beginResize.add(req, beginResize)
+	}
+
+	resp, err := server.PollerResponderNext(beginResize, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		c.beginResize.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginResize) {
+		c.beginResize.remove(req)
 	}
 
 	return resp, nil
@@ -484,6 +568,43 @@ func (c *ComputeServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	return resp, nil
 }
 
+func (c *ComputeServerTransport) dispatchGetAllowedResizeSizes(req *http.Request) (*http.Response, error) {
+	if c.srv.GetAllowedResizeSizes == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetAllowedResizeSizes not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getAllowedVmSizesForResize`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	computeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("computeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.GetAllowedResizeSizes(req.Context(), resourceGroupNameParam, workspaceNameParam, computeNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).VirtualMachineSizeListResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (c *ComputeServerTransport) dispatchListKeys(req *http.Request) (*http.Response, error) {
 	if c.srv.ListKeys == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListKeys not implemented")}
@@ -611,6 +732,129 @@ func (c *ComputeServerTransport) dispatchNewListPager(req *http.Request) (*http.
 	}
 	if !server.PagerResponderMore(newListPager) {
 		c.newListPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (c *ComputeServerTransport) dispatchUpdateCustomServices(req *http.Request) (*http.Response, error) {
+	if c.srv.UpdateCustomServices == nil {
+		return nil, &nonRetriableError{errors.New("fake for method UpdateCustomServices not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/customServices`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[[]*armmachinelearning.CustomService](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	computeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("computeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.UpdateCustomServices(req.Context(), resourceGroupNameParam, workspaceNameParam, computeNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ComputeServerTransport) dispatchUpdateDataMounts(req *http.Request) (*http.Response, error) {
+	if c.srv.UpdateDataMounts == nil {
+		return nil, &nonRetriableError{errors.New("fake for method UpdateDataMounts not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateDataMounts`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[[]*armmachinelearning.ComputeInstanceDataMount](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	computeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("computeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.UpdateDataMounts(req.Context(), resourceGroupNameParam, workspaceNameParam, computeNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (c *ComputeServerTransport) dispatchUpdateIdleShutdownSetting(req *http.Request) (*http.Response, error) {
+	if c.srv.UpdateIdleShutdownSetting == nil {
+		return nil, &nonRetriableError{errors.New("fake for method UpdateIdleShutdownSetting not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/computes/(?P<computeName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/updateIdleShutdownSetting`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	body, err := server.UnmarshalRequestAsJSON[armmachinelearning.IdleShutdownSetting](req)
+	if err != nil {
+		return nil, err
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+	if err != nil {
+		return nil, err
+	}
+	computeNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("computeName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := c.srv.UpdateIdleShutdownSetting(req.Context(), resourceGroupNameParam, workspaceNameParam, computeNameParam, body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
 	}
 	return resp, nil
 }

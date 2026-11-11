@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
+// Generated from example definition: 2026-09-15-preview/OnlineDeployment/KubernetesOnlineDeployment/createOrUpdate.json
 func ExampleOnlineDeploymentsClient_BeginCreateOrUpdate_createOrUpdateKubernetesOnlineDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -183,7 +183,7 @@ func ExampleOnlineDeploymentsClient_BeginCreateOrUpdate_createOrUpdateKubernetes
 	// }
 }
 
-// Generated from example definition: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/createOrUpdate.json
+// Generated from example definition: 2026-09-15-preview/OnlineDeployment/ManagedOnlineDeployment/createOrUpdate.json
 func ExampleOnlineDeploymentsClient_BeginCreateOrUpdate_createOrUpdateManagedOnlineDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,7 +344,7 @@ func ExampleOnlineDeploymentsClient_BeginCreateOrUpdate_createOrUpdateManagedOnl
 	// }
 }
 
-// Generated from example definition: 2026-09-01/Workspace/OnlineDeployment/delete.json
+// Generated from example definition: 2026-09-15-preview/Workspace/OnlineDeployment/delete.json
 func ExampleOnlineDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +370,7 @@ func ExampleOnlineDeploymentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/update.json
+// Generated from example definition: 2026-09-15-preview/OnlineDeployment/KubernetesOnlineDeployment/update.json
 func ExampleOnlineDeploymentsClient_BeginUpdate_updateKubernetesOnlineDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,7 +487,7 @@ func ExampleOnlineDeploymentsClient_BeginUpdate_updateKubernetesOnlineDeployment
 	// }
 }
 
-// Generated from example definition: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/update.json
+// Generated from example definition: 2026-09-15-preview/OnlineDeployment/ManagedOnlineDeployment/update.json
 func ExampleOnlineDeploymentsClient_BeginUpdate_updateManagedOnlineDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -599,7 +599,7 @@ func ExampleOnlineDeploymentsClient_BeginUpdate_updateManagedOnlineDeployment() 
 	// }
 }
 
-// Generated from example definition: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/get.json
+// Generated from example definition: 2026-09-15-preview/OnlineDeployment/KubernetesOnlineDeployment/get.json
 func ExampleOnlineDeploymentsClient_Get_getKubernetesOnlineDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -703,7 +703,7 @@ func ExampleOnlineDeploymentsClient_Get_getKubernetesOnlineDeployment() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/get.json
+// Generated from example definition: 2026-09-15-preview/OnlineDeployment/ManagedOnlineDeployment/get.json
 func ExampleOnlineDeploymentsClient_Get_getManagedOnlineDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -802,7 +802,7 @@ func ExampleOnlineDeploymentsClient_Get_getManagedOnlineDeployment() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/OnlineDeployment/getLogs.json
+// Generated from example definition: 2026-09-15-preview/OnlineDeployment/getLogs.json
 func ExampleOnlineDeploymentsClient_GetLogs() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -830,7 +830,7 @@ func ExampleOnlineDeploymentsClient_GetLogs() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/OnlineDeployment/list.json
+// Generated from example definition: 2026-09-15-preview/OnlineDeployment/list.json
 func ExampleOnlineDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -856,7 +856,7 @@ func ExampleOnlineDeploymentsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.OnlineDeploymentsClientListResponse{
 		// 	OnlineDeploymentTrackedResourceArmPaginatedResult: armmachinelearning.OnlineDeploymentTrackedResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments?api-version=2026-09-01&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments?api-version=2025-07-01-preview&$skip=2"),
 		// 		Value: []*armmachinelearning.OnlineDeployment{
 		// 			{
 		// 				Name: to.Ptr("string"),
@@ -946,7 +946,7 @@ func ExampleOnlineDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/OnlineDeployment/KubernetesOnlineDeployment/listSkus.json
+// Generated from example definition: 2026-09-15-preview/OnlineDeployment/KubernetesOnlineDeployment/listSkus.json
 func ExampleOnlineDeploymentsClient_NewListSKUsPager_listKubernetesOnlineDeploymentSkus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -971,7 +971,7 @@ func ExampleOnlineDeploymentsClient_NewListSKUsPager_listKubernetesOnlineDeploym
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.OnlineDeploymentsClientListSKUsResponse{
 		// 	SKUResourceArmPaginatedResult: armmachinelearning.SKUResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments/testDeploymentName/skus?api-version=2026-09-01&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments/testDeploymentName/skus?api-version=2025-07-01-preview&$skip=2"),
 		// 		Value: []*armmachinelearning.SKUResource{
 		// 			{
 		// 				Capacity: &armmachinelearning.SKUCapacity{
@@ -992,7 +992,7 @@ func ExampleOnlineDeploymentsClient_NewListSKUsPager_listKubernetesOnlineDeploym
 	}
 }
 
-// Generated from example definition: 2026-09-01/OnlineDeployment/ManagedOnlineDeployment/listSkus.json
+// Generated from example definition: 2026-09-15-preview/OnlineDeployment/ManagedOnlineDeployment/listSkus.json
 func ExampleOnlineDeploymentsClient_NewListSKUsPager_listManagedOnlineDeploymentSkus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1017,7 +1017,7 @@ func ExampleOnlineDeploymentsClient_NewListSKUsPager_listManagedOnlineDeployment
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.OnlineDeploymentsClientListSKUsResponse{
 		// 	SKUResourceArmPaginatedResult: armmachinelearning.SKUResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments/testDeploymentName/skus?api-version=2026-09-01&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/onlineEndpoints/testEndpointName/deployments/testDeploymentName/skus?api-version=2025-07-01-preview&$skip=2"),
 		// 		Value: []*armmachinelearning.SKUResource{
 		// 			{
 		// 				Capacity: &armmachinelearning.SKUCapacity{

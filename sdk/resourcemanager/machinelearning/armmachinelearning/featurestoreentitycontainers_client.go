@@ -20,7 +20,7 @@ import (
 // FeaturestoreEntityContainersClient contains the methods for the FeaturestoreEntityContainers group.
 // Don't use this type directly, use NewFeaturestoreEntityContainersClient() instead.
 //
-// Generated from API version 2026-09-01
+// Generated from API version 2026-09-15-preview
 type FeaturestoreEntityContainersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -122,7 +122,7 @@ func (client *FeaturestoreEntityContainersClient) createOrUpdateCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -207,7 +207,7 @@ func (client *FeaturestoreEntityContainersClient) deleteCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -263,7 +263,7 @@ func (client *FeaturestoreEntityContainersClient) getEntityCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901)
+	reqQP.Set("api-version", version20260915Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -344,7 +344,7 @@ func (client *FeaturestoreEntityContainersClient) listCreateRequest(ctx context.
 		if options != nil && options.Skip != nil {
 			reqQP.Set("$skip", *options.Skip)
 		}
-		reqQP.Set("api-version", version20260901)
+		reqQP.Set("api-version", version20260915Preview)
 		if options != nil && options.CreatedBy != nil {
 			reqQP.Set("createdBy", *options.CreatedBy)
 		}

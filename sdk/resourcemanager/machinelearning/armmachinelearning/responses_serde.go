@@ -4,6 +4,8 @@
 
 package armmachinelearning
 
+import "encoding/json"
+
 // UnmarshalJSON implements the json.Unmarshaller interface for type ComputeClientListKeysResponse.
 func (c *ComputeClientListKeysResponse) UnmarshalJSON(data []byte) error {
 	res, err := unmarshalComputeSecretsClassification(data)
@@ -12,6 +14,11 @@ func (c *ComputeClientListKeysResponse) UnmarshalJSON(data []byte) error {
 	}
 	c.ComputeSecretsClassification = res
 	return nil
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ConnectionRaiBlocklistItemClientAddBulkResponse.
+func (c *ConnectionRaiBlocklistItemClientAddBulkResponse) UnmarshalJSON(data []byte) error {
+	return json.Unmarshal(data, &c.RaiBlocklistItemPropertiesBasicResourceArray)
 }
 
 // UnmarshalJSON implements the json.Unmarshaller interface for type DatastoresClientListSecretsResponse.

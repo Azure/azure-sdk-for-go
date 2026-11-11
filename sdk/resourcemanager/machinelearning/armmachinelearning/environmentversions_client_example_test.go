@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01/Workspace/EnvironmentVersion/publish.json
+// Generated from example definition: 2026-09-15-preview/Workspace/EnvironmentVersion/publish.json
 func ExampleEnvironmentVersionsClient_BeginPublish() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleEnvironmentVersionsClient_BeginPublish() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/Workspace/EnvironmentVersion/createOrUpdate.json
+// Generated from example definition: 2026-09-15-preview/Workspace/EnvironmentVersion/createOrUpdate.json
 func ExampleEnvironmentVersionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleEnvironmentVersionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/Workspace/EnvironmentVersion/delete.json
+// Generated from example definition: 2026-09-15-preview/Workspace/EnvironmentVersion/delete.json
 func ExampleEnvironmentVersionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -161,7 +161,7 @@ func ExampleEnvironmentVersionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/Workspace/EnvironmentVersion/get.json
+// Generated from example definition: 2026-09-15-preview/Workspace/EnvironmentVersion/get.json
 func ExampleEnvironmentVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -227,7 +227,7 @@ func ExampleEnvironmentVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/Workspace/EnvironmentVersion/list.json
+// Generated from example definition: 2026-09-15-preview/Workspace/EnvironmentVersion/list.json
 func ExampleEnvironmentVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +253,7 @@ func ExampleEnvironmentVersionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.EnvironmentVersionsClientListResponse{
 		// 	EnvironmentVersionResourceArmPaginatedResult: armmachinelearning.EnvironmentVersionResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/environments/string/versions?api-version=2026-09-01&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/environments/string/versions?api-version=2025-07-01-preview&$skip=2"),
 		// 		Value: []*armmachinelearning.EnvironmentVersion{
 		// 			{
 		// 				Name: to.Ptr("string"),

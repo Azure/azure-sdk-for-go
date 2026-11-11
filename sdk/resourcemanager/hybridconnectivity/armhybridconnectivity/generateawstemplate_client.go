@@ -63,7 +63,8 @@ func (client *GenerateAwsTemplateClient) Post(ctx context.Context, generateAwsTe
 	if err != nil {
 		return GenerateAwsTemplateClientPostResponse{}, err
 	}
-	return client.postHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.postHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // postCreateRequest creates the Post request.

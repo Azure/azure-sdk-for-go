@@ -90,7 +90,8 @@ func (client *AFDEndpointsClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -173,7 +174,8 @@ func (client *AFDEndpointsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -253,7 +255,8 @@ func (client *AFDEndpointsClient) purgeContent(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -340,7 +343,8 @@ func (client *AFDEndpointsClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -401,7 +405,8 @@ func (client *AFDEndpointsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return AFDEndpointsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -631,7 +636,8 @@ func (client *AFDEndpointsClient) ValidateCustomDomain(ctx context.Context, reso
 	if err != nil {
 		return AFDEndpointsClientValidateCustomDomainResponse{}, err
 	}
-	return client.validateCustomDomainHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateCustomDomainHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCustomDomainCreateRequest creates the ValidateCustomDomain request.

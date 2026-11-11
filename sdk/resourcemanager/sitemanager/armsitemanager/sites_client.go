@@ -68,7 +68,7 @@ func (client *SitesClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 	}
 }
 
-// CreateOrUpdate - Create a Site
+// createOrUpdate - Create a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SitesClient) createOrUpdate(ctx context.Context, resourceGroupName string, siteName string, resource Site, options *SitesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *SitesClient) createOrUpdate(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SitesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, siteName string, resource Site, _ *SitesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Edge/sites/{siteName}"
 	if client.subscriptionID == "" {
@@ -140,7 +141,8 @@ func (client *SitesClient) Delete(ctx context.Context, resourceGroupName string,
 		return SitesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SitesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SitesClientDeleteResponse{}, err
 	}
 	return SitesClientDeleteResponse{}, nil
 }
@@ -189,7 +191,8 @@ func (client *SitesClient) Get(ctx context.Context, resourceGroupName string, si
 	if err != nil {
 		return SitesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -322,7 +325,8 @@ func (client *SitesClient) Update(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return SitesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

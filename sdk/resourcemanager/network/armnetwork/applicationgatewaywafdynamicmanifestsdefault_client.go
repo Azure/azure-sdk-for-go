@@ -64,7 +64,8 @@ func (client *ApplicationGatewayWafDynamicManifestsDefaultClient) Get(ctx contex
 	if err != nil {
 		return ApplicationGatewayWafDynamicManifestsDefaultClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

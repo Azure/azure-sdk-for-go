@@ -65,7 +65,8 @@ func (client *JobClient) Create(ctx context.Context, resourceGroupName string, a
 	if err != nil {
 		return JobClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -137,7 +138,8 @@ func (client *JobClient) Get(ctx context.Context, resourceGroupName string, auto
 	if err != nil {
 		return JobClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -205,7 +207,8 @@ func (client *JobClient) GetOutput(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return JobClientGetOutputResponse{}, err
 	}
-	return client.getOutputHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getOutputHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getOutputCreateRequest creates the GetOutput request.
@@ -276,7 +279,8 @@ func (client *JobClient) GetRunbookContent(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return JobClientGetRunbookContentResponse{}, err
 	}
-	return client.getRunbookContentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRunbookContentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRunbookContentCreateRequest creates the GetRunbookContent request.
@@ -431,7 +435,8 @@ func (client *JobClient) Resume(ctx context.Context, resourceGroupName string, a
 		return JobClientResumeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return JobClientResumeResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JobClientResumeResponse{}, err
 	}
 	return JobClientResumeResponse{}, nil
 }
@@ -489,7 +494,8 @@ func (client *JobClient) Stop(ctx context.Context, resourceGroupName string, aut
 		return JobClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return JobClientStopResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JobClientStopResponse{}, err
 	}
 	return JobClientStopResponse{}, nil
 }
@@ -547,7 +553,8 @@ func (client *JobClient) Suspend(ctx context.Context, resourceGroupName string, 
 		return JobClientSuspendResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return JobClientSuspendResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JobClientSuspendResponse{}, err
 	}
 	return JobClientSuspendResponse{}, nil
 }

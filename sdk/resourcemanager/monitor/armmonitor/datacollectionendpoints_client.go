@@ -89,7 +89,8 @@ func (client *DataCollectionEndpointsClient) reconcileNSP(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -146,7 +147,8 @@ func (client *DataCollectionEndpointsClient) Create(ctx context.Context, resourc
 	if err != nil {
 		return DataCollectionEndpointsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -214,7 +216,8 @@ func (client *DataCollectionEndpointsClient) Delete(ctx context.Context, resourc
 		return DataCollectionEndpointsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DataCollectionEndpointsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DataCollectionEndpointsClientDeleteResponse{}, err
 	}
 	return DataCollectionEndpointsClientDeleteResponse{}, nil
 }
@@ -266,7 +269,8 @@ func (client *DataCollectionEndpointsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return DataCollectionEndpointsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -330,7 +334,8 @@ func (client *DataCollectionEndpointsClient) GetNSP(ctx context.Context, resourc
 	if err != nil {
 		return DataCollectionEndpointsClientGetNSPResponse{}, err
 	}
-	return client.getNSPHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNSPHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNSPCreateRequest creates the GetNSP request.
@@ -620,7 +625,8 @@ func (client *DataCollectionEndpointsClient) Update(ctx context.Context, resourc
 	if err != nil {
 		return DataCollectionEndpointsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

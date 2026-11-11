@@ -69,7 +69,7 @@ func (client *ArchivesClient) BeginCreate(ctx context.Context, resourceGroupName
 	}
 }
 
-// Create - Creates a archive for a container registry with the specified parameters.
+// create - Creates a archive for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ArchivesClient) create(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveCreateParameters Archive, options *ArchivesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *ArchivesClient) create(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ArchivesClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, archiveCreateParameters Archive, _ *ArchivesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/packages/{packageType}/archives/{archiveName}"
 	if client.subscriptionID == "" {
@@ -153,7 +154,7 @@ func (client *ArchivesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Deletes a archive from a container registry.
+// deleteOperation - Deletes a archive from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ArchivesClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, options *ArchivesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -170,12 +171,13 @@ func (client *ArchivesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ArchivesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, packageType string, archiveName string, _ *ArchivesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/packages/{packageType}/archives/{archiveName}"
 	if client.subscriptionID == "" {
@@ -229,7 +231,8 @@ func (client *ArchivesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ArchivesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -381,7 +384,8 @@ func (client *ArchivesClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ArchivesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

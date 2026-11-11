@@ -12,6 +12,27 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2025-10-01-preview/fileImports/DeleteFileImport.json
+func ExampleFileImportsClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFileImportsClient().BeginDelete(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2025-10-01-preview/fileImports/CreateFileImport.json
 func ExampleFileImportsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -64,27 +85,6 @@ func ExampleFileImportsClient_Create() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-10-01-preview/fileImports/DeleteFileImport.json
-func ExampleFileImportsClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurityinsights.NewClientFactory("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewFileImportsClient().BeginDelete(ctx, "myRg", "myWorkspace", "73e01a99-5cd7-4139-a149-9f2736ff2ab5", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }
 
 // Generated from example definition: 2025-10-01-preview/fileImports/GetFileImportById.json

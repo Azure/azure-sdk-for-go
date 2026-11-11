@@ -63,7 +63,8 @@ func (client *DecompileOperationGroupClient) Bicep(ctx context.Context, decompil
 	if err != nil {
 		return DecompileOperationGroupClientBicepResponse{}, err
 	}
-	return client.bicepHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.bicepHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // bicepCreateRequest creates the Bicep request.

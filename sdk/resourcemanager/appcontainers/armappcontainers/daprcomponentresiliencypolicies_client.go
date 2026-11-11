@@ -69,7 +69,8 @@ func (client *DaprComponentResiliencyPoliciesClient) CreateOrUpdate(ctx context.
 	if err != nil {
 		return DaprComponentResiliencyPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -147,7 +148,8 @@ func (client *DaprComponentResiliencyPoliciesClient) Delete(ctx context.Context,
 		return DaprComponentResiliencyPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DaprComponentResiliencyPoliciesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DaprComponentResiliencyPoliciesClientDeleteResponse{}, err
 	}
 	return DaprComponentResiliencyPoliciesClientDeleteResponse{}, nil
 }
@@ -209,7 +211,8 @@ func (client *DaprComponentResiliencyPoliciesClient) Get(ctx context.Context, re
 	if err != nil {
 		return DaprComponentResiliencyPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

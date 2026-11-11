@@ -142,6 +142,55 @@ func ExampleReplicationsClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2026-09-01-preview/ReplicationUpdate.json
+func ExampleReplicationsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewReplicationsClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myReplication", armcontainerregistry.ReplicationUpdateParameters{
+		Tags: map[string]*string{
+			"key": to.Ptr("value"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerregistry.ReplicationsClientUpdateResponse{
+	// 	Replication: armcontainerregistry.Replication{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/replications/myReplication"),
+	// 		Name: to.Ptr("myReplication"),
+	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/replications"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Tags: map[string]*string{
+	// 			"key": to.Ptr("value"),
+	// 		},
+	// 		Properties: &armcontainerregistry.ReplicationProperties{
+	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
+	// 			Status: &armcontainerregistry.Status{
+	// 				DisplayStatus: to.Ptr("Ready"),
+	// 				Message: to.Ptr("The replication is ready."),
+	// 				Timestamp: to.Ptr(time.Date(2017, time.March, 1, 23, 15, 37, 70780800, time.UTC)),
+	// 			},
+	// 			RegionEndpointEnabled: to.Ptr(true),
+	// 			ZoneRedundancy: to.Ptr(armcontainerregistry.ZoneRedundancyDisabled),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-09-01-preview/ReplicationGet.json
 func ExampleReplicationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -231,53 +280,4 @@ func ExampleReplicationsClient_NewListPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-09-01-preview/ReplicationUpdate.json
-func ExampleReplicationsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewReplicationsClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myReplication", armcontainerregistry.ReplicationUpdateParameters{
-		Tags: map[string]*string{
-			"key": to.Ptr("value"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerregistry.ReplicationsClientUpdateResponse{
-	// 	Replication: armcontainerregistry.Replication{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myRegistry/replications/myReplication"),
-	// 		Name: to.Ptr("myReplication"),
-	// 		Type: to.Ptr("Microsoft.ContainerRegistry/registries/replications"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Tags: map[string]*string{
-	// 			"key": to.Ptr("value"),
-	// 		},
-	// 		Properties: &armcontainerregistry.ReplicationProperties{
-	// 			ProvisioningState: to.Ptr(armcontainerregistry.ProvisioningStateSucceeded),
-	// 			Status: &armcontainerregistry.Status{
-	// 				DisplayStatus: to.Ptr("Ready"),
-	// 				Message: to.Ptr("The replication is ready."),
-	// 				Timestamp: to.Ptr(time.Date(2017, time.March, 1, 23, 15, 37, 70780800, time.UTC)),
-	// 			},
-	// 			RegionEndpointEnabled: to.Ptr(true),
-	// 			ZoneRedundancy: to.Ptr(armcontainerregistry.ZoneRedundancyDisabled),
-	// 		},
-	// 	},
-	// }
 }

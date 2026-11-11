@@ -52,7 +52,7 @@ func NewAzureMonitorWorkspacesClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *AzureMonitorWorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *AzureMonitorWorkspacesClientBeginDeleteOptions) (*runtime.Poller[AzureMonitorWorkspacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, azureMonitorWorkspaceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, azureMonitorWorkspaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -67,9 +67,9 @@ func (client *AzureMonitorWorkspacesClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// delete - Deletes an Azure Monitor Workspace
+// deleteOperation - Deletes an Azure Monitor Workspace
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AzureMonitorWorkspacesClient) delete(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *AzureMonitorWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AzureMonitorWorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, azureMonitorWorkspaceName string, options *AzureMonitorWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureMonitorWorkspacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -84,7 +84,8 @@ func (client *AzureMonitorWorkspacesClient) delete(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -135,7 +136,8 @@ func (client *AzureMonitorWorkspacesClient) CreateOrUpdate(ctx context.Context, 
 	if err != nil {
 		return AzureMonitorWorkspacesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -200,7 +202,8 @@ func (client *AzureMonitorWorkspacesClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return AzureMonitorWorkspacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -401,7 +404,8 @@ func (client *AzureMonitorWorkspacesClient) Update(ctx context.Context, resource
 	if err != nil {
 		return AzureMonitorWorkspacesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

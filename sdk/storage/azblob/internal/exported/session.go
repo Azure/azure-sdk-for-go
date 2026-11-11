@@ -1,0 +1,243 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License. See License.txt in the project root for license information.
+
+package exported
+
+import (
+	"context"
+	"errors"
+	"net/http"
+	"net/url"
+	"strings"
+	"sync"
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/generated"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/internal/shared"
+	"github.com/Azure/azure-sdk-for-go/sdk/storage/internal/autorefresh"
+)
+
+// ResolveSessionEnabled resolves SessionOptions.Enabled. Nil leaves the decision to the client
+// library, which may change it in a future release; currently it resolves to disabled.
+func ResolveSessionEnabled(enabled *bool) bool {
+	if enabled == nil {
+		return false
+	}
+	return *enabled
+}
+
+// SessionOptions configures session authentication. Sessions apply only to clients
+// authenticated with an azcore.TokenCredential; clients using a shared key, a SAS or no
+// credential ignore these options.
+type SessionOptions struct {
+	// Enabled specifies whether eligible requests are authenticated with a session, created and
+	// cached per container. When false, every request is authenticated with a bearer token. When
+	// true, the storage account name is required: if it can be determined from neither AccountName
+	// nor the client's URL, client construction fails. The default, nil, leaves the decision to the
+	// client library, which may change it in a future release; currently it resolves to disabled.
+	Enabled *bool
+
+	// AccountName is the storage account name used to sign requests with the session key. When
+	// empty, it is derived from the client's URL. Set it when the URL is a custom domain from
+	// which the account name can't be derived.
+	// When the account name can be determined from neither this field nor the URL, client
+	// construction fails if Enabled is true; otherwise the client authenticates every
+	// request with a bearer token.
+	AccountName string
+}
+
+// SessionProvider provides and caches the sessions used to authenticate eligible requests. Each
+// token credential client with sessions enabled creates one, shared with the clients derived from
+// it (for example the container and blob clients created from a service client).
+type SessionProvider interface {
+	// getSession returns the cached session for the request's scope, acquiring one if needed.
+	// The result may be a fallback marker meaning the request should use a bearer token.
+	getSession(req *http.Request) (sessionCredential, error)
+
+	// invalidateSession discards the cached session for the request's scope, but only when it is
+	// still used. The next eligible request acquires a new session.
+	invalidateSession(req *http.Request, used sessionCredential)
+
+	// isRequestEligible reports whether the request can be authenticated with a session.
+	isRequestEligible(req *http.Request) bool
+}
+
+// sessionCredential is a session returned by Create Session, or a marker that sessions are
+// unavailable and requests should fall back to bearer token authentication.
+type sessionCredential struct {
+	token string
+	key   string
+	// fallback marks a cached "sessions are unavailable" decision. It is cached like a session
+	// so that the service isn't asked again until it expires.
+	fallback bool
+}
+
+const (
+	// sessionRefreshBuffer is how long before a session expires that a background refresh starts.
+	sessionRefreshBuffer = 30 * time.Second
+
+	// sessionBackgroundAcquireTimeout bounds a background session refresh.
+	sessionBackgroundAcquireTimeout = 30 * time.Second
+
+	// sessionFallbackCooldown is how long a fallback-to-bearer decision is cached after Create
+	// Session fails with a 5xx, a 403, or a 400 FeatureNotEnabled.
+	sessionFallbackCooldown = 5 * time.Minute
+
+	featureNotEnabled = "FeatureNotEnabled"
+)
+
+// ContainerSessionProvider is a SessionProvider that creates sessions with an
+// azcore.TokenCredential and caches one per container. It applies only to clients authenticated
+// with a token credential.
+//
+// Use NewContainerSessionProviderFromClient to create one. The zero value is not usable.
+type ContainerSessionProvider struct {
+	client *generated.ServiceClient
+	now    func() time.Time
+
+	// caches maps a container name to the cache holding its session. Entries are never removed,
+	// so a provider retains one entry per distinct container it has been used with.
+	caches sync.Map // map[string]*autorefresh.Cache[sessionCredential]
+}
+
+// NewContainerSessionProviderFromClient returns a ContainerSessionProvider that creates sessions
+// through client, which must target a blob service endpoint and must not itself use sessions.
+// It is the constructor the clients use once they have built a session-free pipeline.
+func NewContainerSessionProviderFromClient(client *generated.ServiceClient) *ContainerSessionProvider {
+	return &ContainerSessionProvider{client: client, now: time.Now}
+}
+
+func (p *ContainerSessionProvider) getSession(req *http.Request) (sessionCredential, error) {
+	cache, err := p.cacheFor(req)
+	if err != nil {
+		return sessionCredential{}, err
+	}
+	return cache.Get(acquireContext(req.Context()))
+}
+
+// acquireContext returns the context a session is acquired with. It keeps ctx's deadline and
+// cancellation, so a caller waiting for a new session can still give up, but none of ctx's values,
+// which belong to the request being authenticated: a response capture target, such as azcore's
+// runtime.WithCaptureResponse or Data Lake's, would otherwise receive the Create Session response,
+// concurrently with the request's own when the session is refreshed in the background; and the
+// request's layout endpoint would route Create Session away from the account endpoint.
+func acquireContext(ctx context.Context) context.Context {
+	return withoutValues{ctx}
+}
+
+// withoutValues is a context that hides its parent's values.
+type withoutValues struct{ context.Context }
+
+func (withoutValues) Value(any) any { return nil }
+
+func (p *ContainerSessionProvider) invalidateSession(req *http.Request, used sessionCredential) {
+	cache, err := p.cacheFor(req)
+	if err != nil {
+		return
+	}
+	cache.InvalidateIf(func(current sessionCredential) bool {
+		return current.token == used.token
+	})
+}
+
+// isRequestEligible reports whether req is a Get Blob request, the only operation a session
+// authenticates: a GET addressed to a blob, with neither a comp nor a restype query parameter
+// (whatever their values), and not requesting a structured message body. Every other request,
+// including Get Blob Properties, Put Blob, Put Block, Put Block List, Get Layout and every
+// container- or service-level operation, is authenticated with the bearer token.
+func (p *ContainerSessionProvider) isRequestEligible(req *http.Request) bool {
+	if req == nil || req.URL == nil || req.Method != http.MethodGet {
+		return false
+	}
+	if _, blob, err := shared.GetContainerAndBlobName(accountURL(req)); err != nil || blob == "" {
+		return false
+	}
+	query := req.URL.Query()
+	if query.Has("comp") || query.Has("restype") {
+		return false
+	}
+	if shared.HeaderValue(req.Header, shared.HeaderXmsStructuredBody) != "" {
+		return false
+	}
+	return true
+}
+
+// accountURL returns the request's URL addressed to the account it was sent for. Layout routing
+// replaces the URL host with the layout endpoint and keeps the account authority in req.Host; the
+// container must still be read from the path as the account endpoint lays it out, because a layout
+// endpoint that is an IP address would otherwise make the path look path-style.
+func accountURL(req *http.Request) *url.URL {
+	if req.Host == "" || req.Host == req.URL.Host {
+		return req.URL
+	}
+	u := *req.URL
+	u.Host = req.Host
+	return &u
+}
+
+// cacheFor returns the session cache for the request's container, creating it on first use.
+func (p *ContainerSessionProvider) cacheFor(req *http.Request) (*autorefresh.Cache[sessionCredential], error) {
+	if req == nil {
+		return nil, errors.New("a request is required to determine the session container")
+	}
+	container, _, err := shared.GetContainerAndBlobName(accountURL(req))
+	if err != nil {
+		return nil, err
+	}
+	// container names are case-insensitive to the service
+	key := strings.ToLower(container)
+	if cache, ok := p.caches.Load(key); ok {
+		return cache.(*autorefresh.Cache[sessionCredential]), nil
+	}
+	// Creating a cache has no side effects, so losing the race to store one only discards an
+	// unused cache; it never causes an extra Create Session.
+	cache := autorefresh.New(p.acquireFunc(container), &autorefresh.Options{
+		BackgroundAcquireTimeout: sessionBackgroundAcquireTimeout,
+		Now:                      p.now,
+	})
+	actual, _ := p.caches.LoadOrStore(key, cache)
+	return actual.(*autorefresh.Cache[sessionCredential]), nil
+}
+
+// acquireFunc returns the function that creates a session for container. A Create Session
+// failure that indicates sessions are unavailable (any 5xx, a 403, or a 400 with error code
+// FeatureNotEnabled) becomes a fallback marker cached for five minutes, during which this
+// container's requests use bearer tokens without contacting the service again. Other failures
+// are returned to the caller.
+func (p *ContainerSessionProvider) acquireFunc(container string) autorefresh.AcquireFunc[sessionCredential] {
+	containerClient := generated.NewContainerClient(runtime.JoinPaths(p.client.Endpoint(), container), p.client.InternalClient())
+	return func(ctx context.Context) (autorefresh.Entry[sessionCredential], error) {
+		resp, err := containerClient.CreateSession(ctx, generated.CreateSessionConfiguration{AuthenticationType: to.Ptr(generated.AuthenticationTypeHmac)}, nil)
+		if err != nil {
+			if isSessionFallbackError(err) {
+				expires := p.now().Add(sessionFallbackCooldown)
+				// no refresh before expiry: the decision holds for the whole cooldown
+				return autorefresh.Entry[sessionCredential]{Value: sessionCredential{fallback: true}, ExpiresOn: expires, RefreshOn: expires}, nil
+			}
+			return autorefresh.Entry[sessionCredential]{}, err
+		}
+		if resp.Expiration == nil || resp.Credentials == nil || resp.Credentials.SessionToken == nil || resp.Credentials.SessionKey == nil {
+			return autorefresh.Entry[sessionCredential]{}, errors.New("the Create Session response is missing the session credentials or their expiration")
+		}
+		return autorefresh.Entry[sessionCredential]{
+			Value:     sessionCredential{token: *resp.Credentials.SessionToken, key: *resp.Credentials.SessionKey},
+			ExpiresOn: *resp.Expiration,
+			RefreshOn: resp.Expiration.Add(-sessionRefreshBuffer),
+		}, nil
+	}
+}
+
+// isSessionFallbackError reports whether a Create Session failure means sessions are
+// unavailable rather than that the request was wrong.
+func isSessionFallbackError(err error) bool {
+	var respErr *azcore.ResponseError
+	if !errors.As(err, &respErr) {
+		return false
+	}
+	return respErr.StatusCode >= http.StatusInternalServerError ||
+		respErr.StatusCode == http.StatusForbidden ||
+		(respErr.StatusCode == http.StatusBadRequest && strings.EqualFold(respErr.ErrorCode, featureNotEnabled))
+}

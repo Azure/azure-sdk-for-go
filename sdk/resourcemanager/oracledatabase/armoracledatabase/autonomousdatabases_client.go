@@ -68,7 +68,7 @@ func (client *AutonomousDatabasesClient) BeginAction(ctx context.Context, resour
 	}
 }
 
-// Action - Perform Lifecycle Management Action on Autonomous Database
+// action - Perform Lifecycle Management Action on Autonomous Database
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutonomousDatabasesClient) action(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body AutonomousDatabaseLifecycleAction, options *AutonomousDatabasesClientBeginActionOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *AutonomousDatabasesClient) action(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// actionCreateRequest creates the Action request.
+// actionCreateRequest creates the action request.
 func (client *AutonomousDatabasesClient) actionCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body AutonomousDatabaseLifecycleAction, _ *AutonomousDatabasesClientBeginActionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/action"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *AutonomousDatabasesClient) BeginChangeDisasterRecoveryConfiguratio
 	}
 }
 
-// ChangeDisasterRecoveryConfiguration - Perform ChangeDisasterRecoveryConfiguration action on Autonomous Database
+// changeDisasterRecoveryConfiguration - Perform ChangeDisasterRecoveryConfiguration action on Autonomous Database
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutonomousDatabasesClient) changeDisasterRecoveryConfiguration(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body DisasterRecoveryConfigurationDetails, options *AutonomousDatabasesClientBeginChangeDisasterRecoveryConfigurationOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *AutonomousDatabasesClient) changeDisasterRecoveryConfiguration(ctx
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// changeDisasterRecoveryConfigurationCreateRequest creates the ChangeDisasterRecoveryConfiguration request.
+// changeDisasterRecoveryConfigurationCreateRequest creates the changeDisasterRecoveryConfiguration request.
 func (client *AutonomousDatabasesClient) changeDisasterRecoveryConfigurationCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body DisasterRecoveryConfigurationDetails, _ *AutonomousDatabasesClientBeginChangeDisasterRecoveryConfigurationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/changeDisasterRecoveryConfiguration"
 	if client.subscriptionID == "" {
@@ -220,7 +222,7 @@ func (client *AutonomousDatabasesClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create a AutonomousDatabase
+// createOrUpdate - Create a AutonomousDatabase
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutonomousDatabasesClient) createOrUpdate(ctx context.Context, resourceGroupName string, autonomousdatabasename string, resource AutonomousDatabase, options *AutonomousDatabasesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -237,12 +239,13 @@ func (client *AutonomousDatabasesClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AutonomousDatabasesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, resource AutonomousDatabase, _ *AutonomousDatabasesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}"
 	if client.subscriptionID == "" {
@@ -295,7 +298,7 @@ func (client *AutonomousDatabasesClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Delete a AutonomousDatabase
+// deleteOperation - Delete a AutonomousDatabase
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutonomousDatabasesClient) deleteOperation(ctx context.Context, resourceGroupName string, autonomousdatabasename string, options *AutonomousDatabasesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -312,12 +315,13 @@ func (client *AutonomousDatabasesClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AutonomousDatabasesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, _ *AutonomousDatabasesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}"
 	if client.subscriptionID == "" {
@@ -366,7 +370,7 @@ func (client *AutonomousDatabasesClient) BeginFailover(ctx context.Context, reso
 	}
 }
 
-// Failover - Perform failover action on Autonomous Database
+// failover - Perform failover action on Autonomous Database
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutonomousDatabasesClient) failover(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body PeerDbDetails, options *AutonomousDatabasesClientBeginFailoverOptions) (*http.Response, error) {
 	var err error
@@ -383,12 +387,13 @@ func (client *AutonomousDatabasesClient) failover(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// failoverCreateRequest creates the Failover request.
+// failoverCreateRequest creates the failover request.
 func (client *AutonomousDatabasesClient) failoverCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body PeerDbDetails, _ *AutonomousDatabasesClientBeginFailoverOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/failover"
 	if client.subscriptionID == "" {
@@ -418,6 +423,309 @@ func (client *AutonomousDatabasesClient) failoverCreateRequest(ctx context.Conte
 	return req, nil
 }
 
+// BeginRestore - Restores an Autonomous Database based on the provided request parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - autonomousdatabasename - The database name.
+//   - body - The content of the action request
+//   - options - AutonomousDatabasesClientBeginRestoreOptions contains the optional parameters for the AutonomousDatabasesClient.BeginRestore
+//     method.
+func (client *AutonomousDatabasesClient) BeginRestore(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body RestoreAutonomousDatabaseDetails, options *AutonomousDatabasesClientBeginRestoreOptions) (*runtime.Poller[AutonomousDatabasesClientRestoreResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restore(ctx, resourceGroupName, autonomousdatabasename, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutonomousDatabasesClientRestoreResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutonomousDatabasesClientRestoreResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restore - Restores an Autonomous Database based on the provided request parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AutonomousDatabasesClient) restore(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body RestoreAutonomousDatabaseDetails, options *AutonomousDatabasesClientBeginRestoreOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AutonomousDatabasesClient.BeginRestore"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restoreCreateRequest(ctx, resourceGroupName, autonomousdatabasename, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// restoreCreateRequest creates the restore request.
+func (client *AutonomousDatabasesClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body RestoreAutonomousDatabaseDetails, _ *AutonomousDatabasesClientBeginRestoreOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/restore"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if autonomousdatabasename == "" {
+		return nil, errors.New("parameter autonomousdatabasename cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginShrink - This operation shrinks the current allocated storage down to the current actual used data storage.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - autonomousdatabasename - The database name.
+//   - options - AutonomousDatabasesClientBeginShrinkOptions contains the optional parameters for the AutonomousDatabasesClient.BeginShrink
+//     method.
+func (client *AutonomousDatabasesClient) BeginShrink(ctx context.Context, resourceGroupName string, autonomousdatabasename string, options *AutonomousDatabasesClientBeginShrinkOptions) (*runtime.Poller[AutonomousDatabasesClientShrinkResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.shrink(ctx, resourceGroupName, autonomousdatabasename, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutonomousDatabasesClientShrinkResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutonomousDatabasesClientShrinkResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// shrink - This operation shrinks the current allocated storage down to the current actual used data storage.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AutonomousDatabasesClient) shrink(ctx context.Context, resourceGroupName string, autonomousdatabasename string, options *AutonomousDatabasesClientBeginShrinkOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AutonomousDatabasesClient.BeginShrink"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.shrinkCreateRequest(ctx, resourceGroupName, autonomousdatabasename, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// shrinkCreateRequest creates the shrink request.
+func (client *AutonomousDatabasesClient) shrinkCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, _ *AutonomousDatabasesClientBeginShrinkOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/shrink"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if autonomousdatabasename == "" {
+		return nil, errors.New("parameter autonomousdatabasename cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginSwitchover - Perform switchover action on Autonomous Database
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - autonomousdatabasename - The database name.
+//   - body - The content of the action request
+//   - options - AutonomousDatabasesClientBeginSwitchoverOptions contains the optional parameters for the AutonomousDatabasesClient.BeginSwitchover
+//     method.
+func (client *AutonomousDatabasesClient) BeginSwitchover(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body PeerDbDetails, options *AutonomousDatabasesClientBeginSwitchoverOptions) (*runtime.Poller[AutonomousDatabasesClientSwitchoverResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.switchover(ctx, resourceGroupName, autonomousdatabasename, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutonomousDatabasesClientSwitchoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutonomousDatabasesClientSwitchoverResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// switchover - Perform switchover action on Autonomous Database
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AutonomousDatabasesClient) switchover(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body PeerDbDetails, options *AutonomousDatabasesClientBeginSwitchoverOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AutonomousDatabasesClient.BeginSwitchover"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.switchoverCreateRequest(ctx, resourceGroupName, autonomousdatabasename, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// switchoverCreateRequest creates the switchover request.
+func (client *AutonomousDatabasesClient) switchoverCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body PeerDbDetails, _ *AutonomousDatabasesClientBeginSwitchoverOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/switchover"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if autonomousdatabasename == "" {
+		return nil, errors.New("parameter autonomousdatabasename cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a AutonomousDatabase
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - autonomousdatabasename - The database name.
+//   - properties - The resource properties to be updated.
+//   - options - AutonomousDatabasesClientBeginUpdateOptions contains the optional parameters for the AutonomousDatabasesClient.BeginUpdate
+//     method.
+func (client *AutonomousDatabasesClient) BeginUpdate(ctx context.Context, resourceGroupName string, autonomousdatabasename string, properties AutonomousDatabaseUpdate, options *AutonomousDatabasesClientBeginUpdateOptions) (*runtime.Poller[AutonomousDatabasesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, autonomousdatabasename, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutonomousDatabasesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutonomousDatabasesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a AutonomousDatabase
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *AutonomousDatabasesClient) update(ctx context.Context, resourceGroupName string, autonomousdatabasename string, properties AutonomousDatabaseUpdate, options *AutonomousDatabasesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "AutonomousDatabasesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, autonomousdatabasename, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *AutonomousDatabasesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, properties AutonomousDatabaseUpdate, _ *AutonomousDatabasesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if autonomousdatabasename == "" {
+		return nil, errors.New("parameter autonomousdatabasename cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260601)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // GenerateWallet - Generate wallet action on Autonomous Database
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -439,7 +747,8 @@ func (client *AutonomousDatabasesClient) GenerateWallet(ctx context.Context, res
 	if err != nil {
 		return AutonomousDatabasesClientGenerateWalletResponse{}, err
 	}
-	return client.generateWalletHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateWalletHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateWalletCreateRequest creates the GenerateWallet request.
@@ -503,7 +812,8 @@ func (client *AutonomousDatabasesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AutonomousDatabasesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -681,303 +991,4 @@ func (client *AutonomousDatabasesClient) listBySubscriptionHandleResponse(resp *
 		return AutonomousDatabasesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRestore - Restores an Autonomous Database based on the provided request parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - autonomousdatabasename - The database name.
-//   - body - The content of the action request
-//   - options - AutonomousDatabasesClientBeginRestoreOptions contains the optional parameters for the AutonomousDatabasesClient.BeginRestore
-//     method.
-func (client *AutonomousDatabasesClient) BeginRestore(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body RestoreAutonomousDatabaseDetails, options *AutonomousDatabasesClientBeginRestoreOptions) (*runtime.Poller[AutonomousDatabasesClientRestoreResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restore(ctx, resourceGroupName, autonomousdatabasename, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutonomousDatabasesClientRestoreResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutonomousDatabasesClientRestoreResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Restore - Restores an Autonomous Database based on the provided request parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AutonomousDatabasesClient) restore(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body RestoreAutonomousDatabaseDetails, options *AutonomousDatabasesClientBeginRestoreOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AutonomousDatabasesClient.BeginRestore"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restoreCreateRequest(ctx, resourceGroupName, autonomousdatabasename, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restoreCreateRequest creates the Restore request.
-func (client *AutonomousDatabasesClient) restoreCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body RestoreAutonomousDatabaseDetails, _ *AutonomousDatabasesClientBeginRestoreOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/restore"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if autonomousdatabasename == "" {
-		return nil, errors.New("parameter autonomousdatabasename cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginShrink - This operation shrinks the current allocated storage down to the current actual used data storage.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - autonomousdatabasename - The database name.
-//   - options - AutonomousDatabasesClientBeginShrinkOptions contains the optional parameters for the AutonomousDatabasesClient.BeginShrink
-//     method.
-func (client *AutonomousDatabasesClient) BeginShrink(ctx context.Context, resourceGroupName string, autonomousdatabasename string, options *AutonomousDatabasesClientBeginShrinkOptions) (*runtime.Poller[AutonomousDatabasesClientShrinkResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.shrink(ctx, resourceGroupName, autonomousdatabasename, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutonomousDatabasesClientShrinkResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutonomousDatabasesClientShrinkResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Shrink - This operation shrinks the current allocated storage down to the current actual used data storage.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AutonomousDatabasesClient) shrink(ctx context.Context, resourceGroupName string, autonomousdatabasename string, options *AutonomousDatabasesClientBeginShrinkOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AutonomousDatabasesClient.BeginShrink"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.shrinkCreateRequest(ctx, resourceGroupName, autonomousdatabasename, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// shrinkCreateRequest creates the Shrink request.
-func (client *AutonomousDatabasesClient) shrinkCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, _ *AutonomousDatabasesClientBeginShrinkOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/shrink"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if autonomousdatabasename == "" {
-		return nil, errors.New("parameter autonomousdatabasename cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// BeginSwitchover - Perform switchover action on Autonomous Database
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - autonomousdatabasename - The database name.
-//   - body - The content of the action request
-//   - options - AutonomousDatabasesClientBeginSwitchoverOptions contains the optional parameters for the AutonomousDatabasesClient.BeginSwitchover
-//     method.
-func (client *AutonomousDatabasesClient) BeginSwitchover(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body PeerDbDetails, options *AutonomousDatabasesClientBeginSwitchoverOptions) (*runtime.Poller[AutonomousDatabasesClientSwitchoverResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.switchover(ctx, resourceGroupName, autonomousdatabasename, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutonomousDatabasesClientSwitchoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutonomousDatabasesClientSwitchoverResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Switchover - Perform switchover action on Autonomous Database
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AutonomousDatabasesClient) switchover(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body PeerDbDetails, options *AutonomousDatabasesClientBeginSwitchoverOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AutonomousDatabasesClient.BeginSwitchover"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.switchoverCreateRequest(ctx, resourceGroupName, autonomousdatabasename, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// switchoverCreateRequest creates the Switchover request.
-func (client *AutonomousDatabasesClient) switchoverCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, body PeerDbDetails, _ *AutonomousDatabasesClientBeginSwitchoverOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}/switchover"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if autonomousdatabasename == "" {
-		return nil, errors.New("parameter autonomousdatabasename cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginUpdate - Update a AutonomousDatabase
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - autonomousdatabasename - The database name.
-//   - properties - The resource properties to be updated.
-//   - options - AutonomousDatabasesClientBeginUpdateOptions contains the optional parameters for the AutonomousDatabasesClient.BeginUpdate
-//     method.
-func (client *AutonomousDatabasesClient) BeginUpdate(ctx context.Context, resourceGroupName string, autonomousdatabasename string, properties AutonomousDatabaseUpdate, options *AutonomousDatabasesClientBeginUpdateOptions) (*runtime.Poller[AutonomousDatabasesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, autonomousdatabasename, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[AutonomousDatabasesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[AutonomousDatabasesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a AutonomousDatabase
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *AutonomousDatabasesClient) update(ctx context.Context, resourceGroupName string, autonomousdatabasename string, properties AutonomousDatabaseUpdate, options *AutonomousDatabasesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "AutonomousDatabasesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, autonomousdatabasename, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *AutonomousDatabasesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, autonomousdatabasename string, properties AutonomousDatabaseUpdate, _ *AutonomousDatabasesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/autonomousDatabases/{autonomousdatabasename}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if autonomousdatabasename == "" {
-		return nil, errors.New("parameter autonomousdatabasename cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{autonomousdatabasename}", url.PathEscape(autonomousdatabasename))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260601)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

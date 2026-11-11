@@ -12,70 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01-preview/checkNameAvailability.json
-func ExampleResourceClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewResourceClient().CheckNameAvailability(ctx, armiothub.OperationInputs{
-		Name: to.Ptr("test-request"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armiothub.ResourceClientCheckNameAvailabilityResponse{
-	// 	NameAvailabilityInfo: armiothub.NameAvailabilityInfo{
-	// 		Message: to.Ptr(""),
-	// 		NameAvailable: to.Ptr(true),
-	// 		Reason: to.Ptr(armiothub.IotHubNameUnavailabilityReasonInvalid),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-01-preview/iothub_createconsumergroup.json
-func ExampleResourceClient_CreateEventHubConsumerGroup() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewResourceClient().CreateEventHubConsumerGroup(ctx, "myResourceGroup", "testHub", "events", "test", armiothub.EventHubConsumerGroupBodyDescription{
-		Properties: &armiothub.EventHubConsumerGroupName{
-			Name: to.Ptr("test"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armiothub.ResourceClientCreateEventHubConsumerGroupResponse{
-	// 	EventHubConsumerGroupInfo: armiothub.EventHubConsumerGroupInfo{
-	// 		Name: to.Ptr("test"),
-	// 		Type: to.Ptr("Microsoft.Devices/IotHubs/EventHubEndpoints/ConsumerGroups"),
-	// 		Etag: to.Ptr("AAAAAAFD6M4="),
-	// 		ID: to.Ptr("/subscriptions/cmd-sub-1/resourceGroups/cmd-rg-1/providers/Microsoft.Devices/IotHubs/test-hub-2/eventHubEndpoints/events/ConsumerGroups/%24Default"),
-	// 		Properties: map[string]any{
-	// 			"created": "Thu, 15 Jun 2017 19:20:58 GMT",
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-10-01-preview/CreateOrReplace_IoTHub_With_MqttV5.json
 func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIoTHubWithMqttV5() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -968,6 +904,211 @@ func ExampleResourceClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2026-10-01-preview/iothub_patch.json
+func ExampleResourceClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewResourceClient().BeginUpdate(ctx, "myResourceGroup", "myHub", armiothub.TagsResource{
+		Tags: map[string]*string{
+			"foo": to.Ptr("bar"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armiothub.ResourceClientUpdateResponse{
+	// 	Description: armiothub.Description{
+	// 		Name: to.Ptr("testHub"),
+	// 		Type: to.Ptr("Microsoft.Devices/IotHubs"),
+	// 		Etag: to.Ptr("AAAAAAFD6M4="),
+	// 		ID: to.Ptr("/subscriptions/ae24ff83-d2ca-4fc8-9717-05dae4bba489/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/testHub"),
+	// 		Location: to.Ptr("centraluseuap"),
+	// 		Properties: &armiothub.Properties{
+	// 			CloudToDevice: &armiothub.CloudToDeviceProperties{
+	// 				DefaultTTLAsIso8601: to.Ptr("PT1H"),
+	// 				Feedback: &armiothub.FeedbackProperties{
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
+	// 					MaxDeliveryCount: to.Ptr[int32](10),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
+	// 				},
+	// 				MaxDeliveryCount: to.Ptr[int32](10),
+	// 			},
+	// 			EnableFileUploadNotifications: to.Ptr(false),
+	// 			EventHubEndpoints: map[string]*armiothub.EventHubProperties{
+	// 				"events": &armiothub.EventHubProperties{
+	// 					Path: to.Ptr("iot-dps-cit-hub-1"),
+	// 					Endpoint: to.Ptr("sb://iothub-ns-iot-dps-ci-245306-76aca8e13b.servicebus.windows.net/"),
+	// 					PartitionCount: to.Ptr[int32](2),
+	// 					PartitionIDs: []*string{
+	// 						to.Ptr("0"),
+	// 						to.Ptr("1"),
+	// 					},
+	// 					RetentionTimeInDays: to.Ptr[int64](1),
+	// 				},
+	// 			},
+	// 			Features: to.Ptr(armiothub.CapabilitiesNone),
+	// 			HostName: to.Ptr("iot-dps-cit-hub-1.azure-devices.net"),
+	// 			IPFilterRules: []*armiothub.IPFilterRule{
+	// 				{
+	// 					Action: to.Ptr(armiothub.IPFilterActionTypeAccept),
+	// 					FilterName: to.Ptr("rule1"),
+	// 					IPMask: to.Ptr("131.117.159.53"),
+	// 				},
+	// 				{
+	// 					Action: to.Ptr(armiothub.IPFilterActionTypeAccept),
+	// 					FilterName: to.Ptr("rule2"),
+	// 					IPMask: to.Ptr("157.55.59.128/25"),
+	// 				},
+	// 			},
+	// 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
+	// 				"fileNotifications": &armiothub.MessagingEndpointProperties{
+	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
+	// 					MaxDeliveryCount: to.Ptr[int32](10),
+	// 					TTLAsIso8601: to.Ptr("PT1H"),
+	// 				},
+	// 			},
+	// 			NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
+	// 				ApplyToBuiltInEventHubEndpoint: to.Ptr(true),
+	// 				DefaultAction: to.Ptr(armiothub.DefaultActionDeny),
+	// 				IPRules: []*armiothub.NetworkRuleSetIPRule{
+	// 					{
+	// 						Action: to.Ptr(armiothub.NetworkRuleIPActionAllow),
+	// 						FilterName: to.Ptr("rule1"),
+	// 						IPMask: to.Ptr("131.117.159.53"),
+	// 					},
+	// 					{
+	// 						Action: to.Ptr(armiothub.NetworkRuleIPActionAllow),
+	// 						FilterName: to.Ptr("rule2"),
+	// 						IPMask: to.Ptr("157.55.59.128/25"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			Routing: &armiothub.RoutingProperties{
+	// 				Endpoints: &armiothub.RoutingEndpoints{
+	// 					EventHubs: []*armiothub.RoutingEventHubProperties{
+	// 					},
+	// 					ServiceBusQueues: []*armiothub.RoutingServiceBusQueueEndpointProperties{
+	// 					},
+	// 					ServiceBusTopics: []*armiothub.RoutingServiceBusTopicEndpointProperties{
+	// 					},
+	// 					StorageContainers: []*armiothub.RoutingStorageContainerProperties{
+	// 					},
+	// 				},
+	// 				FallbackRoute: &armiothub.FallbackRouteProperties{
+	// 					Name: to.Ptr("$fallback"),
+	// 					Condition: to.Ptr("true"),
+	// 					EndpointNames: []*string{
+	// 						to.Ptr("events"),
+	// 					},
+	// 					IsEnabled: to.Ptr(true),
+	// 					Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
+	// 				},
+	// 				Routes: []*armiothub.RouteProperties{
+	// 				},
+	// 			},
+	// 			State: to.Ptr("Active"),
+	// 			StorageEndpoints: map[string]*armiothub.StorageEndpointProperties{
+	// 				"$default": &armiothub.StorageEndpointProperties{
+	// 					ConnectionString: to.Ptr(""),
+	// 					ContainerName: to.Ptr(""),
+	// 					SasTTLAsIso8601: to.Ptr("PT1H"),
+	// 				},
+	// 			},
+	// 		},
+	// 		SKU: &armiothub.SKUInfo{
+	// 			Name: to.Ptr(armiothub.IotHubSKUS1),
+	// 			Capacity: to.Ptr[int64](1),
+	// 			Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
+	// 		},
+	// 		SystemData: &armiothub.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"foo": to.Ptr("bar"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/checkNameAvailability.json
+func ExampleResourceClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewResourceClient().CheckNameAvailability(ctx, armiothub.OperationInputs{
+		Name: to.Ptr("test-request"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armiothub.ResourceClientCheckNameAvailabilityResponse{
+	// 	NameAvailabilityInfo: armiothub.NameAvailabilityInfo{
+	// 		Message: to.Ptr(""),
+	// 		NameAvailable: to.Ptr(true),
+	// 		Reason: to.Ptr(armiothub.IotHubNameUnavailabilityReasonInvalid),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/iothub_createconsumergroup.json
+func ExampleResourceClient_CreateEventHubConsumerGroup() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewResourceClient().CreateEventHubConsumerGroup(ctx, "myResourceGroup", "testHub", "events", "test", armiothub.EventHubConsumerGroupBodyDescription{
+		Properties: &armiothub.EventHubConsumerGroupName{
+			Name: to.Ptr("test"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armiothub.ResourceClientCreateEventHubConsumerGroupResponse{
+	// 	EventHubConsumerGroupInfo: armiothub.EventHubConsumerGroupInfo{
+	// 		Name: to.Ptr("test"),
+	// 		Type: to.Ptr("Microsoft.Devices/IotHubs/EventHubEndpoints/ConsumerGroups"),
+	// 		Etag: to.Ptr("AAAAAAFD6M4="),
+	// 		ID: to.Ptr("/subscriptions/cmd-sub-1/resourceGroups/cmd-rg-1/providers/Microsoft.Devices/IotHubs/test-hub-2/eventHubEndpoints/events/ConsumerGroups/%24Default"),
+	// 		Properties: map[string]any{
+	// 			"created": "Thu, 15 Jun 2017 19:20:58 GMT",
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-10-01-preview/iothub_deleteconsumergroup.json
 func ExampleResourceClient_DeleteEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1510,55 +1651,6 @@ func ExampleResourceClient_Get_iotHubResourceGet() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_routingendpointhealth.json
-func ExampleResourceClient_NewGetEndpointHealthPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewResourceClient().NewGetEndpointHealthPager("myResourceGroup", "testHub", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armiothub.ResourceClientGetEndpointHealthResponse{
-		// 	EndpointHealthDataListResult: armiothub.EndpointHealthDataListResult{
-		// 		Value: []*armiothub.EndpointHealthData{
-		// 			{
-		// 				EndpointID: to.Ptr("id1"),
-		// 				HealthStatus: to.Ptr(armiothub.EndpointHealthStatusHealthy),
-		// 				LastSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
-		// 				LastSuccessfulSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
-		// 			},
-		// 			{
-		// 				EndpointID: to.Ptr("id2"),
-		// 				HealthStatus: to.Ptr(armiothub.EndpointHealthStatusUnknown),
-		// 			},
-		// 			{
-		// 				EndpointID: to.Ptr("id3"),
-		// 				HealthStatus: to.Ptr(armiothub.EndpointHealthStatusUnhealthy),
-		// 				LastKnownError: to.Ptr("NotFound"),
-		// 				LastKnownErrorTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
-		// 				LastSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
-		// 				LastSuccessfulSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-10-01-preview/iothub_getconsumergroup.json
 func ExampleResourceClient_GetEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1647,6 +1739,114 @@ func ExampleResourceClient_GetKeysForKeyName() {
 	// }
 }
 
+// Generated from example definition: 2026-10-01-preview/iothub_stats.json
+func ExampleResourceClient_GetStats() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewResourceClient().GetStats(ctx, "myResourceGroup", "testHub", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armiothub.ResourceClientGetStatsResponse{
+	// 	RegistryStatistics: armiothub.RegistryStatistics{
+	// 		DisabledDeviceCount: to.Ptr[int64](0),
+	// 		EnabledDeviceCount: to.Ptr[int64](0),
+	// 		TotalDeviceCount: to.Ptr[int64](0),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/iothub_importdevices.json
+func ExampleResourceClient_ImportDevices() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewResourceClient().ImportDevices(ctx, "myResourceGroup", "testHub", armiothub.ImportDevicesRequest{
+		InputBlobContainerURI:  to.Ptr("testBlob"),
+		OutputBlobContainerURI: to.Ptr("testBlob"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armiothub.ResourceClientImportDevicesResponse{
+	// 	JobResponse: armiothub.JobResponse{
+	// 		Type: to.Ptr(armiothub.JobTypeUnknown),
+	// 		EndTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
+	// 		JobID: to.Ptr("test"),
+	// 		StartTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
+	// 		Status: to.Ptr(armiothub.JobStatusUnknown),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/iothub_routingendpointhealth.json
+func ExampleResourceClient_NewGetEndpointHealthPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewResourceClient().NewGetEndpointHealthPager("myResourceGroup", "testHub", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armiothub.ResourceClientGetEndpointHealthResponse{
+		// 	EndpointHealthDataListResult: armiothub.EndpointHealthDataListResult{
+		// 		Value: []*armiothub.EndpointHealthData{
+		// 			{
+		// 				EndpointID: to.Ptr("id1"),
+		// 				HealthStatus: to.Ptr(armiothub.EndpointHealthStatusHealthy),
+		// 				LastSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
+		// 				LastSuccessfulSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
+		// 			},
+		// 			{
+		// 				EndpointID: to.Ptr("id2"),
+		// 				HealthStatus: to.Ptr(armiothub.EndpointHealthStatusUnknown),
+		// 			},
+		// 			{
+		// 				EndpointID: to.Ptr("id3"),
+		// 				HealthStatus: to.Ptr(armiothub.EndpointHealthStatusUnhealthy),
+		// 				LastKnownError: to.Ptr("NotFound"),
+		// 				LastKnownErrorTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
+		// 				LastSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
+		// 				LastSuccessfulSendAttemptTime: to.Ptr(time.Date(2017, time.September, 13, 18, 4, 32, 0, time.UTC)),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2026-10-01-preview/iothub_quotametrics.json
 func ExampleResourceClient_NewGetQuotaMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1686,33 +1886,6 @@ func ExampleResourceClient_NewGetQuotaMetricsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-10-01-preview/iothub_stats.json
-func ExampleResourceClient_GetStats() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewResourceClient().GetStats(ctx, "myResourceGroup", "testHub", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armiothub.ResourceClientGetStatsResponse{
-	// 	RegistryStatistics: armiothub.RegistryStatistics{
-	// 		DisabledDeviceCount: to.Ptr[int64](0),
-	// 		EnabledDeviceCount: to.Ptr[int64](0),
-	// 		TotalDeviceCount: to.Ptr[int64](0),
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2026-10-01-preview/iothub_getskus.json
@@ -1781,38 +1954,6 @@ func ExampleResourceClient_NewGetValidSKUsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-10-01-preview/iothub_importdevices.json
-func ExampleResourceClient_ImportDevices() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewResourceClient().ImportDevices(ctx, "myResourceGroup", "testHub", armiothub.ImportDevicesRequest{
-		InputBlobContainerURI:  to.Ptr("testBlob"),
-		OutputBlobContainerURI: to.Ptr("testBlob"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armiothub.ResourceClientImportDevicesResponse{
-	// 	JobResponse: armiothub.JobResponse{
-	// 		Type: to.Ptr(armiothub.JobTypeUnknown),
-	// 		EndTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
-	// 		JobID: to.Ptr("test"),
-	// 		StartTimeUTC: to.Ptr(time.Date(2017, time.June, 15, 19, 20, 58, 0, time.UTC)),
-	// 		Status: to.Ptr(armiothub.JobStatusUnknown),
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2026-10-01-preview/iothub_listbyrg.json
@@ -2339,147 +2480,6 @@ func ExampleResourceClient_TestRoute() {
 	// 					Severity: to.Ptr(armiothub.RouteErrorSeverityError),
 	// 				},
 	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-01-preview/iothub_patch.json
-func ExampleResourceClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewResourceClient().BeginUpdate(ctx, "myResourceGroup", "myHub", armiothub.TagsResource{
-		Tags: map[string]*string{
-			"foo": to.Ptr("bar"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armiothub.ResourceClientUpdateResponse{
-	// 	Description: armiothub.Description{
-	// 		Name: to.Ptr("testHub"),
-	// 		Type: to.Ptr("Microsoft.Devices/IotHubs"),
-	// 		Etag: to.Ptr("AAAAAAFD6M4="),
-	// 		ID: to.Ptr("/subscriptions/ae24ff83-d2ca-4fc8-9717-05dae4bba489/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/testHub"),
-	// 		Location: to.Ptr("centraluseuap"),
-	// 		Properties: &armiothub.Properties{
-	// 			CloudToDevice: &armiothub.CloudToDeviceProperties{
-	// 				DefaultTTLAsIso8601: to.Ptr("PT1H"),
-	// 				Feedback: &armiothub.FeedbackProperties{
-	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
-	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsIso8601: to.Ptr("PT1H"),
-	// 				},
-	// 				MaxDeliveryCount: to.Ptr[int32](10),
-	// 			},
-	// 			EnableFileUploadNotifications: to.Ptr(false),
-	// 			EventHubEndpoints: map[string]*armiothub.EventHubProperties{
-	// 				"events": &armiothub.EventHubProperties{
-	// 					Path: to.Ptr("iot-dps-cit-hub-1"),
-	// 					Endpoint: to.Ptr("sb://iothub-ns-iot-dps-ci-245306-76aca8e13b.servicebus.windows.net/"),
-	// 					PartitionCount: to.Ptr[int32](2),
-	// 					PartitionIDs: []*string{
-	// 						to.Ptr("0"),
-	// 						to.Ptr("1"),
-	// 					},
-	// 					RetentionTimeInDays: to.Ptr[int64](1),
-	// 				},
-	// 			},
-	// 			Features: to.Ptr(armiothub.CapabilitiesNone),
-	// 			HostName: to.Ptr("iot-dps-cit-hub-1.azure-devices.net"),
-	// 			IPFilterRules: []*armiothub.IPFilterRule{
-	// 				{
-	// 					Action: to.Ptr(armiothub.IPFilterActionTypeAccept),
-	// 					FilterName: to.Ptr("rule1"),
-	// 					IPMask: to.Ptr("131.117.159.53"),
-	// 				},
-	// 				{
-	// 					Action: to.Ptr(armiothub.IPFilterActionTypeAccept),
-	// 					FilterName: to.Ptr("rule2"),
-	// 					IPMask: to.Ptr("157.55.59.128/25"),
-	// 				},
-	// 			},
-	// 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
-	// 				"fileNotifications": &armiothub.MessagingEndpointProperties{
-	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
-	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsIso8601: to.Ptr("PT1H"),
-	// 				},
-	// 			},
-	// 			NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
-	// 				ApplyToBuiltInEventHubEndpoint: to.Ptr(true),
-	// 				DefaultAction: to.Ptr(armiothub.DefaultActionDeny),
-	// 				IPRules: []*armiothub.NetworkRuleSetIPRule{
-	// 					{
-	// 						Action: to.Ptr(armiothub.NetworkRuleIPActionAllow),
-	// 						FilterName: to.Ptr("rule1"),
-	// 						IPMask: to.Ptr("131.117.159.53"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armiothub.NetworkRuleIPActionAllow),
-	// 						FilterName: to.Ptr("rule2"),
-	// 						IPMask: to.Ptr("157.55.59.128/25"),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			Routing: &armiothub.RoutingProperties{
-	// 				Endpoints: &armiothub.RoutingEndpoints{
-	// 					EventHubs: []*armiothub.RoutingEventHubProperties{
-	// 					},
-	// 					ServiceBusQueues: []*armiothub.RoutingServiceBusQueueEndpointProperties{
-	// 					},
-	// 					ServiceBusTopics: []*armiothub.RoutingServiceBusTopicEndpointProperties{
-	// 					},
-	// 					StorageContainers: []*armiothub.RoutingStorageContainerProperties{
-	// 					},
-	// 				},
-	// 				FallbackRoute: &armiothub.FallbackRouteProperties{
-	// 					Name: to.Ptr("$fallback"),
-	// 					Condition: to.Ptr("true"),
-	// 					EndpointNames: []*string{
-	// 						to.Ptr("events"),
-	// 					},
-	// 					IsEnabled: to.Ptr(true),
-	// 					Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
-	// 				},
-	// 				Routes: []*armiothub.RouteProperties{
-	// 				},
-	// 			},
-	// 			State: to.Ptr("Active"),
-	// 			StorageEndpoints: map[string]*armiothub.StorageEndpointProperties{
-	// 				"$default": &armiothub.StorageEndpointProperties{
-	// 					ConnectionString: to.Ptr(""),
-	// 					ContainerName: to.Ptr(""),
-	// 					SasTTLAsIso8601: to.Ptr("PT1H"),
-	// 				},
-	// 			},
-	// 		},
-	// 		SKU: &armiothub.SKUInfo{
-	// 			Name: to.Ptr(armiothub.IotHubSKUS1),
-	// 			Capacity: to.Ptr[int64](1),
-	// 			Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
-	// 		},
-	// 		SystemData: &armiothub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"foo": to.Ptr("bar"),
 	// 		},
 	// 	},
 	// }

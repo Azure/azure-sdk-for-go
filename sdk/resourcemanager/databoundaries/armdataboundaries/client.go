@@ -57,7 +57,8 @@ func (client *Client) GetScope(ctx context.Context, scope string, defaultParam D
 	if err != nil {
 		return ClientGetScopeResponse{}, err
 	}
-	return client.getScopeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getScopeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getScopeCreateRequest creates the GetScope request.
@@ -112,7 +113,8 @@ func (client *Client) GetTenant(ctx context.Context, defaultParam DefaultName, o
 	if err != nil {
 		return ClientGetTenantResponse{}, err
 	}
-	return client.getTenantHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTenantHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTenantCreateRequest creates the GetTenant request.
@@ -164,7 +166,8 @@ func (client *Client) Put(ctx context.Context, defaultParam DefaultName, dataBou
 	if err != nil {
 		return ClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.

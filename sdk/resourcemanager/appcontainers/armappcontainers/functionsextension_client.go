@@ -68,7 +68,8 @@ func (client *FunctionsExtensionClient) InvokeFunctionsHost(ctx context.Context,
 	if err != nil {
 		return FunctionsExtensionClientInvokeFunctionsHostResponse{}, err
 	}
-	return client.invokeFunctionsHostHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.invokeFunctionsHostHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // invokeFunctionsHostCreateRequest creates the InvokeFunctionsHost request.

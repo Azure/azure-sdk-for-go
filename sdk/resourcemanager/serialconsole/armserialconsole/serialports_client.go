@@ -66,7 +66,8 @@ func (client *SerialPortsClient) Connect(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return SerialPortsClientConnectResponse{}, err
 	}
-	return client.connectHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.connectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // connectCreateRequest creates the Connect request.
@@ -142,7 +143,8 @@ func (client *SerialPortsClient) Create(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return SerialPortsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -221,7 +223,8 @@ func (client *SerialPortsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return SerialPortsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -295,7 +298,8 @@ func (client *SerialPortsClient) List(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return SerialPortsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -362,7 +366,8 @@ func (client *SerialPortsClient) ListBySubscriptions(ctx context.Context, option
 	if err != nil {
 		return SerialPortsClientListBySubscriptionsResponse{}, err
 	}
-	return client.listBySubscriptionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listBySubscriptionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listBySubscriptionsCreateRequest creates the ListBySubscriptions request.

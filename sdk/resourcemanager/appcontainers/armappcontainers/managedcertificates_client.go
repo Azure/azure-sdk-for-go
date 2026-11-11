@@ -71,7 +71,7 @@ func (client *ManagedCertificatesClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create or Update a Managed Certificate.
+// createOrUpdate - Create or Update a Managed Certificate.
 //
 // Create or Update a Managed Certificate.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -90,12 +90,13 @@ func (client *ManagedCertificatesClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedCertificatesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, managedCertificateName string, managedCertificateEnvelope ManagedCertificate, _ *ManagedCertificatesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/managedCertificates/{managedCertificateName}"
 	if client.subscriptionID == "" {
@@ -153,7 +154,8 @@ func (client *ManagedCertificatesClient) Delete(ctx context.Context, resourceGro
 		return ManagedCertificatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ManagedCertificatesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagedCertificatesClientDeleteResponse{}, err
 	}
 	return ManagedCertificatesClientDeleteResponse{}, nil
 }
@@ -209,7 +211,8 @@ func (client *ManagedCertificatesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ManagedCertificatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -357,7 +360,8 @@ func (client *ManagedCertificatesClient) Update(ctx context.Context, resourceGro
 	if err != nil {
 		return ManagedCertificatesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

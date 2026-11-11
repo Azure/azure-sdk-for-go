@@ -68,7 +68,8 @@ func (client *DataCollectionRuleAssociationsClient) Create(ctx context.Context, 
 	if err != nil {
 		return DataCollectionRuleAssociationsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -132,7 +133,8 @@ func (client *DataCollectionRuleAssociationsClient) Delete(ctx context.Context, 
 		return DataCollectionRuleAssociationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DataCollectionRuleAssociationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DataCollectionRuleAssociationsClientDeleteResponse{}, err
 	}
 	return DataCollectionRuleAssociationsClientDeleteResponse{}, nil
 }
@@ -180,7 +182,8 @@ func (client *DataCollectionRuleAssociationsClient) Get(ctx context.Context, res
 	if err != nil {
 		return DataCollectionRuleAssociationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

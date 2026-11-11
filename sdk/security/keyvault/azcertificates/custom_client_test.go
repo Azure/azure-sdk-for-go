@@ -13,21 +13,8 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func TestNewPlatformManaged(t *testing.T) {
-	metadata := map[string]any{
-		"issuer":       "internal-ca",
-		"rotationDays": 90,
-	}
-
-	pm := NewPlatformManaged("tls-server", metadata)
-
-	require.NotNil(t, pm.CertificateUsage)
-	require.Equal(t, "tls-server", *pm.CertificateUsage)
-	require.Equal(t, metadata, pm.Metadata)
-}
-
-func TestNewPlatformManagedNilMetadata(t *testing.T) {
-	pm := NewPlatformManaged("tls-server", nil)
+func TestPlatformManagedNilMetadata(t *testing.T) {
+	pm := &PlatformManaged{CertificateUsage: to.Ptr("tls-server")}
 
 	require.NotNil(t, pm.CertificateUsage)
 	require.Equal(t, "tls-server", *pm.CertificateUsage)
@@ -43,13 +30,16 @@ func TestNewPlatformManagedNilMetadata(t *testing.T) {
 func TestPlatformManagedSerde(t *testing.T) {
 	policy := CertificatePolicy{
 		IssuerParameters: &IssuerParameters{Name: to.Ptr("Self")},
-		PlatformManaged: NewPlatformManaged("tls-server", map[string]any{
-			"issuer": "internal-ca",
-			"nested": map[string]any{
-				"enabled": true,
+		PlatformManaged: &PlatformManaged{
+			CertificateUsage: to.Ptr("tls-server"),
+			Metadata: map[string]any{
+				"issuer": "internal-ca",
+				"nested": map[string]any{
+					"enabled": true,
+				},
+				"usages": []any{"server", "client"},
 			},
-			"usages": []any{"server", "client"},
-		}),
+		},
 	}
 
 	data, err := json.Marshal(policy)
@@ -82,10 +72,13 @@ func TestCreateCertificateRequestIncludesPlatformManaged(t *testing.T) {
 	parameters := CreateCertificateParameters{
 		CertificatePolicy: &CertificatePolicy{
 			IssuerParameters: &IssuerParameters{Name: to.Ptr("Self")},
-			PlatformManaged: NewPlatformManaged("tls-server", map[string]any{
-				"issuer":       "internal-ca",
-				"rotationDays": 90,
-			}),
+			PlatformManaged: &PlatformManaged{
+				CertificateUsage: to.Ptr("tls-server"),
+				Metadata: map[string]any{
+					"issuer":       "internal-ca",
+					"rotationDays": 90,
+				},
+			},
 		},
 	}
 
@@ -116,12 +109,15 @@ func TestUpdateCertificatePolicyRequestIncludesPlatformManaged(t *testing.T) {
 	client := &Client{vaultBaseUrl: "https://fakevault.vault.azure.net"}
 	policy := CertificatePolicy{
 		IssuerParameters: &IssuerParameters{Name: to.Ptr("Self")},
-		PlatformManaged: NewPlatformManaged("tls-client", map[string]any{
-			"issuer": "internal-ca",
-			"renewal": map[string]any{
-				"enabled": true,
+		PlatformManaged: &PlatformManaged{
+			CertificateUsage: to.Ptr("tls-client"),
+			Metadata: map[string]any{
+				"issuer": "internal-ca",
+				"renewal": map[string]any{
+					"enabled": true,
+				},
 			},
-		}),
+		},
 	}
 
 	req, err := client.updateCertificatePolicyCreateRequest(context.Background(), "cert-name", policy, nil)

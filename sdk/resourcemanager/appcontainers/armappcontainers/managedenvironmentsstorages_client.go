@@ -68,7 +68,8 @@ func (client *ManagedEnvironmentsStoragesClient) CreateOrUpdate(ctx context.Cont
 	if err != nil {
 		return ManagedEnvironmentsStoragesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -141,7 +142,8 @@ func (client *ManagedEnvironmentsStoragesClient) Delete(ctx context.Context, res
 		return ManagedEnvironmentsStoragesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ManagedEnvironmentsStoragesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagedEnvironmentsStoragesClientDeleteResponse{}, err
 	}
 	return ManagedEnvironmentsStoragesClientDeleteResponse{}, nil
 }
@@ -198,7 +200,8 @@ func (client *ManagedEnvironmentsStoragesClient) Get(ctx context.Context, resour
 	if err != nil {
 		return ManagedEnvironmentsStoragesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -265,7 +268,8 @@ func (client *ManagedEnvironmentsStoragesClient) List(ctx context.Context, resou
 	if err != nil {
 		return ManagedEnvironmentsStoragesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

@@ -42,15 +42,9 @@ type Client base.Client[generated.ContainerClient]
 //   - cred - an Azure AD credential, typically obtained via the azidentity module
 //   - options - client options; pass nil to accept the default values
 func NewClient(containerURL string, cred azcore.TokenCredential, options *ClientOptions) (*Client, error) {
-	audience := base.GetAudience((*base.ClientOptions)(options))
 	conOptions := shared.GetClientOptions(options)
-	authPolicy := shared.NewStorageChallengePolicy(cred, audience, conOptions.InsecureAllowCredentialWithHTTP)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(containerURL, cred, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -63,12 +57,8 @@ func NewClient(containerURL string, cred azcore.TokenCredential, options *Client
 //   - options - client options; pass nil to accept the default values
 func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Client, error) {
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(containerURL, nil, nil, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -80,14 +70,9 @@ func NewClientWithNoCredential(containerURL string, options *ClientOptions) (*Cl
 //   - cred - a SharedKeyCredential created with the matching container's storage account and access key
 //   - options - client options; pass nil to accept the default values
 func NewClientWithSharedKeyCredential(containerURL string, cred *SharedKeyCredential, options *ClientOptions) (*Client, error) {
-	authPolicy := exported.NewSharedKeyCredPolicy(cred)
 	conOptions := shared.GetClientOptions(options)
-	plOpts := runtime.PipelineOptions{PerCall: []policy.Policy{shared.NewRangePolicy()}, PerRetry: []policy.Policy{authPolicy}}
-	if p := base.NewExpectContinuePolicy(conOptions.ExpectContinueBehavior); p != nil {
-		plOpts.PerRetry = append(plOpts.PerRetry, p)
-	}
 
-	azClient, err := azcore.NewClient(exported.ModuleName, exported.ModuleVersion, plOpts, &conOptions.ClientOptions)
+	azClient, err := base.GetAzClient(containerURL, nil, cred, (*base.ClientOptions)(conOptions))
 	if err != nil {
 		return nil, err
 	}
@@ -256,15 +241,17 @@ func (c *Client) GetAccountInfo(ctx context.Context, o *GetAccountInfoOptions) (
 func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[ListBlobsFlatResponse] {
 	listOptions := generated.ContainerClientListBlobFlatSegmentOptions{}
 	arrowOptions := o.formatArrow()
-	var useArrow bool
+	// nil options select the default format, as empty options do
+	format := exported.StorageResponseFormatAuto
 	if o != nil {
 		listOptions.Include = o.Include.format()
 		listOptions.Marker = o.Marker
 		listOptions.Maxresults = o.MaxResults
 		listOptions.Prefix = o.Prefix
 		listOptions.StartFrom = o.StartFrom
-		useArrow = exported.ResolveAutoFormat(o.ResponseFormat) == exported.StorageResponseFormatArrow
+		format = o.ResponseFormat
 	}
+	useArrow := exported.ResolveAutoFormat(format) == exported.StorageResponseFormatArrow
 	return runtime.NewPager(runtime.PagingHandler[ListBlobsFlatResponse]{
 		More: func(page ListBlobsFlatResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -292,7 +279,15 @@ func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[L
 			// Otherwise fall back to XML parsing (handles Photon-not-enabled case).
 			arrowResp := useArrow && strings.HasPrefix(resp.Header.Get(shared.HeaderContentType), arrow.ArrowContentType)
 			if arrowResp && runtime.HasStatusCode(resp, http.StatusOK) {
-				return arrow.HandleFlatListResponse(resp)
+				result, err := arrow.HandleFlatListResponse(resp)
+				if err != nil {
+					return result, err
+				}
+				// An Arrow listing carries only the blobs and the next marker. Report the request values
+				// that an XML listing echoes back; ServiceEndpoint can't be known, so it stays nil.
+				result.ContainerName = c.listContainerName()
+				result.Prefix, result.Marker, result.MaxResults = arrowOptions.Prefix, arrowOptions.Marker, arrowOptions.Maxresults
+				return result, nil
 			}
 			return c.generated().ListBlobFlatSegmentHandleResponse(resp, http.StatusOK)
 		},
@@ -307,10 +302,12 @@ func (c *Client) NewListBlobsFlatPager(o *ListBlobsFlatOptions) *runtime.Pager[L
 func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierarchyOptions) *runtime.Pager[ListBlobsHierarchyResponse] {
 	listOptions := o.format()
 	arrowOptions := o.formatArrow()
-	var useArrow bool
+	// nil options select the default format, as empty options do
+	format := exported.StorageResponseFormatAuto
 	if o != nil {
-		useArrow = exported.ResolveAutoFormat(o.ResponseFormat) == exported.StorageResponseFormatArrow
+		format = o.ResponseFormat
 	}
+	useArrow := exported.ResolveAutoFormat(format) == exported.StorageResponseFormatArrow
 	return runtime.NewPager(runtime.PagingHandler[ListBlobsHierarchyResponse]{
 		More: func(page ListBlobsHierarchyResponse) bool {
 			return page.NextMarker != nil && len(*page.NextMarker) > 0
@@ -336,11 +333,31 @@ func (c *Client) NewListBlobsHierarchyPager(delimiter string, o *ListBlobsHierar
 			}
 			arrowResp := useArrow && strings.HasPrefix(resp.Header.Get(shared.HeaderContentType), arrow.ArrowContentType)
 			if arrowResp && runtime.HasStatusCode(resp, http.StatusOK) {
-				return arrow.HandleHierarchyListResponse(resp)
+				result, err := arrow.HandleHierarchyListResponse(resp)
+				if err != nil {
+					return result, err
+				}
+				// An Arrow listing carries only the blobs and the next marker. Report the request values
+				// that an XML listing echoes back; ServiceEndpoint can't be known, so it stays nil.
+				result.ContainerName = c.listContainerName()
+				result.Prefix, result.Marker, result.MaxResults = arrowOptions.Prefix, arrowOptions.Marker, arrowOptions.Maxresults
+				if delimiter != "" {
+					result.Delimiter = &delimiter
+				}
+				return result, nil
 			}
 			return c.generated().ListBlobHierarchySegmentHandleResponse(resp, http.StatusOK)
 		},
 	})
+}
+
+// listContainerName returns the name of the container a listing request addresses, which an XML
+// listing echoes back, for listings returned in Arrow format.
+func (c *Client) listContainerName() *string {
+	if parts, err := blob.ParseURL(c.URL()); err == nil && parts.ContainerName != "" {
+		return &parts.ContainerName
+	}
+	return nil
 }
 
 // GetSASURL is a convenience method for generating a SAS token for the currently pointed at container.

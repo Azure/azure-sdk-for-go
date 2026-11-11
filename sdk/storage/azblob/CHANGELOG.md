@@ -1,17 +1,54 @@
 # Release History
 
-## 1.8.3-beta.1 (Unreleased)
+## 1.9.0-beta.1 (Unreleased)
 
 ### Features Added
+* Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
+  clients authenticated with an `azcore.TokenCredential`; clients using a shared key, a SAS or no credential ignore
+  these options. With `SessionOptions.Enabled` set to true, Get Blob requests (`blob.Client.DownloadStream` and the
+  downloads built on it) are authenticated with a session created and cached per container; every other request keeps
+  using the bearer token. The default, nil, currently resolves to disabled; false disables sessions explicitly.
+  * The account name that signs session requests is derived from the client's URL, or set with
+    `SessionOptions.AccountName` for a custom domain. When it can be determined from neither, client construction
+    fails if `SessionOptions.Enabled` was set to true.
+  * Each client creates its own session cache, shared with the clients derived from it.
+  * Sessions are refreshed in the background shortly before they expire. If the service indicates sessions are
+    unavailable, or rejects a session, the client transparently falls back to bearer token authentication.
+* Added support for data locality in managed downloads through `LayoutAwareRouting` on `DownloadBufferOptions` and
+  `DownloadFileOptions`. When it is set to true and the initial read carries the service's layout download hint, the
+  remaining blocks are routed to the endpoint that serves each one, using a cached layout that is refreshed in the
+  background. The default, nil, currently resolves to disabled; false disables it explicitly. When the service can't
+  provide a layout, downloads use the client's configured endpoint.
 
 ### Breaking Changes
+* `UploadBuffer` and `UploadFile` on `blockblob.Client` and `azblob.Client` now size the initial request the same as
+  subsequent blocks. Content is uploaded with a single Put Blob request only if it is no larger than the block size:
+  the explicitly set `BlockSize`, or by default `blob.DefaultDownloadBlockSize` (4MB), raised as needed to fit the
+  content in `blockblob.MaxBlocks` blocks. Previously, content of up to 256MB was uploaded with a single request,
+  whatever the `BlockSize`. Uploads may now be partitioned more often, leading to more requests.
+  * To keep uploading content of up to 256MB with a single request, set `BlockSize` to `blockblob.MaxUploadBlobBytes`
+    for that content. Don't set it for larger content, which would then be staged in 256MB blocks instead of the
+    default block size.
+  * A negative `BlockSize` now returns an error. Previously, content of up to 256MB was uploaded regardless.
+
+### Bugs Fixed
+* Fixed `UploadBuffer` and `UploadFile` dropping the `AccessConditions` (ETag conditions and lease) from the Put Block
+  List request that commits a staged upload.
+* Fixed a panic in `UploadBuffer` and `UploadFile` when the block size split the content into more than 65,535
+  blocks. Such uploads now return the block limit error before sending any request.
+
+### Other Changes
+* Corrected doc comments on `ListBlobsFlatOptions`, `ListBlobsHierarchyOptions`, `FilterBlobsOptions` and the page blob `GetPageRanges*Options` that incorrectly referred to "containers".
+* Updated the service version to `2027-03-07`.
+* Updated `sdk/storage/internal` version to `0.2.0`
+
+## 1.8.3 (2026-11-02)
 
 ### Bugs Fixed
 * Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
 
 ### Other Changes
-
-* Corrected doc comments on `ListBlobsFlatOptions`, `ListBlobsHierarchyOptions`, `FilterBlobsOptions` and the page blob `GetPageRanges*Options` that incorrectly referred to "containers".
+* Updated `azcore` version to `1.23.3`
 
 ## 1.8.2 (2026-10-01)
 

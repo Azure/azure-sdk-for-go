@@ -67,7 +67,8 @@ func (client *ForwardingRulesClient) CreateOrUpdate(ctx context.Context, resourc
 	if err != nil {
 		return ForwardingRulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -143,7 +144,8 @@ func (client *ForwardingRulesClient) Delete(ctx context.Context, resourceGroupNa
 		return ForwardingRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ForwardingRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ForwardingRulesClientDeleteResponse{}, err
 	}
 	return ForwardingRulesClientDeleteResponse{}, nil
 }
@@ -200,7 +202,8 @@ func (client *ForwardingRulesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ForwardingRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -346,7 +349,8 @@ func (client *ForwardingRulesClient) Update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ForwardingRulesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

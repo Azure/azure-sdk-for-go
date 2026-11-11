@@ -64,7 +64,8 @@ func (client *OperationClient) Validate(ctx context.Context, vaultName string, r
 	if err != nil {
 		return OperationClientValidateResponse{}, err
 	}
-	return client.validateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCreateRequest creates the Validate request.

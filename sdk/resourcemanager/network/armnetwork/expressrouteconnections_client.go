@@ -87,7 +87,8 @@ func (client *ExpressRouteConnectionsClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -135,7 +136,7 @@ func (client *ExpressRouteConnectionsClient) createOrUpdateCreateRequest(ctx con
 //     method.
 func (client *ExpressRouteConnectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, connectionName string, options *ExpressRouteConnectionsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteConnectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, expressRouteGatewayName, connectionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRouteGatewayName, connectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -150,9 +151,9 @@ func (client *ExpressRouteConnectionsClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// delete - Deletes a connection to a ExpressRoute circuit.
+// deleteOperation - Deletes a connection to a ExpressRoute circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRouteConnectionsClient) delete(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, connectionName string, options *ExpressRouteConnectionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRouteConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, connectionName string, options *ExpressRouteConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteConnectionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -167,7 +168,8 @@ func (client *ExpressRouteConnectionsClient) delete(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -222,7 +224,8 @@ func (client *ExpressRouteConnectionsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return ExpressRouteConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -287,7 +290,8 @@ func (client *ExpressRouteConnectionsClient) List(ctx context.Context, resourceG
 	if err != nil {
 		return ExpressRouteConnectionsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

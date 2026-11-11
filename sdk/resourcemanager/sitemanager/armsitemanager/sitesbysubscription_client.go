@@ -67,7 +67,7 @@ func (client *SitesBySubscriptionClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Create a Site
+// createOrUpdate - Create a Site
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SitesBySubscriptionClient) createOrUpdate(ctx context.Context, siteName string, resource Site, options *SitesBySubscriptionClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -84,12 +84,13 @@ func (client *SitesBySubscriptionClient) createOrUpdate(ctx context.Context, sit
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SitesBySubscriptionClient) createOrUpdateCreateRequest(ctx context.Context, siteName string, resource Site, _ *SitesBySubscriptionClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Edge/sites/{siteName}"
 	if client.subscriptionID == "" {
@@ -135,7 +136,8 @@ func (client *SitesBySubscriptionClient) Delete(ctx context.Context, siteName st
 		return SitesBySubscriptionClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SitesBySubscriptionClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SitesBySubscriptionClientDeleteResponse{}, err
 	}
 	return SitesBySubscriptionClientDeleteResponse{}, nil
 }
@@ -179,7 +181,8 @@ func (client *SitesBySubscriptionClient) Get(ctx context.Context, siteName strin
 	if err != nil {
 		return SitesBySubscriptionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -303,7 +306,8 @@ func (client *SitesBySubscriptionClient) Update(ctx context.Context, siteName st
 	if err != nil {
 		return SitesBySubscriptionClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

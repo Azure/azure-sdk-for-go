@@ -60,7 +60,8 @@ func (client *PartnerTransfersClient) Cancel(ctx context.Context, billingAccount
 	if err != nil {
 		return PartnerTransfersClientCancelResponse{}, err
 	}
-	return client.cancelHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.cancelHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -127,7 +128,8 @@ func (client *PartnerTransfersClient) Get(ctx context.Context, billingAccountNam
 	if err != nil {
 		return PartnerTransfersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -196,7 +198,8 @@ func (client *PartnerTransfersClient) Initiate(ctx context.Context, billingAccou
 	if err != nil {
 		return PartnerTransfersClientInitiateResponse{}, err
 	}
-	return client.initiateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.initiateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // initiateCreateRequest creates the Initiate request.

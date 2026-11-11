@@ -46,71 +46,6 @@ func NewJobExecutionsClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// Cancel - Requests cancellation of a job execution.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - serverName - The name of the server.
-//   - jobAgentName - The name of the job agent.
-//   - jobName - The name of the job.
-//   - jobExecutionID - The id of the job execution
-//   - options - JobExecutionsClientCancelOptions contains the optional parameters for the JobExecutionsClient.Cancel method.
-func (client *JobExecutionsClient) Cancel(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientCancelOptions) (JobExecutionsClientCancelResponse, error) {
-	var err error
-	const operationName = "JobExecutionsClient.Cancel"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.cancelCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
-	if err != nil {
-		return JobExecutionsClientCancelResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return JobExecutionsClientCancelResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return JobExecutionsClientCancelResponse{}, runtime.NewResponseError(httpResp)
-	}
-	return JobExecutionsClientCancelResponse{}, nil
-}
-
-// cancelCreateRequest creates the Cancel request.
-func (client *JobExecutionsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, _ *JobExecutionsClientCancelOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/cancel"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if serverName == "" {
-		return nil, errors.New("parameter serverName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
-	if jobAgentName == "" {
-		return nil, errors.New("parameter jobAgentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
-	if jobName == "" {
-		return nil, errors.New("parameter jobName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
-	if jobExecutionID == "" {
-		return nil, errors.New("parameter jobExecutionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
 // BeginCreate - Starts an elastic job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -136,7 +71,7 @@ func (client *JobExecutionsClient) BeginCreate(ctx context.Context, resourceGrou
 	}
 }
 
-// Create - Starts an elastic job execution.
+// create - Starts an elastic job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *JobExecutionsClient) create(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, options *JobExecutionsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -153,12 +88,13 @@ func (client *JobExecutionsClient) create(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *JobExecutionsClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, _ *JobExecutionsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/start"
 	if client.subscriptionID == "" {
@@ -218,7 +154,7 @@ func (client *JobExecutionsClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// CreateOrUpdate - Creates or updates a job execution.
+// createOrUpdate - Creates or updates a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *JobExecutionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -235,12 +171,13 @@ func (client *JobExecutionsClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *JobExecutionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, _ *JobExecutionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}"
 	if client.subscriptionID == "" {
@@ -278,6 +215,72 @@ func (client *JobExecutionsClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, nil
 }
 
+// Cancel - Requests cancellation of a job execution.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - serverName - The name of the server.
+//   - jobAgentName - The name of the job agent.
+//   - jobName - The name of the job.
+//   - jobExecutionID - The id of the job execution
+//   - options - JobExecutionsClientCancelOptions contains the optional parameters for the JobExecutionsClient.Cancel method.
+func (client *JobExecutionsClient) Cancel(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, options *JobExecutionsClientCancelOptions) (JobExecutionsClientCancelResponse, error) {
+	var err error
+	const operationName = "JobExecutionsClient.Cancel"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.cancelCreateRequest(ctx, resourceGroupName, serverName, jobAgentName, jobName, jobExecutionID, options)
+	if err != nil {
+		return JobExecutionsClientCancelResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return JobExecutionsClientCancelResponse{}, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return JobExecutionsClientCancelResponse{}, err
+	}
+	return JobExecutionsClientCancelResponse{}, nil
+}
+
+// cancelCreateRequest creates the Cancel request.
+func (client *JobExecutionsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, serverName string, jobAgentName string, jobName string, jobExecutionID string, _ *JobExecutionsClientCancelOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/executions/{jobExecutionId}/cancel"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if serverName == "" {
+		return nil, errors.New("parameter serverName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serverName}", url.PathEscape(serverName))
+	if jobAgentName == "" {
+		return nil, errors.New("parameter jobAgentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobAgentName}", url.PathEscape(jobAgentName))
+	if jobName == "" {
+		return nil, errors.New("parameter jobName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobName}", url.PathEscape(jobName))
+	if jobExecutionID == "" {
+		return nil, errors.New("parameter jobExecutionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobExecutionId}", url.PathEscape(jobExecutionID))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // Get - Gets a job execution.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -300,7 +303,8 @@ func (client *JobExecutionsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return JobExecutionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

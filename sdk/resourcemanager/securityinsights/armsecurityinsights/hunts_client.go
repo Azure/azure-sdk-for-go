@@ -66,7 +66,8 @@ func (client *HuntsClient) CreateOrUpdate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return HuntsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *HuntsClient) Delete(ctx context.Context, resourceGroupName string,
 		return HuntsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return HuntsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return HuntsClientDeleteResponse{}, err
 	}
 	return HuntsClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *HuntsClient) Get(ctx context.Context, resourceGroupName string, wo
 	if err != nil {
 		return HuntsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

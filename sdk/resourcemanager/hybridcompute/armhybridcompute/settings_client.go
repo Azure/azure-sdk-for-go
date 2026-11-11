@@ -66,7 +66,8 @@ func (client *SettingsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return SettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -142,7 +143,8 @@ func (client *SettingsClient) Patch(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SettingsClientPatchResponse{}, err
 	}
-	return client.patchHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.patchHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // patchCreateRequest creates the Patch request.
@@ -222,7 +224,8 @@ func (client *SettingsClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return SettingsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

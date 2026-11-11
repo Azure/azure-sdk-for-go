@@ -7,11 +7,11 @@ package armcommvaultcontentstore_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/commvaultcontentstore/armcommvaultcontentstore/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-09-30/Operations_List_MaximumSet_Gen.json
+// Generated from example definition: 2026-11-03/Operations_List_MaximumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleOperationsClient_NewListPager_operationsListMaximumSetGeneratedByMax
 	}
 }
 
-// Generated from example definition: 2026-09-30/Operations_List_MinimumSet_Gen.json
+// Generated from example definition: 2026-11-03/Operations_List_MinimumSet_Gen.json
 func ExampleOperationsClient_NewListPager_operationsListMaximumSetGeneratedByMaximumSetRuleGeneratedByMaximumSetRuleGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

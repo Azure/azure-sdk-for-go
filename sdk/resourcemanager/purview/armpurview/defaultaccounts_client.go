@@ -57,7 +57,8 @@ func (client *DefaultAccountsClient) Get(ctx context.Context, scopeTenantID stri
 	if err != nil {
 		return DefaultAccountsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -113,7 +114,8 @@ func (client *DefaultAccountsClient) Remove(ctx context.Context, scopeTenantID s
 		return DefaultAccountsClientRemoveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DefaultAccountsClientRemoveResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DefaultAccountsClientRemoveResponse{}, err
 	}
 	return DefaultAccountsClientRemoveResponse{}, nil
 }
@@ -156,7 +158,8 @@ func (client *DefaultAccountsClient) Set(ctx context.Context, defaultAccountPayl
 	if err != nil {
 		return DefaultAccountsClientSetResponse{}, err
 	}
-	return client.setHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.setHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // setCreateRequest creates the Set request.

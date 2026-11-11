@@ -64,7 +64,8 @@ func (client *JobsClient) Export(ctx context.Context, vaultName string, resource
 		return JobsClientExportResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return JobsClientExportResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JobsClientExportResponse{}, err
 	}
 	return JobsClientExportResponse{}, nil
 }

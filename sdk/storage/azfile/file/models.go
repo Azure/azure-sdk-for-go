@@ -1076,6 +1076,28 @@ func (o *GetSymbolicLinkOptions) format(fileRequestIntent *generated.ShareTokenI
 
 // ---------------------------------------------------------------------------------------------------------------------
 
+// GetFileLinksOptions contains the optional parameters for the Client.GetFileLinks method.
+type GetFileLinksOptions struct {
+	LeaseAccessConditions *LeaseAccessConditions
+	ShareSnapshot         *string
+}
+
+func (o *GetFileLinksOptions) format(fileRequestIntent *generated.ShareTokenIntent) *generated.FileClientGetHardLinksOptions {
+	opts := &generated.FileClientGetHardLinksOptions{
+		FileRequestIntent: fileRequestIntent,
+	}
+	if o == nil {
+		return opts
+	}
+	opts.Sharesnapshot = o.ShareSnapshot
+	if o.LeaseAccessConditions != nil {
+		opts.LeaseID = o.LeaseAccessConditions.LeaseID
+	}
+	return opts
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+
 // ListHandlesOptions contains the optional parameters for the Client.ListHandles method.
 type ListHandlesOptions struct {
 	// A string value that identifies the portion of the list to be returned with the next list operation. The operation returns

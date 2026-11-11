@@ -66,7 +66,8 @@ func (client *DefenderForAISettingsClient) CreateOrUpdate(ctx context.Context, r
 	if err != nil {
 		return DefenderForAISettingsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *DefenderForAISettingsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return DefenderForAISettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -280,7 +282,8 @@ func (client *DefenderForAISettingsClient) Update(ctx context.Context, resourceG
 	if err != nil {
 		return DefenderForAISettingsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

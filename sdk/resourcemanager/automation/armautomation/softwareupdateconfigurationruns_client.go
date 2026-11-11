@@ -65,7 +65,8 @@ func (client *SoftwareUpdateConfigurationRunsClient) GetByID(ctx context.Context
 	if err != nil {
 		return SoftwareUpdateConfigurationRunsClientGetByIDResponse{}, err
 	}
-	return client.getByIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByIDCreateRequest creates the GetByID request.
@@ -133,7 +134,8 @@ func (client *SoftwareUpdateConfigurationRunsClient) List(ctx context.Context, r
 	if err != nil {
 		return SoftwareUpdateConfigurationRunsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

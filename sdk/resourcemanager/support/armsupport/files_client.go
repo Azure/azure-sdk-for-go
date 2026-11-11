@@ -64,7 +64,8 @@ func (client *FilesClient) Create(ctx context.Context, fileWorkspaceName string,
 	if err != nil {
 		return FilesClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -128,7 +129,8 @@ func (client *FilesClient) Get(ctx context.Context, fileWorkspaceName string, fi
 	if err != nil {
 		return FilesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -261,7 +263,8 @@ func (client *FilesClient) Upload(ctx context.Context, fileWorkspaceName string,
 		return FilesClientUploadResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return FilesClientUploadResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FilesClientUploadResponse{}, err
 	}
 	return FilesClientUploadResponse{}, nil
 }

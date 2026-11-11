@@ -19,7 +19,7 @@ import (
 // PrivateLinkScopesClient contains the methods for the PrivateLinkScopes group.
 // Don't use this type directly, use NewPrivateLinkScopesClient() instead.
 //
-// Generated from API version 2026-07-15
+// Generated from API version 2026-09-01
 type PrivateLinkScopesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -110,7 +110,7 @@ func (client *PrivateLinkScopesClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -161,7 +161,7 @@ func (client *PrivateLinkScopesClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -226,7 +226,7 @@ func (client *PrivateLinkScopesClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -288,7 +288,7 @@ func (client *PrivateLinkScopesClient) getValidationDetailsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -350,7 +350,7 @@ func (client *PrivateLinkScopesClient) getValidationDetailsForMachineCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -421,7 +421,7 @@ func (client *PrivateLinkScopesClient) listByResourceGroupCreateRequest(ctx cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -488,7 +488,7 @@ func (client *PrivateLinkScopesClient) listCreateRequest(ctx context.Context, ne
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -552,7 +552,7 @@ func (client *PrivateLinkScopesClient) updateTagsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

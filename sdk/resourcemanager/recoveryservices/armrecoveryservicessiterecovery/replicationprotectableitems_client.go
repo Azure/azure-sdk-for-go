@@ -69,7 +69,8 @@ func (client *ReplicationProtectableItemsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return ReplicationProtectableItemsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

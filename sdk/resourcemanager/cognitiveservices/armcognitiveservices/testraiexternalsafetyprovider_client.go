@@ -66,7 +66,8 @@ func (client *TestRaiExternalSafetyProviderClient) CreateOrUpdate(ctx context.Co
 	if err != nil {
 		return TestRaiExternalSafetyProviderClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.

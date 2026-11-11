@@ -67,7 +67,8 @@ func (client *ScopeConnectionsClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return ScopeConnectionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *ScopeConnectionsClient) Delete(ctx context.Context, resourceGroupN
 		return ScopeConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ScopeConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ScopeConnectionsClientDeleteResponse{}, err
 	}
 	return ScopeConnectionsClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *ScopeConnectionsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ScopeConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

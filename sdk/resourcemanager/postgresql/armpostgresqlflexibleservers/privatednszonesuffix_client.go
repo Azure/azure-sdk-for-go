@@ -54,7 +54,8 @@ func (client *PrivateDNSZoneSuffixClient) Get(ctx context.Context, options *Priv
 	if err != nil {
 		return PrivateDNSZoneSuffixClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -64,7 +64,8 @@ func (client *ProvisionedNetworksClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ProvisionedNetworksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

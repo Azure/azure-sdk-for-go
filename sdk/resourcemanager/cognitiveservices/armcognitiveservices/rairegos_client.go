@@ -66,7 +66,8 @@ func (client *RaiRegosClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return RaiRegosClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -145,7 +146,8 @@ func (client *RaiRegosClient) Delete(ctx context.Context, resourceGroupName stri
 		return RaiRegosClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return RaiRegosClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RaiRegosClientDeleteResponse{}, err
 	}
 	return RaiRegosClientDeleteResponse{}, nil
 }
@@ -202,7 +204,8 @@ func (client *RaiRegosClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return RaiRegosClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

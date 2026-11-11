@@ -95,53 +95,6 @@ func ExampleConnectionClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01/EnclaveConnection_Get.json
-func ExampleConnectionClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armenclave.NewClientFactory("73CEECEF-2C30-488E-946F-D20F414D99BA", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewConnectionClient().Get(ctx, "rgopenapi", "TestMyEnclaveConnection", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armenclave.ConnectionClientGetResponse{
-	// 	ConnectionResource: armenclave.ConnectionResource{
-	// 		Properties: &armenclave.ConnectionProperties{
-	// 			CommunityResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity"),
-	// 			SourceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave"),
-	// 			SourceCidr: to.Ptr("10.0.0.0/24"),
-	// 			DestinationEndpointID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/virtualenclaves/TestMyEnclave/enclaveendpoints/TestMyEnclaveEndpoint"),
-	// 			UpdateMode: to.Ptr(armenclave.UpdateModeManual),
-	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"sampletag": to.Ptr("samplevalue"),
-	// 		},
-	// 		Location: to.Ptr("West US"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/enclaveconnections/TestMyEnclaveConnection"),
-	// 		Name: to.Ptr("TestMyEnclaveConnection"),
-	// 		Type: to.Ptr("Microsoft.Mission/enclaveconnections"),
-	// 		SystemData: &armenclave.SystemData{
-	// 			CreatedBy: to.Ptr("myAlias"),
-	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("myAlias"),
-	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-04-01/EnclaveConnection_HandleApprovalCreation.json
 func ExampleConnectionClient_BeginHandleApprovalCreation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -202,6 +155,111 @@ func ExampleConnectionClient_BeginHandleApprovalDeletion() {
 	// res = armenclave.ConnectionClientHandleApprovalDeletionResponse{
 	// 	ApprovalActionResponse: armenclave.ApprovalActionResponse{
 	// 		Message: to.Ptr("Approval state change handled successfully."),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/EnclaveConnection_Update.json
+func ExampleConnectionClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armenclave.NewClientFactory("73CEECEF-2C30-488E-946F-D20F414D99BA", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewConnectionClient().BeginUpdate(ctx, "rgopenapi", "TestMyEnclaveConnection", armenclave.ConnectionPatchModel{
+		Tags: map[string]*string{
+			"sampletag": to.Ptr("samplevalue"),
+		},
+		Properties: &armenclave.ConnectionPatchProperties{
+			SourceCidr: to.Ptr("10.0.0.0/24"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armenclave.ConnectionClientUpdateResponse{
+	// 	ConnectionResource: armenclave.ConnectionResource{
+	// 		Properties: &armenclave.ConnectionProperties{
+	// 			CommunityResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave"),
+	// 			SourceCidr: to.Ptr("10.0.0.0/24"),
+	// 			DestinationEndpointID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/virtualenclaves/TestMyEnclave/enclaveendpoints/TestMyEnclaveEndpoint"),
+	// 			UpdateMode: to.Ptr(armenclave.UpdateModeManual),
+	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"sampletag": to.Ptr("samplevalue"),
+	// 		},
+	// 		Location: to.Ptr("West US"),
+	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/enclaveconnections/TestMyEnclaveConnection"),
+	// 		Name: to.Ptr("TestMyEnclaveConnection"),
+	// 		Type: to.Ptr("Microsoft.Mission/enclaveconnections"),
+	// 		SystemData: &armenclave.SystemData{
+	// 			CreatedBy: to.Ptr("myAlias"),
+	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("myAlias"),
+	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/EnclaveConnection_Get.json
+func ExampleConnectionClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armenclave.NewClientFactory("73CEECEF-2C30-488E-946F-D20F414D99BA", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewConnectionClient().Get(ctx, "rgopenapi", "TestMyEnclaveConnection", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armenclave.ConnectionClientGetResponse{
+	// 	ConnectionResource: armenclave.ConnectionResource{
+	// 		Properties: &armenclave.ConnectionProperties{
+	// 			CommunityResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave"),
+	// 			SourceCidr: to.Ptr("10.0.0.0/24"),
+	// 			DestinationEndpointID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/virtualenclaves/TestMyEnclave/enclaveendpoints/TestMyEnclaveEndpoint"),
+	// 			UpdateMode: to.Ptr(armenclave.UpdateModeManual),
+	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"sampletag": to.Ptr("samplevalue"),
+	// 		},
+	// 		Location: to.Ptr("West US"),
+	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/enclaveconnections/TestMyEnclaveConnection"),
+	// 		Name: to.Ptr("TestMyEnclaveConnection"),
+	// 		Type: to.Ptr("Microsoft.Mission/enclaveconnections"),
+	// 		SystemData: &armenclave.SystemData{
+	// 			CreatedBy: to.Ptr("myAlias"),
+	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("myAlias"),
+	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
+	// 		},
 	// 	},
 	// }
 }
@@ -318,62 +376,4 @@ func ExampleConnectionClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-04-01/EnclaveConnection_Update.json
-func ExampleConnectionClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armenclave.NewClientFactory("73CEECEF-2C30-488E-946F-D20F414D99BA", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewConnectionClient().BeginUpdate(ctx, "rgopenapi", "TestMyEnclaveConnection", armenclave.ConnectionPatchModel{
-		Tags: map[string]*string{
-			"sampletag": to.Ptr("samplevalue"),
-		},
-		Properties: &armenclave.ConnectionPatchProperties{
-			SourceCidr: to.Ptr("10.0.0.0/24"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armenclave.ConnectionClientUpdateResponse{
-	// 	ConnectionResource: armenclave.ConnectionResource{
-	// 		Properties: &armenclave.ConnectionProperties{
-	// 			CommunityResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/testrg/providers/Microsoft.Mission/communities/TestMyCommunity"),
-	// 			SourceResourceID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/microsoft.mission/virtualenclaves/TestMyEnclave"),
-	// 			SourceCidr: to.Ptr("10.0.0.0/24"),
-	// 			DestinationEndpointID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/virtualenclaves/TestMyEnclave/enclaveendpoints/TestMyEnclaveEndpoint"),
-	// 			UpdateMode: to.Ptr(armenclave.UpdateModeManual),
-	// 			ProvisioningState: to.Ptr(armenclave.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"sampletag": to.Ptr("samplevalue"),
-	// 		},
-	// 		Location: to.Ptr("West US"),
-	// 		ID: to.Ptr("/subscriptions/c64f6eca-bdc5-4bc2-88d6-f8f1dc23f86c/resourceGroups/TestMyRg/providers/Microsoft.Mission/enclaveconnections/TestMyEnclaveConnection"),
-	// 		Name: to.Ptr("TestMyEnclaveConnection"),
-	// 		Type: to.Ptr("Microsoft.Mission/enclaveconnections"),
-	// 		SystemData: &armenclave.SystemData{
-	// 			CreatedBy: to.Ptr("myAlias"),
-	// 			CreatedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("myAlias"),
-	// 			LastModifiedByType: to.Ptr(armenclave.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.March, 17, 20, 43, 17, 760000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

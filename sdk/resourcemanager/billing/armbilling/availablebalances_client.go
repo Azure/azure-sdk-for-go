@@ -60,7 +60,8 @@ func (client *AvailableBalancesClient) GetByBillingAccount(ctx context.Context, 
 	if err != nil {
 		return AvailableBalancesClientGetByBillingAccountResponse{}, err
 	}
-	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
@@ -115,7 +116,8 @@ func (client *AvailableBalancesClient) GetByBillingProfile(ctx context.Context, 
 	if err != nil {
 		return AvailableBalancesClientGetByBillingProfileResponse{}, err
 	}
-	return client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.

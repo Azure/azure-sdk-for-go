@@ -64,7 +64,8 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) CreateOrUpdate(ctx
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -124,7 +125,8 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Delete(ctx context
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -180,7 +182,8 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Get(ctx context.Co
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -237,7 +240,8 @@ func (client *ConfigurationAssignmentsForSubscriptionsClient) Update(ctx context
 	if err != nil {
 		return ConfigurationAssignmentsForSubscriptionsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

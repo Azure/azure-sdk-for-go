@@ -118,6 +118,47 @@ func ExampleSQLMigrationServicesClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-09-01-preview/UpdateSqlMigrationService.json
+func ExampleSQLMigrationServicesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatamigration.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLMigrationServicesClient().BeginUpdate(ctx, "testrg", "testagent", armdatamigration.SQLMigrationServiceUpdate{
+		Tags: map[string]*string{
+			"mytag": to.Ptr("myval"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatamigration.SQLMigrationServicesClientUpdateResponse{
+	// 	SQLMigrationService: armdatamigration.SQLMigrationService{
+	// 		Name: to.Ptr("testagent"),
+	// 		Type: to.Ptr("Microsoft.DataMigration/sqlMigrationServices"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.DataMigration/sqlMigrationServices/testagent"),
+	// 		Location: to.Ptr("northeurope"),
+	// 		Properties: &armdatamigration.SQLMigrationServiceProperties{
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"mytag": to.Ptr("myval"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-09-01-preview/DeleteIntegrationRuntimeNode.json
 func ExampleSQLMigrationServicesClient_DeleteNode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -204,6 +245,51 @@ func ExampleSQLMigrationServicesClient_ListAuthKeys() {
 	// 	AuthenticationKeys: armdatamigration.AuthenticationKeys{
 	// 		AuthKey1: to.Ptr("IR@3c400518-8dce-479f-97f9-83d17c3d8c24@dmsv2test7@ServiceEndpoint=wu.frontend.int.clouddatahub-int.net@Kjvm37BceBapP0z7R2n3zZrvY/M79yo7Hg3rR+LjFFI="),
 	// 		AuthKey2: to.Ptr("IR@3c499528-8ace-47xf-97z9-83d17c3d8c24@dmsv2test7@ServiceEndpoint=wu.frontend.int.clouddatahub-int.net@Kjvm37BceBapP0z7R2n3zZrvY/M79yo7Hg3rR+LjFFI="),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-09-01-preview/GetMonitorDataSqlMigrationService.json
+func ExampleSQLMigrationServicesClient_ListMonitoringData() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatamigration.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewSQLMigrationServicesClient().ListMonitoringData(ctx, "testrg", "service1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatamigration.SQLMigrationServicesClientListMonitoringDataResponse{
+	// 	IntegrationRuntimeMonitoringData: armdatamigration.IntegrationRuntimeMonitoringData{
+	// 		Name: to.Ptr("IntegrationRuntime1"),
+	// 		Nodes: []*armdatamigration.NodeMonitoringData{
+	// 			{
+	// 				AvailableMemoryInMB: to.Ptr[int32](4219),
+	// 				ConcurrentJobsLimit: to.Ptr[int32](20),
+	// 				ConcurrentJobsRunning: to.Ptr[int32](0),
+	// 				CPUUtilization: to.Ptr[int32](66),
+	// 				NodeName: to.Ptr("DESKTOP-6AAAAAA"),
+	// 				ReceivedBytes: to.Ptr[float64](0.14946500957012177),
+	// 				SentBytes: to.Ptr[float64](0.24564747512340546),
+	// 			},
+	// 			{
+	// 				AvailableMemoryInMB: to.Ptr[int32](4219),
+	// 				ConcurrentJobsLimit: to.Ptr[int32](20),
+	// 				ConcurrentJobsRunning: to.Ptr[int32](0),
+	// 				CPUUtilization: to.Ptr[int32](66),
+	// 				NodeName: to.Ptr("DESKTOP-6AAAAAB"),
+	// 				ReceivedBytes: to.Ptr[float64](0.14946500957012177),
+	// 				SentBytes: to.Ptr[float64](0.24564747512340546),
+	// 			},
+	// 		},
 	// 	},
 	// }
 }
@@ -408,51 +494,6 @@ func ExampleSQLMigrationServicesClient_NewListMigrationsPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/GetMonitorDataSqlMigrationService.json
-func ExampleSQLMigrationServicesClient_ListMonitoringData() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatamigration.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewSQLMigrationServicesClient().ListMonitoringData(ctx, "testrg", "service1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatamigration.SQLMigrationServicesClientListMonitoringDataResponse{
-	// 	IntegrationRuntimeMonitoringData: armdatamigration.IntegrationRuntimeMonitoringData{
-	// 		Name: to.Ptr("IntegrationRuntime1"),
-	// 		Nodes: []*armdatamigration.NodeMonitoringData{
-	// 			{
-	// 				AvailableMemoryInMB: to.Ptr[int32](4219),
-	// 				ConcurrentJobsLimit: to.Ptr[int32](20),
-	// 				ConcurrentJobsRunning: to.Ptr[int32](0),
-	// 				CPUUtilization: to.Ptr[int32](66),
-	// 				NodeName: to.Ptr("DESKTOP-6AAAAAA"),
-	// 				ReceivedBytes: to.Ptr[float64](0.14946500957012177),
-	// 				SentBytes: to.Ptr[float64](0.24564747512340546),
-	// 			},
-	// 			{
-	// 				AvailableMemoryInMB: to.Ptr[int32](4219),
-	// 				ConcurrentJobsLimit: to.Ptr[int32](20),
-	// 				ConcurrentJobsRunning: to.Ptr[int32](0),
-	// 				CPUUtilization: to.Ptr[int32](66),
-	// 				NodeName: to.Ptr("DESKTOP-6AAAAAB"),
-	// 				ReceivedBytes: to.Ptr[float64](0.14946500957012177),
-	// 				SentBytes: to.Ptr[float64](0.24564747512340546),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-09-01-preview/RegenAuthKeysSqlMigrationService.json
 func ExampleSQLMigrationServicesClient_RegenerateAuthKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -476,47 +517,6 @@ func ExampleSQLMigrationServicesClient_RegenerateAuthKeys() {
 	// res = armdatamigration.SQLMigrationServicesClientRegenerateAuthKeysResponse{
 	// 	RegenAuthKeys: armdatamigration.RegenAuthKeys{
 	// 		AuthKey1: to.Ptr("IR@3c400538-8dce-479f-97f9-8abcd@dmsv2test7@ServiceEndpoint=wu.frontend.int.clouddatahub-int.net@KXYZ="),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-09-01-preview/UpdateSqlMigrationService.json
-func ExampleSQLMigrationServicesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatamigration.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLMigrationServicesClient().BeginUpdate(ctx, "testrg", "testagent", armdatamigration.SQLMigrationServiceUpdate{
-		Tags: map[string]*string{
-			"mytag": to.Ptr("myval"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatamigration.SQLMigrationServicesClientUpdateResponse{
-	// 	SQLMigrationService: armdatamigration.SQLMigrationService{
-	// 		Name: to.Ptr("testagent"),
-	// 		Type: to.Ptr("Microsoft.DataMigration/sqlMigrationServices"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.DataMigration/sqlMigrationServices/testagent"),
-	// 		Location: to.Ptr("northeurope"),
-	// 		Properties: &armdatamigration.SQLMigrationServiceProperties{
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"mytag": to.Ptr("myval"),
-	// 		},
 	// 	},
 	// }
 }

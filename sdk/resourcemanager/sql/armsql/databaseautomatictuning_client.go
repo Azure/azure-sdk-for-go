@@ -65,7 +65,8 @@ func (client *DatabaseAutomaticTuningClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return DatabaseAutomaticTuningClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -132,7 +133,8 @@ func (client *DatabaseAutomaticTuningClient) Update(ctx context.Context, resourc
 	if err != nil {
 		return DatabaseAutomaticTuningClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

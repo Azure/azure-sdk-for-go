@@ -67,7 +67,8 @@ func (client *SourceControlSyncJobClient) Create(ctx context.Context, resourceGr
 	if err != nil {
 		return SourceControlSyncJobClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -142,7 +143,8 @@ func (client *SourceControlSyncJobClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return SourceControlSyncJobClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

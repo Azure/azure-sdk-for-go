@@ -85,7 +85,8 @@ func (client *BackupsLongTermRetentionClient) start(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,8 @@ func (client *BackupsLongTermRetentionClient) CheckPrerequisites(ctx context.Con
 	if err != nil {
 		return BackupsLongTermRetentionClientCheckPrerequisitesResponse{}, err
 	}
-	return client.checkPrerequisitesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkPrerequisitesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkPrerequisitesCreateRequest creates the CheckPrerequisites request.
@@ -210,7 +212,8 @@ func (client *BackupsLongTermRetentionClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return BackupsLongTermRetentionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

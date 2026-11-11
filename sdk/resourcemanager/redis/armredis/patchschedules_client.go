@@ -66,7 +66,8 @@ func (client *PatchSchedulesClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return PatchSchedulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *PatchSchedulesClient) Delete(ctx context.Context, resourceGroupNam
 		return PatchSchedulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PatchSchedulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PatchSchedulesClientDeleteResponse{}, err
 	}
 	return PatchSchedulesClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *PatchSchedulesClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return PatchSchedulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

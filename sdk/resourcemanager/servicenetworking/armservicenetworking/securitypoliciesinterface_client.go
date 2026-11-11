@@ -70,7 +70,7 @@ func (client *SecurityPoliciesInterfaceClient) BeginCreateOrUpdate(ctx context.C
 	}
 }
 
-// CreateOrUpdate - Create a SecurityPolicy
+// createOrUpdate - Create a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecurityPoliciesInterfaceClient) createOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, resource SecurityPolicy, options *SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *SecurityPoliciesInterfaceClient) createOrUpdate(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SecurityPoliciesInterfaceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, resource SecurityPolicy, _ *SecurityPoliciesInterfaceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}"
 	if client.subscriptionID == "" {
@@ -150,7 +151,7 @@ func (client *SecurityPoliciesInterfaceClient) BeginDelete(ctx context.Context, 
 	}
 }
 
-// Delete - Delete a SecurityPolicy
+// deleteOperation - Delete a SecurityPolicy
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SecurityPoliciesInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, options *SecurityPoliciesInterfaceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,12 +168,13 @@ func (client *SecurityPoliciesInterfaceClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SecurityPoliciesInterfaceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, securityPolicyName string, _ *SecurityPoliciesInterfaceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/securityPolicies/{securityPolicyName}"
 	if client.subscriptionID == "" {
@@ -222,7 +224,8 @@ func (client *SecurityPoliciesInterfaceClient) Get(ctx context.Context, resource
 	if err != nil {
 		return SecurityPoliciesInterfaceClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -366,7 +369,8 @@ func (client *SecurityPoliciesInterfaceClient) Update(ctx context.Context, resou
 	if err != nil {
 		return SecurityPoliciesInterfaceClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

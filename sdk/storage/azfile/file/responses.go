@@ -107,3 +107,12 @@ type CreateSymbolicLinkResponse = generated.FileClientCreateSymbolicLinkResponse
 
 // GetSymbolicLinkResponse contains response from method Client.GetSymbolicLink
 type GetSymbolicLinkResponse = generated.FileClientGetSymbolicLinkResponse
+
+// GetFileLinksResponse contains the response from method Client.GetFileLinks.
+type GetFileLinksResponse = generated.FileClientGetHardLinksResponse
+
+// HardLink - A hard link to a file.
+type HardLink = generated.HardLink
+
+// HardLinkList - The list of hard links for a file.
+type HardLinkList = generated.HardLinkList

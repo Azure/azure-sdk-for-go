@@ -88,7 +88,8 @@ func (client *ResourceClient) updateNetworkSiblingSet(ctx context.Context, locat
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,8 @@ func (client *ResourceClient) CheckFilePathAvailability(ctx context.Context, loc
 	if err != nil {
 		return ResourceClientCheckFilePathAvailabilityResponse{}, err
 	}
-	return client.checkFilePathAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkFilePathAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkFilePathAvailabilityCreateRequest creates the CheckFilePathAvailability request.
@@ -204,7 +206,8 @@ func (client *ResourceClient) CheckNameAvailability(ctx context.Context, locatio
 	if err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -267,7 +270,8 @@ func (client *ResourceClient) CheckQuotaAvailability(ctx context.Context, locati
 	if err != nil {
 		return ResourceClientCheckQuotaAvailabilityResponse{}, err
 	}
-	return client.checkQuotaAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkQuotaAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkQuotaAvailabilityCreateRequest creates the CheckQuotaAvailability request.
@@ -330,7 +334,8 @@ func (client *ResourceClient) QueryNetworkSiblingSet(ctx context.Context, locati
 	if err != nil {
 		return ResourceClientQueryNetworkSiblingSetResponse{}, err
 	}
-	return client.queryNetworkSiblingSetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryNetworkSiblingSetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryNetworkSiblingSetCreateRequest creates the QueryNetworkSiblingSet request.
@@ -392,7 +397,8 @@ func (client *ResourceClient) QueryRegionInfo(ctx context.Context, location stri
 	if err != nil {
 		return ResourceClientQueryRegionInfoResponse{}, err
 	}
-	return client.queryRegionInfoHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryRegionInfoHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryRegionInfoCreateRequest creates the QueryRegionInfo request.

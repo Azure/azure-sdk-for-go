@@ -67,7 +67,8 @@ func (client *RegisteredAsnsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return RegisteredAsnsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *RegisteredAsnsClient) Delete(ctx context.Context, resourceGroupNam
 		return RegisteredAsnsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return RegisteredAsnsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RegisteredAsnsClientDeleteResponse{}, err
 	}
 	return RegisteredAsnsClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *RegisteredAsnsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return RegisteredAsnsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

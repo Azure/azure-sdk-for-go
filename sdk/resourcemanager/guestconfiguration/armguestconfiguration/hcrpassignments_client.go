@@ -66,7 +66,8 @@ func (client *HCRPAssignmentsClient) CreateOrUpdate(ctx context.Context, guestCo
 	if err != nil {
 		return HCRPAssignmentsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *HCRPAssignmentsClient) Delete(ctx context.Context, resourceGroupNa
 		return HCRPAssignmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return HCRPAssignmentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return HCRPAssignmentsClientDeleteResponse{}, err
 	}
 	return HCRPAssignmentsClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *HCRPAssignmentsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return HCRPAssignmentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

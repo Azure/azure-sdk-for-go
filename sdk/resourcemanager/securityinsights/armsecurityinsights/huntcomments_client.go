@@ -68,7 +68,8 @@ func (client *HuntCommentsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return HuntCommentsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -143,7 +144,8 @@ func (client *HuntCommentsClient) Delete(ctx context.Context, resourceGroupName 
 		return HuntCommentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return HuntCommentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return HuntCommentsClientDeleteResponse{}, err
 	}
 	return HuntCommentsClientDeleteResponse{}, nil
 }
@@ -202,7 +204,8 @@ func (client *HuntCommentsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return HuntCommentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

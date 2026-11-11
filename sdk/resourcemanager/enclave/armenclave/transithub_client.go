@@ -70,7 +70,7 @@ func (client *TransitHubClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create a TransitHubResource
+// createOrUpdate - Create a TransitHubResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TransitHubClient) createOrUpdate(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, resource TransitHubResource, options *TransitHubClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *TransitHubClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *TransitHubClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, resource TransitHubResource, _ *TransitHubClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/transitHubs/{transitHubName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *TransitHubClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a TransitHubResource
+// deleteOperation - Delete a TransitHubResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TransitHubClient) deleteOperation(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, options *TransitHubClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *TransitHubClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *TransitHubClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, _ *TransitHubClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/transitHubs/{transitHubName}"
 	if client.subscriptionID == "" {
@@ -200,6 +202,87 @@ func (client *TransitHubClient) deleteCreateRequest(ctx context.Context, resourc
 	return req, nil
 }
 
+// BeginUpdate - Update a TransitHubResource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - communityName - The name of the communityResource Resource
+//   - transitHubName - The name of the TransitHub Resource
+//   - properties - The resource properties to be updated.
+//   - options - TransitHubClientBeginUpdateOptions contains the optional parameters for the TransitHubClient.BeginUpdate method.
+func (client *TransitHubClient) BeginUpdate(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, properties TransitHubPatchModel, options *TransitHubClientBeginUpdateOptions) (*runtime.Poller[TransitHubClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, communityName, transitHubName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TransitHubClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TransitHubClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a TransitHubResource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *TransitHubClient) update(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, properties TransitHubPatchModel, options *TransitHubClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "TransitHubClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, communityName, transitHubName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *TransitHubClient) updateCreateRequest(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, properties TransitHubPatchModel, _ *TransitHubClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/transitHubs/{transitHubName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if communityName == "" {
+		return nil, errors.New("parameter communityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
+	if transitHubName == "" {
+		return nil, errors.New("parameter transitHubName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{transitHubName}", url.PathEscape(transitHubName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get a TransitHubResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -220,7 +303,8 @@ func (client *TransitHubClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return TransitHubClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -412,84 +496,4 @@ func (client *TransitHubClient) listBySubscriptionHandleResponse(resp *http.Resp
 		return TransitHubClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a TransitHubResource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - communityName - The name of the communityResource Resource
-//   - transitHubName - The name of the TransitHub Resource
-//   - properties - The resource properties to be updated.
-//   - options - TransitHubClientBeginUpdateOptions contains the optional parameters for the TransitHubClient.BeginUpdate method.
-func (client *TransitHubClient) BeginUpdate(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, properties TransitHubPatchModel, options *TransitHubClientBeginUpdateOptions) (*runtime.Poller[TransitHubClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, communityName, transitHubName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[TransitHubClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[TransitHubClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a TransitHubResource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *TransitHubClient) update(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, properties TransitHubPatchModel, options *TransitHubClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "TransitHubClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, communityName, transitHubName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *TransitHubClient) updateCreateRequest(ctx context.Context, resourceGroupName string, communityName string, transitHubName string, properties TransitHubPatchModel, _ *TransitHubClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/transitHubs/{transitHubName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if communityName == "" {
-		return nil, errors.New("parameter communityName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
-	if transitHubName == "" {
-		return nil, errors.New("parameter transitHubName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{transitHubName}", url.PathEscape(transitHubName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

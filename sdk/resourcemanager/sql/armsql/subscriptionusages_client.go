@@ -63,7 +63,8 @@ func (client *SubscriptionUsagesClient) Get(ctx context.Context, locationName st
 	if err != nil {
 		return SubscriptionUsagesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

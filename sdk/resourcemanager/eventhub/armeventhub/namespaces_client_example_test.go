@@ -12,35 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceCheckNameAvailability.json
-func ExampleNamespacesClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNamespacesClient().CheckNameAvailability(ctx, armeventhub.CheckNameAvailabilityParameter{
-		Name: to.Ptr("sdk-Namespace-8458"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventhub.NamespacesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: armeventhub.CheckNameAvailabilityResult{
-	// 		Message: to.Ptr(""),
-	// 		NameAvailable: to.Ptr(true),
-	// 		Reason: to.Ptr(armeventhub.UnavailableReasonNone),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceCreate.json
 func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -272,6 +243,87 @@ func ExampleNamespacesClient_BeginCreateOrUpdate_namespaceWithGeoDrCreate() {
 	// }
 }
 
+// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceDelete.json
+func ExampleNamespacesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("SampleSubscription", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespacesClient().BeginDelete(ctx, "ResurceGroupSample", "NamespaceSample", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventhub.NamespacesClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNamespaceFailover.json
+func ExampleNamespacesClient_BeginFailover() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("SampleSubscription", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNamespacesClient().BeginFailover(ctx, "ResurceGroupSample", "NamespaceGeoDRFailoverSample", armeventhub.FailOver{
+		Properties: &armeventhub.FailOverProperties{
+			Force:           to.Ptr(true),
+			PrimaryLocation: to.Ptr("centralus"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceCheckNameAvailability.json
+func ExampleNamespacesClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNamespacesClient().CheckNameAvailability(ctx, armeventhub.CheckNameAvailabilityParameter{
+		Name: to.Ptr("sdk-Namespace-8458"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventhub.NamespacesClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResult: armeventhub.CheckNameAvailabilityResult{
+	// 		Message: to.Ptr(""),
+	// 		NameAvailable: to.Ptr(true),
+	// 		Reason: to.Ptr(armeventhub.UnavailableReasonNone),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleCreate.json
 func ExampleNamespacesClient_CreateOrUpdateAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -430,32 +482,6 @@ func ExampleNamespacesClient_CreateOrUpdateNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceDelete.json
-func ExampleNamespacesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("SampleSubscription", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNamespacesClient().BeginDelete(ctx, "ResurceGroupSample", "NamespaceSample", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventhub.NamespacesClientDeleteResponse{
-	// }
-}
-
 // Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleDelete.json
 func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -476,32 +502,6 @@ func ExampleNamespacesClient_DeleteAuthorizationRule() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armeventhub.NamespacesClientDeleteAuthorizationRuleResponse{
 	// }
-}
-
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNamespaceFailover.json
-func ExampleNamespacesClient_BeginFailover() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("SampleSubscription", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNamespacesClient().BeginFailover(ctx, "ResurceGroupSample", "NamespaceGeoDRFailoverSample", armeventhub.FailOver{
-		Properties: &armeventhub.FailOverProperties{
-			Force:           to.Ptr(true),
-			PrimaryLocation: to.Ptr("centralus"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }
 
 // Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceGet.json
@@ -708,90 +708,109 @@ func ExampleNamespacesClient_GetNetworkRuleSet() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceList.json
-func ExampleNamespacesClient_NewListPager() {
+// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleListKey.json
+func ExampleNamespacesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("SampleSubscription", cred, nil)
+	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewNamespacesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeventhub.NamespacesClientListResponse{
-		// 	EHNamespaceListResult: armeventhub.EHNamespaceListResult{
-		// 		Value: []*armeventhub.EHNamespace{
-		// 			{
-		// 				Name: to.Ptr("NamespaceSample"),
-		// 				Type: to.Ptr("Microsoft.EventHub/Namespaces"),
-		// 				ID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/namespaces/NamespaceSample"),
-		// 				Identity: &armeventhub.Identity{
-		// 					Type: to.Ptr(armeventhub.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
-		// 					PrincipalID: to.Ptr("PrincipalIdGUID"),
-		// 					TenantID: to.Ptr("TenantIdGUID"),
-		// 					UserAssignedIdentities: map[string]*armeventhub.UserAssignedIdentity{
-		// 						"/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1": &armeventhub.UserAssignedIdentity{
-		// 							ClientID: to.Ptr("ClientIdGUID"),
-		// 							PrincipalID: to.Ptr("PrincipalIdGUID"),
-		// 						},
-		// 						"/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud2": &armeventhub.UserAssignedIdentity{
-		// 							ClientID: to.Ptr("6a35400f-6ccb-4817-8f1a-ce19ea4523bc"),
-		// 							PrincipalID: to.Ptr("ce2d5953-5c15-40ca-9d51-cc3f4a63b0f5"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Location: to.Ptr("East US"),
-		// 				Properties: &armeventhub.EHNamespaceProperties{
-		// 					ClusterArmID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test"),
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
-		// 					DisableLocalAuth: to.Ptr(false),
-		// 					Encryption: &armeventhub.Encryption{
-		// 						KeySource: to.Ptr("Microsoft.KeyVault"),
-		// 						KeyVaultProperties: []*armeventhub.KeyVaultProperties{
-		// 							{
-		// 								Identity: &armeventhub.UserAssignedIdentityProperties{
-		// 									UserAssignedIdentity: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1"),
-		// 								},
-		// 								KeyName: to.Ptr("Samplekey"),
-		// 								KeyVaultURI: to.Ptr("https://sample-keyvault-user.vault-int.azure-int.net"),
-		// 								KeyVersion: to.Ptr(""),
-		// 							},
-		// 						},
-		// 						RequireInfrastructureEncryption: to.Ptr(false),
-		// 					},
-		// 					IsAutoInflateEnabled: to.Ptr(false),
-		// 					MaximumThroughputUnits: to.Ptr[int32](0),
-		// 					MetricID: to.Ptr("MetricGUID:NamespaceSample"),
-		// 					MinimumTLSVersion: to.Ptr(armeventhub.TLSVersionOne2),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					ServiceBusEndpoint: to.Ptr("https://NamespaceSample.servicebus.windows-int.net:443/"),
-		// 					UpdatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 30, 55, 143000000, time.UTC)),
-		// 					ZoneRedundant: to.Ptr(false),
-		// 				},
-		// 				SKU: &armeventhub.SKU{
-		// 					Name: to.Ptr(armeventhub.SKUNameStandard),
-		// 					Capacity: to.Ptr[int32](0),
-		// 					Tier: to.Ptr(armeventhub.SKUTierStandard),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewNamespacesClient().ListKeys(ctx, "ArunMonocle", "sdk-Namespace-2702", "sdk-Authrules-1746", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventhub.NamespacesClientListKeysResponse{
+	// 	AccessKeys: armeventhub.AccessKeys{
+	// 		KeyName: to.Ptr("sdk-Authrules-1746"),
+	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-2702.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-1746;SharedAccessKey=############################################"),
+	// 		PrimaryKey: to.Ptr("############################################"),
+	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-2702.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-1746;SharedAccessKey=############################################"),
+	// 		SecondaryKey: to.Ptr("############################################"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01-preview/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetList.json
+func ExampleNamespacesClient_ListNetworkRuleSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeventhub.NewClientFactory("Subscription", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewNamespacesClient().ListNetworkRuleSet(ctx, "ResourceGroup", "sdk-Namespace-6019", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventhub.NamespacesClientListNetworkRuleSetResponse{
+	// 	NetworkRuleSetListResult: armeventhub.NetworkRuleSetListResult{
+	// 		Value: []*armeventhub.NetworkRuleSet{
+	// 			{
+	// 				Name: to.Ptr("default"),
+	// 				Type: to.Ptr("Microsoft.EventHub/Namespaces/NetworkRuleSet"),
+	// 				ID: to.Ptr("/subscriptions/subscriptionid/resourceGroups/resourcegroupid/providers/Microsoft.EventHub/namespaces/sdk-Namespace-9659/networkruleset/default"),
+	// 				Properties: &armeventhub.NetworkRuleSetProperties{
+	// 					DefaultAction: to.Ptr(armeventhub.DefaultActionDeny),
+	// 					IPRules: []*armeventhub.NWRuleSetIPRules{
+	// 						{
+	// 							Action: to.Ptr(armeventhub.NetworkRuleIPActionAllow),
+	// 							IPMask: to.Ptr("1.1.1.1"),
+	// 						},
+	// 						{
+	// 							Action: to.Ptr(armeventhub.NetworkRuleIPActionAllow),
+	// 							IPMask: to.Ptr("1.1.1.2"),
+	// 						},
+	// 						{
+	// 							Action: to.Ptr(armeventhub.NetworkRuleIPActionAllow),
+	// 							IPMask: to.Ptr("1.1.1.3"),
+	// 						},
+	// 						{
+	// 							Action: to.Ptr(armeventhub.NetworkRuleIPActionAllow),
+	// 							IPMask: to.Ptr("1.1.1.4"),
+	// 						},
+	// 						{
+	// 							Action: to.Ptr(armeventhub.NetworkRuleIPActionAllow),
+	// 							IPMask: to.Ptr("1.1.1.5"),
+	// 						},
+	// 					},
+	// 					VirtualNetworkRules: []*armeventhub.NWRuleSetVirtualNetworkRules{
+	// 						{
+	// 							IgnoreMissingVnetServiceEndpoint: to.Ptr(true),
+	// 							Subnet: &armeventhub.Subnet{
+	// 								ID: to.Ptr("/subscriptions/subscriptionid/resourcegroups/resourcegroupid/providers/Microsoft.Network/virtualNetworks/myvn/subnets/subnet2"),
+	// 							},
+	// 						},
+	// 						{
+	// 							IgnoreMissingVnetServiceEndpoint: to.Ptr(false),
+	// 							Subnet: &armeventhub.Subnet{
+	// 								ID: to.Ptr("/subscriptions/subscriptionid/resourcegroups/resourcegroupid/providers/Microsoft.Network/virtualNetworks/myvn/subnets/subnet3"),
+	// 							},
+	// 						},
+	// 						{
+	// 							IgnoreMissingVnetServiceEndpoint: to.Ptr(false),
+	// 							Subnet: &armeventhub.Subnet{
+	// 								ID: to.Ptr("/subscriptions/subscriptionid/resourcegroups/resourcegroupid/providers/Microsoft.Network/virtualNetworks/myvn/subnets/subnet6"),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleListAll.json
@@ -933,109 +952,90 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleListKey.json
-func ExampleNamespacesClient_ListKeys() {
+// Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceList.json
+func ExampleNamespacesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("5f750a97-50d9-4e36-8081-c9ee4c0210d4", cred, nil)
+	clientFactory, err := armeventhub.NewClientFactory("SampleSubscription", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNamespacesClient().ListKeys(ctx, "ArunMonocle", "sdk-Namespace-2702", "sdk-Authrules-1746", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewNamespacesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeventhub.NamespacesClientListResponse{
+		// 	EHNamespaceListResult: armeventhub.EHNamespaceListResult{
+		// 		Value: []*armeventhub.EHNamespace{
+		// 			{
+		// 				Name: to.Ptr("NamespaceSample"),
+		// 				Type: to.Ptr("Microsoft.EventHub/Namespaces"),
+		// 				ID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/namespaces/NamespaceSample"),
+		// 				Identity: &armeventhub.Identity{
+		// 					Type: to.Ptr(armeventhub.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+		// 					PrincipalID: to.Ptr("PrincipalIdGUID"),
+		// 					TenantID: to.Ptr("TenantIdGUID"),
+		// 					UserAssignedIdentities: map[string]*armeventhub.UserAssignedIdentity{
+		// 						"/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1": &armeventhub.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("ClientIdGUID"),
+		// 							PrincipalID: to.Ptr("PrincipalIdGUID"),
+		// 						},
+		// 						"/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud2": &armeventhub.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("6a35400f-6ccb-4817-8f1a-ce19ea4523bc"),
+		// 							PrincipalID: to.Ptr("ce2d5953-5c15-40ca-9d51-cc3f4a63b0f5"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Location: to.Ptr("East US"),
+		// 				Properties: &armeventhub.EHNamespaceProperties{
+		// 					ClusterArmID: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.EventHub/clusters/enc-test"),
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
+		// 					DisableLocalAuth: to.Ptr(false),
+		// 					Encryption: &armeventhub.Encryption{
+		// 						KeySource: to.Ptr("Microsoft.KeyVault"),
+		// 						KeyVaultProperties: []*armeventhub.KeyVaultProperties{
+		// 							{
+		// 								Identity: &armeventhub.UserAssignedIdentityProperties{
+		// 									UserAssignedIdentity: to.Ptr("/subscriptions/SampleSubscription/resourceGroups/ResurceGroupSample/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ud1"),
+		// 								},
+		// 								KeyName: to.Ptr("Samplekey"),
+		// 								KeyVaultURI: to.Ptr("https://sample-keyvault-user.vault-int.azure-int.net"),
+		// 								KeyVersion: to.Ptr(""),
+		// 							},
+		// 						},
+		// 						RequireInfrastructureEncryption: to.Ptr(false),
+		// 					},
+		// 					IsAutoInflateEnabled: to.Ptr(false),
+		// 					MaximumThroughputUnits: to.Ptr[int32](0),
+		// 					MetricID: to.Ptr("MetricGUID:NamespaceSample"),
+		// 					MinimumTLSVersion: to.Ptr(armeventhub.TLSVersionOne2),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					ServiceBusEndpoint: to.Ptr("https://NamespaceSample.servicebus.windows-int.net:443/"),
+		// 					UpdatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 30, 55, 143000000, time.UTC)),
+		// 					ZoneRedundant: to.Ptr(false),
+		// 				},
+		// 				SKU: &armeventhub.SKU{
+		// 					Name: to.Ptr(armeventhub.SKUNameStandard),
+		// 					Capacity: to.Ptr[int32](0),
+		// 					Tier: to.Ptr(armeventhub.SKUTierStandard),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventhub.NamespacesClientListKeysResponse{
-	// 	AccessKeys: armeventhub.AccessKeys{
-	// 		KeyName: to.Ptr("sdk-Authrules-1746"),
-	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-2702.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-1746;SharedAccessKey=############################################"),
-	// 		PrimaryKey: to.Ptr("############################################"),
-	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-namespace-2702.servicebus.windows-int.net/;SharedAccessKeyName=sdk-Authrules-1746;SharedAccessKey=############################################"),
-	// 		SecondaryKey: to.Ptr("############################################"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01-preview/NameSpaces/VirtualNetworkRule/EHNetworkRuleSetList.json
-func ExampleNamespacesClient_ListNetworkRuleSet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeventhub.NewClientFactory("Subscription", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewNamespacesClient().ListNetworkRuleSet(ctx, "ResourceGroup", "sdk-Namespace-6019", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventhub.NamespacesClientListNetworkRuleSetResponse{
-	// 	NetworkRuleSetListResult: armeventhub.NetworkRuleSetListResult{
-	// 		Value: []*armeventhub.NetworkRuleSet{
-	// 			{
-	// 				Name: to.Ptr("default"),
-	// 				Type: to.Ptr("Microsoft.EventHub/Namespaces/NetworkRuleSet"),
-	// 				ID: to.Ptr("/subscriptions/subscriptionid/resourceGroups/resourcegroupid/providers/Microsoft.EventHub/namespaces/sdk-Namespace-9659/networkruleset/default"),
-	// 				Properties: &armeventhub.NetworkRuleSetProperties{
-	// 					DefaultAction: to.Ptr(armeventhub.DefaultActionDeny),
-	// 					IPRules: []*armeventhub.NWRuleSetIPRules{
-	// 						{
-	// 							Action: to.Ptr(armeventhub.NetworkRuleIPActionAllow),
-	// 							IPMask: to.Ptr("1.1.1.1"),
-	// 						},
-	// 						{
-	// 							Action: to.Ptr(armeventhub.NetworkRuleIPActionAllow),
-	// 							IPMask: to.Ptr("1.1.1.2"),
-	// 						},
-	// 						{
-	// 							Action: to.Ptr(armeventhub.NetworkRuleIPActionAllow),
-	// 							IPMask: to.Ptr("1.1.1.3"),
-	// 						},
-	// 						{
-	// 							Action: to.Ptr(armeventhub.NetworkRuleIPActionAllow),
-	// 							IPMask: to.Ptr("1.1.1.4"),
-	// 						},
-	// 						{
-	// 							Action: to.Ptr(armeventhub.NetworkRuleIPActionAllow),
-	// 							IPMask: to.Ptr("1.1.1.5"),
-	// 						},
-	// 					},
-	// 					VirtualNetworkRules: []*armeventhub.NWRuleSetVirtualNetworkRules{
-	// 						{
-	// 							IgnoreMissingVnetServiceEndpoint: to.Ptr(true),
-	// 							Subnet: &armeventhub.Subnet{
-	// 								ID: to.Ptr("/subscriptions/subscriptionid/resourcegroups/resourcegroupid/providers/Microsoft.Network/virtualNetworks/myvn/subnets/subnet2"),
-	// 							},
-	// 						},
-	// 						{
-	// 							IgnoreMissingVnetServiceEndpoint: to.Ptr(false),
-	// 							Subnet: &armeventhub.Subnet{
-	// 								ID: to.Ptr("/subscriptions/subscriptionid/resourcegroups/resourcegroupid/providers/Microsoft.Network/virtualNetworks/myvn/subnets/subnet3"),
-	// 							},
-	// 						},
-	// 						{
-	// 							IgnoreMissingVnetServiceEndpoint: to.Ptr(false),
-	// 							Subnet: &armeventhub.Subnet{
-	// 								ID: to.Ptr("/subscriptions/subscriptionid/resourcegroups/resourcegroupid/providers/Microsoft.Network/virtualNetworks/myvn/subnets/subnet6"),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2025-05-01-preview/NameSpaces/EHNameSpaceAuthorizationRuleRegenerateKey.json

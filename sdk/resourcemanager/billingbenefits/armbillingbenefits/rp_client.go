@@ -54,7 +54,8 @@ func (client *RPClient) Validate(ctx context.Context, body BenefitValidateReques
 	if err != nil {
 		return RPClientValidateResponse{}, err
 	}
-	return client.validateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCreateRequest creates the Validate request.

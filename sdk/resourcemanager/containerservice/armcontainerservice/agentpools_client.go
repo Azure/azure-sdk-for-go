@@ -94,7 +94,8 @@ func (client *AgentPoolsClient) abortLatestOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -173,7 +174,8 @@ func (client *AgentPoolsClient) completeUpgrade(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -249,7 +251,8 @@ func (client *AgentPoolsClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -334,7 +337,8 @@ func (client *AgentPoolsClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -416,7 +420,8 @@ func (client *AgentPoolsClient) deleteMachines(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -497,7 +502,8 @@ func (client *AgentPoolsClient) update(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -586,7 +592,8 @@ func (client *AgentPoolsClient) upgradeNodeImageVersion(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -641,7 +648,8 @@ func (client *AgentPoolsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return AgentPoolsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -709,7 +717,8 @@ func (client *AgentPoolsClient) GetAvailableAgentPoolVersions(ctx context.Contex
 	if err != nil {
 		return AgentPoolsClientGetAvailableAgentPoolVersionsResponse{}, err
 	}
-	return client.getAvailableAgentPoolVersionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAvailableAgentPoolVersionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAvailableAgentPoolVersionsCreateRequest creates the GetAvailableAgentPoolVersions request.
@@ -771,7 +780,8 @@ func (client *AgentPoolsClient) GetUpgradeProfile(ctx context.Context, resourceG
 	if err != nil {
 		return AgentPoolsClientGetUpgradeProfileResponse{}, err
 	}
-	return client.getUpgradeProfileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getUpgradeProfileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getUpgradeProfileCreateRequest creates the GetUpgradeProfile request.
@@ -840,7 +850,8 @@ func (client *AgentPoolsClient) ListBootstrapData(ctx context.Context, resourceG
 	if err != nil {
 		return AgentPoolsClientListBootstrapDataResponse{}, err
 	}
-	return client.listBootstrapDataHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listBootstrapDataHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listBootstrapDataCreateRequest creates the ListBootstrapData request.

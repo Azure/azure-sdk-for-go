@@ -125,6 +125,90 @@ func ExampleAutoImportJobsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-08-01/autoImportJobs_Update.json
+func ExampleAutoImportJobsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAutoImportJobsClient().BeginUpdate(ctx, "scgroup", "fs1", "autojob1", armstoragecache.AutoImportJobUpdate{
+		Properties: &armstoragecache.AutoImportJobUpdateProperties{
+			AdminStatus: to.Ptr(armstoragecache.AutoImportJobUpdatePropertiesAdminStatusDisable),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstoragecache.AutoImportJobsClientUpdateResponse{
+	// 	AutoImportJob: armstoragecache.AutoImportJob{
+	// 		Name: to.Ptr("autojob1"),
+	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/autoImportJob"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/autoImportJobs/autojob1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armstoragecache.AutoImportJobProperties{
+	// 			AdminStatus: to.Ptr(armstoragecache.AutoImportJobPropertiesAdminStatusDisable),
+	// 			AutoImportPrefixes: []*string{
+	// 				to.Ptr("/"),
+	// 			},
+	// 			ConflictResolutionMode: to.Ptr(armstoragecache.ConflictResolutionModeSkip),
+	// 			EnableDeletions: to.Ptr(false),
+	// 			MaximumErrors: to.Ptr[int64](0),
+	// 			ProvisioningState: to.Ptr(armstoragecache.AutoImportJobPropertiesProvisioningStateSucceeded),
+	// 			Status: &armstoragecache.AutoImportJobPropertiesStatus{
+	// 				BlobSyncEvents: &armstoragecache.AutoImportJobPropertiesStatusBlobSyncEvents{
+	// 					Deletions: to.Ptr[int64](20),
+	// 					ImportedDirectories: to.Ptr[int64](100),
+	// 					ImportedFiles: to.Ptr[int64](500),
+	// 					ImportedSymlinks: to.Ptr[int64](50),
+	// 					LastChangeFeedEventConsumedTime: to.Ptr(time.Date(2024, time.March, 21, 18, 35, 43, 511000000, time.UTC)),
+	// 					LastTimeFullySynchronized: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 					PreexistingDirectories: to.Ptr[int64](1000),
+	// 					PreexistingFiles: to.Ptr[int64](10000),
+	// 					PreexistingSymlinks: to.Ptr[int64](200),
+	// 					RateOfBlobImport: to.Ptr[int64](0),
+	// 					TotalBlobsImported: to.Ptr[int64](11850),
+	// 					TotalConflicts: to.Ptr[int64](1),
+	// 					TotalErrors: to.Ptr[int64](3),
+	// 				},
+	// 				ImportedDirectories: to.Ptr[int64](1000),
+	// 				ImportedFiles: to.Ptr[int64](8000),
+	// 				ImportedSymlinks: to.Ptr[int64](1000),
+	// 				LastCompletionTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				LastStartedTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
+	// 				PreexistingDirectories: to.Ptr[int64](80000),
+	// 				PreexistingFiles: to.Ptr[int64](800000),
+	// 				PreexistingSymlinks: to.Ptr[int64](10000),
+	// 				RateOfBlobImport: to.Ptr[int64](0),
+	// 				RateOfBlobWalk: to.Ptr[int64](0),
+	// 				ScanEndTime: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
+	// 				ScanStartTime: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
+	// 				State: to.Ptr(armstoragecache.AutoImportJobStateDisabling),
+	// 				StatusMessage: to.Ptr("Auto import job is being disabled."),
+	// 				TotalBlobsImported: to.Ptr[int64](900000),
+	// 				TotalBlobsWalked: to.Ptr[int64](1000000),
+	// 				TotalConflicts: to.Ptr[int64](5),
+	// 				TotalErrors: to.Ptr[int64](10),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Dept": to.Ptr("ContosoAds"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-08-01/autoImportJobs_Get.json
 func ExampleAutoImportJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -335,88 +419,4 @@ func ExampleAutoImportJobsClient_NewListByAmlFilesystemPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-08-01/autoImportJobs_Update.json
-func ExampleAutoImportJobsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAutoImportJobsClient().BeginUpdate(ctx, "scgroup", "fs1", "autojob1", armstoragecache.AutoImportJobUpdate{
-		Properties: &armstoragecache.AutoImportJobUpdateProperties{
-			AdminStatus: to.Ptr(armstoragecache.AutoImportJobUpdatePropertiesAdminStatusDisable),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstoragecache.AutoImportJobsClientUpdateResponse{
-	// 	AutoImportJob: armstoragecache.AutoImportJob{
-	// 		Name: to.Ptr("autojob1"),
-	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/autoImportJob"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/autoImportJobs/autojob1"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armstoragecache.AutoImportJobProperties{
-	// 			AdminStatus: to.Ptr(armstoragecache.AutoImportJobPropertiesAdminStatusDisable),
-	// 			AutoImportPrefixes: []*string{
-	// 				to.Ptr("/"),
-	// 			},
-	// 			ConflictResolutionMode: to.Ptr(armstoragecache.ConflictResolutionModeSkip),
-	// 			EnableDeletions: to.Ptr(false),
-	// 			MaximumErrors: to.Ptr[int64](0),
-	// 			ProvisioningState: to.Ptr(armstoragecache.AutoImportJobPropertiesProvisioningStateSucceeded),
-	// 			Status: &armstoragecache.AutoImportJobPropertiesStatus{
-	// 				BlobSyncEvents: &armstoragecache.AutoImportJobPropertiesStatusBlobSyncEvents{
-	// 					Deletions: to.Ptr[int64](20),
-	// 					ImportedDirectories: to.Ptr[int64](100),
-	// 					ImportedFiles: to.Ptr[int64](500),
-	// 					ImportedSymlinks: to.Ptr[int64](50),
-	// 					LastChangeFeedEventConsumedTime: to.Ptr(time.Date(2024, time.March, 21, 18, 35, 43, 511000000, time.UTC)),
-	// 					LastTimeFullySynchronized: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
-	// 					PreexistingDirectories: to.Ptr[int64](1000),
-	// 					PreexistingFiles: to.Ptr[int64](10000),
-	// 					PreexistingSymlinks: to.Ptr[int64](200),
-	// 					RateOfBlobImport: to.Ptr[int64](0),
-	// 					TotalBlobsImported: to.Ptr[int64](11850),
-	// 					TotalConflicts: to.Ptr[int64](1),
-	// 					TotalErrors: to.Ptr[int64](3),
-	// 				},
-	// 				ImportedDirectories: to.Ptr[int64](1000),
-	// 				ImportedFiles: to.Ptr[int64](8000),
-	// 				ImportedSymlinks: to.Ptr[int64](1000),
-	// 				LastCompletionTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
-	// 				LastStartedTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
-	// 				PreexistingDirectories: to.Ptr[int64](80000),
-	// 				PreexistingFiles: to.Ptr[int64](800000),
-	// 				PreexistingSymlinks: to.Ptr[int64](10000),
-	// 				RateOfBlobImport: to.Ptr[int64](0),
-	// 				RateOfBlobWalk: to.Ptr[int64](0),
-	// 				ScanEndTime: to.Ptr(time.Date(2024, time.March, 21, 18, 25, 43, 511000000, time.UTC)),
-	// 				ScanStartTime: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
-	// 				State: to.Ptr(armstoragecache.AutoImportJobStateDisabling),
-	// 				StatusMessage: to.Ptr("Auto import job is being disabled."),
-	// 				TotalBlobsImported: to.Ptr[int64](900000),
-	// 				TotalBlobsWalked: to.Ptr[int64](1000000),
-	// 				TotalConflicts: to.Ptr[int64](5),
-	// 				TotalErrors: to.Ptr[int64](10),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"Dept": to.Ptr("ContosoAds"),
-	// 		},
-	// 	},
-	// }
 }

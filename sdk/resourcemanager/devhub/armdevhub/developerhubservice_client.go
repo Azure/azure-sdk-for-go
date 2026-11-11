@@ -65,7 +65,8 @@ func (client *DeveloperHubServiceClient) GeneratePreviewArtifacts(ctx context.Co
 	if err != nil {
 		return DeveloperHubServiceClientGeneratePreviewArtifactsResponse{}, err
 	}
-	return client.generatePreviewArtifactsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generatePreviewArtifactsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generatePreviewArtifactsCreateRequest creates the GeneratePreviewArtifacts request.
@@ -127,7 +128,8 @@ func (client *DeveloperHubServiceClient) GetADOOAuthInfo(ctx context.Context, lo
 	if err != nil {
 		return DeveloperHubServiceClientGetADOOAuthInfoResponse{}, err
 	}
-	return client.getADOOAuthInfoHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getADOOAuthInfoHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getADOOAuthInfoCreateRequest creates the GetADOOAuthInfo request.
@@ -192,7 +194,8 @@ func (client *DeveloperHubServiceClient) GitHubOAuth(ctx context.Context, locati
 	if err != nil {
 		return DeveloperHubServiceClientGitHubOAuthResponse{}, err
 	}
-	return client.gitHubOAuthHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.gitHubOAuthHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // gitHubOAuthCreateRequest creates the GitHubOAuth request.
@@ -259,7 +262,8 @@ func (client *DeveloperHubServiceClient) GitHubOAuthCallback(ctx context.Context
 	if err != nil {
 		return DeveloperHubServiceClientGitHubOAuthCallbackResponse{}, err
 	}
-	return client.gitHubOAuthCallbackHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.gitHubOAuthCallbackHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // gitHubOAuthCallbackCreateRequest creates the GitHubOAuthCallback request.
@@ -319,7 +323,8 @@ func (client *DeveloperHubServiceClient) ListGitHubOAuth(ctx context.Context, lo
 	if err != nil {
 		return DeveloperHubServiceClientListGitHubOAuthResponse{}, err
 	}
-	return client.listGitHubOAuthHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listGitHubOAuthHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listGitHubOAuthCreateRequest creates the ListGitHubOAuth request.

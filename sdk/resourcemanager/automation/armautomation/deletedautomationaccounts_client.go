@@ -62,7 +62,8 @@ func (client *DeletedAutomationAccountsClient) ListBySubscription(ctx context.Co
 	if err != nil {
 		return DeletedAutomationAccountsClientListBySubscriptionResponse{}, err
 	}
-	return client.listBySubscriptionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listBySubscriptionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.

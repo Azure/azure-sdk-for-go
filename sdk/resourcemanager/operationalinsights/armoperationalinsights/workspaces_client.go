@@ -432,6 +432,82 @@ func (client *WorkspacesClient) reconcileNSPCreateRequest(ctx context.Context, r
 	return req, nil
 }
 
+// BeginReconcileNSP - Reconcile network security perimeter configuration for Workspace resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - workspaceName - The name of the workspace.
+//   - networkSecurityPerimeterConfigurationName - The name for a network security perimeter configuration
+//   - options - WorkspacesClientBeginReconcileNSPOptions contains the optional parameters for the WorkspacesClient.BeginReconcileNSP
+//     method.
+func (client *WorkspacesClient) BeginReconcileNSP(ctx context.Context, resourceGroupName string, workspaceName string, networkSecurityPerimeterConfigurationName string, options *WorkspacesClientBeginReconcileNSPOptions) (*runtime.Poller[WorkspacesClientReconcileNSPResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.reconcileNSP(ctx, resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkspacesClientReconcileNSPResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkspacesClientReconcileNSPResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// reconcileNSP - Reconcile network security perimeter configuration for Workspace resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkspacesClient) reconcileNSP(ctx context.Context, resourceGroupName string, workspaceName string, networkSecurityPerimeterConfigurationName string, options *WorkspacesClientBeginReconcileNSPOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkspacesClient.BeginReconcileNSP"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.reconcileNSPCreateRequest(ctx, resourceGroupName, workspaceName, networkSecurityPerimeterConfigurationName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// reconcileNSPCreateRequest creates the reconcileNSP request.
+func (client *WorkspacesClient) reconcileNSPCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, networkSecurityPerimeterConfigurationName string, _ *WorkspacesClientBeginReconcileNSPOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/networkSecurityPerimeterConfigurations/{networkSecurityPerimeterConfigurationName}/reconcile"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if workspaceName == "" {
+		return nil, errors.New("parameter workspaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workspaceName}", url.PathEscape(workspaceName))
+	if networkSecurityPerimeterConfigurationName == "" {
+		return nil, errors.New("parameter networkSecurityPerimeterConfigurationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{networkSecurityPerimeterConfigurationName}", url.PathEscape(networkSecurityPerimeterConfigurationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // Get - Gets a workspace instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.

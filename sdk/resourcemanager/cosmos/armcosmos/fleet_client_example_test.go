@@ -12,6 +12,27 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetDelete.json
+func ExampleFleetClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFleetClient().BeginDelete(ctx, "rg1", "fleet1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetCreate.json
 func ExampleFleetClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -53,27 +74,6 @@ func ExampleFleetClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetDelete.json
-func ExampleFleetClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewFleetClient().BeginDelete(ctx, "rg1", "fleet1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
 // Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetGet.json
 func ExampleFleetClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -109,8 +109,8 @@ func ExampleFleetClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetList.json
-func ExampleFleetClient_NewListPager() {
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetList_ListByResourceGroup.json
+func ExampleFleetClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -120,7 +120,7 @@ func ExampleFleetClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFleetClient().NewListPager(nil)
+	pager := clientFactory.NewFleetClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -131,7 +131,7 @@ func ExampleFleetClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.FleetClientListResponse{
+		// page = armcosmos.FleetClientListByResourceGroupResponse{
 		// 	FleetListResult: armcosmos.FleetListResult{
 		// 		Value: []*armcosmos.FleetResource{
 		// 			{
@@ -166,8 +166,8 @@ func ExampleFleetClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetList_ListByResourceGroup.json
-func ExampleFleetClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-04-01-preview/fleet/CosmosDBFleetList.json
+func ExampleFleetClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -177,7 +177,7 @@ func ExampleFleetClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFleetClient().NewListByResourceGroupPager("rg1", nil)
+	pager := clientFactory.NewFleetClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -188,7 +188,7 @@ func ExampleFleetClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.FleetClientListByResourceGroupResponse{
+		// page = armcosmos.FleetClientListResponse{
 		// 	FleetListResult: armcosmos.FleetListResult{
 		// 		Value: []*armcosmos.FleetResource{
 		// 			{

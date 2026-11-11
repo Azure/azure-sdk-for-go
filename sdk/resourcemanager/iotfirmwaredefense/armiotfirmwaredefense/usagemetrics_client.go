@@ -64,7 +64,8 @@ func (client *UsageMetricsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return UsageMetricsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

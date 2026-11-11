@@ -66,7 +66,8 @@ func (client *ReplicationEligibilityResultsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return ReplicationEligibilityResultsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -129,7 +130,8 @@ func (client *ReplicationEligibilityResultsClient) List(ctx context.Context, res
 	if err != nil {
 		return ReplicationEligibilityResultsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

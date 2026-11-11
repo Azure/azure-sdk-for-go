@@ -66,7 +66,8 @@ func (client *CostControlsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return CostControlsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -145,7 +146,8 @@ func (client *CostControlsClient) Delete(ctx context.Context, resourceGroupName 
 		return CostControlsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return CostControlsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CostControlsClientDeleteResponse{}, err
 	}
 	return CostControlsClientDeleteResponse{}, nil
 }
@@ -202,7 +204,8 @@ func (client *CostControlsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return CostControlsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -347,7 +350,8 @@ func (client *CostControlsClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return CostControlsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

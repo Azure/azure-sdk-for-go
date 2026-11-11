@@ -120,7 +120,7 @@ func ExampleFleetClient_NewListByResourceGroupPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewFleetClient().NewListPager(nil)
+	pager := clientFactory.NewFleetClient().NewListByResourceGroupPager("rg1", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -131,7 +131,7 @@ func ExampleFleetClient_NewListByResourceGroupPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.FleetClientListResponse{
+		// page = armcosmos.FleetClientListByResourceGroupResponse{
 		// 	FleetListResult: armcosmos.FleetListResult{
 		// 		Value: []*armcosmos.FleetResource{
 		// 			{

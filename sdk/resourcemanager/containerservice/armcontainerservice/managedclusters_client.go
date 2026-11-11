@@ -93,7 +93,8 @@ func (client *ManagedClustersClient) abortLatestOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -164,7 +165,8 @@ func (client *ManagedClustersClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -245,7 +247,8 @@ func (client *ManagedClustersClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -322,7 +325,8 @@ func (client *ManagedClustersClient) rebalanceLoadBalancers(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -403,7 +407,8 @@ func (client *ManagedClustersClient) resetAADProfile(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -482,7 +487,8 @@ func (client *ManagedClustersClient) resetServicePrincipalProfile(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -562,7 +568,8 @@ func (client *ManagedClustersClient) rotateClusterCertificates(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -632,7 +639,8 @@ func (client *ManagedClustersClient) rotateServiceAccountSigningKeys(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -709,7 +717,8 @@ func (client *ManagedClustersClient) runCommand(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -788,7 +797,8 @@ func (client *ManagedClustersClient) start(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -868,7 +878,8 @@ func (client *ManagedClustersClient) stop(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -939,7 +950,8 @@ func (client *ManagedClustersClient) updateTags(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -996,7 +1008,8 @@ func (client *ManagedClustersClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ManagedClustersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -1061,7 +1074,8 @@ func (client *ManagedClustersClient) GetAccessProfile(ctx context.Context, resou
 	if err != nil {
 		return ManagedClustersClientGetAccessProfileResponse{}, err
 	}
-	return client.getAccessProfileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAccessProfileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAccessProfileCreateRequest creates the GetAccessProfile request.
@@ -1127,7 +1141,8 @@ func (client *ManagedClustersClient) GetCommandResult(ctx context.Context, resou
 	if err != nil {
 		return ManagedClustersClientGetCommandResultResponse{}, err
 	}
-	return client.getCommandResultHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getCommandResultHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getCommandResultCreateRequest creates the GetCommandResult request.
@@ -1197,7 +1212,8 @@ func (client *ManagedClustersClient) GetGuardrailsVersions(ctx context.Context, 
 	if err != nil {
 		return ManagedClustersClientGetGuardrailsVersionsResponse{}, err
 	}
-	return client.getGuardrailsVersionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getGuardrailsVersionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getGuardrailsVersionsCreateRequest creates the GetGuardrailsVersions request.
@@ -1260,7 +1276,8 @@ func (client *ManagedClustersClient) GetMeshRevisionProfile(ctx context.Context,
 	if err != nil {
 		return ManagedClustersClientGetMeshRevisionProfileResponse{}, err
 	}
-	return client.getMeshRevisionProfileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMeshRevisionProfileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMeshRevisionProfileCreateRequest creates the GetMeshRevisionProfile request.
@@ -1322,7 +1339,8 @@ func (client *ManagedClustersClient) GetMeshUpgradeProfile(ctx context.Context, 
 	if err != nil {
 		return ManagedClustersClientGetMeshUpgradeProfileResponse{}, err
 	}
-	return client.getMeshUpgradeProfileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMeshUpgradeProfileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMeshUpgradeProfileCreateRequest creates the GetMeshUpgradeProfile request.
@@ -1389,7 +1407,8 @@ func (client *ManagedClustersClient) GetSafeguardsVersions(ctx context.Context, 
 	if err != nil {
 		return ManagedClustersClientGetSafeguardsVersionsResponse{}, err
 	}
-	return client.getSafeguardsVersionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSafeguardsVersionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSafeguardsVersionsCreateRequest creates the GetSafeguardsVersions request.
@@ -1450,7 +1469,8 @@ func (client *ManagedClustersClient) GetUpgradeProfile(ctx context.Context, reso
 	if err != nil {
 		return ManagedClustersClientGetUpgradeProfileResponse{}, err
 	}
-	return client.getUpgradeProfileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getUpgradeProfileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getUpgradeProfileCreateRequest creates the GetUpgradeProfile request.
@@ -1511,7 +1531,8 @@ func (client *ManagedClustersClient) ListClusterAdminCredentials(ctx context.Con
 	if err != nil {
 		return ManagedClustersClientListClusterAdminCredentialsResponse{}, err
 	}
-	return client.listClusterAdminCredentialsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listClusterAdminCredentialsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listClusterAdminCredentialsCreateRequest creates the ListClusterAdminCredentials request.
@@ -1575,7 +1596,8 @@ func (client *ManagedClustersClient) ListClusterMonitoringUserCredentials(ctx co
 	if err != nil {
 		return ManagedClustersClientListClusterMonitoringUserCredentialsResponse{}, err
 	}
-	return client.listClusterMonitoringUserCredentialsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listClusterMonitoringUserCredentialsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listClusterMonitoringUserCredentialsCreateRequest creates the ListClusterMonitoringUserCredentials request.
@@ -1639,7 +1661,8 @@ func (client *ManagedClustersClient) ListClusterUserCredentials(ctx context.Cont
 	if err != nil {
 		return ManagedClustersClientListClusterUserCredentialsResponse{}, err
 	}
-	return client.listClusterUserCredentialsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listClusterUserCredentialsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listClusterUserCredentialsCreateRequest creates the ListClusterUserCredentials request.
@@ -1708,7 +1731,8 @@ func (client *ManagedClustersClient) ListKubernetesVersions(ctx context.Context,
 	if err != nil {
 		return ManagedClustersClientListKubernetesVersionsResponse{}, err
 	}
-	return client.listKubernetesVersionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKubernetesVersionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKubernetesVersionsCreateRequest creates the ListKubernetesVersions request.

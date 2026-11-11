@@ -62,7 +62,8 @@ func (client *Client) CheckNameAvailability(ctx context.Context, nameAvailabilit
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.

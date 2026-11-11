@@ -65,7 +65,8 @@ func (client *GatewaysClient) Delete(ctx context.Context, resourceGroupName stri
 		return GatewaysClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return GatewaysClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return GatewaysClientDeleteResponse{}, err
 	}
 	return GatewaysClientDeleteResponse{}, nil
 }

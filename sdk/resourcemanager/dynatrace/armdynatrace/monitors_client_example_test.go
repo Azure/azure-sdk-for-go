@@ -211,6 +211,62 @@ func ExampleMonitorsClient_BeginDelete_monitorsDeleteMinimumSetGen() {
 	}
 }
 
+// Generated from example definition: 2024-04-24/Monitors_UpgradePlan_MaximumSet_Gen.json
+func ExampleMonitorsClient_BeginUpgradePlan_monitorsUpgradePlanMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdynatrace.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMonitorsClient().BeginUpgradePlan(ctx, "myResourceGroup", "myMonitor", armdynatrace.UpgradePlanRequest{
+		PlanData: &armdynatrace.PlanData{
+			BillingCycle:  to.Ptr("Monthly"),
+			EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
+			PlanDetails:   to.Ptr("dynatraceapitestplan"),
+			UsageType:     to.Ptr("Committed"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2024-04-24/Monitors_UpgradePlan_MinimumSet_Gen.json
+func ExampleMonitorsClient_BeginUpgradePlan_monitorsUpgradePlanMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdynatrace.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMonitorsClient().BeginUpgradePlan(ctx, "myResourceGroup", "myMonitor", armdynatrace.UpgradePlanRequest{
+		PlanData: &armdynatrace.PlanData{
+			BillingCycle:  to.Ptr("Monthly"),
+			EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
+			PlanDetails:   to.Ptr("dynatraceapitestplan"),
+			UsageType:     to.Ptr("Committed"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2024-04-24/Monitors_Get_MaximumSet_Gen.json
 func ExampleMonitorsClient_Get_monitorsGetMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -600,6 +656,57 @@ func ExampleMonitorsClient_GetVMHostPayload_monitorsGetVMHostPayloadMinimumSetGe
 	// 	VMExtensionPayload: armdynatrace.VMExtensionPayload{
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2024-04-24/Monitors_ManageAgentInstallation_MaximumSet_Gen.json
+func ExampleMonitorsClient_ManageAgentInstallation_monitorsManageAgentInstallationMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdynatrace.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewMonitorsClient().ManageAgentInstallation(ctx, "myResourceGroup", "myMonitor", armdynatrace.ManageAgentInstallationRequest{
+		Action: to.Ptr(armdynatrace.ActionInstall),
+		ManageAgentInstallationList: []*armdynatrace.ManageAgentList{
+			{
+				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/vmssName"),
+			},
+			{
+				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/vmssName2"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: 2024-04-24/Monitors_ManageAgentInstallation_MinimumSet_Gen.json
+func ExampleMonitorsClient_ManageAgentInstallation_monitorsManageAgentInstallationMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdynatrace.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewMonitorsClient().ManageAgentInstallation(ctx, "myResourceGroup", "myMonitor", armdynatrace.ManageAgentInstallationRequest{
+		Action: to.Ptr(armdynatrace.ActionUninstall),
+		ManageAgentInstallationList: []*armdynatrace.ManageAgentList{
+			{
+				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/vmssName"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
 }
 
 // Generated from example definition: 2024-04-24/Monitors_ListAppServices_MaximumSet_Gen.json
@@ -1174,57 +1281,6 @@ func ExampleMonitorsClient_NewListMonitoredResourcesPager_monitorsListMonitoredR
 	}
 }
 
-// Generated from example definition: 2024-04-24/Monitors_ManageAgentInstallation_MaximumSet_Gen.json
-func ExampleMonitorsClient_ManageAgentInstallation_monitorsManageAgentInstallationMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdynatrace.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewMonitorsClient().ManageAgentInstallation(ctx, "myResourceGroup", "myMonitor", armdynatrace.ManageAgentInstallationRequest{
-		Action: to.Ptr(armdynatrace.ActionInstall),
-		ManageAgentInstallationList: []*armdynatrace.ManageAgentList{
-			{
-				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/vmssName"),
-			},
-			{
-				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/vmssName2"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: 2024-04-24/Monitors_ManageAgentInstallation_MinimumSet_Gen.json
-func ExampleMonitorsClient_ManageAgentInstallation_monitorsManageAgentInstallationMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdynatrace.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewMonitorsClient().ManageAgentInstallation(ctx, "myResourceGroup", "myMonitor", armdynatrace.ManageAgentInstallationRequest{
-		Action: to.Ptr(armdynatrace.ActionUninstall),
-		ManageAgentInstallationList: []*armdynatrace.ManageAgentList{
-			{
-				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachineScaleSets/vmssName"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
 // Generated from example definition: 2024-04-24/Monitors_Update_MaximumSet_Gen.json
 func ExampleMonitorsClient_Update_monitorsUpdateMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1348,60 +1404,4 @@ func ExampleMonitorsClient_Update_monitorsUpdateMinimumSetGen() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2024-04-24/Monitors_UpgradePlan_MaximumSet_Gen.json
-func ExampleMonitorsClient_BeginUpgradePlan_monitorsUpgradePlanMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdynatrace.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMonitorsClient().BeginUpgradePlan(ctx, "myResourceGroup", "myMonitor", armdynatrace.UpgradePlanRequest{
-		PlanData: &armdynatrace.PlanData{
-			BillingCycle:  to.Ptr("Monthly"),
-			EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
-			PlanDetails:   to.Ptr("dynatraceapitestplan"),
-			UsageType:     to.Ptr("Committed"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2024-04-24/Monitors_UpgradePlan_MinimumSet_Gen.json
-func ExampleMonitorsClient_BeginUpgradePlan_monitorsUpgradePlanMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdynatrace.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMonitorsClient().BeginUpgradePlan(ctx, "myResourceGroup", "myMonitor", armdynatrace.UpgradePlanRequest{
-		PlanData: &armdynatrace.PlanData{
-			BillingCycle:  to.Ptr("Monthly"),
-			EffectiveDate: to.Ptr(time.Date(2019, time.August, 30, 13, 14, 33, 0, time.UTC)),
-			PlanDetails:   to.Ptr("dynatraceapitestplan"),
-			UsageType:     to.Ptr("Committed"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }

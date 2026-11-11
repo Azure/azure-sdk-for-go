@@ -70,7 +70,7 @@ func (client *TagRulesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Creates a new set of tag rules for a specific New Relic monitor resource, determining which Azure resources
+// createOrUpdate - Creates a new set of tag rules for a specific New Relic monitor resource, determining which Azure resources
 // are monitored based on their tags
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TagRulesClient) createOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, resource TagRule, options *TagRulesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -88,12 +88,13 @@ func (client *TagRulesClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *TagRulesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, resource TagRule, _ *TagRulesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/tagRules/{ruleSetName}"
 	if client.subscriptionID == "" {
@@ -151,7 +152,7 @@ func (client *TagRulesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
+// deleteOperation - Deletes a tag rule set for a given New Relic monitor resource, removing fine-grained control over observability
 // based on resource tags
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TagRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, options *TagRulesClientBeginDeleteOptions) (*http.Response, error) {
@@ -169,12 +170,13 @@ func (client *TagRulesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *TagRulesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, _ *TagRulesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/NewRelic.Observability/monitors/{monitorName}/tagRules/{ruleSetName}"
 	if client.subscriptionID == "" {
@@ -224,7 +226,8 @@ func (client *TagRulesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return TagRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -369,7 +372,8 @@ func (client *TagRulesClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return TagRulesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

@@ -86,7 +86,8 @@ func (client *RouteMapsClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -133,7 +134,7 @@ func (client *RouteMapsClient) createOrUpdateCreateRequest(ctx context.Context, 
 //   - options - RouteMapsClientBeginDeleteOptions contains the optional parameters for the RouteMapsClient.BeginDelete method.
 func (client *RouteMapsClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routeMapName string, options *RouteMapsClientBeginDeleteOptions) (*runtime.Poller[RouteMapsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualHubName, routeMapName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, routeMapName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -148,9 +149,9 @@ func (client *RouteMapsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// delete - Deletes a RouteMap.
+// deleteOperation - Deletes a RouteMap.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RouteMapsClient) delete(ctx context.Context, resourceGroupName string, virtualHubName string, routeMapName string, options *RouteMapsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RouteMapsClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routeMapName string, options *RouteMapsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RouteMapsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -165,7 +166,8 @@ func (client *RouteMapsClient) delete(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -219,7 +221,8 @@ func (client *RouteMapsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return RouteMapsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

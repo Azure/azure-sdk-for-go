@@ -96,6 +96,66 @@ func ExampleFreeServicesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2025-12-01-preview/FreeServicesUpdate.json
+func ExampleFreeServicesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewFreeServicesClient("97ee05f2-07d5-494d-908c-081a197f4277").BeginUpdate(ctx, "resource_group_name_01", "freeservice_20251001", armbillingbenefits.FreeServicesPatchRequest{
+		Properties: &armbillingbenefits.FreeServicesPatchRequestProperties{
+			EndAt: to.Ptr(time.Date(2026, time.December, 1, 0, 0, 0, 0, time.UTC)),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+			"key2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbillingbenefits.FreeServicesClientUpdateResponse{
+	// 	FreeServices: armbillingbenefits.FreeServices{
+	// 		ID: to.Ptr("/subscriptions/97ee05f2-07d5-494d-908c-081a197f4277/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/freeServices/freeservice_20251001"),
+	// 		Name: to.Ptr("freeservice_20251001"),
+	// 		Type: to.Ptr("Microsoft.BillingBenefits/freeServices"),
+	// 		Properties: &armbillingbenefits.FreeServicesProperties{
+	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
+	// 			Status: to.Ptr(armbillingbenefits.FreeServicesStatusActive),
+	// 			StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
+	// 			EndAt: to.Ptr(time.Date(2026, time.December, 1, 0, 0, 0, 0, time.UTC)),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
+	// 			BillingProfileResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
+	// 			CustomerResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/customers/40000000-0000-0000-0000-000000000000"),
+	// 			SystemID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+	// 		},
+	// 		Location: to.Ptr("global"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("updated"),
+	// 		},
+	// 		SystemData: &armbillingbenefits.SystemData{
+	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.October, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.November, 1, 1, 1, 1, 107505600, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-12-01-preview/FreeServicesGet.json
 func ExampleFreeServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -334,64 +394,4 @@ func ExampleFreeServicesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-12-01-preview/FreeServicesUpdate.json
-func ExampleFreeServicesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbillingbenefits.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewFreeServicesClient("97ee05f2-07d5-494d-908c-081a197f4277").BeginUpdate(ctx, "resource_group_name_01", "freeservice_20251001", armbillingbenefits.FreeServicesPatchRequest{
-		Properties: &armbillingbenefits.FreeServicesPatchRequestProperties{
-			EndAt: to.Ptr(time.Date(2026, time.December, 1, 0, 0, 0, 0, time.UTC)),
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("value1"),
-			"key2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbillingbenefits.FreeServicesClientUpdateResponse{
-	// 	FreeServices: armbillingbenefits.FreeServices{
-	// 		ID: to.Ptr("/subscriptions/97ee05f2-07d5-494d-908c-081a197f4277/resourceGroups/resource_group_name_01/providers/Microsoft.BillingBenefits/freeServices/freeservice_20251001"),
-	// 		Name: to.Ptr("freeservice_20251001"),
-	// 		Type: to.Ptr("Microsoft.BillingBenefits/freeServices"),
-	// 		Properties: &armbillingbenefits.FreeServicesProperties{
-	// 			ProductCode: to.Ptr("0001d726-0000-0160-330f-a0b98cdbbdc4"),
-	// 			Status: to.Ptr(armbillingbenefits.FreeServicesStatusActive),
-	// 			StartAt: to.Ptr(time.Date(2025, time.October, 1, 0, 0, 0, 0, time.UTC)),
-	// 			EndAt: to.Ptr(time.Date(2026, time.December, 1, 0, 0, 0, 0, time.UTC)),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			BillingAccountResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31"),
-	// 			BillingProfileResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/billingProfiles/KPSV-DWNE-BG7-TGB"),
-	// 			CustomerResourceID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/20000000-1000-0000-0000-000000000000:20000000-0000-3000-0000-000000000000_2019-05-31/customers/40000000-0000-0000-0000-000000000000"),
-	// 			SystemID: to.Ptr("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
-	// 		},
-	// 		Location: to.Ptr("global"),
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("updated"),
-	// 		},
-	// 		SystemData: &armbillingbenefits.SystemData{
-	// 			CreatedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.October, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 			LastModifiedByType: to.Ptr(armbillingbenefits.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.November, 1, 1, 1, 1, 107505600, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

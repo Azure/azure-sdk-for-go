@@ -68,7 +68,7 @@ func (client *StorageAccountsClient) BeginCreateOrUpdate(ctx context.Context, de
 	}
 }
 
-// CreateOrUpdate - Creates a new StorageAccount or updates an existing StorageAccount on the device.
+// createOrUpdate - Creates a new StorageAccount or updates an existing StorageAccount on the device.
 //
 // Creates a new StorageAccount or updates an existing StorageAccount on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -87,12 +87,13 @@ func (client *StorageAccountsClient) createOrUpdate(ctx context.Context, deviceN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *StorageAccountsClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, storageAccount StorageAccount, _ *StorageAccountsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccounts/{storageAccountName}"
 	if client.subscriptionID == "" {
@@ -148,7 +149,7 @@ func (client *StorageAccountsClient) BeginDelete(ctx context.Context, deviceName
 	}
 }
 
-// Delete - Deletes the StorageAccount on the Data Box Edge/Data Box Gateway device.
+// deleteOperation - Deletes the StorageAccount on the Data Box Edge/Data Box Gateway device.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageAccountsClient) deleteOperation(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, options *StorageAccountsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -165,12 +166,13 @@ func (client *StorageAccountsClient) deleteOperation(ctx context.Context, device
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StorageAccountsClient) deleteCreateRequest(ctx context.Context, deviceName string, storageAccountName string, resourceGroupName string, _ *StorageAccountsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccounts/{storageAccountName}"
 	if client.subscriptionID == "" {
@@ -219,7 +221,8 @@ func (client *StorageAccountsClient) Get(ctx context.Context, deviceName string,
 	if err != nil {
 		return StorageAccountsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

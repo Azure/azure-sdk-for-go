@@ -66,7 +66,8 @@ func (client *TableServicesClient) GetServiceProperties(ctx context.Context, res
 	if err != nil {
 		return TableServicesClientGetServicePropertiesResponse{}, err
 	}
-	return client.getServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getServicePropertiesCreateRequest creates the GetServiceProperties request.
@@ -127,7 +128,8 @@ func (client *TableServicesClient) List(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return TableServicesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -192,7 +194,8 @@ func (client *TableServicesClient) SetServiceProperties(ctx context.Context, res
 	if err != nil {
 		return TableServicesClientSetServicePropertiesResponse{}, err
 	}
-	return client.setServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.setServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // setServicePropertiesCreateRequest creates the SetServiceProperties request.

@@ -86,7 +86,8 @@ func (client *VirtualNetworksClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -129,7 +130,7 @@ func (client *VirtualNetworksClient) createOrUpdateCreateRequest(ctx context.Con
 //     method.
 func (client *VirtualNetworksClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginDeleteOptions) (*runtime.Poller[VirtualNetworksClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualNetworkName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -144,9 +145,9 @@ func (client *VirtualNetworksClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// delete - Deletes the specified virtual network.
+// deleteOperation - Deletes the specified virtual network.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualNetworksClient) delete(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VirtualNetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkName string, options *VirtualNetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworksClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -161,7 +162,8 @@ func (client *VirtualNetworksClient) delete(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -249,7 +251,8 @@ func (client *VirtualNetworksClient) listDdosProtectionStatus(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -349,7 +352,8 @@ func (client *VirtualNetworksClient) moveIPConfigurations(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -404,7 +408,8 @@ func (client *VirtualNetworksClient) CheckIPAddressAvailability(ctx context.Cont
 	if err != nil {
 		return VirtualNetworksClientCheckIPAddressAvailabilityResponse{}, err
 	}
-	return client.checkIPAddressAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkIPAddressAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkIPAddressAvailabilityCreateRequest creates the CheckIPAddressAvailability request.
@@ -465,7 +470,8 @@ func (client *VirtualNetworksClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return VirtualNetworksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -746,7 +752,8 @@ func (client *VirtualNetworksClient) UpdateTags(ctx context.Context, resourceGro
 	if err != nil {
 		return VirtualNetworksClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

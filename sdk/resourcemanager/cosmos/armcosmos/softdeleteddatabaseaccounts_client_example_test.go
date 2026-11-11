@@ -11,6 +11,48 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-04-01-preview/CosmosDBSoftDeletedDatabaseAccountPurge.json
+func ExampleSoftDeletedDatabaseAccountsClient_BeginPurge() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSoftDeletedDatabaseAccountsClient().BeginPurge(ctx, "rg1", "West US", "softdeleted-cosmosdb-1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBSoftDeletedDatabaseAccountRestore.json
+func ExampleSoftDeletedDatabaseAccountsClient_BeginRestore() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSoftDeletedDatabaseAccountsClient().BeginRestore(ctx, "rg2", "West US", "softdeleted-cosmosdb-2", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2026-04-01-preview/CosmosDBSoftDeletedDatabaseAccountGet.json
 func ExampleSoftDeletedDatabaseAccountsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -148,46 +190,4 @@ func ExampleSoftDeletedDatabaseAccountsClient_ListByResourceGroupAndLocation() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSoftDeletedDatabaseAccountPurge.json
-func ExampleSoftDeletedDatabaseAccountsClient_BeginPurge() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSoftDeletedDatabaseAccountsClient().BeginPurge(ctx, "rg1", "West US", "softdeleted-cosmosdb-1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-04-01-preview/CosmosDBSoftDeletedDatabaseAccountRestore.json
-func ExampleSoftDeletedDatabaseAccountsClient_BeginRestore() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSoftDeletedDatabaseAccountsClient().BeginRestore(ctx, "rg2", "West US", "softdeleted-cosmosdb-2", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }

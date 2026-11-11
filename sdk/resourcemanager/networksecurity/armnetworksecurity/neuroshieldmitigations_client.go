@@ -69,7 +69,8 @@ func (client *NeuroShieldMitigationsClient) Execute(ctx context.Context, resourc
 	if err != nil {
 		return NeuroShieldMitigationsClientExecuteResponse{}, err
 	}
-	return client.executeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executeCreateRequest creates the Execute request.
@@ -142,7 +143,8 @@ func (client *NeuroShieldMitigationsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return NeuroShieldMitigationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -393,7 +395,8 @@ func (client *NeuroShieldMitigationsClient) Rollback(ctx context.Context, resour
 	if err != nil {
 		return NeuroShieldMitigationsClientRollbackResponse{}, err
 	}
-	return client.rollbackHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.rollbackHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // rollbackCreateRequest creates the Rollback request.

@@ -12,122 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01/AzureWorkload/ProtectionContainers_Get.json
-func ExampleProtectionContainersClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewProtectionContainersClient().Get(ctx, "testVault", "testRg", "Azure", "VMAppContainer;Compute;testRG;testSQL", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrecoveryservicesbackup.ProtectionContainersClientGetResponse{
-	// 	ProtectionContainerResource: armrecoveryservicesbackup.ProtectionContainerResource{
-	// 		Name: to.Ptr("VMAppContainer;Compute;testRG;testSQL"),
-	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers"),
-	// 		ID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.RecoveryServices/vaults/testVault/backupFabrics/Azure/protectionContainers/VMAppContainer;Compute;testRG;testSQL"),
-	// 		Properties: &armrecoveryservicesbackup.AzureVMAppContainerProtectionContainer{
-	// 			BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureWorkload),
-	// 			ContainerType: to.Ptr(armrecoveryservicesbackup.ProtectableContainerTypeVMAppContainer),
-	// 			ExtendedInfo: &armrecoveryservicesbackup.AzureWorkloadContainerExtendedInfo{
-	// 				HostServerName: to.Ptr("testsql"),
-	// 				InquiryInfo: &armrecoveryservicesbackup.InquiryInfo{
-	// 					ErrorDetail: &armrecoveryservicesbackup.ErrorDetail{
-	// 						Code: to.Ptr("Success"),
-	// 						Message: to.Ptr("Not Available"),
-	// 						Recommendations: []*string{
-	// 							to.Ptr("Not Available"),
-	// 						},
-	// 					},
-	// 					InquiryDetails: []*armrecoveryservicesbackup.WorkloadInquiryDetails{
-	// 						{
-	// 							Type: to.Ptr("sql"),
-	// 							InquiryValidation: &armrecoveryservicesbackup.InquiryValidation{
-	// 								ErrorDetail: &armrecoveryservicesbackup.ErrorDetail{
-	// 									Code: to.Ptr("Success"),
-	// 									Message: to.Ptr("Not Available"),
-	// 									Recommendations: []*string{
-	// 										to.Ptr("Not Available"),
-	// 									},
-	// 								},
-	// 								Status: to.Ptr("Success"),
-	// 							},
-	// 							ItemCount: to.Ptr[int64](14),
-	// 						},
-	// 					},
-	// 					Status: to.Ptr("Success"),
-	// 				},
-	// 				NodesList: []*armrecoveryservicesbackup.DistributedNodesInfo{
-	// 				},
-	// 			},
-	// 			FriendlyName: to.Ptr("testSQL"),
-	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testSQL"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-01/AzureStorage/ProtectionContainers_Inquire.json
-func ExampleProtectionContainersClient_Inquire() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewProtectionContainersClient().Inquire(ctx, "testvault", "test-rg", "Azure", "storagecontainer;Storage;test-rg;teststorage", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-10-01/Common/RefreshContainers.json
-func ExampleProtectionContainersClient_Refresh_triggerAzureVMDiscovery() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewProtectionContainersClient().Refresh(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "Azure", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-10-01/Common/RefreshContainers_CrossSubscription.json
-func ExampleProtectionContainersClient_Refresh_triggerCrossSubscriptionAzureWorkloadDiscovery() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	_, err = clientFactory.NewProtectionContainersClient().Refresh(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "Azure", &armrecoveryservicesbackup.ProtectionContainersClientRefreshOptions{
-		Filter: to.Ptr("backupManagementType eq 'AzureWorkload' and containerSubscriptionId eq 'a76f4f58-8c04-4f53-9e68-4a698b0f43e4'")})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-}
-
 // Generated from example definition: 2026-10-01/AzureStorage/ProtectionContainers_ReRegister_SwitchToSAMI.json
 func ExampleProtectionContainersClient_BeginRegister_reRegisterAzureStorageProtectionContainersSwitchingToSystemAssignedManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -404,6 +288,122 @@ func ExampleProtectionContainersClient_BeginRegister_registerAzureStorageProtect
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-10-01/AzureWorkload/ProtectionContainers_Get.json
+func ExampleProtectionContainersClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewProtectionContainersClient().Get(ctx, "testVault", "testRg", "Azure", "VMAppContainer;Compute;testRG;testSQL", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrecoveryservicesbackup.ProtectionContainersClientGetResponse{
+	// 	ProtectionContainerResource: armrecoveryservicesbackup.ProtectionContainerResource{
+	// 		Name: to.Ptr("VMAppContainer;Compute;testRG;testSQL"),
+	// 		Type: to.Ptr("Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers"),
+	// 		ID: to.Ptr("/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.RecoveryServices/vaults/testVault/backupFabrics/Azure/protectionContainers/VMAppContainer;Compute;testRG;testSQL"),
+	// 		Properties: &armrecoveryservicesbackup.AzureVMAppContainerProtectionContainer{
+	// 			BackupManagementType: to.Ptr(armrecoveryservicesbackup.BackupManagementTypeAzureWorkload),
+	// 			ContainerType: to.Ptr(armrecoveryservicesbackup.ProtectableContainerTypeVMAppContainer),
+	// 			ExtendedInfo: &armrecoveryservicesbackup.AzureWorkloadContainerExtendedInfo{
+	// 				HostServerName: to.Ptr("testsql"),
+	// 				InquiryInfo: &armrecoveryservicesbackup.InquiryInfo{
+	// 					ErrorDetail: &armrecoveryservicesbackup.ErrorDetail{
+	// 						Code: to.Ptr("Success"),
+	// 						Message: to.Ptr("Not Available"),
+	// 						Recommendations: []*string{
+	// 							to.Ptr("Not Available"),
+	// 						},
+	// 					},
+	// 					InquiryDetails: []*armrecoveryservicesbackup.WorkloadInquiryDetails{
+	// 						{
+	// 							Type: to.Ptr("sql"),
+	// 							InquiryValidation: &armrecoveryservicesbackup.InquiryValidation{
+	// 								ErrorDetail: &armrecoveryservicesbackup.ErrorDetail{
+	// 									Code: to.Ptr("Success"),
+	// 									Message: to.Ptr("Not Available"),
+	// 									Recommendations: []*string{
+	// 										to.Ptr("Not Available"),
+	// 									},
+	// 								},
+	// 								Status: to.Ptr("Success"),
+	// 							},
+	// 							ItemCount: to.Ptr[int64](14),
+	// 						},
+	// 					},
+	// 					Status: to.Ptr("Success"),
+	// 				},
+	// 				NodesList: []*armrecoveryservicesbackup.DistributedNodesInfo{
+	// 				},
+	// 			},
+	// 			FriendlyName: to.Ptr("testSQL"),
+	// 			SourceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRG/providers/Microsoft.Compute/virtualMachines/testSQL"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01/AzureStorage/ProtectionContainers_Inquire.json
+func ExampleProtectionContainersClient_Inquire() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewProtectionContainersClient().Inquire(ctx, "testvault", "test-rg", "Azure", "storagecontainer;Storage;test-rg;teststorage", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-10-01/Common/RefreshContainers.json
+func ExampleProtectionContainersClient_Refresh_triggerAzureVMDiscovery() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewProtectionContainersClient().Refresh(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "Azure", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-10-01/Common/RefreshContainers_CrossSubscription.json
+func ExampleProtectionContainersClient_Refresh_triggerCrossSubscriptionAzureWorkloadDiscovery() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrecoveryservicesbackup.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	_, err = clientFactory.NewProtectionContainersClient().Refresh(ctx, "NetSDKTestRsVault", "SwaggerTestRg", "Azure", &armrecoveryservicesbackup.ProtectionContainersClientRefreshOptions{
+		Filter: to.Ptr("backupManagementType eq 'AzureWorkload' and containerSubscriptionId eq 'a76f4f58-8c04-4f53-9e68-4a698b0f43e4'")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
 }
 
 // Generated from example definition: 2026-10-01/AzureWorkload/ProtectionContainers_Unregister.json

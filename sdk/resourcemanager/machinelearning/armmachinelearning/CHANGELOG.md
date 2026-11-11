@@ -1,6 +1,6 @@
 # Release History
 
-## 5.0.0 (2026-11-09)
+## 5.0.0 (2026-11-11)
 ### Breaking Changes
 
 - Function `*PrivateEndpointConnectionsClient.CreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, properties PrivateEndpointConnection, options *PrivateEndpointConnectionsClientCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, workspaceName string, privateEndpointConnectionName string, body PrivateEndpointConnection, options *PrivateEndpointConnectionsClientCreateOrUpdateOptions)`
@@ -101,9 +101,11 @@
 - New function `*CapabilityHostsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, workspaceName string, name string, body CapabilityHost, options *CapabilityHostsClientBeginCreateOrUpdateOptions) (*runtime.Poller[CapabilityHostsClientCreateOrUpdateResponse], error)`
 - New function `*CapabilityHostsClient.BeginDelete(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *CapabilityHostsClientBeginDeleteOptions) (*runtime.Poller[CapabilityHostsClientDeleteResponse], error)`
 - New function `*CapabilityHostsClient.Get(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *CapabilityHostsClientGetOptions) (CapabilityHostsClientGetResponse, error)`
+- New function `*CapabilityHostsClient.NewListPager(resourceGroupName string, workspaceName string, options *CapabilityHostsClientListOptions) *runtime.Pager[CapabilityHostsClientListResponse]`
 - New function `*ClientFactory.NewCapabilityHostsClient() *CapabilityHostsClient`
 - New function `*WorkspaceConnectionsClient.Update(ctx context.Context, resourceGroupName string, workspaceName string, connectionName string, body WorkspaceConnectionUpdateParameter, options *WorkspaceConnectionsClientUpdateOptions) (WorkspaceConnectionsClientUpdateResponse, error)`
 - New struct `CapabilityHost`
+- New struct `CapabilityHostListResult`
 - New struct `CapabilityHostProperties`
 - New struct `DatasetReference`
 - New struct `FQDNEndpointsPropertyBag`

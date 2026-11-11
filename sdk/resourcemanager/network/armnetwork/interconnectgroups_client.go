@@ -84,7 +84,8 @@ func (client *InterconnectGroupsClient) getNodeAvailability(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -136,7 +137,8 @@ func (client *InterconnectGroupsClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return InterconnectGroupsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -202,7 +204,8 @@ func (client *InterconnectGroupsClient) Delete(ctx context.Context, resourceGrou
 		return InterconnectGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return InterconnectGroupsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return InterconnectGroupsClientDeleteResponse{}, err
 	}
 	return InterconnectGroupsClientDeleteResponse{}, nil
 }
@@ -251,7 +254,8 @@ func (client *InterconnectGroupsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return InterconnectGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -452,7 +456,8 @@ func (client *InterconnectGroupsClient) UpdateTags(ctx context.Context, resource
 	if err != nil {
 		return InterconnectGroupsClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

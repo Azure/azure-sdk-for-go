@@ -67,7 +67,8 @@ func (client *ThreatIntelligenceIndicatorClient) AppendTags(ctx context.Context,
 		return ThreatIntelligenceIndicatorClientAppendTagsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ThreatIntelligenceIndicatorClientAppendTagsResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ThreatIntelligenceIndicatorClientAppendTagsResponse{}, err
 	}
 	return ThreatIntelligenceIndicatorClientAppendTagsResponse{}, nil
 }
@@ -127,7 +128,8 @@ func (client *ThreatIntelligenceIndicatorClient) Create(ctx context.Context, res
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -197,7 +199,8 @@ func (client *ThreatIntelligenceIndicatorClient) CreateIndicator(ctx context.Con
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientCreateIndicatorResponse{}, err
 	}
-	return client.createIndicatorHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createIndicatorHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createIndicatorCreateRequest creates the CreateIndicator request.
@@ -264,7 +267,8 @@ func (client *ThreatIntelligenceIndicatorClient) Delete(ctx context.Context, res
 		return ThreatIntelligenceIndicatorClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ThreatIntelligenceIndicatorClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ThreatIntelligenceIndicatorClientDeleteResponse{}, err
 	}
 	return ThreatIntelligenceIndicatorClientDeleteResponse{}, nil
 }
@@ -319,7 +323,8 @@ func (client *ThreatIntelligenceIndicatorClient) Get(ctx context.Context, resour
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -468,7 +473,8 @@ func (client *ThreatIntelligenceIndicatorClient) ReplaceTags(ctx context.Context
 	if err != nil {
 		return ThreatIntelligenceIndicatorClientReplaceTagsResponse{}, err
 	}
-	return client.replaceTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.replaceTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // replaceTagsCreateRequest creates the ReplaceTags request.

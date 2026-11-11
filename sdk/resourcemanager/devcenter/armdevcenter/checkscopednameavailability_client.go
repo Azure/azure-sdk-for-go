@@ -63,7 +63,8 @@ func (client *CheckScopedNameAvailabilityClient) Execute(ctx context.Context, na
 	if err != nil {
 		return CheckScopedNameAvailabilityClientExecuteResponse{}, err
 	}
-	return client.executeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executeCreateRequest creates the Execute request.

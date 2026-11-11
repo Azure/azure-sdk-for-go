@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseCreate.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseCreate.json
 func ExampleClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleClient_BeginCreate() {
 				},
 			},
 			MinimumTLSVersion:   to.Ptr(armredisenterprise.TLSVersionOne2),
-			PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessDisabled),
+			PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessEnabled),
 			MaintenanceConfiguration: &armredisenterprise.MaintenanceConfiguration{
 				MaintenanceWindows: []*armredisenterprise.MaintenanceWindow{
 					{
@@ -71,10 +71,19 @@ func ExampleClient_BeginCreate() {
 					},
 				},
 			},
+			FirewallRules: []*armredisenterprise.FirewallRule{
+				{
+					Name:                to.Ptr("allowOfficeNetwork"),
+					SourceAddressPrefix: to.Ptr("10.0.0.0/24"),
+				},
+				{
+					Name:                to.Ptr("allowPartnerNetwork"),
+					SourceAddressPrefix: to.Ptr("192.168.1.0/24"),
+				},
+			},
 		},
 		SKU: &armredisenterprise.SKU{
-			Name:     to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
-			Capacity: to.Ptr[int32](3),
+			Name: to.Ptr(armredisenterprise.SKUNameBalancedB10),
 		},
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -115,7 +124,7 @@ func ExampleClient_BeginCreate() {
 	// 			HostName: to.Ptr("cache1.westus.something.azure.net"),
 	// 			MinimumTLSVersion: to.Ptr(armredisenterprise.TLSVersionOne2),
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessDisabled),
+	// 			PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessEnabled),
 	// 			MaintenanceConfiguration: &armredisenterprise.MaintenanceConfiguration{
 	// 				MaintenanceWindows: []*armredisenterprise.MaintenanceWindow{
 	// 					{
@@ -144,12 +153,21 @@ func ExampleClient_BeginCreate() {
 	// 					},
 	// 				},
 	// 			},
+	// 			FirewallRules: []*armredisenterprise.FirewallRule{
+	// 				{
+	// 					Name: to.Ptr("allowOfficeNetwork"),
+	// 					SourceAddressPrefix: to.Ptr("10.0.0.0/24"),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("allowPartnerNetwork"),
+	// 					SourceAddressPrefix: to.Ptr("192.168.1.0/24"),
+	// 				},
+	// 			},
 	// 			RedisVersion: to.Ptr("5"),
 	// 			ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
 	// 		},
 	// 		SKU: &armredisenterprise.SKU{
-	// 			Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
-	// 			Capacity: to.Ptr[int32](3),
+	// 			Name: to.Ptr(armredisenterprise.SKUNameBalancedB10),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tag1": to.Ptr("value1"),
@@ -163,7 +181,7 @@ func ExampleClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDelete.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDelete.json
 func ExampleClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +207,7 @@ func ExampleClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseUpdate.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseUpdate.json
 func ExampleClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,10 +250,19 @@ func ExampleClient_BeginUpdate() {
 					},
 				},
 			},
+			FirewallRules: []*armredisenterprise.FirewallRule{
+				{
+					Name:                to.Ptr("allowOfficeNetwork"),
+					SourceAddressPrefix: to.Ptr("10.0.0.0/24"),
+				},
+				{
+					Name:                to.Ptr("allowPartnerNetwork"),
+					SourceAddressPrefix: to.Ptr("192.168.1.0/24"),
+				},
+			},
 		},
 		SKU: &armredisenterprise.SKU{
-			Name:     to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
-			Capacity: to.Ptr[int32](9),
+			Name: to.Ptr(armredisenterprise.SKUNameBalancedB10),
 		},
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1"),
@@ -294,12 +321,21 @@ func ExampleClient_BeginUpdate() {
 	// 					},
 	// 				},
 	// 			},
+	// 			FirewallRules: []*armredisenterprise.FirewallRule{
+	// 				{
+	// 					Name: to.Ptr("allowOfficeNetwork"),
+	// 					SourceAddressPrefix: to.Ptr("10.0.0.0/24"),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("allowPartnerNetwork"),
+	// 					SourceAddressPrefix: to.Ptr("192.168.1.0/24"),
+	// 				},
+	// 			},
 	// 			RedisVersion: to.Ptr("5"),
 	// 			ResourceState: to.Ptr(armredisenterprise.ResourceStateUpdating),
 	// 		},
 	// 		SKU: &armredisenterprise.SKU{
-	// 			Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
-	// 			Capacity: to.Ptr[int32](9),
+	// 			Name: to.Ptr(armredisenterprise.SKUNameBalancedB10),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"tag1": to.Ptr("value1"),
@@ -313,7 +349,7 @@ func ExampleClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseGet.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseGet.json
 func ExampleClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -357,7 +393,7 @@ func ExampleClient_Get() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr(armredisenterprise.ProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessDisabled),
+	// 			PublicNetworkAccess: to.Ptr(armredisenterprise.PublicNetworkAccessEnabled),
 	// 			MaintenanceConfiguration: &armredisenterprise.MaintenanceConfiguration{
 	// 				MaintenanceWindows: []*armredisenterprise.MaintenanceWindow{
 	// 					{
@@ -386,12 +422,21 @@ func ExampleClient_Get() {
 	// 					},
 	// 				},
 	// 			},
+	// 			FirewallRules: []*armredisenterprise.FirewallRule{
+	// 				{
+	// 					Name: to.Ptr("allowOfficeNetwork"),
+	// 					SourceAddressPrefix: to.Ptr("10.0.0.0/24"),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("allowPartnerNetwork"),
+	// 					SourceAddressPrefix: to.Ptr("192.168.1.0/24"),
+	// 				},
+	// 			},
 	// 			RedisVersion: to.Ptr("6"),
 	// 			ResourceState: to.Ptr(armredisenterprise.ResourceStateRunning),
 	// 		},
 	// 		SKU: &armredisenterprise.SKU{
-	// 			Name: to.Ptr(armredisenterprise.SKUNameEnterpriseFlashF300),
-	// 			Capacity: to.Ptr[int32](3),
+	// 			Name: to.Ptr(armredisenterprise.SKUNameBalancedB10),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 		},
@@ -404,7 +449,7 @@ func ExampleClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseListSkusForScaling.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseListSkusForScaling.json
 func ExampleClient_ListSKUsForScaling() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -442,7 +487,7 @@ func ExampleClient_ListSKUsForScaling() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseListByResourceGroup.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseListByResourceGroup.json
 func ExampleClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +544,7 @@ func ExampleClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseList.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseList.json
 func ExampleClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

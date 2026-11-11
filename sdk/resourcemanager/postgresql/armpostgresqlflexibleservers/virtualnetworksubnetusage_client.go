@@ -64,7 +64,8 @@ func (client *VirtualNetworkSubnetUsageClient) List(ctx context.Context, locatio
 	if err != nil {
 		return VirtualNetworkSubnetUsageClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

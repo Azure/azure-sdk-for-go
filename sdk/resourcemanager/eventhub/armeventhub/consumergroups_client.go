@@ -68,7 +68,8 @@ func (client *ConsumerGroupsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return ConsumerGroupsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -143,7 +144,8 @@ func (client *ConsumerGroupsClient) Delete(ctx context.Context, resourceGroupNam
 		return ConsumerGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ConsumerGroupsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ConsumerGroupsClientDeleteResponse{}, err
 	}
 	return ConsumerGroupsClientDeleteResponse{}, nil
 }
@@ -202,7 +204,8 @@ func (client *ConsumerGroupsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ConsumerGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

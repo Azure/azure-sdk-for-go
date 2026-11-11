@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDeletePrivateEndpointConnection.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDeletePrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterprisePutPrivateEndpointConnection.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterprisePutPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_BeginPut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExamplePrivateEndpointConnectionsClient_BeginPut() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseGetPrivateEndpointConnection.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseGetPrivateEndpointConnection.json
 func ExamplePrivateEndpointConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExamplePrivateEndpointConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseListPrivateEndpointConnections.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseListPrivateEndpointConnections.json
 func ExamplePrivateEndpointConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -68,7 +68,8 @@ func (client *CertificatesClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return CertificatesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -144,7 +145,8 @@ func (client *CertificatesClient) Delete(ctx context.Context, resourceGroupName 
 		return CertificatesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return CertificatesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CertificatesClientDeleteResponse{}, err
 	}
 	return CertificatesClientDeleteResponse{}, nil
 }
@@ -203,7 +205,8 @@ func (client *CertificatesClient) GenerateVerificationCode(ctx context.Context, 
 	if err != nil {
 		return CertificatesClientGenerateVerificationCodeResponse{}, err
 	}
-	return client.generateVerificationCodeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateVerificationCodeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateVerificationCodeCreateRequest creates the GenerateVerificationCode request.
@@ -271,7 +274,8 @@ func (client *CertificatesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return CertificatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -338,7 +342,8 @@ func (client *CertificatesClient) ListByIotHub(ctx context.Context, resourceGrou
 	if err != nil {
 		return CertificatesClientListByIotHubResponse{}, err
 	}
-	return client.listByIotHubHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByIotHubHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByIotHubCreateRequest creates the ListByIotHub request.
@@ -403,7 +408,8 @@ func (client *CertificatesClient) Verify(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return CertificatesClientVerifyResponse{}, err
 	}
-	return client.verifyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.verifyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // verifyCreateRequest creates the Verify request.

@@ -56,7 +56,8 @@ func (client *OfferingsClient) Fetch(ctx context.Context, options *OfferingsClie
 	if err != nil {
 		return OfferingsClientFetchResponse{}, err
 	}
-	return client.fetchHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.fetchHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // fetchCreateRequest creates the Fetch request.

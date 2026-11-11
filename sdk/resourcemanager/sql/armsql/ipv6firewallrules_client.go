@@ -66,7 +66,8 @@ func (client *IPv6FirewallRulesClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return IPv6FirewallRulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *IPv6FirewallRulesClient) Delete(ctx context.Context, resourceGroup
 		return IPv6FirewallRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return IPv6FirewallRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return IPv6FirewallRulesClientDeleteResponse{}, err
 	}
 	return IPv6FirewallRulesClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *IPv6FirewallRulesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return IPv6FirewallRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

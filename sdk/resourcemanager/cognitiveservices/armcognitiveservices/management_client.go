@@ -63,7 +63,8 @@ func (client *ManagementClient) CalculateModelCapacity(ctx context.Context, para
 	if err != nil {
 		return ManagementClientCalculateModelCapacityResponse{}, err
 	}
-	return client.calculateModelCapacityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.calculateModelCapacityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // calculateModelCapacityCreateRequest creates the CalculateModelCapacity request.
@@ -119,7 +120,8 @@ func (client *ManagementClient) CheckDomainAvailability(ctx context.Context, par
 	if err != nil {
 		return ManagementClientCheckDomainAvailabilityResponse{}, err
 	}
-	return client.checkDomainAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkDomainAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkDomainAvailabilityCreateRequest creates the CheckDomainAvailability request.
@@ -176,7 +178,8 @@ func (client *ManagementClient) CheckSKUAvailability(ctx context.Context, locati
 	if err != nil {
 		return ManagementClientCheckSKUAvailabilityResponse{}, err
 	}
-	return client.checkSKUAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkSKUAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkSKUAvailabilityCreateRequest creates the CheckSKUAvailability request.

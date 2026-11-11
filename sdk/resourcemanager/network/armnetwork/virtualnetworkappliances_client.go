@@ -85,7 +85,8 @@ func (client *VirtualNetworkAppliancesClient) createOrUpdate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -128,7 +129,7 @@ func (client *VirtualNetworkAppliancesClient) createOrUpdateCreateRequest(ctx co
 //     method.
 func (client *VirtualNetworkAppliancesClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, options *VirtualNetworkAppliancesClientBeginDeleteOptions) (*runtime.Poller[VirtualNetworkAppliancesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualNetworkApplianceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualNetworkApplianceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *VirtualNetworkAppliancesClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// delete - Deletes the specified virtual network appliance.
+// deleteOperation - Deletes the specified virtual network appliance.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualNetworkAppliancesClient) delete(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, options *VirtualNetworkAppliancesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VirtualNetworkAppliancesClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualNetworkApplianceName string, options *VirtualNetworkAppliancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualNetworkAppliancesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *VirtualNetworkAppliancesClient) delete(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -210,7 +212,8 @@ func (client *VirtualNetworkAppliancesClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return VirtualNetworkAppliancesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -411,7 +414,8 @@ func (client *VirtualNetworkAppliancesClient) UpdateTags(ctx context.Context, re
 	if err != nil {
 		return VirtualNetworkAppliancesClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

@@ -59,88 +59,6 @@ func ExampleRestorableDatabaseAccountsClient_GetByLocation() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBRestorableDatabaseAccountNoLocationList.json
-func ExampleRestorableDatabaseAccountsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRestorableDatabaseAccountsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcosmos.RestorableDatabaseAccountsClientListResponse{
-		// 	RestorableDatabaseAccountsListResult: armcosmos.RestorableDatabaseAccountsListResult{
-		// 		Value: []*armcosmos.RestorableDatabaseAccountGetResult{
-		// 			{
-		// 				Name: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armcosmos.RestorableDatabaseAccountProperties{
-		// 					AccountName: to.Ptr("ddb1"),
-		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
-		// 					CreationTime: to.Ptr(time.Date(2020, time.April, 11, 21, 56, 15, 0, time.UTC)),
-		// 					DeletionTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
-		// 					OldestRestorableTime: to.Ptr(time.Date(2021, time.March, 1, 22, 5, 9, 0, time.UTC)),
-		// 					RestorableLocations: []*armcosmos.RestorableLocationResource{
-		// 						{
-		// 							CreationTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 10, 0, time.UTC)),
-		// 							DeletionTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 35, 0, time.UTC)),
-		// 							LocationName: to.Ptr("South Central US"),
-		// 							RegionalDatabaseAccountInstanceID: to.Ptr("d7a01f78-606f-45c6-9dac-0df32f433bb5"),
-		// 						},
-		// 						{
-		// 							CreationTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 10, 0, time.UTC)),
-		// 							LocationName: to.Ptr("West US"),
-		// 							RegionalDatabaseAccountInstanceID: to.Ptr("fdb43d84-1572-4697-b6e7-2bcda0c51b2c"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("4f9e6ace-ac7a-446c-98bc-194c502a06b4"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/4f9e6ace-ac7a-446c-98bc-194c502a06b4"),
-		// 				Location: to.Ptr("East US"),
-		// 				Properties: &armcosmos.RestorableDatabaseAccountProperties{
-		// 					AccountName: to.Ptr("ddb2"),
-		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
-		// 					CreationTime: to.Ptr(time.Date(2020, time.May, 1, 8, 5, 18, 0, time.UTC)),
-		// 					OldestRestorableTime: to.Ptr(time.Date(2021, time.March, 1, 22, 5, 9, 0, time.UTC)),
-		// 					RestorableLocations: []*armcosmos.RestorableLocationResource{
-		// 						{
-		// 							CreationTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 10, 0, time.UTC)),
-		// 							DeletionTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 35, 0, time.UTC)),
-		// 							LocationName: to.Ptr("South Central US"),
-		// 							RegionalDatabaseAccountInstanceID: to.Ptr("d7a01f78-606f-45c6-9dac-0df32f433bb5"),
-		// 						},
-		// 						{
-		// 							CreationTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 10, 0, time.UTC)),
-		// 							LocationName: to.Ptr("West US"),
-		// 							RegionalDatabaseAccountInstanceID: to.Ptr("fdb43d84-1572-4697-b6e7-2bcda0c51b2c"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-04-01-preview/CosmosDBRestorableDatabaseAccountList.json
 func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -197,6 +115,88 @@ func ExampleRestorableDatabaseAccountsClient_NewListByLocationPager() {
 		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
 		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/4f9e6ace-ac7a-446c-98bc-194c502a06b4"),
 		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armcosmos.RestorableDatabaseAccountProperties{
+		// 					AccountName: to.Ptr("ddb2"),
+		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
+		// 					CreationTime: to.Ptr(time.Date(2020, time.May, 1, 8, 5, 18, 0, time.UTC)),
+		// 					OldestRestorableTime: to.Ptr(time.Date(2021, time.March, 1, 22, 5, 9, 0, time.UTC)),
+		// 					RestorableLocations: []*armcosmos.RestorableLocationResource{
+		// 						{
+		// 							CreationTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 10, 0, time.UTC)),
+		// 							DeletionTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 35, 0, time.UTC)),
+		// 							LocationName: to.Ptr("South Central US"),
+		// 							RegionalDatabaseAccountInstanceID: to.Ptr("d7a01f78-606f-45c6-9dac-0df32f433bb5"),
+		// 						},
+		// 						{
+		// 							CreationTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 10, 0, time.UTC)),
+		// 							LocationName: to.Ptr("West US"),
+		// 							RegionalDatabaseAccountInstanceID: to.Ptr("fdb43d84-1572-4697-b6e7-2bcda0c51b2c"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-04-01-preview/CosmosDBRestorableDatabaseAccountNoLocationList.json
+func ExampleRestorableDatabaseAccountsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcosmos.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRestorableDatabaseAccountsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcosmos.RestorableDatabaseAccountsClientListResponse{
+		// 	RestorableDatabaseAccountsListResult: armcosmos.RestorableDatabaseAccountsListResult{
+		// 		Value: []*armcosmos.RestorableDatabaseAccountGetResult{
+		// 			{
+		// 				Name: to.Ptr("d9b26648-2f53-4541-b3d8-3044f4f9810d"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/d9b26648-2f53-4541-b3d8-3044f4f9810d"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armcosmos.RestorableDatabaseAccountProperties{
+		// 					AccountName: to.Ptr("ddb1"),
+		// 					APIType: to.Ptr(armcosmos.APITypeSQL),
+		// 					CreationTime: to.Ptr(time.Date(2020, time.April, 11, 21, 56, 15, 0, time.UTC)),
+		// 					DeletionTime: to.Ptr(time.Date(2021, time.March, 12, 22, 5, 9, 0, time.UTC)),
+		// 					OldestRestorableTime: to.Ptr(time.Date(2021, time.March, 1, 22, 5, 9, 0, time.UTC)),
+		// 					RestorableLocations: []*armcosmos.RestorableLocationResource{
+		// 						{
+		// 							CreationTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 10, 0, time.UTC)),
+		// 							DeletionTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 35, 0, time.UTC)),
+		// 							LocationName: to.Ptr("South Central US"),
+		// 							RegionalDatabaseAccountInstanceID: to.Ptr("d7a01f78-606f-45c6-9dac-0df32f433bb5"),
+		// 						},
+		// 						{
+		// 							CreationTime: to.Ptr(time.Date(2020, time.October, 30, 21, 13, 10, 0, time.UTC)),
+		// 							LocationName: to.Ptr("West US"),
+		// 							RegionalDatabaseAccountInstanceID: to.Ptr("fdb43d84-1572-4697-b6e7-2bcda0c51b2c"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("4f9e6ace-ac7a-446c-98bc-194c502a06b4"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/locations/restorableDatabaseAccounts"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/providers/Microsoft.DocumentDB/locations/West US/restorableDatabaseAccounts/4f9e6ace-ac7a-446c-98bc-194c502a06b4"),
+		// 				Location: to.Ptr("East US"),
 		// 				Properties: &armcosmos.RestorableDatabaseAccountProperties{
 		// 					AccountName: to.Ptr("ddb2"),
 		// 					APIType: to.Ptr(armcosmos.APITypeSQL),

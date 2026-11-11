@@ -70,7 +70,8 @@ func (client *WorkflowRunActionRepetitionsRequestHistoriesClient) Get(ctx contex
 	if err != nil {
 		return WorkflowRunActionRepetitionsRequestHistoriesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

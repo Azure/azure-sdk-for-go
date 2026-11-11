@@ -66,7 +66,8 @@ func (client *MetadataClient) Create(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return MetadataClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -136,7 +137,8 @@ func (client *MetadataClient) Delete(ctx context.Context, resourceGroupName stri
 		return MetadataClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return MetadataClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return MetadataClientDeleteResponse{}, err
 	}
 	return MetadataClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *MetadataClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return MetadataClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -344,7 +347,8 @@ func (client *MetadataClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return MetadataClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

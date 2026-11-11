@@ -87,7 +87,8 @@ func (client *RoutingIntentClient) createOrUpdate(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -136,7 +137,7 @@ func (client *RoutingIntentClient) createOrUpdateCreateRequest(ctx context.Conte
 //     method.
 func (client *RoutingIntentClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentClientBeginDeleteOptions) (*runtime.Poller[RoutingIntentClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualHubName, routingIntentName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -151,9 +152,9 @@ func (client *RoutingIntentClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// delete - Deletes a RoutingIntent.
+// deleteOperation - Deletes a RoutingIntent.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RoutingIntentClient) delete(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RoutingIntentClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualHubName string, routingIntentName string, options *RoutingIntentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutingIntentClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -168,7 +169,8 @@ func (client *RoutingIntentClient) delete(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -223,7 +225,8 @@ func (client *RoutingIntentClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RoutingIntentClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -68,7 +68,7 @@ func (client *MaccsClient) BeginCancel(ctx context.Context, resourceGroupName st
 	}
 }
 
-// Cancel - Represents an operation to cancel MACC contract. This operation does not indicate deletion of the MACC, but rather
+// cancel - Represents an operation to cancel MACC contract. This operation does not indicate deletion of the MACC, but rather
 // stops applying the benefit to the account.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MaccsClient) cancel(ctx context.Context, resourceGroupName string, maccName string, options *MaccsClientBeginCancelOptions) (*http.Response, error) {
@@ -86,12 +86,13 @@ func (client *MaccsClient) cancel(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *MaccsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, maccName string, _ *MaccsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}/cancel"
 	if client.subscriptionID == "" {
@@ -143,7 +144,7 @@ func (client *MaccsClient) BeginChargeShortfall(ctx context.Context, resourceGro
 	}
 }
 
-// ChargeShortfall - Operation to charge shortfall to a customer's account, ensuring they are charged for the outstanding
+// chargeShortfall - Operation to charge shortfall to a customer's account, ensuring they are charged for the outstanding
 // amount of MACC credit.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MaccsClient) chargeShortfall(ctx context.Context, resourceGroupName string, maccName string, body ChargeShortfallRequest, options *MaccsClientBeginChargeShortfallOptions) (*http.Response, error) {
@@ -161,12 +162,13 @@ func (client *MaccsClient) chargeShortfall(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// chargeShortfallCreateRequest creates the ChargeShortfall request.
+// chargeShortfallCreateRequest creates the chargeShortfall request.
 func (client *MaccsClient) chargeShortfallCreateRequest(ctx context.Context, resourceGroupName string, maccName string, body ChargeShortfallRequest, _ *MaccsClientBeginChargeShortfallOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}/chargeShortfall"
 	if client.subscriptionID == "" {
@@ -219,7 +221,7 @@ func (client *MaccsClient) BeginCreate(ctx context.Context, resourceGroupName st
 	}
 }
 
-// Create - Create MACC.
+// create - Create MACC.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MaccsClient) create(ctx context.Context, resourceGroupName string, maccName string, body Macc, options *MaccsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -236,12 +238,13 @@ func (client *MaccsClient) create(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *MaccsClient) createCreateRequest(ctx context.Context, resourceGroupName string, maccName string, body Macc, _ *MaccsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}"
 	if client.subscriptionID == "" {
@@ -294,7 +297,7 @@ func (client *MaccsClient) BeginDelete(ctx context.Context, resourceGroupName st
 	}
 }
 
-// Delete - Delete MACC.
+// deleteOperation - Delete MACC.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MaccsClient) deleteOperation(ctx context.Context, resourceGroupName string, maccName string, options *MaccsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -311,12 +314,13 @@ func (client *MaccsClient) deleteOperation(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *MaccsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, maccName string, _ *MaccsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}"
 	if client.subscriptionID == "" {
@@ -341,6 +345,157 @@ func (client *MaccsClient) deleteCreateRequest(ctx context.Context, resourceGrou
 	return req, nil
 }
 
+// BeginUpdate - Update MACC.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - maccName - Name of primary MACC.
+//   - body - Request body for updating MACC.
+//   - options - MaccsClientBeginUpdateOptions contains the optional parameters for the MaccsClient.BeginUpdate method.
+func (client *MaccsClient) BeginUpdate(ctx context.Context, resourceGroupName string, maccName string, body MaccPatchRequest, options *MaccsClientBeginUpdateOptions) (*runtime.Poller[MaccsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, maccName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MaccsClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MaccsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update MACC.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MaccsClient) update(ctx context.Context, resourceGroupName string, maccName string, body MaccPatchRequest, options *MaccsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MaccsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, maccName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *MaccsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, maccName string, body MaccPatchRequest, _ *MaccsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if maccName == "" {
+		return nil, errors.New("parameter maccName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{maccName}", url.PathEscape(maccName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginWriteOff - Operation to waive a customer's pending MACC balance (Shortfall) from their account, ensuring they are
+// not charged for the outstanding amount.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - maccName - Name of primary MACC.
+//   - options - MaccsClientBeginWriteOffOptions contains the optional parameters for the MaccsClient.BeginWriteOff method.
+func (client *MaccsClient) BeginWriteOff(ctx context.Context, resourceGroupName string, maccName string, options *MaccsClientBeginWriteOffOptions) (*runtime.Poller[MaccsClientWriteOffResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.writeOff(ctx, resourceGroupName, maccName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MaccsClientWriteOffResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MaccsClientWriteOffResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// writeOff - Operation to waive a customer's pending MACC balance (Shortfall) from their account, ensuring they are not charged
+// for the outstanding amount.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *MaccsClient) writeOff(ctx context.Context, resourceGroupName string, maccName string, options *MaccsClientBeginWriteOffOptions) (*http.Response, error) {
+	var err error
+	const operationName = "MaccsClient.BeginWriteOff"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.writeOffCreateRequest(ctx, resourceGroupName, maccName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// writeOffCreateRequest creates the writeOff request.
+func (client *MaccsClient) writeOffCreateRequest(ctx context.Context, resourceGroupName string, maccName string, _ *MaccsClientBeginWriteOffOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}/writeOff"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if maccName == "" {
+		return nil, errors.New("parameter maccName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{maccName}", url.PathEscape(maccName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251201Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
 // Get - Get a MACC.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -360,7 +515,8 @@ func (client *MaccsClient) Get(ctx context.Context, resourceGroupName string, ma
 	if err != nil {
 		return MaccsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -538,153 +694,4 @@ func (client *MaccsClient) listBySubscriptionHandleResponse(resp *http.Response,
 		return MaccsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update MACC.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - maccName - Name of primary MACC.
-//   - body - Request body for updating MACC.
-//   - options - MaccsClientBeginUpdateOptions contains the optional parameters for the MaccsClient.BeginUpdate method.
-func (client *MaccsClient) BeginUpdate(ctx context.Context, resourceGroupName string, maccName string, body MaccPatchRequest, options *MaccsClientBeginUpdateOptions) (*runtime.Poller[MaccsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, maccName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MaccsClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MaccsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update MACC.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MaccsClient) update(ctx context.Context, resourceGroupName string, maccName string, body MaccPatchRequest, options *MaccsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MaccsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, maccName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *MaccsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, maccName string, body MaccPatchRequest, _ *MaccsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if maccName == "" {
-		return nil, errors.New("parameter maccName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{maccName}", url.PathEscape(maccName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginWriteOff - Operation to waive a customer's pending MACC balance (Shortfall) from their account, ensuring they are
-// not charged for the outstanding amount.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - maccName - Name of primary MACC.
-//   - options - MaccsClientBeginWriteOffOptions contains the optional parameters for the MaccsClient.BeginWriteOff method.
-func (client *MaccsClient) BeginWriteOff(ctx context.Context, resourceGroupName string, maccName string, options *MaccsClientBeginWriteOffOptions) (*runtime.Poller[MaccsClientWriteOffResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.writeOff(ctx, resourceGroupName, maccName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[MaccsClientWriteOffResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[MaccsClientWriteOffResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// WriteOff - Operation to waive a customer's pending MACC balance (Shortfall) from their account, ensuring they are not charged
-// for the outstanding amount.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *MaccsClient) writeOff(ctx context.Context, resourceGroupName string, maccName string, options *MaccsClientBeginWriteOffOptions) (*http.Response, error) {
-	var err error
-	const operationName = "MaccsClient.BeginWriteOff"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.writeOffCreateRequest(ctx, resourceGroupName, maccName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// writeOffCreateRequest creates the WriteOff request.
-func (client *MaccsClient) writeOffCreateRequest(ctx context.Context, resourceGroupName string, maccName string, _ *MaccsClientBeginWriteOffOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BillingBenefits/maccs/{maccName}/writeOff"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if maccName == "" {
-		return nil, errors.New("parameter maccName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{maccName}", url.PathEscape(maccName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
 }

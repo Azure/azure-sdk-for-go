@@ -659,543 +659,6 @@ func ExampleServersClient_BeginFailover() {
 	// }
 }
 
-// Generated from example definition: 2024-12-30/ServerGet.json
-func ExampleServersClient_Get_getAServer() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmysqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServersClient().Get(ctx, "testrg", "mysqltestserver", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmysqlflexibleservers.ServersClientGetResponse{
-	// 	Server: armmysqlflexibleservers.Server{
-	// 		Name: to.Ptr("mysqltestserver"),
-	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver"),
-	// 		Location: to.Ptr("Southeast Asia"),
-	// 		Properties: &armmysqlflexibleservers.ServerProperties{
-	// 			AdministratorLogin: to.Ptr("cloudsa"),
-	// 			AvailabilityZone: to.Ptr("3"),
-	// 			Backup: &armmysqlflexibleservers.Backup{
-	// 				BackupIntervalHours: to.Ptr[int32](24),
-	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
-	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
-	// 			},
-	// 			DatabasePort: to.Ptr[int32](3306),
-	// 			FullVersion: to.Ptr("5.7.44"),
-	// 			FullyQualifiedDomainName: to.Ptr("mysqltestserver.database.mysql.azure.com"),
-	// 			HighAvailability: &armmysqlflexibleservers.HighAvailability{
-	// 				Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
-	// 				State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
-	// 			},
-	// 			MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
-	// 				PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategyRegular),
-	// 			},
-	// 			MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
-	// 				BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
-	// 				CustomWindow: to.Ptr("Enabled"),
-	// 				DayOfWeek: to.Ptr[int32](1),
-	// 				StartHour: to.Ptr[int32](1),
-	// 				StartMinute: to.Ptr[int32](0),
-	// 			},
-	// 			Network: &armmysqlflexibleservers.Network{
-	// 				PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-	// 			},
-	// 			ReplicaCapacity: to.Ptr[int32](10),
-	// 			ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
-	// 			State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
-	// 			Storage: &armmysqlflexibleservers.Storage{
-	// 				AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-	// 				AutoIoScaling: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-	// 				Iops: to.Ptr[int32](600),
-	// 				StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
-	// 				StorageSizeGB: to.Ptr[int32](100),
-	// 				StorageSKU: to.Ptr("Premium_LRS"),
-	// 			},
-	// 			Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
-	// 		},
-	// 		SKU: &armmysqlflexibleservers.MySQLServerSKU{
-	// 			Name: to.Ptr("Standard_D2ds_v4"),
-	// 			Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"num": to.Ptr("1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-12-30/ServerGetWithVnet.json
-func ExampleServersClient_Get_getAServerWithVnet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmysqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServersClient().Get(ctx, "testrg", "mysqltestserver", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmysqlflexibleservers.ServersClientGetResponse{
-	// 	Server: armmysqlflexibleservers.Server{
-	// 		Name: to.Ptr("mysqltestserver"),
-	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
-	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver"),
-	// 		Location: to.Ptr("Southeast Asia"),
-	// 		Properties: &armmysqlflexibleservers.ServerProperties{
-	// 			AdministratorLogin: to.Ptr("cloudsa"),
-	// 			AvailabilityZone: to.Ptr("3"),
-	// 			Backup: &armmysqlflexibleservers.Backup{
-	// 				BackupIntervalHours: to.Ptr[int32](24),
-	// 				BackupRetentionDays: to.Ptr[int32](7),
-	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
-	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
-	// 			},
-	// 			DatabasePort: to.Ptr[int32](3306),
-	// 			FullVersion: to.Ptr("5.7.44"),
-	// 			FullyQualifiedDomainName: to.Ptr("mysqltestserver.database.mysql.azure.com"),
-	// 			HighAvailability: &armmysqlflexibleservers.HighAvailability{
-	// 				Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
-	// 				State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
-	// 			},
-	// 			MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
-	// 				PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategyRegular),
-	// 			},
-	// 			MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
-	// 				BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
-	// 				CustomWindow: to.Ptr("Disabled"),
-	// 				DayOfWeek: to.Ptr[int32](0),
-	// 				StartHour: to.Ptr[int32](0),
-	// 				StartMinute: to.Ptr[int32](0),
-	// 			},
-	// 			Network: &armmysqlflexibleservers.Network{
-	// 				DelegatedSubnetResourceID: to.Ptr("/subscriptions/2941a09d-7bcf-42fe-91ca-1765f521c829/resourceGroups/OrcabrCI-Vnet-Resource-Group/providers/Microsoft.Network/virtualNetworks/OrcabrCI-Vnet/subnets/mysql-subnet"),
-	// 				PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
-	// 			},
-	// 			ReplicaCapacity: to.Ptr[int32](10),
-	// 			ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
-	// 			State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
-	// 			Storage: &armmysqlflexibleservers.Storage{
-	// 				AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-	// 				Iops: to.Ptr[int32](600),
-	// 				StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
-	// 				StorageSizeGB: to.Ptr[int32](100),
-	// 				StorageSKU: to.Ptr("Premium_LRS"),
-	// 			},
-	// 			Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
-	// 		},
-	// 		SKU: &armmysqlflexibleservers.MySQLServerSKU{
-	// 			Name: to.Ptr("Standard_D2ds_v4"),
-	// 			Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"num": to.Ptr("1"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-12-30/ServersList.json
-func ExampleServersClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmysqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewServersClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmysqlflexibleservers.ServersClientListResponse{
-		// 	ServerListResult: armmysqlflexibleservers.ServerListResult{
-		// 		Value: []*armmysqlflexibleservers.Server{
-		// 			{
-		// 				Name: to.Ptr("mysqltestserver1"),
-		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver1"),
-		// 				Location: to.Ptr("Southeast Asia"),
-		// 				Properties: &armmysqlflexibleservers.ServerProperties{
-		// 					AdministratorLogin: to.Ptr("cloudsa"),
-		// 					AvailabilityZone: to.Ptr("1"),
-		// 					Backup: &armmysqlflexibleservers.Backup{
-		// 						BackupIntervalHours: to.Ptr[int32](24),
-		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
-		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
-		// 					},
-		// 					DatabasePort: to.Ptr[int32](3306),
-		// 					FullVersion: to.Ptr("5.7.44"),
-		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver1.database.mysql.azure.com"),
-		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
-		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
-		// 					},
-		// 					MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
-		// 						PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategyRegular),
-		// 					},
-		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
-		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
-		// 						CustomWindow: to.Ptr("Disabled"),
-		// 						DayOfWeek: to.Ptr[int32](0),
-		// 						StartHour: to.Ptr[int32](0),
-		// 						StartMinute: to.Ptr[int32](0),
-		// 					},
-		// 					Network: &armmysqlflexibleservers.Network{
-		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 					},
-		// 					ReplicaCapacity: to.Ptr[int32](10),
-		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
-		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
-		// 					Storage: &armmysqlflexibleservers.Storage{
-		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 						Iops: to.Ptr[int32](369),
-		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
-		// 						StorageSizeGB: to.Ptr[int32](23),
-		// 						StorageSKU: to.Ptr("Premium_LRS"),
-		// 					},
-		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
-		// 				},
-		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
-		// 					Name: to.Ptr("Standard_B1ms"),
-		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierBurstable),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"num": to.Ptr("1"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("mysqltestserver2"),
-		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup2/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver2"),
-		// 				Location: to.Ptr("Southeast Asia"),
-		// 				Properties: &armmysqlflexibleservers.ServerProperties{
-		// 					AdministratorLogin: to.Ptr("cloudsa"),
-		// 					AvailabilityZone: to.Ptr("2"),
-		// 					Backup: &armmysqlflexibleservers.Backup{
-		// 						BackupIntervalHours: to.Ptr[int32](24),
-		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
-		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
-		// 					},
-		// 					DatabasePort: to.Ptr[int32](3306),
-		// 					FullVersion: to.Ptr("5.7.44"),
-		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver2.mysql.database.azure.com"),
-		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
-		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
-		// 					},
-		// 					MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
-		// 						PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategy("Default")),
-		// 					},
-		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
-		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
-		// 						CustomWindow: to.Ptr("Disabled"),
-		// 						DayOfWeek: to.Ptr[int32](0),
-		// 						StartHour: to.Ptr[int32](0),
-		// 						StartMinute: to.Ptr[int32](0),
-		// 					},
-		// 					Network: &armmysqlflexibleservers.Network{
-		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 					},
-		// 					ReplicaCapacity: to.Ptr[int32](10),
-		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
-		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
-		// 					Storage: &armmysqlflexibleservers.Storage{
-		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 						Iops: to.Ptr[int32](369),
-		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
-		// 						StorageSizeGB: to.Ptr[int32](23),
-		// 						StorageSKU: to.Ptr("Premium_LRS"),
-		// 					},
-		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
-		// 				},
-		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
-		// 					Name: to.Ptr("Standard_D2ds_v4"),
-		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"num": to.Ptr("1"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("mysqltestserver3"),
-		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup3/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver3"),
-		// 				Location: to.Ptr("Southeast Asia"),
-		// 				Properties: &armmysqlflexibleservers.ServerProperties{
-		// 					AdministratorLogin: to.Ptr("cloudsa"),
-		// 					AvailabilityZone: to.Ptr("1"),
-		// 					Backup: &armmysqlflexibleservers.Backup{
-		// 						BackupIntervalHours: to.Ptr[int32](24),
-		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 24, 6, 28, 19, 61166700, time.UTC)),
-		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
-		// 					},
-		// 					DatabasePort: to.Ptr[int32](3306),
-		// 					FullVersion: to.Ptr("5.7.44"),
-		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver3.mysql.database.azure.com"),
-		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
-		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
-		// 					},
-		// 					MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
-		// 						PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategy("Default")),
-		// 					},
-		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
-		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
-		// 						CustomWindow: to.Ptr("Disabled"),
-		// 						DayOfWeek: to.Ptr[int32](0),
-		// 						StartHour: to.Ptr[int32](0),
-		// 						StartMinute: to.Ptr[int32](0),
-		// 					},
-		// 					Network: &armmysqlflexibleservers.Network{
-		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 					},
-		// 					ReplicaCapacity: to.Ptr[int32](10),
-		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
-		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
-		// 					Storage: &armmysqlflexibleservers.Storage{
-		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 						Iops: to.Ptr[int32](600),
-		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumZoneRedundancy),
-		// 						StorageSizeGB: to.Ptr[int32](100),
-		// 						StorageSKU: to.Ptr("Premium_ZRS"),
-		// 					},
-		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
-		// 				},
-		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
-		// 					Name: to.Ptr("Standard_E2ds_v4"),
-		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierMemoryOptimized),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"num": to.Ptr("1"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-12-30/ServersListByResourceGroup.json
-func ExampleServersClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmysqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewServersClient().NewListByResourceGroupPager("TestGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmysqlflexibleservers.ServersClientListByResourceGroupResponse{
-		// 	ServerListResult: armmysqlflexibleservers.ServerListResult{
-		// 		Value: []*armmysqlflexibleservers.Server{
-		// 			{
-		// 				Name: to.Ptr("mysqltestserver1"),
-		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver1"),
-		// 				Location: to.Ptr("Southeast Asia"),
-		// 				Properties: &armmysqlflexibleservers.ServerProperties{
-		// 					AdministratorLogin: to.Ptr("cloudsa"),
-		// 					AvailabilityZone: to.Ptr("1"),
-		// 					Backup: &armmysqlflexibleservers.Backup{
-		// 						BackupIntervalHours: to.Ptr[int32](24),
-		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
-		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
-		// 					},
-		// 					DatabasePort: to.Ptr[int32](3306),
-		// 					FullVersion: to.Ptr("5.7.44"),
-		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver1.database.mysql.azure.com"),
-		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
-		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
-		// 					},
-		// 					MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
-		// 						PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategyRegular),
-		// 					},
-		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
-		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
-		// 						CustomWindow: to.Ptr("Disabled"),
-		// 						DayOfWeek: to.Ptr[int32](0),
-		// 						StartHour: to.Ptr[int32](0),
-		// 						StartMinute: to.Ptr[int32](0),
-		// 					},
-		// 					Network: &armmysqlflexibleservers.Network{
-		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 					},
-		// 					ReplicaCapacity: to.Ptr[int32](10),
-		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
-		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
-		// 					Storage: &armmysqlflexibleservers.Storage{
-		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 						Iops: to.Ptr[int32](369),
-		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
-		// 						StorageSizeGB: to.Ptr[int32](23),
-		// 						StorageSKU: to.Ptr("Premium_LRS"),
-		// 					},
-		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
-		// 				},
-		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
-		// 					Name: to.Ptr("Standard_B1ms"),
-		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierBurstable),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"num": to.Ptr("1"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("mysqltestserver2"),
-		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver2"),
-		// 				Location: to.Ptr("Southeast Asia"),
-		// 				Properties: &armmysqlflexibleservers.ServerProperties{
-		// 					AdministratorLogin: to.Ptr("cloudsa"),
-		// 					AvailabilityZone: to.Ptr("2"),
-		// 					Backup: &armmysqlflexibleservers.Backup{
-		// 						BackupIntervalHours: to.Ptr[int32](24),
-		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
-		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
-		// 					},
-		// 					DatabasePort: to.Ptr[int32](3306),
-		// 					FullVersion: to.Ptr("5.7.44"),
-		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver2.mysql.database.azure.com"),
-		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
-		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
-		// 					},
-		// 					MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
-		// 						PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategy("Default")),
-		// 					},
-		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
-		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
-		// 						CustomWindow: to.Ptr("Disabled"),
-		// 						DayOfWeek: to.Ptr[int32](0),
-		// 						StartHour: to.Ptr[int32](0),
-		// 						StartMinute: to.Ptr[int32](0),
-		// 					},
-		// 					Network: &armmysqlflexibleservers.Network{
-		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 					},
-		// 					ReplicaCapacity: to.Ptr[int32](10),
-		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
-		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
-		// 					Storage: &armmysqlflexibleservers.Storage{
-		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 						Iops: to.Ptr[int32](369),
-		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
-		// 						StorageSizeGB: to.Ptr[int32](23),
-		// 						StorageSKU: to.Ptr("Premium_LRS"),
-		// 					},
-		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
-		// 				},
-		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
-		// 					Name: to.Ptr("Standard_D2ds_v4"),
-		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"num": to.Ptr("1"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("mysqltestserver3"),
-		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
-		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver3"),
-		// 				Location: to.Ptr("Southeast Asia"),
-		// 				Properties: &armmysqlflexibleservers.ServerProperties{
-		// 					AdministratorLogin: to.Ptr("cloudsa"),
-		// 					AvailabilityZone: to.Ptr("1"),
-		// 					Backup: &armmysqlflexibleservers.Backup{
-		// 						BackupIntervalHours: to.Ptr[int32](24),
-		// 						BackupRetentionDays: to.Ptr[int32](7),
-		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 24, 6, 28, 19, 61166700, time.UTC)),
-		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
-		// 					},
-		// 					DatabasePort: to.Ptr[int32](3306),
-		// 					FullVersion: to.Ptr("5.7.44"),
-		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver3.mysql.database.azure.com"),
-		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
-		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
-		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
-		// 					},
-		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
-		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
-		// 						CustomWindow: to.Ptr("Disabled"),
-		// 						DayOfWeek: to.Ptr[int32](0),
-		// 						StartHour: to.Ptr[int32](0),
-		// 						StartMinute: to.Ptr[int32](0),
-		// 					},
-		// 					Network: &armmysqlflexibleservers.Network{
-		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 					},
-		// 					ReplicaCapacity: to.Ptr[int32](10),
-		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
-		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
-		// 					Storage: &armmysqlflexibleservers.Storage{
-		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
-		// 						Iops: to.Ptr[int32](600),
-		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumZoneRedundancy),
-		// 						StorageSizeGB: to.Ptr[int32](100),
-		// 						StorageSKU: to.Ptr("Premium_ZRS"),
-		// 					},
-		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
-		// 				},
-		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
-		// 					Name: to.Ptr("Standard_E2ds_v4"),
-		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierMemoryOptimized),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"num": to.Ptr("1"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2024-12-30/ServerResetGtid.json
 func ExampleServersClient_BeginResetGtid() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1754,6 +1217,543 @@ func ExampleServersClient_BeginUpdate_updateServerCustomerMaintenanceWindow() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2024-12-30/ServerGet.json
+func ExampleServersClient_Get_getAServer() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmysqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServersClient().Get(ctx, "testrg", "mysqltestserver", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmysqlflexibleservers.ServersClientGetResponse{
+	// 	Server: armmysqlflexibleservers.Server{
+	// 		Name: to.Ptr("mysqltestserver"),
+	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver"),
+	// 		Location: to.Ptr("Southeast Asia"),
+	// 		Properties: &armmysqlflexibleservers.ServerProperties{
+	// 			AdministratorLogin: to.Ptr("cloudsa"),
+	// 			AvailabilityZone: to.Ptr("3"),
+	// 			Backup: &armmysqlflexibleservers.Backup{
+	// 				BackupIntervalHours: to.Ptr[int32](24),
+	// 				BackupRetentionDays: to.Ptr[int32](7),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
+	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
+	// 			},
+	// 			DatabasePort: to.Ptr[int32](3306),
+	// 			FullVersion: to.Ptr("5.7.44"),
+	// 			FullyQualifiedDomainName: to.Ptr("mysqltestserver.database.mysql.azure.com"),
+	// 			HighAvailability: &armmysqlflexibleservers.HighAvailability{
+	// 				Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
+	// 				State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
+	// 			},
+	// 			MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
+	// 				PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategyRegular),
+	// 			},
+	// 			MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
+	// 				BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
+	// 				CustomWindow: to.Ptr("Enabled"),
+	// 				DayOfWeek: to.Ptr[int32](1),
+	// 				StartHour: to.Ptr[int32](1),
+	// 				StartMinute: to.Ptr[int32](0),
+	// 			},
+	// 			Network: &armmysqlflexibleservers.Network{
+	// 				PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+	// 			},
+	// 			ReplicaCapacity: to.Ptr[int32](10),
+	// 			ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
+	// 			State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
+	// 			Storage: &armmysqlflexibleservers.Storage{
+	// 				AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+	// 				AutoIoScaling: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+	// 				Iops: to.Ptr[int32](600),
+	// 				StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
+	// 				StorageSizeGB: to.Ptr[int32](100),
+	// 				StorageSKU: to.Ptr("Premium_LRS"),
+	// 			},
+	// 			Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
+	// 		},
+	// 		SKU: &armmysqlflexibleservers.MySQLServerSKU{
+	// 			Name: to.Ptr("Standard_D2ds_v4"),
+	// 			Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"num": to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-12-30/ServerGetWithVnet.json
+func ExampleServersClient_Get_getAServerWithVnet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmysqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServersClient().Get(ctx, "testrg", "mysqltestserver", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmysqlflexibleservers.ServersClientGetResponse{
+	// 	Server: armmysqlflexibleservers.Server{
+	// 		Name: to.Ptr("mysqltestserver"),
+	// 		Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/testrg/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver"),
+	// 		Location: to.Ptr("Southeast Asia"),
+	// 		Properties: &armmysqlflexibleservers.ServerProperties{
+	// 			AdministratorLogin: to.Ptr("cloudsa"),
+	// 			AvailabilityZone: to.Ptr("3"),
+	// 			Backup: &armmysqlflexibleservers.Backup{
+	// 				BackupIntervalHours: to.Ptr[int32](24),
+	// 				BackupRetentionDays: to.Ptr[int32](7),
+	// 				EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 6, 11, 38, 415001900, time.UTC)),
+	// 				GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
+	// 			},
+	// 			DatabasePort: to.Ptr[int32](3306),
+	// 			FullVersion: to.Ptr("5.7.44"),
+	// 			FullyQualifiedDomainName: to.Ptr("mysqltestserver.database.mysql.azure.com"),
+	// 			HighAvailability: &armmysqlflexibleservers.HighAvailability{
+	// 				Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
+	// 				State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
+	// 			},
+	// 			MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
+	// 				PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategyRegular),
+	// 			},
+	// 			MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
+	// 				BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
+	// 				CustomWindow: to.Ptr("Disabled"),
+	// 				DayOfWeek: to.Ptr[int32](0),
+	// 				StartHour: to.Ptr[int32](0),
+	// 				StartMinute: to.Ptr[int32](0),
+	// 			},
+	// 			Network: &armmysqlflexibleservers.Network{
+	// 				DelegatedSubnetResourceID: to.Ptr("/subscriptions/2941a09d-7bcf-42fe-91ca-1765f521c829/resourceGroups/OrcabrCI-Vnet-Resource-Group/providers/Microsoft.Network/virtualNetworks/OrcabrCI-Vnet/subnets/mysql-subnet"),
+	// 				PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
+	// 			},
+	// 			ReplicaCapacity: to.Ptr[int32](10),
+	// 			ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
+	// 			State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
+	// 			Storage: &armmysqlflexibleservers.Storage{
+	// 				AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+	// 				Iops: to.Ptr[int32](600),
+	// 				StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
+	// 				StorageSizeGB: to.Ptr[int32](100),
+	// 				StorageSKU: to.Ptr("Premium_LRS"),
+	// 			},
+	// 			Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
+	// 		},
+	// 		SKU: &armmysqlflexibleservers.MySQLServerSKU{
+	// 			Name: to.Ptr("Standard_D2ds_v4"),
+	// 			Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"num": to.Ptr("1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-12-30/ServersListByResourceGroup.json
+func ExampleServersClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmysqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewServersClient().NewListByResourceGroupPager("TestGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armmysqlflexibleservers.ServersClientListByResourceGroupResponse{
+		// 	ServerListResult: armmysqlflexibleservers.ServerListResult{
+		// 		Value: []*armmysqlflexibleservers.Server{
+		// 			{
+		// 				Name: to.Ptr("mysqltestserver1"),
+		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver1"),
+		// 				Location: to.Ptr("Southeast Asia"),
+		// 				Properties: &armmysqlflexibleservers.ServerProperties{
+		// 					AdministratorLogin: to.Ptr("cloudsa"),
+		// 					AvailabilityZone: to.Ptr("1"),
+		// 					Backup: &armmysqlflexibleservers.Backup{
+		// 						BackupIntervalHours: to.Ptr[int32](24),
+		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
+		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
+		// 					},
+		// 					DatabasePort: to.Ptr[int32](3306),
+		// 					FullVersion: to.Ptr("5.7.44"),
+		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver1.database.mysql.azure.com"),
+		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
+		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
+		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
+		// 					},
+		// 					MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
+		// 						PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategyRegular),
+		// 					},
+		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
+		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
+		// 						CustomWindow: to.Ptr("Disabled"),
+		// 						DayOfWeek: to.Ptr[int32](0),
+		// 						StartHour: to.Ptr[int32](0),
+		// 						StartMinute: to.Ptr[int32](0),
+		// 					},
+		// 					Network: &armmysqlflexibleservers.Network{
+		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 					},
+		// 					ReplicaCapacity: to.Ptr[int32](10),
+		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
+		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
+		// 					Storage: &armmysqlflexibleservers.Storage{
+		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 						Iops: to.Ptr[int32](369),
+		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
+		// 						StorageSizeGB: to.Ptr[int32](23),
+		// 						StorageSKU: to.Ptr("Premium_LRS"),
+		// 					},
+		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
+		// 				},
+		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
+		// 					Name: to.Ptr("Standard_B1ms"),
+		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierBurstable),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"num": to.Ptr("1"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("mysqltestserver2"),
+		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver2"),
+		// 				Location: to.Ptr("Southeast Asia"),
+		// 				Properties: &armmysqlflexibleservers.ServerProperties{
+		// 					AdministratorLogin: to.Ptr("cloudsa"),
+		// 					AvailabilityZone: to.Ptr("2"),
+		// 					Backup: &armmysqlflexibleservers.Backup{
+		// 						BackupIntervalHours: to.Ptr[int32](24),
+		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
+		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
+		// 					},
+		// 					DatabasePort: to.Ptr[int32](3306),
+		// 					FullVersion: to.Ptr("5.7.44"),
+		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver2.mysql.database.azure.com"),
+		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
+		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
+		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
+		// 					},
+		// 					MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
+		// 						PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategy("Default")),
+		// 					},
+		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
+		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
+		// 						CustomWindow: to.Ptr("Disabled"),
+		// 						DayOfWeek: to.Ptr[int32](0),
+		// 						StartHour: to.Ptr[int32](0),
+		// 						StartMinute: to.Ptr[int32](0),
+		// 					},
+		// 					Network: &armmysqlflexibleservers.Network{
+		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 					},
+		// 					ReplicaCapacity: to.Ptr[int32](10),
+		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
+		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
+		// 					Storage: &armmysqlflexibleservers.Storage{
+		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 						Iops: to.Ptr[int32](369),
+		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
+		// 						StorageSizeGB: to.Ptr[int32](23),
+		// 						StorageSKU: to.Ptr("Premium_LRS"),
+		// 					},
+		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
+		// 				},
+		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
+		// 					Name: to.Ptr("Standard_D2ds_v4"),
+		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"num": to.Ptr("1"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("mysqltestserver3"),
+		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver3"),
+		// 				Location: to.Ptr("Southeast Asia"),
+		// 				Properties: &armmysqlflexibleservers.ServerProperties{
+		// 					AdministratorLogin: to.Ptr("cloudsa"),
+		// 					AvailabilityZone: to.Ptr("1"),
+		// 					Backup: &armmysqlflexibleservers.Backup{
+		// 						BackupIntervalHours: to.Ptr[int32](24),
+		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 24, 6, 28, 19, 61166700, time.UTC)),
+		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
+		// 					},
+		// 					DatabasePort: to.Ptr[int32](3306),
+		// 					FullVersion: to.Ptr("5.7.44"),
+		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver3.mysql.database.azure.com"),
+		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
+		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
+		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
+		// 					},
+		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
+		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
+		// 						CustomWindow: to.Ptr("Disabled"),
+		// 						DayOfWeek: to.Ptr[int32](0),
+		// 						StartHour: to.Ptr[int32](0),
+		// 						StartMinute: to.Ptr[int32](0),
+		// 					},
+		// 					Network: &armmysqlflexibleservers.Network{
+		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 					},
+		// 					ReplicaCapacity: to.Ptr[int32](10),
+		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
+		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
+		// 					Storage: &armmysqlflexibleservers.Storage{
+		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 						Iops: to.Ptr[int32](600),
+		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumZoneRedundancy),
+		// 						StorageSizeGB: to.Ptr[int32](100),
+		// 						StorageSKU: to.Ptr("Premium_ZRS"),
+		// 					},
+		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
+		// 				},
+		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
+		// 					Name: to.Ptr("Standard_E2ds_v4"),
+		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierMemoryOptimized),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"num": to.Ptr("1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2024-12-30/ServersList.json
+func ExampleServersClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmysqlflexibleservers.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewServersClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armmysqlflexibleservers.ServersClientListResponse{
+		// 	ServerListResult: armmysqlflexibleservers.ServerListResult{
+		// 		Value: []*armmysqlflexibleservers.Server{
+		// 			{
+		// 				Name: to.Ptr("mysqltestserver1"),
+		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver1"),
+		// 				Location: to.Ptr("Southeast Asia"),
+		// 				Properties: &armmysqlflexibleservers.ServerProperties{
+		// 					AdministratorLogin: to.Ptr("cloudsa"),
+		// 					AvailabilityZone: to.Ptr("1"),
+		// 					Backup: &armmysqlflexibleservers.Backup{
+		// 						BackupIntervalHours: to.Ptr[int32](24),
+		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
+		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
+		// 					},
+		// 					DatabasePort: to.Ptr[int32](3306),
+		// 					FullVersion: to.Ptr("5.7.44"),
+		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver1.database.mysql.azure.com"),
+		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
+		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
+		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
+		// 					},
+		// 					MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
+		// 						PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategyRegular),
+		// 					},
+		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
+		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
+		// 						CustomWindow: to.Ptr("Disabled"),
+		// 						DayOfWeek: to.Ptr[int32](0),
+		// 						StartHour: to.Ptr[int32](0),
+		// 						StartMinute: to.Ptr[int32](0),
+		// 					},
+		// 					Network: &armmysqlflexibleservers.Network{
+		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 					},
+		// 					ReplicaCapacity: to.Ptr[int32](10),
+		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
+		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
+		// 					Storage: &armmysqlflexibleservers.Storage{
+		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 						Iops: to.Ptr[int32](369),
+		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
+		// 						StorageSizeGB: to.Ptr[int32](23),
+		// 						StorageSKU: to.Ptr("Premium_LRS"),
+		// 					},
+		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
+		// 				},
+		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
+		// 					Name: to.Ptr("Standard_B1ms"),
+		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierBurstable),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"num": to.Ptr("1"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("mysqltestserver2"),
+		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup2/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver2"),
+		// 				Location: to.Ptr("Southeast Asia"),
+		// 				Properties: &armmysqlflexibleservers.ServerProperties{
+		// 					AdministratorLogin: to.Ptr("cloudsa"),
+		// 					AvailabilityZone: to.Ptr("2"),
+		// 					Backup: &armmysqlflexibleservers.Backup{
+		// 						BackupIntervalHours: to.Ptr[int32](24),
+		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 17, 7, 8, 17, 425988600, time.UTC)),
+		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
+		// 					},
+		// 					DatabasePort: to.Ptr[int32](3306),
+		// 					FullVersion: to.Ptr("5.7.44"),
+		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver2.mysql.database.azure.com"),
+		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
+		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
+		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
+		// 					},
+		// 					MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
+		// 						PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategy("Default")),
+		// 					},
+		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
+		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
+		// 						CustomWindow: to.Ptr("Disabled"),
+		// 						DayOfWeek: to.Ptr[int32](0),
+		// 						StartHour: to.Ptr[int32](0),
+		// 						StartMinute: to.Ptr[int32](0),
+		// 					},
+		// 					Network: &armmysqlflexibleservers.Network{
+		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 					},
+		// 					ReplicaCapacity: to.Ptr[int32](10),
+		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
+		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
+		// 					Storage: &armmysqlflexibleservers.Storage{
+		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 						Iops: to.Ptr[int32](369),
+		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumLocalRedundancy),
+		// 						StorageSizeGB: to.Ptr[int32](23),
+		// 						StorageSKU: to.Ptr("Premium_LRS"),
+		// 					},
+		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
+		// 				},
+		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
+		// 					Name: to.Ptr("Standard_D2ds_v4"),
+		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierGeneralPurpose),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"num": to.Ptr("1"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("mysqltestserver3"),
+		// 				Type: to.Ptr("Microsoft.DBforMySQL/flexibleServers"),
+		// 				ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestGroup3/providers/Microsoft.DBforMySQL/flexibleServers/mysqltestserver3"),
+		// 				Location: to.Ptr("Southeast Asia"),
+		// 				Properties: &armmysqlflexibleservers.ServerProperties{
+		// 					AdministratorLogin: to.Ptr("cloudsa"),
+		// 					AvailabilityZone: to.Ptr("1"),
+		// 					Backup: &armmysqlflexibleservers.Backup{
+		// 						BackupIntervalHours: to.Ptr[int32](24),
+		// 						BackupRetentionDays: to.Ptr[int32](7),
+		// 						EarliestRestoreDate: to.Ptr(time.Date(2021, time.June, 24, 6, 28, 19, 61166700, time.UTC)),
+		// 						GeoRedundantBackup: to.Ptr(armmysqlflexibleservers.EnableStatusEnumDisabled),
+		// 					},
+		// 					DatabasePort: to.Ptr[int32](3306),
+		// 					FullVersion: to.Ptr("5.7.44"),
+		// 					FullyQualifiedDomainName: to.Ptr("mysqltestserver3.mysql.database.azure.com"),
+		// 					HighAvailability: &armmysqlflexibleservers.HighAvailability{
+		// 						Mode: to.Ptr(armmysqlflexibleservers.HighAvailabilityModeDisabled),
+		// 						State: to.Ptr(armmysqlflexibleservers.HighAvailabilityStateNotEnabled),
+		// 					},
+		// 					MaintenancePolicy: &armmysqlflexibleservers.MaintenancePolicy{
+		// 						PatchStrategy: to.Ptr(armmysqlflexibleservers.PatchStrategy("Default")),
+		// 					},
+		// 					MaintenanceWindow: &armmysqlflexibleservers.MaintenanceWindow{
+		// 						BatchOfMaintenance: to.Ptr(armmysqlflexibleservers.BatchOfMaintenanceDefault),
+		// 						CustomWindow: to.Ptr("Disabled"),
+		// 						DayOfWeek: to.Ptr[int32](0),
+		// 						StartHour: to.Ptr[int32](0),
+		// 						StartMinute: to.Ptr[int32](0),
+		// 					},
+		// 					Network: &armmysqlflexibleservers.Network{
+		// 						PublicNetworkAccess: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 					},
+		// 					ReplicaCapacity: to.Ptr[int32](10),
+		// 					ReplicationRole: to.Ptr(armmysqlflexibleservers.ReplicationRoleNone),
+		// 					State: to.Ptr(armmysqlflexibleservers.ServerStateReady),
+		// 					Storage: &armmysqlflexibleservers.Storage{
+		// 						AutoGrow: to.Ptr(armmysqlflexibleservers.EnableStatusEnumEnabled),
+		// 						Iops: to.Ptr[int32](600),
+		// 						StorageRedundancy: to.Ptr(armmysqlflexibleservers.StorageRedundancyEnumZoneRedundancy),
+		// 						StorageSizeGB: to.Ptr[int32](100),
+		// 						StorageSKU: to.Ptr("Premium_ZRS"),
+		// 					},
+		// 					Version: to.Ptr(armmysqlflexibleservers.ServerVersionFive7),
+		// 				},
+		// 				SKU: &armmysqlflexibleservers.MySQLServerSKU{
+		// 					Name: to.Ptr("Standard_E2ds_v4"),
+		// 					Tier: to.Ptr(armmysqlflexibleservers.ServerSKUTierMemoryOptimized),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"num": to.Ptr("1"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }
 
 // Generated from example definition: 2024-12-30/ServerValidateEstimateHighAvailability.json

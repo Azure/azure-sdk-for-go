@@ -54,7 +54,8 @@ func (client *PolicyClient) AddUpdatePolicyForTenant(ctx context.Context, body P
 	if err != nil {
 		return PolicyClientAddUpdatePolicyForTenantResponse{}, err
 	}
-	return client.addUpdatePolicyForTenantHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addUpdatePolicyForTenantHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addUpdatePolicyForTenantCreateRequest creates the AddUpdatePolicyForTenant request.
@@ -105,7 +106,8 @@ func (client *PolicyClient) GetPolicyForTenant(ctx context.Context, options *Pol
 	if err != nil {
 		return PolicyClientGetPolicyForTenantResponse{}, err
 	}
-	return client.getPolicyForTenantHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPolicyForTenantHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPolicyForTenantCreateRequest creates the GetPolicyForTenant request.

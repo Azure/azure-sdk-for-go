@@ -64,7 +64,8 @@ func (client *CreationSupportedClient) Get(ctx context.Context, datadogOrganizat
 	if err != nil {
 		return CreationSupportedClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

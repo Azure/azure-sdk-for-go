@@ -85,7 +85,8 @@ func (client *SecurityPartnerProvidersClient) createOrUpdate(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -128,7 +129,7 @@ func (client *SecurityPartnerProvidersClient) createOrUpdateCreateRequest(ctx co
 //     method.
 func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientBeginDeleteOptions) (*runtime.Poller[SecurityPartnerProvidersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, securityPartnerProviderName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, securityPartnerProviderName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *SecurityPartnerProvidersClient) BeginDelete(ctx context.Context, r
 	}
 }
 
-// delete - Deletes the specified Security Partner Provider.
+// deleteOperation - Deletes the specified Security Partner Provider.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityPartnerProvidersClient) delete(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityPartnerProvidersClient) deleteOperation(ctx context.Context, resourceGroupName string, securityPartnerProviderName string, options *SecurityPartnerProvidersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPartnerProvidersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *SecurityPartnerProvidersClient) delete(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -210,7 +212,8 @@ func (client *SecurityPartnerProvidersClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return SecurityPartnerProvidersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -411,7 +414,8 @@ func (client *SecurityPartnerProvidersClient) UpdateTags(ctx context.Context, re
 	if err != nil {
 		return SecurityPartnerProvidersClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

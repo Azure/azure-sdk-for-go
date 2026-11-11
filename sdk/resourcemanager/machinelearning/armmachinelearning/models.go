@@ -1491,6 +1491,15 @@ type CapabilityHost struct {
 	Type *string
 }
 
+// CapabilityHostListResult - The response of a CapabilityHost list operation.
+type CapabilityHostListResult struct {
+	// REQUIRED; The CapabilityHost items on this page
+	Value []*CapabilityHost
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 type CapabilityHostProperties struct {
 	// List of Aca Environment connections.
 	AcaEnvironmentConnections []*string

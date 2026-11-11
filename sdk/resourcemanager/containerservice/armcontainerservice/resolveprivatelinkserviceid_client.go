@@ -65,7 +65,8 @@ func (client *ResolvePrivateLinkServiceIDClient) POST(ctx context.Context, resou
 	if err != nil {
 		return ResolvePrivateLinkServiceIDClientPOSTResponse{}, err
 	}
-	return client.postHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.postHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // postCreateRequest creates the POST request.

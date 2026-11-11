@@ -70,7 +70,8 @@ func (client *ProjectConnectionsClient) Create(ctx context.Context, resourceGrou
 	if err != nil {
 		return ProjectConnectionsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -148,7 +149,8 @@ func (client *ProjectConnectionsClient) Delete(ctx context.Context, resourceGrou
 		return ProjectConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ProjectConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ProjectConnectionsClientDeleteResponse{}, err
 	}
 	return ProjectConnectionsClientDeleteResponse{}, nil
 }
@@ -209,7 +211,8 @@ func (client *ProjectConnectionsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ProjectConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -376,7 +379,8 @@ func (client *ProjectConnectionsClient) Update(ctx context.Context, resourceGrou
 	if err != nil {
 		return ProjectConnectionsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

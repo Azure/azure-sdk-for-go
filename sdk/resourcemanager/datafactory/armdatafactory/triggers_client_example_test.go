@@ -13,6 +13,118 @@ import (
 	"time"
 )
 
+// Generated from example definition: 2018-06-01/Triggers_Start.json
+func ExampleTriggersClient_BeginStart() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTriggersClient().BeginStart(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatafactory.TriggersClientStartResponse{
+	// }
+}
+
+// Generated from example definition: 2018-06-01/Triggers_Stop.json
+func ExampleTriggersClient_BeginStop() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTriggersClient().BeginStop(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatafactory.TriggersClientStopResponse{
+	// }
+}
+
+// Generated from example definition: 2018-06-01/Triggers_SubscribeToEvents.json
+func ExampleTriggersClient_BeginSubscribeToEvents() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTriggersClient().BeginSubscribeToEvents(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatafactory.TriggersClientSubscribeToEventsResponse{
+	// 	TriggerSubscriptionOperationStatus: armdatafactory.TriggerSubscriptionOperationStatus{
+	// 		Status: to.Ptr(armdatafactory.EventSubscriptionStatusEnabled),
+	// 		TriggerName: to.Ptr("exampleTrigger"),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2018-06-01/Triggers_UnsubscribeFromEvents.json
+func ExampleTriggersClient_BeginUnsubscribeFromEvents() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewTriggersClient().BeginUnsubscribeFromEvents(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatafactory.TriggersClientUnsubscribeFromEventsResponse{
+	// 	TriggerSubscriptionOperationStatus: armdatafactory.TriggerSubscriptionOperationStatus{
+	// 		Status: to.Ptr(armdatafactory.EventSubscriptionStatusDisabled),
+	// 		TriggerName: to.Ptr("exampleTrigger"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2018-06-01/Triggers_Create.json
 func ExampleTriggersClient_CreateOrUpdate_triggersCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -380,118 +492,6 @@ func ExampleTriggersClient_QueryByFactory() {
 	// 				},
 	// 			},
 	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2018-06-01/Triggers_Start.json
-func ExampleTriggersClient_BeginStart() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewTriggersClient().BeginStart(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatafactory.TriggersClientStartResponse{
-	// }
-}
-
-// Generated from example definition: 2018-06-01/Triggers_Stop.json
-func ExampleTriggersClient_BeginStop() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewTriggersClient().BeginStop(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatafactory.TriggersClientStopResponse{
-	// }
-}
-
-// Generated from example definition: 2018-06-01/Triggers_SubscribeToEvents.json
-func ExampleTriggersClient_BeginSubscribeToEvents() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewTriggersClient().BeginSubscribeToEvents(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatafactory.TriggersClientSubscribeToEventsResponse{
-	// 	TriggerSubscriptionOperationStatus: armdatafactory.TriggerSubscriptionOperationStatus{
-	// 		Status: to.Ptr(armdatafactory.EventSubscriptionStatusEnabled),
-	// 		TriggerName: to.Ptr("exampleTrigger"),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2018-06-01/Triggers_UnsubscribeFromEvents.json
-func ExampleTriggersClient_BeginUnsubscribeFromEvents() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewTriggersClient().BeginUnsubscribeFromEvents(ctx, "exampleResourceGroup", "exampleFactoryName", "exampleTrigger", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatafactory.TriggersClientUnsubscribeFromEventsResponse{
-	// 	TriggerSubscriptionOperationStatus: armdatafactory.TriggerSubscriptionOperationStatus{
-	// 		Status: to.Ptr(armdatafactory.EventSubscriptionStatusDisabled),
-	// 		TriggerName: to.Ptr("exampleTrigger"),
 	// 	},
 	// }
 }

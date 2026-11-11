@@ -86,7 +86,8 @@ func (client *ExpressRouteGatewaysClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -130,7 +131,7 @@ func (client *ExpressRouteGatewaysClient) createOrUpdateCreateRequest(ctx contex
 //     method.
 func (client *ExpressRouteGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *ExpressRouteGatewaysClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteGatewaysClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, expressRouteGatewayName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRouteGatewayName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -145,10 +146,10 @@ func (client *ExpressRouteGatewaysClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// delete - Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be deleted
-// when there are no connection subresources.
+// deleteOperation - Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can
+// only be deleted when there are no connection subresources.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRouteGatewaysClient) delete(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *ExpressRouteGatewaysClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRouteGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRouteGatewayName string, options *ExpressRouteGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteGatewaysClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -163,7 +164,8 @@ func (client *ExpressRouteGatewaysClient) delete(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -235,7 +237,8 @@ func (client *ExpressRouteGatewaysClient) getFailoverAllTestsDetails(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -316,7 +319,8 @@ func (client *ExpressRouteGatewaysClient) getFailoverSingleTestDetails(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -389,7 +393,8 @@ func (client *ExpressRouteGatewaysClient) getResiliencyInformation(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -463,7 +468,8 @@ func (client *ExpressRouteGatewaysClient) getRoutesInformation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -538,7 +544,8 @@ func (client *ExpressRouteGatewaysClient) startSiteFailoverTest(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -611,7 +618,8 @@ func (client *ExpressRouteGatewaysClient) stopSiteFailoverTest(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -687,7 +695,8 @@ func (client *ExpressRouteGatewaysClient) updateTags(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -742,7 +751,8 @@ func (client *ExpressRouteGatewaysClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ExpressRouteGatewaysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -802,7 +812,8 @@ func (client *ExpressRouteGatewaysClient) ListByResourceGroup(ctx context.Contex
 	if err != nil {
 		return ExpressRouteGatewaysClientListByResourceGroupResponse{}, err
 	}
-	return client.listByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByResourceGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
@@ -857,7 +868,8 @@ func (client *ExpressRouteGatewaysClient) ListBySubscription(ctx context.Context
 	if err != nil {
 		return ExpressRouteGatewaysClientListBySubscriptionResponse{}, err
 	}
-	return client.listBySubscriptionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listBySubscriptionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.

@@ -67,7 +67,7 @@ func (client *OrganizationClient) BeginActivateResource(ctx context.Context, bod
 	}
 }
 
-// ActivateResource - Resolve the token to get the SaaS resource ID and activate the SaaS resource
+// activateResource - Resolve the token to get the SaaS resource ID and activate the SaaS resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OrganizationClient) activateResource(ctx context.Context, body ActivateSaaSParameterRequest, options *OrganizationClientBeginActivateResourceOptions) (*http.Response, error) {
 	var err error
@@ -84,12 +84,13 @@ func (client *OrganizationClient) activateResource(ctx context.Context, body Act
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// activateResourceCreateRequest creates the ActivateResource request.
+// activateResourceCreateRequest creates the activateResource request.
 func (client *OrganizationClient) activateResourceCreateRequest(ctx context.Context, body ActivateSaaSParameterRequest, _ *OrganizationClientBeginActivateResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Confluent/activateSaaS"
 	if client.subscriptionID == "" {
@@ -135,7 +136,7 @@ func (client *OrganizationClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - Create Organization resource
+// create - Create Organization resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *OrganizationClient) create(ctx context.Context, resourceGroupName string, organizationName string, body OrganizationResource, options *OrganizationClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -152,12 +153,13 @@ func (client *OrganizationClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *OrganizationClient) createCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body OrganizationResource, _ *OrganizationClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}"
 	if client.subscriptionID == "" {
@@ -173,6 +175,159 @@ func (client *OrganizationClient) createCreateRequest(ctx context.Context, resou
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
 	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260602Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Delete Organization resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - options - OrganizationClientBeginDeleteOptions contains the optional parameters for the OrganizationClient.BeginDelete
+//     method.
+func (client *OrganizationClient) BeginDelete(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientBeginDeleteOptions) (*runtime.Poller[OrganizationClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, organizationName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrganizationClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrganizationClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Delete Organization resource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OrganizationClient) deleteOperation(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OrganizationClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, organizationName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *OrganizationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, _ *OrganizationClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260602Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
+// BeginLinkSaaS - Links a new SaaS to the Confluent organization of the underlying resource.
+//
+// Links a new SaaS to the Confluent organization of the underlying resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - organizationName - Organization resource name
+//   - body - SaaS data for linking
+//   - options - OrganizationClientBeginLinkSaaSOptions contains the optional parameters for the OrganizationClient.BeginLinkSaaS
+//     method.
+func (client *OrganizationClient) BeginLinkSaaS(ctx context.Context, resourceGroupName string, organizationName string, body SaaSData, options *OrganizationClientBeginLinkSaaSOptions) (*runtime.Poller[OrganizationClientLinkSaaSResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.linkSaaS(ctx, resourceGroupName, organizationName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrganizationClientLinkSaaSResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrganizationClientLinkSaaSResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// linkSaaS - Links a new SaaS to the Confluent organization of the underlying resource.
+//
+// Links a new SaaS to the Confluent organization of the underlying resource.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *OrganizationClient) linkSaaS(ctx context.Context, resourceGroupName string, organizationName string, body SaaSData, options *OrganizationClientBeginLinkSaaSOptions) (*http.Response, error) {
+	var err error
+	const operationName = "OrganizationClient.BeginLinkSaaS"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.linkSaaSCreateRequest(ctx, resourceGroupName, organizationName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// linkSaaSCreateRequest creates the linkSaaS request.
+func (client *OrganizationClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body SaaSData, _ *OrganizationClientBeginLinkSaaSOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/linkSaaS"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if organizationName == "" {
+		return nil, errors.New("parameter organizationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
@@ -210,7 +365,8 @@ func (client *OrganizationClient) CreateAPIKey(ctx context.Context, resourceGrou
 	if err != nil {
 		return OrganizationClientCreateAPIKeyResponse{}, err
 	}
-	return client.createAPIKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createAPIKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createAPIKeyCreateRequest creates the CreateAPIKey request.
@@ -263,76 +419,6 @@ func (client *OrganizationClient) createAPIKeyHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// BeginDelete - Delete Organization resource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - organizationName - Organization resource name
-//   - options - OrganizationClientBeginDeleteOptions contains the optional parameters for the OrganizationClient.BeginDelete
-//     method.
-func (client *OrganizationClient) BeginDelete(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientBeginDeleteOptions) (*runtime.Poller[OrganizationClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, organizationName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrganizationClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrganizationClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Delete Organization resource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OrganizationClient) deleteOperation(ctx context.Context, resourceGroupName string, organizationName string, options *OrganizationClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "OrganizationClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, organizationName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *OrganizationClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, _ *OrganizationClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if organizationName == "" {
-		return nil, errors.New("parameter organizationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
 // DeleteClusterAPIKey - Deletes API key of a kafka or schema registry cluster
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -355,7 +441,8 @@ func (client *OrganizationClient) DeleteClusterAPIKey(ctx context.Context, resou
 		return OrganizationClientDeleteClusterAPIKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return OrganizationClientDeleteClusterAPIKeyResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return OrganizationClientDeleteClusterAPIKeyResponse{}, err
 	}
 	return OrganizationClientDeleteClusterAPIKeyResponse{}, nil
 }
@@ -408,7 +495,8 @@ func (client *OrganizationClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return OrganizationClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -470,7 +558,8 @@ func (client *OrganizationClient) GetClusterAPIKey(ctx context.Context, resource
 	if err != nil {
 		return OrganizationClientGetClusterAPIKeyResponse{}, err
 	}
-	return client.getClusterAPIKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getClusterAPIKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getClusterAPIKeyCreateRequest creates the GetClusterAPIKey request.
@@ -537,7 +626,8 @@ func (client *OrganizationClient) GetClusterByID(ctx context.Context, resourceGr
 	if err != nil {
 		return OrganizationClientGetClusterByIDResponse{}, err
 	}
-	return client.getClusterByIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getClusterByIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getClusterByIDCreateRequest creates the GetClusterByID request.
@@ -607,7 +697,8 @@ func (client *OrganizationClient) GetEnvironmentByID(ctx context.Context, resour
 	if err != nil {
 		return OrganizationClientGetEnvironmentByIDResponse{}, err
 	}
-	return client.getEnvironmentByIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getEnvironmentByIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getEnvironmentByIDCreateRequest creates the GetEnvironmentByID request.
@@ -674,7 +765,8 @@ func (client *OrganizationClient) GetSchemaRegistryClusterByID(ctx context.Conte
 	if err != nil {
 		return OrganizationClientGetSchemaRegistryClusterByIDResponse{}, err
 	}
-	return client.getSchemaRegistryClusterByIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSchemaRegistryClusterByIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSchemaRegistryClusterByIDCreateRequest creates the GetSchemaRegistryClusterByID request.
@@ -743,7 +835,8 @@ func (client *OrganizationClient) LatestLinkedSaaS(ctx context.Context, resource
 	if err != nil {
 		return OrganizationClientLatestLinkedSaaSResponse{}, err
 	}
-	return client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // latestLinkedSaaSCreateRequest creates the LatestLinkedSaaS request.
@@ -784,60 +877,34 @@ func (client *OrganizationClient) latestLinkedSaaSHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// BeginLinkSaaS - Links a new SaaS to the Confluent organization of the underlying resource.
-//
-// Links a new SaaS to the Confluent organization of the underlying resource.
+// ListRegions - cloud provider regions available for creating Schema Registry clusters.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Organization resource name
-//   - body - SaaS data for linking
-//   - options - OrganizationClientBeginLinkSaaSOptions contains the optional parameters for the OrganizationClient.BeginLinkSaaS
+//   - body - List Access Request Model
+//   - options - OrganizationClientListRegionsOptions contains the optional parameters for the OrganizationClient.ListRegions
 //     method.
-func (client *OrganizationClient) BeginLinkSaaS(ctx context.Context, resourceGroupName string, organizationName string, body SaaSData, options *OrganizationClientBeginLinkSaaSOptions) (*runtime.Poller[OrganizationClientLinkSaaSResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.linkSaaS(ctx, resourceGroupName, organizationName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[OrganizationClientLinkSaaSResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[OrganizationClientLinkSaaSResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// LinkSaaS - Links a new SaaS to the Confluent organization of the underlying resource.
-//
-// Links a new SaaS to the Confluent organization of the underlying resource.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *OrganizationClient) linkSaaS(ctx context.Context, resourceGroupName string, organizationName string, body SaaSData, options *OrganizationClientBeginLinkSaaSOptions) (*http.Response, error) {
+func (client *OrganizationClient) ListRegions(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, options *OrganizationClientListRegionsOptions) (OrganizationClientListRegionsResponse, error) {
 	var err error
-	const operationName = "OrganizationClient.BeginLinkSaaS"
+	const operationName = "OrganizationClient.ListRegions"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.linkSaaSCreateRequest(ctx, resourceGroupName, organizationName, body, options)
+	req, err := client.listRegionsCreateRequest(ctx, resourceGroupName, organizationName, body, options)
 	if err != nil {
-		return nil, err
+		return OrganizationClientListRegionsResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return nil, err
+		return OrganizationClientListRegionsResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
+	resp, err := client.listRegionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
-// linkSaaSCreateRequest creates the LinkSaaS request.
-func (client *OrganizationClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body SaaSData, _ *OrganizationClientBeginLinkSaaSOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/linkSaaS"
+// listRegionsCreateRequest creates the ListRegions request.
+func (client *OrganizationClient) listRegionsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *OrganizationClientListRegionsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/listRegions"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -863,6 +930,18 @@ func (client *OrganizationClient) linkSaaSCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	return req, nil
+}
+
+// listRegionsHandleResponse handles the ListRegions response.
+func (client *OrganizationClient) listRegionsHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientListRegionsResponse, error) {
+	result := OrganizationClientListRegionsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListRegionsSuccessResponse); err != nil {
+		return OrganizationClientListRegionsResponse{}, err
+	}
+	return result, nil
 }
 
 // NewListByResourceGroupPager - List all Organizations under the specified resource group.
@@ -1175,72 +1254,6 @@ func (client *OrganizationClient) listEnvironmentsHandleResponse(resp *http.Resp
 	return result, nil
 }
 
-// ListRegions - cloud provider regions available for creating Schema Registry clusters.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - organizationName - Organization resource name
-//   - body - List Access Request Model
-//   - options - OrganizationClientListRegionsOptions contains the optional parameters for the OrganizationClient.ListRegions
-//     method.
-func (client *OrganizationClient) ListRegions(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, options *OrganizationClientListRegionsOptions) (OrganizationClientListRegionsResponse, error) {
-	var err error
-	const operationName = "OrganizationClient.ListRegions"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listRegionsCreateRequest(ctx, resourceGroupName, organizationName, body, options)
-	if err != nil {
-		return OrganizationClientListRegionsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return OrganizationClientListRegionsResponse{}, err
-	}
-	return client.listRegionsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listRegionsCreateRequest creates the ListRegions request.
-func (client *OrganizationClient) listRegionsCreateRequest(ctx context.Context, resourceGroupName string, organizationName string, body ListAccessRequestModel, _ *OrganizationClientListRegionsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Confluent/organizations/{organizationName}/listRegions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if organizationName == "" {
-		return nil, errors.New("parameter organizationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{organizationName}", url.PathEscape(organizationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// listRegionsHandleResponse handles the ListRegions response.
-func (client *OrganizationClient) listRegionsHandleResponse(resp *http.Response, successCodes ...int) (OrganizationClientListRegionsResponse, error) {
-	result := OrganizationClientListRegionsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListRegionsSuccessResponse); err != nil {
-		return OrganizationClientListRegionsResponse{}, err
-	}
-	return result, nil
-}
-
 // NewListSchemaRegistryClustersPager - Get schema registry clusters
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - organizationName - Organization resource name
@@ -1349,7 +1362,8 @@ func (client *OrganizationClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return OrganizationClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

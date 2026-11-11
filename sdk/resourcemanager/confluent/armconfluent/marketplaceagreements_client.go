@@ -65,7 +65,8 @@ func (client *MarketplaceAgreementsClient) Create(ctx context.Context, body Agre
 	if err != nil {
 		return MarketplaceAgreementsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.

@@ -90,6 +90,57 @@ type BlobItem struct {
 	VersionID *string `xml:"VersionId"`
 }
 
+// BlobLayout - The result of the Get Blob Layout API.
+type BlobLayout struct {
+	// The endpoints that serve the ranges of the blob.
+	Endpoints *BlobLayoutEndpoints `xml:"Endpoints"`
+
+	// The continuation marker used for this request.
+	Marker *string `xml:"Marker"`
+
+	// The maximum number of ranges to return per request.
+	MaxResults *int32 `xml:"MaxResults"`
+
+	// If the number of ranges exceeds MaxResults, a NextMarker is returned for use in subsequent requests to continue listing.
+	NextMarker *string `xml:"NextMarker"`
+
+	// The ranges that make up the blob.
+	Ranges *BlobLayoutRanges `xml:"Ranges"`
+}
+
+// BlobLayoutEndpoint - An endpoint that serves ranges of a blob.
+type BlobLayoutEndpoint struct {
+	// REQUIRED; The index of the endpoint, referenced by Range elements.
+	Index *int32 `xml:"Index,attr"`
+
+	// REQUIRED; The host:port of the endpoint.
+	Value *string `xml:"Value,attr"`
+}
+
+// BlobLayoutEndpoints - The endpoints that serve the ranges of a blob.
+type BlobLayoutEndpoints struct {
+	// The list of endpoints.
+	Endpoint []*BlobLayoutEndpoint `xml:"Endpoint"`
+}
+
+// BlobLayoutRange - A range of a blob, and the endpoint that serves it.
+type BlobLayoutRange struct {
+	// REQUIRED; The end byte offset of the range.
+	End *int64 `xml:"End,attr"`
+
+	// REQUIRED; Index into the Endpoints array indicating which endpoint serves this range.
+	EndpointIndex *int32 `xml:"EndpointIndex,attr"`
+
+	// REQUIRED; The start byte offset of the range.
+	Start *int64 `xml:"Start,attr"`
+}
+
+// BlobLayoutRanges - The ranges that make up a blob.
+type BlobLayoutRanges struct {
+	// The list of ranges.
+	Range []*BlobLayoutRange `xml:"Range"`
+}
+
 // BlobPrefix - Represents a blob prefix.
 type BlobPrefix struct {
 	// REQUIRED; The blob name.
@@ -362,6 +413,27 @@ type ContainerProperties struct {
 	RemainingRetentionDays *int32 `xml:"RemainingRetentionDays"`
 }
 
+// CreateSessionConfiguration - The configuration used to create a session.
+type CreateSessionConfiguration struct {
+	// REQUIRED; The type of authentication required to create the session. The only type currently supported is HMAC.
+	AuthenticationType *AuthenticationType `xml:"AuthenticationType"`
+}
+
+// CreateSessionResponse - The response of the Create Session API.
+type CreateSessionResponse struct {
+	// The type of authentication required to create the session. The only type currently supported is HMAC.
+	AuthenticationType *AuthenticationType `xml:"AuthenticationType"`
+
+	// The credentials used to authorize subsequent requests in the session.
+	Credentials *SessionCredentials `xml:"Credentials"`
+
+	// The time when the session will expire.
+	Expiration *time.Time `xml:"Expiration"`
+
+	// A unique identifier for the created session.
+	ID *string `xml:"Id"`
+}
+
 // DelimitedTextConfiguration - Represents the delimited text configuration.
 type DelimitedTextConfiguration struct {
 	// The string used to separate columns.
@@ -626,6 +698,16 @@ type RetentionPolicy struct {
 
 	// The number of days to retain the logs.
 	Days *int32 `xml:"Days"`
+}
+
+// SessionCredentials - The credentials associated with a session.
+type SessionCredentials struct {
+	// Only returned when AuthenticationType is HMAC. A symmetric encryption key used to sign requests in the session using the
+	// Shared Key protocol.
+	SessionKey *string `xml:"SessionKey"`
+
+	// An opaque token used to authorize subsequent requests in the session. Must be treated as a security credential.
+	SessionToken *string `xml:"SessionToken"`
 }
 
 // SignedIdentifier - A signed identifier.

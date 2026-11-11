@@ -64,7 +64,8 @@ func (client *OperationsResultsLocationClient) Get(ctx context.Context, location
 	if err != nil {
 		return OperationsResultsLocationClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

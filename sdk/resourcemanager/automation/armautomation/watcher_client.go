@@ -65,7 +65,8 @@ func (client *WatcherClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return WatcherClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -135,7 +136,8 @@ func (client *WatcherClient) Delete(ctx context.Context, resourceGroupName strin
 		return WatcherClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WatcherClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WatcherClientDeleteResponse{}, err
 	}
 	return WatcherClientDeleteResponse{}, nil
 }
@@ -189,7 +191,8 @@ func (client *WatcherClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return WatcherClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -335,7 +338,8 @@ func (client *WatcherClient) Start(ctx context.Context, resourceGroupName string
 		return WatcherClientStartResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WatcherClientStartResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WatcherClientStartResponse{}, err
 	}
 	return WatcherClientStartResponse{}, nil
 }
@@ -390,7 +394,8 @@ func (client *WatcherClient) Stop(ctx context.Context, resourceGroupName string,
 		return WatcherClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return WatcherClientStopResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WatcherClientStopResponse{}, err
 	}
 	return WatcherClientStopResponse{}, nil
 }
@@ -445,7 +450,8 @@ func (client *WatcherClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return WatcherClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

@@ -431,412 +431,6 @@ func ExampleVirtualMachineImageTemplatesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/GetImageTemplate.json
-func ExampleVirtualMachineImageTemplatesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armvirtualmachineimagebuilder.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineImageTemplatesClient().Get(ctx, "myResourceGroup", "myImageTemplate", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientGetResponse{
-	// 	ImageTemplate: armvirtualmachineimagebuilder.ImageTemplate{
-	// 		Name: to.Ptr("myImageTemplate"),
-	// 		Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate"),
-	// 		Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
-	// 			Type: to.Ptr(armvirtualmachineimagebuilder.ResourceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armvirtualmachineimagebuilder.UserAssignedIdentity{
-	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1": &armvirtualmachineimagebuilder.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
-	// 			Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
-	// 				&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
-	// 					Name: to.Ptr("Shell Customizer Example"),
-	// 					Type: to.Ptr("Shell"),
-	// 					ScriptURI: to.Ptr("https://example.com/path/to/script.sh"),
-	// 				},
-	// 			},
-	// 			Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
-	// 				&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
-	// 					Type: to.Ptr("ManagedImage"),
-	// 					ArtifactTags: map[string]*string{
-	// 						"tagName": to.Ptr("value"),
-	// 					},
-	// 					ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1"),
-	// 					Location: to.Ptr("1_location"),
-	// 					RunOutputName: to.Ptr("image_it_pir_1"),
-	// 				},
-	// 			},
-	// 			Source: &armvirtualmachineimagebuilder.ImageTemplateManagedImageSource{
-	// 				Type: to.Ptr("ManagedImage"),
-	// 				ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/source_rg/providers/Microsoft.Compute/images/source_image"),
-	// 			},
-	// 			VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
-	// 				OSDiskSizeGB: to.Ptr[int32](64),
-	// 				VMSize: to.Ptr("Standard_D2s_v3"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-10-01/GetRunOutput.json
-func ExampleVirtualMachineImageTemplatesClient_GetRunOutput() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armvirtualmachineimagebuilder.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVirtualMachineImageTemplatesClient().GetRunOutput(ctx, "myResourceGroup", "myImageTemplate", "myManagedImageOutput", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientGetRunOutputResponse{
-	// 	RunOutput: armvirtualmachineimagebuilder.RunOutput{
-	// 		Name: to.Ptr("myManagedImageOutput"),
-	// 		Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates/runOutputs"),
-	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourcegroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate/runOutputs/myManagedImageOutput"),
-	// 		Properties: &armvirtualmachineimagebuilder.RunOutputProperties{
-	// 			ArtifactID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/output_managed_image"),
-	// 			ProvisioningState: to.Ptr(armvirtualmachineimagebuilder.ProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-10-01/ListImageTemplates.json
-func ExampleVirtualMachineImageTemplatesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armvirtualmachineimagebuilder.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineImageTemplatesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse{
-		// 	ImageTemplateListResult: armvirtualmachineimagebuilder.ImageTemplateListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.VirtualMachineImages/imageTemplates?api-version=2025-10-01&skip-token=2"),
-		// 		Value: []*armvirtualmachineimagebuilder.ImageTemplate{
-		// 			{
-		// 				Name: to.Ptr("myImageTemplate"),
-		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate"),
-		// 				Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
-		// 					Type: to.Ptr(armvirtualmachineimagebuilder.ResourceIdentityTypeUserAssigned),
-		// 					UserAssignedIdentities: map[string]*armvirtualmachineimagebuilder.UserAssignedIdentity{
-		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1": &armvirtualmachineimagebuilder.UserAssignedIdentity{
-		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
-		// 					Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
-		// 						&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
-		// 							Name: to.Ptr("Shell customization example"),
-		// 							Type: to.Ptr("Shell"),
-		// 							ScriptURI: to.Ptr("https://example.com/path/to/script.sh"),
-		// 						},
-		// 					},
-		// 					Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
-		// 						&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
-		// 							Type: to.Ptr("ManagedImage"),
-		// 							ArtifactTags: map[string]*string{
-		// 								"tagName": to.Ptr("value"),
-		// 							},
-		// 							ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1"),
-		// 							Location: to.Ptr("1_location"),
-		// 							RunOutputName: to.Ptr("image_it_pir_1"),
-		// 						},
-		// 					},
-		// 					Source: &armvirtualmachineimagebuilder.ImageTemplateManagedImageSource{
-		// 						Type: to.Ptr("ManagedImage"),
-		// 						ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/source_rg/providers/Microsoft.Compute/images/source_image"),
-		// 					},
-		// 					VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
-		// 						OSDiskSizeGB: to.Ptr[int32](64),
-		// 						VMSize: to.Ptr("Standard_D2s_v3"),
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("mySecondImageTemplate"),
-		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myOtherResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/mySecondImageTemplate"),
-		// 				Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
-		// 					Type: to.Ptr(armvirtualmachineimagebuilder.ResourceIdentityTypeUserAssigned),
-		// 					UserAssignedIdentities: map[string]*armvirtualmachineimagebuilder.UserAssignedIdentity{
-		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1": &armvirtualmachineimagebuilder.UserAssignedIdentity{
-		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
-		// 					Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
-		// 						&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
-		// 							Name: to.Ptr("Shell customization example"),
-		// 							Type: to.Ptr("Shell"),
-		// 							ScriptURI: to.Ptr("https://example.com/path/to/script.sh"),
-		// 						},
-		// 					},
-		// 					Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
-		// 						&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
-		// 							Type: to.Ptr("ManagedImage"),
-		// 							ArtifactTags: map[string]*string{
-		// 								"stage": to.Ptr("development"),
-		// 							},
-		// 							ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/mySecondImage-eus"),
-		// 							Location: to.Ptr("eastus"),
-		// 							RunOutputName: to.Ptr("eus"),
-		// 						},
-		// 					},
-		// 					Source: &armvirtualmachineimagebuilder.ImageTemplatePlatformImageSource{
-		// 						Type: to.Ptr("PlatformImage"),
-		// 						Offer: to.Ptr("UbuntuServer"),
-		// 						PlanInfo: &armvirtualmachineimagebuilder.PlatformImagePurchasePlan{
-		// 							PlanName: to.Ptr("example_plan_name"),
-		// 							PlanProduct: to.Ptr("example_plan_product"),
-		// 							PlanPublisher: to.Ptr("example_plan_publisher"),
-		// 						},
-		// 						Publisher: to.Ptr("Canonical"),
-		// 						SKU: to.Ptr("18.04-LTS"),
-		// 						Version: to.Ptr("18.04.201902121"),
-		// 					},
-		// 					VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
-		// 						OSDiskSizeGB: to.Ptr[int32](32),
-		// 						VMSize: to.Ptr("Standard_D8s_v3"),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-10-01/ListImageTemplatesByRg.json
-func ExampleVirtualMachineImageTemplatesClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armvirtualmachineimagebuilder.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineImageTemplatesClient().NewListByResourceGroupPager("myResourceGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListByResourceGroupResponse{
-		// 	ImageTemplateListResult: armvirtualmachineimagebuilder.ImageTemplateListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates?api-version=2025-10-01&skip-token=2"),
-		// 		Value: []*armvirtualmachineimagebuilder.ImageTemplate{
-		// 			{
-		// 				Name: to.Ptr("myImageTemplate"),
-		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate"),
-		// 				Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
-		// 					Type: to.Ptr(armvirtualmachineimagebuilder.ResourceIdentityTypeUserAssigned),
-		// 					UserAssignedIdentities: map[string]*armvirtualmachineimagebuilder.UserAssignedIdentity{
-		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1": &armvirtualmachineimagebuilder.UserAssignedIdentity{
-		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
-		// 					Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
-		// 						&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
-		// 							Name: to.Ptr("Shell customization example"),
-		// 							Type: to.Ptr("Shell"),
-		// 							ScriptURI: to.Ptr("https://example.com/path/to/script.sh"),
-		// 						},
-		// 					},
-		// 					Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
-		// 						&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
-		// 							Type: to.Ptr("ManagedImage"),
-		// 							ArtifactTags: map[string]*string{
-		// 								"tagName": to.Ptr("value"),
-		// 							},
-		// 							ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1"),
-		// 							Location: to.Ptr("1_location"),
-		// 							RunOutputName: to.Ptr("image_it_pir_1"),
-		// 						},
-		// 					},
-		// 					Source: &armvirtualmachineimagebuilder.ImageTemplateManagedImageSource{
-		// 						Type: to.Ptr("ManagedImage"),
-		// 						ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/source_rg/providers/Microsoft.Compute/images/source_image"),
-		// 					},
-		// 					VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
-		// 						OSDiskSizeGB: to.Ptr[int32](64),
-		// 						VMSize: to.Ptr("Standard_D2s_v3"),
-		// 					},
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myOtherImageTemplate"),
-		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myOtherImageTemplate"),
-		// 				Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
-		// 					Type: to.Ptr(armvirtualmachineimagebuilder.ResourceIdentityTypeUserAssigned),
-		// 					UserAssignedIdentities: map[string]*armvirtualmachineimagebuilder.UserAssignedIdentity{
-		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1": &armvirtualmachineimagebuilder.UserAssignedIdentity{
-		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 						},
-		// 					},
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
-		// 					Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
-		// 						&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
-		// 							Name: to.Ptr("Shell customization example"),
-		// 							Type: to.Ptr("Shell"),
-		// 							ScriptURI: to.Ptr("https://example.com/path/to/script.sh"),
-		// 						},
-		// 					},
-		// 					Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
-		// 						&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
-		// 							Type: to.Ptr("ManagedImage"),
-		// 							ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/baseimage-cus"),
-		// 							Location: to.Ptr("centralus"),
-		// 							RunOutputName: to.Ptr("singleImage"),
-		// 						},
-		// 						&armvirtualmachineimagebuilder.ImageTemplateSharedImageDistributor{
-		// 							Type: to.Ptr("SharedImage"),
-		// 							ExcludeFromLatest: to.Ptr(true),
-		// 							GalleryImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/gallery/baseimages/images/baseimage"),
-		// 							ReplicationRegions: []*string{
-		// 								to.Ptr("eastus"),
-		// 								to.Ptr("westus"),
-		// 							},
-		// 							RunOutputName: to.Ptr("gallery"),
-		// 							StorageAccountType: to.Ptr(armvirtualmachineimagebuilder.SharedImageStorageAccountTypeStandardLRS),
-		// 						},
-		// 					},
-		// 					Source: &armvirtualmachineimagebuilder.ImageTemplatePlatformImageSource{
-		// 						Type: to.Ptr("PlatformImage"),
-		// 						Offer: to.Ptr("UbuntuServer"),
-		// 						PlanInfo: &armvirtualmachineimagebuilder.PlatformImagePurchasePlan{
-		// 							PlanName: to.Ptr("example_plan_name"),
-		// 							PlanProduct: to.Ptr("example_plan_product"),
-		// 							PlanPublisher: to.Ptr("example_plan_publisher"),
-		// 						},
-		// 						Publisher: to.Ptr("Canonical"),
-		// 						SKU: to.Ptr("18.04-LTS"),
-		// 						Version: to.Ptr("18.04.201902121"),
-		// 					},
-		// 					VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
-		// 						OSDiskSizeGB: to.Ptr[int32](64),
-		// 						VMSize: to.Ptr("Standard_D8s_v3"),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-10-01/ListRunOutputs.json
-func ExampleVirtualMachineImageTemplatesClient_NewListRunOutputsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armvirtualmachineimagebuilder.NewClientFactory("{subscription-id}", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVirtualMachineImageTemplatesClient().NewListRunOutputsPager("myResourceGroup", "myImageTemplate", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListRunOutputsResponse{
-		// 	RunOutputCollection: armvirtualmachineimagebuilder.RunOutputCollection{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate/runOutputs?api-version=2025-10-01&$skipToken=3"),
-		// 		Value: []*armvirtualmachineimagebuilder.RunOutput{
-		// 			{
-		// 				Name: to.Ptr("myManagedImageOutput"),
-		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates/runOutputs"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourcegroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate/runOutputs/myManagedImageOutput"),
-		// 				Properties: &armvirtualmachineimagebuilder.RunOutputProperties{
-		// 					ArtifactID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/output_managed_image"),
-		// 					ProvisioningState: to.Ptr(armvirtualmachineimagebuilder.ProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("mySharedImageOutput"),
-		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates/runOutputs"),
-		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourcegroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate/runOutputs/mySharedImageOutput"),
-		// 				Properties: &armvirtualmachineimagebuilder.RunOutputProperties{
-		// 					ArtifactID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/galleries/Gallery1/images/SharedImageOutput/imageversions/1.2.3"),
-		// 					ProvisioningState: to.Ptr(armvirtualmachineimagebuilder.ProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-10-01/RunImageTemplate.json
 func ExampleVirtualMachineImageTemplatesClient_BeginRun() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1088,4 +682,410 @@ func ExampleVirtualMachineImageTemplatesClient_BeginUpdate_updateParametersForVM
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-10-01/GetImageTemplate.json
+func ExampleVirtualMachineImageTemplatesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armvirtualmachineimagebuilder.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineImageTemplatesClient().Get(ctx, "myResourceGroup", "myImageTemplate", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientGetResponse{
+	// 	ImageTemplate: armvirtualmachineimagebuilder.ImageTemplate{
+	// 		Name: to.Ptr("myImageTemplate"),
+	// 		Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate"),
+	// 		Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
+	// 			Type: to.Ptr(armvirtualmachineimagebuilder.ResourceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armvirtualmachineimagebuilder.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1": &armvirtualmachineimagebuilder.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
+	// 			Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
+	// 				&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
+	// 					Name: to.Ptr("Shell Customizer Example"),
+	// 					Type: to.Ptr("Shell"),
+	// 					ScriptURI: to.Ptr("https://example.com/path/to/script.sh"),
+	// 				},
+	// 			},
+	// 			Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
+	// 				&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
+	// 					Type: to.Ptr("ManagedImage"),
+	// 					ArtifactTags: map[string]*string{
+	// 						"tagName": to.Ptr("value"),
+	// 					},
+	// 					ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1"),
+	// 					Location: to.Ptr("1_location"),
+	// 					RunOutputName: to.Ptr("image_it_pir_1"),
+	// 				},
+	// 			},
+	// 			Source: &armvirtualmachineimagebuilder.ImageTemplateManagedImageSource{
+	// 				Type: to.Ptr("ManagedImage"),
+	// 				ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/source_rg/providers/Microsoft.Compute/images/source_image"),
+	// 			},
+	// 			VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
+	// 				OSDiskSizeGB: to.Ptr[int32](64),
+	// 				VMSize: to.Ptr("Standard_D2s_v3"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-10-01/GetRunOutput.json
+func ExampleVirtualMachineImageTemplatesClient_GetRunOutput() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armvirtualmachineimagebuilder.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVirtualMachineImageTemplatesClient().GetRunOutput(ctx, "myResourceGroup", "myImageTemplate", "myManagedImageOutput", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientGetRunOutputResponse{
+	// 	RunOutput: armvirtualmachineimagebuilder.RunOutput{
+	// 		Name: to.Ptr("myManagedImageOutput"),
+	// 		Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates/runOutputs"),
+	// 		ID: to.Ptr("/subscriptions/{subscription-id}/resourcegroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate/runOutputs/myManagedImageOutput"),
+	// 		Properties: &armvirtualmachineimagebuilder.RunOutputProperties{
+	// 			ArtifactID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/output_managed_image"),
+	// 			ProvisioningState: to.Ptr(armvirtualmachineimagebuilder.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-10-01/ListImageTemplatesByRg.json
+func ExampleVirtualMachineImageTemplatesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armvirtualmachineimagebuilder.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineImageTemplatesClient().NewListByResourceGroupPager("myResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListByResourceGroupResponse{
+		// 	ImageTemplateListResult: armvirtualmachineimagebuilder.ImageTemplateListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates?api-version=2025-10-01&skip-token=2"),
+		// 		Value: []*armvirtualmachineimagebuilder.ImageTemplate{
+		// 			{
+		// 				Name: to.Ptr("myImageTemplate"),
+		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate"),
+		// 				Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
+		// 					Type: to.Ptr(armvirtualmachineimagebuilder.ResourceIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armvirtualmachineimagebuilder.UserAssignedIdentity{
+		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1": &armvirtualmachineimagebuilder.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
+		// 					Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
+		// 						&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
+		// 							Name: to.Ptr("Shell customization example"),
+		// 							Type: to.Ptr("Shell"),
+		// 							ScriptURI: to.Ptr("https://example.com/path/to/script.sh"),
+		// 						},
+		// 					},
+		// 					Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
+		// 						&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
+		// 							Type: to.Ptr("ManagedImage"),
+		// 							ArtifactTags: map[string]*string{
+		// 								"tagName": to.Ptr("value"),
+		// 							},
+		// 							ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1"),
+		// 							Location: to.Ptr("1_location"),
+		// 							RunOutputName: to.Ptr("image_it_pir_1"),
+		// 						},
+		// 					},
+		// 					Source: &armvirtualmachineimagebuilder.ImageTemplateManagedImageSource{
+		// 						Type: to.Ptr("ManagedImage"),
+		// 						ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/source_rg/providers/Microsoft.Compute/images/source_image"),
+		// 					},
+		// 					VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
+		// 						OSDiskSizeGB: to.Ptr[int32](64),
+		// 						VMSize: to.Ptr("Standard_D2s_v3"),
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myOtherImageTemplate"),
+		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myOtherImageTemplate"),
+		// 				Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
+		// 					Type: to.Ptr(armvirtualmachineimagebuilder.ResourceIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armvirtualmachineimagebuilder.UserAssignedIdentity{
+		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1": &armvirtualmachineimagebuilder.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
+		// 					Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
+		// 						&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
+		// 							Name: to.Ptr("Shell customization example"),
+		// 							Type: to.Ptr("Shell"),
+		// 							ScriptURI: to.Ptr("https://example.com/path/to/script.sh"),
+		// 						},
+		// 					},
+		// 					Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
+		// 						&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
+		// 							Type: to.Ptr("ManagedImage"),
+		// 							ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/baseimage-cus"),
+		// 							Location: to.Ptr("centralus"),
+		// 							RunOutputName: to.Ptr("singleImage"),
+		// 						},
+		// 						&armvirtualmachineimagebuilder.ImageTemplateSharedImageDistributor{
+		// 							Type: to.Ptr("SharedImage"),
+		// 							ExcludeFromLatest: to.Ptr(true),
+		// 							GalleryImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/gallery/baseimages/images/baseimage"),
+		// 							ReplicationRegions: []*string{
+		// 								to.Ptr("eastus"),
+		// 								to.Ptr("westus"),
+		// 							},
+		// 							RunOutputName: to.Ptr("gallery"),
+		// 							StorageAccountType: to.Ptr(armvirtualmachineimagebuilder.SharedImageStorageAccountTypeStandardLRS),
+		// 						},
+		// 					},
+		// 					Source: &armvirtualmachineimagebuilder.ImageTemplatePlatformImageSource{
+		// 						Type: to.Ptr("PlatformImage"),
+		// 						Offer: to.Ptr("UbuntuServer"),
+		// 						PlanInfo: &armvirtualmachineimagebuilder.PlatformImagePurchasePlan{
+		// 							PlanName: to.Ptr("example_plan_name"),
+		// 							PlanProduct: to.Ptr("example_plan_product"),
+		// 							PlanPublisher: to.Ptr("example_plan_publisher"),
+		// 						},
+		// 						Publisher: to.Ptr("Canonical"),
+		// 						SKU: to.Ptr("18.04-LTS"),
+		// 						Version: to.Ptr("18.04.201902121"),
+		// 					},
+		// 					VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
+		// 						OSDiskSizeGB: to.Ptr[int32](64),
+		// 						VMSize: to.Ptr("Standard_D8s_v3"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-10-01/ListImageTemplates.json
+func ExampleVirtualMachineImageTemplatesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armvirtualmachineimagebuilder.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineImageTemplatesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListResponse{
+		// 	ImageTemplateListResult: armvirtualmachineimagebuilder.ImageTemplateListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.VirtualMachineImages/imageTemplates?api-version=2025-10-01&skip-token=2"),
+		// 		Value: []*armvirtualmachineimagebuilder.ImageTemplate{
+		// 			{
+		// 				Name: to.Ptr("myImageTemplate"),
+		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate"),
+		// 				Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
+		// 					Type: to.Ptr(armvirtualmachineimagebuilder.ResourceIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armvirtualmachineimagebuilder.UserAssignedIdentity{
+		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1": &armvirtualmachineimagebuilder.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
+		// 					Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
+		// 						&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
+		// 							Name: to.Ptr("Shell customization example"),
+		// 							Type: to.Ptr("Shell"),
+		// 							ScriptURI: to.Ptr("https://example.com/path/to/script.sh"),
+		// 						},
+		// 					},
+		// 					Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
+		// 						&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
+		// 							Type: to.Ptr("ManagedImage"),
+		// 							ArtifactTags: map[string]*string{
+		// 								"tagName": to.Ptr("value"),
+		// 							},
+		// 							ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/image_it_1"),
+		// 							Location: to.Ptr("1_location"),
+		// 							RunOutputName: to.Ptr("image_it_pir_1"),
+		// 						},
+		// 					},
+		// 					Source: &armvirtualmachineimagebuilder.ImageTemplateManagedImageSource{
+		// 						Type: to.Ptr("ManagedImage"),
+		// 						ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/source_rg/providers/Microsoft.Compute/images/source_image"),
+		// 					},
+		// 					VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
+		// 						OSDiskSizeGB: to.Ptr[int32](64),
+		// 						VMSize: to.Ptr("Standard_D2s_v3"),
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("mySecondImageTemplate"),
+		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/myOtherResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/mySecondImageTemplate"),
+		// 				Identity: &armvirtualmachineimagebuilder.ImageTemplateIdentity{
+		// 					Type: to.Ptr(armvirtualmachineimagebuilder.ResourceIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armvirtualmachineimagebuilder.UserAssignedIdentity{
+		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity_1": &armvirtualmachineimagebuilder.UserAssignedIdentity{
+		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						},
+		// 					},
+		// 				},
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armvirtualmachineimagebuilder.ImageTemplateProperties{
+		// 					Customize: []armvirtualmachineimagebuilder.ImageTemplateCustomizerClassification{
+		// 						&armvirtualmachineimagebuilder.ImageTemplateShellCustomizer{
+		// 							Name: to.Ptr("Shell customization example"),
+		// 							Type: to.Ptr("Shell"),
+		// 							ScriptURI: to.Ptr("https://example.com/path/to/script.sh"),
+		// 						},
+		// 					},
+		// 					Distribute: []armvirtualmachineimagebuilder.ImageTemplateDistributorClassification{
+		// 						&armvirtualmachineimagebuilder.ImageTemplateManagedImageDistributor{
+		// 							Type: to.Ptr("ManagedImage"),
+		// 							ArtifactTags: map[string]*string{
+		// 								"stage": to.Ptr("development"),
+		// 							},
+		// 							ImageID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/mySecondImage-eus"),
+		// 							Location: to.Ptr("eastus"),
+		// 							RunOutputName: to.Ptr("eus"),
+		// 						},
+		// 					},
+		// 					Source: &armvirtualmachineimagebuilder.ImageTemplatePlatformImageSource{
+		// 						Type: to.Ptr("PlatformImage"),
+		// 						Offer: to.Ptr("UbuntuServer"),
+		// 						PlanInfo: &armvirtualmachineimagebuilder.PlatformImagePurchasePlan{
+		// 							PlanName: to.Ptr("example_plan_name"),
+		// 							PlanProduct: to.Ptr("example_plan_product"),
+		// 							PlanPublisher: to.Ptr("example_plan_publisher"),
+		// 						},
+		// 						Publisher: to.Ptr("Canonical"),
+		// 						SKU: to.Ptr("18.04-LTS"),
+		// 						Version: to.Ptr("18.04.201902121"),
+		// 					},
+		// 					VMProfile: &armvirtualmachineimagebuilder.ImageTemplateVMProfile{
+		// 						OSDiskSizeGB: to.Ptr[int32](32),
+		// 						VMSize: to.Ptr("Standard_D8s_v3"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-10-01/ListRunOutputs.json
+func ExampleVirtualMachineImageTemplatesClient_NewListRunOutputsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armvirtualmachineimagebuilder.NewClientFactory("{subscription-id}", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVirtualMachineImageTemplatesClient().NewListRunOutputsPager("myResourceGroup", "myImageTemplate", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armvirtualmachineimagebuilder.VirtualMachineImageTemplatesClientListRunOutputsResponse{
+		// 	RunOutputCollection: armvirtualmachineimagebuilder.RunOutputCollection{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate/runOutputs?api-version=2025-10-01&$skipToken=3"),
+		// 		Value: []*armvirtualmachineimagebuilder.RunOutput{
+		// 			{
+		// 				Name: to.Ptr("myManagedImageOutput"),
+		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates/runOutputs"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourcegroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate/runOutputs/myManagedImageOutput"),
+		// 				Properties: &armvirtualmachineimagebuilder.RunOutputProperties{
+		// 					ArtifactID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/images/output_managed_image"),
+		// 					ProvisioningState: to.Ptr(armvirtualmachineimagebuilder.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("mySharedImageOutput"),
+		// 				Type: to.Ptr("Microsoft.VirtualMachineImages/imageTemplates/runOutputs"),
+		// 				ID: to.Ptr("/subscriptions/{subscription-id}/resourcegroups/myResourceGroup/providers/Microsoft.VirtualMachineImages/imageTemplates/myImageTemplate/runOutputs/mySharedImageOutput"),
+		// 				Properties: &armvirtualmachineimagebuilder.RunOutputProperties{
+		// 					ArtifactID: to.Ptr("/subscriptions/{subscription-id}/resourceGroups/rg1/providers/Microsoft.Compute/galleries/Gallery1/images/SharedImageOutput/imageversions/1.2.3"),
+		// 					ProvisioningState: to.Ptr(armvirtualmachineimagebuilder.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

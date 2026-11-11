@@ -72,7 +72,7 @@ func (client *ApplicationTypeVersionsClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Service Fabric application type version resource.
+// createOrUpdate - Creates or updates a Service Fabric application type version resource.
 //
 // Create or update a Service Fabric application type version resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -91,12 +91,13 @@ func (client *ApplicationTypeVersionsClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ApplicationTypeVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, version string, parameters ApplicationTypeVersionResource, _ *ApplicationTypeVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}/versions/{version}"
 	if client.subscriptionID == "" {
@@ -161,7 +162,7 @@ func (client *ApplicationTypeVersionsClient) BeginDelete(ctx context.Context, re
 	}
 }
 
-// Delete - Deletes a Service Fabric application type version resource.
+// deleteOperation - Deletes a Service Fabric application type version resource.
 //
 // Delete a Service Fabric application type version resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -180,12 +181,13 @@ func (client *ApplicationTypeVersionsClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ApplicationTypeVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationTypeName string, version string, _ *ApplicationTypeVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}/versions/{version}"
 	if client.subscriptionID == "" {
@@ -243,7 +245,8 @@ func (client *ApplicationTypeVersionsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return ApplicationTypeVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

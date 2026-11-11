@@ -65,7 +65,8 @@ func (client *PipelineRunsClient) Cancel(ctx context.Context, resourceGroupName 
 		return PipelineRunsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return PipelineRunsClientCancelResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PipelineRunsClientCancelResponse{}, err
 	}
 	return PipelineRunsClientCancelResponse{}, nil
 }
@@ -121,7 +122,8 @@ func (client *PipelineRunsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return PipelineRunsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -187,7 +189,8 @@ func (client *PipelineRunsClient) QueryByFactory(ctx context.Context, resourceGr
 	if err != nil {
 		return PipelineRunsClientQueryByFactoryResponse{}, err
 	}
-	return client.queryByFactoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.queryByFactoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // queryByFactoryCreateRequest creates the QueryByFactory request.

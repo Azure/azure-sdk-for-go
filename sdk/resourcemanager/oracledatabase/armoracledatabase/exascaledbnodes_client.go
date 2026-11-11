@@ -69,7 +69,7 @@ func (client *ExascaleDbNodesClient) BeginAction(ctx context.Context, resourceGr
 	}
 }
 
-// Action - VM actions on DbNode of ExadbVmCluster by the provided filter
+// action - VM actions on DbNode of ExadbVmCluster by the provided filter
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExascaleDbNodesClient) action(ctx context.Context, resourceGroupName string, exadbVMClusterName string, exascaleDbNodeName string, body DbNodeAction, options *ExascaleDbNodesClientBeginActionOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *ExascaleDbNodesClient) action(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// actionCreateRequest creates the Action request.
+// actionCreateRequest creates the action request.
 func (client *ExascaleDbNodesClient) actionCreateRequest(ctx context.Context, resourceGroupName string, exadbVMClusterName string, exascaleDbNodeName string, body DbNodeAction, _ *ExascaleDbNodesClientBeginActionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Oracle.Database/exadbVmClusters/{exadbVmClusterName}/dbNodes/{exascaleDbNodeName}/action"
 	if client.subscriptionID == "" {
@@ -145,7 +146,8 @@ func (client *ExascaleDbNodesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ExascaleDbNodesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

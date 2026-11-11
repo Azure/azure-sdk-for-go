@@ -67,7 +67,7 @@ func (client *WorkloadImpactsClient) BeginCreate(ctx context.Context, workloadIm
 	}
 }
 
-// Create - Create a WorkloadImpact
+// create - Create a WorkloadImpact
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkloadImpactsClient) create(ctx context.Context, workloadImpactName string, resource WorkloadImpact, options *WorkloadImpactsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -84,12 +84,13 @@ func (client *WorkloadImpactsClient) create(ctx context.Context, workloadImpactN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *WorkloadImpactsClient) createCreateRequest(ctx context.Context, workloadImpactName string, resource WorkloadImpact, _ *WorkloadImpactsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Impact/workloadImpacts/{workloadImpactName}"
 	if client.subscriptionID == "" {
@@ -134,7 +135,8 @@ func (client *WorkloadImpactsClient) Delete(ctx context.Context, workloadImpactN
 		return WorkloadImpactsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WorkloadImpactsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WorkloadImpactsClientDeleteResponse{}, err
 	}
 	return WorkloadImpactsClientDeleteResponse{}, nil
 }
@@ -178,7 +180,8 @@ func (client *WorkloadImpactsClient) Get(ctx context.Context, workloadImpactName
 	if err != nil {
 		return WorkloadImpactsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

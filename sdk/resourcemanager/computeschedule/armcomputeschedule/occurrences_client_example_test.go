@@ -13,51 +13,6 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-04-15-preview/Occurrences_Cancel_MaximumSet_Gen.json
-func ExampleOccurrencesClient_Cancel() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewOccurrencesClient().Cancel(ctx, "rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111", armcomputeschedule.CancelOccurrenceRequest{
-		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcomputeschedule.OccurrencesClientCancelResponse{
-	// 	RecurringActionsResourceOperationResult: armcomputeschedule.RecurringActionsResourceOperationResult{
-	// 		TotalResources: to.Ptr[int32](4),
-	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
-	// 			{
-	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
-	// 				Status: to.Ptr(armcomputeschedule.ResourceOperationStatusSucceeded),
-	// 				Error: &armcomputeschedule.Error{
-	// 					Code: to.Ptr("ResourceNotFound"),
-	// 					Message: to.Ptr("The specified resource was not found."),
-	// 					Target: to.Ptr("virtualMachines/myVm"),
-	// 					Details: []*armcomputeschedule.Error{
-	// 					},
-	// 					Innererror: &armcomputeschedule.InnerError{
-	// 						Code: to.Ptr("ResourceNotFoundError"),
-	// 					},
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-04-15-preview/Occurrences_Delay_MaximumSet_Gen.json
 func ExampleOccurrencesClient_BeginDelay() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -91,6 +46,51 @@ func ExampleOccurrencesClient_BeginDelay() {
 	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
 	// 			{
 	// 				ResourceID: to.Ptr("/subscriptions/1d04e8f1-ee04-4056-b0b2-718f5bb45b04/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
+	// 				Status: to.Ptr(armcomputeschedule.ResourceOperationStatusSucceeded),
+	// 				Error: &armcomputeschedule.Error{
+	// 					Code: to.Ptr("ResourceNotFound"),
+	// 					Message: to.Ptr("The specified resource was not found."),
+	// 					Target: to.Ptr("virtualMachines/myVm"),
+	// 					Details: []*armcomputeschedule.Error{
+	// 					},
+	// 					Innererror: &armcomputeschedule.InnerError{
+	// 						Code: to.Ptr("ResourceNotFoundError"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-15-preview/Occurrences_Cancel_MaximumSet_Gen.json
+func ExampleOccurrencesClient_Cancel() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcomputeschedule.NewClientFactory("732116BD-AF31-4E74-9283-B387C44B4A44", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewOccurrencesClient().Cancel(ctx, "rgcomputeschedule", "scheduled-action-01", "11111111-1111-1111-1111-111111111111", armcomputeschedule.CancelOccurrenceRequest{
+		ResourceIDs: []*string{
+			to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgcomputeschedule/providers/Microsoft.Compute/virtualMachines/vm1"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcomputeschedule.OccurrencesClientCancelResponse{
+	// 	RecurringActionsResourceOperationResult: armcomputeschedule.RecurringActionsResourceOperationResult{
+	// 		TotalResources: to.Ptr[int32](4),
+	// 		ResourcesStatuses: []*armcomputeschedule.ResourceStatus{
+	// 			{
+	// 				ResourceID: to.Ptr("/subscriptions/CB26D7CB-3E27-465F-99C8-EAF7A4118245/resourceGroups/myRg/providers/Microsoft.Compute/virtualMachines/myVm"),
 	// 				Status: to.Ptr(armcomputeschedule.ResourceOperationStatusSucceeded),
 	// 				Error: &armcomputeschedule.Error{
 	// 					Code: to.Ptr("ResourceNotFound"),

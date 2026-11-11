@@ -66,7 +66,8 @@ func (client *ManagedDatabaseSchemasClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ManagedDatabaseSchemasClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

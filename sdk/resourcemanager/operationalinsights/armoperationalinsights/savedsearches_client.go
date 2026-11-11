@@ -66,7 +66,8 @@ func (client *SavedSearchesClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return SavedSearchesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *SavedSearchesClient) Delete(ctx context.Context, resourceGroupName
 		return SavedSearchesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return SavedSearchesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SavedSearchesClientDeleteResponse{}, err
 	}
 	return SavedSearchesClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *SavedSearchesClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return SavedSearchesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -255,7 +258,8 @@ func (client *SavedSearchesClient) ListByWorkspace(ctx context.Context, resource
 	if err != nil {
 		return SavedSearchesClientListByWorkspaceResponse{}, err
 	}
-	return client.listByWorkspaceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByWorkspaceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByWorkspaceCreateRequest creates the ListByWorkspace request.

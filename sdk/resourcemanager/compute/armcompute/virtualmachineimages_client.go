@@ -68,7 +68,8 @@ func (client *VirtualMachineImagesClient) Get(ctx context.Context, location stri
 	if err != nil {
 		return VirtualMachineImagesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -143,7 +144,8 @@ func (client *VirtualMachineImagesClient) List(ctx context.Context, location str
 	if err != nil {
 		return VirtualMachineImagesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -221,7 +223,8 @@ func (client *VirtualMachineImagesClient) ListByEdgeZone(ctx context.Context, lo
 	if err != nil {
 		return VirtualMachineImagesClientListByEdgeZoneResponse{}, err
 	}
-	return client.listByEdgeZoneHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByEdgeZoneHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByEdgeZoneCreateRequest creates the ListByEdgeZone request.
@@ -282,7 +285,8 @@ func (client *VirtualMachineImagesClient) ListOffers(ctx context.Context, locati
 	if err != nil {
 		return VirtualMachineImagesClientListOffersResponse{}, err
 	}
-	return client.listOffersHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listOffersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listOffersCreateRequest creates the ListOffers request.
@@ -342,7 +346,8 @@ func (client *VirtualMachineImagesClient) ListPublishers(ctx context.Context, lo
 	if err != nil {
 		return VirtualMachineImagesClientListPublishersResponse{}, err
 	}
-	return client.listPublishersHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listPublishersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listPublishersCreateRequest creates the ListPublishers request.
@@ -400,7 +405,8 @@ func (client *VirtualMachineImagesClient) ListSKUs(ctx context.Context, location
 	if err != nil {
 		return VirtualMachineImagesClientListSKUsResponse{}, err
 	}
-	return client.listSKUsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSKUsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSKUsCreateRequest creates the ListSKUs request.
@@ -468,7 +474,8 @@ func (client *VirtualMachineImagesClient) ListWithProperties(ctx context.Context
 	if err != nil {
 		return VirtualMachineImagesClientListWithPropertiesResponse{}, err
 	}
-	return client.listWithPropertiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listWithPropertiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listWithPropertiesCreateRequest creates the ListWithProperties request.

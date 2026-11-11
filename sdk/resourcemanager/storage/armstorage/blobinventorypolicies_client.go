@@ -67,7 +67,8 @@ func (client *BlobInventoryPoliciesClient) CreateOrUpdate(ctx context.Context, r
 	if err != nil {
 		return BlobInventoryPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -139,7 +140,8 @@ func (client *BlobInventoryPoliciesClient) Delete(ctx context.Context, resourceG
 		return BlobInventoryPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return BlobInventoryPoliciesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BlobInventoryPoliciesClientDeleteResponse{}, err
 	}
 	return BlobInventoryPoliciesClientDeleteResponse{}, nil
 }
@@ -195,7 +197,8 @@ func (client *BlobInventoryPoliciesClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return BlobInventoryPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

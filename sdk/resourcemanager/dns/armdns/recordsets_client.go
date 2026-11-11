@@ -69,7 +69,8 @@ func (client *RecordSetsClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return RecordSetsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -159,7 +160,8 @@ func (client *RecordSetsClient) Delete(ctx context.Context, resourceGroupName st
 		return RecordSetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return RecordSetsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecordSetsClientDeleteResponse{}, err
 	}
 	return RecordSetsClientDeleteResponse{}, nil
 }
@@ -221,7 +223,8 @@ func (client *RecordSetsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return RecordSetsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -546,7 +549,8 @@ func (client *RecordSetsClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return RecordSetsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

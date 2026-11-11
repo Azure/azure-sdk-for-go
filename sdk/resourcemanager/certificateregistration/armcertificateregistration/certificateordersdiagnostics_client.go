@@ -69,7 +69,8 @@ func (client *CertificateOrdersDiagnosticsClient) GetAppServiceCertificateOrderD
 	if err != nil {
 		return CertificateOrdersDiagnosticsClientGetAppServiceCertificateOrderDetectorResponseResponse{}, err
 	}
-	return client.getAppServiceCertificateOrderDetectorResponseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAppServiceCertificateOrderDetectorResponseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAppServiceCertificateOrderDetectorResponseCreateRequest creates the GetAppServiceCertificateOrderDetectorResponse request.

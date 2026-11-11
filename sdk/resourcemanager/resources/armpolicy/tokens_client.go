@@ -64,7 +64,8 @@ func (client *TokensClient) Acquire(ctx context.Context, parameters TokenRequest
 	if err != nil {
 		return TokensClientAcquireResponse{}, err
 	}
-	return client.acquireHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.acquireHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // acquireCreateRequest creates the Acquire request.
@@ -123,7 +124,8 @@ func (client *TokensClient) AcquireAtManagementGroup(ctx context.Context, manage
 	if err != nil {
 		return TokensClientAcquireAtManagementGroupResponse{}, err
 	}
-	return client.acquireAtManagementGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.acquireAtManagementGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // acquireAtManagementGroupCreateRequest creates the AcquireAtManagementGroup request.

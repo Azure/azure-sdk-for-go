@@ -12,6 +12,111 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2026-06-01/ReservationDetailsWithReservationId.json
+func ExampleReservationsDetailsClient_NewListByReservationOrderAndReservationPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsDetailsClient().NewListByReservationOrderAndReservationPager("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000", "properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-12-05", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armconsumption.ReservationsDetailsClientListByReservationOrderAndReservationResponse{
+		// 	ReservationDetailsListResult: armconsumption.ReservationDetailsListResult{
+		// 		Value: []*armconsumption.ReservationDetail{
+		// 			{
+		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000_20171129"),
+		// 				Type: to.Ptr("Microsoft.Consumption/reservationDetails"),
+		// 				ID: to.Ptr("providers/Microsoft.Capacity/reservationOrders/00000000-0000-0000-0000-000000000000/reservations/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/reservationDetails/20171129"),
+		// 				Properties: &armconsumption.ReservationDetailProperties{
+		// 					InstanceFlexibilityGroup: to.Ptr("D2v2 Series"),
+		// 					InstanceFlexibilityRatio: to.Ptr("1"),
+		// 					InstanceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/wvn-sql/providers/microsoft.compute/virtualmachines/wvn-sql2014sp33"),
+		// 					Kind: to.Ptr("Reservation"),
+		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservedHours: to.Ptr[float64](24),
+		// 					SKUName: to.Ptr("Standard_D2_v2"),
+		// 					TotalReservedQuantity: to.Ptr[float64](1),
+		// 					UsageDate: to.Ptr(time.Date(2017, time.November, 29, 0, 0, 0, 0, time.UTC)),
+		// 					UsedHours: to.Ptr[float64](24),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"dev": to.Ptr("tools"),
+		// 					"env": to.Ptr("newcrp"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01/ReservationDetails.json
+func ExampleReservationsDetailsClient_NewListByReservationOrderPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewReservationsDetailsClient().NewListByReservationOrderPager("00000000-0000-0000-0000-000000000000", "properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-12-05", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armconsumption.ReservationsDetailsClientListByReservationOrderResponse{
+		// 	ReservationDetailsListResult: armconsumption.ReservationDetailsListResult{
+		// 		Value: []*armconsumption.ReservationDetail{
+		// 			{
+		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000_20171129"),
+		// 				Type: to.Ptr("Microsoft.Consumption/reservationDetails"),
+		// 				ID: to.Ptr("providers/Microsoft.Capacity/reservationOrders/00000000-0000-0000-0000-000000000000/reservations/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/reservationDetails/20171129"),
+		// 				Properties: &armconsumption.ReservationDetailProperties{
+		// 					InstanceFlexibilityGroup: to.Ptr("DSv2 Series"),
+		// 					InstanceFlexibilityRatio: to.Ptr("0.25"),
+		// 					InstanceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/wvn-sql/providers/microsoft.compute/virtualmachines/abc-sql2014sp33"),
+		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					ReservedHours: to.Ptr[float64](24),
+		// 					SKUName: to.Ptr("Standard_D2_v2"),
+		// 					TotalReservedQuantity: to.Ptr[float64](1),
+		// 					UsageDate: to.Ptr(time.Date(2017, time.November, 29, 0, 0, 0, 0, time.UTC)),
+		// 					UsedHours: to.Ptr[float64](24),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"dev": to.Ptr("tools"),
+		// 					"env": to.Ptr("newcrp"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2026-06-01/ReservationDetailsByBillingAccountId.json
 func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingAccountId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -155,111 +260,6 @@ func ExampleReservationsDetailsClient_NewListPager_reservationDetailsByBillingPr
 		// 					TotalReservedQuantity: to.Ptr[float64](0),
 		// 					UsageDate: to.Ptr(time.Date(2019, time.September, 30, 8, 0, 0, 0, time.UTC)),
 		// 					UsedHours: to.Ptr[float64](0.6),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-01/ReservationDetails.json
-func ExampleReservationsDetailsClient_NewListByReservationOrderPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReservationsDetailsClient().NewListByReservationOrderPager("00000000-0000-0000-0000-000000000000", "properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-12-05", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armconsumption.ReservationsDetailsClientListByReservationOrderResponse{
-		// 	ReservationDetailsListResult: armconsumption.ReservationDetailsListResult{
-		// 		Value: []*armconsumption.ReservationDetail{
-		// 			{
-		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000_20171129"),
-		// 				Type: to.Ptr("Microsoft.Consumption/reservationDetails"),
-		// 				ID: to.Ptr("providers/Microsoft.Capacity/reservationOrders/00000000-0000-0000-0000-000000000000/reservations/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/reservationDetails/20171129"),
-		// 				Properties: &armconsumption.ReservationDetailProperties{
-		// 					InstanceFlexibilityGroup: to.Ptr("DSv2 Series"),
-		// 					InstanceFlexibilityRatio: to.Ptr("0.25"),
-		// 					InstanceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/wvn-sql/providers/microsoft.compute/virtualmachines/abc-sql2014sp33"),
-		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservedHours: to.Ptr[float64](24),
-		// 					SKUName: to.Ptr("Standard_D2_v2"),
-		// 					TotalReservedQuantity: to.Ptr[float64](1),
-		// 					UsageDate: to.Ptr(time.Date(2017, time.November, 29, 0, 0, 0, 0, time.UTC)),
-		// 					UsedHours: to.Ptr[float64](24),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"dev": to.Ptr("tools"),
-		// 					"env": to.Ptr("newcrp"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-01/ReservationDetailsWithReservationId.json
-func ExampleReservationsDetailsClient_NewListByReservationOrderAndReservationPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armconsumption.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewReservationsDetailsClient().NewListByReservationOrderAndReservationPager("00000000-0000-0000-0000-000000000000", "00000000-0000-0000-0000-000000000000", "properties/usageDate ge 2017-10-01 AND properties/usageDate le 2017-12-05", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armconsumption.ReservationsDetailsClientListByReservationOrderAndReservationResponse{
-		// 	ReservationDetailsListResult: armconsumption.ReservationDetailsListResult{
-		// 		Value: []*armconsumption.ReservationDetail{
-		// 			{
-		// 				Name: to.Ptr("00000000-0000-0000-0000-000000000000_00000000-0000-0000-0000-000000000000_20171129"),
-		// 				Type: to.Ptr("Microsoft.Consumption/reservationDetails"),
-		// 				ID: to.Ptr("providers/Microsoft.Capacity/reservationOrders/00000000-0000-0000-0000-000000000000/reservations/00000000-0000-0000-0000-000000000000/providers/Microsoft.Consumption/reservationDetails/20171129"),
-		// 				Properties: &armconsumption.ReservationDetailProperties{
-		// 					InstanceFlexibilityGroup: to.Ptr("D2v2 Series"),
-		// 					InstanceFlexibilityRatio: to.Ptr("1"),
-		// 					InstanceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/wvn-sql/providers/microsoft.compute/virtualmachines/wvn-sql2014sp33"),
-		// 					Kind: to.Ptr("Reservation"),
-		// 					ReservationID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservationOrderID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					ReservedHours: to.Ptr[float64](24),
-		// 					SKUName: to.Ptr("Standard_D2_v2"),
-		// 					TotalReservedQuantity: to.Ptr[float64](1),
-		// 					UsageDate: to.Ptr(time.Date(2017, time.November, 29, 0, 0, 0, 0, time.UTC)),
-		// 					UsedHours: to.Ptr[float64](24),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"dev": to.Ptr("tools"),
-		// 					"env": to.Ptr("newcrp"),
 		// 				},
 		// 			},
 		// 		},

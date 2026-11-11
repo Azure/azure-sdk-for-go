@@ -68,7 +68,7 @@ func (client *ReservationsClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - Create a reservation
+// create - Create a reservation
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ReservationsClient) create(ctx context.Context, resourceGroupName string, reservationName string, resource Reservation, options *ReservationsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *ReservationsClient) create(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ReservationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, reservationName string, resource Reservation, _ *ReservationsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}"
 	if client.subscriptionID == "" {
@@ -143,7 +144,7 @@ func (client *ReservationsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Delete a reservation
+// deleteOperation - Delete a reservation
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ReservationsClient) deleteOperation(ctx context.Context, resourceGroupName string, reservationName string, options *ReservationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,12 +161,13 @@ func (client *ReservationsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ReservationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, reservationName string, _ *ReservationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}"
 	if client.subscriptionID == "" {
@@ -190,6 +192,165 @@ func (client *ReservationsClient) deleteCreateRequest(ctx context.Context, resou
 	return req, nil
 }
 
+// BeginLinkSaaS - Links a new SaaS to the reservation.
+//
+// A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - reservationName - Name of the reservation.
+//   - body - The content of the action request
+//   - options - ReservationsClientBeginLinkSaaSOptions contains the optional parameters for the ReservationsClient.BeginLinkSaaS
+//     method.
+func (client *ReservationsClient) BeginLinkSaaS(ctx context.Context, resourceGroupName string, reservationName string, body LinkSaaSRequest, options *ReservationsClientBeginLinkSaaSOptions) (*runtime.Poller[ReservationsClientLinkSaaSResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.linkSaaS(ctx, resourceGroupName, reservationName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReservationsClientLinkSaaSResponse]{
+			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReservationsClientLinkSaaSResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// linkSaaS - Links a new SaaS to the reservation.
+//
+// A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReservationsClient) linkSaaS(ctx context.Context, resourceGroupName string, reservationName string, body LinkSaaSRequest, options *ReservationsClientBeginLinkSaaSOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReservationsClient.BeginLinkSaaS"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.linkSaaSCreateRequest(ctx, resourceGroupName, reservationName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// linkSaaSCreateRequest creates the linkSaaS request.
+func (client *ReservationsClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, reservationName string, body LinkSaaSRequest, _ *ReservationsClientBeginLinkSaaSOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}/linkSaaS"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if reservationName == "" {
+		return nil, errors.New("parameter reservationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{reservationName}", url.PathEscape(reservationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginUpdate - Update a reservation
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - reservationName - Name of the reservation.
+//   - properties - The resource properties to be updated.
+//   - options - ReservationsClientBeginUpdateOptions contains the optional parameters for the ReservationsClient.BeginUpdate
+//     method.
+func (client *ReservationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, reservationName string, properties ReservationUpdate, options *ReservationsClientBeginUpdateOptions) (*runtime.Poller[ReservationsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, reservationName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReservationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReservationsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a reservation
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ReservationsClient) update(ctx context.Context, resourceGroupName string, reservationName string, properties ReservationUpdate, options *ReservationsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ReservationsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, reservationName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ReservationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, reservationName string, properties ReservationUpdate, _ *ReservationsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if reservationName == "" {
+		return nil, errors.New("parameter reservationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{reservationName}", url.PathEscape(reservationName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get a reservation
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -209,7 +370,8 @@ func (client *ReservationsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ReservationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -270,7 +432,8 @@ func (client *ReservationsClient) GetBillingReport(ctx context.Context, resource
 	if err != nil {
 		return ReservationsClientGetBillingReportResponse{}, err
 	}
-	return client.getBillingReportHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBillingReportHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBillingReportCreateRequest creates the GetBillingReport request.
@@ -331,7 +494,8 @@ func (client *ReservationsClient) GetBillingStatus(ctx context.Context, resource
 	if err != nil {
 		return ReservationsClientGetBillingStatusResponse{}, err
 	}
-	return client.getBillingStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBillingStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBillingStatusCreateRequest creates the GetBillingStatus request.
@@ -392,7 +556,8 @@ func (client *ReservationsClient) GetResourceLimits(ctx context.Context, resourc
 	if err != nil {
 		return ReservationsClientGetResourceLimitsResponse{}, err
 	}
-	return client.getResourceLimitsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getResourceLimitsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getResourceLimitsCreateRequest creates the GetResourceLimits request.
@@ -453,7 +618,8 @@ func (client *ReservationsClient) LatestLinkedSaaS(ctx context.Context, resource
 	if err != nil {
 		return ReservationsClientLatestLinkedSaaSResponse{}, err
 	}
-	return client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.latestLinkedSaaSHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // latestLinkedSaaSCreateRequest creates the LatestLinkedSaaS request.
@@ -492,87 +658,6 @@ func (client *ReservationsClient) latestLinkedSaaSHandleResponse(resp *http.Resp
 		return ReservationsClientLatestLinkedSaaSResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginLinkSaaS - Links a new SaaS to the reservation.
-//
-// A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - reservationName - Name of the reservation.
-//   - body - The content of the action request
-//   - options - ReservationsClientBeginLinkSaaSOptions contains the optional parameters for the ReservationsClient.BeginLinkSaaS
-//     method.
-func (client *ReservationsClient) BeginLinkSaaS(ctx context.Context, resourceGroupName string, reservationName string, body LinkSaaSRequest, options *ReservationsClientBeginLinkSaaSOptions) (*runtime.Poller[ReservationsClientLinkSaaSResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.linkSaaS(ctx, resourceGroupName, reservationName, body, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReservationsClientLinkSaaSResponse]{
-			FinalStateVia: runtime.FinalStateViaAzureAsyncOp,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReservationsClientLinkSaaSResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// LinkSaaS - Links a new SaaS to the reservation.
-//
-// A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReservationsClient) linkSaaS(ctx context.Context, resourceGroupName string, reservationName string, body LinkSaaSRequest, options *ReservationsClientBeginLinkSaaSOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReservationsClient.BeginLinkSaaS"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.linkSaaSCreateRequest(ctx, resourceGroupName, reservationName, body, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// linkSaaSCreateRequest creates the LinkSaaS request.
-func (client *ReservationsClient) linkSaaSCreateRequest(ctx context.Context, resourceGroupName string, reservationName string, body LinkSaaSRequest, _ *ReservationsClientBeginLinkSaaSOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}/linkSaaS"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if reservationName == "" {
-		return nil, errors.New("parameter reservationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{reservationName}", url.PathEscape(reservationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, body); err != nil {
-		return nil, err
-	}
-	return req, nil
 }
 
 // NewListByResourceGroupPager - List reservations by resource group
@@ -712,80 +797,4 @@ func (client *ReservationsClient) listBySubscriptionHandleResponse(resp *http.Re
 		return ReservationsClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a reservation
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - reservationName - Name of the reservation.
-//   - properties - The resource properties to be updated.
-//   - options - ReservationsClientBeginUpdateOptions contains the optional parameters for the ReservationsClient.BeginUpdate
-//     method.
-func (client *ReservationsClient) BeginUpdate(ctx context.Context, resourceGroupName string, reservationName string, properties ReservationUpdate, options *ReservationsClientBeginUpdateOptions) (*runtime.Poller[ReservationsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, reservationName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ReservationsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ReservationsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a reservation
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ReservationsClient) update(ctx context.Context, resourceGroupName string, reservationName string, properties ReservationUpdate, options *ReservationsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ReservationsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, reservationName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ReservationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, reservationName string, properties ReservationUpdate, _ *ReservationsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PureStorage.Block/reservations/{reservationName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if reservationName == "" {
-		return nil, errors.New("parameter reservationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{reservationName}", url.PathEscape(reservationName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

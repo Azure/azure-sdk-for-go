@@ -62,6 +62,556 @@ func ExampleStaticSitesClient_BeginApproveOrRejectPrivateEndpointConnection() {
 	// }
 }
 
+// Generated from example definition: 2025-05-01/CreateOrUpdateStaticSite.json
+func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSite() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginCreateOrUpdateStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSiteARMResource{
+		Location: to.Ptr("West US 2"),
+		Properties: &armappservice.StaticSite{
+			Branch: to.Ptr("master"),
+			BuildProperties: &armappservice.StaticSiteBuildProperties{
+				APILocation:         to.Ptr("api"),
+				AppArtifactLocation: to.Ptr("build"),
+				AppLocation:         to.Ptr("app"),
+			},
+			RepositoryToken: to.Ptr("repoToken123"),
+			RepositoryURL:   to.Ptr("https://github.com/username/RepoName"),
+		},
+		SKU: &armappservice.SKUDescription{
+			Name: to.Ptr("Basic"),
+			Tier: to.Ptr("Basic"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientCreateOrUpdateStaticSiteResponse{
+	// 	StaticSiteARMResource: armappservice.StaticSiteARMResource{
+	// 		Name: to.Ptr("testStaticSite0"),
+	// 		Type: to.Ptr("Microsoft.Web/staticSites"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0"),
+	// 		Location: to.Ptr("West US 2"),
+	// 		Properties: &armappservice.StaticSite{
+	// 			AllowConfigFileUpdates: to.Ptr(true),
+	// 			Branch: to.Ptr("demo"),
+	// 			ContentDistributionEndpoint: to.Ptr(""),
+	// 			CustomDomains: []*string{
+	// 			},
+	// 			DefaultHostname: to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
+	// 			KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
+	// 			LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
+	// 			},
+	// 			PrivateEndpointConnections: []*armappservice.ResponseMessageEnvelopeRemotePrivateEndpointConnection{
+	// 			},
+	// 			RepositoryURL: to.Ptr("https://github.com/username/RepoName"),
+	// 			StagingEnvironmentPolicy: to.Ptr(armappservice.StagingEnvironmentPolicyEnabled),
+	// 		},
+	// 		SKU: &armappservice.SKUDescription{
+	// 			Name: to.Ptr("Basic"),
+	// 			Tier: to.Ptr("Basic"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/CreateOrUpdateStaticSiteCustomDomain.json
+func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSiteCustomDomain() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginCreateOrUpdateStaticSiteCustomDomain(ctx, "rg", "testStaticSite0", "custom.domain.net", armappservice.StaticSiteCustomDomainRequestPropertiesARMResource{
+		Properties: &armappservice.StaticSiteCustomDomainRequestPropertiesARMResourceProperties{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse{
+	// 	StaticSiteCustomDomainOverviewARMResource: armappservice.StaticSiteCustomDomainOverviewARMResource{
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSitesBuilds/testStaticSite0/customDomains/custom.domain.net"),
+	// 		Properties: &armappservice.StaticSiteCustomDomainOverviewARMResourceProperties{
+	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+	// 			DomainName: to.Ptr("custom.domain.net"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/StaticSiteZipDeploy.json
+func ExampleStaticSitesClient_BeginCreateZipDeploymentForStaticSite() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginCreateZipDeploymentForStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSiteZipDeploymentARMResource{
+		Properties: &armappservice.StaticSiteZipDeployment{
+			APIZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip"),
+			AppZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip"),
+			DeploymentTitle:  to.Ptr("Update index.html"),
+			FunctionLanguage: to.Ptr("testFunctionLanguage"),
+			Provider:         to.Ptr("testProvider"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientCreateZipDeploymentForStaticSiteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-05-01/StaticSiteBuildZipDeploy.json
+func ExampleStaticSitesClient_BeginCreateZipDeploymentForStaticSiteBuild() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginCreateZipDeploymentForStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", armappservice.StaticSiteZipDeploymentARMResource{
+		Properties: &armappservice.StaticSiteZipDeployment{
+			APIZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip"),
+			AppZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip"),
+			DeploymentTitle:  to.Ptr("Update index.html"),
+			FunctionLanguage: to.Ptr("testFunctionLanguage"),
+			Provider:         to.Ptr("testProvider"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse{
+	// }
+}
+
+// Generated from example definition: 2025-05-01/DeleteSitePrivateEndpointConnection_StaticSites.json
+func ExampleStaticSitesClient_BeginDeletePrivateEndpointConnection() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginDeletePrivateEndpointConnection(ctx, "rg", "testSite", "connection", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientDeletePrivateEndpointConnectionResponse{
+	// 	Interface: map[string]any{
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/DeleteStaticSite.json
+func ExampleStaticSitesClient_BeginDeleteStaticSite() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginDeleteStaticSite(ctx, "rg", "testStaticSite0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientDeleteStaticSiteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-05-01/DeleteStaticSiteBuild.json
+func ExampleStaticSitesClient_BeginDeleteStaticSiteBuild() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginDeleteStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientDeleteStaticSiteBuildResponse{
+	// }
+}
+
+// Generated from example definition: 2025-05-01/DeleteStaticSiteCustomDomain.json
+func ExampleStaticSitesClient_BeginDeleteStaticSiteCustomDomain() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginDeleteStaticSiteCustomDomain(ctx, "rg", "testStaticSite0", "custom.domain.net", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientDeleteStaticSiteCustomDomainResponse{
+	// }
+}
+
+// Generated from example definition: 2025-05-01/DetachStaticSite.json
+func ExampleStaticSitesClient_BeginDetachStaticSite() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginDetachStaticSite(ctx, "rg", "testStaticSite0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientDetachStaticSiteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-05-01/LinkBackendToStaticSite.json
+func ExampleStaticSitesClient_BeginLinkBackend() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginLinkBackend(ctx, "rg", "testStaticSite0", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
+		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
+			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
+			Region:            to.Ptr("West US 2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientLinkBackendResponse{
+	// 	StaticSiteLinkedBackendARMResource: armappservice.StaticSiteLinkedBackendARMResource{
+	// 		Name: to.Ptr("testBackend"),
+	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/linkedBackends"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
+	// 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
+	// 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.December, 24, 17, 33, 11, 641000000, time.UTC)),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			Region: to.Ptr("West US 2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/LinkBackendToStaticSiteBuild.json
+func ExampleStaticSitesClient_BeginLinkBackendToBuild() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginLinkBackendToBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
+		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
+			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
+			Region:            to.Ptr("West US 2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientLinkBackendToBuildResponse{
+	// 	StaticSiteLinkedBackendARMResource: armappservice.StaticSiteLinkedBackendARMResource{
+	// 		Name: to.Ptr("testBackend"),
+	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/linkedBackends"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
+	// 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
+	// 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
+	// 			CreatedOn: to.Ptr(time.Date(2021, time.December, 24, 17, 33, 11, 641000000, time.UTC)),
+	// 			ProvisioningState: to.Ptr("Succeeded"),
+	// 			Region: to.Ptr("West US 2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/RegisterUserProvidedFunctionAppWithStaticSite.json
+func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginRegisterUserProvidedFunctionAppWithStaticSite(ctx, "rg", "testStaticSite0", "testFunctionApp", armappservice.StaticSiteUserProvidedFunctionAppARMResource{
+		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
+			FunctionAppRegion:     to.Ptr("West US 2"),
+			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
+		},
+	}, &armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions{
+		IsForced: to.Ptr(true)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse{
+	// 	StaticSiteUserProvidedFunctionAppARMResource: armappservice.StaticSiteUserProvidedFunctionAppARMResource{
+	// 		Name: to.Ptr("testFunctionApp"),
+	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
+	// 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
+	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+	// 			FunctionAppRegion: to.Ptr("West US 2"),
+	// 			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/RegisterUserProvidedFunctionAppWithStaticSiteBuild.json
+func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(ctx, "rg", "testStaticSite0", "default", "testFunctionApp", armappservice.StaticSiteUserProvidedFunctionAppARMResource{
+		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
+			FunctionAppRegion:     to.Ptr("West US 2"),
+			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
+		},
+	}, &armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions{
+		IsForced: to.Ptr(true)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse{
+	// 	StaticSiteUserProvidedFunctionAppARMResource: armappservice.StaticSiteUserProvidedFunctionAppARMResource{
+	// 		Name: to.Ptr("testFunctionApp"),
+	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
+	// 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
+	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+	// 			FunctionAppRegion: to.Ptr("West US 2"),
+	// 			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/ValidateLinkedBackendForStaticSite.json
+func ExampleStaticSitesClient_BeginValidateBackend() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginValidateBackend(ctx, "rg", "testStaticSite0", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
+		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
+			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
+			Region:            to.Ptr("West US 2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-05-01/ValidateLinkedBackendForStaticSiteBuild.json
+func ExampleStaticSitesClient_BeginValidateBackendForBuild() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginValidateBackendForBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
+		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
+			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
+			Region:            to.Ptr("West US 2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2025-05-01/ValidateStaticSiteCustomDomain.json
+func ExampleStaticSitesClient_BeginValidateCustomDomainCanBeAddedToStaticSite() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStaticSitesClient().BeginValidateCustomDomainCanBeAddedToStaticSite(ctx, "rg", "testStaticSite0", "custom.domain.net", armappservice.StaticSiteCustomDomainRequestPropertiesARMResource{
+		Properties: &armappservice.StaticSiteCustomDomainRequestPropertiesARMResourceProperties{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse{
+	// }
+}
+
 // Generated from example definition: 2025-05-01/CreateOrUpdateStaticSiteBasicAuth.json
 func ExampleStaticSitesClient_CreateOrUpdateBasicAuth() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -174,73 +724,6 @@ func ExampleStaticSitesClient_CreateOrUpdateDatabaseConnection() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/CreateOrUpdateStaticSite.json
-func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSite() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginCreateOrUpdateStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSiteARMResource{
-		Location: to.Ptr("West US 2"),
-		Properties: &armappservice.StaticSite{
-			Branch: to.Ptr("master"),
-			BuildProperties: &armappservice.StaticSiteBuildProperties{
-				APILocation:         to.Ptr("api"),
-				AppArtifactLocation: to.Ptr("build"),
-				AppLocation:         to.Ptr("app"),
-			},
-			RepositoryToken: to.Ptr("repoToken123"),
-			RepositoryURL:   to.Ptr("https://github.com/username/RepoName"),
-		},
-		SKU: &armappservice.SKUDescription{
-			Name: to.Ptr("Basic"),
-			Tier: to.Ptr("Basic"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientCreateOrUpdateStaticSiteResponse{
-	// 	StaticSiteARMResource: armappservice.StaticSiteARMResource{
-	// 		Name: to.Ptr("testStaticSite0"),
-	// 		Type: to.Ptr("Microsoft.Web/staticSites"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0"),
-	// 		Location: to.Ptr("West US 2"),
-	// 		Properties: &armappservice.StaticSite{
-	// 			AllowConfigFileUpdates: to.Ptr(true),
-	// 			Branch: to.Ptr("demo"),
-	// 			ContentDistributionEndpoint: to.Ptr(""),
-	// 			CustomDomains: []*string{
-	// 			},
-	// 			DefaultHostname: to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
-	// 			KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-	// 			LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
-	// 			},
-	// 			PrivateEndpointConnections: []*armappservice.ResponseMessageEnvelopeRemotePrivateEndpointConnection{
-	// 			},
-	// 			RepositoryURL: to.Ptr("https://github.com/username/RepoName"),
-	// 			StagingEnvironmentPolicy: to.Ptr(armappservice.StagingEnvironmentPolicyEnabled),
-	// 		},
-	// 		SKU: &armappservice.SKUDescription{
-	// 			Name: to.Ptr("Basic"),
-	// 			Tier: to.Ptr("Basic"),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-05-01/CreateOrUpdateStaticSiteAppSettings.json
 func ExampleStaticSitesClient_CreateOrUpdateStaticSiteAppSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -343,41 +826,6 @@ func ExampleStaticSitesClient_CreateOrUpdateStaticSiteBuildFunctionAppSettings()
 	// }
 }
 
-// Generated from example definition: 2025-05-01/CreateOrUpdateStaticSiteCustomDomain.json
-func ExampleStaticSitesClient_BeginCreateOrUpdateStaticSiteCustomDomain() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginCreateOrUpdateStaticSiteCustomDomain(ctx, "rg", "testStaticSite0", "custom.domain.net", armappservice.StaticSiteCustomDomainRequestPropertiesARMResource{
-		Properties: &armappservice.StaticSiteCustomDomainRequestPropertiesARMResourceProperties{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientCreateOrUpdateStaticSiteCustomDomainResponse{
-	// 	StaticSiteCustomDomainOverviewARMResource: armappservice.StaticSiteCustomDomainOverviewARMResource{
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSitesBuilds/testStaticSite0/customDomains/custom.domain.net"),
-	// 		Properties: &armappservice.StaticSiteCustomDomainOverviewARMResourceProperties{
-	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-	// 			DomainName: to.Ptr("custom.domain.net"),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-05-01/CreateOrUpdateStaticSiteFunctionAppSettings.json
 func ExampleStaticSitesClient_CreateOrUpdateStaticSiteFunctionAppSettings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -448,74 +896,6 @@ func ExampleStaticSitesClient_CreateUserRolesInvitationLink() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/StaticSiteZipDeploy.json
-func ExampleStaticSitesClient_BeginCreateZipDeploymentForStaticSite() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginCreateZipDeploymentForStaticSite(ctx, "rg", "testStaticSite0", armappservice.StaticSiteZipDeploymentARMResource{
-		Properties: &armappservice.StaticSiteZipDeployment{
-			APIZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip"),
-			AppZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip"),
-			DeploymentTitle:  to.Ptr("Update index.html"),
-			FunctionLanguage: to.Ptr("testFunctionLanguage"),
-			Provider:         to.Ptr("testProvider"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientCreateZipDeploymentForStaticSiteResponse{
-	// }
-}
-
-// Generated from example definition: 2025-05-01/StaticSiteBuildZipDeploy.json
-func ExampleStaticSitesClient_BeginCreateZipDeploymentForStaticSiteBuild() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginCreateZipDeploymentForStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", armappservice.StaticSiteZipDeploymentARMResource{
-		Properties: &armappservice.StaticSiteZipDeployment{
-			APIZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/api-zipdeploy.zip"),
-			AppZipURL:        to.Ptr("https://[examplestorageaccount].com/happy-sea-15afae3e-master-81828877/app-zipdeploy.zip"),
-			DeploymentTitle:  to.Ptr("Update index.html"),
-			FunctionLanguage: to.Ptr("testFunctionLanguage"),
-			Provider:         to.Ptr("testProvider"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientCreateZipDeploymentForStaticSiteBuildResponse{
-	// }
-}
-
 // Generated from example definition: 2025-05-01/DeleteStaticSiteBuildDatabaseConnection.json
 func ExampleStaticSitesClient_DeleteBuildDatabaseConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -560,112 +940,6 @@ func ExampleStaticSitesClient_DeleteDatabaseConnection() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/DeleteSitePrivateEndpointConnection_StaticSites.json
-func ExampleStaticSitesClient_BeginDeletePrivateEndpointConnection() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginDeletePrivateEndpointConnection(ctx, "rg", "testSite", "connection", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientDeletePrivateEndpointConnectionResponse{
-	// 	Interface: map[string]any{
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/DeleteStaticSite.json
-func ExampleStaticSitesClient_BeginDeleteStaticSite() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginDeleteStaticSite(ctx, "rg", "testStaticSite0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientDeleteStaticSiteResponse{
-	// }
-}
-
-// Generated from example definition: 2025-05-01/DeleteStaticSiteBuild.json
-func ExampleStaticSitesClient_BeginDeleteStaticSiteBuild() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginDeleteStaticSiteBuild(ctx, "rg", "testStaticSite0", "12", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientDeleteStaticSiteBuildResponse{
-	// }
-}
-
-// Generated from example definition: 2025-05-01/DeleteStaticSiteCustomDomain.json
-func ExampleStaticSitesClient_BeginDeleteStaticSiteCustomDomain() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginDeleteStaticSiteCustomDomain(ctx, "rg", "testStaticSite0", "custom.domain.net", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientDeleteStaticSiteCustomDomainResponse{
-	// }
-}
-
 // Generated from example definition: 2025-05-01/DeleteStaticSiteUser.json
 func ExampleStaticSitesClient_DeleteStaticSiteUser() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -685,32 +959,6 @@ func ExampleStaticSitesClient_DeleteStaticSiteUser() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappservice.StaticSitesClientDeleteStaticSiteUserResponse{
-	// }
-}
-
-// Generated from example definition: 2025-05-01/DetachStaticSite.json
-func ExampleStaticSitesClient_BeginDetachStaticSite() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginDetachStaticSite(ctx, "rg", "testStaticSite0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientDetachStaticSiteResponse{
 	// }
 }
 
@@ -865,101 +1113,6 @@ func ExampleStaticSitesClient_GetBuildDatabaseConnectionWithDetails() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/GetStaticSiteBuildDatabaseConnections.json
-func ExampleStaticSitesClient_NewGetBuildDatabaseConnectionsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewGetBuildDatabaseConnectionsPager("rg", "testStaticSite0", "default", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientGetBuildDatabaseConnectionsResponse{
-		// 	DatabaseConnectionCollection: armappservice.DatabaseConnectionCollection{
-		// 		Value: []*armappservice.DatabaseConnection{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/databaseConnections"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/databaseConnections/default"),
-		// 				Properties: &armappservice.DatabaseConnectionProperties{
-		// 					ConnectionIdentity: to.Ptr("SystemAssigned"),
-		// 					Region: to.Ptr("West US 2"),
-		// 					ResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01/GetStaticSiteBuildDatabaseConnectionsWithDetails.json
-func ExampleStaticSitesClient_NewGetBuildDatabaseConnectionsWithDetailsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewGetBuildDatabaseConnectionsWithDetailsPager("rg", "testStaticSite0", "default", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse{
-		// 	DatabaseConnectionCollection: armappservice.DatabaseConnectionCollection{
-		// 		Value: []*armappservice.DatabaseConnection{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/databaseConnections"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/databaseConnections/default"),
-		// 				Properties: &armappservice.DatabaseConnectionProperties{
-		// 					ConfigurationFiles: []*armappservice.StaticSiteDatabaseConnectionConfigurationFileOverview{
-		// 						{
-		// 							Type: to.Ptr("configuration"),
-		// 							Contents: to.Ptr("base64encodeddatabaseconfiguration"),
-		// 							FileName: to.Ptr("staticwebapp.database.config.json"),
-		// 						},
-		// 						{
-		// 							Type: to.Ptr("graphqlschema"),
-		// 							Contents: to.Ptr("base64encodeddatabasegraphqlschema"),
-		// 							FileName: to.Ptr("staticwebapp.database.schema.gql"),
-		// 						},
-		// 					},
-		// 					ConnectionIdentity: to.Ptr("SystemAssigned"),
-		// 					ConnectionString: to.Ptr("AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;"),
-		// 					Region: to.Ptr("West US 2"),
-		// 					ResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-05-01/GetStaticSiteDatabaseConnection.json
 func ExampleStaticSitesClient_GetDatabaseConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1037,101 +1190,6 @@ func ExampleStaticSitesClient_GetDatabaseConnectionWithDetails() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/GetStaticSiteDatabaseConnections.json
-func ExampleStaticSitesClient_NewGetDatabaseConnectionsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewGetDatabaseConnectionsPager("rg", "testStaticSite0", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientGetDatabaseConnectionsResponse{
-		// 	DatabaseConnectionCollection: armappservice.DatabaseConnectionCollection{
-		// 		Value: []*armappservice.DatabaseConnection{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.Web/staticSites/databaseConnections"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/databaseConnections/default"),
-		// 				Properties: &armappservice.DatabaseConnectionProperties{
-		// 					ConnectionIdentity: to.Ptr("SystemAssigned"),
-		// 					Region: to.Ptr("West US 2"),
-		// 					ResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01/GetStaticSiteDatabaseConnectionsWithDetails.json
-func ExampleStaticSitesClient_NewGetDatabaseConnectionsWithDetailsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewGetDatabaseConnectionsWithDetailsPager("rg", "testStaticSite0", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsResponse{
-		// 	DatabaseConnectionCollection: armappservice.DatabaseConnectionCollection{
-		// 		Value: []*armappservice.DatabaseConnection{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.Web/staticSites/databaseConnections"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/databaseConnections/default"),
-		// 				Properties: &armappservice.DatabaseConnectionProperties{
-		// 					ConfigurationFiles: []*armappservice.StaticSiteDatabaseConnectionConfigurationFileOverview{
-		// 						{
-		// 							Type: to.Ptr("configuration"),
-		// 							Contents: to.Ptr("base64encodeddatabaseconfiguration"),
-		// 							FileName: to.Ptr("staticwebapp.database.config.json"),
-		// 						},
-		// 						{
-		// 							Type: to.Ptr("graphqlschema"),
-		// 							Contents: to.Ptr("base64encodeddatabasegraphqlschema"),
-		// 							FileName: to.Ptr("staticwebapp.database.schema.gql"),
-		// 						},
-		// 					},
-		// 					ConnectionIdentity: to.Ptr("SystemAssigned"),
-		// 					ConnectionString: to.Ptr("AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;"),
-		// 					Region: to.Ptr("West US 2"),
-		// 					ResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-05-01/GetLinkedBackendForStaticSite.json
 func ExampleStaticSitesClient_GetLinkedBackend() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1198,90 +1256,6 @@ func ExampleStaticSitesClient_GetLinkedBackendForBuild() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/GetLinkedBackendsForStaticSite.json
-func ExampleStaticSitesClient_NewGetLinkedBackendsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewGetLinkedBackendsPager("rg", "testStaticSite0", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientGetLinkedBackendsResponse{
-		// 	StaticSiteLinkedBackendsCollection: armappservice.StaticSiteLinkedBackendsCollection{
-		// 		Value: []*armappservice.StaticSiteLinkedBackendARMResource{
-		// 			{
-		// 				Name: to.Ptr("testBackend"),
-		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/linkedBackends"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
-		// 				Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-		// 					BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testBackend"),
-		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					Region: to.Ptr("West US 2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01/GetLinkedBackendsForStaticSiteBuild.json
-func ExampleStaticSitesClient_NewGetLinkedBackendsForBuildPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewGetLinkedBackendsForBuildPager("rg", "testStaticSite0", "default", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientGetLinkedBackendsForBuildResponse{
-		// 	StaticSiteLinkedBackendsCollection: armappservice.StaticSiteLinkedBackendsCollection{
-		// 		Value: []*armappservice.StaticSiteLinkedBackendARMResource{
-		// 			{
-		// 				Name: to.Ptr("testBackend"),
-		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/linkedBackends"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
-		// 				Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-		// 					BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testBackend"),
-		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					Region: to.Ptr("West US 2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-05-01/GetSitePrivateEndpointConnection_StaticSites.json
 func ExampleStaticSitesClient_GetPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1316,51 +1290,6 @@ func ExampleStaticSitesClient_GetPrivateEndpointConnection() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-05-01/GetSitePrivateEndpointConnectionList.json
-func ExampleStaticSitesClient_NewGetPrivateEndpointConnectionListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewGetPrivateEndpointConnectionListPager("rg", "testStaticSite0", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientGetPrivateEndpointConnectionListResponse{
-		// 	PrivateEndpointConnectionCollection: armappservice.PrivateEndpointConnectionCollection{
-		// 		Value: []*armappservice.RemotePrivateEndpointConnectionARMResource{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/privateEndpointConnections/connection"),
-		// 				Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
-		// 					PrivateEndpoint: &armappservice.ArmIDWrapper{
-		// 						ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
-		// 					},
-		// 					PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
-		// 						Description: to.Ptr("Approved by admin."),
-		// 						ActionsRequired: to.Ptr(""),
-		// 						Status: to.Ptr("Approved"),
-		// 					},
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-05-01/GetSitePrivateLinkResources.json
@@ -1496,69 +1425,6 @@ func ExampleStaticSitesClient_GetStaticSiteBuild() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01/GetStaticSiteBuilds.json
-func ExampleStaticSitesClient_NewGetStaticSiteBuildsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewGetStaticSiteBuildsPager("rg", "testStaticSite0", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientGetStaticSiteBuildsResponse{
-		// 	StaticSiteBuildCollection: armappservice.StaticSiteBuildCollection{
-		// 		Value: []*armappservice.StaticSiteBuildARMResource{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default"),
-		// 				Properties: &armappservice.StaticSiteBuildARMResourceProperties{
-		// 					BuildID: to.Ptr("default"),
-		// 					CreatedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-		// 					Hostname: to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
-		// 					LastUpdatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-		// 					LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
-		// 					},
-		// 					SourceBranch: to.Ptr("demo"),
-		// 					Status: to.Ptr(armappservice.BuildStatusReady),
-		// 				},
-		// 			},
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/12"),
-		// 				Properties: &armappservice.StaticSiteBuildARMResourceProperties{
-		// 					BuildID: to.Ptr("12"),
-		// 					CreatedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-		// 					Hostname: to.Ptr("happy-sea-15afae3e-12.westus2.azurestaticwebsites.net"),
-		// 					LastUpdatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-		// 					LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
-		// 						{
-		// 							BackendResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ApiManagement/service/apimService0"),
-		// 							CreatedOn: to.Ptr(time.Time{}),
-		// 							ProvisioningState: to.Ptr("Succeeded"),
-		// 						},
-		// 					},
-		// 					PullRequestTitle: to.Ptr("Update README.md"),
-		// 					SourceBranch: to.Ptr("demo-patch2"),
-		// 					Status: to.Ptr(armappservice.BuildStatusReady),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-05-01/GetStaticSiteCustomDomain.json
 func ExampleStaticSitesClient_GetStaticSiteCustomDomain() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1586,62 +1452,6 @@ func ExampleStaticSitesClient_GetStaticSiteCustomDomain() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-05-01/GetStaticSites.json
-func ExampleStaticSitesClient_NewGetStaticSitesByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewGetStaticSitesByResourceGroupPager("rg", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientGetStaticSitesByResourceGroupResponse{
-		// 	StaticSiteCollection: armappservice.StaticSiteCollection{
-		// 		Value: []*armappservice.StaticSiteARMResource{
-		// 			{
-		// 				Name: to.Ptr("testStaticSite0"),
-		// 				Type: to.Ptr("Microsoft.Web/staticSites"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0"),
-		// 				Location: to.Ptr("West US 2"),
-		// 				Properties: &armappservice.StaticSite{
-		// 					AllowConfigFileUpdates: to.Ptr(true),
-		// 					Branch: to.Ptr("demo"),
-		// 					ContentDistributionEndpoint: to.Ptr(""),
-		// 					CustomDomains: []*string{
-		// 					},
-		// 					DefaultHostname: to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
-		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-		// 					LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
-		// 					},
-		// 					PrivateEndpointConnections: []*armappservice.ResponseMessageEnvelopeRemotePrivateEndpointConnection{
-		// 					},
-		// 					RepositoryURL: to.Ptr("https://github.com/username/repo"),
-		// 					StagingEnvironmentPolicy: to.Ptr(armappservice.StagingEnvironmentPolicyEnabled),
-		// 				},
-		// 				SKU: &armappservice.SKUDescription{
-		// 					Name: to.Ptr("Standard"),
-		// 					Tier: to.Ptr("Standard"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-05-01/GetUserProvidedFunctionAppForStaticSite.json
@@ -1706,267 +1516,6 @@ func ExampleStaticSitesClient_GetUserProvidedFunctionAppForStaticSiteBuild() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-05-01/GetUserProvidedFunctionAppsForStaticSite.json
-func ExampleStaticSitesClient_NewGetUserProvidedFunctionAppsForStaticSitePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewGetUserProvidedFunctionAppsForStaticSitePager("rg", "testStaticSite0", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse{
-		// 	StaticSiteUserProvidedFunctionAppsCollection: armappservice.StaticSiteUserProvidedFunctionAppsCollection{
-		// 		Value: []*armappservice.StaticSiteUserProvidedFunctionAppARMResource{
-		// 			{
-		// 				Name: to.Ptr("testFunctionApp"),
-		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
-		// 				Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-		// 					FunctionAppRegion: to.Ptr("West US 2"),
-		// 					FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01/GetUserProvidedFunctionAppsForStaticSiteBuild.json
-func ExampleStaticSitesClient_NewGetUserProvidedFunctionAppsForStaticSiteBuildPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewGetUserProvidedFunctionAppsForStaticSiteBuildPager("rg", "testStaticSite0", "default", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse{
-		// 	StaticSiteUserProvidedFunctionAppsCollection: armappservice.StaticSiteUserProvidedFunctionAppsCollection{
-		// 		Value: []*armappservice.StaticSiteUserProvidedFunctionAppARMResource{
-		// 			{
-		// 				Name: to.Ptr("testFunctionApp"),
-		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
-		// 				Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-		// 					FunctionAppRegion: to.Ptr("West US 2"),
-		// 					FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01/LinkBackendToStaticSite.json
-func ExampleStaticSitesClient_BeginLinkBackend() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginLinkBackend(ctx, "rg", "testStaticSite0", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
-		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-			Region:            to.Ptr("West US 2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientLinkBackendResponse{
-	// 	StaticSiteLinkedBackendARMResource: armappservice.StaticSiteLinkedBackendARMResource{
-	// 		Name: to.Ptr("testBackend"),
-	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/linkedBackends"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
-	// 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-	// 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-	// 			CreatedOn: to.Ptr(time.Date(2021, time.December, 24, 17, 33, 11, 641000000, time.UTC)),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			Region: to.Ptr("West US 2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/LinkBackendToStaticSiteBuild.json
-func ExampleStaticSitesClient_BeginLinkBackendToBuild() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginLinkBackendToBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
-		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-			Region:            to.Ptr("West US 2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientLinkBackendToBuildResponse{
-	// 	StaticSiteLinkedBackendARMResource: armappservice.StaticSiteLinkedBackendARMResource{
-	// 		Name: to.Ptr("testBackend"),
-	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/linkedBackends"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
-	// 		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-	// 			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-	// 			CreatedOn: to.Ptr(time.Date(2021, time.December, 24, 17, 33, 11, 641000000, time.UTC)),
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			Region: to.Ptr("West US 2"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/GetAllStaticSites.json
-func ExampleStaticSitesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientListResponse{
-		// 	StaticSiteCollection: armappservice.StaticSiteCollection{
-		// 		Value: []*armappservice.StaticSiteARMResource{
-		// 			{
-		// 				Name: to.Ptr("testStaticSite0"),
-		// 				Type: to.Ptr("Microsoft.Web/staticSites"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0"),
-		// 				Location: to.Ptr("West US 2"),
-		// 				Properties: &armappservice.StaticSite{
-		// 					AllowConfigFileUpdates: to.Ptr(true),
-		// 					Branch: to.Ptr("demo"),
-		// 					ContentDistributionEndpoint: to.Ptr(""),
-		// 					CustomDomains: []*string{
-		// 					},
-		// 					DefaultHostname: to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
-		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
-		// 					PrivateEndpointConnections: []*armappservice.ResponseMessageEnvelopeRemotePrivateEndpointConnection{
-		// 					},
-		// 					RepositoryURL: to.Ptr("https://github.com/username/repo"),
-		// 					StagingEnvironmentPolicy: to.Ptr(armappservice.StagingEnvironmentPolicyEnabled),
-		// 					UserProvidedFunctionApps: []*armappservice.StaticSiteUserProvidedFunctionApp{
-		// 					},
-		// 				},
-		// 				SKU: &armappservice.SKUDescription{
-		// 					Name: to.Ptr("Standard"),
-		// 					Tier: to.Ptr("Standard"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-05-01/ListStaticSiteBasicAuth.json
-func ExampleStaticSitesClient_NewListBasicAuthPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewStaticSitesClient().NewListBasicAuthPager("rg", "testStaticSite0", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappservice.StaticSitesClientListBasicAuthResponse{
-		// 	StaticSiteBasicAuthPropertiesCollection: armappservice.StaticSiteBasicAuthPropertiesCollection{
-		// 		Value: []*armappservice.StaticSiteBasicAuthPropertiesARMResource{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/basicAuth/default"),
-		// 				Properties: &armappservice.StaticSiteBasicAuthPropertiesARMResourceProperties{
-		// 					ApplicableEnvironmentsMode: to.Ptr("AllEnvironments"),
-		// 					SecretState: to.Ptr("Password"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-05-01/ListStaticSiteAppSettings.json
@@ -2053,6 +1602,705 @@ func ExampleStaticSitesClient_ListStaticSiteBuildFunctionAppSettings() {
 	// }
 }
 
+// Generated from example definition: 2025-05-01/ListStaticSiteConfiguredRoles.json
+func ExampleStaticSitesClient_ListStaticSiteConfiguredRoles() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteConfiguredRoles(ctx, "rg", "testStaticSite0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientListStaticSiteConfiguredRolesResponse{
+	// 	StringList: armappservice.StringList{
+	// 		Properties: []*string{
+	// 			to.Ptr("authenticated"),
+	// 			to.Ptr("anonymous"),
+	// 			to.Ptr("customRole1"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/ListStaticSiteFunctionAppSettings.json
+func ExampleStaticSitesClient_ListStaticSiteFunctionAppSettings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteFunctionAppSettings(ctx, "rg", "testStaticSite0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientListStaticSiteFunctionAppSettingsResponse{
+	// 	StringDictionary: armappservice.StringDictionary{
+	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/config/appsettings"),
+	// 		Properties: map[string]*string{
+	// 			"setting0": to.Ptr("someVal"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/ListStaticSiteSecrets.json
+func ExampleStaticSitesClient_ListStaticSiteSecrets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteSecrets(ctx, "rg", "testStaticSite0", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappservice.StaticSitesClientListStaticSiteSecretsResponse{
+	// 	StringDictionary: armappservice.StringDictionary{
+	// 		Properties: map[string]*string{
+	// 			"dnsOwnershipKey": to.Ptr("ownershipKey123123"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-05-01/GetStaticSiteBuildDatabaseConnections.json
+func ExampleStaticSitesClient_NewGetBuildDatabaseConnectionsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewGetBuildDatabaseConnectionsPager("rg", "testStaticSite0", "default", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientGetBuildDatabaseConnectionsResponse{
+		// 	DatabaseConnectionCollection: armappservice.DatabaseConnectionCollection{
+		// 		Value: []*armappservice.DatabaseConnection{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/databaseConnections"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/databaseConnections/default"),
+		// 				Properties: &armappservice.DatabaseConnectionProperties{
+		// 					ConnectionIdentity: to.Ptr("SystemAssigned"),
+		// 					Region: to.Ptr("West US 2"),
+		// 					ResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetStaticSiteBuildDatabaseConnectionsWithDetails.json
+func ExampleStaticSitesClient_NewGetBuildDatabaseConnectionsWithDetailsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewGetBuildDatabaseConnectionsWithDetailsPager("rg", "testStaticSite0", "default", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientGetBuildDatabaseConnectionsWithDetailsResponse{
+		// 	DatabaseConnectionCollection: armappservice.DatabaseConnectionCollection{
+		// 		Value: []*armappservice.DatabaseConnection{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/databaseConnections"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/databaseConnections/default"),
+		// 				Properties: &armappservice.DatabaseConnectionProperties{
+		// 					ConfigurationFiles: []*armappservice.StaticSiteDatabaseConnectionConfigurationFileOverview{
+		// 						{
+		// 							Type: to.Ptr("configuration"),
+		// 							Contents: to.Ptr("base64encodeddatabaseconfiguration"),
+		// 							FileName: to.Ptr("staticwebapp.database.config.json"),
+		// 						},
+		// 						{
+		// 							Type: to.Ptr("graphqlschema"),
+		// 							Contents: to.Ptr("base64encodeddatabasegraphqlschema"),
+		// 							FileName: to.Ptr("staticwebapp.database.schema.gql"),
+		// 						},
+		// 					},
+		// 					ConnectionIdentity: to.Ptr("SystemAssigned"),
+		// 					ConnectionString: to.Ptr("AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;"),
+		// 					Region: to.Ptr("West US 2"),
+		// 					ResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetStaticSiteDatabaseConnections.json
+func ExampleStaticSitesClient_NewGetDatabaseConnectionsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewGetDatabaseConnectionsPager("rg", "testStaticSite0", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientGetDatabaseConnectionsResponse{
+		// 	DatabaseConnectionCollection: armappservice.DatabaseConnectionCollection{
+		// 		Value: []*armappservice.DatabaseConnection{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.Web/staticSites/databaseConnections"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/databaseConnections/default"),
+		// 				Properties: &armappservice.DatabaseConnectionProperties{
+		// 					ConnectionIdentity: to.Ptr("SystemAssigned"),
+		// 					Region: to.Ptr("West US 2"),
+		// 					ResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetStaticSiteDatabaseConnectionsWithDetails.json
+func ExampleStaticSitesClient_NewGetDatabaseConnectionsWithDetailsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewGetDatabaseConnectionsWithDetailsPager("rg", "testStaticSite0", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientGetDatabaseConnectionsWithDetailsResponse{
+		// 	DatabaseConnectionCollection: armappservice.DatabaseConnectionCollection{
+		// 		Value: []*armappservice.DatabaseConnection{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.Web/staticSites/databaseConnections"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/databaseConnections/default"),
+		// 				Properties: &armappservice.DatabaseConnectionProperties{
+		// 					ConfigurationFiles: []*armappservice.StaticSiteDatabaseConnectionConfigurationFileOverview{
+		// 						{
+		// 							Type: to.Ptr("configuration"),
+		// 							Contents: to.Ptr("base64encodeddatabaseconfiguration"),
+		// 							FileName: to.Ptr("staticwebapp.database.config.json"),
+		// 						},
+		// 						{
+		// 							Type: to.Ptr("graphqlschema"),
+		// 							Contents: to.Ptr("base64encodeddatabasegraphqlschema"),
+		// 							FileName: to.Ptr("staticwebapp.database.schema.gql"),
+		// 						},
+		// 					},
+		// 					ConnectionIdentity: to.Ptr("SystemAssigned"),
+		// 					ConnectionString: to.Ptr("AccountEndpoint=https://exampleDatabaseName.documents.azure.com:443/;Database=mydb;"),
+		// 					Region: to.Ptr("West US 2"),
+		// 					ResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/databaseRG/providers/Microsoft.DocumentDB/databaseAccounts/exampleDatabaseName"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetLinkedBackendsForStaticSiteBuild.json
+func ExampleStaticSitesClient_NewGetLinkedBackendsForBuildPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewGetLinkedBackendsForBuildPager("rg", "testStaticSite0", "default", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientGetLinkedBackendsForBuildResponse{
+		// 	StaticSiteLinkedBackendsCollection: armappservice.StaticSiteLinkedBackendsCollection{
+		// 		Value: []*armappservice.StaticSiteLinkedBackendARMResource{
+		// 			{
+		// 				Name: to.Ptr("testBackend"),
+		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/linkedBackends"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
+		// 				Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
+		// 					BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testBackend"),
+		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					Region: to.Ptr("West US 2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetLinkedBackendsForStaticSite.json
+func ExampleStaticSitesClient_NewGetLinkedBackendsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewGetLinkedBackendsPager("rg", "testStaticSite0", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientGetLinkedBackendsResponse{
+		// 	StaticSiteLinkedBackendsCollection: armappservice.StaticSiteLinkedBackendsCollection{
+		// 		Value: []*armappservice.StaticSiteLinkedBackendARMResource{
+		// 			{
+		// 				Name: to.Ptr("testBackend"),
+		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/linkedBackends"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/linkedBackends/testBackend"),
+		// 				Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
+		// 					BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testBackend"),
+		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					Region: to.Ptr("West US 2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetSitePrivateEndpointConnectionList.json
+func ExampleStaticSitesClient_NewGetPrivateEndpointConnectionListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewGetPrivateEndpointConnectionListPager("rg", "testStaticSite0", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientGetPrivateEndpointConnectionListResponse{
+		// 	PrivateEndpointConnectionCollection: armappservice.PrivateEndpointConnectionCollection{
+		// 		Value: []*armappservice.RemotePrivateEndpointConnectionARMResource{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/sites/testSite/privateEndpointConnections/connection"),
+		// 				Properties: &armappservice.RemotePrivateEndpointConnectionARMResourceProperties{
+		// 					PrivateEndpoint: &armappservice.ArmIDWrapper{
+		// 						ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Network/privateEndpoints/myPrivateEndpoint"),
+		// 					},
+		// 					PrivateLinkServiceConnectionState: &armappservice.PrivateLinkConnectionState{
+		// 						Description: to.Ptr("Approved by admin."),
+		// 						ActionsRequired: to.Ptr(""),
+		// 						Status: to.Ptr("Approved"),
+		// 					},
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetStaticSiteBuilds.json
+func ExampleStaticSitesClient_NewGetStaticSiteBuildsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewGetStaticSiteBuildsPager("rg", "testStaticSite0", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientGetStaticSiteBuildsResponse{
+		// 	StaticSiteBuildCollection: armappservice.StaticSiteBuildCollection{
+		// 		Value: []*armappservice.StaticSiteBuildARMResource{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default"),
+		// 				Properties: &armappservice.StaticSiteBuildARMResourceProperties{
+		// 					BuildID: to.Ptr("default"),
+		// 					CreatedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+		// 					Hostname: to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
+		// 					LastUpdatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+		// 					LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
+		// 					},
+		// 					SourceBranch: to.Ptr("demo"),
+		// 					Status: to.Ptr(armappservice.BuildStatusReady),
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/12"),
+		// 				Properties: &armappservice.StaticSiteBuildARMResourceProperties{
+		// 					BuildID: to.Ptr("12"),
+		// 					CreatedTimeUTC: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+		// 					Hostname: to.Ptr("happy-sea-15afae3e-12.westus2.azurestaticwebsites.net"),
+		// 					LastUpdatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+		// 					LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
+		// 						{
+		// 							BackendResourceID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.ApiManagement/service/apimService0"),
+		// 							CreatedOn: to.Ptr(time.Time{}),
+		// 							ProvisioningState: to.Ptr("Succeeded"),
+		// 						},
+		// 					},
+		// 					PullRequestTitle: to.Ptr("Update README.md"),
+		// 					SourceBranch: to.Ptr("demo-patch2"),
+		// 					Status: to.Ptr(armappservice.BuildStatusReady),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetStaticSites.json
+func ExampleStaticSitesClient_NewGetStaticSitesByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewGetStaticSitesByResourceGroupPager("rg", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientGetStaticSitesByResourceGroupResponse{
+		// 	StaticSiteCollection: armappservice.StaticSiteCollection{
+		// 		Value: []*armappservice.StaticSiteARMResource{
+		// 			{
+		// 				Name: to.Ptr("testStaticSite0"),
+		// 				Type: to.Ptr("Microsoft.Web/staticSites"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0"),
+		// 				Location: to.Ptr("West US 2"),
+		// 				Properties: &armappservice.StaticSite{
+		// 					AllowConfigFileUpdates: to.Ptr(true),
+		// 					Branch: to.Ptr("demo"),
+		// 					ContentDistributionEndpoint: to.Ptr(""),
+		// 					CustomDomains: []*string{
+		// 					},
+		// 					DefaultHostname: to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
+		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
+		// 					LinkedBackends: []*armappservice.StaticSiteLinkedBackend{
+		// 					},
+		// 					PrivateEndpointConnections: []*armappservice.ResponseMessageEnvelopeRemotePrivateEndpointConnection{
+		// 					},
+		// 					RepositoryURL: to.Ptr("https://github.com/username/repo"),
+		// 					StagingEnvironmentPolicy: to.Ptr(armappservice.StagingEnvironmentPolicyEnabled),
+		// 				},
+		// 				SKU: &armappservice.SKUDescription{
+		// 					Name: to.Ptr("Standard"),
+		// 					Tier: to.Ptr("Standard"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetUserProvidedFunctionAppsForStaticSiteBuild.json
+func ExampleStaticSitesClient_NewGetUserProvidedFunctionAppsForStaticSiteBuildPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewGetUserProvidedFunctionAppsForStaticSiteBuildPager("rg", "testStaticSite0", "default", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteBuildResponse{
+		// 	StaticSiteUserProvidedFunctionAppsCollection: armappservice.StaticSiteUserProvidedFunctionAppsCollection{
+		// 		Value: []*armappservice.StaticSiteUserProvidedFunctionAppARMResource{
+		// 			{
+		// 				Name: to.Ptr("testFunctionApp"),
+		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
+		// 				Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
+		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+		// 					FunctionAppRegion: to.Ptr("West US 2"),
+		// 					FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetUserProvidedFunctionAppsForStaticSite.json
+func ExampleStaticSitesClient_NewGetUserProvidedFunctionAppsForStaticSitePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewGetUserProvidedFunctionAppsForStaticSitePager("rg", "testStaticSite0", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientGetUserProvidedFunctionAppsForStaticSiteResponse{
+		// 	StaticSiteUserProvidedFunctionAppsCollection: armappservice.StaticSiteUserProvidedFunctionAppsCollection{
+		// 		Value: []*armappservice.StaticSiteUserProvidedFunctionAppARMResource{
+		// 			{
+		// 				Name: to.Ptr("testFunctionApp"),
+		// 				Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
+		// 				Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
+		// 					CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
+		// 					FunctionAppRegion: to.Ptr("West US 2"),
+		// 					FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/ListStaticSiteBasicAuth.json
+func ExampleStaticSitesClient_NewListBasicAuthPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewListBasicAuthPager("rg", "testStaticSite0", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientListBasicAuthResponse{
+		// 	StaticSiteBasicAuthPropertiesCollection: armappservice.StaticSiteBasicAuthPropertiesCollection{
+		// 		Value: []*armappservice.StaticSiteBasicAuthPropertiesARMResource{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/basicAuth/default"),
+		// 				Properties: &armappservice.StaticSiteBasicAuthPropertiesARMResourceProperties{
+		// 					ApplicableEnvironmentsMode: to.Ptr("AllEnvironments"),
+		// 					SecretState: to.Ptr("Password"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-05-01/GetAllStaticSites.json
+func ExampleStaticSitesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewStaticSitesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappservice.StaticSitesClientListResponse{
+		// 	StaticSiteCollection: armappservice.StaticSiteCollection{
+		// 		Value: []*armappservice.StaticSiteARMResource{
+		// 			{
+		// 				Name: to.Ptr("testStaticSite0"),
+		// 				Type: to.Ptr("Microsoft.Web/staticSites"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0"),
+		// 				Location: to.Ptr("West US 2"),
+		// 				Properties: &armappservice.StaticSite{
+		// 					AllowConfigFileUpdates: to.Ptr(true),
+		// 					Branch: to.Ptr("demo"),
+		// 					ContentDistributionEndpoint: to.Ptr(""),
+		// 					CustomDomains: []*string{
+		// 					},
+		// 					DefaultHostname: to.Ptr("happy-sea-15afae3e.azurestaticwebsites.net"),
+		// 					KeyVaultReferenceIdentity: to.Ptr("SystemAssigned"),
+		// 					PrivateEndpointConnections: []*armappservice.ResponseMessageEnvelopeRemotePrivateEndpointConnection{
+		// 					},
+		// 					RepositoryURL: to.Ptr("https://github.com/username/repo"),
+		// 					StagingEnvironmentPolicy: to.Ptr(armappservice.StagingEnvironmentPolicyEnabled),
+		// 					UserProvidedFunctionApps: []*armappservice.StaticSiteUserProvidedFunctionApp{
+		// 					},
+		// 				},
+		// 				SKU: &armappservice.SKUDescription{
+		// 					Name: to.Ptr("Standard"),
+		// 					Tier: to.Ptr("Standard"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2025-05-01/ListStaticSiteBuildFunctions.json
 func ExampleStaticSitesClient_NewListStaticSiteBuildFunctionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -2089,35 +2337,6 @@ func ExampleStaticSitesClient_NewListStaticSiteBuildFunctionsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-05-01/ListStaticSiteConfiguredRoles.json
-func ExampleStaticSitesClient_ListStaticSiteConfiguredRoles() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteConfiguredRoles(ctx, "rg", "testStaticSite0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientListStaticSiteConfiguredRolesResponse{
-	// 	StringList: armappservice.StringList{
-	// 		Properties: []*string{
-	// 			to.Ptr("authenticated"),
-	// 			to.Ptr("anonymous"),
-	// 			to.Ptr("customRole1"),
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2025-05-01/GetStaticSiteCustomDomains.json
@@ -2158,34 +2377,6 @@ func ExampleStaticSitesClient_NewListStaticSiteCustomDomainsPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01/ListStaticSiteFunctionAppSettings.json
-func ExampleStaticSitesClient_ListStaticSiteFunctionAppSettings() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteFunctionAppSettings(ctx, "rg", "testStaticSite0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientListStaticSiteFunctionAppSettingsResponse{
-	// 	StringDictionary: armappservice.StringDictionary{
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/config/appsettings"),
-	// 		Properties: map[string]*string{
-	// 			"setting0": to.Ptr("someVal"),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-05-01/ListStaticSiteFunctions.json
 func ExampleStaticSitesClient_NewListStaticSiteFunctionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -2222,33 +2413,6 @@ func ExampleStaticSitesClient_NewListStaticSiteFunctionsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-05-01/ListStaticSiteSecrets.json
-func ExampleStaticSitesClient_ListStaticSiteSecrets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewStaticSitesClient().ListStaticSiteSecrets(ctx, "rg", "testStaticSite0", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientListStaticSiteSecretsResponse{
-	// 	StringDictionary: armappservice.StringDictionary{
-	// 		Properties: map[string]*string{
-	// 			"dnsOwnershipKey": to.Ptr("ownershipKey123123"),
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2025-05-01/ListStaticSiteUsers.json
@@ -2324,90 +2488,6 @@ func ExampleStaticSitesClient_PreviewWorkflow() {
 	// 		Properties: &armappservice.StaticSitesWorkflowPreviewProperties{
 	// 			Path: to.Ptr(".github/workflows/azure-static-web-apps-<generated_hostname>.yml"),
 	// 			Contents: to.Ptr("base64encodedworkflowcontentspreview"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/RegisterUserProvidedFunctionAppWithStaticSite.json
-func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSite() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginRegisterUserProvidedFunctionAppWithStaticSite(ctx, "rg", "testStaticSite0", "testFunctionApp", armappservice.StaticSiteUserProvidedFunctionAppARMResource{
-		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-			FunctionAppRegion:     to.Ptr("West US 2"),
-			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
-		},
-	}, &armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteOptions{
-		IsForced: to.Ptr(true)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteResponse{
-	// 	StaticSiteUserProvidedFunctionAppARMResource: armappservice.StaticSiteUserProvidedFunctionAppARMResource{
-	// 		Name: to.Ptr("testFunctionApp"),
-	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
-	// 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-	// 			FunctionAppRegion: to.Ptr("West US 2"),
-	// 			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/RegisterUserProvidedFunctionAppWithStaticSiteBuild.json
-func ExampleStaticSitesClient_BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginRegisterUserProvidedFunctionAppWithStaticSiteBuild(ctx, "rg", "testStaticSite0", "default", "testFunctionApp", armappservice.StaticSiteUserProvidedFunctionAppARMResource{
-		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-			FunctionAppRegion:     to.Ptr("West US 2"),
-			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
-		},
-	}, &armappservice.StaticSitesClientBeginRegisterUserProvidedFunctionAppWithStaticSiteBuildOptions{
-		IsForced: to.Ptr(true)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientRegisterUserProvidedFunctionAppWithStaticSiteBuildResponse{
-	// 	StaticSiteUserProvidedFunctionAppARMResource: armappservice.StaticSiteUserProvidedFunctionAppARMResource{
-	// 		Name: to.Ptr("testFunctionApp"),
-	// 		Type: to.Ptr("Microsoft.Web/staticSites/builds/userProvidedFunctionApps"),
-	// 		ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/rg/providers/Microsoft.Web/staticSites/testStaticSite0/builds/default/userProvidedFunctionApps/testFunctionApp"),
-	// 		Properties: &armappservice.StaticSiteUserProvidedFunctionAppARMResourceProperties{
-	// 			CreatedOn: to.Ptr(time.Date(2020, time.March, 4, 17, 33, 11, 641000000, time.UTC)),
-	// 			FunctionAppRegion: to.Ptr("West US 2"),
-	// 			FunctionAppResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/functionRG/providers/Microsoft.Web/sites/testFunctionApp"),
 	// 		},
 	// 	},
 	// }
@@ -2632,85 +2712,5 @@ func ExampleStaticSitesClient_UpdateStaticSiteUser() {
 	// 			UserID: to.Ptr("1234"),
 	// 		},
 	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-05-01/ValidateLinkedBackendForStaticSite.json
-func ExampleStaticSitesClient_BeginValidateBackend() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginValidateBackend(ctx, "rg", "testStaticSite0", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
-		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-			Region:            to.Ptr("West US 2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-05-01/ValidateLinkedBackendForStaticSiteBuild.json
-func ExampleStaticSitesClient_BeginValidateBackendForBuild() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginValidateBackendForBuild(ctx, "rg", "testStaticSite0", "default", "testBackend", armappservice.StaticSiteLinkedBackendARMResource{
-		Properties: &armappservice.StaticSiteLinkedBackendARMResourceProperties{
-			BackendResourceID: to.Ptr("/subscription/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/backendRg/providers/Microsoft.Web/sites/testBackend"),
-			Region:            to.Ptr("West US 2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2025-05-01/ValidateStaticSiteCustomDomain.json
-func ExampleStaticSitesClient_BeginValidateCustomDomainCanBeAddedToStaticSite() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappservice.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStaticSitesClient().BeginValidateCustomDomainCanBeAddedToStaticSite(ctx, "rg", "testStaticSite0", "custom.domain.net", armappservice.StaticSiteCustomDomainRequestPropertiesARMResource{
-		Properties: &armappservice.StaticSiteCustomDomainRequestPropertiesARMResourceProperties{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappservice.StaticSitesClientValidateCustomDomainCanBeAddedToStaticSiteResponse{
 	// }
 }

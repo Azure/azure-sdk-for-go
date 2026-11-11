@@ -48,6 +48,7 @@ The following table indicates the state of in-memory and persistent caching in e
 | `DefaultAzureCredential`       | Supported if the target credential in the default chain supports it | Not Supported            |
 | `DeviceCodeCredential`         | Supported                                                           | Supported                |
 | `EnvironmentCredential`        | Supported                                                           | Not Supported            |
+| `GitHubActionsCredential`      | Supported                                                           | Supported                |
 | `InteractiveBrowserCredential` | Supported                                                           | Supported                |
 | `ManagedIdentityCredential`    | Supported                                                           | Not Supported            |
 | `OnBehalfOfCredential`         | Supported                                                           | Not Supported            |

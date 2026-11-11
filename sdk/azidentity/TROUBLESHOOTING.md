@@ -17,6 +17,7 @@ This troubleshooting guide covers failure investigation techniques, common error
 - [Troubleshoot ClientSecretCredential authentication issues](#troubleshoot-clientsecretcredential-authentication-issues)
 - [Troubleshoot DefaultAzureCredential authentication issues](#troubleshoot-defaultazurecredential-authentication-issues)
 - [Troubleshoot EnvironmentCredential authentication issues](#troubleshoot-environmentcredential-authentication-issues)
+- [Troubleshoot GitHubActionsCredential authentication issues](#troubleshoot-githubactionscredential-authentication-issues)
 - [Troubleshoot ManagedIdentityCredential authentication issues](#troubleshoot-managedidentitycredential-authentication-issues)
   - [Azure App Service and Azure Functions managed identity](#azure-app-service-and-azure-functions-managed-identity)
   - [Azure Virtual Machine managed identity](#azure-virtual-machine-managed-identity)
@@ -288,6 +289,18 @@ Get-AzAccessToken -ResourceUrl "https://management.core.windows.net"
 | AADSTS900023: Specified tenant identifier 'some tenant ID' is neither a valid DNS name, nor a valid external domain.|The `tenantID` argument to `NewAzurePipelinesCredential` is incorrect| Verify the tenant ID. It must identify the tenant of the user-assigned managed identity or service principal configured for the service connection.|
 | No service connection found with identifier |The `serviceConnectionID` argument to `NewAzurePipelinesCredential` is incorrect| Verify the service connection ID. This parameter refers to the `resourceId` of the Azure Service Connection. It can also be found in the query string of the service connection's configuration in Azure DevOps. [Azure Pipelines documentation](https://learn.microsoft.com/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml) has more information about service connections.|
 |401 (Unauthorized) response from OIDC endpoint|The `systemAccessToken` argument to `NewAzurePipelinesCredential` is incorrect|Check pipeline configuration. This value comes from the predefined variable `System.AccessToken` [as described in Azure Pipelines documentation](https://learn.microsoft.com/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml#systemaccesstoken).|
+
+<a id="github-actions"></a>
+## Troubleshoot GitHubActionsCredential authentication issues
+
+| Error Message |Description| Mitigation |
+|---|---|---|
+|invalid tenantID / no client ID specified|Missing or invalid identity configuration|Set `AZURE_TENANT_ID` and `AZURE_CLIENT_ID` to identify the Microsoft Entra application or user-assigned managed identity federated with the workflow.|
+|no value for environment variable ACTIONS_ID_TOKEN_REQUEST_URL or ACTIONS_ID_TOKEN_REQUEST_TOKEN|GitHub hasn't provided OIDC configuration|Run in a GitHub Actions workflow with `permissions: id-token: write`.|
+|invalid URL or query parameters for ACTIONS_ID_TOKEN_REQUEST_URL|The OIDC endpoint configuration is invalid|Use the HTTPS URL provided by GitHub Actions without modification.|
+|doesn't support authority host|The configured authority doesn't have a known federation audience|Set `ClientOptions.Cloud` or `AZURE_AUTHORITY_HOST` to the authority for Azure Public, Azure China, Azure US Government, France Government, Germany Government, or Singapore Government.|
+|unexpected response from the GitHub Actions OIDC endpoint / invalid token response|The OIDC token request failed|Check workflow permissions and runner configuration. Don't log or share the response body because it may contain an OIDC token.|
+|AADSTS70021 / AADSTS700211 / AADSTS700212|The assertion doesn't match a federated identity credential|Verify the federated identity credential's issuer, subject, and audience. The subject must match the workflow's actual branch, tag, or environment configuration. See the [GitHub documentation](https://docs.github.com/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-azure).|
 
 ## Troubleshoot persistent token caching issues
 

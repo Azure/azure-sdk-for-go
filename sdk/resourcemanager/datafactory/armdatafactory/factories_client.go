@@ -64,7 +64,8 @@ func (client *FactoriesClient) ConfigureFactoryRepo(ctx context.Context, locatio
 	if err != nil {
 		return FactoriesClientConfigureFactoryRepoResponse{}, err
 	}
-	return client.configureFactoryRepoHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.configureFactoryRepoHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // configureFactoryRepoCreateRequest creates the ConfigureFactoryRepo request.
@@ -126,7 +127,8 @@ func (client *FactoriesClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return FactoriesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -194,7 +196,8 @@ func (client *FactoriesClient) Delete(ctx context.Context, resourceGroupName str
 		return FactoriesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return FactoriesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FactoriesClientDeleteResponse{}, err
 	}
 	return FactoriesClientDeleteResponse{}, nil
 }
@@ -243,7 +246,8 @@ func (client *FactoriesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FactoriesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -308,7 +312,8 @@ func (client *FactoriesClient) GetDataPlaneAccess(ctx context.Context, resourceG
 	if err != nil {
 		return FactoriesClientGetDataPlaneAccessResponse{}, err
 	}
-	return client.getDataPlaneAccessHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDataPlaneAccessHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDataPlaneAccessCreateRequest creates the GetDataPlaneAccess request.
@@ -374,7 +379,8 @@ func (client *FactoriesClient) GetGitHubAccessToken(ctx context.Context, resourc
 	if err != nil {
 		return FactoriesClientGetGitHubAccessTokenResponse{}, err
 	}
-	return client.getGitHubAccessTokenHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getGitHubAccessTokenHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getGitHubAccessTokenCreateRequest creates the GetGitHubAccessToken request.
@@ -415,72 +421,6 @@ func (client *FactoriesClient) getGitHubAccessTokenHandleResponse(resp *http.Res
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.GitHubAccessTokenResponse); err != nil {
 		return FactoriesClientGetGitHubAccessTokenResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Lists factories under the specified subscription.
-//   - options - FactoriesClientListOptions contains the optional parameters for the FactoriesClient.NewListPager method.
-func (client *FactoriesClient) NewListPager(options *FactoriesClientListOptions) *runtime.Pager[FactoriesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[FactoriesClientListResponse]{
-		More: func(page FactoriesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *FactoriesClientListResponse) (FactoriesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FactoriesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return FactoriesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return FactoriesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *FactoriesClient) listCreateRequest(ctx context.Context, nextLink string, _ *FactoriesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20180601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *FactoriesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FactoriesClientListResponse, error) {
-	result := FactoriesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.FactoryListResponse); err != nil {
-		return FactoriesClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -557,6 +497,72 @@ func (client *FactoriesClient) listByResourceGroupHandleResponse(resp *http.Resp
 	return result, nil
 }
 
+// NewListPager - Lists factories under the specified subscription.
+//   - options - FactoriesClientListOptions contains the optional parameters for the FactoriesClient.NewListPager method.
+func (client *FactoriesClient) NewListPager(options *FactoriesClientListOptions) *runtime.Pager[FactoriesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[FactoriesClientListResponse]{
+		More: func(page FactoriesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *FactoriesClientListResponse) (FactoriesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "FactoriesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return FactoriesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return FactoriesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *FactoriesClient) listCreateRequest(ctx context.Context, nextLink string, _ *FactoriesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DataFactory/factories"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20180601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *FactoriesClient) listHandleResponse(resp *http.Response, successCodes ...int) (FactoriesClientListResponse, error) {
+	result := FactoriesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.FactoryListResponse); err != nil {
+		return FactoriesClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // Update - Updates a factory.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -577,7 +583,8 @@ func (client *FactoriesClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FactoriesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

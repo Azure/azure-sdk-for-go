@@ -67,7 +67,8 @@ func (client *ContainerAppsDiagnosticsClient) GetDetector(ctx context.Context, r
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetDetectorResponse{}, err
 	}
-	return client.getDetectorHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDetectorHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDetectorCreateRequest creates the GetDetector request.
@@ -135,7 +136,8 @@ func (client *ContainerAppsDiagnosticsClient) GetRevision(ctx context.Context, r
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetRevisionResponse{}, err
 	}
-	return client.getRevisionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRevisionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRevisionCreateRequest creates the GetRevision request.
@@ -202,7 +204,8 @@ func (client *ContainerAppsDiagnosticsClient) GetRoot(ctx context.Context, resou
 	if err != nil {
 		return ContainerAppsDiagnosticsClientGetRootResponse{}, err
 	}
-	return client.getRootHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRootHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRootCreateRequest creates the GetRoot request.

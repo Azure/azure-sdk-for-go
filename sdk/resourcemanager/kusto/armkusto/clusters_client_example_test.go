@@ -81,36 +81,6 @@ func ExampleClustersClient_BeginAddLanguageExtensions() {
 	// }
 }
 
-// Generated from example definition: 2025-02-14/KustoClustersCheckNameAvailability.json
-func ExampleClustersClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClustersClient().CheckNameAvailability(ctx, "westus", armkusto.ClusterCheckNameRequest{
-		Name: to.Ptr("kustoCluster"),
-		Type: to.Ptr("Microsoft.Kusto/clusters"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.ClustersClientCheckNameAvailabilityResponse{
-	// 	CheckNameResult: armkusto.CheckNameResult{
-	// 		Name: to.Ptr("kuskusprod"),
-	// 		Message: to.Ptr("Name 'kuskusprod' is already taken. Please specify a different name"),
-	// 		NameAvailable: to.Ptr(false),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-02-14/KustoClusterCreateWithCMKFederatedIdentity.json
 func ExampleClustersClient_BeginCreateOrUpdate_kustoClusterCreateWithCmkFederatedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -495,945 +465,6 @@ func ExampleClustersClient_BeginDiagnoseVirtualNetwork() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-02-14/KustoClustersGet.json
-func ExampleClustersClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewClustersClient().Get(ctx, "kustorptest", "kustoCluster", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.ClustersClientGetResponse{
-	// 	Cluster: armkusto.Cluster{
-	// 		Name: to.Ptr("kustoCluster"),
-	// 		Type: to.Ptr("Microsoft.Kusto/Clusters"),
-	// 		Etag: to.Ptr("abcd123"),
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster"),
-	// 		Identity: &armkusto.Identity{
-	// 			Type: to.Ptr(armkusto.IdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("faabad1f-4876-463c-af9d-6ba2d2d2394c"),
-	// 			TenantID: to.Ptr("b932977f-6277-4ab7-a2cd-5bd21f07aaf4"),
-	// 			UserAssignedIdentities: map[string]*armkusto.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties{
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armkusto.ClusterProperties{
-	// 			AllowedFqdnList: []*string{
-	// 				to.Ptr("my-stroage.blob.core.windows.net"),
-	// 			},
-	// 			AllowedIPRangeList: []*string{
-	// 			},
-	// 			EnableAutoStop: to.Ptr(true),
-	// 			EnableDiskEncryption: to.Ptr(false),
-	// 			EnablePurge: to.Ptr(false),
-	// 			EnableStreamingIngest: to.Ptr(true),
-	// 			EngineType: to.Ptr(armkusto.EngineTypeV3),
-	// 			KeyVaultProperties: &armkusto.KeyVaultProperties{
-	// 				KeyName: to.Ptr("keyName"),
-	// 				KeyVaultURI: to.Ptr("https://dummy.keyvault.com"),
-	// 				KeyVersion: to.Ptr("keyVersion"),
-	// 			},
-	// 			MigrationCluster: &armkusto.MigrationClusterProperties{
-	// 				DataIngestionURI: to.Ptr("https://ingest-kustocluster2.westus.kusto.windows.net"),
-	// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster2"),
-	// 				Role: to.Ptr(armkusto.MigrationClusterRoleDestination),
-	// 				URI: to.Ptr("https://kustocluster2.westus.kusto.windows.net"),
-	// 			},
-	// 			PrivateEndpointConnections: []*armkusto.PrivateEndpointConnection{
-	// 				{
-	// 					Name: to.Ptr("privateEndpointTest"),
-	// 					Type: to.Ptr("Microsoft.Kusto/Clusters/PrivateEndpointConnections"),
-	// 					ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/privateEndpointConnections/privateEndpointTest"),
-	// 					Properties: &armkusto.PrivateEndpointConnectionProperties{
-	// 						GroupID: to.Ptr("cluster"),
-	// 						PrivateEndpoint: &armkusto.PrivateEndpointProperty{
-	// 							ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rg1Network/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
-	// 						},
-	// 						PrivateLinkServiceConnectionState: &armkusto.PrivateLinkServiceConnectionStateProperty{
-	// 							Description: to.Ptr("Auto-approved"),
-	// 							ActionsRequired: to.Ptr("None"),
-	// 							Status: to.Ptr("Approved"),
-	// 						},
-	// 						ProvisioningState: to.Ptr("Succeeded"),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
-	// 			PublicIPType: to.Ptr(armkusto.PublicIPTypeIPv4),
-	// 			PublicNetworkAccess: to.Ptr(armkusto.PublicNetworkAccessEnabled),
-	// 			RestrictOutboundNetworkAccess: to.Ptr(armkusto.ClusterNetworkAccessFlagEnabled),
-	// 			ZoneStatus: to.Ptr(armkusto.ZoneStatusNonZonal),
-	// 		},
-	// 		SKU: &armkusto.AzureSKU{
-	// 			Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
-	// 			Capacity: to.Ptr[int32](2),
-	// 			Tier: to.Ptr(armkusto.AzureSKUTierStandard),
-	// 		},
-	// 		SystemData: &armkusto.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.June, 29, 15, 6, 54, 275790600, time.UTC)),
-	// 			CreatedBy: to.Ptr("user@microsoft.com"),
-	// 			CreatedByType: to.Ptr(armkusto.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.June, 29, 15, 6, 54, 275790600, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user@microsoft.com"),
-	// 			LastModifiedByType: to.Ptr(armkusto.CreatedByTypeUser),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-02-14/KustoClustersList.json
-func ExampleClustersClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armkusto.ClustersClientListResponse{
-		// 	ClusterListResult: armkusto.ClusterListResult{
-		// 		Value: []*armkusto.Cluster{
-		// 			{
-		// 				Name: to.Ptr("kustoCluster"),
-		// 				Type: to.Ptr("Microsoft.Kusto/Clusters"),
-		// 				Etag: to.Ptr("abcd123"),
-		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armkusto.ClusterProperties{
-		// 					AllowedFqdnList: []*string{
-		// 						to.Ptr("my-stroage.blob.core.windows.net"),
-		// 					},
-		// 					AllowedIPRangeList: []*string{
-		// 					},
-		// 					CalloutPolicies: []*armkusto.CalloutPolicy{
-		// 						{
-		// 							CalloutID: to.Ptr("*_kusto"),
-		// 							CalloutType: to.Ptr(armkusto.CalloutTypeKusto),
-		// 							CalloutURIRegex: to.Ptr("*"),
-		// 							OutboundAccess: to.Ptr(armkusto.OutboundAccessAllow),
-		// 						},
-		// 					},
-		// 					EnableAutoStop: to.Ptr(true),
-		// 					EnableDiskEncryption: to.Ptr(false),
-		// 					EnableStreamingIngest: to.Ptr(true),
-		// 					EngineType: to.Ptr(armkusto.EngineTypeV3),
-		// 					KeyVaultProperties: &armkusto.KeyVaultProperties{
-		// 						KeyName: to.Ptr("keyName"),
-		// 						KeyVaultURI: to.Ptr("https://dummy.keyvault.com"),
-		// 						KeyVersion: to.Ptr("keyVersion"),
-		// 					},
-		// 					MigrationCluster: &armkusto.MigrationClusterProperties{
-		// 						DataIngestionURI: to.Ptr("https://ingest-kustocluster2.westus.kusto.windows.net"),
-		// 						ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster2"),
-		// 						Role: to.Ptr(armkusto.MigrationClusterRoleDestination),
-		// 						URI: to.Ptr("https://kustocluster2.westus.kusto.windows.net"),
-		// 					},
-		// 					PrivateEndpointConnections: []*armkusto.PrivateEndpointConnection{
-		// 						{
-		// 							Name: to.Ptr("privateEndpointTest"),
-		// 							Type: to.Ptr("Microsoft.Kusto/Clusters/PrivateEndpointConnections"),
-		// 							ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/privateEndpointConnections/privateEndpointTest"),
-		// 							Properties: &armkusto.PrivateEndpointConnectionProperties{
-		// 								GroupID: to.Ptr("cluster"),
-		// 								PrivateEndpoint: &armkusto.PrivateEndpointProperty{
-		// 									ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rg1Network/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armkusto.PrivateLinkServiceConnectionStateProperty{
-		// 									Description: to.Ptr("Auto-approved"),
-		// 									ActionsRequired: to.Ptr("None"),
-		// 									Status: to.Ptr("Approved"),
-		// 								},
-		// 								ProvisioningState: to.Ptr("Succeeded"),
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
-		// 					PublicIPType: to.Ptr(armkusto.PublicIPTypeDualStack),
-		// 					PublicNetworkAccess: to.Ptr(armkusto.PublicNetworkAccessEnabled),
-		// 					RestrictOutboundNetworkAccess: to.Ptr(armkusto.ClusterNetworkAccessFlagEnabled),
-		// 					ZoneStatus: to.Ptr(armkusto.ZoneStatusNonZonal),
-		// 				},
-		// 				SKU: &armkusto.AzureSKU{
-		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
-		// 					Capacity: to.Ptr[int32](2),
-		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("KustoClusterRPTest3"),
-		// 				Type: to.Ptr("Microsoft.Kusto/Clusters"),
-		// 				Etag: to.Ptr("abcd123"),
-		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/KustoClusterRPTest3"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armkusto.ClusterProperties{
-		// 					AllowedIPRangeList: []*string{
-		// 						to.Ptr("0.0.0.0/0"),
-		// 					},
-		// 					EnableDiskEncryption: to.Ptr(true),
-		// 					EnableStreamingIngest: to.Ptr(true),
-		// 					EngineType: to.Ptr(armkusto.EngineTypeV2),
-		// 					PrivateEndpointConnections: []*armkusto.PrivateEndpointConnection{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
-		// 					PublicIPType: to.Ptr(armkusto.PublicIPTypeIPv4),
-		// 					PublicNetworkAccess: to.Ptr(armkusto.PublicNetworkAccessEnabled),
-		// 					RestrictOutboundNetworkAccess: to.Ptr(armkusto.ClusterNetworkAccessFlagDisabled),
-		// 				},
-		// 				SKU: &armkusto.AzureSKU{
-		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
-		// 					Capacity: to.Ptr[int32](2),
-		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-02-14/KustoClustersListByResourceGroup.json
-func ExampleClustersClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListByResourceGroupPager("kustorptest", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armkusto.ClustersClientListByResourceGroupResponse{
-		// 	ClusterListResult: armkusto.ClusterListResult{
-		// 		Value: []*armkusto.Cluster{
-		// 			{
-		// 				Name: to.Ptr("KustoClusterRPTest4"),
-		// 				Type: to.Ptr("Microsoft.Kusto/Clusters"),
-		// 				Etag: to.Ptr("abcd123"),
-		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/KustoClusterRPTest4"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armkusto.ClusterProperties{
-		// 					AllowedFqdnList: []*string{
-		// 						to.Ptr("my-stroage.blob.core.windows.net"),
-		// 					},
-		// 					AllowedIPRangeList: []*string{
-		// 					},
-		// 					EnableDiskEncryption: to.Ptr(false),
-		// 					EnableStreamingIngest: to.Ptr(true),
-		// 					EngineType: to.Ptr(armkusto.EngineTypeV2),
-		// 					KeyVaultProperties: &armkusto.KeyVaultProperties{
-		// 						KeyName: to.Ptr("keyName"),
-		// 						KeyVaultURI: to.Ptr("https://dummy.keyvault.com"),
-		// 						KeyVersion: to.Ptr("keyVersion"),
-		// 					},
-		// 					MigrationCluster: &armkusto.MigrationClusterProperties{
-		// 						DataIngestionURI: to.Ptr("https://ingest-kustocluster2.westus.kusto.windows.net"),
-		// 						ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster2"),
-		// 						Role: to.Ptr(armkusto.MigrationClusterRoleDestination),
-		// 						URI: to.Ptr("https://kustocluster2.westus.kusto.windows.net"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armkusto.PublicNetworkAccessEnabled),
-		// 					RestrictOutboundNetworkAccess: to.Ptr(armkusto.ClusterNetworkAccessFlagDisabled),
-		// 					ZoneStatus: to.Ptr(armkusto.ZoneStatusNonZonal),
-		// 				},
-		// 				SKU: &armkusto.AzureSKU{
-		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
-		// 					Capacity: to.Ptr[int32](2),
-		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("KustoClusterRPTest3"),
-		// 				Type: to.Ptr("Microsoft.Kusto/Clusters"),
-		// 				Etag: to.Ptr("abcd123"),
-		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/KustoClusterRPTest3"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armkusto.ClusterProperties{
-		// 					AllowedIPRangeList: []*string{
-		// 						to.Ptr("0.0.0.0/0"),
-		// 					},
-		// 					EnableDiskEncryption: to.Ptr(true),
-		// 					EnableStreamingIngest: to.Ptr(true),
-		// 					EngineType: to.Ptr(armkusto.EngineTypeV3),
-		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armkusto.PublicNetworkAccessEnabled),
-		// 					RestrictOutboundNetworkAccess: to.Ptr(armkusto.ClusterNetworkAccessFlagDisabled),
-		// 				},
-		// 				SKU: &armkusto.AzureSKU{
-		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
-		// 					Capacity: to.Ptr[int32](2),
-		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-02-14/KustoClustersListCalloutPolicies.json
-func ExampleClustersClient_NewListCalloutPoliciesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListCalloutPoliciesPager("kustorptest", "kustoCluster", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armkusto.ClustersClientListCalloutPoliciesResponse{
-		// 	CalloutPoliciesList: armkusto.CalloutPoliciesList{
-		// 		Value: []*armkusto.CalloutPolicy{
-		// 			{
-		// 				CalloutID: to.Ptr("*_kusto"),
-		// 				CalloutType: to.Ptr(armkusto.CalloutTypeKusto),
-		// 				CalloutURIRegex: to.Ptr("*"),
-		// 				OutboundAccess: to.Ptr(armkusto.OutboundAccessAllow),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-02-14/KustoClusterListFollowerDatabases.json
-func ExampleClustersClient_NewListFollowerDatabasesPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListFollowerDatabasesPager("kustorptest", "kustoCluster", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armkusto.ClustersClientListFollowerDatabasesResponse{
-		// 	FollowerDatabaseListResult: armkusto.FollowerDatabaseListResult{
-		// 		Value: []*armkusto.FollowerDatabaseDefinition{
-		// 			{
-		// 				AttachedDatabaseConfigurationName: to.Ptr("attachedDbConfiguration"),
-		// 				ClusterResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/follower1"),
-		// 				DatabaseName: to.Ptr("*"),
-		// 				DatabaseShareOrigin: to.Ptr(armkusto.DatabaseShareOriginDataShare),
-		// 			},
-		// 			{
-		// 				AttachedDatabaseConfigurationName: to.Ptr("attachedDbConfiguration2"),
-		// 				ClusterResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/follower4"),
-		// 				DatabaseName: to.Ptr("db1"),
-		// 				DatabaseShareOrigin: to.Ptr(armkusto.DatabaseShareOriginDirect),
-		// 				TableLevelSharingProperties: &armkusto.TableLevelSharingProperties{
-		// 					ExternalTablesToExclude: []*string{
-		// 						to.Ptr("ExternalTable2"),
-		// 					},
-		// 					ExternalTablesToInclude: []*string{
-		// 						to.Ptr("ExternalTable1"),
-		// 					},
-		// 					MaterializedViewsToExclude: []*string{
-		// 						to.Ptr("MaterializedViewTable2"),
-		// 					},
-		// 					MaterializedViewsToInclude: []*string{
-		// 						to.Ptr("MaterializedViewTable1"),
-		// 					},
-		// 					TablesToExclude: []*string{
-		// 						to.Ptr("Table2"),
-		// 					},
-		// 					TablesToInclude: []*string{
-		// 						to.Ptr("Table1"),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-02-14/KustoClusterListFollowerDatabasesGet.json
-func ExampleClustersClient_NewListFollowerDatabasesGetPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListFollowerDatabasesGetPager("kustorptest", "kustoCluster", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armkusto.ClustersClientListFollowerDatabasesGetResponse{
-		// 	FollowerDatabaseListResultGet: armkusto.FollowerDatabaseListResultGet{
-		// 		Value: []*armkusto.FollowerDatabaseDefinitionGet{
-		// 			{
-		// 				Properties: &armkusto.FollowerDatabaseProperties{
-		// 					AttachedDatabaseConfigurationName: to.Ptr("attachedDbConfiguration"),
-		// 					ClusterResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/kustoCluster"),
-		// 					DatabaseName: to.Ptr("*"),
-		// 					DatabaseShareOrigin: to.Ptr(armkusto.DatabaseShareOriginDataShare),
-		// 				},
-		// 			},
-		// 			{
-		// 				Properties: &armkusto.FollowerDatabaseProperties{
-		// 					AttachedDatabaseConfigurationName: to.Ptr("attachedDbConfiguration2"),
-		// 					ClusterResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/kustoCluster"),
-		// 					DatabaseName: to.Ptr("db1"),
-		// 					DatabaseShareOrigin: to.Ptr(armkusto.DatabaseShareOriginDirect),
-		// 					TableLevelSharingProperties: &armkusto.TableLevelSharingProperties{
-		// 						ExternalTablesToExclude: []*string{
-		// 							to.Ptr("ExternalTable2"),
-		// 						},
-		// 						ExternalTablesToInclude: []*string{
-		// 							to.Ptr("ExternalTable1"),
-		// 						},
-		// 						MaterializedViewsToExclude: []*string{
-		// 							to.Ptr("MaterializedViewTable2"),
-		// 						},
-		// 						MaterializedViewsToInclude: []*string{
-		// 							to.Ptr("MaterializedViewTable1"),
-		// 						},
-		// 						TablesToExclude: []*string{
-		// 							to.Ptr("Table2"),
-		// 						},
-		// 						TablesToInclude: []*string{
-		// 							to.Ptr("Table1"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-02-14/KustoClusterListLanguageExtensions.json
-func ExampleClustersClient_NewListLanguageExtensionsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListLanguageExtensionsPager("kustorptest", "kustoCluster", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armkusto.ClustersClientListLanguageExtensionsResponse{
-		// 	LanguageExtensionsList: armkusto.LanguageExtensionsList{
-		// 		Value: []*armkusto.LanguageExtension{
-		// 			{
-		// 				LanguageExtensionName: to.Ptr(armkusto.LanguageExtensionNamePYTHON),
-		// 			},
-		// 			{
-		// 				LanguageExtensionName: to.Ptr(armkusto.LanguageExtensionNameR),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-02-14/KustoOutboundNetworkDependenciesList.json
-func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListOutboundNetworkDependenciesEndpointsPager("kustorptest", "kustoCluster", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armkusto.ClustersClientListOutboundNetworkDependenciesEndpointsResponse{
-		// 	OutboundNetworkDependenciesEndpointListResult: armkusto.OutboundNetworkDependenciesEndpointListResult{
-		// 		Value: []*armkusto.OutboundNetworkDependenciesEndpoint{
-		// 			{
-		// 				Name: to.Ptr("kustoCluster/AzureActiveDirectory"),
-		// 				Type: to.Ptr("Microsoft.Kusto/Clusters/OutboundNetworkDependenciesEndpoints"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/OutboundNetworkDependenciesEndpoints/AzureActiveDirectory"),
-		// 				Properties: &armkusto.OutboundNetworkDependenciesEndpointProperties{
-		// 					Category: to.Ptr("Azure Active Directory"),
-		// 					Endpoints: []*armkusto.EndpointDependency{
-		// 						{
-		// 							DomainName: to.Ptr("login.microsoftonline.com"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](443),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("graph.windows.net"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](443),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("graph.microsoft.com"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](443),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("graph.microsoft-ppe.com"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](443),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("kustoCluster/AzureMonitor"),
-		// 				Type: to.Ptr("Microsoft.Kusto/Clusters/OutboundNetworkDependenciesEndpoints"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/OutboundNetworkDependenciesEndpoints/AzureMonitor"),
-		// 				Properties: &armkusto.OutboundNetworkDependenciesEndpointProperties{
-		// 					Category: to.Ptr("Azure Monitor"),
-		// 					Endpoints: []*armkusto.EndpointDependency{
-		// 						{
-		// 							DomainName: to.Ptr("prod.warmpath.msftcloudes.com"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](443),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("gcs.prod.monitoring.core.windows.net"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](443),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("production.diagnostics.monitoring.core.windows.net"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](443),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("shoebox2.metrics.nsatc.net:443"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](443),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("kustoCluster/CertificateAuthority"),
-		// 				Type: to.Ptr("Microsoft.Kusto/Clusters/OutboundNetworkDependenciesEndpoints"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/OutboundNetworkDependenciesEndpoints/CertificateAuthority"),
-		// 				Properties: &armkusto.OutboundNetworkDependenciesEndpointProperties{
-		// 					Category: to.Ptr("Certificate Authority"),
-		// 					Endpoints: []*armkusto.EndpointDependency{
-		// 						{
-		// 							DomainName: to.Ptr("ocsp.msocsp.com"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](80),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("ocsp.digicert.com"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](80),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("crl3.digicert.com"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](80),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("crl.microsoft.com"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](80),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("www.microsoft.com"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](80),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("kustoCluster/AzureStorage"),
-		// 				Type: to.Ptr("Microsoft.Kusto/Clusters/OutboundNetworkDependenciesEndpoints"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/OutboundNetworkDependenciesEndpoints/AzureStorage"),
-		// 				Properties: &armkusto.OutboundNetworkDependenciesEndpointProperties{
-		// 					Category: to.Ptr("Azure Storage"),
-		// 					Endpoints: []*armkusto.EndpointDependency{
-		// 						{
-		// 							DomainName: to.Ptr("clusterinternalsa.blob.core.windows.net"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](443),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("clusterinternalsa.queue.core.windows.net"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](443),
-		// 								},
-		// 							},
-		// 						},
-		// 						{
-		// 							DomainName: to.Ptr("clusterinternalsa.table.core.windows.net"),
-		// 							EndpointDetails: []*armkusto.EndpointDetail{
-		// 								{
-		// 									IPAddress: to.Ptr("1.2.3.4"),
-		// 									Port: to.Ptr[int32](443),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-02-14/KustoClustersListSkus.json
-func ExampleClustersClient_NewListSKUsPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListSKUsPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armkusto.ClustersClientListSKUsResponse{
-		// 	SKUDescriptionList: armkusto.SKUDescriptionList{
-		// 		Value: []*armkusto.SKUDescription{
-		// 			{
-		// 				Name: to.Ptr("Standard_L8s_v3"),
-		// 				LocationInfo: []*armkusto.SKULocationInfoItem{
-		// 					{
-		// 						Location: to.Ptr("West US"),
-		// 						Zones: []*string{
-		// 							to.Ptr("1"),
-		// 							to.Ptr("2"),
-		// 							to.Ptr("3"),
-		// 						},
-		// 					},
-		// 					{
-		// 						Location: to.Ptr("West Europe"),
-		// 						Zones: []*string{
-		// 						},
-		// 					},
-		// 				},
-		// 				Locations: []*string{
-		// 					to.Ptr("West US"),
-		// 					to.Ptr("West Europe"),
-		// 				},
-		// 				Tier: to.Ptr("Standard"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("Standard_L16s_v3"),
-		// 				LocationInfo: []*armkusto.SKULocationInfoItem{
-		// 					{
-		// 						Location: to.Ptr("West US"),
-		// 						Zones: []*string{
-		// 							to.Ptr("1"),
-		// 							to.Ptr("2"),
-		// 							to.Ptr("3"),
-		// 						},
-		// 					},
-		// 					{
-		// 						Location: to.Ptr("West Europe"),
-		// 						Zones: []*string{
-		// 						},
-		// 					},
-		// 				},
-		// 				Locations: []*string{
-		// 					to.Ptr("West US"),
-		// 					to.Ptr("West Europe"),
-		// 				},
-		// 				Tier: to.Ptr("Standard"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("Standard_L8as_v3"),
-		// 				LocationInfo: []*armkusto.SKULocationInfoItem{
-		// 					{
-		// 						Location: to.Ptr("West US"),
-		// 						Zones: []*string{
-		// 							to.Ptr("1"),
-		// 							to.Ptr("2"),
-		// 							to.Ptr("3"),
-		// 						},
-		// 					},
-		// 					{
-		// 						Location: to.Ptr("West Europe"),
-		// 						Zones: []*string{
-		// 						},
-		// 					},
-		// 				},
-		// 				Locations: []*string{
-		// 					to.Ptr("West US"),
-		// 					to.Ptr("West Europe"),
-		// 				},
-		// 				Tier: to.Ptr("Standard"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("Standard_L16as_v3"),
-		// 				LocationInfo: []*armkusto.SKULocationInfoItem{
-		// 					{
-		// 						Location: to.Ptr("West US"),
-		// 						Zones: []*string{
-		// 							to.Ptr("1"),
-		// 							to.Ptr("2"),
-		// 							to.Ptr("3"),
-		// 						},
-		// 					},
-		// 					{
-		// 						Location: to.Ptr("West Europe"),
-		// 						Zones: []*string{
-		// 						},
-		// 					},
-		// 				},
-		// 				Locations: []*string{
-		// 					to.Ptr("West US"),
-		// 					to.Ptr("West Europe"),
-		// 				},
-		// 				Tier: to.Ptr("Standard"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-02-14/KustoClustersListResourceSkus.json
-func ExampleClustersClient_NewListSKUsByResourcePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewClustersClient().NewListSKUsByResourcePager("kustorptest", "kustoCluster", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armkusto.ClustersClientListSKUsByResourceResponse{
-		// 	ListResourceSKUsResult: armkusto.ListResourceSKUsResult{
-		// 		Value: []*armkusto.AzureResourceSKU{
-		// 			{
-		// 				Capacity: &armkusto.AzureCapacity{
-		// 					Default: to.Ptr[int32](2),
-		// 					Maximum: to.Ptr[int32](100),
-		// 					Minimum: to.Ptr[int32](2),
-		// 					ScaleType: to.Ptr(armkusto.AzureScaleTypeAutomatic),
-		// 				},
-		// 				ResourceType: to.Ptr("clusters"),
-		// 				SKU: &armkusto.AzureSKU{
-		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL8SV3),
-		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
-		// 				},
-		// 			},
-		// 			{
-		// 				Capacity: &armkusto.AzureCapacity{
-		// 					Default: to.Ptr[int32](2),
-		// 					Maximum: to.Ptr[int32](100),
-		// 					Minimum: to.Ptr[int32](2),
-		// 					ScaleType: to.Ptr(armkusto.AzureScaleTypeAutomatic),
-		// 				},
-		// 				ResourceType: to.Ptr("clusters"),
-		// 				SKU: &armkusto.AzureSKU{
-		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL8AsV3),
-		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
-		// 				},
-		// 			},
-		// 			{
-		// 				Capacity: &armkusto.AzureCapacity{
-		// 					Default: to.Ptr[int32](2),
-		// 					Maximum: to.Ptr[int32](100),
-		// 					Minimum: to.Ptr[int32](2),
-		// 					ScaleType: to.Ptr(armkusto.AzureScaleTypeAutomatic),
-		// 				},
-		// 				ResourceType: to.Ptr("clusters"),
-		// 				SKU: &armkusto.AzureSKU{
-		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
-		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
-		// 				},
-		// 			},
-		// 			{
-		// 				Capacity: &armkusto.AzureCapacity{
-		// 					Default: to.Ptr[int32](2),
-		// 					Maximum: to.Ptr[int32](100),
-		// 					Minimum: to.Ptr[int32](2),
-		// 					ScaleType: to.Ptr(armkusto.AzureScaleTypeAutomatic),
-		// 				},
-		// 				ResourceType: to.Ptr("clusters"),
-		// 				SKU: &armkusto.AzureSKU{
-		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16SV3),
-		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2025-02-14/KustoClusterMigrate.json
@@ -1942,4 +973,973 @@ func ExampleClustersClient_BeginUpdate_kustoClustersUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoClustersCheckNameAvailability.json
+func ExampleClustersClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().CheckNameAvailability(ctx, "westus", armkusto.ClusterCheckNameRequest{
+		Name: to.Ptr("kustoCluster"),
+		Type: to.Ptr("Microsoft.Kusto/clusters"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.ClustersClientCheckNameAvailabilityResponse{
+	// 	CheckNameResult: armkusto.CheckNameResult{
+	// 		Name: to.Ptr("kuskusprod"),
+	// 		Message: to.Ptr("Name 'kuskusprod' is already taken. Please specify a different name"),
+	// 		NameAvailable: to.Ptr(false),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoClustersGet.json
+func ExampleClustersClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewClustersClient().Get(ctx, "kustorptest", "kustoCluster", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.ClustersClientGetResponse{
+	// 	Cluster: armkusto.Cluster{
+	// 		Name: to.Ptr("kustoCluster"),
+	// 		Type: to.Ptr("Microsoft.Kusto/Clusters"),
+	// 		Etag: to.Ptr("abcd123"),
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster"),
+	// 		Identity: &armkusto.Identity{
+	// 			Type: to.Ptr(armkusto.IdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("faabad1f-4876-463c-af9d-6ba2d2d2394c"),
+	// 			TenantID: to.Ptr("b932977f-6277-4ab7-a2cd-5bd21f07aaf4"),
+	// 			UserAssignedIdentities: map[string]*armkusto.ComponentsSgqdofSchemasIdentityPropertiesUserassignedidentitiesAdditionalproperties{
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armkusto.ClusterProperties{
+	// 			AllowedFqdnList: []*string{
+	// 				to.Ptr("my-stroage.blob.core.windows.net"),
+	// 			},
+	// 			AllowedIPRangeList: []*string{
+	// 			},
+	// 			EnableAutoStop: to.Ptr(true),
+	// 			EnableDiskEncryption: to.Ptr(false),
+	// 			EnablePurge: to.Ptr(false),
+	// 			EnableStreamingIngest: to.Ptr(true),
+	// 			EngineType: to.Ptr(armkusto.EngineTypeV3),
+	// 			KeyVaultProperties: &armkusto.KeyVaultProperties{
+	// 				KeyName: to.Ptr("keyName"),
+	// 				KeyVaultURI: to.Ptr("https://dummy.keyvault.com"),
+	// 				KeyVersion: to.Ptr("keyVersion"),
+	// 			},
+	// 			MigrationCluster: &armkusto.MigrationClusterProperties{
+	// 				DataIngestionURI: to.Ptr("https://ingest-kustocluster2.westus.kusto.windows.net"),
+	// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster2"),
+	// 				Role: to.Ptr(armkusto.MigrationClusterRoleDestination),
+	// 				URI: to.Ptr("https://kustocluster2.westus.kusto.windows.net"),
+	// 			},
+	// 			PrivateEndpointConnections: []*armkusto.PrivateEndpointConnection{
+	// 				{
+	// 					Name: to.Ptr("privateEndpointTest"),
+	// 					Type: to.Ptr("Microsoft.Kusto/Clusters/PrivateEndpointConnections"),
+	// 					ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/privateEndpointConnections/privateEndpointTest"),
+	// 					Properties: &armkusto.PrivateEndpointConnectionProperties{
+	// 						GroupID: to.Ptr("cluster"),
+	// 						PrivateEndpoint: &armkusto.PrivateEndpointProperty{
+	// 							ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rg1Network/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
+	// 						},
+	// 						PrivateLinkServiceConnectionState: &armkusto.PrivateLinkServiceConnectionStateProperty{
+	// 							Description: to.Ptr("Auto-approved"),
+	// 							ActionsRequired: to.Ptr("None"),
+	// 							Status: to.Ptr("Approved"),
+	// 						},
+	// 						ProvisioningState: to.Ptr("Succeeded"),
+	// 					},
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
+	// 			PublicIPType: to.Ptr(armkusto.PublicIPTypeIPv4),
+	// 			PublicNetworkAccess: to.Ptr(armkusto.PublicNetworkAccessEnabled),
+	// 			RestrictOutboundNetworkAccess: to.Ptr(armkusto.ClusterNetworkAccessFlagEnabled),
+	// 			ZoneStatus: to.Ptr(armkusto.ZoneStatusNonZonal),
+	// 		},
+	// 		SKU: &armkusto.AzureSKU{
+	// 			Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
+	// 			Capacity: to.Ptr[int32](2),
+	// 			Tier: to.Ptr(armkusto.AzureSKUTierStandard),
+	// 		},
+	// 		SystemData: &armkusto.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.June, 29, 15, 6, 54, 275790600, time.UTC)),
+	// 			CreatedBy: to.Ptr("user@microsoft.com"),
+	// 			CreatedByType: to.Ptr(armkusto.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.June, 29, 15, 6, 54, 275790600, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user@microsoft.com"),
+	// 			LastModifiedByType: to.Ptr(armkusto.CreatedByTypeUser),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoClustersListByResourceGroup.json
+func ExampleClustersClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListByResourceGroupPager("kustorptest", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armkusto.ClustersClientListByResourceGroupResponse{
+		// 	ClusterListResult: armkusto.ClusterListResult{
+		// 		Value: []*armkusto.Cluster{
+		// 			{
+		// 				Name: to.Ptr("KustoClusterRPTest4"),
+		// 				Type: to.Ptr("Microsoft.Kusto/Clusters"),
+		// 				Etag: to.Ptr("abcd123"),
+		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/KustoClusterRPTest4"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armkusto.ClusterProperties{
+		// 					AllowedFqdnList: []*string{
+		// 						to.Ptr("my-stroage.blob.core.windows.net"),
+		// 					},
+		// 					AllowedIPRangeList: []*string{
+		// 					},
+		// 					EnableDiskEncryption: to.Ptr(false),
+		// 					EnableStreamingIngest: to.Ptr(true),
+		// 					EngineType: to.Ptr(armkusto.EngineTypeV2),
+		// 					KeyVaultProperties: &armkusto.KeyVaultProperties{
+		// 						KeyName: to.Ptr("keyName"),
+		// 						KeyVaultURI: to.Ptr("https://dummy.keyvault.com"),
+		// 						KeyVersion: to.Ptr("keyVersion"),
+		// 					},
+		// 					MigrationCluster: &armkusto.MigrationClusterProperties{
+		// 						DataIngestionURI: to.Ptr("https://ingest-kustocluster2.westus.kusto.windows.net"),
+		// 						ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster2"),
+		// 						Role: to.Ptr(armkusto.MigrationClusterRoleDestination),
+		// 						URI: to.Ptr("https://kustocluster2.westus.kusto.windows.net"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armkusto.PublicNetworkAccessEnabled),
+		// 					RestrictOutboundNetworkAccess: to.Ptr(armkusto.ClusterNetworkAccessFlagDisabled),
+		// 					ZoneStatus: to.Ptr(armkusto.ZoneStatusNonZonal),
+		// 				},
+		// 				SKU: &armkusto.AzureSKU{
+		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
+		// 					Capacity: to.Ptr[int32](2),
+		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("KustoClusterRPTest3"),
+		// 				Type: to.Ptr("Microsoft.Kusto/Clusters"),
+		// 				Etag: to.Ptr("abcd123"),
+		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/KustoClusterRPTest3"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armkusto.ClusterProperties{
+		// 					AllowedIPRangeList: []*string{
+		// 						to.Ptr("0.0.0.0/0"),
+		// 					},
+		// 					EnableDiskEncryption: to.Ptr(true),
+		// 					EnableStreamingIngest: to.Ptr(true),
+		// 					EngineType: to.Ptr(armkusto.EngineTypeV3),
+		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armkusto.PublicNetworkAccessEnabled),
+		// 					RestrictOutboundNetworkAccess: to.Ptr(armkusto.ClusterNetworkAccessFlagDisabled),
+		// 				},
+		// 				SKU: &armkusto.AzureSKU{
+		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
+		// 					Capacity: to.Ptr[int32](2),
+		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-02-14/KustoClustersListCalloutPolicies.json
+func ExampleClustersClient_NewListCalloutPoliciesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListCalloutPoliciesPager("kustorptest", "kustoCluster", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armkusto.ClustersClientListCalloutPoliciesResponse{
+		// 	CalloutPoliciesList: armkusto.CalloutPoliciesList{
+		// 		Value: []*armkusto.CalloutPolicy{
+		// 			{
+		// 				CalloutID: to.Ptr("*_kusto"),
+		// 				CalloutType: to.Ptr(armkusto.CalloutTypeKusto),
+		// 				CalloutURIRegex: to.Ptr("*"),
+		// 				OutboundAccess: to.Ptr(armkusto.OutboundAccessAllow),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-02-14/KustoClusterListFollowerDatabasesGet.json
+func ExampleClustersClient_NewListFollowerDatabasesGetPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListFollowerDatabasesGetPager("kustorptest", "kustoCluster", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armkusto.ClustersClientListFollowerDatabasesGetResponse{
+		// 	FollowerDatabaseListResultGet: armkusto.FollowerDatabaseListResultGet{
+		// 		Value: []*armkusto.FollowerDatabaseDefinitionGet{
+		// 			{
+		// 				Properties: &armkusto.FollowerDatabaseProperties{
+		// 					AttachedDatabaseConfigurationName: to.Ptr("attachedDbConfiguration"),
+		// 					ClusterResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/kustoCluster"),
+		// 					DatabaseName: to.Ptr("*"),
+		// 					DatabaseShareOrigin: to.Ptr(armkusto.DatabaseShareOriginDataShare),
+		// 				},
+		// 			},
+		// 			{
+		// 				Properties: &armkusto.FollowerDatabaseProperties{
+		// 					AttachedDatabaseConfigurationName: to.Ptr("attachedDbConfiguration2"),
+		// 					ClusterResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/kustoCluster"),
+		// 					DatabaseName: to.Ptr("db1"),
+		// 					DatabaseShareOrigin: to.Ptr(armkusto.DatabaseShareOriginDirect),
+		// 					TableLevelSharingProperties: &armkusto.TableLevelSharingProperties{
+		// 						ExternalTablesToExclude: []*string{
+		// 							to.Ptr("ExternalTable2"),
+		// 						},
+		// 						ExternalTablesToInclude: []*string{
+		// 							to.Ptr("ExternalTable1"),
+		// 						},
+		// 						MaterializedViewsToExclude: []*string{
+		// 							to.Ptr("MaterializedViewTable2"),
+		// 						},
+		// 						MaterializedViewsToInclude: []*string{
+		// 							to.Ptr("MaterializedViewTable1"),
+		// 						},
+		// 						TablesToExclude: []*string{
+		// 							to.Ptr("Table2"),
+		// 						},
+		// 						TablesToInclude: []*string{
+		// 							to.Ptr("Table1"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-02-14/KustoClusterListFollowerDatabases.json
+func ExampleClustersClient_NewListFollowerDatabasesPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListFollowerDatabasesPager("kustorptest", "kustoCluster", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armkusto.ClustersClientListFollowerDatabasesResponse{
+		// 	FollowerDatabaseListResult: armkusto.FollowerDatabaseListResult{
+		// 		Value: []*armkusto.FollowerDatabaseDefinition{
+		// 			{
+		// 				AttachedDatabaseConfigurationName: to.Ptr("attachedDbConfiguration"),
+		// 				ClusterResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/follower1"),
+		// 				DatabaseName: to.Ptr("*"),
+		// 				DatabaseShareOrigin: to.Ptr(armkusto.DatabaseShareOriginDataShare),
+		// 			},
+		// 			{
+		// 				AttachedDatabaseConfigurationName: to.Ptr("attachedDbConfiguration2"),
+		// 				ClusterResourceID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/clusters/follower4"),
+		// 				DatabaseName: to.Ptr("db1"),
+		// 				DatabaseShareOrigin: to.Ptr(armkusto.DatabaseShareOriginDirect),
+		// 				TableLevelSharingProperties: &armkusto.TableLevelSharingProperties{
+		// 					ExternalTablesToExclude: []*string{
+		// 						to.Ptr("ExternalTable2"),
+		// 					},
+		// 					ExternalTablesToInclude: []*string{
+		// 						to.Ptr("ExternalTable1"),
+		// 					},
+		// 					MaterializedViewsToExclude: []*string{
+		// 						to.Ptr("MaterializedViewTable2"),
+		// 					},
+		// 					MaterializedViewsToInclude: []*string{
+		// 						to.Ptr("MaterializedViewTable1"),
+		// 					},
+		// 					TablesToExclude: []*string{
+		// 						to.Ptr("Table2"),
+		// 					},
+		// 					TablesToInclude: []*string{
+		// 						to.Ptr("Table1"),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-02-14/KustoClusterListLanguageExtensions.json
+func ExampleClustersClient_NewListLanguageExtensionsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListLanguageExtensionsPager("kustorptest", "kustoCluster", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armkusto.ClustersClientListLanguageExtensionsResponse{
+		// 	LanguageExtensionsList: armkusto.LanguageExtensionsList{
+		// 		Value: []*armkusto.LanguageExtension{
+		// 			{
+		// 				LanguageExtensionName: to.Ptr(armkusto.LanguageExtensionNamePYTHON),
+		// 			},
+		// 			{
+		// 				LanguageExtensionName: to.Ptr(armkusto.LanguageExtensionNameR),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-02-14/KustoOutboundNetworkDependenciesList.json
+func ExampleClustersClient_NewListOutboundNetworkDependenciesEndpointsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListOutboundNetworkDependenciesEndpointsPager("kustorptest", "kustoCluster", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armkusto.ClustersClientListOutboundNetworkDependenciesEndpointsResponse{
+		// 	OutboundNetworkDependenciesEndpointListResult: armkusto.OutboundNetworkDependenciesEndpointListResult{
+		// 		Value: []*armkusto.OutboundNetworkDependenciesEndpoint{
+		// 			{
+		// 				Name: to.Ptr("kustoCluster/AzureActiveDirectory"),
+		// 				Type: to.Ptr("Microsoft.Kusto/Clusters/OutboundNetworkDependenciesEndpoints"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/OutboundNetworkDependenciesEndpoints/AzureActiveDirectory"),
+		// 				Properties: &armkusto.OutboundNetworkDependenciesEndpointProperties{
+		// 					Category: to.Ptr("Azure Active Directory"),
+		// 					Endpoints: []*armkusto.EndpointDependency{
+		// 						{
+		// 							DomainName: to.Ptr("login.microsoftonline.com"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](443),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("graph.windows.net"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](443),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("graph.microsoft.com"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](443),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("graph.microsoft-ppe.com"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](443),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("kustoCluster/AzureMonitor"),
+		// 				Type: to.Ptr("Microsoft.Kusto/Clusters/OutboundNetworkDependenciesEndpoints"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/OutboundNetworkDependenciesEndpoints/AzureMonitor"),
+		// 				Properties: &armkusto.OutboundNetworkDependenciesEndpointProperties{
+		// 					Category: to.Ptr("Azure Monitor"),
+		// 					Endpoints: []*armkusto.EndpointDependency{
+		// 						{
+		// 							DomainName: to.Ptr("prod.warmpath.msftcloudes.com"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](443),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("gcs.prod.monitoring.core.windows.net"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](443),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("production.diagnostics.monitoring.core.windows.net"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](443),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("shoebox2.metrics.nsatc.net:443"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](443),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("kustoCluster/CertificateAuthority"),
+		// 				Type: to.Ptr("Microsoft.Kusto/Clusters/OutboundNetworkDependenciesEndpoints"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/OutboundNetworkDependenciesEndpoints/CertificateAuthority"),
+		// 				Properties: &armkusto.OutboundNetworkDependenciesEndpointProperties{
+		// 					Category: to.Ptr("Certificate Authority"),
+		// 					Endpoints: []*armkusto.EndpointDependency{
+		// 						{
+		// 							DomainName: to.Ptr("ocsp.msocsp.com"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](80),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("ocsp.digicert.com"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](80),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("crl3.digicert.com"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](80),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("crl.microsoft.com"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](80),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("www.microsoft.com"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](80),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("kustoCluster/AzureStorage"),
+		// 				Type: to.Ptr("Microsoft.Kusto/Clusters/OutboundNetworkDependenciesEndpoints"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/OutboundNetworkDependenciesEndpoints/AzureStorage"),
+		// 				Properties: &armkusto.OutboundNetworkDependenciesEndpointProperties{
+		// 					Category: to.Ptr("Azure Storage"),
+		// 					Endpoints: []*armkusto.EndpointDependency{
+		// 						{
+		// 							DomainName: to.Ptr("clusterinternalsa.blob.core.windows.net"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](443),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("clusterinternalsa.queue.core.windows.net"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](443),
+		// 								},
+		// 							},
+		// 						},
+		// 						{
+		// 							DomainName: to.Ptr("clusterinternalsa.table.core.windows.net"),
+		// 							EndpointDetails: []*armkusto.EndpointDetail{
+		// 								{
+		// 									IPAddress: to.Ptr("1.2.3.4"),
+		// 									Port: to.Ptr[int32](443),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-02-14/KustoClustersList.json
+func ExampleClustersClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armkusto.ClustersClientListResponse{
+		// 	ClusterListResult: armkusto.ClusterListResult{
+		// 		Value: []*armkusto.Cluster{
+		// 			{
+		// 				Name: to.Ptr("kustoCluster"),
+		// 				Type: to.Ptr("Microsoft.Kusto/Clusters"),
+		// 				Etag: to.Ptr("abcd123"),
+		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armkusto.ClusterProperties{
+		// 					AllowedFqdnList: []*string{
+		// 						to.Ptr("my-stroage.blob.core.windows.net"),
+		// 					},
+		// 					AllowedIPRangeList: []*string{
+		// 					},
+		// 					CalloutPolicies: []*armkusto.CalloutPolicy{
+		// 						{
+		// 							CalloutID: to.Ptr("*_kusto"),
+		// 							CalloutType: to.Ptr(armkusto.CalloutTypeKusto),
+		// 							CalloutURIRegex: to.Ptr("*"),
+		// 							OutboundAccess: to.Ptr(armkusto.OutboundAccessAllow),
+		// 						},
+		// 					},
+		// 					EnableAutoStop: to.Ptr(true),
+		// 					EnableDiskEncryption: to.Ptr(false),
+		// 					EnableStreamingIngest: to.Ptr(true),
+		// 					EngineType: to.Ptr(armkusto.EngineTypeV3),
+		// 					KeyVaultProperties: &armkusto.KeyVaultProperties{
+		// 						KeyName: to.Ptr("keyName"),
+		// 						KeyVaultURI: to.Ptr("https://dummy.keyvault.com"),
+		// 						KeyVersion: to.Ptr("keyVersion"),
+		// 					},
+		// 					MigrationCluster: &armkusto.MigrationClusterProperties{
+		// 						DataIngestionURI: to.Ptr("https://ingest-kustocluster2.westus.kusto.windows.net"),
+		// 						ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster2"),
+		// 						Role: to.Ptr(armkusto.MigrationClusterRoleDestination),
+		// 						URI: to.Ptr("https://kustocluster2.westus.kusto.windows.net"),
+		// 					},
+		// 					PrivateEndpointConnections: []*armkusto.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("privateEndpointTest"),
+		// 							Type: to.Ptr("Microsoft.Kusto/Clusters/PrivateEndpointConnections"),
+		// 							ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/privateEndpointConnections/privateEndpointTest"),
+		// 							Properties: &armkusto.PrivateEndpointConnectionProperties{
+		// 								GroupID: to.Ptr("cluster"),
+		// 								PrivateEndpoint: &armkusto.PrivateEndpointProperty{
+		// 									ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/rg1Network/providers/Microsoft.Network/privateEndpoints/privateEndpointName"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armkusto.PrivateLinkServiceConnectionStateProperty{
+		// 									Description: to.Ptr("Auto-approved"),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 									Status: to.Ptr("Approved"),
+		// 								},
+		// 								ProvisioningState: to.Ptr("Succeeded"),
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
+		// 					PublicIPType: to.Ptr(armkusto.PublicIPTypeDualStack),
+		// 					PublicNetworkAccess: to.Ptr(armkusto.PublicNetworkAccessEnabled),
+		// 					RestrictOutboundNetworkAccess: to.Ptr(armkusto.ClusterNetworkAccessFlagEnabled),
+		// 					ZoneStatus: to.Ptr(armkusto.ZoneStatusNonZonal),
+		// 				},
+		// 				SKU: &armkusto.AzureSKU{
+		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
+		// 					Capacity: to.Ptr[int32](2),
+		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("KustoClusterRPTest3"),
+		// 				Type: to.Ptr("Microsoft.Kusto/Clusters"),
+		// 				Etag: to.Ptr("abcd123"),
+		// 				ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/KustoClusterRPTest3"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armkusto.ClusterProperties{
+		// 					AllowedIPRangeList: []*string{
+		// 						to.Ptr("0.0.0.0/0"),
+		// 					},
+		// 					EnableDiskEncryption: to.Ptr(true),
+		// 					EnableStreamingIngest: to.Ptr(true),
+		// 					EngineType: to.Ptr(armkusto.EngineTypeV2),
+		// 					PrivateEndpointConnections: []*armkusto.PrivateEndpointConnection{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
+		// 					PublicIPType: to.Ptr(armkusto.PublicIPTypeIPv4),
+		// 					PublicNetworkAccess: to.Ptr(armkusto.PublicNetworkAccessEnabled),
+		// 					RestrictOutboundNetworkAccess: to.Ptr(armkusto.ClusterNetworkAccessFlagDisabled),
+		// 				},
+		// 				SKU: &armkusto.AzureSKU{
+		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
+		// 					Capacity: to.Ptr[int32](2),
+		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-02-14/KustoClustersListResourceSkus.json
+func ExampleClustersClient_NewListSKUsByResourcePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListSKUsByResourcePager("kustorptest", "kustoCluster", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armkusto.ClustersClientListSKUsByResourceResponse{
+		// 	ListResourceSKUsResult: armkusto.ListResourceSKUsResult{
+		// 		Value: []*armkusto.AzureResourceSKU{
+		// 			{
+		// 				Capacity: &armkusto.AzureCapacity{
+		// 					Default: to.Ptr[int32](2),
+		// 					Maximum: to.Ptr[int32](100),
+		// 					Minimum: to.Ptr[int32](2),
+		// 					ScaleType: to.Ptr(armkusto.AzureScaleTypeAutomatic),
+		// 				},
+		// 				ResourceType: to.Ptr("clusters"),
+		// 				SKU: &armkusto.AzureSKU{
+		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL8SV3),
+		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
+		// 				},
+		// 			},
+		// 			{
+		// 				Capacity: &armkusto.AzureCapacity{
+		// 					Default: to.Ptr[int32](2),
+		// 					Maximum: to.Ptr[int32](100),
+		// 					Minimum: to.Ptr[int32](2),
+		// 					ScaleType: to.Ptr(armkusto.AzureScaleTypeAutomatic),
+		// 				},
+		// 				ResourceType: to.Ptr("clusters"),
+		// 				SKU: &armkusto.AzureSKU{
+		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL8AsV3),
+		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
+		// 				},
+		// 			},
+		// 			{
+		// 				Capacity: &armkusto.AzureCapacity{
+		// 					Default: to.Ptr[int32](2),
+		// 					Maximum: to.Ptr[int32](100),
+		// 					Minimum: to.Ptr[int32](2),
+		// 					ScaleType: to.Ptr(armkusto.AzureScaleTypeAutomatic),
+		// 				},
+		// 				ResourceType: to.Ptr("clusters"),
+		// 				SKU: &armkusto.AzureSKU{
+		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16AsV3),
+		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
+		// 				},
+		// 			},
+		// 			{
+		// 				Capacity: &armkusto.AzureCapacity{
+		// 					Default: to.Ptr[int32](2),
+		// 					Maximum: to.Ptr[int32](100),
+		// 					Minimum: to.Ptr[int32](2),
+		// 					ScaleType: to.Ptr(armkusto.AzureScaleTypeAutomatic),
+		// 				},
+		// 				ResourceType: to.Ptr("clusters"),
+		// 				SKU: &armkusto.AzureSKU{
+		// 					Name: to.Ptr(armkusto.AzureSKUNameStandardL16SV3),
+		// 					Tier: to.Ptr(armkusto.AzureSKUTierStandard),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-02-14/KustoClustersListSkus.json
+func ExampleClustersClient_NewListSKUsPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewClustersClient().NewListSKUsPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armkusto.ClustersClientListSKUsResponse{
+		// 	SKUDescriptionList: armkusto.SKUDescriptionList{
+		// 		Value: []*armkusto.SKUDescription{
+		// 			{
+		// 				Name: to.Ptr("Standard_L8s_v3"),
+		// 				LocationInfo: []*armkusto.SKULocationInfoItem{
+		// 					{
+		// 						Location: to.Ptr("West US"),
+		// 						Zones: []*string{
+		// 							to.Ptr("1"),
+		// 							to.Ptr("2"),
+		// 							to.Ptr("3"),
+		// 						},
+		// 					},
+		// 					{
+		// 						Location: to.Ptr("West Europe"),
+		// 						Zones: []*string{
+		// 						},
+		// 					},
+		// 				},
+		// 				Locations: []*string{
+		// 					to.Ptr("West US"),
+		// 					to.Ptr("West Europe"),
+		// 				},
+		// 				Tier: to.Ptr("Standard"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Standard_L16s_v3"),
+		// 				LocationInfo: []*armkusto.SKULocationInfoItem{
+		// 					{
+		// 						Location: to.Ptr("West US"),
+		// 						Zones: []*string{
+		// 							to.Ptr("1"),
+		// 							to.Ptr("2"),
+		// 							to.Ptr("3"),
+		// 						},
+		// 					},
+		// 					{
+		// 						Location: to.Ptr("West Europe"),
+		// 						Zones: []*string{
+		// 						},
+		// 					},
+		// 				},
+		// 				Locations: []*string{
+		// 					to.Ptr("West US"),
+		// 					to.Ptr("West Europe"),
+		// 				},
+		// 				Tier: to.Ptr("Standard"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Standard_L8as_v3"),
+		// 				LocationInfo: []*armkusto.SKULocationInfoItem{
+		// 					{
+		// 						Location: to.Ptr("West US"),
+		// 						Zones: []*string{
+		// 							to.Ptr("1"),
+		// 							to.Ptr("2"),
+		// 							to.Ptr("3"),
+		// 						},
+		// 					},
+		// 					{
+		// 						Location: to.Ptr("West Europe"),
+		// 						Zones: []*string{
+		// 						},
+		// 					},
+		// 				},
+		// 				Locations: []*string{
+		// 					to.Ptr("West US"),
+		// 					to.Ptr("West Europe"),
+		// 				},
+		// 				Tier: to.Ptr("Standard"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Standard_L16as_v3"),
+		// 				LocationInfo: []*armkusto.SKULocationInfoItem{
+		// 					{
+		// 						Location: to.Ptr("West US"),
+		// 						Zones: []*string{
+		// 							to.Ptr("1"),
+		// 							to.Ptr("2"),
+		// 							to.Ptr("3"),
+		// 						},
+		// 					},
+		// 					{
+		// 						Location: to.Ptr("West Europe"),
+		// 						Zones: []*string{
+		// 						},
+		// 					},
+		// 				},
+		// 				Locations: []*string{
+		// 					to.Ptr("West US"),
+		// 					to.Ptr("West Europe"),
+		// 				},
+		// 				Tier: to.Ptr("Standard"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

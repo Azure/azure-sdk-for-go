@@ -85,7 +85,8 @@ func (client *DdosCustomPoliciesClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -128,7 +129,7 @@ func (client *DdosCustomPoliciesClient) createOrUpdateCreateRequest(ctx context.
 //     method.
 func (client *DdosCustomPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, options *DdosCustomPoliciesClientBeginDeleteOptions) (*runtime.Poller[DdosCustomPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, ddosCustomPolicyName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, ddosCustomPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *DdosCustomPoliciesClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Deletes the specified DDoS custom policy.
+// deleteOperation - Deletes the specified DDoS custom policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *DdosCustomPoliciesClient) delete(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, options *DdosCustomPoliciesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *DdosCustomPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, ddosCustomPolicyName string, options *DdosCustomPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "DdosCustomPoliciesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *DdosCustomPoliciesClient) delete(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -209,7 +211,8 @@ func (client *DdosCustomPoliciesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return DdosCustomPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -410,7 +413,8 @@ func (client *DdosCustomPoliciesClient) UpdateTags(ctx context.Context, resource
 	if err != nil {
 		return DdosCustomPoliciesClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

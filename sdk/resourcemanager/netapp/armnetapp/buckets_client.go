@@ -90,7 +90,8 @@ func (client *BucketsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -179,7 +180,8 @@ func (client *BucketsClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -268,7 +270,8 @@ func (client *BucketsClient) generateAkvCredentials(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -358,7 +361,8 @@ func (client *BucketsClient) refreshCertificate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -444,7 +448,8 @@ func (client *BucketsClient) update(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -516,7 +521,8 @@ func (client *BucketsClient) GenerateCredentials(ctx context.Context, resourceGr
 	if err != nil {
 		return BucketsClientGenerateCredentialsResponse{}, err
 	}
-	return client.generateCredentialsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateCredentialsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateCredentialsCreateRequest creates the GenerateCredentials request.
@@ -596,7 +602,8 @@ func (client *BucketsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return BucketsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

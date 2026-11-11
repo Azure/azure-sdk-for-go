@@ -64,7 +64,8 @@ func (client *InsightsClient) Create(ctx context.Context, workloadImpactName str
 	if err != nil {
 		return InsightsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -129,7 +130,8 @@ func (client *InsightsClient) Delete(ctx context.Context, workloadImpactName str
 		return InsightsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return InsightsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return InsightsClientDeleteResponse{}, err
 	}
 	return InsightsClientDeleteResponse{}, nil
 }
@@ -178,7 +180,8 @@ func (client *InsightsClient) Get(ctx context.Context, workloadImpactName string
 	if err != nil {
 		return InsightsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -85,7 +85,8 @@ func (client *VirtualRoutersClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -128,7 +129,7 @@ func (client *VirtualRoutersClient) createOrUpdateCreateRequest(ctx context.Cont
 //     method.
 func (client *VirtualRoutersClient) BeginDelete(ctx context.Context, resourceGroupName string, virtualRouterName string, options *VirtualRoutersClientBeginDeleteOptions) (*runtime.Poller[VirtualRoutersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, virtualRouterName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, virtualRouterName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *VirtualRoutersClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// delete - Deletes the specified Virtual Router.
+// deleteOperation - Deletes the specified Virtual Router.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VirtualRoutersClient) delete(ctx context.Context, resourceGroupName string, virtualRouterName string, options *VirtualRoutersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VirtualRoutersClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualRouterName string, options *VirtualRoutersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VirtualRoutersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *VirtualRoutersClient) delete(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -209,7 +211,8 @@ func (client *VirtualRoutersClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return VirtualRoutersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

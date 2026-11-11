@@ -59,7 +59,8 @@ func (client *EndpointsClient) CreateOrUpdate(ctx context.Context, resourceURI s
 	if err != nil {
 		return EndpointsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,7 +121,8 @@ func (client *EndpointsClient) Delete(ctx context.Context, resourceURI string, e
 		return EndpointsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return EndpointsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EndpointsClientDeleteResponse{}, err
 	}
 	return EndpointsClientDeleteResponse{}, nil
 }
@@ -165,7 +167,8 @@ func (client *EndpointsClient) Get(ctx context.Context, resourceURI string, endp
 	if err != nil {
 		return EndpointsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -222,7 +225,8 @@ func (client *EndpointsClient) ListCredentials(ctx context.Context, resourceURI 
 	if err != nil {
 		return EndpointsClientListCredentialsResponse{}, err
 	}
-	return client.listCredentialsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listCredentialsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCredentialsCreateRequest creates the ListCredentials request.
@@ -289,7 +293,8 @@ func (client *EndpointsClient) ListIngressGatewayCredentials(ctx context.Context
 	if err != nil {
 		return EndpointsClientListIngressGatewayCredentialsResponse{}, err
 	}
-	return client.listIngressGatewayCredentialsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listIngressGatewayCredentialsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listIngressGatewayCredentialsCreateRequest creates the ListIngressGatewayCredentials request.
@@ -357,7 +362,8 @@ func (client *EndpointsClient) ListManagedProxyDetails(ctx context.Context, reso
 	if err != nil {
 		return EndpointsClientListManagedProxyDetailsResponse{}, err
 	}
-	return client.listManagedProxyDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listManagedProxyDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listManagedProxyDetailsCreateRequest creates the ListManagedProxyDetails request.
@@ -485,7 +491,8 @@ func (client *EndpointsClient) Update(ctx context.Context, resourceURI string, e
 	if err != nil {
 		return EndpointsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

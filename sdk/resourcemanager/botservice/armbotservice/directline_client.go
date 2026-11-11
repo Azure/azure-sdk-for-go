@@ -66,7 +66,8 @@ func (client *DirectLineClient) RegenerateKeys(ctx context.Context, resourceGrou
 	if err != nil {
 		return DirectLineClientRegenerateKeysResponse{}, err
 	}
-	return client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regenerateKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regenerateKeysCreateRequest creates the RegenerateKeys request.

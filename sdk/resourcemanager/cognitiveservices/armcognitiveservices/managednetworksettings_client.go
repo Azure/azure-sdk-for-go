@@ -55,7 +55,7 @@ func NewManagedNetworkSettingsClient(subscriptionID string, credential azcore.To
 //     method.
 func (client *ManagedNetworkSettingsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkSettingsClientBeginDeleteOptions) (*runtime.Poller[ManagedNetworkSettingsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, managedNetworkName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, managedNetworkName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -70,11 +70,11 @@ func (client *ManagedNetworkSettingsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// delete - Delete API for managed network settings of a cognitive services account.
+// deleteOperation - Delete API for managed network settings of a cognitive services account.
 //
 // Delete API for managed network settings of a cognitive services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ManagedNetworkSettingsClient) delete(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkSettingsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ManagedNetworkSettingsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, managedNetworkName string, options *ManagedNetworkSettingsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ManagedNetworkSettingsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -89,7 +89,8 @@ func (client *ManagedNetworkSettingsClient) delete(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -169,7 +170,8 @@ func (client *ManagedNetworkSettingsClient) patch(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -254,7 +256,8 @@ func (client *ManagedNetworkSettingsClient) put(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -316,7 +319,8 @@ func (client *ManagedNetworkSettingsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ManagedNetworkSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -66,7 +66,8 @@ func (client *DataFlowsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return DataFlowsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -139,7 +140,8 @@ func (client *DataFlowsClient) Delete(ctx context.Context, resourceGroupName str
 		return DataFlowsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DataFlowsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DataFlowsClientDeleteResponse{}, err
 	}
 	return DataFlowsClientDeleteResponse{}, nil
 }
@@ -193,7 +195,8 @@ func (client *DataFlowsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return DataFlowsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

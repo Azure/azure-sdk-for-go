@@ -63,7 +63,8 @@ func (client *BackupResourceVaultConfigsClient) Get(ctx context.Context, vaultNa
 	if err != nil {
 		return BackupResourceVaultConfigsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -123,7 +124,8 @@ func (client *BackupResourceVaultConfigsClient) Put(ctx context.Context, vaultNa
 	if err != nil {
 		return BackupResourceVaultConfigsClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.
@@ -190,7 +192,8 @@ func (client *BackupResourceVaultConfigsClient) Update(ctx context.Context, vaul
 	if err != nil {
 		return BackupResourceVaultConfigsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

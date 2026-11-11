@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-06-01/PrivateZonePut.json
+// Generated from example definition: 2026-06-01-preview/PrivateZonePut.json
 func ExamplePrivateZonesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -62,7 +62,7 @@ func ExamplePrivateZonesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/PrivateZoneDelete.json
+// Generated from example definition: 2026-06-01-preview/PrivateZoneDelete.json
 func ExamplePrivateZonesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -88,7 +88,7 @@ func ExamplePrivateZonesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/PrivateZonePatch.json
+// Generated from example definition: 2026-06-01-preview/PrivateZonePatch.json
 func ExamplePrivateZonesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExamplePrivateZonesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/PrivateZoneGet.json
+// Generated from example definition: 2026-06-01-preview/PrivateZoneGet.json
 func ExamplePrivateZonesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExamplePrivateZonesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/PrivateZoneListInResourceGroup.json
+// Generated from example definition: 2026-06-01-preview/PrivateZoneListInResourceGroup.json
 func ExamplePrivateZonesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,7 +202,7 @@ func ExamplePrivateZonesClient_NewListByResourceGroupPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armprivatedns.PrivateZonesClientListByResourceGroupResponse{
 		// 	PrivateZoneListResult: armprivatedns.PrivateZoneListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones?api-version=2024-06-01&$skipToken=skipToken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones?api-version=2026-06-01-preview&$skipToken=skipToken"),
 		// 		Value: []*armprivatedns.PrivateZone{
 		// 			{
 		// 				Name: to.Ptr("privatezone1.com"),
@@ -245,7 +245,7 @@ func ExamplePrivateZonesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2024-06-01/PrivateZoneListInSubscription.json
+// Generated from example definition: 2026-06-01-preview/PrivateZoneListInSubscription.json
 func ExamplePrivateZonesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExamplePrivateZonesClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armprivatedns.PrivateZonesClientListResponse{
 		// 	PrivateZoneListResult: armprivatedns.PrivateZoneListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.Network/privateDnsZones?api-version=2024-06-01&$skipToken=skipToken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/providers/Microsoft.Network/privateDnsZones?api-version=2026-06-01-preview&$skipToken=skipToken"),
 		// 		Value: []*armprivatedns.PrivateZone{
 		// 			{
 		// 				Name: to.Ptr("privatezone1.com"),

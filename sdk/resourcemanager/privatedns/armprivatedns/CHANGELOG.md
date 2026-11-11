@@ -1,5 +1,19 @@
 # Release History
 
+## 2.1.0-beta.1 (2026-11-11)
+### Features Added
+
+- New function `*ClientFactory.NewResourceReferenceClient() *ResourceReferenceClient`
+- New function `NewResourceReferenceClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ResourceReferenceClient, error)`
+- New function `*ResourceReferenceClient.GetByTargetResources(ctx context.Context, parameters ResourceReferenceRequest, options *ResourceReferenceClientGetByTargetResourcesOptions) (ResourceReferenceClientGetByTargetResourcesResponse, error)`
+- New struct `ResourceReference`
+- New struct `ResourceReferenceRequest`
+- New struct `ResourceReferenceRequestProperties`
+- New struct `ResourceReferenceResult`
+- New struct `ResourceReferenceResultProperties`
+- New field `ProvisioningState`, `TrafficManagementProfile` in struct `RecordSetProperties`
+
+
 ## 2.0.0 (2026-06-24)
 ### Breaking Changes
 

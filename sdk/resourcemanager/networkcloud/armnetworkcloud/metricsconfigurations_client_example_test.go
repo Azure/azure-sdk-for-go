@@ -112,6 +112,80 @@ func ExampleMetricsConfigurationsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-07-01/ClusterMetricsConfigurations_Patch.json
+func ExampleMetricsConfigurationsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMetricsConfigurationsClient().BeginUpdate(ctx, "resourceGroupName", "clusterName", "default", armnetworkcloud.ClusterMetricsConfigurationPatchParameters{
+		Properties: &armnetworkcloud.ClusterMetricsConfigurationPatchProperties{
+			CollectionInterval: to.Ptr[int64](15),
+			EnabledMetrics: []*string{
+				to.Ptr("metric1"),
+				to.Ptr("metric2"),
+			},
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("myvalue1"),
+			"key2": to.Ptr("myvalue2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetworkcloud.MetricsConfigurationsClientUpdateResponse{
+	// 	ClusterMetricsConfiguration: armnetworkcloud.ClusterMetricsConfiguration{
+	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 			Type: to.Ptr("CustomLocation"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/metricsConfigurations/default"),
+	// 		Location: to.Ptr("location"),
+	// 		Name: to.Ptr("default"),
+	// 		Properties: &armnetworkcloud.ClusterMetricsConfigurationProperties{
+	// 			CollectionInterval: to.Ptr[int64](15),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterMetricsConfigurationDetailedStatusApplied),
+	// 			DetailedStatusMessage: to.Ptr("Metrics configuration has been successfully applied to all resources."),
+	// 			DisabledMetrics: []*string{
+	// 				to.Ptr("metric3"),
+	// 				to.Ptr("metric4"),
+	// 			},
+	// 			EnabledMetrics: []*string{
+	// 				to.Ptr("metric1"),
+	// 				to.Ptr("metric2"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterMetricsConfigurationProvisioningStateSucceeded),
+	// 		},
+	// 		SystemData: &armnetworkcloud.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("identityA"),
+	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("identityB"),
+	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("myvalue1"),
+	// 			"key2": to.Ptr("myvalue2"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/clusters/metricsConfigurations"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-07-01/ClusterMetricsConfigurations_Get.json
 func ExampleMetricsConfigurationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -236,78 +310,4 @@ func ExampleMetricsConfigurationsClient_NewListByClusterPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01/ClusterMetricsConfigurations_Patch.json
-func ExampleMetricsConfigurationsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMetricsConfigurationsClient().BeginUpdate(ctx, "resourceGroupName", "clusterName", "default", armnetworkcloud.ClusterMetricsConfigurationPatchParameters{
-		Properties: &armnetworkcloud.ClusterMetricsConfigurationPatchProperties{
-			CollectionInterval: to.Ptr[int64](15),
-			EnabledMetrics: []*string{
-				to.Ptr("metric1"),
-				to.Ptr("metric2"),
-			},
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("myvalue1"),
-			"key2": to.Ptr("myvalue2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetworkcloud.MetricsConfigurationsClientUpdateResponse{
-	// 	ClusterMetricsConfiguration: armnetworkcloud.ClusterMetricsConfiguration{
-	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
-	// 			Type: to.Ptr("CustomLocation"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName/metricsConfigurations/default"),
-	// 		Location: to.Ptr("location"),
-	// 		Name: to.Ptr("default"),
-	// 		Properties: &armnetworkcloud.ClusterMetricsConfigurationProperties{
-	// 			CollectionInterval: to.Ptr[int64](15),
-	// 			DetailedStatus: to.Ptr(armnetworkcloud.ClusterMetricsConfigurationDetailedStatusApplied),
-	// 			DetailedStatusMessage: to.Ptr("Metrics configuration has been successfully applied to all resources."),
-	// 			DisabledMetrics: []*string{
-	// 				to.Ptr("metric3"),
-	// 				to.Ptr("metric4"),
-	// 			},
-	// 			EnabledMetrics: []*string{
-	// 				to.Ptr("metric1"),
-	// 				to.Ptr("metric2"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnetworkcloud.ClusterMetricsConfigurationProvisioningStateSucceeded),
-	// 		},
-	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("identityA"),
-	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("identityB"),
-	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("myvalue1"),
-	// 			"key2": to.Ptr("myvalue2"),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.NetworkCloud/clusters/metricsConfigurations"),
-	// 	},
-	// }
 }

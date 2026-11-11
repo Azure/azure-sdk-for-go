@@ -58,7 +58,8 @@ func (client *SolutionSelfHelpClient) Get(ctx context.Context, solutionID string
 	if err != nil {
 		return SolutionSelfHelpClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

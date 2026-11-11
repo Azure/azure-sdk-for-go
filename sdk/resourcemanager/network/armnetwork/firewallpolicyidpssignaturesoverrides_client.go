@@ -64,7 +64,8 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) Get(ctx context.Conte
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -125,7 +126,8 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) List(ctx context.Cont
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -187,7 +189,8 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) Patch(ctx context.Con
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientPatchResponse{}, err
 	}
-	return client.patchHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.patchHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // patchCreateRequest creates the Patch request.
@@ -253,7 +256,8 @@ func (client *FirewallPolicyIdpsSignaturesOverridesClient) Put(ctx context.Conte
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesOverridesClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.

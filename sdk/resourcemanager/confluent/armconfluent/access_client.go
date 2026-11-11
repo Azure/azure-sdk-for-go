@@ -65,7 +65,8 @@ func (client *AccessClient) CreateRoleBinding(ctx context.Context, resourceGroup
 	if err != nil {
 		return AccessClientCreateRoleBindingResponse{}, err
 	}
-	return client.createRoleBindingHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createRoleBindingHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createRoleBindingCreateRequest creates the CreateRoleBinding request.
@@ -132,7 +133,8 @@ func (client *AccessClient) DeleteRoleBinding(ctx context.Context, resourceGroup
 		return AccessClientDeleteRoleBindingResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AccessClientDeleteRoleBindingResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AccessClientDeleteRoleBindingResponse{}, err
 	}
 	return AccessClientDeleteRoleBindingResponse{}, nil
 }
@@ -186,7 +188,8 @@ func (client *AccessClient) InviteUser(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return AccessClientInviteUserResponse{}, err
 	}
-	return client.inviteUserHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.inviteUserHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // inviteUserCreateRequest creates the InviteUser request.
@@ -251,7 +254,8 @@ func (client *AccessClient) ListClusters(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return AccessClientListClustersResponse{}, err
 	}
-	return client.listClustersHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listClustersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listClustersCreateRequest creates the ListClusters request.
@@ -316,7 +320,8 @@ func (client *AccessClient) ListEnvironments(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AccessClientListEnvironmentsResponse{}, err
 	}
-	return client.listEnvironmentsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listEnvironmentsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listEnvironmentsCreateRequest creates the ListEnvironments request.
@@ -381,7 +386,8 @@ func (client *AccessClient) ListInvitations(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AccessClientListInvitationsResponse{}, err
 	}
-	return client.listInvitationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listInvitationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listInvitationsCreateRequest creates the ListInvitations request.
@@ -447,7 +453,8 @@ func (client *AccessClient) ListRoleBindingNameList(ctx context.Context, resourc
 	if err != nil {
 		return AccessClientListRoleBindingNameListResponse{}, err
 	}
-	return client.listRoleBindingNameListHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listRoleBindingNameListHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listRoleBindingNameListCreateRequest creates the ListRoleBindingNameList request.
@@ -512,7 +519,8 @@ func (client *AccessClient) ListRoleBindings(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AccessClientListRoleBindingsResponse{}, err
 	}
-	return client.listRoleBindingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listRoleBindingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listRoleBindingsCreateRequest creates the ListRoleBindings request.
@@ -578,7 +586,8 @@ func (client *AccessClient) ListServiceAccounts(ctx context.Context, resourceGro
 	if err != nil {
 		return AccessClientListServiceAccountsResponse{}, err
 	}
-	return client.listServiceAccountsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listServiceAccountsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listServiceAccountsCreateRequest creates the ListServiceAccounts request.
@@ -643,7 +652,8 @@ func (client *AccessClient) ListUsers(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return AccessClientListUsersResponse{}, err
 	}
-	return client.listUsersHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listUsersHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listUsersCreateRequest creates the ListUsers request.

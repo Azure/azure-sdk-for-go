@@ -44,6 +44,77 @@ func NewPrivateLinkScopesClient(subscriptionID string, credential azcore.TokenCr
 	return client, nil
 }
 
+// BeginDelete - Deletes a Azure Arc PrivateLinkScope.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - scopeName - The name of the Azure Arc PrivateLinkScope resource.
+//   - options - PrivateLinkScopesClientBeginDeleteOptions contains the optional parameters for the PrivateLinkScopesClient.BeginDelete
+//     method.
+func (client *PrivateLinkScopesClient) BeginDelete(ctx context.Context, resourceGroupName string, scopeName string, options *PrivateLinkScopesClientBeginDeleteOptions) (*runtime.Poller[PrivateLinkScopesClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, scopeName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateLinkScopesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateLinkScopesClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Deletes a Azure Arc PrivateLinkScope.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PrivateLinkScopesClient) deleteOperation(ctx context.Context, resourceGroupName string, scopeName string, options *PrivateLinkScopesClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PrivateLinkScopesClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, scopeName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *PrivateLinkScopesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, _ *PrivateLinkScopesClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if scopeName == "" {
+		return nil, errors.New("parameter scopeName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scopeName}", url.PathEscape(scopeName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260715)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // CreateOrUpdate - Creates (or updates) a Azure Arc PrivateLinkScope. Note: You cannot specify a different value for InstrumentationKey
 // nor AppId in the Put operation.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -66,7 +137,8 @@ func (client *PrivateLinkScopesClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return PrivateLinkScopesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -111,76 +183,6 @@ func (client *PrivateLinkScopesClient) createOrUpdateHandleResponse(resp *http.R
 	return result, nil
 }
 
-// BeginDelete - Deletes a Azure Arc PrivateLinkScope.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - scopeName - The name of the Azure Arc PrivateLinkScope resource.
-//   - options - PrivateLinkScopesClientBeginDeleteOptions contains the optional parameters for the PrivateLinkScopesClient.BeginDelete
-//     method.
-func (client *PrivateLinkScopesClient) BeginDelete(ctx context.Context, resourceGroupName string, scopeName string, options *PrivateLinkScopesClientBeginDeleteOptions) (*runtime.Poller[PrivateLinkScopesClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, scopeName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PrivateLinkScopesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PrivateLinkScopesClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Deletes a Azure Arc PrivateLinkScope.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *PrivateLinkScopesClient) deleteOperation(ctx context.Context, resourceGroupName string, scopeName string, options *PrivateLinkScopesClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "PrivateLinkScopesClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, scopeName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *PrivateLinkScopesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, scopeName string, _ *PrivateLinkScopesClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute/privateLinkScopes/{scopeName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if scopeName == "" {
-		return nil, errors.New("parameter scopeName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scopeName}", url.PathEscape(scopeName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
-}
-
 // Get - Returns a Azure Arc PrivateLinkScope.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -200,7 +202,8 @@ func (client *PrivateLinkScopesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PrivateLinkScopesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -261,7 +264,8 @@ func (client *PrivateLinkScopesClient) GetValidationDetails(ctx context.Context,
 	if err != nil {
 		return PrivateLinkScopesClientGetValidationDetailsResponse{}, err
 	}
-	return client.getValidationDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getValidationDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getValidationDetailsCreateRequest creates the GetValidationDetails request.
@@ -322,7 +326,8 @@ func (client *PrivateLinkScopesClient) GetValidationDetailsForMachine(ctx contex
 	if err != nil {
 		return PrivateLinkScopesClientGetValidationDetailsForMachineResponse{}, err
 	}
-	return client.getValidationDetailsForMachineHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getValidationDetailsForMachineHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getValidationDetailsForMachineCreateRequest creates the GetValidationDetailsForMachine request.
@@ -359,73 +364,6 @@ func (client *PrivateLinkScopesClient) getValidationDetailsForMachineHandleRespo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkScopeValidationDetails); err != nil {
 		return PrivateLinkScopesClientGetValidationDetailsForMachineResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets a list of all Azure Arc PrivateLinkScopes within a subscription.
-//   - options - PrivateLinkScopesClientListOptions contains the optional parameters for the PrivateLinkScopesClient.NewListPager
-//     method.
-func (client *PrivateLinkScopesClient) NewListPager(options *PrivateLinkScopesClientListOptions) *runtime.Pager[PrivateLinkScopesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PrivateLinkScopesClientListResponse]{
-		More: func(page PrivateLinkScopesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *PrivateLinkScopesClientListResponse) (PrivateLinkScopesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkScopesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return PrivateLinkScopesClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PrivateLinkScopesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *PrivateLinkScopesClient) listCreateRequest(ctx context.Context, nextLink string, _ *PrivateLinkScopesClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *PrivateLinkScopesClient) listHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkScopesClientListResponse, error) {
-	result := PrivateLinkScopesClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkScopeListResult); err != nil {
-		return PrivateLinkScopesClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -502,6 +440,73 @@ func (client *PrivateLinkScopesClient) listByResourceGroupHandleResponse(resp *h
 	return result, nil
 }
 
+// NewListPager - Gets a list of all Azure Arc PrivateLinkScopes within a subscription.
+//   - options - PrivateLinkScopesClientListOptions contains the optional parameters for the PrivateLinkScopesClient.NewListPager
+//     method.
+func (client *PrivateLinkScopesClient) NewListPager(options *PrivateLinkScopesClientListOptions) *runtime.Pager[PrivateLinkScopesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PrivateLinkScopesClientListResponse]{
+		More: func(page PrivateLinkScopesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PrivateLinkScopesClientListResponse) (PrivateLinkScopesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PrivateLinkScopesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return PrivateLinkScopesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PrivateLinkScopesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *PrivateLinkScopesClient) listCreateRequest(ctx context.Context, nextLink string, _ *PrivateLinkScopesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.HybridCompute/privateLinkScopes"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260715)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *PrivateLinkScopesClient) listHandleResponse(resp *http.Response, successCodes ...int) (PrivateLinkScopesClientListResponse, error) {
+	result := PrivateLinkScopesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PrivateLinkScopeListResult); err != nil {
+		return PrivateLinkScopesClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // UpdateTags - Updates an existing PrivateLinkScope's tags. To update other fields use the CreateOrUpdate method.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -523,7 +528,8 @@ func (client *PrivateLinkScopesClient) UpdateTags(ctx context.Context, resourceG
 	if err != nil {
 		return PrivateLinkScopesClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

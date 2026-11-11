@@ -86,7 +86,8 @@ func (client *DedicatedHostsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -166,7 +167,8 @@ func (client *DedicatedHostsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -247,7 +249,8 @@ func (client *DedicatedHostsClient) redeploy(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -328,7 +331,8 @@ func (client *DedicatedHostsClient) restart(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -404,7 +408,8 @@ func (client *DedicatedHostsClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -463,7 +468,8 @@ func (client *DedicatedHostsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return DedicatedHostsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

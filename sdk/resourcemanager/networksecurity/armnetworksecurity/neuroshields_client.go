@@ -68,7 +68,8 @@ func (client *NeuroShieldsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return NeuroShieldsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -141,7 +142,8 @@ func (client *NeuroShieldsClient) Delete(ctx context.Context, resourceGroupName 
 		return NeuroShieldsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return NeuroShieldsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return NeuroShieldsClientDeleteResponse{}, err
 	}
 	return NeuroShieldsClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *NeuroShieldsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return NeuroShieldsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -413,7 +416,8 @@ func (client *NeuroShieldsClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return NeuroShieldsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

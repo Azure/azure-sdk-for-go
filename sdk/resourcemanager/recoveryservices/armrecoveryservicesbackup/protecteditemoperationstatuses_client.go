@@ -65,7 +65,8 @@ func (client *ProtectedItemOperationStatusesClient) Get(ctx context.Context, vau
 	if err != nil {
 		return ProtectedItemOperationStatusesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

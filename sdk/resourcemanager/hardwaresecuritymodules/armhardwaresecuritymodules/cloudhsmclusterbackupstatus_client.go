@@ -66,7 +66,8 @@ func (client *CloudHsmClusterBackupStatusClient) Get(ctx context.Context, resour
 	if err != nil {
 		return CloudHsmClusterBackupStatusClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

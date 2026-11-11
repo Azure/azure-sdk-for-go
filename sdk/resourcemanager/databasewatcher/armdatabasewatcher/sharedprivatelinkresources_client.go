@@ -70,7 +70,7 @@ func (client *SharedPrivateLinkResourcesClient) BeginCreate(ctx context.Context,
 	}
 }
 
-// Create - Create a SharedPrivateLinkResource
+// create - Create a SharedPrivateLinkResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SharedPrivateLinkResourcesClient) create(ctx context.Context, resourceGroupName string, watcherName string, sharedPrivateLinkResourceName string, resource SharedPrivateLinkResource, options *SharedPrivateLinkResourcesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *SharedPrivateLinkResourcesClient) create(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *SharedPrivateLinkResourcesClient) createCreateRequest(ctx context.Context, resourceGroupName string, watcherName string, sharedPrivateLinkResourceName string, resource SharedPrivateLinkResource, _ *SharedPrivateLinkResourcesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}"
 	if client.subscriptionID == "" {
@@ -150,7 +151,7 @@ func (client *SharedPrivateLinkResourcesClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Delete a SharedPrivateLinkResource
+// deleteOperation - Delete a SharedPrivateLinkResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Context, resourceGroupName string, watcherName string, sharedPrivateLinkResourceName string, options *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,12 +168,13 @@ func (client *SharedPrivateLinkResourcesClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SharedPrivateLinkResourcesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, watcherName string, sharedPrivateLinkResourceName string, _ *SharedPrivateLinkResourcesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DatabaseWatcher/watchers/{watcherName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}"
 	if client.subscriptionID == "" {
@@ -222,7 +224,8 @@ func (client *SharedPrivateLinkResourcesClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return SharedPrivateLinkResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -148,68 +148,6 @@ func ExampleTagsClient_BeginDeleteAtScope_updateTagsOnASubscription() {
 	// }
 }
 
-// Generated from example definition: 2025-04-01/GetTagsResource.json
-func ExampleTagsClient_GetAtScope_getTagsOnAResource() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresources.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewTagsClient().GetAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armresources.TagsClientGetAtScopeResponse{
-	// 	TagsResource: armresources.TagsResource{
-	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm"),
-	// 		Properties: &armresources.Tags{
-	// 			Tags: map[string]*string{
-	// 				"tagKey1": to.Ptr("tag-value-1"),
-	// 				"tagKey2": to.Ptr("tag-value-2"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-04-01/GetTagsSubscription.json
-func ExampleTagsClient_GetAtScope_getTagsOnASubscription() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresources.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewTagsClient().GetAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armresources.TagsClientGetAtScopeResponse{
-	// 	TagsResource: armresources.TagsResource{
-	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000"),
-	// 		Properties: &armresources.Tags{
-	// 			Tags: map[string]*string{
-	// 				"tagKey1": to.Ptr("tag-value-1"),
-	// 				"tagKey2": to.Ptr("tag-value-2"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-04-01/PatchTagsResource.json
 func ExampleTagsClient_BeginUpdateAtScope_updateTagsOnAResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -284,6 +222,68 @@ func ExampleTagsClient_BeginUpdateAtScope_updateTagsOnASubscription() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armresources.TagsClientUpdateAtScopeResponse{
+	// 	TagsResource: armresources.TagsResource{
+	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000"),
+	// 		Properties: &armresources.Tags{
+	// 			Tags: map[string]*string{
+	// 				"tagKey1": to.Ptr("tag-value-1"),
+	// 				"tagKey2": to.Ptr("tag-value-2"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-04-01/GetTagsResource.json
+func ExampleTagsClient_GetAtScope_getTagsOnAResource() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewTagsClient().GetAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresources.TagsClientGetAtScopeResponse{
+	// 	TagsResource: armresources.TagsResource{
+	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm"),
+	// 		Properties: &armresources.Tags{
+	// 			Tags: map[string]*string{
+	// 				"tagKey1": to.Ptr("tag-value-1"),
+	// 				"tagKey2": to.Ptr("tag-value-2"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-04-01/GetTagsSubscription.json
+func ExampleTagsClient_GetAtScope_getTagsOnASubscription() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresources.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewTagsClient().GetAtScope(ctx, "subscriptions/00000000-0000-0000-0000-000000000000", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresources.TagsClientGetAtScopeResponse{
 	// 	TagsResource: armresources.TagsResource{
 	// 		ID: to.Ptr("subscriptions/00000000-0000-0000-0000-000000000000"),
 	// 		Properties: &armresources.Tags{

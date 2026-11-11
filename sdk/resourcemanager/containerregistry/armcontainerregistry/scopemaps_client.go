@@ -68,7 +68,7 @@ func (client *ScopeMapsClient) BeginCreate(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Create - Creates a scope map for a container registry with the specified parameters.
+// create - Creates a scope map for a container registry with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScopeMapsClient) create(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters ScopeMap, options *ScopeMapsClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *ScopeMapsClient) create(ctx context.Context, resourceGroupName str
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *ScopeMapsClient) createCreateRequest(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapCreateParameters ScopeMap, _ *ScopeMapsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scopeMaps/{scopeMapName}"
 	if client.subscriptionID == "" {
@@ -147,7 +148,7 @@ func (client *ScopeMapsClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Deletes a scope map from a container registry.
+// deleteOperation - Deletes a scope map from a container registry.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ScopeMapsClient) deleteOperation(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, options *ScopeMapsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,12 +165,13 @@ func (client *ScopeMapsClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ScopeMapsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, _ *ScopeMapsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scopeMaps/{scopeMapName}"
 	if client.subscriptionID == "" {
@@ -198,6 +200,87 @@ func (client *ScopeMapsClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
+// BeginUpdate - Updates a scope map with the specified parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - registryName - The name of the container registry.
+//   - scopeMapName - The name of the scope map.
+//   - scopeMapUpdateParameters - The parameters for updating a scope map.
+//   - options - ScopeMapsClientBeginUpdateOptions contains the optional parameters for the ScopeMapsClient.BeginUpdate method.
+func (client *ScopeMapsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*runtime.Poller[ScopeMapsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScopeMapsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScopeMapsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a scope map with the specified parameters.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ScopeMapsClient) update(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ScopeMapsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ScopeMapsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, _ *ScopeMapsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scopeMaps/{scopeMapName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if registryName == "" {
+		return nil, errors.New("parameter registryName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
+	if scopeMapName == "" {
+		return nil, errors.New("parameter scopeMapName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scopeMapName}", url.PathEscape(scopeMapName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, scopeMapUpdateParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Gets the properties of the specified scope map.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -218,7 +301,8 @@ func (client *ScopeMapsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return ScopeMapsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -337,84 +421,4 @@ func (client *ScopeMapsClient) listHandleResponse(resp *http.Response, successCo
 		return ScopeMapsClientListResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Updates a scope map with the specified parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - registryName - The name of the container registry.
-//   - scopeMapName - The name of the scope map.
-//   - scopeMapUpdateParameters - The parameters for updating a scope map.
-//   - options - ScopeMapsClientBeginUpdateOptions contains the optional parameters for the ScopeMapsClient.BeginUpdate method.
-func (client *ScopeMapsClient) BeginUpdate(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*runtime.Poller[ScopeMapsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ScopeMapsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ScopeMapsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a scope map with the specified parameters.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ScopeMapsClient) update(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, options *ScopeMapsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ScopeMapsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, registryName, scopeMapName, scopeMapUpdateParameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ScopeMapsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, scopeMapName string, scopeMapUpdateParameters ScopeMapUpdateParameters, _ *ScopeMapsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/scopeMaps/{scopeMapName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if registryName == "" {
-		return nil, errors.New("parameter registryName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{registryName}", url.PathEscape(registryName))
-	if scopeMapName == "" {
-		return nil, errors.New("parameter scopeMapName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scopeMapName}", url.PathEscape(scopeMapName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, scopeMapUpdateParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

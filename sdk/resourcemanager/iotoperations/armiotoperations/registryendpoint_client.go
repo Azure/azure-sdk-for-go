@@ -69,7 +69,7 @@ func (client *RegistryEndpointClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Create a RegistryEndpointResource
+// createOrUpdate - Create a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RegistryEndpointClient) createOrUpdate(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, resource RegistryEndpointResource, options *RegistryEndpointClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *RegistryEndpointClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RegistryEndpointClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, resource RegistryEndpointResource, _ *RegistryEndpointClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints/{registryEndpointName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *RegistryEndpointClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a RegistryEndpointResource
+// deleteOperation - Delete a RegistryEndpointResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *RegistryEndpointClient) deleteOperation(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, options *RegistryEndpointClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *RegistryEndpointClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RegistryEndpointClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, instanceName string, registryEndpointName string, _ *RegistryEndpointClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.IoTOperations/instances/{instanceName}/registryEndpoints/{registryEndpointName}"
 	if client.subscriptionID == "" {
@@ -220,7 +222,8 @@ func (client *RegistryEndpointClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return RegistryEndpointClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

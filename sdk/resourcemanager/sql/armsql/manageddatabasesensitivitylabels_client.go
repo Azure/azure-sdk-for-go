@@ -70,7 +70,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) CreateOrUpdate(ctx context
 	if err != nil {
 		return ManagedDatabaseSensitivityLabelsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -157,7 +158,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) Delete(ctx context.Context
 		return ManagedDatabaseSensitivityLabelsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ManagedDatabaseSensitivityLabelsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagedDatabaseSensitivityLabelsClientDeleteResponse{}, err
 	}
 	return ManagedDatabaseSensitivityLabelsClientDeleteResponse{}, nil
 }
@@ -229,7 +231,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) DisableRecommendation(ctx 
 		return ManagedDatabaseSensitivityLabelsClientDisableRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ManagedDatabaseSensitivityLabelsClientDisableRecommendationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagedDatabaseSensitivityLabelsClientDisableRecommendationResponse{}, err
 	}
 	return ManagedDatabaseSensitivityLabelsClientDisableRecommendationResponse{}, nil
 }
@@ -302,7 +305,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) EnableRecommendation(ctx c
 		return ManagedDatabaseSensitivityLabelsClientEnableRecommendationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ManagedDatabaseSensitivityLabelsClientEnableRecommendationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagedDatabaseSensitivityLabelsClientEnableRecommendationResponse{}, err
 	}
 	return ManagedDatabaseSensitivityLabelsClientEnableRecommendationResponse{}, nil
 }
@@ -374,7 +378,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) Get(ctx context.Context, r
 	if err != nil {
 		return ManagedDatabaseSensitivityLabelsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -724,7 +729,8 @@ func (client *ManagedDatabaseSensitivityLabelsClient) Update(ctx context.Context
 		return ManagedDatabaseSensitivityLabelsClientUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ManagedDatabaseSensitivityLabelsClientUpdateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagedDatabaseSensitivityLabelsClientUpdateResponse{}, err
 	}
 	return ManagedDatabaseSensitivityLabelsClientUpdateResponse{}, nil
 }

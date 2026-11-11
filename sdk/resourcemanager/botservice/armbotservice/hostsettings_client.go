@@ -61,7 +61,8 @@ func (client *HostSettingsClient) Get(ctx context.Context, options *HostSettings
 	if err != nil {
 		return HostSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

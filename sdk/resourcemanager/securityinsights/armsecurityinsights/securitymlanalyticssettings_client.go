@@ -66,7 +66,8 @@ func (client *SecurityMLAnalyticsSettingsClient) CreateOrUpdate(ctx context.Cont
 	if err != nil {
 		return SecurityMLAnalyticsSettingsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *SecurityMLAnalyticsSettingsClient) Delete(ctx context.Context, res
 		return SecurityMLAnalyticsSettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SecurityMLAnalyticsSettingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SecurityMLAnalyticsSettingsClientDeleteResponse{}, err
 	}
 	return SecurityMLAnalyticsSettingsClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *SecurityMLAnalyticsSettingsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return SecurityMLAnalyticsSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -67,7 +67,8 @@ func (client *MaintenanceWindowsClient) CreateOrUpdate(ctx context.Context, reso
 		return MaintenanceWindowsClientCreateOrUpdateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return MaintenanceWindowsClientCreateOrUpdateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return MaintenanceWindowsClientCreateOrUpdateResponse{}, err
 	}
 	return MaintenanceWindowsClientCreateOrUpdateResponse{}, nil
 }
@@ -127,7 +128,8 @@ func (client *MaintenanceWindowsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return MaintenanceWindowsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -58,9 +58,9 @@ func PossibleActivationStatusValues() []ActivationStatus {
 type AdditionalAuthenticationType string
 
 const (
-	// AdditionalAuthenticationTypeAwsElasticContainerRegistry - Amazon Elastic Container Registry (ECR) authentication via workload
+	// AdditionalAuthenticationTypeAWSElasticContainerRegistry - Amazon Elastic Container Registry (ECR) authentication via workload
 	// identity federation.
-	AdditionalAuthenticationTypeAwsElasticContainerRegistry AdditionalAuthenticationType = "AwsElasticContainerRegistry"
+	AdditionalAuthenticationTypeAWSElasticContainerRegistry AdditionalAuthenticationType = "AwsElasticContainerRegistry"
 	// AdditionalAuthenticationTypeEntraFederatedIdentityCredential - Microsoft Entra authentication via a federated identity
 	// credential on an application
 	// in another tenant.
@@ -73,7 +73,7 @@ const (
 // PossibleAdditionalAuthenticationTypeValues returns the possible values for the AdditionalAuthenticationType const type.
 func PossibleAdditionalAuthenticationTypeValues() []AdditionalAuthenticationType {
 	return []AdditionalAuthenticationType{
-		AdditionalAuthenticationTypeAwsElasticContainerRegistry,
+		AdditionalAuthenticationTypeAWSElasticContainerRegistry,
 		AdditionalAuthenticationTypeEntraFederatedIdentityCredential,
 		AdditionalAuthenticationTypeGoogleArtifactRegistry,
 	}

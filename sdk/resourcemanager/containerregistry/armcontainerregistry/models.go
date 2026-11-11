@@ -432,8 +432,8 @@ type CredentialSetUpdateProperties struct {
 	AuthCredentials []*AuthCredential
 }
 
-// EcrAuthenticationProperties - Amazon Elastic Container Registry (ECR) authentication configuration.
-type EcrAuthenticationProperties struct {
+// ECRAuthenticationProperties - Amazon Elastic Container Registry (ECR) authentication configuration.
+type ECRAuthenticationProperties struct {
 	// REQUIRED; The AWS account that owns the IAM role used for authentication.
 	// The IAM role is assumed via AWS Security Token Service (STS) when exchanging a
 	// federated Entra access token for an ECR access token. The full IAM role ARN is
@@ -441,7 +441,7 @@ type EcrAuthenticationProperties struct {
 	// `arn:aws:iam::{accountNumber}:role{rolePath}{roleName}` (the initial path defaults to `/`).
 	AccountNumber *string
 
-	// CONSTANT; Field has constant value AdditionalAuthenticationTypeAwsElasticContainerRegistry, any specified value is ignored.
+	// CONSTANT; Field has constant value AdditionalAuthenticationTypeAWSElasticContainerRegistry, any specified value is ignored.
 	AuthenticationType *AdditionalAuthenticationType
 
 	// REQUIRED; The AWS region of the upstream Elastic Container Registry (e.g. `us-west-2`).
@@ -466,17 +466,17 @@ type EcrAuthenticationProperties struct {
 }
 
 // GetAdditionalAuthenticationProperties implements the AdditionalAuthenticationPropertiesClassification interface for type
-// EcrAuthenticationProperties.
-func (e *EcrAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
+// ECRAuthenticationProperties.
+func (e *ECRAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
 	return &AdditionalAuthenticationProperties{
 		AuthenticationType: e.AuthenticationType,
 	}
 }
 
-// EcrAuthenticationUpdateProperties - Partial Amazon Elastic Container Registry (ECR) authentication configuration.
+// ECRAuthenticationUpdateProperties - Partial Amazon Elastic Container Registry (ECR) authentication configuration.
 // When authentication is first configured, accountNumber, region, and roleName must be supplied.
-type EcrAuthenticationUpdateProperties struct {
-	// CONSTANT; Field has constant value AdditionalAuthenticationTypeAwsElasticContainerRegistry, any specified value is ignored.
+type ECRAuthenticationUpdateProperties struct {
+	// CONSTANT; Field has constant value AdditionalAuthenticationTypeAWSElasticContainerRegistry, any specified value is ignored.
 	AuthenticationType *AdditionalAuthenticationType
 
 	// The AWS account that owns the IAM role used for authentication.
@@ -508,8 +508,8 @@ type EcrAuthenticationUpdateProperties struct {
 }
 
 // GetAdditionalAuthenticationUpdateProperties implements the AdditionalAuthenticationUpdatePropertiesClassification interface
-// for type EcrAuthenticationUpdateProperties.
-func (e *EcrAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
+// for type ECRAuthenticationUpdateProperties.
+func (e *ECRAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
 	return &AdditionalAuthenticationUpdateProperties{
 		AuthenticationType: e.AuthenticationType,
 	}
@@ -734,6 +734,32 @@ type ExportPolicy struct {
 	Status *ExportPolicyStatus
 }
 
+// GARAuthenticationUpdateProperties - Partial Google Artifact Registry (GAR) authentication configuration.
+// When authentication is first configured, projectNumber, workloadIdentityPool, and
+// workloadIdentityProvider must be supplied.
+type GARAuthenticationUpdateProperties struct {
+	// CONSTANT; Field has constant value AdditionalAuthenticationTypeGoogleArtifactRegistry, any specified value is ignored.
+	AuthenticationType *AdditionalAuthenticationType
+
+	// The Google Cloud Platform project that is configured for authentication
+	// Permissions should be granted to principal://iam.googleapis.com/projects/{ProjectNumber}/locations/global/workloadIdentityPools/{WorkloadIdentityPool}/providers/{WorkloadIdentityProvider}/subject/{ManagedIdentityPrincipal}
+	ProjectNumber *string
+
+	// The Google Cloud platform workload identity pool used for authentication.
+	WorkloadIdentityPool *string
+
+	// The Google Cloud Platform workload identity provider used for authentication.
+	WorkloadIdentityProvider *string
+}
+
+// GetAdditionalAuthenticationUpdateProperties implements the AdditionalAuthenticationUpdatePropertiesClassification interface
+// for type GARAuthenticationUpdateProperties.
+func (g *GARAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
+	return &AdditionalAuthenticationUpdateProperties{
+		AuthenticationType: g.AuthenticationType,
+	}
+}
+
 // GarAuthenticationProperties - Google Artifact Registry (GAR) authentication configuration.
 type GarAuthenticationProperties struct {
 	// CONSTANT; Field has constant value AdditionalAuthenticationTypeGoogleArtifactRegistry, any specified value is ignored.
@@ -754,32 +780,6 @@ type GarAuthenticationProperties struct {
 // GarAuthenticationProperties.
 func (g *GarAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
 	return &AdditionalAuthenticationProperties{
-		AuthenticationType: g.AuthenticationType,
-	}
-}
-
-// GarAuthenticationUpdateProperties - Partial Google Artifact Registry (GAR) authentication configuration.
-// When authentication is first configured, projectNumber, workloadIdentityPool, and
-// workloadIdentityProvider must be supplied.
-type GarAuthenticationUpdateProperties struct {
-	// CONSTANT; Field has constant value AdditionalAuthenticationTypeGoogleArtifactRegistry, any specified value is ignored.
-	AuthenticationType *AdditionalAuthenticationType
-
-	// The Google Cloud Platform project that is configured for authentication
-	// Permissions should be granted to principal://iam.googleapis.com/projects/{ProjectNumber}/locations/global/workloadIdentityPools/{WorkloadIdentityPool}/providers/{WorkloadIdentityProvider}/subject/{ManagedIdentityPrincipal}
-	ProjectNumber *string
-
-	// The Google Cloud platform workload identity pool used for authentication.
-	WorkloadIdentityPool *string
-
-	// The Google Cloud Platform workload identity provider used for authentication.
-	WorkloadIdentityProvider *string
-}
-
-// GetAdditionalAuthenticationUpdateProperties implements the AdditionalAuthenticationUpdatePropertiesClassification interface
-// for type GarAuthenticationUpdateProperties.
-func (g *GarAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
-	return &AdditionalAuthenticationUpdateProperties{
 		AuthenticationType: g.AuthenticationType,
 	}
 }

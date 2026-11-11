@@ -1153,19 +1153,19 @@ func (c *CredentialSetUpdateProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EcrAuthenticationProperties.
-func (e EcrAuthenticationProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ECRAuthenticationProperties.
+func (e ECRAuthenticationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accountNumber", e.AccountNumber)
-	objectMap["authenticationType"] = AdditionalAuthenticationTypeAwsElasticContainerRegistry
+	objectMap["authenticationType"] = AdditionalAuthenticationTypeAWSElasticContainerRegistry
 	populate(objectMap, "region", e.Region)
 	populate(objectMap, "roleName", e.RoleName)
 	populate(objectMap, "rolePath", e.RolePath)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type EcrAuthenticationProperties.
-func (e *EcrAuthenticationProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ECRAuthenticationProperties.
+func (e *ECRAuthenticationProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
@@ -1196,19 +1196,19 @@ func (e *EcrAuthenticationProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EcrAuthenticationUpdateProperties.
-func (e EcrAuthenticationUpdateProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ECRAuthenticationUpdateProperties.
+func (e ECRAuthenticationUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "accountNumber", e.AccountNumber)
-	objectMap["authenticationType"] = AdditionalAuthenticationTypeAwsElasticContainerRegistry
+	objectMap["authenticationType"] = AdditionalAuthenticationTypeAWSElasticContainerRegistry
 	populate(objectMap, "region", e.Region)
 	populate(objectMap, "roleName", e.RoleName)
 	populate(objectMap, "rolePath", e.RolePath)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type EcrAuthenticationUpdateProperties.
-func (e *EcrAuthenticationUpdateProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ECRAuthenticationUpdateProperties.
+func (e *ECRAuthenticationUpdateProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
@@ -1753,8 +1753,8 @@ func (e *ExportPolicy) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GarAuthenticationProperties.
-func (g GarAuthenticationProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GARAuthenticationUpdateProperties.
+func (g GARAuthenticationUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["authenticationType"] = AdditionalAuthenticationTypeGoogleArtifactRegistry
 	populate(objectMap, "projectNumber", g.ProjectNumber)
@@ -1763,8 +1763,8 @@ func (g GarAuthenticationProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GarAuthenticationProperties.
-func (g *GarAuthenticationProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GARAuthenticationUpdateProperties.
+func (g *GARAuthenticationUpdateProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())
@@ -1792,8 +1792,8 @@ func (g *GarAuthenticationProperties) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type GarAuthenticationUpdateProperties.
-func (g GarAuthenticationUpdateProperties) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type GarAuthenticationProperties.
+func (g GarAuthenticationProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	objectMap["authenticationType"] = AdditionalAuthenticationTypeGoogleArtifactRegistry
 	populate(objectMap, "projectNumber", g.ProjectNumber)
@@ -1802,8 +1802,8 @@ func (g GarAuthenticationUpdateProperties) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type GarAuthenticationUpdateProperties.
-func (g *GarAuthenticationUpdateProperties) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type GarAuthenticationProperties.
+func (g *GarAuthenticationProperties) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", g, err.Error())

@@ -7,7 +7,7 @@ package armcontainerregistry
 // AdditionalAuthenticationPropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetAdditionalAuthenticationProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AdditionalAuthenticationProperties, *EcrAuthenticationProperties, *EntraFederatedIdentityCredentialAuthenticationProperties,
+// - *AdditionalAuthenticationProperties, *ECRAuthenticationProperties, *EntraFederatedIdentityCredentialAuthenticationProperties,
 // - *GarAuthenticationProperties
 type AdditionalAuthenticationPropertiesClassification interface {
 	// GetAdditionalAuthenticationProperties returns the AdditionalAuthenticationProperties content of the underlying type.
@@ -17,8 +17,8 @@ type AdditionalAuthenticationPropertiesClassification interface {
 // AdditionalAuthenticationUpdatePropertiesClassification provides polymorphic access to related types.
 // Call the interface's GetAdditionalAuthenticationUpdateProperties() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:
-// - *AdditionalAuthenticationUpdateProperties, *EcrAuthenticationUpdateProperties, *EntraFederatedIdentityCredentialAuthenticationUpdateProperties,
-// - *GarAuthenticationUpdateProperties
+// - *AdditionalAuthenticationUpdateProperties, *ECRAuthenticationUpdateProperties, *EntraFederatedIdentityCredentialAuthenticationUpdateProperties,
+// - *GARAuthenticationUpdateProperties
 type AdditionalAuthenticationUpdatePropertiesClassification interface {
 	// GetAdditionalAuthenticationUpdateProperties returns the AdditionalAuthenticationUpdateProperties content of the underlying type.
 	GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties

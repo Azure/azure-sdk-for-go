@@ -128,8 +128,8 @@ func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthAws() 
 		Properties: &armcontainerregistry.CacheRuleProperties{
 			SourceRepository: to.Ptr("123456789012.dkr.ecr.us-west-2.amazonaws.com/hello-world"),
 			TargetRepository: to.Ptr("cached-ecr/hello-world"),
-			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationProperties{
-				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+			AdditionalAuthenticationProperties: &armcontainerregistry.ECRAuthenticationProperties{
+				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAWSElasticContainerRegistry),
 				AccountNumber:      to.Ptr("123456789012"),
 				Region:             to.Ptr("us-west-2"),
 				RoleName:           to.Ptr("my-ecr-pull-role"),
@@ -164,8 +164,8 @@ func ExampleCacheRulesClient_BeginCreate_cacheRuleCreateUserAssignedMiAuthAws() 
 	// 		Properties: &armcontainerregistry.CacheRuleProperties{
 	// 			SourceRepository: to.Ptr("123456789012.dkr.ecr.us-west-2.amazonaws.com/hello-world"),
 	// 			TargetRepository: to.Ptr("cached-ecr/hello-world"),
-	// 			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationProperties{
-	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+	// 			AdditionalAuthenticationProperties: &armcontainerregistry.ECRAuthenticationProperties{
+	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAWSElasticContainerRegistry),
 	// 				AccountNumber: to.Ptr("123456789012"),
 	// 				Region: to.Ptr("us-west-2"),
 	// 				RoleName: to.Ptr("my-ecr-pull-role"),
@@ -378,8 +378,8 @@ func ExampleCacheRulesClient_BeginUpdate_updateAwsAuthenticationWhilePreservingO
 	}
 	poller, err := clientFactory.NewCacheRulesClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRuleUpdateParameters{
 		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
-			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationUpdateProperties{
-				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+			AdditionalAuthenticationProperties: &armcontainerregistry.ECRAuthenticationUpdateProperties{
+				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAWSElasticContainerRegistry),
 				RoleName:           to.Ptr("updated-ecr-pull-role"),
 			},
 		},
@@ -402,8 +402,8 @@ func ExampleCacheRulesClient_BeginUpdate_updateAwsAuthenticationWhilePreservingO
 	// 		Properties: &armcontainerregistry.CacheRuleProperties{
 	// 			SourceRepository: to.Ptr("123456789012.dkr.ecr.us-west-2.amazonaws.com/hello-world"),
 	// 			TargetRepository: to.Ptr("cached-ecr/hello-world"),
-	// 			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationProperties{
-	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+	// 			AdditionalAuthenticationProperties: &armcontainerregistry.ECRAuthenticationProperties{
+	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAWSElasticContainerRegistry),
 	// 				AccountNumber: to.Ptr("123456789012"),
 	// 				Region: to.Ptr("us-west-2"),
 	// 				RoleName: to.Ptr("updated-ecr-pull-role"),
@@ -434,8 +434,8 @@ func ExampleCacheRulesClient_BeginUpdate_configureAwsAuthenticationOnAnExistingC
 			},
 		},
 		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
-			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationUpdateProperties{
-				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+			AdditionalAuthenticationProperties: &armcontainerregistry.ECRAuthenticationUpdateProperties{
+				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAWSElasticContainerRegistry),
 				AccountNumber:      to.Ptr("123456789012"),
 				Region:             to.Ptr("us-west-2"),
 				RoleName:           to.Ptr("my-ecr-pull-role"),
@@ -469,8 +469,8 @@ func ExampleCacheRulesClient_BeginUpdate_configureAwsAuthenticationOnAnExistingC
 	// 		Properties: &armcontainerregistry.CacheRuleProperties{
 	// 			SourceRepository: to.Ptr("123456789012.dkr.ecr.us-west-2.amazonaws.com/hello-world"),
 	// 			TargetRepository: to.Ptr("cached-ecr/hello-world"),
-	// 			AdditionalAuthenticationProperties: &armcontainerregistry.EcrAuthenticationProperties{
-	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAwsElasticContainerRegistry),
+	// 			AdditionalAuthenticationProperties: &armcontainerregistry.ECRAuthenticationProperties{
+	// 				AuthenticationType: to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeAWSElasticContainerRegistry),
 	// 				AccountNumber: to.Ptr("123456789012"),
 	// 				Region: to.Ptr("us-west-2"),
 	// 				RoleName: to.Ptr("my-ecr-pull-role"),
@@ -565,7 +565,7 @@ func ExampleCacheRulesClient_BeginUpdate_configureGoogleAuthenticationOnAnExisti
 			},
 		},
 		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
-			AdditionalAuthenticationProperties: &armcontainerregistry.GarAuthenticationUpdateProperties{
+			AdditionalAuthenticationProperties: &armcontainerregistry.GARAuthenticationUpdateProperties{
 				AuthenticationType:       to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeGoogleArtifactRegistry),
 				ProjectNumber:            to.Ptr("123456789012"),
 				WorkloadIdentityPool:     to.Ptr("my-workload-identity-pool"),
@@ -673,7 +673,7 @@ func ExampleCacheRulesClient_BeginUpdate_updateGoogleAuthenticationWhilePreservi
 	}
 	poller, err := clientFactory.NewCacheRulesClient().BeginUpdate(ctx, "myResourceGroup", "myRegistry", "myCacheRule", armcontainerregistry.CacheRuleUpdateParameters{
 		Properties: &armcontainerregistry.CacheRuleUpdateProperties{
-			AdditionalAuthenticationProperties: &armcontainerregistry.GarAuthenticationUpdateProperties{
+			AdditionalAuthenticationProperties: &armcontainerregistry.GARAuthenticationUpdateProperties{
 				AuthenticationType:       to.Ptr(armcontainerregistry.AdditionalAuthenticationTypeGoogleArtifactRegistry),
 				WorkloadIdentityProvider: to.Ptr("updated-identity-provider"),
 			},

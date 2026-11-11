@@ -16,8 +16,8 @@ func unmarshalAdditionalAuthenticationPropertiesClassification(rawMsg json.RawMe
 	}
 	var b AdditionalAuthenticationPropertiesClassification
 	switch m["authenticationType"] {
-	case string(AdditionalAuthenticationTypeAwsElasticContainerRegistry):
-		b = &EcrAuthenticationProperties{}
+	case string(AdditionalAuthenticationTypeAWSElasticContainerRegistry):
+		b = &ECRAuthenticationProperties{}
 	case string(AdditionalAuthenticationTypeEntraFederatedIdentityCredential):
 		b = &EntraFederatedIdentityCredentialAuthenticationProperties{}
 	case string(AdditionalAuthenticationTypeGoogleArtifactRegistry):
@@ -41,12 +41,12 @@ func unmarshalAdditionalAuthenticationUpdatePropertiesClassification(rawMsg json
 	}
 	var b AdditionalAuthenticationUpdatePropertiesClassification
 	switch m["authenticationType"] {
-	case string(AdditionalAuthenticationTypeAwsElasticContainerRegistry):
-		b = &EcrAuthenticationUpdateProperties{}
+	case string(AdditionalAuthenticationTypeAWSElasticContainerRegistry):
+		b = &ECRAuthenticationUpdateProperties{}
 	case string(AdditionalAuthenticationTypeEntraFederatedIdentityCredential):
 		b = &EntraFederatedIdentityCredentialAuthenticationUpdateProperties{}
 	case string(AdditionalAuthenticationTypeGoogleArtifactRegistry):
-		b = &GarAuthenticationUpdateProperties{}
+		b = &GARAuthenticationUpdateProperties{}
 	default:
 		b = &AdditionalAuthenticationUpdateProperties{}
 	}

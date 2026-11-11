@@ -1,24 +1,24 @@
 # Release History
 
-## 4.0.0-beta.1 (2026-11-09)
+## 4.0.0-beta.1 (2026-11-11)
 ### Breaking Changes
 
 - Type of `CacheRuleUpdateProperties.AdditionalAuthenticationProperties` has been changed from `AdditionalAuthenticationPropertiesClassification` to `AdditionalAuthenticationUpdatePropertiesClassification`
 
 ### Features Added
 
-- New value `AdditionalAuthenticationTypeAwsElasticContainerRegistry`, `AdditionalAuthenticationTypeEntraFederatedIdentityCredential` added to enum type `AdditionalAuthenticationType`
+- New value `AdditionalAuthenticationTypeAWSElasticContainerRegistry`, `AdditionalAuthenticationTypeEntraFederatedIdentityCredential` added to enum type `AdditionalAuthenticationType`
 - New function `*AdditionalAuthenticationUpdateProperties.GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties`
-- New function `*EcrAuthenticationProperties.GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties`
-- New function `*EcrAuthenticationUpdateProperties.GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties`
+- New function `*ECRAuthenticationProperties.GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties`
+- New function `*ECRAuthenticationUpdateProperties.GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties`
 - New function `*EntraFederatedIdentityCredentialAuthenticationProperties.GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties`
 - New function `*EntraFederatedIdentityCredentialAuthenticationUpdateProperties.GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties`
-- New function `*GarAuthenticationUpdateProperties.GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties`
-- New struct `EcrAuthenticationProperties`
-- New struct `EcrAuthenticationUpdateProperties`
+- New function `*GARAuthenticationUpdateProperties.GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties`
+- New struct `ECRAuthenticationProperties`
+- New struct `ECRAuthenticationUpdateProperties`
 - New struct `EntraFederatedIdentityCredentialAuthenticationProperties`
 - New struct `EntraFederatedIdentityCredentialAuthenticationUpdateProperties`
-- New struct `GarAuthenticationUpdateProperties`
+- New struct `GARAuthenticationUpdateProperties`
 
 
 ## 3.1.0-beta.3 (2026-09-06)

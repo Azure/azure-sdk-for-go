@@ -69,7 +69,7 @@ func (client *TrafficControllerInterfaceClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Create a TrafficController
+// createOrUpdate - Create a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TrafficControllerInterfaceClient) createOrUpdate(ctx context.Context, resourceGroupName string, trafficControllerName string, resource TrafficController, options *TrafficControllerInterfaceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *TrafficControllerInterfaceClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *TrafficControllerInterfaceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, resource TrafficController, _ *TrafficControllerInterfaceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *TrafficControllerInterfaceClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Delete a TrafficController
+// deleteOperation - Delete a TrafficController
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *TrafficControllerInterfaceClient) deleteOperation(ctx context.Context, resourceGroupName string, trafficControllerName string, options *TrafficControllerInterfaceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *TrafficControllerInterfaceClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *TrafficControllerInterfaceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, trafficControllerName string, _ *TrafficControllerInterfaceClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}"
 	if client.subscriptionID == "" {
@@ -211,7 +213,8 @@ func (client *TrafficControllerInterfaceClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return TrafficControllerInterfaceClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -412,7 +415,8 @@ func (client *TrafficControllerInterfaceClient) Update(ctx context.Context, reso
 	if err != nil {
 		return TrafficControllerInterfaceClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

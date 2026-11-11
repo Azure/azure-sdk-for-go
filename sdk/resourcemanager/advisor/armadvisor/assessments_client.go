@@ -63,7 +63,8 @@ func (client *AssessmentsClient) Delete(ctx context.Context, assessmentName stri
 		return AssessmentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AssessmentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AssessmentsClientDeleteResponse{}, err
 	}
 	return AssessmentsClientDeleteResponse{}, nil
 }
@@ -107,7 +108,8 @@ func (client *AssessmentsClient) Get(ctx context.Context, assessmentName string,
 	if err != nil {
 		return AssessmentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -235,7 +237,8 @@ func (client *AssessmentsClient) Put(ctx context.Context, assessmentName string,
 	if err != nil {
 		return AssessmentsClientPutResponse{}, err
 	}
-	return client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.putHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // putCreateRequest creates the Put request.

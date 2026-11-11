@@ -65,7 +65,8 @@ func (client *BookmarkClient) Expand(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return BookmarkClientExpandResponse{}, err
 	}
-	return client.expandHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.expandHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // expandCreateRequest creates the Expand request.

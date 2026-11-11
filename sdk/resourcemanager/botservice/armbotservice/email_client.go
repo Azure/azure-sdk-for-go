@@ -63,7 +63,8 @@ func (client *EmailClient) CreateSignInURL(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return EmailClientCreateSignInURLResponse{}, err
 	}
-	return client.createSignInURLHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createSignInURLHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createSignInURLCreateRequest creates the CreateSignInURL request.

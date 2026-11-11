@@ -85,7 +85,8 @@ func (client *VirtualMachinesClient) assessPatches(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -157,7 +158,8 @@ func (client *VirtualMachinesClient) attachDetachDataDisks(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -235,7 +237,8 @@ func (client *VirtualMachinesClient) capture(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -312,7 +315,8 @@ func (client *VirtualMachinesClient) convertToManagedDisks(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -385,7 +389,8 @@ func (client *VirtualMachinesClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -468,7 +473,8 @@ func (client *VirtualMachinesClient) deallocate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -544,7 +550,8 @@ func (client *VirtualMachinesClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -618,7 +625,8 @@ func (client *VirtualMachinesClient) installPatches(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -693,7 +701,8 @@ func (client *VirtualMachinesClient) migrateToVMScaleSet(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -770,7 +779,8 @@ func (client *VirtualMachinesClient) performMaintenance(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -842,7 +852,8 @@ func (client *VirtualMachinesClient) powerOff(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -915,7 +926,8 @@ func (client *VirtualMachinesClient) reapply(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -985,7 +997,8 @@ func (client *VirtualMachinesClient) redeploy(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1063,7 +1076,8 @@ func (client *VirtualMachinesClient) reimage(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1140,7 +1154,8 @@ func (client *VirtualMachinesClient) restart(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1211,7 +1226,8 @@ func (client *VirtualMachinesClient) runCommand(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1286,7 +1302,8 @@ func (client *VirtualMachinesClient) start(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1357,7 +1374,8 @@ func (client *VirtualMachinesClient) update(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1421,7 +1439,8 @@ func (client *VirtualMachinesClient) Generalize(ctx context.Context, resourceGro
 		return VirtualMachinesClientGeneralizeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return VirtualMachinesClientGeneralizeResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachinesClientGeneralizeResponse{}, err
 	}
 	return VirtualMachinesClientGeneralizeResponse{}, nil
 }
@@ -1470,7 +1489,8 @@ func (client *VirtualMachinesClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return VirtualMachinesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -1534,7 +1554,8 @@ func (client *VirtualMachinesClient) InstanceView(ctx context.Context, resourceG
 	if err != nil {
 		return VirtualMachinesClientInstanceViewResponse{}, err
 	}
-	return client.instanceViewHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.instanceViewHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // instanceViewCreateRequest creates the InstanceView request.
@@ -1900,7 +1921,8 @@ func (client *VirtualMachinesClient) RetrieveBootDiagnosticsData(ctx context.Con
 	if err != nil {
 		return VirtualMachinesClientRetrieveBootDiagnosticsDataResponse{}, err
 	}
-	return client.retrieveBootDiagnosticsDataHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.retrieveBootDiagnosticsDataHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // retrieveBootDiagnosticsDataCreateRequest creates the RetrieveBootDiagnosticsData request.
@@ -1965,7 +1987,8 @@ func (client *VirtualMachinesClient) SimulateEviction(ctx context.Context, resou
 		return VirtualMachinesClientSimulateEvictionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return VirtualMachinesClientSimulateEvictionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachinesClientSimulateEvictionResponse{}, err
 	}
 	return VirtualMachinesClientSimulateEvictionResponse{}, nil
 }

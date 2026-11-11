@@ -69,7 +69,7 @@ func (client *MongoMIResourcesClient) BeginCreateUpdateMongoMIRoleAssignment(ctx
 	}
 }
 
-// CreateUpdateMongoMIRoleAssignment - Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
+// createUpdateMongoMIRoleAssignment - Creates or updates an Azure Cosmos DB MongoMI Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateMongoMIRoleAssignmentParameters MongoMIRoleAssignmentResource, options *MongoMIResourcesClientBeginCreateUpdateMongoMIRoleAssignmentOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignment(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createUpdateMongoMIRoleAssignmentCreateRequest creates the CreateUpdateMongoMIRoleAssignment request.
+// createUpdateMongoMIRoleAssignmentCreateRequest creates the createUpdateMongoMIRoleAssignment request.
 func (client *MongoMIResourcesClient) createUpdateMongoMIRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, createUpdateMongoMIRoleAssignmentParameters MongoMIRoleAssignmentResource, _ *MongoMIResourcesClientBeginCreateUpdateMongoMIRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
@@ -150,7 +151,7 @@ func (client *MongoMIResourcesClient) BeginCreateUpdateMongoMIRoleDefinition(ctx
 	}
 }
 
-// CreateUpdateMongoMIRoleDefinition - Creates or updates an Azure Cosmos DB MongoMI Role Definition.
+// createUpdateMongoMIRoleDefinition - Creates or updates an Azure Cosmos DB MongoMI Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateMongoMIRoleDefinitionParameters MongoMIRoleDefinitionResource, options *MongoMIResourcesClientBeginCreateUpdateMongoMIRoleDefinitionOptions) (*http.Response, error) {
 	var err error
@@ -167,12 +168,13 @@ func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinition(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createUpdateMongoMIRoleDefinitionCreateRequest creates the CreateUpdateMongoMIRoleDefinition request.
+// createUpdateMongoMIRoleDefinitionCreateRequest creates the createUpdateMongoMIRoleDefinition request.
 func (client *MongoMIResourcesClient) createUpdateMongoMIRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, createUpdateMongoMIRoleDefinitionParameters MongoMIRoleDefinitionResource, _ *MongoMIResourcesClientBeginCreateUpdateMongoMIRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
@@ -230,7 +232,7 @@ func (client *MongoMIResourcesClient) BeginDeleteMongoMIRoleAssignment(ctx conte
 	}
 }
 
-// DeleteMongoMIRoleAssignment - Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
+// deleteMongoMIRoleAssignment - Deletes an existing Azure Cosmos DB MongoMI Role Assignment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoMIResourcesClient) deleteMongoMIRoleAssignment(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, options *MongoMIResourcesClientBeginDeleteMongoMIRoleAssignmentOptions) (*http.Response, error) {
 	var err error
@@ -247,12 +249,13 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleAssignment(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteMongoMIRoleAssignmentCreateRequest creates the DeleteMongoMIRoleAssignment request.
+// deleteMongoMIRoleAssignmentCreateRequest creates the deleteMongoMIRoleAssignment request.
 func (client *MongoMIResourcesClient) deleteMongoMIRoleAssignmentCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleAssignmentID string, _ *MongoMIResourcesClientBeginDeleteMongoMIRoleAssignmentOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleAssignments/{roleAssignmentId}"
 	if client.subscriptionID == "" {
@@ -305,7 +308,7 @@ func (client *MongoMIResourcesClient) BeginDeleteMongoMIRoleDefinition(ctx conte
 	}
 }
 
-// DeleteMongoMIRoleDefinition - Deletes an existing Azure Cosmos DB MongoMI Role Definition.
+// deleteMongoMIRoleDefinition - Deletes an existing Azure Cosmos DB MongoMI Role Definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoMIResourcesClient) deleteMongoMIRoleDefinition(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, options *MongoMIResourcesClientBeginDeleteMongoMIRoleDefinitionOptions) (*http.Response, error) {
 	var err error
@@ -322,12 +325,13 @@ func (client *MongoMIResourcesClient) deleteMongoMIRoleDefinition(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteMongoMIRoleDefinitionCreateRequest creates the DeleteMongoMIRoleDefinition request.
+// deleteMongoMIRoleDefinitionCreateRequest creates the deleteMongoMIRoleDefinition request.
 func (client *MongoMIResourcesClient) deleteMongoMIRoleDefinitionCreateRequest(ctx context.Context, resourceGroupName string, accountName string, roleDefinitionID string, _ *MongoMIResourcesClientBeginDeleteMongoMIRoleDefinitionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/mongoMIRoleDefinitions/{roleDefinitionId}"
 	if client.subscriptionID == "" {
@@ -378,7 +382,8 @@ func (client *MongoMIResourcesClient) GetMongoMIRoleAssignment(ctx context.Conte
 	if err != nil {
 		return MongoMIResourcesClientGetMongoMIRoleAssignmentResponse{}, err
 	}
-	return client.getMongoMIRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMongoMIRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMongoMIRoleAssignmentCreateRequest creates the GetMongoMIRoleAssignment request.
@@ -445,7 +450,8 @@ func (client *MongoMIResourcesClient) GetMongoMIRoleDefinition(ctx context.Conte
 	if err != nil {
 		return MongoMIResourcesClientGetMongoMIRoleDefinitionResponse{}, err
 	}
-	return client.getMongoMIRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getMongoMIRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getMongoMIRoleDefinitionCreateRequest creates the GetMongoMIRoleDefinition request.

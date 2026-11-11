@@ -64,7 +64,8 @@ func (client *PrivateLinkResourcesClient) ListByProvider(ctx context.Context, re
 	if err != nil {
 		return PrivateLinkResourcesClientListByProviderResponse{}, err
 	}
-	return client.listByProviderHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByProviderHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByProviderCreateRequest creates the ListByProvider request.

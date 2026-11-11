@@ -66,7 +66,8 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) CreateOrUpdate(ctx c
 	if err != nil {
 		return SecurityPerimeterLoggingConfigurationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) Delete(ctx context.C
 		return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, err
 	}
 	return SecurityPerimeterLoggingConfigurationsClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *SecurityPerimeterLoggingConfigurationsClient) Get(ctx context.Cont
 	if err != nil {
 		return SecurityPerimeterLoggingConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

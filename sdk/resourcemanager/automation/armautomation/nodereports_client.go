@@ -65,7 +65,8 @@ func (client *NodeReportsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return NodeReportsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -135,7 +136,8 @@ func (client *NodeReportsClient) GetContent(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return NodeReportsClientGetContentResponse{}, err
 	}
-	return client.getContentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getContentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getContentCreateRequest creates the GetContent request.

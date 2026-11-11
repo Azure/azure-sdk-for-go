@@ -61,7 +61,8 @@ func (client *JoinRequestsClient) Approve(ctx context.Context, billingAccountNam
 		return JoinRequestsClientApproveResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return JoinRequestsClientApproveResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JoinRequestsClientApproveResponse{}, err
 	}
 	return JoinRequestsClientApproveResponse{}, nil
 }
@@ -117,7 +118,8 @@ func (client *JoinRequestsClient) Deny(ctx context.Context, billingAccountName s
 		return JoinRequestsClientDenyResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return JoinRequestsClientDenyResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JoinRequestsClientDenyResponse{}, err
 	}
 	return JoinRequestsClientDenyResponse{}, nil
 }
@@ -172,7 +174,8 @@ func (client *JoinRequestsClient) Get(ctx context.Context, billingAccountName st
 	if err != nil {
 		return JoinRequestsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

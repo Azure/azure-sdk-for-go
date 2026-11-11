@@ -65,7 +65,8 @@ func (client *OfficeConsentsClient) Delete(ctx context.Context, resourceGroupNam
 		return OfficeConsentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return OfficeConsentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return OfficeConsentsClientDeleteResponse{}, err
 	}
 	return OfficeConsentsClientDeleteResponse{}, nil
 }
@@ -119,7 +120,8 @@ func (client *OfficeConsentsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return OfficeConsentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

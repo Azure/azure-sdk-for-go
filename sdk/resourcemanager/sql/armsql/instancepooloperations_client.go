@@ -64,7 +64,8 @@ func (client *InstancePoolOperationsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return InstancePoolOperationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

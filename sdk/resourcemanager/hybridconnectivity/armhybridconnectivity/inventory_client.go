@@ -58,7 +58,8 @@ func (client *InventoryClient) Get(ctx context.Context, resourceURI string, solu
 	if err != nil {
 		return InventoryClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

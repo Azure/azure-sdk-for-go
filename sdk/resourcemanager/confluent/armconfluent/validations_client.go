@@ -67,7 +67,8 @@ func (client *ValidationsClient) ValidateOrganization(ctx context.Context, resou
 	if err != nil {
 		return ValidationsClientValidateOrganizationResponse{}, err
 	}
-	return client.validateOrganizationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateOrganizationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateOrganizationCreateRequest creates the ValidateOrganization request.
@@ -135,7 +136,8 @@ func (client *ValidationsClient) ValidateOrganizationV2(ctx context.Context, res
 	if err != nil {
 		return ValidationsClientValidateOrganizationV2Response{}, err
 	}
-	return client.validateOrganizationV2HandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateOrganizationV2HandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateOrganizationV2CreateRequest creates the ValidateOrganizationV2 request.

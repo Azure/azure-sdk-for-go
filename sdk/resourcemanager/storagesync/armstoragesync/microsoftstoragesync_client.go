@@ -64,7 +64,8 @@ func (client *MicrosoftStorageSyncClient) LocationOperationStatus(ctx context.Co
 	if err != nil {
 		return MicrosoftStorageSyncClientLocationOperationStatusResponse{}, err
 	}
-	return client.locationOperationStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.locationOperationStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // locationOperationStatusCreateRequest creates the LocationOperationStatus request.

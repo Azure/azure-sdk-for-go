@@ -93,6 +93,89 @@ func ExampleVolumesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-05-01-preview/Volumes_Overwrite_MaximumSet_Gen.json
+func ExampleVolumesClient_BeginOverwrite() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumesClient().BeginOverwrite(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", "volume-01", armpurestorageblock.VolumeOverwriteRequest{
+		SourceType:                  to.Ptr(armpurestorageblock.VolumeSourceTypeSnapshot),
+		SourceVolumeGroupResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01"),
+		SourceVolumeSnapshot: &armpurestorageblock.VolumeSnapshotSource{
+			VolumeGroupSnapshotResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/snapshots/snapshot-01"),
+			VolumeSnapshotName:            to.Ptr("volume-01"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Volumes_Update_MaximumSet_Gen.json
+func ExampleVolumesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVolumesClient().BeginUpdate(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", "volume-01", armpurestorageblock.VolumeUpdate{
+		Properties: &armpurestorageblock.VolumeUpdateProperties{
+			ProvisionedSize: to.Ptr[int64](21474836480),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.VolumesClientUpdateResponse{
+	// 	Volume: armpurestorageblock.Volume{
+	// 		Properties: &armpurestorageblock.AzureVolumeProperties{
+	// 			Space: &armpurestorageblock.Space{
+	// 				TotalUsed: to.Ptr[int64](1073741824),
+	// 				Unique: to.Ptr[int64](536870912),
+	// 				Snapshots: to.Ptr[int64](268435456),
+	// 				Shared: to.Ptr[int64](268435456),
+	// 			},
+	// 			ProvisionedSize: to.Ptr[int64](21474836480),
+	// 			SerialNumber: to.Ptr("PURE-VOL-ABC123XYZ"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/volumes/volume-01"),
+	// 		Name: to.Ptr("volume-01"),
+	// 		Type: to.Ptr("PureStorage.Block/storagePools/volumeGroups/volumes"),
+	// 		SystemData: &armpurestorageblock.SystemData{
+	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 8, 30, 0, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-05-01-preview/Volumes_Get_MaximumSet_Gen.json
 func ExampleVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -200,87 +283,4 @@ func ExampleVolumesClient_NewListByVolumeGroupPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Volumes_Overwrite_MaximumSet_Gen.json
-func ExampleVolumesClient_BeginOverwrite() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVolumesClient().BeginOverwrite(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", "volume-01", armpurestorageblock.VolumeOverwriteRequest{
-		SourceType:                  to.Ptr(armpurestorageblock.VolumeSourceTypeSnapshot),
-		SourceVolumeGroupResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01"),
-		SourceVolumeSnapshot: &armpurestorageblock.VolumeSnapshotSource{
-			VolumeGroupSnapshotResourceID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/snapshots/snapshot-01"),
-			VolumeSnapshotName:            to.Ptr("volume-01"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/Volumes_Update_MaximumSet_Gen.json
-func ExampleVolumesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewVolumesClient().BeginUpdate(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", "volume-01", armpurestorageblock.VolumeUpdate{
-		Properties: &armpurestorageblock.VolumeUpdateProperties{
-			ProvisionedSize: to.Ptr[int64](21474836480),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.VolumesClientUpdateResponse{
-	// 	Volume: armpurestorageblock.Volume{
-	// 		Properties: &armpurestorageblock.AzureVolumeProperties{
-	// 			Space: &armpurestorageblock.Space{
-	// 				TotalUsed: to.Ptr[int64](1073741824),
-	// 				Unique: to.Ptr[int64](536870912),
-	// 				Snapshots: to.Ptr[int64](268435456),
-	// 				Shared: to.Ptr[int64](268435456),
-	// 			},
-	// 			ProvisionedSize: to.Ptr[int64](21474836480),
-	// 			SerialNumber: to.Ptr("PURE-VOL-ABC123XYZ"),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01/volumes/volume-01"),
-	// 		Name: to.Ptr("volume-01"),
-	// 		Type: to.Ptr("PureStorage.Block/storagePools/volumeGroups/volumes"),
-	// 		SystemData: &armpurestorageblock.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
-	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 8, 30, 0, 0, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

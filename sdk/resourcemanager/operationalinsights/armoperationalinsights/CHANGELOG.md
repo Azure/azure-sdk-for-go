@@ -1,6 +1,6 @@
 # Release History
 
-## 3.1.0 (2026-11-09)
+## 3.1.0 (2026-11-11)
 ### Features Added
 
 - New value `ColumnDataTypeHintEnumVector16` added to enum type `ColumnDataTypeHintEnum`

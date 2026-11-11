@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-15-preview/ListLocationModels.json
+// Generated from example definition: 2026-11-01/ListLocationModels.json
 func ExampleModelsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

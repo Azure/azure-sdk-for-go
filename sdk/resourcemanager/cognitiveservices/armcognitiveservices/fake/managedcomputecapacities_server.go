@@ -95,11 +95,13 @@ func (m *ManagedComputeCapacitiesServerTransport) dispatchNewListPager(req *http
 		qp := req.URL.Query()
 		acceleratorTypeParam := getOptional(qp.Get("acceleratorType"))
 		deploymentIDParam := getOptional(qp.Get("deploymentId"))
+		locationParam := getOptional(qp.Get("location"))
 		var options *armcognitiveservices.ManagedComputeCapacitiesClientListOptions
-		if acceleratorTypeParam != nil || deploymentIDParam != nil {
+		if acceleratorTypeParam != nil || deploymentIDParam != nil || locationParam != nil {
 			options = &armcognitiveservices.ManagedComputeCapacitiesClientListOptions{
 				AcceleratorType: acceleratorTypeParam,
 				DeploymentID:    deploymentIDParam,
+				Location:        locationParam,
 			}
 		}
 		resp := m.srv.NewListPager(qp.Get("offer"), options)

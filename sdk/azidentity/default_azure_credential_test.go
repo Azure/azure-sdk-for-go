@@ -176,6 +176,128 @@ func TestDefaultAzureCredential_AzurePowerShellCredentialOptions(t *testing.T) {
 	require.True(azurePowerShell.opts.inDefaultChain)
 }
 
+func TestDefaultAzureCredential_InvalidEnvironment(t *testing.T) {
+	// EnvironmentCredential would be available but for the invalid cloud name. The chain
+	// mustn't skip it and authenticate a different identity
+	for k, v := range map[string]string{
+		azureAuthorityHost: "",
+		azureClientID:      fakeClientID,
+		azureClientSecret:  fakeSecret,
+		azureEnvironment:   "invalid",
+		azureTenantID:      fakeTenantID,
+	} {
+		t.Setenv(k, v)
+	}
+	cred, err := NewDefaultAzureCredential(nil)
+	if err == nil {
+		t.Fatal("expected an error")
+	}
+	if !strings.Contains(err.Error(), azureEnvironment) {
+		t.Fatalf(`expected the error to mention %s, got "%s"`, azureEnvironment, err.Error())
+	}
+	if cred != nil {
+		t.Fatal("expected a nil credential")
+	}
+
+	// the variable is ignored when the application or AZURE_AUTHORITY_HOST specifies a cloud
+	_, err = NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+		ClientOptions: azcore.ClientOptions{Cloud: cloud.AzureGovernment},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Setenv(azureAuthorityHost, cloud.AzureChina.ActiveDirectoryAuthorityHost)
+	_, err = NewDefaultAzureCredential(nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// a cloud configuration having only services counts as specified, as it does in setAuthorityHost
+	t.Setenv(azureAuthorityHost, "")
+	_, err = NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+		ClientOptions: azcore.ClientOptions{
+			Cloud: cloud.Configuration{
+				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+					cloud.ResourceManager: {Audience: "https://localhost", Endpoint: "https://localhost"},
+				},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// and when the chain contains no credential that would read it
+	t.Setenv(azureAuthorityHost, "")
+	for _, name := range []string{credNameManagedIdentity, credNameAzureCLI, "dev"} {
+		t.Setenv(azureTokenCredentials, name)
+		_, err = NewDefaultAzureCredential(nil)
+		if err != nil {
+			t.Fatalf("unexpected error when %s=%s: %v", azureTokenCredentials, name, err)
+		}
+	}
+	for _, name := range []string{credNameEnvironment, credNameWorkloadIdentity, "prod"} {
+		t.Setenv(azureTokenCredentials, name)
+		_, err = NewDefaultAzureCredential(nil)
+		if err == nil {
+			t.Fatalf("expected an error when %s=%s", azureTokenCredentials, name)
+		}
+	}
+}
+
+func TestDefaultAzureCredential_Environment(t *testing.T) {
+	for name, expected := range map[string]cloud.Configuration{
+		"AzureChina":        cloud.AzureChina,
+		"AzureUSGovernment": cloud.AzureGovernment,
+	} {
+		t.Run(name, func(t *testing.T) {
+			for k, v := range map[string]string{
+				azureAuthorityHost: "",
+				azureClientID:      fakeClientID,
+				azureClientSecret:  fakeSecret,
+				azureEnvironment:   name,
+				azureTenantID:      fakeTenantID,
+			} {
+				t.Setenv(k, v)
+			}
+			tokenRequests := 0
+			sts := mockSTS{tokenRequestCallback: func(r *http.Request) *http.Response {
+				tokenRequests++
+				if actual := "https://" + r.URL.Host + "/"; actual != expected.ActiveDirectoryAuthorityHost {
+					t.Fatalf(`expected a token request to "%s", got one to "%s"`, expected.ActiveDirectoryAuthorityHost, actual)
+				}
+				return nil
+			}}
+			// DefaultAzureCredential should authenticate with EnvironmentCredential in the named cloud
+			dac, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+				ClientOptions: azcore.ClientOptions{Transport: &sts},
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			// so should a credential the application constructs directly
+			csc, err := NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, &ClientSecretCredentialOptions{
+				ClientOptions: azcore.ClientOptions{Transport: &sts},
+			})
+			if err != nil {
+				t.Fatal(err)
+			}
+			for i, cred := range []azcore.TokenCredential{dac, csc} {
+				tk, err := cred.GetToken(context.Background(), testTRO)
+				if err != nil {
+					t.Fatal(err)
+				}
+				if tk.Token != tokenValue {
+					t.Fatalf(`unexpected token "%s"`, tk.Token)
+				}
+				if tokenRequests != i+1 {
+					t.Fatalf("expected %d token requests, got %d", i+1, tokenRequests)
+				}
+			}
+		})
+	}
+}
+
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 	// ensure NewEnvironmentCredential returns an error
 	t.Setenv(azureTenantID, "")

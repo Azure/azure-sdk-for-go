@@ -68,7 +68,8 @@ func (client *ServiceTasksClient) Cancel(ctx context.Context, groupName string, 
 	if err != nil {
 		return ServiceTasksClientCancelResponse{}, err
 	}
-	return client.cancelHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.cancelHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -139,7 +140,8 @@ func (client *ServiceTasksClient) CreateOrUpdate(ctx context.Context, groupName 
 	if err != nil {
 		return ServiceTasksClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -212,7 +214,8 @@ func (client *ServiceTasksClient) Delete(ctx context.Context, groupName string, 
 		return ServiceTasksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ServiceTasksClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ServiceTasksClientDeleteResponse{}, err
 	}
 	return ServiceTasksClientDeleteResponse{}, nil
 }
@@ -272,7 +275,8 @@ func (client *ServiceTasksClient) Get(ctx context.Context, groupName string, ser
 	if err != nil {
 		return ServiceTasksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -428,7 +432,8 @@ func (client *ServiceTasksClient) Update(ctx context.Context, groupName string, 
 	if err != nil {
 		return ServiceTasksClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

@@ -66,7 +66,8 @@ func (client *WorkspaceManagerAssignmentJobsClient) Create(ctx context.Context, 
 	if err != nil {
 		return WorkspaceManagerAssignmentJobsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -134,7 +135,8 @@ func (client *WorkspaceManagerAssignmentJobsClient) Delete(ctx context.Context, 
 		return WorkspaceManagerAssignmentJobsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WorkspaceManagerAssignmentJobsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WorkspaceManagerAssignmentJobsClientDeleteResponse{}, err
 	}
 	return WorkspaceManagerAssignmentJobsClientDeleteResponse{}, nil
 }
@@ -194,7 +196,8 @@ func (client *WorkspaceManagerAssignmentJobsClient) Get(ctx context.Context, res
 	if err != nil {
 		return WorkspaceManagerAssignmentJobsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

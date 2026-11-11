@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesCreate.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesCreate.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesCreateWithGeoReplication.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesCreateWithGeoReplication.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActiveGeoReplication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateWithActive
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesNoClusterCacheCreate.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesNoClusterCacheCreate.json
 func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterCache() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -230,7 +230,7 @@ func ExampleDatabasesClient_BeginCreate_redisEnterpriseDatabasesCreateNoClusterC
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesDelete.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesDelete.json
 func ExampleDatabasesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -256,7 +256,7 @@ func ExampleDatabasesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesExport.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesExport.json
 func ExampleDatabasesClient_BeginExport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -284,7 +284,7 @@ func ExampleDatabasesClient_BeginExport() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesFlush.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesFlush.json
 func ExampleDatabasesClient_BeginFlush() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -315,7 +315,7 @@ func ExampleDatabasesClient_BeginFlush() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesForceLink.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesForceLink.json
 func ExampleDatabasesClient_BeginForceLinkToReplicationGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +348,7 @@ func ExampleDatabasesClient_BeginForceLinkToReplicationGroup() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesForceUnlink.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesForceUnlink.json
 func ExampleDatabasesClient_BeginForceUnlink() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -378,7 +378,7 @@ func ExampleDatabasesClient_BeginForceUnlink() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesImport.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesImport.json
 func ExampleDatabasesClient_BeginImport() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +409,7 @@ func ExampleDatabasesClient_BeginImport() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesRegenerateKey.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesRegenerateKey.json
 func ExampleDatabasesClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -441,7 +441,7 @@ func ExampleDatabasesClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesNoClusterCacheUpdateClustering.json
 func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClusteringOnNoClusterCache() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -492,7 +492,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdateClustering
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesUpdate.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesUpdate.json
 func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -557,7 +557,7 @@ func ExampleDatabasesClient_BeginUpdate_redisEnterpriseDatabasesUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesUpgradeDBRedisVersion.json
 func ExampleDatabasesClient_BeginUpgradeDBRedisVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -578,7 +578,7 @@ func ExampleDatabasesClient_BeginUpgradeDBRedisVersion() {
 	}
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesGet.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesGet.json
 func ExampleDatabasesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -628,7 +628,7 @@ func ExampleDatabasesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesListKeys.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesListKeys.json
 func ExampleDatabasesClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -654,7 +654,7 @@ func ExampleDatabasesClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01/RedisEnterpriseDatabasesListByCluster.json
+// Generated from example definition: 2026-10-01-preview/RedisEnterpriseDatabasesListByCluster.json
 func ExampleDatabasesClient_NewListByClusterPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

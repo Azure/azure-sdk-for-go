@@ -69,7 +69,8 @@ func (client *ManagedHsmKeysClient) CreateIfNotExist(ctx context.Context, resour
 	if err != nil {
 		return ManagedHsmKeysClientCreateIfNotExistResponse{}, err
 	}
-	return client.createIfNotExistHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createIfNotExistHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createIfNotExistCreateRequest creates the CreateIfNotExist request.
@@ -139,7 +140,8 @@ func (client *ManagedHsmKeysClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ManagedHsmKeysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -207,7 +209,8 @@ func (client *ManagedHsmKeysClient) GetVersion(ctx context.Context, resourceGrou
 	if err != nil {
 		return ManagedHsmKeysClientGetVersionResponse{}, err
 	}
-	return client.getVersionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVersionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVersionCreateRequest creates the GetVersion request.

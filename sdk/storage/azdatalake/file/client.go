@@ -69,8 +69,13 @@ func NewClient(fileURL string, cred azcore.TokenCredential, options *ClientOptio
 	options.PerCallPolicies = perCallPolicies
 	blobClientOpts := blockblob.ClientOptions{
 		ClientOptions: options.ClientOptions,
+		// sessions apply only to the requests this client sends to the blob endpoint
+		Session: conOptions.Session,
 	}
-	blobClient, _ := blockblob.NewClient(blobURL, cred, &blobClientOpts)
+	blobClient, err := blockblob.NewClient(blobURL, cred, &blobClientOpts)
+	if err != nil {
+		return nil, err
+	}
 	fileClient := base.NewPathClient(fileURL, blobURL, blobClient, azClient, nil, &cred, (*base.ClientOptions)(conOptions))
 
 	return (*Client)(fileClient), nil

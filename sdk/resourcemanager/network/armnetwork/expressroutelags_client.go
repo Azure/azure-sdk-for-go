@@ -85,7 +85,8 @@ func (client *ExpressRouteLagsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -128,7 +129,7 @@ func (client *ExpressRouteLagsClient) createOrUpdateCreateRequest(ctx context.Co
 //     method.
 func (client *ExpressRouteLagsClient) BeginDelete(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteLagsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, expressRouteLagName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, expressRouteLagName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *ExpressRouteLagsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// delete - Deletes the specified ExpressRouteLag resource.
+// deleteOperation - Deletes the specified ExpressRouteLag resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRouteLagsClient) delete(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRouteLagsClient) deleteOperation(ctx context.Context, resourceGroupName string, expressRouteLagName string, options *ExpressRouteLagsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteLagsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *ExpressRouteLagsClient) delete(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -211,7 +213,8 @@ func (client *ExpressRouteLagsClient) GenerateLoa(ctx context.Context, resourceG
 	if err != nil {
 		return ExpressRouteLagsClientGenerateLoaResponse{}, err
 	}
-	return client.generateLoaHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateLoaHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateLoaCreateRequest creates the GenerateLoa request.
@@ -275,7 +278,8 @@ func (client *ExpressRouteLagsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return ExpressRouteLagsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -337,7 +341,8 @@ func (client *ExpressRouteLagsClient) LinksGet(ctx context.Context, resourceGrou
 	if err != nil {
 		return ExpressRouteLagsClientLinksGetResponse{}, err
 	}
-	return client.linksGetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.linksGetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // linksGetCreateRequest creates the LinksGet request.
@@ -404,7 +409,8 @@ func (client *ExpressRouteLagsClient) MembersGet(ctx context.Context, resourceGr
 	if err != nil {
 		return ExpressRouteLagsClientMembersGetResponse{}, err
 	}
-	return client.membersGetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.membersGetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // membersGetCreateRequest creates the MembersGet request.
@@ -771,7 +777,8 @@ func (client *ExpressRouteLagsClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ExpressRouteLagsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

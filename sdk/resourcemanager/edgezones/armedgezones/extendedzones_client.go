@@ -62,7 +62,8 @@ func (client *ExtendedZonesClient) Get(ctx context.Context, extendedZoneName str
 	if err != nil {
 		return ExtendedZonesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -184,7 +185,8 @@ func (client *ExtendedZonesClient) Register(ctx context.Context, extendedZoneNam
 	if err != nil {
 		return ExtendedZonesClientRegisterResponse{}, err
 	}
-	return client.registerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.registerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // registerCreateRequest creates the Register request.
@@ -240,7 +242,8 @@ func (client *ExtendedZonesClient) Unregister(ctx context.Context, extendedZoneN
 	if err != nil {
 		return ExtendedZonesClientUnregisterResponse{}, err
 	}
-	return client.unregisterHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.unregisterHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // unregisterCreateRequest creates the Unregister request.

@@ -66,7 +66,8 @@ func (client *Python2PackageClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return Python2PackageClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *Python2PackageClient) Delete(ctx context.Context, resourceGroupNam
 		return Python2PackageClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return Python2PackageClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return Python2PackageClientDeleteResponse{}, err
 	}
 	return Python2PackageClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *Python2PackageClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return Python2PackageClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -333,7 +336,8 @@ func (client *Python2PackageClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return Python2PackageClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

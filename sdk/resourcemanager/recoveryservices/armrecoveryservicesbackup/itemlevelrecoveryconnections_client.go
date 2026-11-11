@@ -71,7 +71,8 @@ func (client *ItemLevelRecoveryConnectionsClient) ListInstantItemRecoveryOperati
 	if err != nil {
 		return ItemLevelRecoveryConnectionsClientListInstantItemRecoveryOperationResultResponse{}, err
 	}
-	return client.listInstantItemRecoveryOperationResultHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listInstantItemRecoveryOperationResultHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listInstantItemRecoveryOperationResultCreateRequest creates the ListInstantItemRecoveryOperationResult request.
@@ -154,7 +155,8 @@ func (client *ItemLevelRecoveryConnectionsClient) Provision(ctx context.Context,
 		return ItemLevelRecoveryConnectionsClientProvisionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return ItemLevelRecoveryConnectionsClientProvisionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ItemLevelRecoveryConnectionsClientProvisionResponse{}, err
 	}
 	return ItemLevelRecoveryConnectionsClientProvisionResponse{}, nil
 }
@@ -225,7 +227,8 @@ func (client *ItemLevelRecoveryConnectionsClient) Revoke(ctx context.Context, va
 		return ItemLevelRecoveryConnectionsClientRevokeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return ItemLevelRecoveryConnectionsClientRevokeResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ItemLevelRecoveryConnectionsClientRevokeResponse{}, err
 	}
 	return ItemLevelRecoveryConnectionsClientRevokeResponse{}, nil
 }

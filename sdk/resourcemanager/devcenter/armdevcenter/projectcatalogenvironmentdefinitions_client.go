@@ -66,7 +66,8 @@ func (client *ProjectCatalogEnvironmentDefinitionsClient) GetErrorDetails(ctx co
 	if err != nil {
 		return ProjectCatalogEnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
 	}
-	return client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.

@@ -71,7 +71,8 @@ func (client *MetricConfigurationsClient) CreateOrUpdate(ctx context.Context, re
 	if err != nil {
 		return MetricConfigurationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -155,7 +156,8 @@ func (client *MetricConfigurationsClient) Delete(ctx context.Context, resourceGr
 		return MetricConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return MetricConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return MetricConfigurationsClientDeleteResponse{}, err
 	}
 	return MetricConfigurationsClientDeleteResponse{}, nil
 }
@@ -223,7 +225,8 @@ func (client *MetricConfigurationsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return MetricConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

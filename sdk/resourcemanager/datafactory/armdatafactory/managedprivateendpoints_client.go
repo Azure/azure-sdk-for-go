@@ -67,7 +67,8 @@ func (client *ManagedPrivateEndpointsClient) CreateOrUpdate(ctx context.Context,
 	if err != nil {
 		return ManagedPrivateEndpointsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -146,7 +147,8 @@ func (client *ManagedPrivateEndpointsClient) Delete(ctx context.Context, resourc
 		return ManagedPrivateEndpointsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ManagedPrivateEndpointsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagedPrivateEndpointsClientDeleteResponse{}, err
 	}
 	return ManagedPrivateEndpointsClientDeleteResponse{}, nil
 }
@@ -206,7 +208,8 @@ func (client *ManagedPrivateEndpointsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return ManagedPrivateEndpointsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

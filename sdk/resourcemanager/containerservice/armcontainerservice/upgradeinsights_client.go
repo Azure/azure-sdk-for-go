@@ -71,7 +71,8 @@ func (client *UpgradeInsightsClient) Generate(ctx context.Context, resourceGroup
 	if err != nil {
 		return UpgradeInsightsClientGenerateResponse{}, err
 	}
-	return client.generateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateCreateRequest creates the Generate request.
@@ -140,7 +141,8 @@ func (client *UpgradeInsightsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return UpgradeInsightsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

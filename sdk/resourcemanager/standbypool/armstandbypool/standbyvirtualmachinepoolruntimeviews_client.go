@@ -66,7 +66,8 @@ func (client *StandbyVirtualMachinePoolRuntimeViewsClient) Get(ctx context.Conte
 	if err != nil {
 		return StandbyVirtualMachinePoolRuntimeViewsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -65,7 +65,8 @@ func (client *JobScheduleClient) Create(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return JobScheduleClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -135,7 +136,8 @@ func (client *JobScheduleClient) Delete(ctx context.Context, resourceGroupName s
 		return JobScheduleClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return JobScheduleClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JobScheduleClientDeleteResponse{}, err
 	}
 	return JobScheduleClientDeleteResponse{}, nil
 }
@@ -189,7 +191,8 @@ func (client *JobScheduleClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return JobScheduleClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

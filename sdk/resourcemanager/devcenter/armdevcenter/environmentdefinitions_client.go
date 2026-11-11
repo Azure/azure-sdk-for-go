@@ -67,7 +67,8 @@ func (client *EnvironmentDefinitionsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return EnvironmentDefinitionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -138,7 +139,8 @@ func (client *EnvironmentDefinitionsClient) GetByProjectCatalog(ctx context.Cont
 	if err != nil {
 		return EnvironmentDefinitionsClientGetByProjectCatalogResponse{}, err
 	}
-	return client.getByProjectCatalogHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByProjectCatalogHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByProjectCatalogCreateRequest creates the GetByProjectCatalog request.
@@ -209,7 +211,8 @@ func (client *EnvironmentDefinitionsClient) GetErrorDetails(ctx context.Context,
 	if err != nil {
 		return EnvironmentDefinitionsClientGetErrorDetailsResponse{}, err
 	}
-	return client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getErrorDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getErrorDetailsCreateRequest creates the GetErrorDetails request.

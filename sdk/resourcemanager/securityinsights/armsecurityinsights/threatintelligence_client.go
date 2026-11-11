@@ -65,7 +65,8 @@ func (client *ThreatIntelligenceClient) Count(ctx context.Context, resourceGroup
 	if err != nil {
 		return ThreatIntelligenceClientCountResponse{}, err
 	}
-	return client.countHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.countHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // countCreateRequest creates the Count request.

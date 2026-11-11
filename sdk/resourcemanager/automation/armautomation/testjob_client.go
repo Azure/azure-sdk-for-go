@@ -65,7 +65,8 @@ func (client *TestJobClient) Create(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return TestJobClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -134,7 +135,8 @@ func (client *TestJobClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return TestJobClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -200,7 +202,8 @@ func (client *TestJobClient) Resume(ctx context.Context, resourceGroupName strin
 		return TestJobClientResumeResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return TestJobClientResumeResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TestJobClientResumeResponse{}, err
 	}
 	return TestJobClientResumeResponse{}, nil
 }
@@ -255,7 +258,8 @@ func (client *TestJobClient) Stop(ctx context.Context, resourceGroupName string,
 		return TestJobClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return TestJobClientStopResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TestJobClientStopResponse{}, err
 	}
 	return TestJobClientStopResponse{}, nil
 }
@@ -310,7 +314,8 @@ func (client *TestJobClient) Suspend(ctx context.Context, resourceGroupName stri
 		return TestJobClientSuspendResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return TestJobClientSuspendResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TestJobClientSuspendResponse{}, err
 	}
 	return TestJobClientSuspendResponse{}, nil
 }

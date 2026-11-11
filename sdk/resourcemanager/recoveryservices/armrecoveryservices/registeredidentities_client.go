@@ -66,7 +66,8 @@ func (client *RegisteredIdentitiesClient) Delete(ctx context.Context, resourceGr
 		return RegisteredIdentitiesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RegisteredIdentitiesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RegisteredIdentitiesClientDeleteResponse{}, err
 	}
 	return RegisteredIdentitiesClientDeleteResponse{}, nil
 }

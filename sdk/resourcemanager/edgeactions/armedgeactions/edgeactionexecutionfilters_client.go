@@ -86,7 +86,8 @@ func (client *EdgeActionExecutionFiltersClient) create(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -134,7 +135,7 @@ func (client *EdgeActionExecutionFiltersClient) createCreateRequest(ctx context.
 //     method.
 func (client *EdgeActionExecutionFiltersClient) BeginDelete(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, options *EdgeActionExecutionFiltersClientBeginDeleteOptions) (*runtime.Poller[EdgeActionExecutionFiltersClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, edgeActionName, executionFilter, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, edgeActionName, executionFilter, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +150,9 @@ func (client *EdgeActionExecutionFiltersClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// delete - Delete a EdgeActionExecutionFilter
+// deleteOperation - Delete a EdgeActionExecutionFilter
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *EdgeActionExecutionFiltersClient) delete(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, options *EdgeActionExecutionFiltersClientBeginDeleteOptions) (*http.Response, error) {
+func (client *EdgeActionExecutionFiltersClient) deleteOperation(ctx context.Context, resourceGroupName string, edgeActionName string, executionFilter string, options *EdgeActionExecutionFiltersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionExecutionFiltersClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -166,7 +167,8 @@ func (client *EdgeActionExecutionFiltersClient) delete(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -244,7 +246,8 @@ func (client *EdgeActionExecutionFiltersClient) update(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -304,7 +307,8 @@ func (client *EdgeActionExecutionFiltersClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return EdgeActionExecutionFiltersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -66,7 +66,8 @@ func (client *AlertRuleResourcesClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return AlertRuleResourcesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *AlertRuleResourcesClient) Delete(ctx context.Context, resourceGrou
 		return AlertRuleResourcesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AlertRuleResourcesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AlertRuleResourcesClientDeleteResponse{}, err
 	}
 	return AlertRuleResourcesClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *AlertRuleResourcesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AlertRuleResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

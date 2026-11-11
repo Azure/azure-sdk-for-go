@@ -66,7 +66,8 @@ func (client *LoadBalancerFrontendIPConfigurationsClient) Get(ctx context.Contex
 	if err != nil {
 		return LoadBalancerFrontendIPConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

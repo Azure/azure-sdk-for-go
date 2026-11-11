@@ -66,7 +66,8 @@ func (client *EntityQueriesClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return EntityQueriesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *EntityQueriesClient) Delete(ctx context.Context, resourceGroupName
 		return EntityQueriesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return EntityQueriesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EntityQueriesClientDeleteResponse{}, err
 	}
 	return EntityQueriesClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *EntityQueriesClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return EntityQueriesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

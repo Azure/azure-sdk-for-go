@@ -45,6 +45,87 @@ func NewDomainsClient(subscriptionID string, credential azcore.TokenCredential, 
 	return client, nil
 }
 
+// BeginCreateOrUpdate - Creates or updates a domain.
+//
+// Description for Creates or updates a domain.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - domainName - Name of the domain.
+//   - domain - Domain registration information.
+//   - options - DomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainsClient.BeginCreateOrUpdate
+//     method.
+func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DomainsClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, domainName, domain, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DomainsClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Creates or updates a domain.
+//
+// Description for Creates or updates a domain.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "DomainsClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, domainName, domain, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domain Domain, _ *DomainsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if domainName == "" {
+		return nil, errors.New("parameter domainName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20241101)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, domain); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // CheckAvailability - Check if a domain is available for registration.
 //
 // Description for Check if a domain is available for registration.
@@ -66,7 +147,8 @@ func (client *DomainsClient) CheckAvailability(ctx context.Context, identifier N
 	if err != nil {
 		return DomainsClientCheckAvailabilityResponse{}, err
 	}
-	return client.checkAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkAvailabilityCreateRequest creates the CheckAvailability request.
@@ -103,86 +185,6 @@ func (client *DomainsClient) checkAvailabilityHandleResponse(resp *http.Response
 	return result, nil
 }
 
-// BeginCreateOrUpdate - Creates or updates a domain.
-//
-// Description for Creates or updates a domain.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - domainName - Name of the domain.
-//   - domain - Domain registration information.
-//   - options - DomainsClientBeginCreateOrUpdateOptions contains the optional parameters for the DomainsClient.BeginCreateOrUpdate
-//     method.
-func (client *DomainsClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsClientBeginCreateOrUpdateOptions) (*runtime.Poller[DomainsClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, domainName, domain, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[DomainsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[DomainsClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Creates or updates a domain.
-//
-// Description for Creates or updates a domain.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *DomainsClient) createOrUpdate(ctx context.Context, resourceGroupName string, domainName string, domain Domain, options *DomainsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "DomainsClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, domainName, domain, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *DomainsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domain Domain, _ *DomainsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DomainRegistration/domains/{domainName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if domainName == "" {
-		return nil, errors.New("parameter domainName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{domainName}", url.PathEscape(domainName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20241101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, domain); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
 // CreateOrUpdateOwnershipIdentifier - Creates an ownership identifier for a domain or updates identifier details for an existing
 // identifier
 //
@@ -208,7 +210,8 @@ func (client *DomainsClient) CreateOrUpdateOwnershipIdentifier(ctx context.Conte
 	if err != nil {
 		return DomainsClientCreateOrUpdateOwnershipIdentifierResponse{}, err
 	}
-	return client.createOrUpdateOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateOwnershipIdentifierCreateRequest creates the CreateOrUpdateOwnershipIdentifier request.
@@ -279,7 +282,8 @@ func (client *DomainsClient) Delete(ctx context.Context, resourceGroupName strin
 		return DomainsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DomainsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DomainsClientDeleteResponse{}, err
 	}
 	return DomainsClientDeleteResponse{}, nil
 }
@@ -336,7 +340,8 @@ func (client *DomainsClient) DeleteOwnershipIdentifier(ctx context.Context, reso
 		return DomainsClientDeleteOwnershipIdentifierResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DomainsClientDeleteOwnershipIdentifierResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DomainsClientDeleteOwnershipIdentifierResponse{}, err
 	}
 	return DomainsClientDeleteOwnershipIdentifierResponse{}, nil
 }
@@ -391,7 +396,8 @@ func (client *DomainsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return DomainsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -452,7 +458,8 @@ func (client *DomainsClient) GetControlCenterSsoRequest(ctx context.Context, opt
 	if err != nil {
 		return DomainsClientGetControlCenterSsoRequestResponse{}, err
 	}
-	return client.getControlCenterSsoRequestHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getControlCenterSsoRequestHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getControlCenterSsoRequestCreateRequest creates the GetControlCenterSsoRequest request.
@@ -508,7 +515,8 @@ func (client *DomainsClient) GetOwnershipIdentifier(ctx context.Context, resourc
 	if err != nil {
 		return DomainsClientGetOwnershipIdentifierResponse{}, err
 	}
-	return client.getOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getOwnershipIdentifierCreateRequest creates the GetOwnershipIdentifier request.
@@ -549,74 +557,6 @@ func (client *DomainsClient) getOwnershipIdentifierHandleResponse(resp *http.Res
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DomainOwnershipIdentifier); err != nil {
 		return DomainsClientGetOwnershipIdentifierResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Get all domains in a subscription.
-//
-// Description for Get all domains in a subscription.
-//   - options - DomainsClientListOptions contains the optional parameters for the DomainsClient.NewListPager method.
-func (client *DomainsClient) NewListPager(options *DomainsClientListOptions) *runtime.Pager[DomainsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DomainsClientListResponse]{
-		More: func(page DomainsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DomainsClientListResponse) (DomainsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DomainsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return DomainsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return DomainsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *DomainsClient) listCreateRequest(ctx context.Context, nextLink string, _ *DomainsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20241101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *DomainsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DomainsClientListResponse, error) {
-	result := DomainsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DomainCollection); err != nil {
-		return DomainsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -774,6 +714,74 @@ func (client *DomainsClient) listOwnershipIdentifiersHandleResponse(resp *http.R
 	return result, nil
 }
 
+// NewListPager - Get all domains in a subscription.
+//
+// Description for Get all domains in a subscription.
+//   - options - DomainsClientListOptions contains the optional parameters for the DomainsClient.NewListPager method.
+func (client *DomainsClient) NewListPager(options *DomainsClientListOptions) *runtime.Pager[DomainsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DomainsClientListResponse]{
+		More: func(page DomainsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DomainsClientListResponse) (DomainsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DomainsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return DomainsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DomainsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *DomainsClient) listCreateRequest(ctx context.Context, nextLink string, _ *DomainsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DomainRegistration/domains"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *DomainsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DomainsClientListResponse, error) {
+	result := DomainsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DomainCollection); err != nil {
+		return DomainsClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // NewListRecommendationsPager - Get domain name recommendations based on keywords.
 //
 // Description for Get domain name recommendations based on keywords.
@@ -870,7 +878,8 @@ func (client *DomainsClient) Renew(ctx context.Context, resourceGroupName string
 		return DomainsClientRenewResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return DomainsClientRenewResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DomainsClientRenewResponse{}, err
 	}
 	return DomainsClientRenewResponse{}, nil
 }
@@ -921,7 +930,8 @@ func (client *DomainsClient) TransferOut(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return DomainsClientTransferOutResponse{}, err
 	}
-	return client.transferOutHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.transferOutHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // transferOutCreateRequest creates the TransferOut request.
@@ -984,7 +994,8 @@ func (client *DomainsClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return DomainsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -1054,7 +1065,8 @@ func (client *DomainsClient) UpdateOwnershipIdentifier(ctx context.Context, reso
 	if err != nil {
 		return DomainsClientUpdateOwnershipIdentifierResponse{}, err
 	}
-	return client.updateOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateOwnershipIdentifierHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateOwnershipIdentifierCreateRequest creates the UpdateOwnershipIdentifier request.

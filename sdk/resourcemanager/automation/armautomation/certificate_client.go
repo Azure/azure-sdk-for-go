@@ -66,7 +66,8 @@ func (client *CertificateClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err != nil {
 		return CertificateClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *CertificateClient) Delete(ctx context.Context, resourceGroupName s
 		return CertificateClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return CertificateClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CertificateClientDeleteResponse{}, err
 	}
 	return CertificateClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *CertificateClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return CertificateClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -333,7 +336,8 @@ func (client *CertificateClient) Update(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return CertificateClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

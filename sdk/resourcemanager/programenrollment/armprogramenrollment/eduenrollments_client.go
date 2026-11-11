@@ -68,7 +68,7 @@ func (client *EduEnrollmentsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Creates or updates the specified edu enrollment.
+// createOrUpdate - Creates or updates the specified edu enrollment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EduEnrollmentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, enrollmentName string, resource EduEnrollment, options *EduEnrollmentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *EduEnrollmentsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EduEnrollmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, enrollmentName string, resource EduEnrollment, _ *EduEnrollmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments/{enrollmentName}"
 	if client.subscriptionID == "" {
@@ -143,7 +144,7 @@ func (client *EduEnrollmentsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Deletes the specified edu enrollment.
+// deleteOperation - Deletes the specified edu enrollment.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *EduEnrollmentsClient) deleteOperation(ctx context.Context, resourceGroupName string, enrollmentName string, options *EduEnrollmentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,12 +161,13 @@ func (client *EduEnrollmentsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EduEnrollmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, enrollmentName string, _ *EduEnrollmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ProgramEnrollment/eduEnrollments/{enrollmentName}"
 	if client.subscriptionID == "" {
@@ -209,7 +211,8 @@ func (client *EduEnrollmentsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return EduEnrollmentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -409,7 +412,8 @@ func (client *EduEnrollmentsClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return EduEnrollmentsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

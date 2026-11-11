@@ -44,6 +44,249 @@ func NewResourceClient(subscriptionID string, credential azcore.TokenCredential,
 	return client, nil
 }
 
+// BeginCreateOrUpdate - Create or update the metadata of an IoT hub.
+//
+// Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata
+// and security metadata, and then combine them with the modified values in a new body to update the IoT hub.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the IoT hub.
+//   - iotHubDescription - The IoT hub metadata and security metadata.
+//   - options - ResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the ResourceClient.BeginCreateOrUpdate
+//     method.
+func (client *ResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, iotHubDescription Description, options *ResourceClientBeginCreateOrUpdateOptions) (*runtime.Poller[ResourceClientCreateOrUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, iotHubDescription, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientCreateOrUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientCreateOrUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// createOrUpdate - Create or update the metadata of an IoT hub.
+//
+// Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata
+// and security metadata, and then combine them with the modified values in a new body to update the IoT hub.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ResourceClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, iotHubDescription Description, options *ResourceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ResourceClient.BeginCreateOrUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, iotHubDescription, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// createOrUpdateCreateRequest creates the createOrUpdate request.
+func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, iotHubDescription Description, options *ResourceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, iotHubDescription); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginDelete - Delete an IoT hub
+//
+// Delete an IoT hub.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the IoT hub.
+//   - options - ResourceClientBeginDeleteOptions contains the optional parameters for the ResourceClient.BeginDelete method.
+func (client *ResourceClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientBeginDeleteOptions) (*runtime.Poller[ResourceClientDeleteResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientDeleteResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// deleteOperation - Delete an IoT hub
+//
+// Delete an IoT hub.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ResourceClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientBeginDeleteOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ResourceClient.BeginDelete"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// deleteCreateRequest creates the delete request.
+func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ResourceClientBeginDeleteOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// BeginUpdate - Update an existing IoT Hubs tags.
+//
+// Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the IoT hub.
+//   - iotHubTags - Updated tag information to set into the iot hub instance.
+//   - options - ResourceClientBeginUpdateOptions contains the optional parameters for the ResourceClient.BeginUpdate method.
+func (client *ResourceClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, iotHubTags TagsResource, options *ResourceClientBeginUpdateOptions) (*runtime.Poller[ResourceClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, resourceName, iotHubTags, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientUpdateResponse]{
+			FinalStateVia: runtime.FinalStateViaLocation,
+			Tracer:        client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update an existing IoT Hubs tags.
+//
+// Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ResourceClient) update(ctx context.Context, resourceGroupName string, resourceName string, iotHubTags TagsResource, options *ResourceClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ResourceClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, iotHubTags, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ResourceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, iotHubTags TagsResource, _ *ResourceClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, iotHubTags); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // CheckNameAvailability - Check if an IoT hub name is available
 //
 // Check if an IoT hub name is available.
@@ -65,7 +308,8 @@ func (client *ResourceClient) CheckNameAvailability(ctx context.Context, operati
 	if err != nil {
 		return ResourceClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -127,7 +371,8 @@ func (client *ResourceClient) CreateEventHubConsumerGroup(ctx context.Context, r
 	if err != nil {
 		return ResourceClientCreateEventHubConsumerGroupResponse{}, err
 	}
-	return client.createEventHubConsumerGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createEventHubConsumerGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createEventHubConsumerGroupCreateRequest creates the CreateEventHubConsumerGroup request.
@@ -180,166 +425,6 @@ func (client *ResourceClient) createEventHubConsumerGroupHandleResponse(resp *ht
 	return result, nil
 }
 
-// BeginCreateOrUpdate - Create or update the metadata of an IoT hub.
-//
-// Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata
-// and security metadata, and then combine them with the modified values in a new body to update the IoT hub.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IoT hub.
-//   - iotHubDescription - The IoT hub metadata and security metadata.
-//   - options - ResourceClientBeginCreateOrUpdateOptions contains the optional parameters for the ResourceClient.BeginCreateOrUpdate
-//     method.
-func (client *ResourceClient) BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, iotHubDescription Description, options *ResourceClientBeginCreateOrUpdateOptions) (*runtime.Poller[ResourceClientCreateOrUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.createOrUpdate(ctx, resourceGroupName, resourceName, iotHubDescription, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientCreateOrUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientCreateOrUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// CreateOrUpdate - Create or update the metadata of an IoT hub.
-//
-// Create or update the metadata of an Iot hub. The usual pattern to modify a property is to retrieve the IoT hub metadata
-// and security metadata, and then combine them with the modified values in a new body to update the IoT hub.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ResourceClient) createOrUpdate(ctx context.Context, resourceGroupName string, resourceName string, iotHubDescription Description, options *ResourceClientBeginCreateOrUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ResourceClient.BeginCreateOrUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, resourceName, iotHubDescription, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ResourceClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, iotHubDescription Description, options *ResourceClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPut, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, iotHubDescription); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// BeginDelete - Delete an IoT hub
-//
-// Delete an IoT hub.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IoT hub.
-//   - options - ResourceClientBeginDeleteOptions contains the optional parameters for the ResourceClient.BeginDelete method.
-func (client *ResourceClient) BeginDelete(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientBeginDeleteOptions) (*runtime.Poller[ResourceClientDeleteResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.deleteOperation(ctx, resourceGroupName, resourceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientDeleteResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Delete - Delete an IoT hub
-//
-// Delete an IoT hub.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ResourceClient) deleteOperation(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientBeginDeleteOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ResourceClient.BeginDelete"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.deleteCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// deleteCreateRequest creates the Delete request.
-func (client *ResourceClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ResourceClientBeginDeleteOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodDelete, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
 // DeleteEventHubConsumerGroup - Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub
 //
 // Delete a consumer group from an Event Hub-compatible endpoint in an IoT hub.
@@ -365,7 +450,8 @@ func (client *ResourceClient) DeleteEventHubConsumerGroup(ctx context.Context, r
 		return ResourceClientDeleteEventHubConsumerGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ResourceClientDeleteEventHubConsumerGroupResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ResourceClientDeleteEventHubConsumerGroupResponse{}, err
 	}
 	return ResourceClientDeleteEventHubConsumerGroupResponse{}, nil
 }
@@ -427,7 +513,8 @@ func (client *ResourceClient) ExportDevices(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ResourceClientExportDevicesResponse{}, err
 	}
-	return client.exportDevicesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.exportDevicesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // exportDevicesCreateRequest creates the ExportDevices request.
@@ -493,7 +580,8 @@ func (client *ResourceClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ResourceClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -530,6 +618,348 @@ func (client *ResourceClient) getHandleResponse(resp *http.Response, successCode
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Description); err != nil {
 		return ResourceClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// GetEventHubConsumerGroup - Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub
+//
+// Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the IoT hub.
+//   - eventHubEndpointName - The name of the EventHubEndpoint
+//   - name - The name of the consumer group to retrieve.
+//   - options - ResourceClientGetEventHubConsumerGroupOptions contains the optional parameters for the ResourceClient.GetEventHubConsumerGroup
+//     method.
+func (client *ResourceClient) GetEventHubConsumerGroup(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, options *ResourceClientGetEventHubConsumerGroupOptions) (ResourceClientGetEventHubConsumerGroupResponse, error) {
+	var err error
+	const operationName = "ResourceClient.GetEventHubConsumerGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getEventHubConsumerGroupCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, name, options)
+	if err != nil {
+		return ResourceClientGetEventHubConsumerGroupResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceClientGetEventHubConsumerGroupResponse{}, err
+	}
+	resp, err := client.getEventHubConsumerGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getEventHubConsumerGroupCreateRequest creates the GetEventHubConsumerGroup request.
+func (client *ResourceClient) getEventHubConsumerGroupCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, _ *ResourceClientGetEventHubConsumerGroupOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if eventHubEndpointName == "" {
+		return nil, errors.New("parameter eventHubEndpointName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{eventHubEndpointName}", url.PathEscape(eventHubEndpointName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getEventHubConsumerGroupHandleResponse handles the GetEventHubConsumerGroup response.
+func (client *ResourceClient) getEventHubConsumerGroupHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetEventHubConsumerGroupResponse, error) {
+	result := ResourceClientGetEventHubConsumerGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.EventHubConsumerGroupInfo); err != nil {
+		return ResourceClientGetEventHubConsumerGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// GetJob - Get the details of a job from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry
+//
+// Get the details of a job from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the IoT hub.
+//   - jobID - The job identifier.
+//   - options - ResourceClientGetJobOptions contains the optional parameters for the ResourceClient.GetJob method.
+func (client *ResourceClient) GetJob(ctx context.Context, resourceGroupName string, resourceName string, jobID string, options *ResourceClientGetJobOptions) (ResourceClientGetJobResponse, error) {
+	var err error
+	const operationName = "ResourceClient.GetJob"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getJobCreateRequest(ctx, resourceGroupName, resourceName, jobID, options)
+	if err != nil {
+		return ResourceClientGetJobResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceClientGetJobResponse{}, err
+	}
+	resp, err := client.getJobHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getJobCreateRequest creates the GetJob request.
+func (client *ResourceClient) getJobCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, jobID string, _ *ResourceClientGetJobOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/jobs/{jobId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if jobID == "" {
+		return nil, errors.New("parameter jobID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getJobHandleResponse handles the GetJob response.
+func (client *ResourceClient) getJobHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetJobResponse, error) {
+	result := ResourceClientGetJobResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
+		return ResourceClientGetJobResponse{}, err
+	}
+	return result, nil
+}
+
+// GetKeysForKeyName - Get a shared access policy by name from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security
+//
+// Get a shared access policy by name from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the IoT hub.
+//   - keyName - The name of the shared access policy.
+//   - options - ResourceClientGetKeysForKeyNameOptions contains the optional parameters for the ResourceClient.GetKeysForKeyName
+//     method.
+func (client *ResourceClient) GetKeysForKeyName(ctx context.Context, resourceGroupName string, resourceName string, keyName string, options *ResourceClientGetKeysForKeyNameOptions) (ResourceClientGetKeysForKeyNameResponse, error) {
+	var err error
+	const operationName = "ResourceClient.GetKeysForKeyName"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getKeysForKeyNameCreateRequest(ctx, resourceGroupName, resourceName, keyName, options)
+	if err != nil {
+		return ResourceClientGetKeysForKeyNameResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceClientGetKeysForKeyNameResponse{}, err
+	}
+	resp, err := client.getKeysForKeyNameHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getKeysForKeyNameCreateRequest creates the GetKeysForKeyName request.
+func (client *ResourceClient) getKeysForKeyNameCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, keyName string, _ *ResourceClientGetKeysForKeyNameOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/IotHubKeys/{keyName}/listkeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	if keyName == "" {
+		return nil, errors.New("parameter keyName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getKeysForKeyNameHandleResponse handles the GetKeysForKeyName response.
+func (client *ResourceClient) getKeysForKeyNameHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetKeysForKeyNameResponse, error) {
+	result := ResourceClientGetKeysForKeyNameResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRule); err != nil {
+		return ResourceClientGetKeysForKeyNameResponse{}, err
+	}
+	return result, nil
+}
+
+// GetStats - Get the statistics from an IoT hub
+//
+// Get the statistics from an IoT hub.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - ResourceClientGetStatsOptions contains the optional parameters for the ResourceClient.GetStats method.
+func (client *ResourceClient) GetStats(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientGetStatsOptions) (ResourceClientGetStatsResponse, error) {
+	var err error
+	const operationName = "ResourceClient.GetStats"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getStatsCreateRequest(ctx, resourceGroupName, resourceName, options)
+	if err != nil {
+		return ResourceClientGetStatsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceClientGetStatsResponse{}, err
+	}
+	resp, err := client.getStatsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getStatsCreateRequest creates the GetStats request.
+func (client *ResourceClient) getStatsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ResourceClientGetStatsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/IotHubStats"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getStatsHandleResponse handles the GetStats response.
+func (client *ResourceClient) getStatsHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetStatsResponse, error) {
+	result := ResourceClientGetStatsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryStatistics); err != nil {
+		return ResourceClientGetStatsResponse{}, err
+	}
+	return result, nil
+}
+
+// ImportDevices - Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
+// see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities
+//
+// Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - resourceName - The name of the IoT hub.
+//   - importDevicesParameters - The parameters that specify the import devices operation.
+//   - options - ResourceClientImportDevicesOptions contains the optional parameters for the ResourceClient.ImportDevices method.
+func (client *ResourceClient) ImportDevices(ctx context.Context, resourceGroupName string, resourceName string, importDevicesParameters ImportDevicesRequest, options *ResourceClientImportDevicesOptions) (ResourceClientImportDevicesResponse, error) {
+	var err error
+	const operationName = "ResourceClient.ImportDevices"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.importDevicesCreateRequest(ctx, resourceGroupName, resourceName, importDevicesParameters, options)
+	if err != nil {
+		return ResourceClientImportDevicesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ResourceClientImportDevicesResponse{}, err
+	}
+	resp, err := client.importDevicesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// importDevicesCreateRequest creates the ImportDevices request.
+func (client *ResourceClient) importDevicesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, importDevicesParameters ImportDevicesRequest, _ *ResourceClientImportDevicesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/importDevices"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if resourceName == "" {
+		return nil, errors.New("parameter resourceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20261001Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, importDevicesParameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// importDevicesHandleResponse handles the ImportDevices response.
+func (client *ResourceClient) importDevicesHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientImportDevicesResponse, error) {
+	result := ResourceClientImportDevicesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
+		return ResourceClientImportDevicesResponse{}, err
 	}
 	return result, nil
 }
@@ -608,214 +1038,6 @@ func (client *ResourceClient) getEndpointHealthHandleResponse(resp *http.Respons
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.EndpointHealthDataListResult); err != nil {
 		return ResourceClientGetEndpointHealthResponse{}, err
-	}
-	return result, nil
-}
-
-// GetEventHubConsumerGroup - Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub
-//
-// Get a consumer group from the Event Hub-compatible device-to-cloud endpoint for an IoT hub.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IoT hub.
-//   - eventHubEndpointName - The name of the EventHubEndpoint
-//   - name - The name of the consumer group to retrieve.
-//   - options - ResourceClientGetEventHubConsumerGroupOptions contains the optional parameters for the ResourceClient.GetEventHubConsumerGroup
-//     method.
-func (client *ResourceClient) GetEventHubConsumerGroup(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, options *ResourceClientGetEventHubConsumerGroupOptions) (ResourceClientGetEventHubConsumerGroupResponse, error) {
-	var err error
-	const operationName = "ResourceClient.GetEventHubConsumerGroup"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getEventHubConsumerGroupCreateRequest(ctx, resourceGroupName, resourceName, eventHubEndpointName, name, options)
-	if err != nil {
-		return ResourceClientGetEventHubConsumerGroupResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ResourceClientGetEventHubConsumerGroupResponse{}, err
-	}
-	return client.getEventHubConsumerGroupHandleResponse(httpResp, http.StatusOK)
-}
-
-// getEventHubConsumerGroupCreateRequest creates the GetEventHubConsumerGroup request.
-func (client *ResourceClient) getEventHubConsumerGroupCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, eventHubEndpointName string, name string, _ *ResourceClientGetEventHubConsumerGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/eventHubEndpoints/{eventHubEndpointName}/ConsumerGroups/{name}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if eventHubEndpointName == "" {
-		return nil, errors.New("parameter eventHubEndpointName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{eventHubEndpointName}", url.PathEscape(eventHubEndpointName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getEventHubConsumerGroupHandleResponse handles the GetEventHubConsumerGroup response.
-func (client *ResourceClient) getEventHubConsumerGroupHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetEventHubConsumerGroupResponse, error) {
-	result := ResourceClientGetEventHubConsumerGroupResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.EventHubConsumerGroupInfo); err != nil {
-		return ResourceClientGetEventHubConsumerGroupResponse{}, err
-	}
-	return result, nil
-}
-
-// GetJob - Get the details of a job from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry
-//
-// Get the details of a job from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IoT hub.
-//   - jobID - The job identifier.
-//   - options - ResourceClientGetJobOptions contains the optional parameters for the ResourceClient.GetJob method.
-func (client *ResourceClient) GetJob(ctx context.Context, resourceGroupName string, resourceName string, jobID string, options *ResourceClientGetJobOptions) (ResourceClientGetJobResponse, error) {
-	var err error
-	const operationName = "ResourceClient.GetJob"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getJobCreateRequest(ctx, resourceGroupName, resourceName, jobID, options)
-	if err != nil {
-		return ResourceClientGetJobResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ResourceClientGetJobResponse{}, err
-	}
-	return client.getJobHandleResponse(httpResp, http.StatusOK)
-}
-
-// getJobCreateRequest creates the GetJob request.
-func (client *ResourceClient) getJobCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, jobID string, _ *ResourceClientGetJobOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/jobs/{jobId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if jobID == "" {
-		return nil, errors.New("parameter jobID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{jobId}", url.PathEscape(jobID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getJobHandleResponse handles the GetJob response.
-func (client *ResourceClient) getJobHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetJobResponse, error) {
-	result := ResourceClientGetJobResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
-		return ResourceClientGetJobResponse{}, err
-	}
-	return result, nil
-}
-
-// GetKeysForKeyName - Get a shared access policy by name from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security
-//
-// Get a shared access policy by name from an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IoT hub.
-//   - keyName - The name of the shared access policy.
-//   - options - ResourceClientGetKeysForKeyNameOptions contains the optional parameters for the ResourceClient.GetKeysForKeyName
-//     method.
-func (client *ResourceClient) GetKeysForKeyName(ctx context.Context, resourceGroupName string, resourceName string, keyName string, options *ResourceClientGetKeysForKeyNameOptions) (ResourceClientGetKeysForKeyNameResponse, error) {
-	var err error
-	const operationName = "ResourceClient.GetKeysForKeyName"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getKeysForKeyNameCreateRequest(ctx, resourceGroupName, resourceName, keyName, options)
-	if err != nil {
-		return ResourceClientGetKeysForKeyNameResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ResourceClientGetKeysForKeyNameResponse{}, err
-	}
-	return client.getKeysForKeyNameHandleResponse(httpResp, http.StatusOK)
-}
-
-// getKeysForKeyNameCreateRequest creates the GetKeysForKeyName request.
-func (client *ResourceClient) getKeysForKeyNameCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, keyName string, _ *ResourceClientGetKeysForKeyNameOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/IotHubKeys/{keyName}/listkeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	if keyName == "" {
-		return nil, errors.New("parameter keyName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{keyName}", url.PathEscape(keyName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getKeysForKeyNameHandleResponse handles the GetKeysForKeyName response.
-func (client *ResourceClient) getKeysForKeyNameHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetKeysForKeyNameResponse, error) {
-	result := ResourceClientGetKeysForKeyNameResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SharedAccessSignatureAuthorizationRule); err != nil {
-		return ResourceClientGetKeysForKeyNameResponse{}, err
 	}
 	return result, nil
 }
@@ -899,67 +1121,6 @@ func (client *ResourceClient) getQuotaMetricsHandleResponse(resp *http.Response,
 	return result, nil
 }
 
-// GetStats - Get the statistics from an IoT hub
-//
-// Get the statistics from an IoT hub.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - ResourceClientGetStatsOptions contains the optional parameters for the ResourceClient.GetStats method.
-func (client *ResourceClient) GetStats(ctx context.Context, resourceGroupName string, resourceName string, options *ResourceClientGetStatsOptions) (ResourceClientGetStatsResponse, error) {
-	var err error
-	const operationName = "ResourceClient.GetStats"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getStatsCreateRequest(ctx, resourceGroupName, resourceName, options)
-	if err != nil {
-		return ResourceClientGetStatsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ResourceClientGetStatsResponse{}, err
-	}
-	return client.getStatsHandleResponse(httpResp, http.StatusOK)
-}
-
-// getStatsCreateRequest creates the GetStats request.
-func (client *ResourceClient) getStatsCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ResourceClientGetStatsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/IotHubStats"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getStatsHandleResponse handles the GetStats response.
-func (client *ResourceClient) getStatsHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientGetStatsResponse, error) {
-	result := ResourceClientGetStatsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RegistryStatistics); err != nil {
-		return ResourceClientGetStatsResponse{}, err
-	}
-	return result, nil
-}
-
 // NewGetValidSKUsPager - Get the list of valid SKUs for an IoT hub
 //
 // Get the list of valid SKUs for an IoT hub.
@@ -1035,74 +1196,6 @@ func (client *ResourceClient) getValidSKUsHandleResponse(resp *http.Response, su
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SKUDescriptionListResult); err != nil {
 		return ResourceClientGetValidSKUsResponse{}, err
-	}
-	return result, nil
-}
-
-// ImportDevices - Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
-// see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities
-//
-// Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IoT hub.
-//   - importDevicesParameters - The parameters that specify the import devices operation.
-//   - options - ResourceClientImportDevicesOptions contains the optional parameters for the ResourceClient.ImportDevices method.
-func (client *ResourceClient) ImportDevices(ctx context.Context, resourceGroupName string, resourceName string, importDevicesParameters ImportDevicesRequest, options *ResourceClientImportDevicesOptions) (ResourceClientImportDevicesResponse, error) {
-	var err error
-	const operationName = "ResourceClient.ImportDevices"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.importDevicesCreateRequest(ctx, resourceGroupName, resourceName, importDevicesParameters, options)
-	if err != nil {
-		return ResourceClientImportDevicesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ResourceClientImportDevicesResponse{}, err
-	}
-	return client.importDevicesHandleResponse(httpResp, http.StatusOK)
-}
-
-// importDevicesCreateRequest creates the ImportDevices request.
-func (client *ResourceClient) importDevicesCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, importDevicesParameters ImportDevicesRequest, _ *ResourceClientImportDevicesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}/importDevices"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, importDevicesParameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// importDevicesHandleResponse handles the ImportDevices response.
-func (client *ResourceClient) importDevicesHandleResponse(resp *http.Response, successCodes ...int) (ResourceClientImportDevicesResponse, error) {
-	result := ResourceClientImportDevicesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.JobResponse); err != nil {
-		return ResourceClientImportDevicesResponse{}, err
 	}
 	return result, nil
 }
@@ -1511,7 +1604,8 @@ func (client *ResourceClient) TestAllRoutes(ctx context.Context, iotHubName stri
 	if err != nil {
 		return ResourceClientTestAllRoutesResponse{}, err
 	}
-	return client.testAllRoutesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.testAllRoutesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // testAllRoutesCreateRequest creates the TestAllRoutes request.
@@ -1576,7 +1670,8 @@ func (client *ResourceClient) TestRoute(ctx context.Context, iotHubName string, 
 	if err != nil {
 		return ResourceClientTestRouteResponse{}, err
 	}
-	return client.testRouteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.testRouteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // testRouteCreateRequest creates the TestRoute request.
@@ -1619,84 +1714,4 @@ func (client *ResourceClient) testRouteHandleResponse(resp *http.Response, succe
 		return ResourceClientTestRouteResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update an existing IoT Hubs tags.
-//
-// Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - resourceName - The name of the IoT hub.
-//   - iotHubTags - Updated tag information to set into the iot hub instance.
-//   - options - ResourceClientBeginUpdateOptions contains the optional parameters for the ResourceClient.BeginUpdate method.
-func (client *ResourceClient) BeginUpdate(ctx context.Context, resourceGroupName string, resourceName string, iotHubTags TagsResource, options *ResourceClientBeginUpdateOptions) (*runtime.Poller[ResourceClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, resourceName, iotHubTags, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ResourceClientUpdateResponse]{
-			FinalStateVia: runtime.FinalStateViaLocation,
-			Tracer:        client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ResourceClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update an existing IoT Hubs tags.
-//
-// Update an existing IoT Hub tags. to update other fields use the CreateOrUpdate method
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ResourceClient) update(ctx context.Context, resourceGroupName string, resourceName string, iotHubTags TagsResource, options *ResourceClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ResourceClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, resourceName, iotHubTags, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ResourceClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, iotHubTags TagsResource, _ *ResourceClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Devices/IotHubs/{resourceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if resourceName == "" {
-		return nil, errors.New("parameter resourceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceName}", url.PathEscape(resourceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, iotHubTags); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

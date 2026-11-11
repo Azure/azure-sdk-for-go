@@ -68,7 +68,8 @@ func (client *LogAnalyticsClient) GetLogAnalyticsLocations(ctx context.Context, 
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsLocationsResponse{}, err
 	}
-	return client.getLogAnalyticsLocationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLogAnalyticsLocationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLogAnalyticsLocationsCreateRequest creates the GetLogAnalyticsLocations request.
@@ -130,7 +131,8 @@ func (client *LogAnalyticsClient) GetLogAnalyticsMetrics(ctx context.Context, re
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsMetricsResponse{}, err
 	}
-	return client.getLogAnalyticsMetricsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLogAnalyticsMetricsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLogAnalyticsMetricsCreateRequest creates the GetLogAnalyticsMetrics request.
@@ -219,7 +221,8 @@ func (client *LogAnalyticsClient) GetLogAnalyticsRankings(ctx context.Context, r
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsRankingsResponse{}, err
 	}
-	return client.getLogAnalyticsRankingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLogAnalyticsRankingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLogAnalyticsRankingsCreateRequest creates the GetLogAnalyticsRankings request.
@@ -295,7 +298,8 @@ func (client *LogAnalyticsClient) GetLogAnalyticsResources(ctx context.Context, 
 	if err != nil {
 		return LogAnalyticsClientGetLogAnalyticsResourcesResponse{}, err
 	}
-	return client.getLogAnalyticsResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLogAnalyticsResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLogAnalyticsResourcesCreateRequest creates the GetLogAnalyticsResources request.
@@ -357,7 +361,8 @@ func (client *LogAnalyticsClient) GetWafLogAnalyticsMetrics(ctx context.Context,
 	if err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsMetricsResponse{}, err
 	}
-	return client.getWafLogAnalyticsMetricsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getWafLogAnalyticsMetricsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getWafLogAnalyticsMetricsCreateRequest creates the GetWafLogAnalyticsMetrics request.
@@ -440,7 +445,8 @@ func (client *LogAnalyticsClient) GetWafLogAnalyticsRankings(ctx context.Context
 	if err != nil {
 		return LogAnalyticsClientGetWafLogAnalyticsRankingsResponse{}, err
 	}
-	return client.getWafLogAnalyticsRankingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getWafLogAnalyticsRankingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getWafLogAnalyticsRankingsCreateRequest creates the GetWafLogAnalyticsRankings request.

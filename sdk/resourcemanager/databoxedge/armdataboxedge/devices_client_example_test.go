@@ -12,6 +12,139 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2023-12-01/SecuritySettingsUpdatePost.json
+func ExampleDevicesClient_BeginCreateOrUpdateSecuritySettings() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataboxedge.NewClientFactory("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDevicesClient().BeginCreateOrUpdateSecuritySettings(ctx, "testedgedevice", "AzureVM", armdataboxedge.SecuritySettings{
+		Properties: &armdataboxedge.SecuritySettingsProperties{
+			DeviceAdminPassword: &armdataboxedge.AsymmetricEncryptedSecret{
+				EncryptionAlgorithm:      to.Ptr(armdataboxedge.EncryptionAlgorithmAES256),
+				EncryptionCertThumbprint: to.Ptr("<encryptionThumprint>"),
+				Value:                    to.Ptr("<deviceAdminPassword>"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2023-12-01/DataBoxEdgeDeviceDelete.json
+func ExampleDevicesClient_BeginDelete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataboxedge.NewClientFactory("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDevicesClient().BeginDelete(ctx, "testedgedevice", "GroupForEdgeAutomation", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataboxedge.DevicesClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2023-12-01/DownloadUpdatesPost.json
+func ExampleDevicesClient_BeginDownloadUpdates() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataboxedge.NewClientFactory("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDevicesClient().BeginDownloadUpdates(ctx, "testedgedevice", "GroupForEdgeAutomation", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataboxedge.DevicesClientDownloadUpdatesResponse{
+	// }
+}
+
+// Generated from example definition: 2023-12-01/InstallUpdatesPost.json
+func ExampleDevicesClient_BeginInstallUpdates() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataboxedge.NewClientFactory("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDevicesClient().BeginInstallUpdates(ctx, "testedgedevice", "GroupForEdgeAutomation", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataboxedge.DevicesClientInstallUpdatesResponse{
+	// }
+}
+
+// Generated from example definition: 2023-12-01/ScanForUpdatesPost.json
+func ExampleDevicesClient_BeginScanForUpdates() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdataboxedge.NewClientFactory("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDevicesClient().BeginScanForUpdates(ctx, "testedgedevice", "GroupForEdgeAutomation", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdataboxedge.DevicesClientScanForUpdatesResponse{
+	// }
+}
+
 // Generated from example definition: 2023-12-01/DataBoxEdgeDevicePut.json
 func ExampleDevicesClient_CreateOrUpdate_dataBoxEdgeDevicePut() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -99,87 +232,6 @@ func ExampleDevicesClient_CreateOrUpdate_dataBoxEdgeDevicePutWithDataResidency()
 	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
-	// }
-}
-
-// Generated from example definition: 2023-12-01/SecuritySettingsUpdatePost.json
-func ExampleDevicesClient_BeginCreateOrUpdateSecuritySettings() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataboxedge.NewClientFactory("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDevicesClient().BeginCreateOrUpdateSecuritySettings(ctx, "testedgedevice", "AzureVM", armdataboxedge.SecuritySettings{
-		Properties: &armdataboxedge.SecuritySettingsProperties{
-			DeviceAdminPassword: &armdataboxedge.AsymmetricEncryptedSecret{
-				EncryptionAlgorithm:      to.Ptr(armdataboxedge.EncryptionAlgorithmAES256),
-				EncryptionCertThumbprint: to.Ptr("<encryptionThumprint>"),
-				Value:                    to.Ptr("<deviceAdminPassword>"),
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2023-12-01/DataBoxEdgeDeviceDelete.json
-func ExampleDevicesClient_BeginDelete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataboxedge.NewClientFactory("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDevicesClient().BeginDelete(ctx, "testedgedevice", "GroupForEdgeAutomation", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataboxedge.DevicesClientDeleteResponse{
-	// }
-}
-
-// Generated from example definition: 2023-12-01/DownloadUpdatesPost.json
-func ExampleDevicesClient_BeginDownloadUpdates() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataboxedge.NewClientFactory("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDevicesClient().BeginDownloadUpdates(ctx, "testedgedevice", "GroupForEdgeAutomation", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataboxedge.DevicesClientDownloadUpdatesResponse{
 	// }
 }
 
@@ -476,32 +528,6 @@ func ExampleDevicesClient_GetUpdateSummary() {
 	// }
 }
 
-// Generated from example definition: 2023-12-01/InstallUpdatesPost.json
-func ExampleDevicesClient_BeginInstallUpdates() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataboxedge.NewClientFactory("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDevicesClient().BeginInstallUpdates(ctx, "testedgedevice", "GroupForEdgeAutomation", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataboxedge.DevicesClientInstallUpdatesResponse{
-	// }
-}
-
 // Generated from example definition: 2023-12-01/DataBoxEdgeDeviceGetByResourceGroup.json
 func ExampleDevicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -676,32 +702,6 @@ func ExampleDevicesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2023-12-01/ScanForUpdatesPost.json
-func ExampleDevicesClient_BeginScanForUpdates() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdataboxedge.NewClientFactory("4385cf00-2d3a-425a-832f-f4285b1c9dce", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDevicesClient().BeginScanForUpdates(ctx, "testedgedevice", "GroupForEdgeAutomation", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdataboxedge.DevicesClientScanForUpdatesResponse{
-	// }
 }
 
 // Generated from example definition: 2023-12-01/DataBoxEdgeDevicePatch.json

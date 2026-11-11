@@ -65,7 +65,8 @@ func (client *AutoscaleSettingsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return AutoscaleSettingsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *AutoscaleSettingsClient) Delete(ctx context.Context, resourceGroup
 		return AutoscaleSettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AutoscaleSettingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AutoscaleSettingsClientDeleteResponse{}, err
 	}
 	return AutoscaleSettingsClientDeleteResponse{}, nil
 }
@@ -180,7 +182,8 @@ func (client *AutoscaleSettingsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return AutoscaleSettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -381,7 +384,8 @@ func (client *AutoscaleSettingsClient) Update(ctx context.Context, resourceGroup
 	if err != nil {
 		return AutoscaleSettingsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

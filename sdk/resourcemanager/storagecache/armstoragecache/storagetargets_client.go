@@ -70,7 +70,7 @@ func (client *StorageTargetsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create or update a Storage Target. This operation is allowed at any time, but if the cache is down or
+// createOrUpdate - Create or update a Storage Target. This operation is allowed at any time, but if the cache is down or
 // unhealthy, the actual creation/modification of the Storage Target may be delayed until the cache is healthy again.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageTargetsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, storagetarget StorageTarget, options *StorageTargetsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
@@ -88,12 +88,13 @@ func (client *StorageTargetsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *StorageTargetsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, storagetarget StorageTarget, _ *StorageTargetsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}"
 	if client.subscriptionID == "" {
@@ -152,7 +153,7 @@ func (client *StorageTargetsClient) BeginDNSRefresh(ctx context.Context, resourc
 	}
 }
 
-// DNSRefresh - Tells a storage target to refresh its DNS information.
+// dnsRefresh - Tells a storage target to refresh its DNS information.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageTargetsClient) dnsRefresh(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDNSRefreshOptions) (*http.Response, error) {
 	var err error
@@ -169,12 +170,13 @@ func (client *StorageTargetsClient) dnsRefresh(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// dnsRefreshCreateRequest creates the DNSRefresh request.
+// dnsRefreshCreateRequest creates the dnsRefresh request.
 func (client *StorageTargetsClient) dnsRefreshCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetsClientBeginDNSRefreshOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/dnsRefresh"
 	if client.subscriptionID == "" {
@@ -229,9 +231,9 @@ func (client *StorageTargetsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Removes a Storage Target from a cache. This operation is allowed at any time, but if the cache is down or unhealthy,
-// the actual removal of the Storage Target may be delayed until the cache is healthy again. Note that if the cache has data
-// to flush to the Storage Target, the data will be flushed before the Storage Target will be deleted.
+// deleteOperation - Removes a Storage Target from a cache. This operation is allowed at any time, but if the cache is down
+// or unhealthy, the actual removal of the Storage Target may be delayed until the cache is healthy again. Note that if the
+// cache has data to flush to the Storage Target, the data will be flushed before the Storage Target will be deleted.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StorageTargetsClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -248,12 +250,13 @@ func (client *StorageTargetsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StorageTargetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}"
 	if client.subscriptionID == "" {
@@ -285,6 +288,82 @@ func (client *StorageTargetsClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
+// BeginRestoreDefaults - Tells a storage target to restore its settings to their default values.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
+//   - storageTargetName - Name of Storage Target.
+//   - options - StorageTargetsClientBeginRestoreDefaultsOptions contains the optional parameters for the StorageTargetsClient.BeginRestoreDefaults
+//     method.
+func (client *StorageTargetsClient) BeginRestoreDefaults(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginRestoreDefaultsOptions) (*runtime.Poller[StorageTargetsClientRestoreDefaultsResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restoreDefaults(ctx, resourceGroupName, cacheName, storageTargetName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageTargetsClientRestoreDefaultsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StorageTargetsClientRestoreDefaultsResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restoreDefaults - Tells a storage target to restore its settings to their default values.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *StorageTargetsClient) restoreDefaults(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginRestoreDefaultsOptions) (*http.Response, error) {
+	var err error
+	const operationName = "StorageTargetsClient.BeginRestoreDefaults"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restoreDefaultsCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// restoreDefaultsCreateRequest creates the restoreDefaults request.
+func (client *StorageTargetsClient) restoreDefaultsCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetsClientBeginRestoreDefaultsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/restoreDefaults"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if cacheName == "" {
+		return nil, errors.New("parameter cacheName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
+	if storageTargetName == "" {
+		return nil, errors.New("parameter storageTargetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	return req, nil
+}
+
 // Get - Returns a Storage Target from a cache.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -305,7 +384,8 @@ func (client *StorageTargetsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return StorageTargetsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -425,79 +505,4 @@ func (client *StorageTargetsClient) listByCacheHandleResponse(resp *http.Respons
 		return StorageTargetsClientListByCacheResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginRestoreDefaults - Tells a storage target to restore its settings to their default values.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - cacheName - Name of cache. Length of name must not be greater than 80 and chars must be from the [-0-9a-zA-Z_] char class.
-//   - storageTargetName - Name of Storage Target.
-//   - options - StorageTargetsClientBeginRestoreDefaultsOptions contains the optional parameters for the StorageTargetsClient.BeginRestoreDefaults
-//     method.
-func (client *StorageTargetsClient) BeginRestoreDefaults(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginRestoreDefaultsOptions) (*runtime.Poller[StorageTargetsClientRestoreDefaultsResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restoreDefaults(ctx, resourceGroupName, cacheName, storageTargetName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[StorageTargetsClientRestoreDefaultsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[StorageTargetsClientRestoreDefaultsResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RestoreDefaults - Tells a storage target to restore its settings to their default values.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *StorageTargetsClient) restoreDefaults(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, options *StorageTargetsClientBeginRestoreDefaultsOptions) (*http.Response, error) {
-	var err error
-	const operationName = "StorageTargetsClient.BeginRestoreDefaults"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restoreDefaultsCreateRequest(ctx, resourceGroupName, cacheName, storageTargetName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restoreDefaultsCreateRequest creates the RestoreDefaults request.
-func (client *StorageTargetsClient) restoreDefaultsCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, storageTargetName string, _ *StorageTargetsClientBeginRestoreDefaultsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StorageCache/caches/{cacheName}/storageTargets/{storageTargetName}/restoreDefaults"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if cacheName == "" {
-		return nil, errors.New("parameter cacheName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{cacheName}", url.PathEscape(cacheName))
-	if storageTargetName == "" {
-		return nil, errors.New("parameter storageTargetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{storageTargetName}", url.PathEscape(storageTargetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	return req, nil
 }

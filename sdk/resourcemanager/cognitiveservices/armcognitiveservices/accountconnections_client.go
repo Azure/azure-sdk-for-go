@@ -69,7 +69,8 @@ func (client *AccountConnectionsClient) Create(ctx context.Context, resourceGrou
 	if err != nil {
 		return AccountConnectionsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -142,7 +143,8 @@ func (client *AccountConnectionsClient) Delete(ctx context.Context, resourceGrou
 		return AccountConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AccountConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AccountConnectionsClientDeleteResponse{}, err
 	}
 	return AccountConnectionsClientDeleteResponse{}, nil
 }
@@ -198,7 +200,8 @@ func (client *AccountConnectionsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AccountConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -355,7 +358,8 @@ func (client *AccountConnectionsClient) Update(ctx context.Context, resourceGrou
 	if err != nil {
 		return AccountConnectionsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

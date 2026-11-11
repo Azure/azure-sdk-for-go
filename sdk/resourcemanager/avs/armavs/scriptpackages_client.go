@@ -64,7 +64,8 @@ func (client *ScriptPackagesClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ScriptPackagesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -64,7 +64,8 @@ func (client *PrivateLinkResourcesClient) ListByVault(ctx context.Context, resou
 	if err != nil {
 		return PrivateLinkResourcesClientListByVaultResponse{}, err
 	}
-	return client.listByVaultHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByVaultHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByVaultCreateRequest creates the ListByVault request.

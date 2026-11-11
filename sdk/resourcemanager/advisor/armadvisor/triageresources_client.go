@@ -67,7 +67,8 @@ func (client *TriageResourcesClient) Get(ctx context.Context, reviewID string, r
 	if err != nil {
 		return TriageResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

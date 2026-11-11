@@ -65,7 +65,8 @@ func (client *SnapshotsClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return SnapshotsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -130,7 +131,8 @@ func (client *SnapshotsClient) Delete(ctx context.Context, resourceGroupName str
 		return SnapshotsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SnapshotsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SnapshotsClientDeleteResponse{}, err
 	}
 	return SnapshotsClientDeleteResponse{}, nil
 }
@@ -179,7 +181,8 @@ func (client *SnapshotsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return SnapshotsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -378,7 +381,8 @@ func (client *SnapshotsClient) UpdateTags(ctx context.Context, resourceGroupName
 	if err != nil {
 		return SnapshotsClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

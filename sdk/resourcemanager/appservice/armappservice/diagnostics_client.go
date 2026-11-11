@@ -69,7 +69,8 @@ func (client *DiagnosticsClient) ExecuteSiteAnalysis(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisResponse{}, err
 	}
-	return client.executeSiteAnalysisHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executeSiteAnalysisHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executeSiteAnalysisCreateRequest creates the ExecuteSiteAnalysis request.
@@ -148,7 +149,8 @@ func (client *DiagnosticsClient) ExecuteSiteAnalysisSlot(ctx context.Context, re
 	if err != nil {
 		return DiagnosticsClientExecuteSiteAnalysisSlotResponse{}, err
 	}
-	return client.executeSiteAnalysisSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executeSiteAnalysisSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executeSiteAnalysisSlotCreateRequest creates the ExecuteSiteAnalysisSlot request.
@@ -231,7 +233,8 @@ func (client *DiagnosticsClient) ExecuteSiteDetector(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorResponse{}, err
 	}
-	return client.executeSiteDetectorHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executeSiteDetectorHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executeSiteDetectorCreateRequest creates the ExecuteSiteDetector request.
@@ -310,7 +313,8 @@ func (client *DiagnosticsClient) ExecuteSiteDetectorSlot(ctx context.Context, re
 	if err != nil {
 		return DiagnosticsClientExecuteSiteDetectorSlotResponse{}, err
 	}
-	return client.executeSiteDetectorSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.executeSiteDetectorSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // executeSiteDetectorSlotCreateRequest creates the ExecuteSiteDetectorSlot request.
@@ -395,7 +399,8 @@ func (client *DiagnosticsClient) GetHostingEnvironmentDetectorResponse(ctx conte
 	if err != nil {
 		return DiagnosticsClientGetHostingEnvironmentDetectorResponseResponse{}, err
 	}
-	return client.getHostingEnvironmentDetectorResponseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHostingEnvironmentDetectorResponseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getHostingEnvironmentDetectorResponseCreateRequest creates the GetHostingEnvironmentDetectorResponse request.
@@ -473,7 +478,8 @@ func (client *DiagnosticsClient) GetSiteAnalysis(ctx context.Context, resourceGr
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisResponse{}, err
 	}
-	return client.getSiteAnalysisHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteAnalysisHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteAnalysisCreateRequest creates the GetSiteAnalysis request.
@@ -543,7 +549,8 @@ func (client *DiagnosticsClient) GetSiteAnalysisSlot(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientGetSiteAnalysisSlotResponse{}, err
 	}
-	return client.getSiteAnalysisSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteAnalysisSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteAnalysisSlotCreateRequest creates the GetSiteAnalysisSlot request.
@@ -620,7 +627,8 @@ func (client *DiagnosticsClient) GetSiteDetector(ctx context.Context, resourceGr
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponse{}, err
 	}
-	return client.getSiteDetectorHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteDetectorHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteDetectorCreateRequest creates the GetSiteDetector request.
@@ -692,7 +700,8 @@ func (client *DiagnosticsClient) GetSiteDetectorResponse(ctx context.Context, re
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseResponse{}, err
 	}
-	return client.getSiteDetectorResponseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteDetectorResponseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteDetectorResponseCreateRequest creates the GetSiteDetectorResponse request.
@@ -767,7 +776,8 @@ func (client *DiagnosticsClient) GetSiteDetectorResponseSlot(ctx context.Context
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorResponseSlotResponse{}, err
 	}
-	return client.getSiteDetectorResponseSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteDetectorResponseSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteDetectorResponseSlotCreateRequest creates the GetSiteDetectorResponseSlot request.
@@ -846,7 +856,8 @@ func (client *DiagnosticsClient) GetSiteDetectorSlot(ctx context.Context, resour
 	if err != nil {
 		return DiagnosticsClientGetSiteDetectorSlotResponse{}, err
 	}
-	return client.getSiteDetectorSlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteDetectorSlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteDetectorSlotCreateRequest creates the GetSiteDetectorSlot request.
@@ -922,7 +933,8 @@ func (client *DiagnosticsClient) GetSiteDiagnosticCategory(ctx context.Context, 
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategoryResponse{}, err
 	}
-	return client.getSiteDiagnosticCategoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteDiagnosticCategoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteDiagnosticCategoryCreateRequest creates the GetSiteDiagnosticCategory request.
@@ -988,7 +1000,8 @@ func (client *DiagnosticsClient) GetSiteDiagnosticCategorySlot(ctx context.Conte
 	if err != nil {
 		return DiagnosticsClientGetSiteDiagnosticCategorySlotResponse{}, err
 	}
-	return client.getSiteDiagnosticCategorySlotHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSiteDiagnosticCategorySlotHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSiteDiagnosticCategorySlotCreateRequest creates the GetSiteDiagnosticCategorySlot request.

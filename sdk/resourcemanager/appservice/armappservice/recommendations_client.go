@@ -69,7 +69,8 @@ func (client *RecommendationsClient) DisableAllForHostingEnvironment(ctx context
 		return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, err
 	}
 	return RecommendationsClientDisableAllForHostingEnvironmentResponse{}, nil
 }
@@ -123,7 +124,8 @@ func (client *RecommendationsClient) DisableAllForWebApp(ctx context.Context, re
 		return RecommendationsClientDisableAllForWebAppResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RecommendationsClientDisableAllForWebAppResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientDisableAllForWebAppResponse{}, err
 	}
 	return RecommendationsClientDisableAllForWebAppResponse{}, nil
 }
@@ -175,7 +177,8 @@ func (client *RecommendationsClient) DisableRecommendationForHostingEnvironment(
 		return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, err
 	}
 	return RecommendationsClientDisableRecommendationForHostingEnvironmentResponse{}, nil
 }
@@ -234,7 +237,8 @@ func (client *RecommendationsClient) DisableRecommendationForSite(ctx context.Co
 		return RecommendationsClientDisableRecommendationForSiteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return RecommendationsClientDisableRecommendationForSiteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientDisableRecommendationForSiteResponse{}, err
 	}
 	return RecommendationsClientDisableRecommendationForSiteResponse{}, nil
 }
@@ -290,7 +294,8 @@ func (client *RecommendationsClient) DisableRecommendationForSubscription(ctx co
 		return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, err
 	}
 	return RecommendationsClientDisableRecommendationForSubscriptionResponse{}, nil
 }
@@ -339,7 +344,8 @@ func (client *RecommendationsClient) GetRuleDetailsByHostingEnvironment(ctx cont
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByHostingEnvironmentResponse{}, err
 	}
-	return client.getRuleDetailsByHostingEnvironmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRuleDetailsByHostingEnvironmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRuleDetailsByHostingEnvironmentCreateRequest creates the GetRuleDetailsByHostingEnvironment request.
@@ -413,7 +419,8 @@ func (client *RecommendationsClient) GetRuleDetailsByWebApp(ctx context.Context,
 	if err != nil {
 		return RecommendationsClientGetRuleDetailsByWebAppResponse{}, err
 	}
-	return client.getRuleDetailsByWebAppHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRuleDetailsByWebAppHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRuleDetailsByWebAppCreateRequest creates the GetRuleDetailsByWebApp request.
@@ -460,81 +467,6 @@ func (client *RecommendationsClient) getRuleDetailsByWebAppHandleResponse(resp *
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationRule); err != nil {
 		return RecommendationsClientGetRuleDetailsByWebAppResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - List all recommendations for a subscription.
-//
-// Description for List all recommendations for a subscription.
-//   - options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager
-//     method.
-func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListResponse]{
-		More: func(page RecommendationsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *RecommendationsClientListResponse) (RecommendationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecommendationsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return RecommendationsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return RecommendationsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *RecommendationsClient) listCreateRequest(ctx context.Context, nextLink string, options *RecommendationsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		reqQP.Set("api-version", version20250501)
-		if options != nil && options.Featured != nil {
-			reqQP.Set("featured", strconv.FormatBool(*options.Featured))
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *RecommendationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientListResponse, error) {
-	result := RecommendationsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
-		return RecommendationsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -705,6 +637,81 @@ func (client *RecommendationsClient) listHistoryForWebAppHandleResponse(resp *ht
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
 		return RecommendationsClientListHistoryForWebAppResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - List all recommendations for a subscription.
+//
+// Description for List all recommendations for a subscription.
+//   - options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager
+//     method.
+func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListResponse]{
+		More: func(page RecommendationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *RecommendationsClientListResponse) (RecommendationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecommendationsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return RecommendationsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecommendationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *RecommendationsClient) listCreateRequest(ctx context.Context, nextLink string, options *RecommendationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.Featured != nil {
+			reqQP.Set("featured", strconv.FormatBool(*options.Featured))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *RecommendationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientListResponse, error) {
+	result := RecommendationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.RecommendationCollection); err != nil {
+		return RecommendationsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -900,7 +907,8 @@ func (client *RecommendationsClient) ResetAllFilters(ctx context.Context, option
 		return RecommendationsClientResetAllFiltersResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RecommendationsClientResetAllFiltersResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientResetAllFiltersResponse{}, err
 	}
 	return RecommendationsClientResetAllFiltersResponse{}, nil
 }
@@ -946,7 +954,8 @@ func (client *RecommendationsClient) ResetAllFiltersForHostingEnvironment(ctx co
 		return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, err
 	}
 	return RecommendationsClientResetAllFiltersForHostingEnvironmentResponse{}, nil
 }
@@ -1000,7 +1009,8 @@ func (client *RecommendationsClient) ResetAllFiltersForWebApp(ctx context.Contex
 		return RecommendationsClientResetAllFiltersForWebAppResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return RecommendationsClientResetAllFiltersForWebAppResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RecommendationsClientResetAllFiltersForWebAppResponse{}, err
 	}
 	return RecommendationsClientResetAllFiltersForWebAppResponse{}, nil
 }

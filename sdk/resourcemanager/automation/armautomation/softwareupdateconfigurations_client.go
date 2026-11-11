@@ -66,7 +66,8 @@ func (client *SoftwareUpdateConfigurationsClient) Create(ctx context.Context, re
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -140,7 +141,8 @@ func (client *SoftwareUpdateConfigurationsClient) Delete(ctx context.Context, re
 		return SoftwareUpdateConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SoftwareUpdateConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SoftwareUpdateConfigurationsClientDeleteResponse{}, err
 	}
 	return SoftwareUpdateConfigurationsClientDeleteResponse{}, nil
 }
@@ -198,7 +200,8 @@ func (client *SoftwareUpdateConfigurationsClient) GetByName(ctx context.Context,
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientGetByNameResponse{}, err
 	}
-	return client.getByNameHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByNameHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByNameCreateRequest creates the GetByName request.
@@ -266,7 +269,8 @@ func (client *SoftwareUpdateConfigurationsClient) List(ctx context.Context, reso
 	if err != nil {
 		return SoftwareUpdateConfigurationsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

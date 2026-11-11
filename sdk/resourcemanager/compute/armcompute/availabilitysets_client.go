@@ -86,7 +86,8 @@ func (client *AvailabilitySetsClient) convertToVirtualMachineScaleSet(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -144,7 +145,8 @@ func (client *AvailabilitySetsClient) CancelMigrationToVirtualMachineScaleSet(ct
 		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	return AvailabilitySetsClientCancelMigrationToVirtualMachineScaleSetResponse{}, nil
 }
@@ -195,7 +197,8 @@ func (client *AvailabilitySetsClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return AvailabilitySetsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -260,7 +263,8 @@ func (client *AvailabilitySetsClient) Delete(ctx context.Context, resourceGroupN
 		return AvailabilitySetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AvailabilitySetsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AvailabilitySetsClientDeleteResponse{}, err
 	}
 	return AvailabilitySetsClientDeleteResponse{}, nil
 }
@@ -309,7 +313,8 @@ func (client *AvailabilitySetsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AvailabilitySetsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -594,7 +599,8 @@ func (client *AvailabilitySetsClient) StartMigrationToVirtualMachineScaleSet(ctx
 		return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	return AvailabilitySetsClientStartMigrationToVirtualMachineScaleSetResponse{}, nil
 }
@@ -648,7 +654,8 @@ func (client *AvailabilitySetsClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return AvailabilitySetsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -716,7 +723,8 @@ func (client *AvailabilitySetsClient) ValidateMigrationToVirtualMachineScaleSet(
 		return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, err
 	}
 	return AvailabilitySetsClientValidateMigrationToVirtualMachineScaleSetResponse{}, nil
 }

@@ -66,7 +66,8 @@ func (client *FirewallRulesClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return FirewallRulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *FirewallRulesClient) Delete(ctx context.Context, resourceGroupName
 		return FirewallRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return FirewallRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FirewallRulesClientDeleteResponse{}, err
 	}
 	return FirewallRulesClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *FirewallRulesClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return FirewallRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -331,7 +334,8 @@ func (client *FirewallRulesClient) Replace(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return FirewallRulesClientReplaceResponse{}, err
 	}
-	return client.replaceHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.replaceHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // replaceCreateRequest creates the Replace request.

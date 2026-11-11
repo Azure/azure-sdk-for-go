@@ -58,7 +58,8 @@ func (client *AggregatedCostClient) GetByManagementGroup(ctx context.Context, ma
 	if err != nil {
 		return AggregatedCostClientGetByManagementGroupResponse{}, err
 	}
-	return client.getByManagementGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByManagementGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByManagementGroupCreateRequest creates the GetByManagementGroup request.
@@ -115,7 +116,8 @@ func (client *AggregatedCostClient) GetForBillingPeriodByManagementGroup(ctx con
 	if err != nil {
 		return AggregatedCostClientGetForBillingPeriodByManagementGroupResponse{}, err
 	}
-	return client.getForBillingPeriodByManagementGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getForBillingPeriodByManagementGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getForBillingPeriodByManagementGroupCreateRequest creates the GetForBillingPeriodByManagementGroup request.

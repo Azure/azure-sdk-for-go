@@ -67,7 +67,8 @@ func (client *IncidentTasksClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return IncidentTasksClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -142,7 +143,8 @@ func (client *IncidentTasksClient) Delete(ctx context.Context, resourceGroupName
 		return IncidentTasksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return IncidentTasksClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return IncidentTasksClientDeleteResponse{}, err
 	}
 	return IncidentTasksClientDeleteResponse{}, nil
 }
@@ -201,7 +203,8 @@ func (client *IncidentTasksClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return IncidentTasksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

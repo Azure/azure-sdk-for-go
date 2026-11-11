@@ -63,7 +63,8 @@ func (client *PeerAsnsClient) CreateOrUpdate(ctx context.Context, peerAsnName st
 	if err != nil {
 		return PeerAsnsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -123,7 +124,8 @@ func (client *PeerAsnsClient) Delete(ctx context.Context, peerAsnName string, op
 		return PeerAsnsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PeerAsnsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PeerAsnsClientDeleteResponse{}, err
 	}
 	return PeerAsnsClientDeleteResponse{}, nil
 }
@@ -167,7 +169,8 @@ func (client *PeerAsnsClient) Get(ctx context.Context, peerAsnName string, optio
 	if err != nil {
 		return PeerAsnsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

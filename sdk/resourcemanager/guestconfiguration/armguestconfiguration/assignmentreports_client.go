@@ -65,7 +65,8 @@ func (client *AssignmentReportsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return AssignmentReportsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -134,7 +135,8 @@ func (client *AssignmentReportsClient) List(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AssignmentReportsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

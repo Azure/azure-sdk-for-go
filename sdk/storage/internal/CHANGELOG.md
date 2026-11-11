@@ -1,6 +1,6 @@
 # Release History
 
-## 0.2.0 (Unreleased)
+## 0.2.0 (2026-11-11)
 
 ### Features Added
 * `autorefresh` package: a cache for a single expiring value with background refresh, shared acquisitions and conditional invalidation, used by STG105 session authentication and data locality

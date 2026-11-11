@@ -85,7 +85,8 @@ func (client *ServiceGatewaysClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -128,7 +129,7 @@ func (client *ServiceGatewaysClient) createOrUpdateCreateRequest(ctx context.Con
 //     method.
 func (client *ServiceGatewaysClient) BeginDelete(ctx context.Context, resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientBeginDeleteOptions) (*runtime.Poller[ServiceGatewaysClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, serviceGatewayName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, serviceGatewayName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -143,9 +144,9 @@ func (client *ServiceGatewaysClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// delete - Deletes the specified service gateway.
+// deleteOperation - Deletes the specified service gateway.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ServiceGatewaysClient) delete(ctx context.Context, resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ServiceGatewaysClient) deleteOperation(ctx context.Context, resourceGroupName string, serviceGatewayName string, options *ServiceGatewaysClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ServiceGatewaysClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -160,7 +161,8 @@ func (client *ServiceGatewaysClient) delete(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -209,7 +211,8 @@ func (client *ServiceGatewaysClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ServiceGatewaysClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -569,7 +572,8 @@ func (client *ServiceGatewaysClient) UpdateAddressLocations(ctx context.Context,
 	if err != nil {
 		return ServiceGatewaysClientUpdateAddressLocationsResponse{}, err
 	}
-	return client.updateAddressLocationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateAddressLocationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateAddressLocationsCreateRequest creates the UpdateAddressLocations request.
@@ -638,7 +642,8 @@ func (client *ServiceGatewaysClient) UpdateServices(ctx context.Context, resourc
 	if err != nil {
 		return ServiceGatewaysClientUpdateServicesResponse{}, err
 	}
-	return client.updateServicesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateServicesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateServicesCreateRequest creates the UpdateServices request.
@@ -704,7 +709,8 @@ func (client *ServiceGatewaysClient) UpdateTags(ctx context.Context, resourceGro
 	if err != nil {
 		return ServiceGatewaysClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

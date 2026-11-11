@@ -72,7 +72,7 @@ func (client *ConfigureSourceScanClient) BeginExecute(ctx context.Context, resou
 	}
 }
 
-// Execute - Configures source scan for a protected item. This is an asynchronous operation. To know the status of the
+// execute - Configures source scan for a protected item. This is an asynchronous operation. To know the status of the
 // operation, call GetProtectedItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConfigureSourceScanClient) execute(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, containerName string, protectedItemName string, body ProtectedItemConfigureSourceScanRequest, options *ConfigureSourceScanClientBeginExecuteOptions) (*http.Response, error) {
@@ -90,12 +90,13 @@ func (client *ConfigureSourceScanClient) execute(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// executeCreateRequest creates the Execute request.
+// executeCreateRequest creates the execute request.
 func (client *ConfigureSourceScanClient) executeCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, fabricName string, containerName string, protectedItemName string, body ProtectedItemConfigureSourceScanRequest, _ *ConfigureSourceScanClientBeginExecuteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/configureSourceScan"
 	if client.subscriptionID == "" {

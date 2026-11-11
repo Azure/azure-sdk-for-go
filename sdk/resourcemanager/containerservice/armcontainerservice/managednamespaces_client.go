@@ -88,7 +88,8 @@ func (client *ManagedNamespacesClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -168,7 +169,8 @@ func (client *ManagedNamespacesClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -222,7 +224,8 @@ func (client *ManagedNamespacesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ManagedNamespacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -288,7 +291,8 @@ func (client *ManagedNamespacesClient) ListCredential(ctx context.Context, resou
 	if err != nil {
 		return ManagedNamespacesClientListCredentialResponse{}, err
 	}
-	return client.listCredentialHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listCredentialHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCredentialCreateRequest creates the ListCredential request.
@@ -432,7 +436,8 @@ func (client *ManagedNamespacesClient) Update(ctx context.Context, resourceGroup
 	if err != nil {
 		return ManagedNamespacesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

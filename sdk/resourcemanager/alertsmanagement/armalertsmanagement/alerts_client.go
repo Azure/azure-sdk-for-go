@@ -67,7 +67,8 @@ func (client *AlertsClient) ChangeState(ctx context.Context, alertID string, new
 	if err != nil {
 		return AlertsClientChangeStateResponse{}, err
 	}
-	return client.changeStateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.changeStateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // changeStateCreateRequest creates the ChangeState request.
@@ -132,7 +133,8 @@ func (client *AlertsClient) ChangeStateTenant(ctx context.Context, alertID strin
 	if err != nil {
 		return AlertsClientChangeStateTenantResponse{}, err
 	}
-	return client.changeStateTenantHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.changeStateTenantHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // changeStateTenantCreateRequest creates the ChangeStateTenant request.
@@ -169,6 +171,370 @@ func (client *AlertsClient) changeStateTenantHandleResponse(resp *http.Response,
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
 		return AlertsClientChangeStateTenantResponse{}, err
+	}
+	return result, nil
+}
+
+// GetByID - Get a specific alert.
+//
+// Get information related to a specific alert. If scope is a deleted resource then please use scope as parent resource of
+// the delete resource. For example if my alert id is '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/vm1/providers/Microsoft.AlertsManagement/alerts/{alertId}'
+// and 'vm1' is deleted then if you want to get alert by id then use parent resource of scope. So in this example get alert
+// by id call will look like this: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AlertsManagement/alerts/{alertId}'.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - alertID - Unique ID of an alert instance.
+//   - options - AlertsClientGetByIDOptions contains the optional parameters for the AlertsClient.GetByID method.
+func (client *AlertsClient) GetByID(ctx context.Context, alertID string, options *AlertsClientGetByIDOptions) (AlertsClientGetByIDResponse, error) {
+	var err error
+	const operationName = "AlertsClient.GetByID"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByIDCreateRequest(ctx, alertID, options)
+	if err != nil {
+		return AlertsClientGetByIDResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AlertsClientGetByIDResponse{}, err
+	}
+	resp, err := client.getByIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getByIDCreateRequest creates the GetByID request.
+func (client *AlertsClient) getByIDCreateRequest(ctx context.Context, alertID string, _ *AlertsClientGetByIDOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts/{alertId}"
+	if client.scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
+	if alertID == "" {
+		return nil, errors.New("parameter alertID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250525Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByIDHandleResponse handles the GetByID response.
+func (client *AlertsClient) getByIDHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetByIDResponse, error) {
+	result := AlertsClientGetByIDResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
+		return AlertsClientGetByIDResponse{}, err
+	}
+	return result, nil
+}
+
+// GetByIDTenant - Get a specific alert.
+//
+// Get information related to a specific alert.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - alertID - Unique ID of an alert instance.
+//   - options - AlertsClientGetByIDTenantOptions contains the optional parameters for the AlertsClient.GetByIDTenant method.
+func (client *AlertsClient) GetByIDTenant(ctx context.Context, alertID string, options *AlertsClientGetByIDTenantOptions) (AlertsClientGetByIDTenantResponse, error) {
+	var err error
+	const operationName = "AlertsClient.GetByIDTenant"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByIDTenantCreateRequest(ctx, alertID, options)
+	if err != nil {
+		return AlertsClientGetByIDTenantResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AlertsClientGetByIDTenantResponse{}, err
+	}
+	resp, err := client.getByIDTenantHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getByIDTenantCreateRequest creates the GetByIDTenant request.
+func (client *AlertsClient) getByIDTenantCreateRequest(ctx context.Context, alertID string, _ *AlertsClientGetByIDTenantOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.AlertsManagement/alerts/{alertId}"
+	if alertID == "" {
+		return nil, errors.New("parameter alertID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250525Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByIDTenantHandleResponse handles the GetByIDTenant response.
+func (client *AlertsClient) getByIDTenantHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetByIDTenantResponse, error) {
+	result := AlertsClientGetByIDTenantResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
+		return AlertsClientGetByIDTenantResponse{}, err
+	}
+	return result, nil
+}
+
+// GetHistory - Get the history of an alert, which captures any monitor condition changes (Fired/Resolved), alert state changes
+// (New/Acknowledged/Closed) and applied action rules for that particular alert. If scope is a deleted resource then please
+// use scope as parent resource of the delete resource. For example if my alert id is '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/vm1/providers/Microsoft.AlertsManagement/alerts/{alertId}'
+// and 'vm1' is deleted then if you want to get history of this particular alert then use parent resource of scope. So in
+// this example get history call will look like this: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AlertsManagement/alerts/{alertId}/history'.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - alertID - Unique ID of an alert instance.
+//   - options - AlertsClientGetHistoryOptions contains the optional parameters for the AlertsClient.GetHistory method.
+func (client *AlertsClient) GetHistory(ctx context.Context, alertID string, options *AlertsClientGetHistoryOptions) (AlertsClientGetHistoryResponse, error) {
+	var err error
+	const operationName = "AlertsClient.GetHistory"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getHistoryCreateRequest(ctx, alertID, options)
+	if err != nil {
+		return AlertsClientGetHistoryResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AlertsClientGetHistoryResponse{}, err
+	}
+	resp, err := client.getHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getHistoryCreateRequest creates the GetHistory request.
+func (client *AlertsClient) getHistoryCreateRequest(ctx context.Context, alertID string, _ *AlertsClientGetHistoryOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts/{alertId}/history"
+	if client.scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
+	if alertID == "" {
+		return nil, errors.New("parameter alertID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250525Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHistoryHandleResponse handles the GetHistory response.
+func (client *AlertsClient) getHistoryHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetHistoryResponse, error) {
+	result := AlertsClientGetHistoryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AlertModification); err != nil {
+		return AlertsClientGetHistoryResponse{}, err
+	}
+	return result, nil
+}
+
+// GetHistoryTenant - Get the history of an alert, which captures any monitor condition changes (Fired/Resolved), alert state
+// changes (New/Acknowledged/Closed) and applied action rules for that particular alert.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - alertID - Unique ID of an alert instance.
+//   - options - AlertsClientGetHistoryTenantOptions contains the optional parameters for the AlertsClient.GetHistoryTenant method.
+func (client *AlertsClient) GetHistoryTenant(ctx context.Context, alertID string, options *AlertsClientGetHistoryTenantOptions) (AlertsClientGetHistoryTenantResponse, error) {
+	var err error
+	const operationName = "AlertsClient.GetHistoryTenant"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getHistoryTenantCreateRequest(ctx, alertID, options)
+	if err != nil {
+		return AlertsClientGetHistoryTenantResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AlertsClientGetHistoryTenantResponse{}, err
+	}
+	resp, err := client.getHistoryTenantHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getHistoryTenantCreateRequest creates the GetHistoryTenant request.
+func (client *AlertsClient) getHistoryTenantCreateRequest(ctx context.Context, alertID string, _ *AlertsClientGetHistoryTenantOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.AlertsManagement/alerts/{alertId}/history"
+	if alertID == "" {
+		return nil, errors.New("parameter alertID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250525Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHistoryTenantHandleResponse handles the GetHistoryTenant response.
+func (client *AlertsClient) getHistoryTenantHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetHistoryTenantResponse, error) {
+	result := AlertsClientGetHistoryTenantResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AlertModification); err != nil {
+		return AlertsClientGetHistoryTenantResponse{}, err
+	}
+	return result, nil
+}
+
+// GetSummary - Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
+// count of alerts for each severity).
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - groupby - This parameter allows the result set to be grouped by input fields. For example, groupby=severity,alertstate.
+//   - options - AlertsClientGetSummaryOptions contains the optional parameters for the AlertsClient.GetSummary method.
+func (client *AlertsClient) GetSummary(ctx context.Context, groupby AlertsSummaryGroupByFields, options *AlertsClientGetSummaryOptions) (AlertsClientGetSummaryResponse, error) {
+	var err error
+	const operationName = "AlertsClient.GetSummary"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getSummaryCreateRequest(ctx, groupby, options)
+	if err != nil {
+		return AlertsClientGetSummaryResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AlertsClientGetSummaryResponse{}, err
+	}
+	resp, err := client.getSummaryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getSummaryCreateRequest creates the GetSummary request.
+func (client *AlertsClient) getSummaryCreateRequest(ctx context.Context, groupby AlertsSummaryGroupByFields, options *AlertsClientGetSummaryOptions) (*policy.Request, error) {
+	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alertsSummary"
+	if client.scope == "" {
+		return nil, errors.New("parameter scope cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	if options != nil && options.AlertRule != nil {
+		reqQP.Set("alertRule", *options.AlertRule)
+	}
+	if options != nil && options.AlertState != nil {
+		reqQP.Set("alertState", string(*options.AlertState))
+	}
+	reqQP.Set("api-version", version20250525Preview)
+	if options != nil && options.CustomTimeRange != nil {
+		reqQP.Set("customTimeRange", *options.CustomTimeRange)
+	}
+	reqQP.Set("groupby", string(groupby))
+	if options != nil && options.IncludeSmartGroupsCount != nil {
+		reqQP.Set("includeSmartGroupsCount", strconv.FormatBool(*options.IncludeSmartGroupsCount))
+	}
+	if options != nil && options.MonitorCondition != nil {
+		reqQP.Set("monitorCondition", string(*options.MonitorCondition))
+	}
+	if options != nil && options.MonitorService != nil {
+		reqQP.Set("monitorService", string(*options.MonitorService))
+	}
+	if options != nil && options.Severity != nil {
+		reqQP.Set("severity", string(*options.Severity))
+	}
+	if options != nil && options.TargetResource != nil {
+		reqQP.Set("targetResource", *options.TargetResource)
+	}
+	if options != nil && options.TargetResourceGroup != nil {
+		reqQP.Set("targetResourceGroup", *options.TargetResourceGroup)
+	}
+	if options != nil && options.TargetResourceType != nil {
+		reqQP.Set("targetResourceType", *options.TargetResourceType)
+	}
+	if options != nil && options.TimeRange != nil {
+		reqQP.Set("timeRange", string(*options.TimeRange))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getSummaryHandleResponse handles the GetSummary response.
+func (client *AlertsClient) getSummaryHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetSummaryResponse, error) {
+	result := AlertsClientGetSummaryResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSummary); err != nil {
+		return AlertsClientGetSummaryResponse{}, err
+	}
+	return result, nil
+}
+
+// MetaData - List alerts meta data information based on value of identifier parameter.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - identifier - Identification of the information to be retrieved by API call.
+//   - options - AlertsClientMetaDataOptions contains the optional parameters for the AlertsClient.MetaData method.
+func (client *AlertsClient) MetaData(ctx context.Context, identifier Identifier, options *AlertsClientMetaDataOptions) (AlertsClientMetaDataResponse, error) {
+	var err error
+	const operationName = "AlertsClient.MetaData"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.metaDataCreateRequest(ctx, identifier, options)
+	if err != nil {
+		return AlertsClientMetaDataResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return AlertsClientMetaDataResponse{}, err
+	}
+	resp, err := client.metaDataHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// metaDataCreateRequest creates the MetaData request.
+func (client *AlertsClient) metaDataCreateRequest(ctx context.Context, identifier Identifier, _ *AlertsClientMetaDataOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.AlertsManagement/alertsMetaData"
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250525Preview)
+	reqQP.Set("identifier", string(identifier))
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// metaDataHandleResponse handles the MetaData response.
+func (client *AlertsClient) metaDataHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientMetaDataResponse, error) {
+	result := AlertsClientMetaDataResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsMetaData); err != nil {
+		return AlertsClientMetaDataResponse{}, err
 	}
 	return result, nil
 }
@@ -405,119 +771,6 @@ func (client *AlertsClient) getAllTenantHandleResponse(resp *http.Response, succ
 	return result, nil
 }
 
-// GetByID - Get a specific alert.
-//
-// Get information related to a specific alert. If scope is a deleted resource then please use scope as parent resource of
-// the delete resource. For example if my alert id is '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/vm1/providers/Microsoft.AlertsManagement/alerts/{alertId}'
-// and 'vm1' is deleted then if you want to get alert by id then use parent resource of scope. So in this example get alert
-// by id call will look like this: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AlertsManagement/alerts/{alertId}'.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - alertID - Unique ID of an alert instance.
-//   - options - AlertsClientGetByIDOptions contains the optional parameters for the AlertsClient.GetByID method.
-func (client *AlertsClient) GetByID(ctx context.Context, alertID string, options *AlertsClientGetByIDOptions) (AlertsClientGetByIDResponse, error) {
-	var err error
-	const operationName = "AlertsClient.GetByID"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getByIDCreateRequest(ctx, alertID, options)
-	if err != nil {
-		return AlertsClientGetByIDResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AlertsClientGetByIDResponse{}, err
-	}
-	return client.getByIDHandleResponse(httpResp, http.StatusOK)
-}
-
-// getByIDCreateRequest creates the GetByID request.
-func (client *AlertsClient) getByIDCreateRequest(ctx context.Context, alertID string, _ *AlertsClientGetByIDOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts/{alertId}"
-	if client.scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
-	if alertID == "" {
-		return nil, errors.New("parameter alertID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250525Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getByIDHandleResponse handles the GetByID response.
-func (client *AlertsClient) getByIDHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetByIDResponse, error) {
-	result := AlertsClientGetByIDResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
-		return AlertsClientGetByIDResponse{}, err
-	}
-	return result, nil
-}
-
-// GetByIDTenant - Get a specific alert.
-//
-// Get information related to a specific alert.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - alertID - Unique ID of an alert instance.
-//   - options - AlertsClientGetByIDTenantOptions contains the optional parameters for the AlertsClient.GetByIDTenant method.
-func (client *AlertsClient) GetByIDTenant(ctx context.Context, alertID string, options *AlertsClientGetByIDTenantOptions) (AlertsClientGetByIDTenantResponse, error) {
-	var err error
-	const operationName = "AlertsClient.GetByIDTenant"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getByIDTenantCreateRequest(ctx, alertID, options)
-	if err != nil {
-		return AlertsClientGetByIDTenantResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AlertsClientGetByIDTenantResponse{}, err
-	}
-	return client.getByIDTenantHandleResponse(httpResp, http.StatusOK)
-}
-
-// getByIDTenantCreateRequest creates the GetByIDTenant request.
-func (client *AlertsClient) getByIDTenantCreateRequest(ctx context.Context, alertID string, _ *AlertsClientGetByIDTenantOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.AlertsManagement/alerts/{alertId}"
-	if alertID == "" {
-		return nil, errors.New("parameter alertID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250525Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getByIDTenantHandleResponse handles the GetByIDTenant response.
-func (client *AlertsClient) getByIDTenantHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetByIDTenantResponse, error) {
-	result := AlertsClientGetByIDTenantResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Alert); err != nil {
-		return AlertsClientGetByIDTenantResponse{}, err
-	}
-	return result, nil
-}
-
 // NewGetEnrichmentsPager - Get the enrichments of an alert. It returns a collection of one object named default.
 //   - alertID - Unique ID of an alert instance.
 //   - options - AlertsClientGetEnrichmentsOptions contains the optional parameters for the AlertsClient.NewGetEnrichmentsPager
@@ -586,251 +839,6 @@ func (client *AlertsClient) getEnrichmentsHandleResponse(resp *http.Response, su
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertEnrichmentsList); err != nil {
 		return AlertsClientGetEnrichmentsResponse{}, err
-	}
-	return result, nil
-}
-
-// GetHistory - Get the history of an alert, which captures any monitor condition changes (Fired/Resolved), alert state changes
-// (New/Acknowledged/Closed) and applied action rules for that particular alert. If scope is a deleted resource then please
-// use scope as parent resource of the delete resource. For example if my alert id is '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/vm1/providers/Microsoft.AlertsManagement/alerts/{alertId}'
-// and 'vm1' is deleted then if you want to get history of this particular alert then use parent resource of scope. So in
-// this example get history call will look like this: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.AlertsManagement/alerts/{alertId}/history'.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - alertID - Unique ID of an alert instance.
-//   - options - AlertsClientGetHistoryOptions contains the optional parameters for the AlertsClient.GetHistory method.
-func (client *AlertsClient) GetHistory(ctx context.Context, alertID string, options *AlertsClientGetHistoryOptions) (AlertsClientGetHistoryResponse, error) {
-	var err error
-	const operationName = "AlertsClient.GetHistory"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getHistoryCreateRequest(ctx, alertID, options)
-	if err != nil {
-		return AlertsClientGetHistoryResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AlertsClientGetHistoryResponse{}, err
-	}
-	return client.getHistoryHandleResponse(httpResp, http.StatusOK)
-}
-
-// getHistoryCreateRequest creates the GetHistory request.
-func (client *AlertsClient) getHistoryCreateRequest(ctx context.Context, alertID string, _ *AlertsClientGetHistoryOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alerts/{alertId}/history"
-	if client.scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
-	if alertID == "" {
-		return nil, errors.New("parameter alertID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250525Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHistoryHandleResponse handles the GetHistory response.
-func (client *AlertsClient) getHistoryHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetHistoryResponse, error) {
-	result := AlertsClientGetHistoryResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AlertModification); err != nil {
-		return AlertsClientGetHistoryResponse{}, err
-	}
-	return result, nil
-}
-
-// GetHistoryTenant - Get the history of an alert, which captures any monitor condition changes (Fired/Resolved), alert state
-// changes (New/Acknowledged/Closed) and applied action rules for that particular alert.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - alertID - Unique ID of an alert instance.
-//   - options - AlertsClientGetHistoryTenantOptions contains the optional parameters for the AlertsClient.GetHistoryTenant method.
-func (client *AlertsClient) GetHistoryTenant(ctx context.Context, alertID string, options *AlertsClientGetHistoryTenantOptions) (AlertsClientGetHistoryTenantResponse, error) {
-	var err error
-	const operationName = "AlertsClient.GetHistoryTenant"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getHistoryTenantCreateRequest(ctx, alertID, options)
-	if err != nil {
-		return AlertsClientGetHistoryTenantResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AlertsClientGetHistoryTenantResponse{}, err
-	}
-	return client.getHistoryTenantHandleResponse(httpResp, http.StatusOK)
-}
-
-// getHistoryTenantCreateRequest creates the GetHistoryTenant request.
-func (client *AlertsClient) getHistoryTenantCreateRequest(ctx context.Context, alertID string, _ *AlertsClientGetHistoryTenantOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.AlertsManagement/alerts/{alertId}/history"
-	if alertID == "" {
-		return nil, errors.New("parameter alertID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{alertId}", url.PathEscape(alertID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250525Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHistoryTenantHandleResponse handles the GetHistoryTenant response.
-func (client *AlertsClient) getHistoryTenantHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetHistoryTenantResponse, error) {
-	result := AlertsClientGetHistoryTenantResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AlertModification); err != nil {
-		return AlertsClientGetHistoryTenantResponse{}, err
-	}
-	return result, nil
-}
-
-// GetSummary - Get a summarized count of your alerts grouped by various parameters (e.g. grouping by 'Severity' returns the
-// count of alerts for each severity).
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - groupby - This parameter allows the result set to be grouped by input fields. For example, groupby=severity,alertstate.
-//   - options - AlertsClientGetSummaryOptions contains the optional parameters for the AlertsClient.GetSummary method.
-func (client *AlertsClient) GetSummary(ctx context.Context, groupby AlertsSummaryGroupByFields, options *AlertsClientGetSummaryOptions) (AlertsClientGetSummaryResponse, error) {
-	var err error
-	const operationName = "AlertsClient.GetSummary"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getSummaryCreateRequest(ctx, groupby, options)
-	if err != nil {
-		return AlertsClientGetSummaryResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AlertsClientGetSummaryResponse{}, err
-	}
-	return client.getSummaryHandleResponse(httpResp, http.StatusOK)
-}
-
-// getSummaryCreateRequest creates the GetSummary request.
-func (client *AlertsClient) getSummaryCreateRequest(ctx context.Context, groupby AlertsSummaryGroupByFields, options *AlertsClientGetSummaryOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.AlertsManagement/alertsSummary"
-	if client.scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", url.PathEscape(client.scope))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.AlertRule != nil {
-		reqQP.Set("alertRule", *options.AlertRule)
-	}
-	if options != nil && options.AlertState != nil {
-		reqQP.Set("alertState", string(*options.AlertState))
-	}
-	reqQP.Set("api-version", version20250525Preview)
-	if options != nil && options.CustomTimeRange != nil {
-		reqQP.Set("customTimeRange", *options.CustomTimeRange)
-	}
-	reqQP.Set("groupby", string(groupby))
-	if options != nil && options.IncludeSmartGroupsCount != nil {
-		reqQP.Set("includeSmartGroupsCount", strconv.FormatBool(*options.IncludeSmartGroupsCount))
-	}
-	if options != nil && options.MonitorCondition != nil {
-		reqQP.Set("monitorCondition", string(*options.MonitorCondition))
-	}
-	if options != nil && options.MonitorService != nil {
-		reqQP.Set("monitorService", string(*options.MonitorService))
-	}
-	if options != nil && options.Severity != nil {
-		reqQP.Set("severity", string(*options.Severity))
-	}
-	if options != nil && options.TargetResource != nil {
-		reqQP.Set("targetResource", *options.TargetResource)
-	}
-	if options != nil && options.TargetResourceGroup != nil {
-		reqQP.Set("targetResourceGroup", *options.TargetResourceGroup)
-	}
-	if options != nil && options.TargetResourceType != nil {
-		reqQP.Set("targetResourceType", *options.TargetResourceType)
-	}
-	if options != nil && options.TimeRange != nil {
-		reqQP.Set("timeRange", string(*options.TimeRange))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getSummaryHandleResponse handles the GetSummary response.
-func (client *AlertsClient) getSummaryHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientGetSummaryResponse, error) {
-	result := AlertsClientGetSummaryResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSummary); err != nil {
-		return AlertsClientGetSummaryResponse{}, err
-	}
-	return result, nil
-}
-
-// MetaData - List alerts meta data information based on value of identifier parameter.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - identifier - Identification of the information to be retrieved by API call.
-//   - options - AlertsClientMetaDataOptions contains the optional parameters for the AlertsClient.MetaData method.
-func (client *AlertsClient) MetaData(ctx context.Context, identifier Identifier, options *AlertsClientMetaDataOptions) (AlertsClientMetaDataResponse, error) {
-	var err error
-	const operationName = "AlertsClient.MetaData"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.metaDataCreateRequest(ctx, identifier, options)
-	if err != nil {
-		return AlertsClientMetaDataResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return AlertsClientMetaDataResponse{}, err
-	}
-	return client.metaDataHandleResponse(httpResp, http.StatusOK)
-}
-
-// metaDataCreateRequest creates the MetaData request.
-func (client *AlertsClient) metaDataCreateRequest(ctx context.Context, identifier Identifier, _ *AlertsClientMetaDataOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.AlertsManagement/alertsMetaData"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250525Preview)
-	reqQP.Set("identifier", string(identifier))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// metaDataHandleResponse handles the MetaData response.
-func (client *AlertsClient) metaDataHandleResponse(resp *http.Response, successCodes ...int) (AlertsClientMetaDataResponse, error) {
-	result := AlertsClientMetaDataResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsMetaData); err != nil {
-		return AlertsClientMetaDataResponse{}, err
 	}
 	return result, nil
 }

@@ -64,7 +64,8 @@ func (client *AccountsClient) CreateOrUpdate(ctx context.Context, accountName st
 	if err != nil {
 		return AccountsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -129,7 +130,8 @@ func (client *AccountsClient) Delete(ctx context.Context, accountName string, re
 		return AccountsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AccountsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AccountsClientDeleteResponse{}, err
 	}
 	return AccountsClientDeleteResponse{}, nil
 }
@@ -178,7 +180,8 @@ func (client *AccountsClient) Get(ctx context.Context, accountName string, resou
 	if err != nil {
 		return AccountsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -378,7 +381,8 @@ func (client *AccountsClient) Update(ctx context.Context, accountName string, re
 	if err != nil {
 		return AccountsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

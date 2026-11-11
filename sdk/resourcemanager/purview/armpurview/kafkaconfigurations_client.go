@@ -68,7 +68,8 @@ func (client *KafkaConfigurationsClient) CreateOrUpdate(ctx context.Context, res
 	if err != nil {
 		return KafkaConfigurationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -141,7 +142,8 @@ func (client *KafkaConfigurationsClient) Delete(ctx context.Context, resourceGro
 		return KafkaConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return KafkaConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return KafkaConfigurationsClientDeleteResponse{}, err
 	}
 	return KafkaConfigurationsClientDeleteResponse{}, nil
 }
@@ -197,7 +199,8 @@ func (client *KafkaConfigurationsClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return KafkaConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

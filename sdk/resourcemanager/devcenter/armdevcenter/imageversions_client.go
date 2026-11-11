@@ -66,7 +66,8 @@ func (client *ImageVersionsClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ImageVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -141,7 +142,8 @@ func (client *ImageVersionsClient) GetByProject(ctx context.Context, resourceGro
 	if err != nil {
 		return ImageVersionsClientGetByProjectResponse{}, err
 	}
-	return client.getByProjectHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByProjectHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByProjectCreateRequest creates the GetByProject request.

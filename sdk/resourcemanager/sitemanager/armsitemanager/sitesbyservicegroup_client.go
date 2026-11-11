@@ -62,7 +62,7 @@ func (client *SitesByServiceGroupClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - create or update Site at SG scope
+// createOrUpdate - create or update Site at SG scope
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SitesByServiceGroupClient) createOrUpdate(ctx context.Context, servicegroupName string, siteName string, resource Site, options *SitesByServiceGroupClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -79,12 +79,13 @@ func (client *SitesByServiceGroupClient) createOrUpdate(ctx context.Context, ser
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *SitesByServiceGroupClient) createOrUpdateCreateRequest(ctx context.Context, servicegroupName string, siteName string, resource Site, _ *SitesByServiceGroupClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/serviceGroups/{servicegroupName}/providers/Microsoft.Edge/sites/{siteName}"
 	if servicegroupName == "" {
@@ -131,7 +132,8 @@ func (client *SitesByServiceGroupClient) Delete(ctx context.Context, servicegrou
 		return SitesByServiceGroupClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SitesByServiceGroupClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SitesByServiceGroupClientDeleteResponse{}, err
 	}
 	return SitesByServiceGroupClientDeleteResponse{}, nil
 }
@@ -176,7 +178,8 @@ func (client *SitesByServiceGroupClient) Get(ctx context.Context, servicegroupNa
 	if err != nil {
 		return SitesByServiceGroupClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -302,7 +305,8 @@ func (client *SitesByServiceGroupClient) Update(ctx context.Context, servicegrou
 	if err != nil {
 		return SitesByServiceGroupClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

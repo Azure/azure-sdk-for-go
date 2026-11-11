@@ -1,5 +1,21 @@
 # Release History
 
+## 2.0.0 (2026-11-09)
+### Breaking Changes
+
+- Function `*CloudAccountsClient.BeginUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccount, options *CloudAccountsClientBeginUpdateOptions)` to `(ctx context.Context, resourceGroupName string, cloudAccountName string, properties CloudAccountUpdate, options *CloudAccountsClientBeginUpdateOptions)`
+
+### Features Added
+
+- New value `StorageClassTypeCold` added to enum type `StorageClassType`
+- New struct `CloudAccountIdentityUpdate`
+- New struct `CloudAccountMarketplaceUpdate`
+- New struct `CloudAccountOfferDetailsUpdate`
+- New struct `CloudAccountUpdate`
+- New struct `CloudAccountUpdateProperties`
+- New struct `CloudAccountUserUpdate`
+
+
 ## 1.0.0 (2026-10-09)
 ### Breaking Changes
 

@@ -67,7 +67,10 @@ type AuthenticationProperties struct {
 
 // BackupProperties - Backup configuration properties for a HorizonDB cluster.
 type BackupProperties struct {
-	// REQUIRED; The geo-redundancy state. Geo-redundant backup is not supported when dataEncryption.type is AzureKeyVault.
+	// REQUIRED; The geo-redundancy state. When creationMode is PointInTimeRestore, the service ignores the requested value during
+	// cluster creation and configures the new cluster with the same geo-redundancy setting as the source cluster, for both same-location
+	// and cross-location restores. The response reports the inherited setting. Geo-redundant backup is not supported when dataEncryption.type
+	// is AzureKeyVault.
 	GeoRedundancy *GeoRedundancyState
 
 	// The number of days that automatic backups are retained. The service defaults to 7 days when this property is omitted.
@@ -632,9 +635,10 @@ type ClusterProperties struct {
 	// The mode used to create the cluster. When this property is omitted while creating a new cluster, the service records Create.
 	// PointInTimeRestore creates a new cluster from an available backup; pointInTimeUtc and creationSourceClusterResourceId are
 	// then required, postgreSqlVersion must be omitted because it is obtained from the backup metadata, and creationSourceClusterLocation
-	// is required when the source and target cluster locations differ. This property is immutable and is returned as creation
-	// provenance. On replacement, omission preserves the recorded value, resubmitting the same value is accepted, and changing
-	// it is rejected.
+	// is required when the source and target cluster locations differ. During PointInTimeRestore creation, the service ignores
+	// the requested backup.geoRedundancy value and configures the new cluster with the same geo-redundancy setting as the source
+	// cluster. This property is immutable and is returned as creation provenance. On replacement, omission preserves the recorded
+	// value, resubmitting the same value is accepted, and changing it is rejected.
 	CreationMode *ClusterCreateMode
 
 	// The Azure location of the source HorizonDB cluster used for point-in-time restore. This property is optional when the source
@@ -1553,8 +1557,8 @@ type PasswordAuthenticationProperties struct {
 	// REQUIRED; The state of PostgreSQL username-and-password authentication.
 	State *AuthenticationState
 
-	// The PostgreSQL administrator login name. This value is not returned in responses. After it is set, renaming is not supported.
-	// Setting the login requires password authentication state to be Enabled in the same request.
+	// The PostgreSQL administrator login name. This value is returned in responses after it is set. After it is set, renaming
+	// is not supported. Setting the login requires password authentication state to be Enabled in the same request.
 	AdministratorLogin *string
 
 	// The PostgreSQL administrator password. Setting the password requires password authentication state to be Enabled in the
@@ -1584,9 +1588,6 @@ type PasswordAuthenticationPropertiesForPatchUpdate struct {
 type Pool struct {
 	// The resource-specific properties for this resource.
 	Properties *PoolProperties
-
-	// Resource tags.
-	Tags map[string]*string
 
 	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
 	ID *string
@@ -1660,9 +1661,6 @@ type PoolFeatureCapability struct {
 type PoolForPatchUpdate struct {
 	// The properties that can be updated for a HorizonDB pool.
 	Properties *PoolPropertiesForPatchUpdate
-
-	// Resource tags.
-	Tags map[string]*string
 }
 
 // PoolHighAvailability - The high-availability configuration for a HorizonDB pool.
@@ -1697,9 +1695,10 @@ type PoolParameterGroupReference struct {
 	// maintenance do not apply pending parameter changes.
 	ApplyMethod *ParameterApplyMethod
 
-	// REQUIRED; The Azure resource ID of the associated parameter group. Initial pool creation in this API version requires the
-	// corresponding Microsoft.HorizonDb/locations/parameterGroups resource. For an existing pool, PUT can specify either the
-	// corresponding default group or a customer-created Microsoft.HorizonDb/parameterGroups resource.
+	// REQUIRED; The Azure resource ID of the associated parameter group. When the parameter group is supplied during initial
+	// pool creation in this API version, the ID must identify the corresponding Microsoft.HorizonDb/locations/parameterGroups
+	// resource. For an existing pool, PUT can specify either the corresponding default group or a customer-created Microsoft.HorizonDb/parameterGroups
+	// resource.
 	ParameterGroupResourceID *string
 
 	// READ-ONLY; The synchronization status between the pool and its parameter group. PendingReboot changes remain pending across
@@ -1732,11 +1731,12 @@ type PoolProperties struct {
 	// runtime compute without changing the configured node count, stop the pool.
 	NodeCount *int32
 
-	// REQUIRED; The required parameter group associated with the pool. When creating a new pool in this API version, the caller
-	// must supply the corresponding default parameter group; customer-created parameter groups are not accepted during creation.
-	// For an existing pool, PUT or PATCH can associate either the corresponding default parameter group or a customer-created
-	// parameter group. The create-visible shape intentionally supports both resource ID forms so a future API version can allow
-	// customer-created parameter groups during creation without a breaking schema change.
+	// The parameter group associated with the pool. When omitted during creation, the service applies the default parameter group
+	// compatible with the parent cluster's PostgreSQL version. When supplied during creation in this API version, it must reference
+	// the corresponding default parameter group; customer-created parameter groups are not accepted during creation. For an existing
+	// pool, PUT or PATCH can associate either the corresponding default parameter group or a customer-created parameter group.
+	// The create-visible shape intentionally supports both resource ID forms so a future API version can allow customer-created
+	// parameter groups during creation without a breaking schema change.
 	ParameterGroup *PoolParameterGroupReference
 
 	// The scheduled maintenance configuration for the pool. The properties available depend on the selected maintenance management

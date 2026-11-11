@@ -72,7 +72,7 @@ func (client *ClientsClient) BeginCreateOrUpdate(ctx context.Context, resourceGr
 	}
 }
 
-// CreateOrUpdate - Create or update a client.
+// createOrUpdate - Create or update a client.
 //
 // Create or update a client with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -91,12 +91,13 @@ func (client *ClientsClient) createOrUpdate(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ClientsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, clientName string, clientInfo Client, _ *ClientsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/clients/{clientName}"
 	if client.subscriptionID == "" {
@@ -155,7 +156,7 @@ func (client *ClientsClient) BeginDelete(ctx context.Context, resourceGroupName 
 	}
 }
 
-// Delete - Delete a client.
+// deleteOperation - Delete a client.
 //
 // Delete an existing client.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -174,12 +175,13 @@ func (client *ClientsClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ClientsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, clientName string, _ *ClientsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/clients/{clientName}"
 	if client.subscriptionID == "" {
@@ -230,7 +232,8 @@ func (client *ClientsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return ClientsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

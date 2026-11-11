@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0-beta.2 (2026-11-09)
+## 2.0.0-beta.2 (2026-11-11)
 ### Features Added
 
 - New enum type `ExceptionWindowAction` with values `ExceptionWindowActionAllow`, `ExceptionWindowActionBlock`

@@ -103,7 +103,8 @@ func (client *AdapterDeploymentsClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -157,7 +158,7 @@ func (client *AdapterDeploymentsClient) createOrUpdateCreateRequest(ctx context.
 //     method.
 func (client *AdapterDeploymentsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, options *AdapterDeploymentsClientBeginDeleteOptions) (*runtime.Poller[AdapterDeploymentsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, adapterDeploymentName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, adapterDeploymentName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -172,9 +173,9 @@ func (client *AdapterDeploymentsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Drains requests and deletes an adapter deployment and its serving snapshot.
+// deleteOperation - Drains requests and deletes an adapter deployment and its serving snapshot.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AdapterDeploymentsClient) delete(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, options *AdapterDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AdapterDeploymentsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, options *AdapterDeploymentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AdapterDeploymentsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -189,7 +190,8 @@ func (client *AdapterDeploymentsClient) delete(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -246,7 +248,8 @@ func (client *AdapterDeploymentsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AdapterDeploymentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

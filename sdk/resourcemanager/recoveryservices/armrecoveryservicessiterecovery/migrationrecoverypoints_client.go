@@ -70,7 +70,8 @@ func (client *MigrationRecoveryPointsClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return MigrationRecoveryPointsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

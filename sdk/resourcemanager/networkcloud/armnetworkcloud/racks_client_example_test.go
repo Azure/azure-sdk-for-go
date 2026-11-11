@@ -107,6 +107,73 @@ func ExampleRacksClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-07-01/Racks_Patch.json
+func ExampleRacksClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRacksClient().BeginUpdate(ctx, "resourceGroupName", "rackName", armnetworkcloud.RackPatchParameters{
+		Properties: &armnetworkcloud.RacksPatchProperties{
+			RackLocation:     to.Ptr("Rack 2B"),
+			RackSerialNumber: to.Ptr("RACK_SERIAL_NUMBER"),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("myvalue1"),
+			"key2": to.Ptr("myvalue2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetworkcloud.RacksClientUpdateResponse{
+	// 	Rack: armnetworkcloud.Rack{
+	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 			Type: to.Ptr("CustomLocation"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
+	// 		Location: to.Ptr("location"),
+	// 		Name: to.Ptr("rackName"),
+	// 		Properties: &armnetworkcloud.RackProperties{
+	// 			AvailabilityZone: to.Ptr("1"),
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.RackDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("Rack is operational"),
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.RackProvisioningStateSucceeded),
+	// 			RackLocation: to.Ptr("Rack 28"),
+	// 			RackSerialNumber: to.Ptr("RACK_SERIAL_NUMBER"),
+	// 			RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
+	// 		},
+	// 		SystemData: &armnetworkcloud.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("identityA"),
+	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("identityB"),
+	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("myvalue1"),
+	// 			"key2": to.Ptr("myvalue2"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/racks"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-07-01/Racks_Get.json
 func ExampleRacksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -287,71 +354,4 @@ func ExampleRacksClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01/Racks_Patch.json
-func ExampleRacksClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewRacksClient().BeginUpdate(ctx, "resourceGroupName", "rackName", armnetworkcloud.RackPatchParameters{
-		Properties: &armnetworkcloud.RacksPatchProperties{
-			RackLocation:     to.Ptr("Rack 2B"),
-			RackSerialNumber: to.Ptr("RACK_SERIAL_NUMBER"),
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("myvalue1"),
-			"key2": to.Ptr("myvalue2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetworkcloud.RacksClientUpdateResponse{
-	// 	Rack: armnetworkcloud.Rack{
-	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
-	// 			Type: to.Ptr("CustomLocation"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
-	// 		Location: to.Ptr("location"),
-	// 		Name: to.Ptr("rackName"),
-	// 		Properties: &armnetworkcloud.RackProperties{
-	// 			AvailabilityZone: to.Ptr("1"),
-	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 			DetailedStatus: to.Ptr(armnetworkcloud.RackDetailedStatusAvailable),
-	// 			DetailedStatusMessage: to.Ptr("Rack is operational"),
-	// 			ProvisioningState: to.Ptr(armnetworkcloud.RackProvisioningStateSucceeded),
-	// 			RackLocation: to.Ptr("Rack 28"),
-	// 			RackSerialNumber: to.Ptr("RACK_SERIAL_NUMBER"),
-	// 			RackSKUID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/rackSkus/rackSkuName"),
-	// 		},
-	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("identityA"),
-	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("identityB"),
-	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("myvalue1"),
-	// 			"key2": to.Ptr("myvalue2"),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.NetworkCloud/racks"),
-	// 	},
-	// }
 }

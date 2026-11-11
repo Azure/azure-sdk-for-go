@@ -65,7 +65,8 @@ func (client *ManagedInstanceOperationsClient) Cancel(ctx context.Context, resou
 		return ManagedInstanceOperationsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ManagedInstanceOperationsClientCancelResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagedInstanceOperationsClientCancelResponse{}, err
 	}
 	return ManagedInstanceOperationsClientCancelResponse{}, nil
 }
@@ -119,7 +120,8 @@ func (client *ManagedInstanceOperationsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ManagedInstanceOperationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

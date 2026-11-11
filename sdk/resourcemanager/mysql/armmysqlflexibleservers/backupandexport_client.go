@@ -68,7 +68,7 @@ func (client *BackupAndExportClient) BeginCreate(ctx context.Context, resourceGr
 	}
 }
 
-// Create - Exports the backup of the given server by creating a backup if not existing.
+// create - Exports the backup of the given server by creating a backup if not existing.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BackupAndExportClient) create(ctx context.Context, resourceGroupName string, serverName string, parameters BackupAndExportRequest, options *BackupAndExportClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *BackupAndExportClient) create(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *BackupAndExportClient) createCreateRequest(ctx context.Context, resourceGroupName string, serverName string, parameters BackupAndExportRequest, _ *BackupAndExportClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DBforMySQL/flexibleServers/{serverName}/backupAndExport"
 	if client.subscriptionID == "" {
@@ -140,7 +141,8 @@ func (client *BackupAndExportClient) ValidateBackup(ctx context.Context, resourc
 	if err != nil {
 		return BackupAndExportClientValidateBackupResponse{}, err
 	}
-	return client.validateBackupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateBackupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateBackupCreateRequest creates the ValidateBackup request.

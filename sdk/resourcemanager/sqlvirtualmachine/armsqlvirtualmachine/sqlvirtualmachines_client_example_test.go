@@ -622,6 +622,102 @@ func ExampleSQLVirtualMachinesClient_BeginFetchDCAssessment() {
 	}
 }
 
+// Generated from example definition: 2023-10-01/RedeploySqlVirtualMachine.json
+func ExampleSQLVirtualMachinesClient_BeginRedeploy() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsqlvirtualmachine.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLVirtualMachinesClient().BeginRedeploy(ctx, "testrg", "testvm", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2023-10-01/StartAssessmentOnSqlVirtualMachine.json
+func ExampleSQLVirtualMachinesClient_BeginStartAssessment() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsqlvirtualmachine.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLVirtualMachinesClient().BeginStartAssessment(ctx, "testrg", "testvm", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2023-10-01/UpdateSqlVirtualMachine.json
+func ExampleSQLVirtualMachinesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsqlvirtualmachine.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSQLVirtualMachinesClient().BeginUpdate(ctx, "testrg", "testvm", armsqlvirtualmachine.Update{
+		Tags: map[string]*string{
+			"mytag": to.Ptr("myval"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsqlvirtualmachine.SQLVirtualMachinesClientUpdateResponse{
+	// 	SQLVirtualMachine: armsqlvirtualmachine.SQLVirtualMachine{
+	// 		Name: to.Ptr("testvm"),
+	// 		Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),
+	// 		Location: to.Ptr("northeurope"),
+	// 		Properties: &armsqlvirtualmachine.Properties{
+	// 			AdditionalVMPatch: to.Ptr(armsqlvirtualmachine.AdditionalOsPatchWUMU),
+	// 			EnableAutomaticUpgrade: to.Ptr(true),
+	// 			LeastPrivilegeMode: to.Ptr(armsqlvirtualmachine.LeastPrivilegeModeEnabled),
+	// 			OSType: to.Ptr(armsqlvirtualmachine.OsTypeWindows),
+	// 			ProvisioningState: to.Ptr("Updating"),
+	// 			SQLImageOffer: to.Ptr("SQL2022-WS2022"),
+	// 			SQLImageSKU: to.Ptr(armsqlvirtualmachine.SQLImageSKUEnterprise),
+	// 			SQLManagement: to.Ptr(armsqlvirtualmachine.SQLManagementModeFull),
+	// 			SQLServerLicenseType: to.Ptr(armsqlvirtualmachine.SQLServerLicenseTypePAYG),
+	// 			VirtualMachineIdentitySettings: &armsqlvirtualmachine.VirtualMachineIdentity{
+	// 				Type: to.Ptr(armsqlvirtualmachine.VMIdentityTypeSystemAssigned),
+	// 			},
+	// 			VirtualMachineResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Compute/virtualMachines/testvm"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"mytag": to.Ptr("myval"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2023-10-01/GetSqlVirtualMachine.json
 func ExampleSQLVirtualMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -663,117 +759,6 @@ func ExampleSQLVirtualMachinesClient_Get() {
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2023-10-01/ListSubscriptionSqlVirtualMachine.json
-func ExampleSQLVirtualMachinesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsqlvirtualmachine.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewSQLVirtualMachinesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsqlvirtualmachine.SQLVirtualMachinesClientListResponse{
-		// 	ListResult: armsqlvirtualmachine.ListResult{
-		// 		Value: []*armsqlvirtualmachine.SQLVirtualMachine{
-		// 			{
-		// 				Name: to.Ptr("testvm"),
-		// 				Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),
-		// 				Location: to.Ptr("northeurope"),
-		// 				Properties: &armsqlvirtualmachine.Properties{
-		// 					AdditionalVMPatch: to.Ptr(armsqlvirtualmachine.AdditionalOsPatchWUMU),
-		// 					EnableAutomaticUpgrade: to.Ptr(true),
-		// 					LeastPrivilegeMode: to.Ptr(armsqlvirtualmachine.LeastPrivilegeModeEnabled),
-		// 					OSType: to.Ptr(armsqlvirtualmachine.OsTypeWindows),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					SQLImageOffer: to.Ptr("SQL2022-WS2022"),
-		// 					SQLImageSKU: to.Ptr(armsqlvirtualmachine.SQLImageSKUEnterprise),
-		// 					SQLManagement: to.Ptr(armsqlvirtualmachine.SQLManagementModeFull),
-		// 					SQLServerLicenseType: to.Ptr(armsqlvirtualmachine.SQLServerLicenseTypePAYG),
-		// 					VirtualMachineIdentitySettings: &armsqlvirtualmachine.VirtualMachineIdentity{
-		// 						Type: to.Ptr(armsqlvirtualmachine.VMIdentityTypeSystemAssigned),
-		// 					},
-		// 					VirtualMachineResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Compute/virtualMachines/testvm"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("testvm1"),
-		// 				Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm1"),
-		// 				Location: to.Ptr("northeurope"),
-		// 				Properties: &armsqlvirtualmachine.Properties{
-		// 					AdditionalVMPatch: to.Ptr(armsqlvirtualmachine.AdditionalOsPatchWUMU),
-		// 					EnableAutomaticUpgrade: to.Ptr(false),
-		// 					LeastPrivilegeMode: to.Ptr(armsqlvirtualmachine.LeastPrivilegeModeEnabled),
-		// 					OSType: to.Ptr(armsqlvirtualmachine.OsTypeWindows),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					SQLImageOffer: to.Ptr("SQL2019-WS2022"),
-		// 					SQLImageSKU: to.Ptr(armsqlvirtualmachine.SQLImageSKUEnterprise),
-		// 					SQLManagement: to.Ptr(armsqlvirtualmachine.SQLManagementModeFull),
-		// 					SQLServerLicenseType: to.Ptr(armsqlvirtualmachine.SQLServerLicenseTypeAHUB),
-		// 					VirtualMachineIdentitySettings: &armsqlvirtualmachine.VirtualMachineIdentity{
-		// 						Type: to.Ptr(armsqlvirtualmachine.VMIdentityTypeNone),
-		// 					},
-		// 					VirtualMachineResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Compute/virtualMachines/testvm1"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("testvm2"),
-		// 				Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg1/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm2"),
-		// 				Location: to.Ptr("northeurope"),
-		// 				Properties: &armsqlvirtualmachine.Properties{
-		// 					AdditionalVMPatch: to.Ptr(armsqlvirtualmachine.AdditionalOsPatchWU),
-		// 					EnableAutomaticUpgrade: to.Ptr(false),
-		// 					LeastPrivilegeMode: to.Ptr(armsqlvirtualmachine.LeastPrivilegeModeEnabled),
-		// 					OSType: to.Ptr(armsqlvirtualmachine.OsTypeWindows),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					SQLImageOffer: to.Ptr("SQL2016-WS2016"),
-		// 					SQLImageSKU: to.Ptr(armsqlvirtualmachine.SQLImageSKUDeveloper),
-		// 					SQLManagement: to.Ptr(armsqlvirtualmachine.SQLManagementModeFull),
-		// 					SQLServerLicenseType: to.Ptr(armsqlvirtualmachine.SQLServerLicenseTypePAYG),
-		// 					VirtualMachineIdentitySettings: &armsqlvirtualmachine.VirtualMachineIdentity{
-		// 						Type: to.Ptr(armsqlvirtualmachine.VMIdentityTypeSystemAssigned),
-		// 					},
-		// 					VirtualMachineResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg1/providers/Microsoft.Compute/virtualMachines/testvm2"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("testvm2"),
-		// 				Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg2/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm2"),
-		// 				Location: to.Ptr("northeurope"),
-		// 				Properties: &armsqlvirtualmachine.Properties{
-		// 					EnableAutomaticUpgrade: to.Ptr(true),
-		// 					LeastPrivilegeMode: to.Ptr(armsqlvirtualmachine.LeastPrivilegeModeNotSet),
-		// 					OSType: to.Ptr(armsqlvirtualmachine.OsTypeLinux),
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					SQLImageOffer: to.Ptr("SQL2019-Ubuntu20"),
-		// 					SQLImageSKU: to.Ptr(armsqlvirtualmachine.SQLImageSKUDeveloper),
-		// 					SQLManagement: to.Ptr(armsqlvirtualmachine.SQLManagementModeLightWeight),
-		// 					SQLServerLicenseType: to.Ptr(armsqlvirtualmachine.SQLServerLicenseTypePAYG),
-		// 					VirtualMachineResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg2/providers/Microsoft.Compute/virtualMachines/testvm2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2023-10-01/ListByResourceGroupSqlVirtualMachine.json
@@ -919,8 +904,8 @@ func ExampleSQLVirtualMachinesClient_NewListBySQLVMGroupPager() {
 	}
 }
 
-// Generated from example definition: 2023-10-01/RedeploySqlVirtualMachine.json
-func ExampleSQLVirtualMachinesClient_BeginRedeploy() {
+// Generated from example definition: 2023-10-01/ListSubscriptionSqlVirtualMachine.json
+func ExampleSQLVirtualMachinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -930,87 +915,102 @@ func ExampleSQLVirtualMachinesClient_BeginRedeploy() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewSQLVirtualMachinesClient().BeginRedeploy(ctx, "testrg", "testvm", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewSQLVirtualMachinesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsqlvirtualmachine.SQLVirtualMachinesClientListResponse{
+		// 	ListResult: armsqlvirtualmachine.ListResult{
+		// 		Value: []*armsqlvirtualmachine.SQLVirtualMachine{
+		// 			{
+		// 				Name: to.Ptr("testvm"),
+		// 				Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),
+		// 				Location: to.Ptr("northeurope"),
+		// 				Properties: &armsqlvirtualmachine.Properties{
+		// 					AdditionalVMPatch: to.Ptr(armsqlvirtualmachine.AdditionalOsPatchWUMU),
+		// 					EnableAutomaticUpgrade: to.Ptr(true),
+		// 					LeastPrivilegeMode: to.Ptr(armsqlvirtualmachine.LeastPrivilegeModeEnabled),
+		// 					OSType: to.Ptr(armsqlvirtualmachine.OsTypeWindows),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					SQLImageOffer: to.Ptr("SQL2022-WS2022"),
+		// 					SQLImageSKU: to.Ptr(armsqlvirtualmachine.SQLImageSKUEnterprise),
+		// 					SQLManagement: to.Ptr(armsqlvirtualmachine.SQLManagementModeFull),
+		// 					SQLServerLicenseType: to.Ptr(armsqlvirtualmachine.SQLServerLicenseTypePAYG),
+		// 					VirtualMachineIdentitySettings: &armsqlvirtualmachine.VirtualMachineIdentity{
+		// 						Type: to.Ptr(armsqlvirtualmachine.VMIdentityTypeSystemAssigned),
+		// 					},
+		// 					VirtualMachineResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Compute/virtualMachines/testvm"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("testvm1"),
+		// 				Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm1"),
+		// 				Location: to.Ptr("northeurope"),
+		// 				Properties: &armsqlvirtualmachine.Properties{
+		// 					AdditionalVMPatch: to.Ptr(armsqlvirtualmachine.AdditionalOsPatchWUMU),
+		// 					EnableAutomaticUpgrade: to.Ptr(false),
+		// 					LeastPrivilegeMode: to.Ptr(armsqlvirtualmachine.LeastPrivilegeModeEnabled),
+		// 					OSType: to.Ptr(armsqlvirtualmachine.OsTypeWindows),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					SQLImageOffer: to.Ptr("SQL2019-WS2022"),
+		// 					SQLImageSKU: to.Ptr(armsqlvirtualmachine.SQLImageSKUEnterprise),
+		// 					SQLManagement: to.Ptr(armsqlvirtualmachine.SQLManagementModeFull),
+		// 					SQLServerLicenseType: to.Ptr(armsqlvirtualmachine.SQLServerLicenseTypeAHUB),
+		// 					VirtualMachineIdentitySettings: &armsqlvirtualmachine.VirtualMachineIdentity{
+		// 						Type: to.Ptr(armsqlvirtualmachine.VMIdentityTypeNone),
+		// 					},
+		// 					VirtualMachineResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Compute/virtualMachines/testvm1"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("testvm2"),
+		// 				Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg1/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm2"),
+		// 				Location: to.Ptr("northeurope"),
+		// 				Properties: &armsqlvirtualmachine.Properties{
+		// 					AdditionalVMPatch: to.Ptr(armsqlvirtualmachine.AdditionalOsPatchWU),
+		// 					EnableAutomaticUpgrade: to.Ptr(false),
+		// 					LeastPrivilegeMode: to.Ptr(armsqlvirtualmachine.LeastPrivilegeModeEnabled),
+		// 					OSType: to.Ptr(armsqlvirtualmachine.OsTypeWindows),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					SQLImageOffer: to.Ptr("SQL2016-WS2016"),
+		// 					SQLImageSKU: to.Ptr(armsqlvirtualmachine.SQLImageSKUDeveloper),
+		// 					SQLManagement: to.Ptr(armsqlvirtualmachine.SQLManagementModeFull),
+		// 					SQLServerLicenseType: to.Ptr(armsqlvirtualmachine.SQLServerLicenseTypePAYG),
+		// 					VirtualMachineIdentitySettings: &armsqlvirtualmachine.VirtualMachineIdentity{
+		// 						Type: to.Ptr(armsqlvirtualmachine.VMIdentityTypeSystemAssigned),
+		// 					},
+		// 					VirtualMachineResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg1/providers/Microsoft.Compute/virtualMachines/testvm2"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("testvm2"),
+		// 				Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg2/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm2"),
+		// 				Location: to.Ptr("northeurope"),
+		// 				Properties: &armsqlvirtualmachine.Properties{
+		// 					EnableAutomaticUpgrade: to.Ptr(true),
+		// 					LeastPrivilegeMode: to.Ptr(armsqlvirtualmachine.LeastPrivilegeModeNotSet),
+		// 					OSType: to.Ptr(armsqlvirtualmachine.OsTypeLinux),
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					SQLImageOffer: to.Ptr("SQL2019-Ubuntu20"),
+		// 					SQLImageSKU: to.Ptr(armsqlvirtualmachine.SQLImageSKUDeveloper),
+		// 					SQLManagement: to.Ptr(armsqlvirtualmachine.SQLManagementModeLightWeight),
+		// 					SQLServerLicenseType: to.Ptr(armsqlvirtualmachine.SQLServerLicenseTypePAYG),
+		// 					VirtualMachineResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg2/providers/Microsoft.Compute/virtualMachines/testvm2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2023-10-01/StartAssessmentOnSqlVirtualMachine.json
-func ExampleSQLVirtualMachinesClient_BeginStartAssessment() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsqlvirtualmachine.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLVirtualMachinesClient().BeginStartAssessment(ctx, "testrg", "testvm", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2023-10-01/UpdateSqlVirtualMachine.json
-func ExampleSQLVirtualMachinesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsqlvirtualmachine.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSQLVirtualMachinesClient().BeginUpdate(ctx, "testrg", "testvm", armsqlvirtualmachine.Update{
-		Tags: map[string]*string{
-			"mytag": to.Ptr("myval"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsqlvirtualmachine.SQLVirtualMachinesClientUpdateResponse{
-	// 	SQLVirtualMachine: armsqlvirtualmachine.SQLVirtualMachine{
-	// 		Name: to.Ptr("testvm"),
-	// 		Type: to.Ptr("Microsoft.SqlVirtualMachine/sqlVirtualMachines"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.SqlVirtualMachine/sqlVirtualMachines/testvm"),
-	// 		Location: to.Ptr("northeurope"),
-	// 		Properties: &armsqlvirtualmachine.Properties{
-	// 			AdditionalVMPatch: to.Ptr(armsqlvirtualmachine.AdditionalOsPatchWUMU),
-	// 			EnableAutomaticUpgrade: to.Ptr(true),
-	// 			LeastPrivilegeMode: to.Ptr(armsqlvirtualmachine.LeastPrivilegeModeEnabled),
-	// 			OSType: to.Ptr(armsqlvirtualmachine.OsTypeWindows),
-	// 			ProvisioningState: to.Ptr("Updating"),
-	// 			SQLImageOffer: to.Ptr("SQL2022-WS2022"),
-	// 			SQLImageSKU: to.Ptr(armsqlvirtualmachine.SQLImageSKUEnterprise),
-	// 			SQLManagement: to.Ptr(armsqlvirtualmachine.SQLManagementModeFull),
-	// 			SQLServerLicenseType: to.Ptr(armsqlvirtualmachine.SQLServerLicenseTypePAYG),
-	// 			VirtualMachineIdentitySettings: &armsqlvirtualmachine.VirtualMachineIdentity{
-	// 				Type: to.Ptr(armsqlvirtualmachine.VMIdentityTypeSystemAssigned),
-	// 			},
-	// 			VirtualMachineResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.Compute/virtualMachines/testvm"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"mytag": to.Ptr("myval"),
-	// 		},
-	// 	},
-	// }
 }

@@ -44,72 +44,6 @@ func NewCommunityClient(subscriptionID string, credential azcore.TokenCredential
 	return client, nil
 }
 
-// CheckAddressSpaceAvailability - Checks that the IP Address Space to be allocated for this Community is available.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - communityName - The name of the communityResource Resource
-//   - checkAddressSpaceAvailabilityRequest - Check IP Address Space request body.
-//   - options - CommunityClientCheckAddressSpaceAvailabilityOptions contains the optional parameters for the CommunityClient.CheckAddressSpaceAvailability
-//     method.
-func (client *CommunityClient) CheckAddressSpaceAvailability(ctx context.Context, resourceGroupName string, communityName string, checkAddressSpaceAvailabilityRequest CheckAddressSpaceAvailabilityRequest, options *CommunityClientCheckAddressSpaceAvailabilityOptions) (CommunityClientCheckAddressSpaceAvailabilityResponse, error) {
-	var err error
-	const operationName = "CommunityClient.CheckAddressSpaceAvailability"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.checkAddressSpaceAvailabilityCreateRequest(ctx, resourceGroupName, communityName, checkAddressSpaceAvailabilityRequest, options)
-	if err != nil {
-		return CommunityClientCheckAddressSpaceAvailabilityResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return CommunityClientCheckAddressSpaceAvailabilityResponse{}, err
-	}
-	return client.checkAddressSpaceAvailabilityHandleResponse(httpResp, http.StatusOK)
-}
-
-// checkAddressSpaceAvailabilityCreateRequest creates the CheckAddressSpaceAvailability request.
-func (client *CommunityClient) checkAddressSpaceAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, communityName string, checkAddressSpaceAvailabilityRequest CheckAddressSpaceAvailabilityRequest, _ *CommunityClientCheckAddressSpaceAvailabilityOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/checkAddressSpaceAvailability"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if communityName == "" {
-		return nil, errors.New("parameter communityName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, checkAddressSpaceAvailabilityRequest); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
-// checkAddressSpaceAvailabilityHandleResponse handles the CheckAddressSpaceAvailability response.
-func (client *CommunityClient) checkAddressSpaceAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (CommunityClientCheckAddressSpaceAvailabilityResponse, error) {
-	result := CommunityClientCheckAddressSpaceAvailabilityResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAddressSpaceAvailabilityResponse); err != nil {
-		return CommunityClientCheckAddressSpaceAvailabilityResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginCreateOrUpdate - Create a CommunityResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -135,7 +69,7 @@ func (client *CommunityClient) BeginCreateOrUpdate(ctx context.Context, resource
 	}
 }
 
-// CreateOrUpdate - Create a CommunityResource
+// createOrUpdate - Create a CommunityResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CommunityClient) createOrUpdate(ctx context.Context, resourceGroupName string, communityName string, resource CommunityResource, options *CommunityClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -152,12 +86,13 @@ func (client *CommunityClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CommunityClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, communityName string, resource CommunityResource, _ *CommunityClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}"
 	if client.subscriptionID == "" {
@@ -209,7 +144,7 @@ func (client *CommunityClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Delete a CommunityResource
+// deleteOperation - Delete a CommunityResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CommunityClient) deleteOperation(ctx context.Context, resourceGroupName string, communityName string, options *CommunityClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -226,12 +161,13 @@ func (client *CommunityClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CommunityClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, communityName string, _ *CommunityClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}"
 	if client.subscriptionID == "" {
@@ -256,6 +192,149 @@ func (client *CommunityClient) deleteCreateRequest(ctx context.Context, resource
 	return req, nil
 }
 
+// BeginUpdate - Update a CommunityResource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - communityName - The name of the communityResource Resource
+//   - properties - The resource properties to be updated.
+//   - options - CommunityClientBeginUpdateOptions contains the optional parameters for the CommunityClient.BeginUpdate method.
+func (client *CommunityClient) BeginUpdate(ctx context.Context, resourceGroupName string, communityName string, properties CommunityPatchModel, options *CommunityClientBeginUpdateOptions) (*runtime.Poller[CommunityClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, communityName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunityClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CommunityClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a CommunityResource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *CommunityClient) update(ctx context.Context, resourceGroupName string, communityName string, properties CommunityPatchModel, options *CommunityClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "CommunityClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, communityName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *CommunityClient) updateCreateRequest(ctx context.Context, resourceGroupName string, communityName string, properties CommunityPatchModel, _ *CommunityClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if communityName == "" {
+		return nil, errors.New("parameter communityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// CheckAddressSpaceAvailability - Checks that the IP Address Space to be allocated for this Community is available.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - communityName - The name of the communityResource Resource
+//   - checkAddressSpaceAvailabilityRequest - Check IP Address Space request body.
+//   - options - CommunityClientCheckAddressSpaceAvailabilityOptions contains the optional parameters for the CommunityClient.CheckAddressSpaceAvailability
+//     method.
+func (client *CommunityClient) CheckAddressSpaceAvailability(ctx context.Context, resourceGroupName string, communityName string, checkAddressSpaceAvailabilityRequest CheckAddressSpaceAvailabilityRequest, options *CommunityClientCheckAddressSpaceAvailabilityOptions) (CommunityClientCheckAddressSpaceAvailabilityResponse, error) {
+	var err error
+	const operationName = "CommunityClient.CheckAddressSpaceAvailability"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.checkAddressSpaceAvailabilityCreateRequest(ctx, resourceGroupName, communityName, checkAddressSpaceAvailabilityRequest, options)
+	if err != nil {
+		return CommunityClientCheckAddressSpaceAvailabilityResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CommunityClientCheckAddressSpaceAvailabilityResponse{}, err
+	}
+	resp, err := client.checkAddressSpaceAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// checkAddressSpaceAvailabilityCreateRequest creates the CheckAddressSpaceAvailability request.
+func (client *CommunityClient) checkAddressSpaceAvailabilityCreateRequest(ctx context.Context, resourceGroupName string, communityName string, checkAddressSpaceAvailabilityRequest CheckAddressSpaceAvailabilityRequest, _ *CommunityClientCheckAddressSpaceAvailabilityOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}/checkAddressSpaceAvailability"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if communityName == "" {
+		return nil, errors.New("parameter communityName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, checkAddressSpaceAvailabilityRequest); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// checkAddressSpaceAvailabilityHandleResponse handles the CheckAddressSpaceAvailability response.
+func (client *CommunityClient) checkAddressSpaceAvailabilityHandleResponse(resp *http.Response, successCodes ...int) (CommunityClientCheckAddressSpaceAvailabilityResponse, error) {
+	result := CommunityClientCheckAddressSpaceAvailabilityResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CheckAddressSpaceAvailabilityResponse); err != nil {
+		return CommunityClientCheckAddressSpaceAvailabilityResponse{}, err
+	}
+	return result, nil
+}
+
 // Get - Get a CommunityResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -275,7 +354,8 @@ func (client *CommunityClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return CommunityClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -453,79 +533,4 @@ func (client *CommunityClient) listBySubscriptionHandleResponse(resp *http.Respo
 		return CommunityClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a CommunityResource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - communityName - The name of the communityResource Resource
-//   - properties - The resource properties to be updated.
-//   - options - CommunityClientBeginUpdateOptions contains the optional parameters for the CommunityClient.BeginUpdate method.
-func (client *CommunityClient) BeginUpdate(ctx context.Context, resourceGroupName string, communityName string, properties CommunityPatchModel, options *CommunityClientBeginUpdateOptions) (*runtime.Poller[CommunityClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, communityName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[CommunityClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[CommunityClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a CommunityResource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *CommunityClient) update(ctx context.Context, resourceGroupName string, communityName string, properties CommunityPatchModel, options *CommunityClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "CommunityClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, communityName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *CommunityClient) updateCreateRequest(ctx context.Context, resourceGroupName string, communityName string, properties CommunityPatchModel, _ *CommunityClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/communities/{communityName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if communityName == "" {
-		return nil, errors.New("parameter communityName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{communityName}", url.PathEscape(communityName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

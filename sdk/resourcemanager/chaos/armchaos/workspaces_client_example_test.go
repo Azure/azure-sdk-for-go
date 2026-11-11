@@ -152,191 +152,6 @@ func ExampleWorkspacesClient_BeginEvaluate() {
 	}
 }
 
-// Generated from example definition: 2026-08-01-preview/Workspaces_Get.json
-func ExampleWorkspacesClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "exampleRG", "exampleWorkspace", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armchaos.WorkspacesClientGetResponse{
-	// 	Workspace: armchaos.Workspace{
-	// 		Name: to.Ptr("exampleWorkspace"),
-	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
-	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
-	// 		Identity: &armchaos.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
-	// 			UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
-	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
-	// 				},
-	// 			},
-	// 			TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
-	// 			"department": to.Ptr("engineering"),
-	// 			"project": to.Ptr("chaos-testing"),
-	// 		},
-	// 		Location: to.Ptr("westus2"),
-	// 		Properties: &armchaos.WorkspaceProperties{
-	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
-	// 			Scopes: []*string{
-	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
-	// 			},
-	// 		},
-	// 		SystemData: &armchaos.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			CreatedBy: to.Ptr("User"),
-	// 			CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("User"),
-	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-08-01-preview/Workspaces_List.json
-func ExampleWorkspacesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkspacesClient().NewListPager("exampleRG", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armchaos.WorkspacesClientListResponse{
-		// 	WorkspaceListResult: armchaos.WorkspaceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces?continuationToken=&api-version=2026-08-01-preview"),
-		// 		Value: []*armchaos.Workspace{
-		// 			{
-		// 				Name: to.Ptr("exampleWorkspace"),
-		// 				Type: to.Ptr("Microsoft.Chaos/workspaces"),
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
-		// 				Identity: &armchaos.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
-		// 					UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
-		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
-		// 						},
-		// 					},
-		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 					"department": to.Ptr("engineering"),
-		// 					"project": to.Ptr("chaos-testing"),
-		// 				},
-		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armchaos.WorkspaceProperties{
-		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
-		// 					Scopes: []*string{
-		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
-		// 					},
-		// 				},
-		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("User"),
-		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("User"),
-		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-08-01-preview/Workspaces_ListAll.json
-func ExampleWorkspacesClient_NewListAllPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewWorkspacesClient().NewListAllPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armchaos.WorkspacesClientListAllResponse{
-		// 	WorkspaceListResult: armchaos.WorkspaceListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/workspaces?continuationToken=&api-version=2026-08-01-preview"),
-		// 		Value: []*armchaos.Workspace{
-		// 			{
-		// 				Name: to.Ptr("exampleWorkspace"),
-		// 				Type: to.Ptr("Microsoft.Chaos/workspaces"),
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
-		// 				Identity: &armchaos.ManagedServiceIdentity{
-		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
-		// 					UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
-		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
-		// 						},
-		// 					},
-		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 					"department": to.Ptr("engineering"),
-		// 					"project": to.Ptr("chaos-testing"),
-		// 				},
-		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armchaos.WorkspaceProperties{
-		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
-		// 					Scopes: []*string{
-		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
-		// 					},
-		// 				},
-		// 				SystemData: &armchaos.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("User"),
-		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("User"),
-		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-08-01-preview/Workspaces_Update.json
 func ExampleWorkspacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -406,4 +221,189 @@ func ExampleWorkspacesClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/Workspaces_Get.json
+func ExampleWorkspacesClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewWorkspacesClient().Get(ctx, "exampleRG", "exampleWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armchaos.WorkspacesClientGetResponse{
+	// 	Workspace: armchaos.Workspace{
+	// 		Name: to.Ptr("exampleWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Chaos/workspaces"),
+	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+	// 		Identity: &armchaos.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
+	// 				},
+	// 			},
+	// 			TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 			"department": to.Ptr("engineering"),
+	// 			"project": to.Ptr("chaos-testing"),
+	// 		},
+	// 		Location: to.Ptr("westus2"),
+	// 		Properties: &armchaos.WorkspaceProperties{
+	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
+	// 			Scopes: []*string{
+	// 				to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
+	// 			},
+	// 		},
+	// 		SystemData: &armchaos.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("User"),
+	// 			CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("User"),
+	// 			LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-08-01-preview/Workspaces_ListAll.json
+func ExampleWorkspacesClient_NewListAllPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkspacesClient().NewListAllPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armchaos.WorkspacesClientListAllResponse{
+		// 	WorkspaceListResult: armchaos.WorkspaceListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/providers/Microsoft.Chaos/workspaces?continuationToken=&api-version=2026-08-01-preview"),
+		// 		Value: []*armchaos.Workspace{
+		// 			{
+		// 				Name: to.Ptr("exampleWorkspace"),
+		// 				Type: to.Ptr("Microsoft.Chaos/workspaces"),
+		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+		// 				Identity: &armchaos.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
+		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
+		// 						},
+		// 					},
+		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 					"department": to.Ptr("engineering"),
+		// 					"project": to.Ptr("chaos-testing"),
+		// 				},
+		// 				Location: to.Ptr("westus2"),
+		// 				Properties: &armchaos.WorkspaceProperties{
+		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
+		// 					Scopes: []*string{
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
+		// 					},
+		// 				},
+		// 				SystemData: &armchaos.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("User"),
+		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("User"),
+		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-08-01-preview/Workspaces_List.json
+func ExampleWorkspacesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewWorkspacesClient().NewListPager("exampleRG", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armchaos.WorkspacesClientListResponse{
+		// 	WorkspaceListResult: armchaos.WorkspaceListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces?continuationToken=&api-version=2026-08-01-preview"),
+		// 		Value: []*armchaos.Workspace{
+		// 			{
+		// 				Name: to.Ptr("exampleWorkspace"),
+		// 				Type: to.Ptr("Microsoft.Chaos/workspaces"),
+		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace"),
+		// 				Identity: &armchaos.ManagedServiceIdentity{
+		// 					Type: to.Ptr(armchaos.ManagedServiceIdentityTypeUserAssigned),
+		// 					UserAssignedIdentities: map[string]*armchaos.UserAssignedIdentity{
+		// 						"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/exampleIdentity": &armchaos.UserAssignedIdentity{
+		// 						},
+		// 					},
+		// 					TenantID: to.Ptr("8c3e2fb2-fe7a-4bf1-b779-d73990782fe6"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 					"department": to.Ptr("engineering"),
+		// 					"project": to.Ptr("chaos-testing"),
+		// 				},
+		// 				Location: to.Ptr("westus2"),
+		// 				Properties: &armchaos.WorkspaceProperties{
+		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateUpdating),
+		// 					Scopes: []*string{
+		// 						to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleResourceGroup"),
+		// 					},
+		// 				},
+		// 				SystemData: &armchaos.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("User"),
+		// 					CreatedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 					LastModifiedAt: to.Ptr(time.Date(2021, time.July, 1, 0, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("User"),
+		// 					LastModifiedByType: to.Ptr(armchaos.CreatedByType("b3a41dba-4415-4d36-9ee8-e5eaa86db976")),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

@@ -55,7 +55,7 @@ func NewSecurityUserRuleCollectionsClient(subscriptionID string, credential azco
 //     method.
 func (client *SecurityUserRuleCollectionsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *SecurityUserRuleCollectionsClientBeginDeleteOptions) (*runtime.Poller[SecurityUserRuleCollectionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -70,9 +70,9 @@ func (client *SecurityUserRuleCollectionsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// delete - Deletes a Security User Rule collection.
+// deleteOperation - Deletes a Security User Rule collection.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityUserRuleCollectionsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *SecurityUserRuleCollectionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityUserRuleCollectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, options *SecurityUserRuleCollectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityUserRuleCollectionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -87,7 +87,8 @@ func (client *SecurityUserRuleCollectionsClient) delete(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -151,7 +152,8 @@ func (client *SecurityUserRuleCollectionsClient) CreateOrUpdate(ctx context.Cont
 	if err != nil {
 		return SecurityUserRuleCollectionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -226,7 +228,8 @@ func (client *SecurityUserRuleCollectionsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return SecurityUserRuleCollectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

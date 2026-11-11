@@ -64,7 +64,8 @@ func (client *AgentRegistrationInformationClient) Get(ctx context.Context, resou
 	if err != nil {
 		return AgentRegistrationInformationClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -126,7 +127,8 @@ func (client *AgentRegistrationInformationClient) RegenerateKey(ctx context.Cont
 	if err != nil {
 		return AgentRegistrationInformationClientRegenerateKeyResponse{}, err
 	}
-	return client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regenerateKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regenerateKeyCreateRequest creates the RegenerateKey request.

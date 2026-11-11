@@ -67,7 +67,8 @@ func (client *RaiBindingsClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err != nil {
 		return RaiBindingsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -146,7 +147,8 @@ func (client *RaiBindingsClient) Delete(ctx context.Context, resourceGroupName s
 		return RaiBindingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return RaiBindingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RaiBindingsClientDeleteResponse{}, err
 	}
 	return RaiBindingsClientDeleteResponse{}, nil
 }
@@ -203,7 +205,8 @@ func (client *RaiBindingsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return RaiBindingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

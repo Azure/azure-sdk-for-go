@@ -30,6 +30,9 @@ type GraphResourcesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGraphResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GraphResourcesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *GraphResourcesClient) BeginCreateUpdateGraph(ctx context.Context, 
 	}
 }
 
-// CreateUpdateGraph - Create or update an Azure Cosmos DB Graph.
+// createUpdateGraph - Create or update an Azure Cosmos DB Graph.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GraphResourcesClient) createUpdateGraph(ctx context.Context, resourceGroupName string, accountName string, graphName string, createUpdateGraphParameters GraphResourceCreateUpdateParameters, options *GraphResourcesClientBeginCreateUpdateGraphOptions) (*http.Response, error) {
 	var err error
@@ -83,16 +86,17 @@ func (client *GraphResourcesClient) createUpdateGraph(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createUpdateGraphCreateRequest creates the CreateUpdateGraph request.
+// createUpdateGraphCreateRequest creates the createUpdateGraph request.
 func (client *GraphResourcesClient) createUpdateGraphCreateRequest(ctx context.Context, resourceGroupName string, accountName string, graphName string, createUpdateGraphParameters GraphResourceCreateUpdateParameters, _ *GraphResourcesClientBeginCreateUpdateGraphOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/graphs/{graphName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -146,7 +150,7 @@ func (client *GraphResourcesClient) BeginDeleteGraphResource(ctx context.Context
 	}
 }
 
-// DeleteGraphResource - Deletes an existing Azure Cosmos DB Graph Resource.
+// deleteGraphResource - Deletes an existing Azure Cosmos DB Graph Resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GraphResourcesClient) deleteGraphResource(ctx context.Context, resourceGroupName string, accountName string, graphName string, options *GraphResourcesClientBeginDeleteGraphResourceOptions) (*http.Response, error) {
 	var err error
@@ -163,16 +167,17 @@ func (client *GraphResourcesClient) deleteGraphResource(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteGraphResourceCreateRequest creates the DeleteGraphResource request.
+// deleteGraphResourceCreateRequest creates the deleteGraphResource request.
 func (client *GraphResourcesClient) deleteGraphResourceCreateRequest(ctx context.Context, resourceGroupName string, accountName string, graphName string, _ *GraphResourcesClientBeginDeleteGraphResourceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/graphs/{graphName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -217,14 +222,15 @@ func (client *GraphResourcesClient) GetGraph(ctx context.Context, resourceGroupN
 	if err != nil {
 		return GraphResourcesClientGetGraphResponse{}, err
 	}
-	return client.getGraphHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getGraphHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getGraphCreateRequest creates the GetGraph request.
 func (client *GraphResourcesClient) getGraphCreateRequest(ctx context.Context, resourceGroupName string, accountName string, graphName string, _ *GraphResourcesClientGetGraphOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/graphs/{graphName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -300,7 +306,7 @@ func (client *GraphResourcesClient) listGraphsCreateRequest(ctx context.Context,
 	if firstPage {
 		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/graphs"
 		if client.subscriptionID == "" {
-			return nil, errors.New("parameter client.subscriptionID cannot be empty")
+			return nil, errors.New("parameter subscriptionID cannot be empty")
 		}
 		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 		if resourceGroupName == "" {

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v4"
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/ScopeMapCreate.json
+// Generated from example definition: 2026-10-15-preview/ScopeMapCreate.json
 func ExampleScopeMapsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExampleScopeMapsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ScopeMapDelete.json
+// Generated from example definition: 2026-10-15-preview/ScopeMapDelete.json
 func ExampleScopeMapsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExampleScopeMapsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ScopeMapUpdate.json
+// Generated from example definition: 2026-10-15-preview/ScopeMapUpdate.json
 func ExampleScopeMapsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -134,7 +134,7 @@ func ExampleScopeMapsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ScopeMapGet.json
+// Generated from example definition: 2026-10-15-preview/ScopeMapGet.json
 func ExampleScopeMapsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -170,7 +170,7 @@ func ExampleScopeMapsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ScopeMapList.json
+// Generated from example definition: 2026-10-15-preview/ScopeMapList.json
 func ExampleScopeMapsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

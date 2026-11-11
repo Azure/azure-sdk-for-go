@@ -19,7 +19,7 @@ import (
 // WorkspacesClient contains the methods for the Workspaces group.
 // Don't use this type directly, use NewWorkspacesClient() instead.
 //
-// Generated from API version 2026-08-01-preview
+// Generated from API version 2026-11-01
 type WorkspacesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -92,7 +92,7 @@ func (client *WorkspacesClient) createOrUpdate(ctx context.Context, resourceGrou
 }
 
 // createOrUpdateCreateRequest creates the createOrUpdate request.
-func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, resource Workspace, _ *WorkspacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, resource Workspace, options *WorkspacesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -111,9 +111,15 @@ func (client *WorkspacesClient) createOrUpdateCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
@@ -186,12 +192,15 @@ func (client *WorkspacesClient) deleteCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginDiscover - Triggers resource discovery for the workspace.
+// BeginDiscover - Starts discovery for the workspace. The initial 202 has no body. Poll the operation-bound Location URL
+// until completion: a successful or partially successful discovery returns the typed result; failed or canceled processing
+// returns an Azure error whose target identifies the discovery resource. Ordinary discovery reads return the current resource,
+// including failed or canceled results, while retained.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
@@ -215,7 +224,10 @@ func (client *WorkspacesClient) BeginDiscover(ctx context.Context, resourceGroup
 	}
 }
 
-// discover - Triggers resource discovery for the workspace.
+// discover - Starts discovery for the workspace. The initial 202 has no body. Poll the operation-bound Location URL until
+// completion: a successful or partially successful discovery returns the typed result; failed or canceled processing returns
+// an Azure error whose target identifies the discovery resource. Ordinary discovery reads return the current resource, including
+// failed or canceled results, while retained.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkspacesClient) discover(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginDiscoverOptions) (*http.Response, error) {
 	var err error
@@ -231,7 +243,7 @@ func (client *WorkspacesClient) discover(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -258,12 +270,20 @@ func (client *WorkspacesClient) discoverCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// BeginEvaluate - Triggers scenario evaluation for the workspace.
+// BeginEvaluate - Starts evaluation of published scenario-template versions, including when the workspace has no scenarios.
+// Acceptance fixes the selected template membership and total count, qualified resource snapshot and canonical discovery
+// result reference. Without a usable discovery snapshot or valid catalog input, the request is rejected synchronously with
+// an Azure error and no evaluation result is created. A valid empty catalog completes successfully with zero counts and an
+// empty results array. Outcome counts reflect processing after acceptance. The initial 202 has no body. Poll the operation-bound
+// Location URL until completion: a completed successful or partially successful assessment returns the typed result; failed
+// or canceled processing returns an Azure error whose target identifies the evaluation resource. Ordinary evaluation reads
+// return the current resource, including failed or canceled results, while retained.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - workspaceName - String that represents a Workspace resource name.
@@ -287,7 +307,14 @@ func (client *WorkspacesClient) BeginEvaluate(ctx context.Context, resourceGroup
 	}
 }
 
-// evaluate - Triggers scenario evaluation for the workspace.
+// evaluate - Starts evaluation of published scenario-template versions, including when the workspace has no scenarios. Acceptance
+// fixes the selected template membership and total count, qualified resource snapshot and canonical discovery result reference.
+// Without a usable discovery snapshot or valid catalog input, the request is rejected synchronously with an Azure error and
+// no evaluation result is created. A valid empty catalog completes successfully with zero counts and an empty results array.
+// Outcome counts reflect processing after acceptance. The initial 202 has no body. Poll the operation-bound Location URL
+// until completion: a completed successful or partially successful assessment returns the typed result; failed or canceled
+// processing returns an Azure error whose target identifies the evaluation resource. Ordinary evaluation reads return the
+// current resource, including failed or canceled results, while retained.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkspacesClient) evaluate(ctx context.Context, resourceGroupName string, workspaceName string, options *WorkspacesClientBeginEvaluateOptions) (*http.Response, error) {
 	var err error
@@ -303,7 +330,7 @@ func (client *WorkspacesClient) evaluate(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return nil, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
 		err = runtime.NewResponseError(httpResp)
 		return nil, err
 	}
@@ -330,8 +357,9 @@ func (client *WorkspacesClient) evaluateCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
@@ -401,7 +429,7 @@ func (client *WorkspacesClient) updateCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -454,7 +482,7 @@ func (client *WorkspacesClient) getCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -519,7 +547,7 @@ func (client *WorkspacesClient) listAllCreateRequest(ctx context.Context, nextLi
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260801Preview)
+		reqQP.Set("api-version", version20261101)
 		if options != nil && options.ContinuationToken != nil {
 			reqQP.Set("continuationToken", *options.ContinuationToken)
 		}
@@ -593,7 +621,7 @@ func (client *WorkspacesClient) listCreateRequest(ctx context.Context, resourceG
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260801Preview)
+		reqQP.Set("api-version", version20261101)
 		if options != nil && options.ContinuationToken != nil {
 			reqQP.Set("continuationToken", *options.ContinuationToken)
 		}

@@ -309,10 +309,10 @@ func (d *nativeDriver) buildDriverOptions() (*C.cosmos_driver_options_t, error) 
 
 	var options *C.cosmos_driver_options_t
 	var status C.cosmos_status_code_t
-	if len(d.faultRules) == 0 {
+	if len(d.faultRules) == 0 && d.cfg.options.ResourceNameValidation == nil {
 		status = C.cosmos_driver_options_build(d.account, config, &options) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
 	} else {
-		status = d.buildFaultInjectionOptions(config, &options)
+		status = d.buildDriverOptionsV2(config, &options)
 	}
 	if err := statusError(status, nil, "building the driver options"); err != nil {
 		return nil, err
@@ -442,9 +442,10 @@ func inspectNativeFaultRule(rule nativeFaultRule) nativeFaultRuleValues {
 	}
 }
 
-// buildFaultInjectionOptions uses the versioned ABI only for native integration tests.
-// The driver copies all rule memory before this call returns.
-func (d *nativeDriver) buildFaultInjectionOptions(
+// buildDriverOptionsV2 uses the versioned ABI for settings the flat config cannot carry: resource
+// name validation and native fault-injection rules. The driver copies all rule memory before this
+// call returns.
+func (d *nativeDriver) buildDriverOptionsV2(
 	config *C.cosmos_driver_options_config_t,
 	out **C.cosmos_driver_options_t,
 ) C.cosmos_status_code_t {
@@ -457,7 +458,21 @@ func (d *nativeDriver) buildFaultInjectionOptions(
 	v2.fault_injection_rules = rules
 	v2.fault_injection_rules_len = C.uintptr_t(len(d.faultRules))
 	v2.fault_injection_rule_stride = C.uintptr_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))
+	v2.resource_name_validation_enabled = nativeResourceNameValidation(d.cfg.options.ResourceNameValidation)
 	return C.cosmos_driver_options_build_v2(d.account, &v2, out) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+}
+
+// nativeResourceNameValidation encodes the driver's tri-state: 0 keeps the default, 1 disables,
+// and 2 enables.
+func nativeResourceNameValidation(enabled *bool) C.int8_t {
+	switch {
+	case enabled == nil:
+		return 0
+	case *enabled:
+		return 2
+	default:
+		return 1
+	}
 }
 
 // buildRuntime creates the Tokio runtime the driver executes on.

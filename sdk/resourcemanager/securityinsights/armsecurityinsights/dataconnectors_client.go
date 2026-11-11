@@ -66,7 +66,8 @@ func (client *DataConnectorsClient) Connect(ctx context.Context, resourceGroupNa
 		return DataConnectorsClientConnectResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return DataConnectorsClientConnectResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DataConnectorsClientConnectResponse{}, err
 	}
 	return DataConnectorsClientConnectResponse{}, nil
 }
@@ -126,7 +127,8 @@ func (client *DataConnectorsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return DataConnectorsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -196,7 +198,8 @@ func (client *DataConnectorsClient) Delete(ctx context.Context, resourceGroupNam
 		return DataConnectorsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DataConnectorsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DataConnectorsClientDeleteResponse{}, err
 	}
 	return DataConnectorsClientDeleteResponse{}, nil
 }
@@ -252,7 +255,8 @@ func (client *DataConnectorsClient) Disconnect(ctx context.Context, resourceGrou
 		return DataConnectorsClientDisconnectResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return DataConnectorsClientDisconnectResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DataConnectorsClientDisconnectResponse{}, err
 	}
 	return DataConnectorsClientDisconnectResponse{}, nil
 }
@@ -306,7 +310,8 @@ func (client *DataConnectorsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return DataConnectorsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -66,7 +66,8 @@ func (client *DataConnectorDefinitionsClient) CreateOrUpdate(ctx context.Context
 	if err != nil {
 		return DataConnectorDefinitionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *DataConnectorDefinitionsClient) Delete(ctx context.Context, resour
 		return DataConnectorDefinitionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DataConnectorDefinitionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DataConnectorDefinitionsClientDeleteResponse{}, err
 	}
 	return DataConnectorDefinitionsClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *DataConnectorDefinitionsClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return DataConnectorDefinitionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

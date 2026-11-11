@@ -69,7 +69,7 @@ func (client *ConnectionClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create a EnclaveConnectionResource
+// createOrUpdate - Create a EnclaveConnectionResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectionClient) createOrUpdate(ctx context.Context, resourceGroupName string, enclaveConnectionName string, resource ConnectionResource, options *ConnectionClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *ConnectionClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConnectionClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, enclaveConnectionName string, resource ConnectionResource, _ *ConnectionClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}"
 	if client.subscriptionID == "" {
@@ -143,7 +144,7 @@ func (client *ConnectionClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete a EnclaveConnectionResource
+// deleteOperation - Delete a EnclaveConnectionResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectionClient) deleteOperation(ctx context.Context, resourceGroupName string, enclaveConnectionName string, options *ConnectionClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,12 +161,13 @@ func (client *ConnectionClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConnectionClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, enclaveConnectionName string, _ *ConnectionClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}"
 	if client.subscriptionID == "" {
@@ -188,66 +190,6 @@ func (client *ConnectionClient) deleteCreateRequest(ctx context.Context, resourc
 	reqQP.Set("api-version", version20260401)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Get a EnclaveConnectionResource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - enclaveConnectionName - The name of the Enclave Connection Resource
-//   - options - ConnectionClientGetOptions contains the optional parameters for the ConnectionClient.Get method.
-func (client *ConnectionClient) Get(ctx context.Context, resourceGroupName string, enclaveConnectionName string, options *ConnectionClientGetOptions) (ConnectionClientGetResponse, error) {
-	var err error
-	const operationName = "ConnectionClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, enclaveConnectionName, options)
-	if err != nil {
-		return ConnectionClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ConnectionClientGetResponse{}, err
-	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
-}
-
-// getCreateRequest creates the Get request.
-func (client *ConnectionClient) getCreateRequest(ctx context.Context, resourceGroupName string, enclaveConnectionName string, _ *ConnectionClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if enclaveConnectionName == "" {
-		return nil, errors.New("parameter enclaveConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{enclaveConnectionName}", url.PathEscape(enclaveConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *ConnectionClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectionClientGetResponse, error) {
-	result := ConnectionClientGetResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionResource); err != nil {
-		return ConnectionClientGetResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginHandleApprovalCreation - Callback that triggers on approval state change.
@@ -274,7 +216,7 @@ func (client *ConnectionClient) BeginHandleApprovalCreation(ctx context.Context,
 	}
 }
 
-// HandleApprovalCreation - Callback that triggers on approval state change.
+// handleApprovalCreation - Callback that triggers on approval state change.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectionClient) handleApprovalCreation(ctx context.Context, resourceGroupName string, enclaveConnectionName string, body ApprovalCallbackRequest, options *ConnectionClientBeginHandleApprovalCreationOptions) (*http.Response, error) {
 	var err error
@@ -291,12 +233,13 @@ func (client *ConnectionClient) handleApprovalCreation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// handleApprovalCreationCreateRequest creates the HandleApprovalCreation request.
+// handleApprovalCreationCreateRequest creates the handleApprovalCreation request.
 func (client *ConnectionClient) handleApprovalCreationCreateRequest(ctx context.Context, resourceGroupName string, enclaveConnectionName string, body ApprovalCallbackRequest, _ *ConnectionClientBeginHandleApprovalCreationOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}/handleApprovalCreation"
 	if client.subscriptionID == "" {
@@ -350,7 +293,7 @@ func (client *ConnectionClient) BeginHandleApprovalDeletion(ctx context.Context,
 	}
 }
 
-// HandleApprovalDeletion - Callback that triggers on approval deletion state change.
+// handleApprovalDeletion - Callback that triggers on approval deletion state change.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConnectionClient) handleApprovalDeletion(ctx context.Context, resourceGroupName string, enclaveConnectionName string, body ApprovalDeletionCallbackRequest, options *ConnectionClientBeginHandleApprovalDeletionOptions) (*http.Response, error) {
 	var err error
@@ -367,12 +310,13 @@ func (client *ConnectionClient) handleApprovalDeletion(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// handleApprovalDeletionCreateRequest creates the HandleApprovalDeletion request.
+// handleApprovalDeletionCreateRequest creates the handleApprovalDeletion request.
 func (client *ConnectionClient) handleApprovalDeletionCreateRequest(ctx context.Context, resourceGroupName string, enclaveConnectionName string, body ApprovalDeletionCallbackRequest, _ *ConnectionClientBeginHandleApprovalDeletionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}/handleApprovalDeletion"
 	if client.subscriptionID == "" {
@@ -400,6 +344,143 @@ func (client *ConnectionClient) handleApprovalDeletionCreateRequest(ctx context.
 		return nil, err
 	}
 	return req, nil
+}
+
+// BeginUpdate - Update a EnclaveConnectionResource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - enclaveConnectionName - The name of the Enclave Connection Resource
+//   - properties - The resource properties to be updated.
+//   - options - ConnectionClientBeginUpdateOptions contains the optional parameters for the ConnectionClient.BeginUpdate method.
+func (client *ConnectionClient) BeginUpdate(ctx context.Context, resourceGroupName string, enclaveConnectionName string, properties ConnectionPatchModel, options *ConnectionClientBeginUpdateOptions) (*runtime.Poller[ConnectionClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, enclaveConnectionName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectionClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectionClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a EnclaveConnectionResource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ConnectionClient) update(ctx context.Context, resourceGroupName string, enclaveConnectionName string, properties ConnectionPatchModel, options *ConnectionClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ConnectionClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, enclaveConnectionName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *ConnectionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, enclaveConnectionName string, properties ConnectionPatchModel, _ *ConnectionClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if enclaveConnectionName == "" {
+		return nil, errors.New("parameter enclaveConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enclaveConnectionName}", url.PathEscape(enclaveConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// Get - Get a EnclaveConnectionResource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - enclaveConnectionName - The name of the Enclave Connection Resource
+//   - options - ConnectionClientGetOptions contains the optional parameters for the ConnectionClient.Get method.
+func (client *ConnectionClient) Get(ctx context.Context, resourceGroupName string, enclaveConnectionName string, options *ConnectionClientGetOptions) (ConnectionClientGetResponse, error) {
+	var err error
+	const operationName = "ConnectionClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, enclaveConnectionName, options)
+	if err != nil {
+		return ConnectionClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ConnectionClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *ConnectionClient) getCreateRequest(ctx context.Context, resourceGroupName string, enclaveConnectionName string, _ *ConnectionClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if enclaveConnectionName == "" {
+		return nil, errors.New("parameter enclaveConnectionName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{enclaveConnectionName}", url.PathEscape(enclaveConnectionName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *ConnectionClient) getHandleResponse(resp *http.Response, successCodes ...int) (ConnectionClientGetResponse, error) {
+	result := ConnectionClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ConnectionResource); err != nil {
+		return ConnectionClientGetResponse{}, err
+	}
+	return result, nil
 }
 
 // NewListByResourceGroupPager - List EnclaveConnectionResource resources by resource group
@@ -539,79 +620,4 @@ func (client *ConnectionClient) listBySubscriptionHandleResponse(resp *http.Resp
 		return ConnectionClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a EnclaveConnectionResource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - enclaveConnectionName - The name of the Enclave Connection Resource
-//   - properties - The resource properties to be updated.
-//   - options - ConnectionClientBeginUpdateOptions contains the optional parameters for the ConnectionClient.BeginUpdate method.
-func (client *ConnectionClient) BeginUpdate(ctx context.Context, resourceGroupName string, enclaveConnectionName string, properties ConnectionPatchModel, options *ConnectionClientBeginUpdateOptions) (*runtime.Poller[ConnectionClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, enclaveConnectionName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ConnectionClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ConnectionClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a EnclaveConnectionResource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ConnectionClient) update(ctx context.Context, resourceGroupName string, enclaveConnectionName string, properties ConnectionPatchModel, options *ConnectionClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ConnectionClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, enclaveConnectionName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *ConnectionClient) updateCreateRequest(ctx context.Context, resourceGroupName string, enclaveConnectionName string, properties ConnectionPatchModel, _ *ConnectionClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/enclaveConnections/{enclaveConnectionName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if enclaveConnectionName == "" {
-		return nil, errors.New("parameter enclaveConnectionName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{enclaveConnectionName}", url.PathEscape(enclaveConnectionName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

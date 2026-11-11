@@ -56,7 +56,8 @@ func (client *MetadataClient) GetEntity(ctx context.Context, name string, option
 	if err != nil {
 		return MetadataClientGetEntityResponse{}, err
 	}
-	return client.getEntityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getEntityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getEntityCreateRequest creates the GetEntity request.

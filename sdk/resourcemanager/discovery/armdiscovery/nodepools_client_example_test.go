@@ -102,6 +102,68 @@ func ExampleNodePoolsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-06-01/NodePools_Update_MaximumSet_Gen.json
+func ExampleNodePoolsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdiscovery.NewClientFactory("A54D43BD-2F5F-4BB1-95D4-9A8D23CC7DD4", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNodePoolsClient().BeginUpdate(ctx, "rgdiscovery", "8e65e3461b33b01369", "2e50b6da812ce89198", armdiscovery.NodePool{
+		Properties: &armdiscovery.NodePoolProperties{
+			MaxNodeCount: to.Ptr[int32](24),
+			MinNodeCount: to.Ptr[int32](0),
+		},
+		Tags: map[string]*string{
+			"key101": to.Ptr("dnegxftfhcehhkgcn"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdiscovery.NodePoolsClientUpdateResponse{
+	// 	NodePool: armdiscovery.NodePool{
+	// 		ID: to.Ptr("/subscriptions/A54D43BD-2F5F-4BB1-95D4-9A8D23CC7DD4/resourceGroups/rgdiscovery/providers/Microsoft.Discovery/supercomputers/8e65e3461b33b01369/nodePools/2e50b6da812ce89198"),
+	// 		Name: to.Ptr("2e50b6da812ce89198"),
+	// 		Tags: map[string]*string{
+	// 			"key7034": to.Ptr("obcmoprnvrxxcdbeokgwotr"),
+	// 		},
+	// 		Location: to.Ptr("uksouth"),
+	// 		Type: to.Ptr("Microsoft.Discovery/supercomputers/nodePools"),
+	// 		SystemData: &armdiscovery.SystemData{
+	// 			CreatedBy: to.Ptr("uymdmmhvojuqtvvxokgefohqpcjw"),
+	// 			CreatedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("ucuttxilomgszapozsuit"),
+	// 			LastModifiedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
+	// 		},
+	// 		Properties: &armdiscovery.NodePoolProperties{
+	// 			ProvisioningState: to.Ptr(armdiscovery.ProvisioningStateSucceeded),
+	// 			SubnetID: to.Ptr("/subscriptions/31735C59-6307-4464-8B80-3675223F23D2/providers/Microsoft.Network/virtualNetworks/virtualnetwork1/subnets/subnet1"),
+	// 			VMSize: to.Ptr(armdiscovery.VMSizeStandardNC24AdsA100V4),
+	// 			MaxNodeCount: to.Ptr[int32](18),
+	// 			MinNodeCount: to.Ptr[int32](0),
+	// 			ScaleSetPriority: to.Ptr(armdiscovery.ScaleSetPriorityRegular),
+	// 			OSDiskSizeGb: to.Ptr[int32](610),
+	// 			ImageCacheLowerThreshold: to.Ptr[int32](4),
+	// 			ImageCacheUpperThreshold: to.Ptr[int32](92),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-06-01/NodePools_Get_MaximumSet_Gen.json
 func ExampleNodePoolsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -210,66 +272,4 @@ func ExampleNodePoolsClient_NewListBySupercomputerPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-06-01/NodePools_Update_MaximumSet_Gen.json
-func ExampleNodePoolsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdiscovery.NewClientFactory("A54D43BD-2F5F-4BB1-95D4-9A8D23CC7DD4", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewNodePoolsClient().BeginUpdate(ctx, "rgdiscovery", "8e65e3461b33b01369", "2e50b6da812ce89198", armdiscovery.NodePool{
-		Properties: &armdiscovery.NodePoolProperties{
-			MaxNodeCount: to.Ptr[int32](24),
-			MinNodeCount: to.Ptr[int32](0),
-		},
-		Tags: map[string]*string{
-			"key101": to.Ptr("dnegxftfhcehhkgcn"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdiscovery.NodePoolsClientUpdateResponse{
-	// 	NodePool: armdiscovery.NodePool{
-	// 		ID: to.Ptr("/subscriptions/A54D43BD-2F5F-4BB1-95D4-9A8D23CC7DD4/resourceGroups/rgdiscovery/providers/Microsoft.Discovery/supercomputers/8e65e3461b33b01369/nodePools/2e50b6da812ce89198"),
-	// 		Name: to.Ptr("2e50b6da812ce89198"),
-	// 		Tags: map[string]*string{
-	// 			"key7034": to.Ptr("obcmoprnvrxxcdbeokgwotr"),
-	// 		},
-	// 		Location: to.Ptr("uksouth"),
-	// 		Type: to.Ptr("Microsoft.Discovery/supercomputers/nodePools"),
-	// 		SystemData: &armdiscovery.SystemData{
-	// 			CreatedBy: to.Ptr("uymdmmhvojuqtvvxokgefohqpcjw"),
-	// 			CreatedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("ucuttxilomgszapozsuit"),
-	// 			LastModifiedByType: to.Ptr(armdiscovery.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.May, 4, 11, 59, 49, 804000000, time.UTC)),
-	// 		},
-	// 		Properties: &armdiscovery.NodePoolProperties{
-	// 			ProvisioningState: to.Ptr(armdiscovery.ProvisioningStateSucceeded),
-	// 			SubnetID: to.Ptr("/subscriptions/31735C59-6307-4464-8B80-3675223F23D2/providers/Microsoft.Network/virtualNetworks/virtualnetwork1/subnets/subnet1"),
-	// 			VMSize: to.Ptr(armdiscovery.VMSizeStandardNC24AdsA100V4),
-	// 			MaxNodeCount: to.Ptr[int32](18),
-	// 			MinNodeCount: to.Ptr[int32](0),
-	// 			ScaleSetPriority: to.Ptr(armdiscovery.ScaleSetPriorityRegular),
-	// 			OSDiskSizeGb: to.Ptr[int32](610),
-	// 			ImageCacheLowerThreshold: to.Ptr[int32](4),
-	// 			ImageCacheUpperThreshold: to.Ptr[int32](92),
-	// 		},
-	// 	},
-	// }
 }

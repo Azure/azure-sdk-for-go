@@ -92,7 +92,8 @@ func (client *ProjectCapabilityHostsClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -147,7 +148,7 @@ func (client *ProjectCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 //     method.
 func (client *ProjectCapabilityHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, options *ProjectCapabilityHostsClientBeginDeleteOptions) (*runtime.Poller[ProjectCapabilityHostsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, projectName, capabilityHostName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, projectName, capabilityHostName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -162,11 +163,11 @@ func (client *ProjectCapabilityHostsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// delete - Delete project capabilityHost.
+// deleteOperation - Delete project capabilityHost.
 //
 // Delete project capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ProjectCapabilityHostsClient) delete(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, options *ProjectCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ProjectCapabilityHostsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, capabilityHostName string, options *ProjectCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ProjectCapabilityHostsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -181,7 +182,8 @@ func (client *ProjectCapabilityHostsClient) delete(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -243,7 +245,8 @@ func (client *ProjectCapabilityHostsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return ProjectCapabilityHostsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

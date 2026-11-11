@@ -65,7 +65,8 @@ func (client *MaintenancesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return MaintenancesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -131,7 +132,8 @@ func (client *MaintenancesClient) InitiateChecks(ctx context.Context, resourceGr
 	if err != nil {
 		return MaintenancesClientInitiateChecksResponse{}, err
 	}
-	return client.initiateChecksHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.initiateChecksHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // initiateChecksCreateRequest creates the InitiateChecks request.
@@ -285,7 +287,8 @@ func (client *MaintenancesClient) Reschedule(ctx context.Context, resourceGroupN
 	if err != nil {
 		return MaintenancesClientRescheduleResponse{}, err
 	}
-	return client.rescheduleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.rescheduleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // rescheduleCreateRequest creates the Reschedule request.
@@ -355,7 +358,8 @@ func (client *MaintenancesClient) Schedule(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return MaintenancesClientScheduleResponse{}, err
 	}
-	return client.scheduleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.scheduleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // scheduleCreateRequest creates the Schedule request.

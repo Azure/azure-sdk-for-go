@@ -66,7 +66,8 @@ func (client *CredentialClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return CredentialClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *CredentialClient) Delete(ctx context.Context, resourceGroupName st
 		return CredentialClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return CredentialClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CredentialClientDeleteResponse{}, err
 	}
 	return CredentialClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *CredentialClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return CredentialClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -333,7 +336,8 @@ func (client *CredentialClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return CredentialClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

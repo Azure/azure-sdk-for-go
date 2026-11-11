@@ -216,6 +216,29 @@ func ExampleDatabaseMigrationsSQLDbClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2025-09-01-preview/SqlDbRetryDatabaseMigration.json
+func ExampleDatabaseMigrationsSQLDbClient_BeginRetry() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatamigration.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDatabaseMigrationsSQLDbClient().BeginRetry(ctx, "testrg", "sqldbinstance", "db1", armdatamigration.MigrationOperationInput{
+		MigrationOperationID: to.Ptr("9a90bb84-e70f-46f7-b0ae-1aef5b3b9f07"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2025-09-01-preview/SqlDbGetDatabaseMigration.json
 func ExampleDatabaseMigrationsSQLDbClient_Get_getSqlDbDatabaseMigrationWithoutTheExpandParameter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -335,27 +358,4 @@ func ExampleDatabaseMigrationsSQLDbClient_Get_getSqlDbDatabaseMigrationWithTheEx
 	// 		},
 	// 	},
 	// }
-}
-
-// Generated from example definition: 2025-09-01-preview/SqlDbRetryDatabaseMigration.json
-func ExampleDatabaseMigrationsSQLDbClient_BeginRetry() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatamigration.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabaseMigrationsSQLDbClient().BeginRetry(ctx, "testrg", "sqldbinstance", "db1", armdatamigration.MigrationOperationInput{
-		MigrationOperationID: to.Ptr("9a90bb84-e70f-46f7-b0ae-1aef5b3b9f07"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
 }

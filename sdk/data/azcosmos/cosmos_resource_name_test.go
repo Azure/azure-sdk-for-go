@@ -141,6 +141,37 @@ func TestResourceNameValidationClientOptions(t *testing.T) {
 	}
 }
 
+func TestEncodingScenarioResourceNameCompatibility(t *testing.T) {
+	emulator := &emulatorTests{host: "https://localhost", key: "dGVzdA=="}
+	tracer := newSpanValidator(t, &spanMatcher{})
+	defaultClient := emulator.getClient(t, tracer)
+	defer defaultClient.Close()
+	compatClient := emulator.getClientWithOptions(t, tracer, ClientOptions{DisableResourceNameValidation: true})
+	defer compatClient.Close()
+
+	statuses := []int{http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent}
+	transport := &countingTransport{}
+	transport.respFunc = func() (int, []byte) {
+		return statuses[transport.count.Load()-1], []byte(`{}`)
+	}
+	internal, err := azcore.NewClient("azcosmostest", "v1.0.0", runtime.PipelineOptions{}, &policy.ClientOptions{Transport: transport})
+	require.NoError(t, err)
+	defaultClient.internal = internal
+	compatClient.internal = internal
+
+	defaultContainer, err := defaultClient.NewContainer("database", "container")
+	require.NoError(t, err)
+	id := "Disallowed?Chars"
+	_, err = defaultContainer.CreateItem(context.Background(), NewPartitionKeyString(id), []byte(`{"id":"Disallowed?Chars"}`), nil)
+	require.ErrorContains(t, err, "invalid item ID")
+	require.Zero(t, transport.count.Load())
+
+	compatContainer, err := compatClient.NewContainer("database", "container")
+	require.NoError(t, err)
+	verifyEncodingScenario(t, compatContainer, "compatibility", id, http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	require.EqualValues(t, 4, transport.count.Load())
+}
+
 func TestResourceNameValidationBeforeRequests(t *testing.T) {
 	ctx := context.Background()
 	pk := NewPartitionKeyString("pk")

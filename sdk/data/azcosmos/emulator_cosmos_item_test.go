@@ -6,7 +6,6 @@ package azcosmos
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"net/http"
 	"reflect"
 	"strings"
@@ -14,6 +13,7 @@ import (
 	"testing"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/stretchr/testify/require"
 )
 
 func TestItemCRUD(t *testing.T) {
@@ -427,6 +427,7 @@ func TestItemIdEncodingRoutingGW(t *testing.T) {
 	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
+	defer client.Close()
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -442,8 +443,8 @@ func TestItemIdEncodingRoutingGW(t *testing.T) {
 		t.Fatalf("Failed to create container: %v", err)
 	}
 
-	container, _ := database.NewContainer("aContainer")
-
+	container, err := database.NewContainer("aContainer")
+	require.NoError(t, err)
 	verifyEncodingScenario(t, container, "RoutingGW - PlainVanillaId", "Test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithWhitespaces", "This is a test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "RoutingGW - IdStartingWithWhitespaces", " Test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
@@ -453,14 +454,23 @@ func TestItemIdEncodingRoutingGW(t *testing.T) {
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithBase64EncodedIdCharacters", strings.ReplaceAll("BQE1D3PdG4N4bzU9TKaCIM3qc0TVcZ2/Y3jnsRfwdHC1ombkX3F1dot/SG0/UTq9AbgdX3kOWoP6qL6lJqWeKgV3zwWWPZO/t5X0ehJzv9LGkWld07LID2rhWhGT6huBM6Q=", "/", "-"), http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "RoutingGW - IdEndingWithPercentEncodedWhitespace", "IdEndingWithPercentEncodedWhitespace%20", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithPercentEncodedSpecialChar", "WithPercentEncodedSpecialChar%E9%B1%80", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
-	verifyEncodingScenario(t, container, "RoutingGW - IdWithDisallowedCharQuestionMark", "Disallowed?Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
-	verifyEncodingScenario(t, container, "RoutingGW - IdWithDisallowedCharForwardSlash", "Disallowed/Chars", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
-	verifyEncodingScenario(t, container, "RoutingGW - IdWithDisallowedCharBackSlash", "Disallowed\\Chars", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
-	verifyEncodingScenario(t, container, "RoutingGW - IdWithDisallowedCharPoundSign", "Disallowed#Chars", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
-	verifyEncodingScenario(t, container, "RoutingGW - IdWithCarriageReturn", "With\rCarriageReturn", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
-	verifyEncodingScenario(t, container, "RoutingGW - IdWithTab", "With\tTab", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
-	verifyEncodingScenario(t, container, "RoutingGW - IdWithLineFeed", "With\nLineFeed", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
 	verifyEncodingScenario(t, container, "RoutingGW - IdWithUnicodeCharacters", "WithUnicode鱀", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("Disallowed?Chars"), []byte(`{"id":"Disallowed?Chars","pk":"Disallowed?Chars"}`), nil)
+	require.ErrorContains(t, err, "invalid item ID")
+
+	// Preserve the service's legacy encoding scenarios with validation disabled.
+	compatClient := emulatorTests.getClientWithOptions(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}), ClientOptions{DisableResourceNameValidation: true})
+	defer compatClient.Close()
+	compatContainer, err := compatClient.NewContainer(database.ID(), container.ID())
+	require.NoError(t, err)
+	verifyEncodingScenario(t, compatContainer, "RoutingGW - IdWithDisallowedCharQuestionMark", "Disallowed?Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, compatContainer, "RoutingGW - IdWithDisallowedCharForwardSlash", "Disallowed/Chars", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
+	verifyEncodingScenario(t, compatContainer, "RoutingGW - IdWithDisallowedCharBackSlash", "Disallowed\\Chars", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
+	verifyEncodingScenario(t, compatContainer, "RoutingGW - IdWithDisallowedCharPoundSign", "Disallowed#Chars", http.StatusCreated, http.StatusUnauthorized, http.StatusUnauthorized, http.StatusUnauthorized)
+	verifyEncodingScenario(t, compatContainer, "RoutingGW - IdWithCarriageReturn", "With\rCarriageReturn", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
+	verifyEncodingScenario(t, compatContainer, "RoutingGW - IdWithTab", "With\tTab", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
+	verifyEncodingScenario(t, compatContainer, "RoutingGW - IdWithLineFeed", "With\nLineFeed", http.StatusCreated, http.StatusBadRequest, http.StatusBadRequest, http.StatusBadRequest)
 }
 
 func TestItemIdEncodingComputeGW(t *testing.T) {
@@ -468,6 +478,7 @@ func TestItemIdEncodingComputeGW(t *testing.T) {
 	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
 	}))
+	defer client.Close()
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
 	defer emulatorTests.deleteDatabase(t, context.TODO(), database)
@@ -483,8 +494,8 @@ func TestItemIdEncodingComputeGW(t *testing.T) {
 		t.Fatalf("Failed to create container: %v", err)
 	}
 
-	container, _ := database.NewContainer("aContainer")
-
+	container, err := database.NewContainer("aContainer")
+	require.NoError(t, err)
 	verifyEncodingScenario(t, container, "ComputeGW-PlainVanillaId", "Test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "ComputeGW-IdWithWhitespaces", "This is a test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "ComputeGW-IdStartingWithWhitespaces", " Test", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
@@ -494,14 +505,23 @@ func TestItemIdEncodingComputeGW(t *testing.T) {
 	verifyEncodingScenario(t, container, "ComputeGW-IdWithBase64EncodedIdCharacters", strings.ReplaceAll("BQE1D3PdG4N4bzU9TKaCIM3qc0TVcZ2/Y3jnsRfwdHC1ombkX3F1dot/SG0/UTq9AbgdX3kOWoP6qL6lJqWeKgV3zwWWPZO/t5X0ehJzv9LGkWld07LID2rhWhGT6huBM6Q=", "/", "-"), http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "ComputeGW-IdEndingWithPercentEncodedWhitespace", "IdEndingWithPercentEncodedWhitespace%20", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "ComputeGW-IdWithPercentEncodedSpecialChar", "WithPercentEncodedSpecialChar%E9%B1%80", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
-	verifyEncodingScenario(t, container, "ComputeGW-IdWithDisallowedCharQuestionMark", "Disallowed?Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
-	verifyEncodingScenario(t, container, "ComputeGW-IdWithDisallowedCharForwardSlash", "Disallowed/Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
-	verifyEncodingScenario(t, container, "ComputeGW-IdWithDisallowedCharBackSlash", "Disallowed\\Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
-	verifyEncodingScenario(t, container, "ComputeGW-IdWithDisallowedCharPoundSign", "Disallowed#Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
-	verifyEncodingScenario(t, container, "ComputeGW-IdWithCarriageReturn", "With\rCarriageReturn", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
-	verifyEncodingScenario(t, container, "ComputeGW-IdWithTab", "With\tTab", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
-	verifyEncodingScenario(t, container, "ComputeGW-IdWithLineFeed", "With\nLineFeed", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 	verifyEncodingScenario(t, container, "ComputeGW-IdWithUnicodeCharacters", "WithUnicode鱀", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+
+	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("Disallowed?Chars"), []byte(`{"id":"Disallowed?Chars","pk":"Disallowed?Chars"}`), nil)
+	require.ErrorContains(t, err, "invalid item ID")
+
+	// Preserve the service's legacy encoding scenarios with validation disabled.
+	compatClient := emulatorTests.getClientWithOptions(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}), ClientOptions{DisableResourceNameValidation: true})
+	defer compatClient.Close()
+	compatContainer, err := compatClient.NewContainer(database.ID(), container.ID())
+	require.NoError(t, err)
+	verifyEncodingScenario(t, compatContainer, "ComputeGW-IdWithDisallowedCharQuestionMark", "Disallowed?Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, compatContainer, "ComputeGW-IdWithDisallowedCharForwardSlash", "Disallowed/Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, compatContainer, "ComputeGW-IdWithDisallowedCharBackSlash", "Disallowed\\Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, compatContainer, "ComputeGW-IdWithDisallowedCharPoundSign", "Disallowed#Chars", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, compatContainer, "ComputeGW-IdWithCarriageReturn", "With\rCarriageReturn", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, compatContainer, "ComputeGW-IdWithTab", "With\tTab", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
+	verifyEncodingScenario(t, compatContainer, "ComputeGW-IdWithLineFeed", "With\nLineFeed", http.StatusCreated, http.StatusOK, http.StatusOK, http.StatusNoContent)
 }
 
 func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
@@ -695,6 +715,7 @@ func TestItemCRUDHierarchicalPartitionKey(t *testing.T) {
 }
 
 func verifyEncodingScenario(t *testing.T, container *ContainerClient, name string, id string, expectedCreate int, expectedRead int, expectedReplace int, expectedDelete int) {
+	t.Helper()
 	item := map[string]interface{}{
 		"id": id,
 		"pk": id,
@@ -718,13 +739,14 @@ func verifyEncodingScenario(t *testing.T, container *ContainerClient, name strin
 }
 
 func verifyEncodingScenarioResponse(t *testing.T, name string, itemResponse ItemResponse, err error, expectedStatus int) {
+	t.Helper()
 	if err != nil {
 		var responseErr *azcore.ResponseError
-		errors.As(err, &responseErr)
-		if responseErr.StatusCode != expectedStatus {
-			t.Fatalf("[%s] Expected status code %d, got %d, %s", name, expectedStatus, responseErr.StatusCode, err)
-		}
-	} else if itemResponse.RawResponse.StatusCode != expectedStatus {
-		t.Fatalf("[%s] Expected status code %d, got %d", name, expectedStatus, itemResponse.RawResponse.StatusCode)
+		require.ErrorAs(t, err, &responseErr, "[%s] expected a service response", name)
+		require.NotNil(t, responseErr, "[%s] missing service error", name)
+		require.Equal(t, expectedStatus, responseErr.StatusCode, "[%s] %v", name, err)
+	} else {
+		require.NotNil(t, itemResponse.RawResponse, "[%s] missing service response", name)
+		require.Equal(t, expectedStatus, itemResponse.RawResponse.StatusCode, "[%s]", name)
 	}
 }

@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed senders and receivers remaining unusable when connection recovery fails while creating a session or link.
+
 ### Other Changes
 
 ## 1.11.0 (2026-10-06)

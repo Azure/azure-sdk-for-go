@@ -519,10 +519,9 @@ type CapacityReservationGroupProperties struct {
 	ReservationType *ReservationType
 
 	// Specifies the settings to enable sharing across subscriptions for the capacity reservation group resource. The capacity
-	// reservation group resource can generally be shared across subscriptions belonging to a single Azure AAD tenant or across
-	// AAD tenants if there is a trust relationship established between the tenants. Block capacity reservation does not support
-	// sharing across subscriptions. **Note:** Minimum api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing
-	// for more details.
+	// reservation group resource can be shared only across subscriptions belonging to the same Microsoft Entra ID tenant. Sharing
+	// across tenants is not supported. Block capacity reservation does not support sharing across subscriptions. **Note:** Minimum
+	// api-version: 2023-09-01. Please refer to https://aka.ms/computereservationsharing for more details.
 	SharingProfile *ResourceSharingProfile
 
 	// READ-ONLY; A list of all capacity reservation resource ids that belong to capacity reservation group.
@@ -4335,9 +4334,9 @@ type Placement struct {
 	// is not provided, all availability zones in region will be considered for selection.
 	IncludeZones []*string
 
-	// Specifies the policy for resource's placement in availability zone. Possible values are: **Any** (used for Virtual Machines),
-	// **Auto** (used for Virtual Machine Scale Sets) - An availability zone will be automatically picked by system as part of
-	// resource creation.
+	// Specifies the policy for the resource's placement in an availability zone. Use **Auto** for Virtual Machines and Virtual
+	// Machine Scale Sets to let the system automatically select an availability zone during resource creation. **Any** remains
+	// supported for Virtual Machines for backward compatibility.
 	ZonePlacementPolicy *ZonePlacementPolicyType
 }
 
@@ -6128,8 +6127,8 @@ type StartRecoveryPolicy struct {
 
 // StorageProfile - Specifies the storage settings for the virtual machine disks.
 type StorageProfile struct {
-	// Specifies whether the regional disks should be aligned/moved to the VM zone. This is applicable only for VMs with placement
-	// property set. Please note that this change is irreversible. Minimum api-version: 2024-11-01.
+	// Specifies whether the regional disks should be aligned/moved to the VM zone. This is applicable **only** for VMs with placement.zonePlacementPolicy
+	// set to **Any**. Please note that this change is irreversible. Minimum api-version: 2024-11-01.
 	AlignRegionalDisksToVMZone *bool
 
 	// Specifies the parameters that are used to add a data disk to a virtual machine. For more information about disks, see [About

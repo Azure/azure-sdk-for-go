@@ -3740,14 +3740,14 @@ func PossibleZonalPlatformFaultDomainAlignModeValues() []ZonalPlatformFaultDomai
 	}
 }
 
-// ZonePlacementPolicyType - Specifies the policy for resource's placement in availability zone. Possible values are: **Any**
-// (used for Virtual Machines), **Auto** (used for Virtual Machine Scale Sets) - An availability zone will be automatically
-// picked by system as part of resource creation.
+// ZonePlacementPolicyType - Specifies the policy for the resource's placement in an availability zone. Use **Auto** for Virtual
+// Machines and Virtual Machine Scale Sets to let the system automatically select an availability zone during resource creation.
+// **Any** remains supported for Virtual Machines for backward compatibility.
 type ZonePlacementPolicyType string
 
 const (
 	ZonePlacementPolicyTypeAny ZonePlacementPolicyType = "Any"
-	// ZonePlacementPolicyTypeAuto - Automatic zone placement in a Virtual Machine Scale Set.
+	// ZonePlacementPolicyTypeAuto - Automatic zone placement for Virtual Machines and Virtual Machine Scale Sets.
 	ZonePlacementPolicyTypeAuto ZonePlacementPolicyType = "Auto"
 )
 

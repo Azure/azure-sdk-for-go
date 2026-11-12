@@ -132,7 +132,8 @@ type ReadManyOptions struct {
 	// Zero uses the driver default. Negative values are invalid.
 	PageSizeHint int32
 
-	// MaxFanOut limits the physical partitions read concurrently. Zero uses the native default.
+	// MaxFanOut limits how many physical partitions a read may target, checked when the read is
+	// planned. It is not a concurrency limit. Zero uses the native default (100).
 	MaxFanOut uint32
 }
 

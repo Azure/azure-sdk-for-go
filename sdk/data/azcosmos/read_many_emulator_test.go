@@ -49,7 +49,8 @@ func seedReadManyItems(t *testing.T, container *ContainerClient, partitions, cou
 	return pks, ids
 }
 
-// drainReadMany reads every page, checks each page's metadata, and returns the sorted item IDs.
+// drainReadMany reads every page, checks each service page's metadata, and returns the sorted
+// item IDs and the number of pages that contained items.
 func drainReadMany(t *testing.T, pager *ReadManyItemsPager[readManyEmulatorItem]) ([]string, int) {
 	t.Helper()
 	t.Cleanup(func() { require.NoError(t, pager.Close()) })
@@ -58,8 +59,13 @@ func drainReadMany(t *testing.T, pager *ReadManyItemsPager[readManyEmulatorItem]
 	for pager.More() {
 		page, err := pager.NextPage(t.Context())
 		require.NoError(t, err)
-		pages++
-		require.NotNil(t, page.Diagnostics, "every page carries diagnostics")
+		if len(page.Items) > 0 {
+			pages++
+		}
+		// Empty selections and terminal pages may complete without a service response.
+		if page.StatusCode != 0 {
+			require.NotNil(t, page.Diagnostics, "every service page carries diagnostics")
+		}
 		for _, item := range page.Items {
 			ids = append(ids, item.ID)
 		}
@@ -106,7 +112,9 @@ func TestEmulatorReadManyItems(t *testing.T) {
 		for pager.More() {
 			page, err := pager.NextPage(t.Context())
 			require.NoError(t, err)
-			require.NotNil(t, page.Diagnostics)
+			if page.StatusCode != 0 {
+				require.NotNil(t, page.Diagnostics)
+			}
 			charge += page.RequestCharge
 			items = append(items, page.Items...)
 		}
@@ -141,9 +149,9 @@ func TestEmulatorReadManyPartitions(t *testing.T) {
 
 	t.Run("page size hint returns the same items", func(t *testing.T) {
 		got, pages := drainReadMany(t, container.NewReadManyItemsPager[readManyEmulatorItem](selection,
-			&ReadManyOptions{PageSizeHint: 1, MaxFanOut: 1}))
+			&ReadManyOptions{PageSizeHint: 1}))
 		require.Equal(t, sortedCopy(all), got)
-		require.Greater(t, pages, 1, "a page size hint of one splits the results")
+		require.Greater(t, pages, 1, "a page size hint of one splits the results across non-empty pages")
 	})
 
 	t.Run("concurrent pagers", func(t *testing.T) {

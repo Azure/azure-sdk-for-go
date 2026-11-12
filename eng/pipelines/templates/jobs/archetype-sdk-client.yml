@@ -82,6 +82,9 @@ parameters:
   - name: AdditionalStages
     type: object
     default: []
+  - name: AdditionalNetworkIsolationPolicies
+    type: object
+    default: []
   - name: oneESTemplateTag
     type: string
     default: release
@@ -107,6 +110,7 @@ extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
     oneESTemplateTag: ${{ parameters.oneESTemplateTag }}
+    AdditionalNetworkIsolationPolicies: ${{ parameters.AdditionalNetworkIsolationPolicies }}
     stages:
       - ${{ if and(eq(parameters.SkipPrValidation, true), eq(variables['Build.Reason'], 'Manual')) }}:
           - stage: NoOp

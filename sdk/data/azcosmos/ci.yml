@@ -35,6 +35,9 @@ extends:
     LintVersion: 'v2.14.0'
     MatrixReplace:
       - GoVersion=.*/1.27.2
+    ${{ if and(eq(variables['System.TeamProject'], 'internal'), startsWith(variables['Build.SourceBranch'], 'refs/heads/'), ne(variables['Build.Reason'], 'PullRequest'), or(and(eq(variables['Build.Reason'], 'Manual'), parameters.RunLiveTests), eq(variables['Build.Reason'], 'Schedule'), endsWith(variables['Build.DefinitionName'], '- weekly'))) }}:
+      AdditionalNetworkIsolationPolicies:
+        - AzureCosmosDB
     # Keep the shared build matrix unchanged. Its live path also uses that matrix,
     # including unsupported native targets, so compose the bounded Linux lane below.
     AdditionalStages:

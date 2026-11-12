@@ -19,6 +19,9 @@ parameters:
 - name: oneESTemplateTag
   type: string
   default: release
+- name: AdditionalNetworkIsolationPolicies
+  type: object
+  default: []
 
 extends:
   ${{ if and(parameters.Use1ESOfficial, eq(parameters.oneESTemplateTag, 'canary')) }}:
@@ -43,7 +46,10 @@ extends:
         - 1ES.PT.Tag-refs/tags/canary
     settings:
       skipBuildTagsForGitHubPullRequests: true
-      networkIsolationPolicy: Permissive, CFSClean, CFSClean2
+      ${{ if eq(length(parameters.AdditionalNetworkIsolationPolicies), 0) }}:
+        networkIsolationPolicy: Permissive, CFSClean, CFSClean2
+      ${{ else }}:
+        networkIsolationPolicy: ${{ format('Permissive, CFSClean, CFSClean2, {0}', join(', ', parameters.AdditionalNetworkIsolationPolicies)) }}
     sdl:
       ${{ if and(eq(variables['Build.DefinitionName'], 'go - azcore'), eq(variables['Build.SourceBranchName'], 'main'), eq(variables['System.TeamProject'], 'internal')) }}:
         autobaseline:

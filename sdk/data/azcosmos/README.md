@@ -512,6 +512,8 @@ CI runs do not provision live resources or require live credentials. Manual runs
 with `RunLiveTests=true`; scheduled runs and definitions ending in `- weekly` select the
 same bounded smoke suite. Separate definitions can reuse this `ci.yml`; no separate
 `tests.yml` is required. Live execution is restricted to branch builds, not PR merge refs.
+Only those live-run contexts opt in to the additional Cosmos outbound-network policy;
+ordinary Cosmos validation and other Go pipelines retain the shared policy defaults.
 
 The selection in [`internal/e2e/live.go`](internal/e2e/live.go) contains five permanent
 shared scenario IDs: `bootstrap.primary-success`, `item.lifecycle`,

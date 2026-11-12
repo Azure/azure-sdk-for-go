@@ -2,21 +2,17 @@
 
 <!-- cSpell:ignore documentdb unmarshalling -->
 
-## 1.6.0-beta.6 (Unreleased)
+## 1.6.0-beta.6 (2026-11-12)
 
 ### Features Added
 
 * Added optional resource-name validation. Set `ClientOptions.EnableResourceNameValidation` to `true` to validate database, container, and item IDs before requests. Validation rejects invalid UTF-8, empty IDs, exact dot segments, and names containing `/`, `\`, `?`, `#`, tab, line feed, or carriage return. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
-
-### Breaking Changes
 
 ### Bugs Fixed
 
 * Fixed transactional batch item IDs being inserted into JSON without escaping. IDs now remain a single string value in Read, Replace, Patch, and Delete operations. Database and container IDs are also escaped when serializing their properties. This escaping applies regardless of `ClientOptions.EnableResourceNameValidation`. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
 * Reject malformed transactional batch item bodies before serialization so they cannot alter the surrounding operation. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
 * Fixed `ReadManyItems` requests for a shared logical partition key being rejected with HTTP 400 because both the partition key and partition key range ID headers were sent. The SDK now omits the range ID header when the partition key header is present. See [PR 28027](https://github.com/Azure/azure-sdk-for-go/pull/28027).
-
-### Other Changes
 
 ## 1.6.0-beta.5 (2026-11-06)
 

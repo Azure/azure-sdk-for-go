@@ -219,6 +219,9 @@ func TestCodeForSyntheticSubStatus(t *testing.T) {
 		{"client operation timeout", 20008, CodeClientOperationTimeout},
 		{"serialization of a response body", 20020, CodeSerializationFailed},
 		{"serialization of a request body", 20021, CodeSerializationFailed},
+		{"read session not available", 20310, CodeServiceUnavailable},
+		{"write forbidden", 20311, CodeServiceUnavailable},
+		{"database account not found", 20312, CodeServiceUnavailable},
 
 		// Anything the driver has not given a dedicated meaning is still client-side.
 		{"invalid account endpoint url", 20108, CodeClientError},

@@ -58,6 +58,10 @@ func (c *Client) openQuery(context.Context, *queryRequest) (queryCursor, Respons
 	return nil, Response{}, newDriverUnavailableError()
 }
 
+func (c *Client) openReadMany(context.Context, *readManyRequest) (queryCursor, error) {
+	return nil, newDriverUnavailableError()
+}
+
 func (c *Client) executeBatch(context.Context, itemRequest, int) (TransactionalBatchResponse, error) {
 	return TransactionalBatchResponse{}, newDriverUnavailableError()
 }

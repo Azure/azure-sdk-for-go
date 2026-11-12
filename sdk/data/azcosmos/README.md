@@ -58,7 +58,7 @@ and diagnostics snapshots using a local HTTP server, without an emulator or live
 CI executes the native tests on Linux/amd64 in `DriverEmulator`; `DarwinNativeCompile`
 compiles and links the Darwin/arm64 tests without executing them on the hosted macOS agent.
 
-The v0.2.0 driver owns throttle and session retries; Go submits once and exposes the driver's
+The v0.3.0 driver owns throttle and session retries; Go submits once and exposes the driver's
 attempt count and final status on responses and errors. When attached by the driver,
 `Response.Diagnostics` and `Error.Diagnostics` contain a Go-owned snapshot of total charge,
 elapsed time, regions contacted, retained per-attempt status/substatus and latency, and the
@@ -174,7 +174,7 @@ Go currently supports environment-driven PPCB configuration. It does not expose 
 constructed by either account constructor. Changing the process environment
 afterward does not reconfigure an existing driver or client.
 
-The pinned native driver v0.2.0 uses these defaults:
+The pinned native driver v0.3.0 uses these defaults:
 
 | Environment variable | Default | Purpose |
 | --- | --- | --- |
@@ -224,8 +224,9 @@ throughput separately until the follow-up throughput surface lands.
 
 ### SDK identity
 
-Service requests include `azsdk-go-azcosmos/<version>` in the User-Agent header alongside the native
-Cosmos driver identity and feature flags. Configure an application suffix through
+Service requests send a User-Agent of the form
+`azsdk-go-azcosmos/<version> (drv=<driver version>; <os>; <arch>; <rustc version>; ft=<features>)`,
+followed by the optional application suffix. Configure an application suffix through
 `RuntimeOptions.ApplicationID`, then supply that runtime in `ClientOptions.Runtime`.
 SDK identity does not consume the suffix's length allowance.
 
@@ -288,7 +289,7 @@ Move `ClientOptions.BinaryEncoding` to `ClientOptions.Operation.BinaryEncoding`,
 `Enabled: &value` with `Disabled: !value`. A nil outer pointer inherits; a non-nil zero group
 explicitly enables binary encoding. Precedence is request, client, runtime, environment, then
 enabled. The Go binding reads `AZURE_COSMOS_BINARY_ENCODING_ENABLED` at runtime creation because
-native 0.2.0 does not read it: `1`, `true`, `yes`, and `on` (case-insensitive, trimmed) enable it;
+native 0.3.0 does not read it: `1`, `true`, `yes`, and `on` (case-insensitive, trimmed) enable it;
 other set values disable it. The implicit runtime captures this once on first use. This does not
 add binary support to PATCH, delete, or transactional batches. Responses remain text JSON.
 
@@ -388,6 +389,17 @@ zero response and a cancellation error while native work drains in the backgroun
 waits for outstanding native work before freeing resources. Responses and errors own their
 payloads and remain usable after the client closes.
 
+### Reading many items
+
+`ContainerClient.NewReadManyItemsPager[T]` reads items by identity in one native operation.
+Build the selection with `NewReadManyItemsSelection(NewItemIdentity(pk, id), ...)`, or use
+`NewReadManyPartitionsSelection(pk, ...)` to read whole logical partitions or hierarchical key
+prefixes. `WithFilter` adds a predicate over the item alias `c` (without `WHERE`), and
+`WithParameter` binds its parameters. Missing items are omitted, duplicate identities are read
+once, and the order of results is not specified. Read-many pagers have no continuation token.
+They share the query pager's `More`, `NextPage`, and `Close` lifecycle and return
+`QueryItemsResponse[T]` pages.
+
 ### Querying items
 
 `ContainerClient.NewQueryItemsPager[T]` accepts a `Query`, an explicit `FeedScope`, and optional
@@ -441,7 +453,7 @@ fetched can finish decoding and be returned after the pager or client closes.
 All cursors on a client share a cursor-format completion reactor, separate from the legacy
 operation queue. Query callers wait on Go channels rather than each blocking an OS thread.
 
-The pinned native driver v0.2.0 returns complete raw and pre-split query pages.
+The pinned native driver v0.3.0 returns complete raw and pre-split query pages.
 `FeedOptions.MaxFanOut` limits initial physical-partition fan-out; zero uses the native default
 of 100. This is not a runtime limit: resume and later splits do not recheck it. Broad scopes
 can consume substantial RUs. `QueryPlanMode` selects local-preferred (default) or gateway-only

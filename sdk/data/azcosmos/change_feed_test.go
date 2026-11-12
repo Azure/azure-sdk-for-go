@@ -125,10 +125,10 @@ func TestChangeFeedPagerArgumentAndLifetimeOrdering(t *testing.T) {
 	require.ErrorIs(t, err, context.Canceled)
 
 	pager := newTestContainer(t).NewChangeFeedPager(scope, now, nil)
-	page, err = pager.NextPage(nil)
+	page, err = pager.NextPage(nil) //nolint:staticcheck // verifies the boundary guard
 	require.Zero(t, page)
 	require.ErrorContains(t, err, "context must not be nil")
-	token, err := pager.ContinuationToken(nil)
+	token, err := pager.ContinuationToken(nil) //nolint:staticcheck // verifies the boundary guard
 	require.Empty(t, token)
 	require.ErrorContains(t, err, "context must not be nil")
 	require.NoError(t, pager.Close())

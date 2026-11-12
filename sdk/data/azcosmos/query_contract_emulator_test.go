@@ -26,11 +26,37 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+func TestQueryContractProxySupportsHTTP2(t *testing.T) {
+	backend := newMetadataServer(t, nil)
+	t.Setenv("EMULATOR", "true")
+	t.Setenv("AZCOSMOS_ENDPOINT", backend.URL)
+	t.Setenv("AZCOSMOS_CONTAINER", "items")
+	container := queryContractContainer(t, nil, nil)
+
+	// Match the native driver's cleartext HTTP/2 account capability probe, without fallback.
+	transport := &http.Transport{Protocols: new(http.Protocols)}
+	transport.Protocols.SetUnencryptedHTTP2(true)
+	t.Cleanup(transport.CloseIdleConnections)
+	client := &http.Client{Transport: transport, Timeout: 5 * time.Second}
+	response, err := client.Get(container.database.client.Endpoint())
+	require.NoError(t, err)
+	defer func() { require.NoError(t, response.Body.Close()) }()
+	body, err := io.ReadAll(response.Body)
+	require.NoError(t, err)
+	require.Equal(t, http.StatusOK, response.StatusCode)
+	require.Equal(t, 2, response.ProtoMajor)
+	var account struct {
+		ID string `json:"id"`
+	}
+	require.NoError(t, json.Unmarshal(body, &account))
+	require.Equal(t, "synthetic", account.ID)
+}
+
 func TestEmulatorCursorCheckpointCancellation(t *testing.T) {
 	key, query, _ := seedQueryContractItems(t, emulatorContainer(t))
 	container := queryContractContainer(t, nil, nil)
 	client := container.database.client
-	pager := container.NewQueryItemsPager(query, NewFeedScopeForPartitionKey(key),
+	pager := container.NewQueryItemsPager[json.RawMessage](query, NewFeedScopeForPartitionKey(key),
 		&QueryOptions{Feed: FeedOptions{PageSizeHint: 1}})
 	defer func() { require.NoError(t, pager.Close()) }()
 	_, err := pager.NextPage(t.Context())
@@ -112,7 +138,7 @@ func TestEmulatorCursorCompletionCancellationRace(t *testing.T) {
 	for _, operation := range []string{"page", "checkpoint"} {
 		t.Run(operation, func(t *testing.T) {
 			for range 20 {
-				pager := container.NewQueryItemsPager(query, NewFeedScopeForPartitionKey(key),
+				pager := container.NewQueryItemsPager[json.RawMessage](query, NewFeedScopeForPartitionKey(key),
 					&QueryOptions{Feed: FeedOptions{PageSizeHint: 1}})
 				_, err := pager.NextPage(t.Context())
 				require.NoError(t, err)
@@ -186,16 +212,44 @@ func queryContractContainer(t *testing.T, intercept func(http.ResponseWriter, *h
 		}
 	}))
 	proxyURL = "http://" + server.Listener.Addr().String()
+	// Match the native capability probe instead of depending on HTTP/1 fallback.
+	server.Config.Protocols = new(http.Protocols)
+	server.Config.Protocols.SetHTTP1(true)
+	server.Config.Protocols.SetUnencryptedHTTP2(true)
 	server.Start()
 	t.Cleanup(server.Close)
+	// Do not retain routing caches or pooled connections beyond this temporary proxy's lifetime.
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
 	credential, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
-	client, err := NewClientWithKey(server.URL, credential, nil)
+	client, err := NewClientWithKey(t.Context(), server.URL, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	return container
+}
+
+func TestEmulatorQueryContractRuntimeIsolation(t *testing.T) {
+	emulatorConfiguration(t)
+	var previous *Runtime
+	for _, name := range []string{"first proxy", "replacement proxy"} {
+		var current *Runtime
+		t.Run(name, func(t *testing.T) {
+			container := queryContractContainer(t, nil, nil)
+			current = container.database.client.runtime
+			require.NotNil(t, current)
+			require.NotSame(t, previous, current)
+			require.NotNil(t, container.database.client.driver.driver)
+		})
+		require.NotNil(t, current)
+		require.True(t, current.closed)
+		require.Zero(t, current.clients)
+		require.Nil(t, current.native, "native resources must be released before the proxy is retired")
+		previous = current
+	}
 }
 
 func seedQueryContractItems(t *testing.T, container *ContainerClient) (PartitionKey, Query, SessionToken) {
@@ -207,7 +261,7 @@ func seedQueryContractItems(t *testing.T, container *ContainerClient) (Partition
 		id := fmt.Sprintf("%s-%d", partition, value)
 		body, err := json.Marshal(map[string]any{"id": id, "pk": partition, "value": value})
 		require.NoError(t, err)
-		item, err := container.CreateItem(t.Context(), key, id, body, nil)
+		item, err := container.CreateItem(t.Context(), key, id, json.RawMessage(body), nil)
 		require.NoError(t, err)
 		session = item.SessionToken
 		trackEmulatorItem(t, container, key, id)
@@ -219,6 +273,28 @@ func seedQueryContractItems(t *testing.T, container *ContainerClient) (Partition
 func isQueryDataRequest(r *http.Request) bool {
 	return r.Method == http.MethodPost && strings.HasSuffix(r.URL.Path, "/docs") &&
 		!strings.EqualFold(r.Header.Get("x-ms-cosmos-is-query-plan-request"), "true")
+}
+
+func TestEmulatorCursorTimeoutDoesNotExpireBetweenPages(t *testing.T) {
+	endpoint, database, containerID := emulatorConfiguration(t)
+	shared, err := NewRuntime(&RuntimeOptions{Operation: OperationOptions{EndToEndTimeout: to(time.Second)}})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, shared.Close()) })
+	client, err := NewClientWithKey(t.Context(), endpoint, KeyCredential{accountKey: emulatorKey}, &ClientOptions{Runtime: shared})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
+	container, err := client.NewContainer(t.Context(), database, containerID)
+	require.NoError(t, err)
+	key, query, _ := seedQueryContractItems(t, container)
+	pager := container.NewQueryItemsPager[json.RawMessage](query, NewFeedScopeForPartitionKey(key), &QueryOptions{Feed: FeedOptions{PageSizeHint: 1}})
+	defer func() { require.NoError(t, pager.Close()) }()
+	first, err := pager.NextPage(t.Context())
+	require.NoError(t, err)
+	require.Equal(t, []json.RawMessage{[]byte("0")}, first.Items)
+	time.Sleep(1100 * time.Millisecond)
+	second, err := pager.NextPage(t.Context())
+	require.NoError(t, err, "cursor must not retain its admission snapshot's absolute deadline")
+	require.Equal(t, []json.RawMessage{[]byte("1")}, second.Items)
 }
 
 func TestEmulatorQueryMidPaginationFailureMetadata(t *testing.T) {
@@ -261,17 +337,17 @@ func TestEmulatorQueryMidPaginationFailureMetadata(t *testing.T) {
 		}
 		return nil
 	})
-	pager := container.NewQueryItemsPager(query, NewFeedScopeForPartitionKey(key), &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}})
+	pager := container.NewQueryItemsPager[json.RawMessage](query, NewFeedScopeForPartitionKey(key), &QueryOptions{Feed: FeedOptions{PageSizeHint: 2}})
 	defer func() { require.NoError(t, pager.Close()) }()
 	first, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
-	require.Equal(t, [][]byte{[]byte("0"), []byte("1")}, first.Items)
+	require.Equal(t, []json.RawMessage{[]byte("0"), []byte("1")}, first.Items)
 	require.Equal(t, 3.75, first.RequestCharge, "first fetch includes the extra metadata-validation charge")
 	require.Equal(t, successActivity, first.ActivityID)
 	require.NotEmpty(t, first.SessionToken)
 	second, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
-	require.Equal(t, [][]byte{[]byte("2"), []byte("3")}, second.Items)
+	require.Equal(t, []json.RawMessage{[]byte("2"), []byte("3")}, second.Items)
 	require.Equal(t, 2.5, second.RequestCharge, "subsequent pages must not repeat setup charges")
 	require.Equal(t, successActivity, second.ActivityID)
 	require.NotEmpty(t, second.SessionToken)
@@ -323,7 +399,7 @@ func TestEmulatorQueryMetricsAndSessionOptions(t *testing.T) {
 				}
 				return nil
 			})
-			pager := container.NewQueryItemsPager(query, NewFeedScopeForPartitionKey(key), &QueryOptions{
+			pager := container.NewQueryItemsPager[json.RawMessage](query, NewFeedScopeForPartitionKey(key), &QueryOptions{
 				Feed: FeedOptions{PageSizeHint: 2}, SessionToken: session,
 				PopulateIndexMetrics: &enabled, PopulateQueryMetrics: &enabled,
 			})
@@ -331,7 +407,7 @@ func TestEmulatorQueryMetricsAndSessionOptions(t *testing.T) {
 			for pageNumber := range 2 {
 				page, err := pager.NextPage(t.Context())
 				require.NoError(t, err)
-				require.Equal(t, [][]byte{[]byte(fmt.Sprint(pageNumber * 2)), []byte(fmt.Sprint(pageNumber*2 + 1))}, page.Items)
+				require.Equal(t, []json.RawMessage{[]byte(fmt.Sprint(pageNumber * 2)), []byte(fmt.Sprint(pageNumber*2 + 1))}, page.Items)
 				mu.Lock()
 				observedRequests := append([]http.Header(nil), requests...)
 				observedSessions := append([]SessionToken(nil), sessions...)

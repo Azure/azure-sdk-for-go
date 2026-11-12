@@ -1,0 +1,51 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "topology.replication-pause-resume",
+    "title": "Replication pause and resume converge without loss",
+    "requirement": "A paused replica remains stale and, after replication resumes, converges to every committed item without loss or duplication.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos_emulator/src/management.rs",
+            "test": "replication_pause_and_resume_round_trip_through_management_api"
+        }
+    ],
+    "profiles": [
+        "dynamicTopology"
+    ],
+    "tags": [
+        "topology",
+        "replication",
+        "consistency"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "simulated",
+            "fidelity": "simulated",
+            "reason": "Hosted controls pause and resume a virtual replica queue.",
+            "requires": [
+                "item",
+                "query",
+                "replicationPauseResume"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "simulated",
+            "fidelity": "simulated",
+            "reason": "Hosted controls pause and resume a virtual replica queue.",
+            "requires": [
+                "item",
+                "query",
+                "replicationPauseResume",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "notApplicable",
+            "fidelity": "none",
+            "reason": "Azure Live does not expose deterministic replication pause controls."
+        }
+    }
+}

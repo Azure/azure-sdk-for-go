@@ -1,0 +1,46 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "changefeed.pagination-resume",
+  "title": "Change feed pagination resumes without replay",
+  "requirement": "A LatestVersion change feed can persist and resume a continuation without losing or replaying changes from the current snapshot.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_change_feed.rs",
+      "test": "change_feed_continuation_token_resume"
+    }
+  ],
+  "profiles": [
+    "coreOperations"
+  ],
+  "tags": [
+    "changeFeed",
+    "continuation",
+    "coreOperations"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "simulated",
+      "fidelity": "simulated",
+      "reason": "The hosted emulator validates the public continuation path over a stable snapshot but does not yet retain a complete change log.",
+      "requires": [
+        "changeFeed"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "simulated",
+      "fidelity": "simulated",
+      "reason": "The hosted emulator validates the public continuation path over a stable snapshot but does not yet retain a complete change log.",
+      "requires": [
+        "changeFeed",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "supported",
+      "fidelity": "full"
+    }
+  }
+}

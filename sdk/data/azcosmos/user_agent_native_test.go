@@ -22,11 +22,14 @@ func TestNativeUserAgentOnWire(t *testing.T) {
 	for _, tt := range []struct {
 		name          string
 		applicationID string
+		shared        bool
 	}{
 		{name: "empty"},
 		{name: "application", applicationID: "orders"},
 		{name: "24 characters", applicationID: strings.Repeat("a", 24)},
 		{name: "25 characters", applicationID: strings.Repeat("a", 25)},
+		{name: "shared empty", shared: true},
+		{name: "shared application", applicationID: "orders", shared: true},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			var mu sync.Mutex
@@ -51,23 +54,29 @@ func TestNativeUserAgentOnWire(t *testing.T) {
 
 			credential, err := NewKeyCredential(emulatorKey)
 			require.NoError(t, err)
-			client, err := NewClientWithKey(server.URL, credential, &ClientOptions{ApplicationID: tt.applicationID})
+			options := &ClientOptions{}
+			if tt.shared || tt.applicationID != "" {
+				shared, err := NewRuntime(&RuntimeOptions{ApplicationID: tt.applicationID})
+				require.NoError(t, err)
+				t.Cleanup(func() { require.NoError(t, shared.Close()) })
+				options.Runtime = shared
+			}
+			client, err := newTestClientWithKey(server.URL, credential, options)
 			require.NoError(t, err)
 			defer func() { require.NoError(t, client.Close()) }()
 
-			require.Error(t, client.Initialize(t.Context()))
+			require.Error(t, client.initialize(t.Context()))
 
 			mu.Lock()
 			defer mu.Unlock()
 			require.NotEmpty(t, agents, "native driver sent no observed service request")
-			suffixPattern := ` ` + regexp.QuoteMeta(tt.applicationID)
-			if tt.applicationID == "" {
-				suffixPattern = ` rustc/[^ |]+`
+			suffixPattern := ""
+			if tt.applicationID != "" {
+				suffixPattern = ` ` + regexp.QuoteMeta(tt.applicationID)
 			}
+			prefix := regexp.QuoteMeta("azsdk-go-azcosmos/" + strings.TrimPrefix(serviceLibVersion, "v"))
 			for _, agent := range agents {
-				require.Contains(t, strings.Fields(agent), "azsdk-go-azcosmos/"+strings.TrimPrefix(serviceLibVersion, "v"))
-				require.Regexp(t, `(?:^| )azsdk-rust-cosmos-driver/\S+(?: |$)`, agent)
-				require.Regexp(t, suffixPattern+`\|F[0-9A-Fa-f]+$`, agent)
+				require.Regexp(t, `^`+prefix+` \(drv=[^;()]+; [^;()]+; [^;()]+; [^;()]+; ft=[^;()]+\)`+suffixPattern+`$`, agent)
 			}
 		})
 	}

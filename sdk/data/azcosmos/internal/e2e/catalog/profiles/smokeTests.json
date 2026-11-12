@@ -1,0 +1,36 @@
+{
+  "$schema": "../schema/profile.v1.json",
+  "specVersion": "1.0",
+  "id": "smokeTests",
+  "accounts": [
+    {
+      "id": "sessionSingleRegion",
+      "writeMode": "single",
+      "consistency": "session",
+      "regions": [
+        {
+          "name": "East US"
+        }
+      ],
+      "replication": {
+        "minDelayMs": 0,
+        "maxDelayMs": 0
+      },
+      "perPartitionFailover": false
+    }
+  ],
+  "runtimes": [
+    {
+      "id": "sdkDefault",
+      "gatewayV2": "backendDefault",
+      "ppcb": "sdkDefault"
+    }
+  ],
+  "clients": [
+    {
+      "id": "sdkDefault",
+      "binaryEncoding": "sdkDefault",
+      "routing": "proximity"
+    }
+  ]
+}

@@ -1,0 +1,41 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "item.lifecycle",
+    "title": "An item completes its CRUD lifecycle",
+    "requirement": "Create, read, replace, and delete preserve the addressed item identity and expose stable statuses.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "java",
+            "path": "sdk/cosmos/azure-cosmos-tests/src/test/java/com/azure/cosmos/CosmosItemTest.java",
+            "test": "createItem/readItem/replaceItem/deleteItem"
+        }
+    ],
+    "profiles": [
+        "smokeTests",
+        "lifecycleConsistencyMatrix",
+        "readConsistencyOverrideMatrix"
+    ],
+    "tags": [
+        "prSmoke",
+        "item"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full"
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

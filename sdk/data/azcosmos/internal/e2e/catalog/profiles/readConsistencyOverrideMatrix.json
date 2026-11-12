@@ -1,0 +1,22 @@
+{
+  "$schema": "../schema/profile.v1.json",
+  "specVersion": "1.0",
+  "id": "readConsistencyOverrideMatrix",
+  "accounts": [{
+    "id": "session",
+    "writeMode": "single",
+    "consistency": "session",
+    "regions": [{ "name": "East US" }, { "name": "West US" }],
+    "replication": { "minDelayMs": 500, "maxDelayMs": 500 },
+    "perPartitionFailover": false
+  }],
+  "runtimes": [
+    { "id": "unset", "gatewayV2": "backendDefault", "ppcb": "disabled" },
+    { "id": "eventual", "gatewayV2": "backendDefault", "ppcb": "disabled", "defaultReadConsistencyStrategy": "Eventual" },
+    { "id": "session", "gatewayV2": "backendDefault", "ppcb": "disabled", "defaultReadConsistencyStrategy": "Session" }
+  ],
+  "clients": [
+    { "id": "unset", "binaryEncoding": "sdkDefault", "routing": "preferredRegions" },
+    { "id": "latestCommitted", "binaryEncoding": "sdkDefault", "routing": "preferredRegions", "defaultReadConsistencyStrategy": "LatestCommitted" }
+  ]
+}

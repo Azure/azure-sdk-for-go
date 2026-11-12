@@ -25,7 +25,7 @@ func TestEmulatorChangeFeedPartitionIsolation(t *testing.T) {
 			if hierarchical {
 				containerID = "query-hierarchical"
 			}
-			container, err := client.NewContainer(databaseID, containerID)
+			container, err := client.NewContainer(t.Context(), databaseID, containerID)
 			require.NoError(t, err)
 			prefix := fmt.Sprintf("change-feed-%d", time.Now().UnixNano())
 			key := NewPartitionKeyString(prefix)
@@ -45,7 +45,7 @@ func TestEmulatorChangeFeedPartitionIsolation(t *testing.T) {
 			}
 			seedChangeFeedEmulatorItem(t, container, foreignKey, foreignID, foreignPartition, foreignChild)
 			pager := container.NewChangeFeedPager(NewFeedScopeForPartitionKey(key), NewChangeFeedStartFromBeginning(),
-				&ChangeFeedOptions{Feed: FeedOptions{PageSizeHint: 100}, Operation: OperationOptions{EndToEndTimeout: 5 * time.Second}})
+				&ChangeFeedOptions{Feed: FeedOptions{PageSizeHint: 100}, Operation: OperationOptions{EndToEndTimeout: to(5 * time.Second)}})
 			defer func() { require.NoError(t, pager.Close()) }()
 			for range 8 {
 				page, err := pager.NextPage(t.Context())
@@ -74,7 +74,7 @@ func TestEmulatorChangeFeedFullContainerScope(t *testing.T) {
 		seedChangeFeedEmulatorItem(t, container, NewPartitionKeyString(id), id, id, "child")
 	}
 	pager := container.NewChangeFeedPager(NewFeedScopeForFullContainer(), NewChangeFeedStartFromBeginning(),
-		&ChangeFeedOptions{Feed: FeedOptions{PageSizeHint: 1000}, Operation: OperationOptions{EndToEndTimeout: 5 * time.Second}})
+		&ChangeFeedOptions{Feed: FeedOptions{PageSizeHint: 1000}, Operation: OperationOptions{EndToEndTimeout: to(5 * time.Second)}})
 	defer func() { require.NoError(t, pager.Close()) }()
 	for range 32 {
 		page, err := pager.NextPage(t.Context())
@@ -99,7 +99,7 @@ func seedChangeFeedEmulatorItem(t *testing.T, container *ContainerClient, key Pa
 	t.Helper()
 	body, err := json.Marshal(map[string]string{"id": id, "pk": partition, "child": child})
 	require.NoError(t, err)
-	_, err = container.CreateItem(t.Context(), key, id, body, nil)
+	_, err = container.CreateItem(t.Context(), key, id, json.RawMessage(body), nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
 		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)

@@ -1,0 +1,56 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "item.validation-contracts",
+    "title": "Invalid item writes fail without changing state",
+    "requirement": "Missing identity, mismatched partition keys, oversized payloads, and duplicate unique keys return stable failures without mutating stored items; name-addressed Replace can mutate the item ID while retaining its resource identity.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_items.rs",
+            "test": "create_item_duplicate_returns_conflict"
+        },
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_items.rs",
+            "test": "item_replace_if_match_etag"
+        },
+        {
+            "sdk": "service",
+            "path": "https://learn.microsoft.com/azure/cosmos-db/unique-keys",
+            "test": "unique keys are scoped to a logical partition"
+        }
+    ],
+    "profiles": [
+        "coreOperations"
+    ],
+    "tags": [
+        "item",
+        "validation",
+        "coreOperations"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "container",
+                "item"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "container",
+                "item",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

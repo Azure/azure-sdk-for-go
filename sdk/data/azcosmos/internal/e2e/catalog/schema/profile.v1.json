@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://azure.github.io/cosmos-sdk-e2e-tests/profile.v1.json",
+  "title": "Cosmos SDK E2E test profile",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "specVersion",
+    "id",
+    "accounts",
+    "runtimes",
+    "clients"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "../schema/profile.v1.json"
+    },
+    "specVersion": {
+      "const": "1.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-zA-Z0-9]*$"
+    },
+    "accounts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/account"
+      }
+    },
+    "runtimes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/runtime"
+      }
+    },
+    "clients": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/client"
+      }
+    }
+  },
+  "$defs": {
+    "readConsistencyStrategy": {
+      "enum": [
+        "Default",
+        "Eventual",
+        "Session",
+        "LatestCommitted",
+        "GlobalStrong"
+      ]
+    },
+    "account": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "writeMode",
+        "consistency",
+        "regions",
+        "replication",
+        "perPartitionFailover"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9]*$"
+        },
+        "writeMode": {
+          "enum": [
+            "single",
+            "multi"
+          ]
+        },
+        "consistency": {
+          "enum": [
+            "strong",
+            "boundedStaleness",
+            "session",
+            "consistentPrefix",
+            "eventual"
+          ]
+        },
+        "regions": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "name"
+            ],
+            "properties": {
+              "name": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "replication": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "minDelayMs",
+            "maxDelayMs"
+          ],
+          "properties": {
+            "minDelayMs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "maxDelayMs": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "perPartitionFailover": {
+          "type": "boolean"
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "gatewayV2",
+        "ppcb"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9]*$"
+        },
+        "gatewayV2": {
+          "enum": [
+            "enabled",
+            "disabled",
+            "backendDefault"
+          ]
+        },
+        "ppcb": {
+          "enum": [
+            "enabled",
+            "disabled",
+            "sdkDefault"
+          ]
+        },
+        "defaultReadConsistencyStrategy": {
+          "$ref": "#/$defs/readConsistencyStrategy"
+        }
+      }
+    },
+    "client": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "binaryEncoding",
+        "routing"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-zA-Z0-9]*$"
+        },
+        "binaryEncoding": {
+          "enum": [
+            "enabled",
+            "disabled",
+            "sdkDefault"
+          ]
+        },
+        "routing": {
+          "enum": [
+            "proximity",
+            "preferredRegions",
+            "accountOrder"
+          ]
+        },
+        "defaultReadConsistencyStrategy": {
+          "$ref": "#/$defs/readConsistencyStrategy"
+        }
+      }
+    }
+  }
+}

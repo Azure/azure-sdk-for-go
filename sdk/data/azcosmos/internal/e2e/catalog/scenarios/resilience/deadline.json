@@ -1,0 +1,45 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "resilience.deadline",
+  "title": "End-to-end deadlines bound delayed operations",
+  "requirement": "An operation deadline terminates a delayed read before the injected response completes and diagnostics retain the failed attempt history.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos_driver/tests/in_memory_emulator_tests/hedging.rs",
+      "test": "hedging_respects_deadline"
+    }
+  ],
+  "profiles": [
+    "configurationResilience"
+  ],
+  "tags": [
+    "resilience",
+    "deadline",
+    "faultInjection"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "notApplicable",
+      "fidelity": "none",
+      "reason": "The scenario intentionally injects a deterministic response delay."
+    }
+  }
+}

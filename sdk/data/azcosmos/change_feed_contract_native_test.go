@@ -59,10 +59,10 @@ func (s *changeFeedContractService) container(t *testing.T, id string) *Containe
 	s.mu.Lock()
 	endpoint := s.url
 	s.mu.Unlock()
-	client, err := NewClientWithKey(endpoint, credential, nil)
+	client, err := NewClientWithKey(t.Context(), endpoint, credential, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	container, err := client.NewContainer("db", id)
+	container, err := client.NewContainer(t.Context(), "db", id)
 	require.NoError(t, err)
 	return container
 }
@@ -361,6 +361,12 @@ func TestNativeChangeFeedForwardsHierarchicalKeys(t *testing.T) {
 			require.NoError(t, err)
 			headers := service.observed()
 			require.NotEmpty(t, headers)
+			if tt.name == "prefix" {
+				require.NotEmpty(t, headers[0].Get("x-ms-start-epk"), "prefix headers: %v", headers[0])
+				require.NotEmpty(t, headers[0].Get("x-ms-end-epk"), "prefix headers: %v", headers[0])
+				require.Empty(t, headers[0].Get("x-ms-documentdb-partitionkey"))
+				return
+			}
 			require.JSONEq(t, tt.wire, headers[0].Get("x-ms-documentdb-partitionkey"),
 				"forward the logical key; this fixture does not certify prefix fan-out")
 		})

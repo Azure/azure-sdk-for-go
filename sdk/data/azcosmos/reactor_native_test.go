@@ -6,9 +6,12 @@
 package azcosmos
 
 import (
+	"context"
+	"runtime/cgo"
 	"sync"
 	"testing"
 	"time"
+	"unsafe"
 
 	"github.com/stretchr/testify/require"
 )
@@ -64,6 +67,28 @@ func TestAbandonReportsNothingBufferedWhenNoResultArrivedYet(t *testing.T) {
 	require.Zero(t, result)
 }
 
+func TestAbandonedNativeDeliverySignalsCleanup(t *testing.T) {
+	pending := &pendingOperation{
+		result:    make(chan completionResult, 1),
+		delivered: make(chan struct{}),
+	}
+	_, buffered := pending.abandon()
+	require.False(t, buffered)
+	select {
+	case <-pending.delivered:
+		t.Fatal("abandonment must not signal native completion")
+	default:
+	}
+	pending.deliver(completionResult{body: []byte("late completion")})
+	select {
+	case <-pending.delivered:
+	default:
+		t.Fatal("native delivery must unblock resource cleanup")
+	}
+	require.Empty(t, pending.result)
+	require.NotPanics(t, func() { pending.deliver(completionResult{}) })
+}
+
 // The reactor owns a completion queue and a goroutine blocked in C. These cover its lifetime
 // without a service, which the emulator tests cannot: they need an account to talk to, and a leak
 // or a hang here would show up there as a timeout rather than as itself.
@@ -79,6 +104,90 @@ func TestReactorStartsAndStops(t *testing.T) {
 
 	r.close()
 	require.Nil(t, r.queue, "close must not leave a dangling queue")
+	require.Nil(t, r.batch, "close must not leave a dangling batch")
+}
+
+func TestReactorCompletionBatchAllocationFailure(t *testing.T) {
+	d := &nativeDriver{}
+	require.NoError(t, d.buildRuntime())
+	t.Cleanup(func() { _ = d.close() })
+
+	allocate := allocateCompletionBatch
+	t.Cleanup(func() { allocateCompletionBatch = allocate })
+	allocateCompletionBatch = func() unsafe.Pointer { return nil }
+	r, err := newReactor(d.runtime, DiagnosticsVerbosityDefault)
+	require.Nil(t, r, "allocation failure must not start a reactor")
+	var cosmosErr *Error
+	require.ErrorAs(t, err, &cosmosErr)
+	require.Equal(t, CodeClientError, cosmosErr.Code)
+	require.Equal(t, "azcosmos: allocating the completion batch", cosmosErr.Message)
+
+	allocateCompletionBatch = allocate
+	r, err = newReactor(d.runtime, DiagnosticsVerbosityDefault)
+	require.NoError(t, err, "a failed construction must leave the runtime usable")
+	r.close()
+}
+
+func TestReactorCCompletionBatchReuse(t *testing.T) {
+	d := &nativeDriver{}
+	require.NoError(t, d.buildRuntime())
+	t.Cleanup(func() { _ = d.close() })
+
+	started, resume := make(chan struct{}), make(chan struct{})
+	var once sync.Once
+	r, err := newReactorWithWait(d.runtime, 0, func() {
+		once.Do(func() {
+			close(started)
+			<-resume
+		})
+	}, DiagnosticsVerbosityDefault)
+	require.NoError(t, err)
+	t.Cleanup(func() {
+		close(resume)
+		r.close()
+	})
+	<-started
+	require.Len(t, r.batch, completionBatch)
+	for i := range r.batch {
+		require.Zero(t, r.batch[i], "calloc must initialize every slot")
+	}
+
+	wrongType := cgo.NewHandle("not an operation")
+	defer wrongType.Delete()
+	deleted := cgo.NewHandle(&pendingOperation{})
+	deleted.Delete()
+	for i, cookie := range []uintptr{0, uintptr(deleted), uintptr(wrongType)} {
+		cleared, release := dispatchSyntheticCompletionInSlot(r, &r.batch[i], cookie, 200, "unclaimed")
+		release()
+		require.False(t, cleared, "unclaimed slots must remain available to native cleanup")
+	}
+
+	for i := range completionBatch * 3 {
+		pending, cookie := handoffPending(t)
+		slot := &r.batch[i%completionBatch]
+		cleared, release := dispatchSyntheticCompletionInSlot(r, slot, cookie, 201, `{"id":"one"}`)
+		defer release()
+		require.True(t, cleared)
+		result := <-pending.result
+		result = result.prepare()
+		require.Equal(t, 201, result.response.StatusCode)
+		require.JSONEq(t, `{"id":"one"}`, string(result.body))
+	}
+
+	pending, cookie := handoffPending(t)
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	_, err = awaitOperationResult(ctx, pending)
+	require.ErrorIs(t, err, context.Canceled)
+	cleared, release := dispatchSyntheticCompletionInSlot(r, &r.batch[0], cookie, 200, "late")
+	release()
+	require.True(t, cleared)
+	require.Empty(t, pending.result, "late delivery must release the moved completion")
+	select {
+	case <-pending.delivered:
+	default:
+		t.Fatal("late delivery did not signal cleanup")
+	}
 }
 
 // close has to be safe to call more than once, because the driver's close path calls it and a

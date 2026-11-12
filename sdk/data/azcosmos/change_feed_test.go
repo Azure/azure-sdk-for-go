@@ -28,6 +28,8 @@ func TestChangeFeedRequestDefaultsAndSnapshots(t *testing.T) {
 		Feed: FeedOptions{PageSizeHint: 5, MaxFanOut: 2, ContinuationToken: "opaque checkpoint"},
 		Operation: OperationOptions{
 			EnableContentResponseOnWrite: &enabled, ExcludedRegions: []Region{RegionEastUS},
+			EndToEndTimeout: to(2500 * time.Millisecond),
+			CustomHeaders:   map[string]string{"x-test": "original"},
 		},
 		SessionToken: "0:1",
 	}
@@ -35,9 +37,13 @@ func TestChangeFeedRequestDefaultsAndSnapshots(t *testing.T) {
 	require.NoError(t, err)
 	enabled = false
 	options.Operation.ExcludedRegions[0] = RegionWestUS
+	*options.Operation.EndToEndTimeout = time.Second
+	options.Operation.CustomHeaders["x-test"] = "changed"
 	options.Mode, options.Feed, options.SessionToken = "", FeedOptions{}, ""
 	require.True(t, *req.options.Operation.EnableContentResponseOnWrite)
 	require.Equal(t, []Region{RegionEastUS}, req.options.Operation.ExcludedRegions)
+	require.Equal(t, 2500*time.Millisecond, *req.options.Operation.EndToEndTimeout)
+	require.Equal(t, map[string]string{"x-test": "original"}, req.options.Operation.CustomHeaders)
 	require.Equal(t, ChangeFeedModeAllVersionsAndDeletes, req.options.Mode)
 	require.Equal(t, FeedOptions{PageSizeHint: 5, MaxFanOut: 2, ContinuationToken: "opaque checkpoint"}, req.options.Feed)
 	require.Equal(t, SessionToken("0:1"), req.options.SessionToken)
@@ -92,6 +98,8 @@ func TestChangeFeedPagerArgumentAndLifetimeOrdering(t *testing.T) {
 		{"negative hint", scope, now, &ChangeFeedOptions{Feed: FeedOptions{PageSizeHint: -1}}, "page size hint"},
 		{"invalid token", scope, now, &ChangeFeedOptions{Feed: FeedOptions{ContinuationToken: "a\x00b"}}, "continuation token"},
 		{"invalid consistency", scope, now, &ChangeFeedOptions{Operation: OperationOptions{ConsistencyStrategy: "invalid"}}, "consistency"},
+		{"negative timeout", scope, now, &ChangeFeedOptions{Operation: OperationOptions{EndToEndTimeout: to(-time.Second)}}, "EndToEndTimeout"},
+		{"invalid header", scope, now, &ChangeFeedOptions{Operation: OperationOptions{CustomHeaders: map[string]string{"invalid name": "value"}}}, "custom header"},
 		{"invalid session", scope, now, &ChangeFeedOptions{SessionToken: "a\x00b"}, "session"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
@@ -115,6 +123,15 @@ func TestChangeFeedPagerArgumentAndLifetimeOrdering(t *testing.T) {
 	page, err = newTestContainer(t).NewChangeFeedPager(scope, now, nil).NextPage(ctx)
 	require.Zero(t, page)
 	require.ErrorIs(t, err, context.Canceled)
+
+	pager := newTestContainer(t).NewChangeFeedPager(scope, now, nil)
+	page, err = pager.NextPage(nil)
+	require.Zero(t, page)
+	require.ErrorContains(t, err, "context must not be nil")
+	token, err := pager.ContinuationToken(nil)
+	require.Empty(t, token)
+	require.ErrorContains(t, err, "context must not be nil")
+	require.NoError(t, pager.Close())
 }
 
 type testChangeFeedCursor struct {

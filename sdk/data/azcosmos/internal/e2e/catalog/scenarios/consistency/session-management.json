@@ -1,0 +1,46 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "consistency.session-management",
+  "title": "Session tokens remain explicit and controllable",
+  "requirement": "With automatic session capture disabled, an explicit write token restores session-consistent reads and query continuations preserve explicit session semantics without loss or duplication.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/in_memory_emulator_tests/session_token.rs",
+      "test": "session_capturing_disabled_prevents_write_response_capture"
+    }
+  ],
+  "profiles": [
+    "configurationResilience"
+  ],
+  "tags": [
+    "consistency",
+    "session",
+    "continuation"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item",
+        "query"
+      ]
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "item",
+        "query",
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "supported",
+      "fidelity": "full"
+    }
+  }
+}

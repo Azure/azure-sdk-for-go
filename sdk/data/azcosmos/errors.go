@@ -91,8 +91,8 @@ const (
 	// service responded. It differs from [CodeRequestTimeout], which the service reports.
 	CodeClientOperationTimeout Code = "ClientOperationTimeout"
 
-	// CodeOperationCancelled means an operation already in flight was cancelled before it
-	// completed, because the caller's context ended or the native driver cancelled it. An [Error]
+	// CodeOperationCancelled means the caller stopped waiting for an in-flight operation.
+	// Native work continues and a submitted write may still commit. An [Error]
 	// carrying it unwraps to the context error that caused cancellation,
 	// so errors.Is reports it the same way the rest of the standard library does. An operation
 	// started after the client was closed is [CodeClientClosed] instead, since it never ran.
@@ -116,6 +116,9 @@ const (
 // [Error.Code] is part of the published API. The string returned by [Error.Error] is not, and is
 // subject to change.
 type Error struct {
+	// PatchTrackingID identifies a tracked patch. Cancelled waits retain a caller-supplied ID;
+	// a native-generated ID is available only when a completion was received.
+	PatchTrackingID PatchTrackingID
 	// Diagnostics is a copy of the native operation diagnostics, if available.
 	Diagnostics *Diagnostics
 
@@ -167,15 +170,18 @@ type Error struct {
 	// failures the client produced, and is the payload to quote when reporting a problem.
 	Body []byte
 
-	// FromWire reports whether the service produced this failure, which is to say whether the
-	// request reached it at all. It is false for failures the client produced without a service
-	// response, such as transport and serialization failures.
+	// FromWire reports whether the service produced this failure.
+	// It is false for failures the client produced without a service
+	// response, such as transport failures, and for local model conversion failures.
 	//
 	// StatusCode does not imply this: the driver synthesizes statuses for client-side failures
 	// too, so a non-zero status is not evidence the service replied. The distinction matters most
 	// for writes, where a wire failure means the operation definitely reached the service and a
-	// client-side one leaves that unknown. The response-derived fields above are only populated
-	// when this is true.
+	// client-side one leaves that unknown. Local decoding failures can retain metadata from a
+	// successful response while FromWire is false; this flag identifies the origin of the error,
+	// not whether an earlier write succeeded. Likewise, the 503 failures with substatus 20310,
+	// 20311, and 20312 that the driver synthesizes after a service failure keep that response's
+	// metadata, such as RequestCharge and ActivityID, but report FromWire false.
 	FromWire bool
 
 	cause error
@@ -211,7 +217,7 @@ func (e *Error) Error() string {
 
 // Unwrap reports the standard library error a failure corresponds to, so that callers can use
 // errors.Is for the conditions Go already has a vocabulary for. A cancelled operation unwraps to
-// its caller's context error, or [context.Canceled] when the native driver initiated cancellation.
+// its caller's context error, or [context.Canceled] for a cancellation without a recorded cause.
 func (e *Error) Unwrap() error {
 	if e.cause != nil {
 		return e.cause
@@ -225,7 +231,7 @@ func (e *Error) Unwrap() error {
 func newOperationCancelledError(cause error, requestCharge float64, activityID string) *Error {
 	return &Error{
 		Code:          CodeOperationCancelled,
-		Message:       "azcosmos: the operation was cancelled",
+		Message:       "azcosmos: stopped waiting for the operation; submitted native work may still complete",
 		RequestCharge: requestCharge,
 		ActivityID:    activityID,
 		cause:         cause,
@@ -240,9 +246,20 @@ func cloneError(err error) error {
 	clone := *cosmosErr
 	clone.Body = append([]byte(nil), cosmosErr.Body...)
 	if cosmosErr.Diagnostics != nil {
-		diagnostics := *cosmosErr.Diagnostics
-		diagnostics.RegionsContacted = append([]string(nil), diagnostics.RegionsContacted...)
-		diagnostics.Attempts = append([]DiagnosticAttempt(nil), diagnostics.Attempts...)
+		source := cosmosErr.Diagnostics
+		diagnostics := Diagnostics{
+			StatusCode:         source.StatusCode,
+			SubStatus:          source.SubStatus,
+			AttemptCount:       source.AttemptCount,
+			TotalRequestCharge: source.TotalRequestCharge,
+			Elapsed:            source.Elapsed,
+			Completed:          source.Completed,
+			Failed:             source.Failed,
+			Compacted:          source.Compacted,
+			RegionsContacted:   append([]string(nil), source.RegionsContacted...),
+			Attempts:           append([]DiagnosticAttempt(nil), source.Attempts...),
+		}
+		diagnostics.initializeJSON(cosmosErr.Diagnostics.jsonVerbosity())
 		clone.Diagnostics = &diagnostics
 	}
 	return &clone
@@ -332,6 +349,13 @@ const (
 	// the same class of failure, and so does this.
 	subStatusClientGenerated401   = 20401
 	subStatusAuthenticationFailed = 20402
+	// Synthetic 503s wrapping a service failure the driver could not route around: a read session
+	// that stayed unavailable (404/1002), writes forbidden in a region (403/3), and a database
+	// account that could not be found (403/1008). The wrapped response is real, so these are the
+	// service's unavailability rather than a local failure.
+	subStatusClientReadSessionNotAvailable = 20310
+	subStatusClientWriteForbidden          = 20311
+	subStatusClientDatabaseAccountNotFound = 20312
 )
 
 // codeForSyntheticSubStatus classifies a failure the client produced rather than the service.
@@ -351,6 +375,10 @@ func codeForSyntheticSubStatus(subStatus int) Code {
 		return CodeClientOperationTimeout
 	case subStatus >= subStatusSerializationMin && subStatus <= subStatusSerializationMax:
 		return CodeSerializationFailed
+	case subStatus == subStatusClientReadSessionNotAvailable,
+		subStatus == subStatusClientWriteForbidden,
+		subStatus == subStatusClientDatabaseAccountNotFound:
+		return CodeServiceUnavailable
 	default:
 		return CodeClientError
 	}

@@ -1,0 +1,45 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "resilience.partition-topology-retry",
+    "title": "Partition topology changes refresh routing",
+    "requirement": "A partition-scoped query that receives 410/1002 refreshes partition routing, retries, and retains the failed topology attempt in diagnostics.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos_driver/src/driver/dataflow/request.rs",
+            "test": "request_retries_logical_partition_key_topology_change_once"
+        }
+    ],
+    "profiles": [
+        "configurationResilience"
+    ],
+    "tags": [
+        "resilience",
+        "partitionTopology",
+        "faultInjection"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "notApplicable",
+            "fidelity": "none",
+            "reason": "The scenario intentionally injects a partition-topology response."
+        }
+    }
+}

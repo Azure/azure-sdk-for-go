@@ -1,0 +1,39 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "bootstrap.primary-success",
+    "title": "A reachable primary endpoint initializes the client",
+    "requirement": "Building a client with a reachable account endpoint succeeds and permits a first data operation.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_items.rs",
+            "test": "item_crud"
+        }
+    ],
+    "profiles": [
+        "smokeTests"
+    ],
+    "tags": [
+        "prSmoke",
+        "bootstrap"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full"
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

@@ -34,7 +34,7 @@ func TestNativeChangeFeedSelectors(t *testing.T) {
 			req, err := newChangeFeedRequest(NewFeedScopeForFullContainer(), start.value, &ChangeFeedOptions{
 				Mode:         mode.value,
 				Feed:         FeedOptions{PageSizeHint: 7, MaxFanOut: 3, ContinuationToken: "opaque checkpoint"},
-				Operation:    OperationOptions{EndToEndTimeout: 2500 * time.Millisecond},
+				Operation:    OperationOptions{EndToEndTimeout: to(2500 * time.Millisecond)},
 				SessionToken: "0:3",
 			})
 			require.NoError(t, err)

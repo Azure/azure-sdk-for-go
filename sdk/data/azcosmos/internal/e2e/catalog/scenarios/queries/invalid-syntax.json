@@ -1,0 +1,40 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "query.invalid-syntax",
+    "title": "Invalid query syntax returns bad request",
+    "requirement": "A deferred query failure is surfaced as a typed 400 error rather than an empty feed.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "dotnet",
+            "path": "Microsoft.Azure.Cosmos/tests/Microsoft.Azure.Cosmos.EmulatorTests/CosmosItemTests.cs",
+            "test": "NegativeQueryTest"
+        }
+    ],
+    "profiles": [
+        "smokeTests"
+    ],
+    "tags": [
+        "prSmoke",
+        "query",
+        "negative"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full"
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

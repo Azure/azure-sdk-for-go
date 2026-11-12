@@ -8,43 +8,44 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"slices"
 	"strings"
 	"sync"
 )
 
-// NewQueryItemsPager queries the supplied scope, returning raw JSON items in pages.
+// NewQueryItemsPager queries the supplied scope, decoding each result as T with encoding/json.
 // Construction performs no network I/O; argument errors are reported by NextPage.
 //
 // Defer Close when stopping before exhaustion. Empty pages do not imply exhaustion.
 // Use ContinuationToken to snapshot progress explicitly; not every query supports snapshots.
-func (c *ContainerClient) NewQueryItemsPager(query Query, scope FeedScope, options *QueryOptions) *QueryItemsPager {
+func (c *ContainerClient) NewQueryItemsPager[T any](query Query, scope FeedScope, options *QueryOptions) *QueryItemsPager[T] {
 	req, err := newQueryRequest(query, scope, options)
 	req.databaseID = c.database.id
 	req.containerID = c.id
-	return &QueryItemsPager{client: c.database.client, req: req, validationErr: err}
+	return &QueryItemsPager[T]{client: c.database.client, req: req, validationErr: err}
 }
 
 // QueryItemsPager owns a retained query plan. Close releases it when iteration stops early.
-// Iteration and checkpoint calls must not be concurrent; Close safely waits for an active call.
+// Iteration and checkpoint calls must not be concurrent. Close waits for native fetching,
+// but not model conversion; an already-fetched page can still be returned after Close.
 // An empty token is not an exhaustion signal. Use More instead.
-type QueryItemsPager struct {
+type QueryItemsPager[T any] struct {
 	mu            sync.Mutex
 	client        *Client
 	req           queryRequest
 	validationErr error
 	cursor        queryCursor
 	done          bool
+	converting    bool
 }
 
 type queryCursor interface {
-	next(context.Context) (QueryItemsResponse, bool, error)
+	next(context.Context) (queryPage, bool, error)
 	checkpoint(context.Context) (string, error)
 	close()
 }
 
 // More reports whether another page may be fetched. It does not perform I/O.
-func (p *QueryItemsPager) More() bool {
+func (p *QueryItemsPager[T]) More() bool {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	return !p.done
@@ -54,70 +55,142 @@ func (p *QueryItemsPager) More() bool {
 // Failures after execution starts terminate this pager; retries belong to the native driver.
 // The context bounds the Go wait, not admitted native execution. Client.Close may wait
 // for native work to finish after this method returns a context error.
-func (p *QueryItemsPager) NextPage(ctx context.Context) (QueryItemsResponse, error) {
+// Decoding failures return a zero page and stop iteration, retaining the cursor for checkpointing.
+// A subsequent checkpoint skips the entire failed page. Call Close to release the cursor.
+func (p *QueryItemsPager[T]) NextPage(ctx context.Context) (QueryItemsResponse[T], error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	if p.validationErr != nil {
-		return QueryItemsResponse{}, p.validationErr
+		return QueryItemsResponse[T]{}, p.validationErr
+	}
+	if ctx == nil {
+		return QueryItemsResponse[T]{}, errors.New("azcosmos: context must not be nil")
 	}
 	release, err := p.client.acquire()
 	if err != nil {
-		return QueryItemsResponse{}, err
+		return QueryItemsResponse[T]{}, err
 	}
-	defer release()
+	defer func() {
+		if release != nil {
+			release()
+		}
+	}()
+	if p.converting {
+		return QueryItemsResponse[T]{}, &Error{Code: CodeClientError, Message: "azcosmos: query page conversion is in progress"}
+	}
 	if p.done {
-		return QueryItemsResponse{}, &Error{Code: CodeClientError, Message: "azcosmos: query pager is closed or exhausted"}
+		return QueryItemsResponse[T]{}, &Error{Code: CodeClientError, Message: "azcosmos: query pager is closed or exhausted"}
 	}
 	if err := ctx.Err(); err != nil {
-		return QueryItemsResponse{}, err
+		return QueryItemsResponse[T]{}, err
 	}
-	ctx, cancel := contextWithEndToEndTimeout(ctx, p.req.options.Operation.EndToEndTimeout)
+	ctx, cancel, err := p.client.queryContext(ctx, p.req.options.Operation)
+	if err != nil {
+		return QueryItemsResponse[T]{}, err
+	}
 	defer cancel()
 	var setup Response
 	if p.cursor == nil {
 		p.cursor, setup, err = p.client.openQuery(ctx, &p.req)
 		if err != nil {
 			p.finish()
-			return QueryItemsResponse{}, addQuerySetupCharge(err, setup)
+			return QueryItemsResponse[T]{}, addQuerySetupCharge(err, setup)
 		}
 	}
 	page, end, err := p.cursor.next(ctx)
 	if err != nil {
 		p.finish()
-		return QueryItemsResponse{}, addQuerySetupCharge(err, setup)
+		return QueryItemsResponse[T]{}, addQuerySetupCharge(err, setup)
 	}
 	page.RequestCharge += setup.RequestCharge
 	if page.ActivityID == "" && setup.RequestCharge != 0 {
 		page.ActivityID = setup.ActivityID
 	}
+	p.converting = true
+	defer func() { p.converting = false }()
+	release()
+	release = nil
+	decoded, err := func() (QueryItemsResponse[T], error) {
+		p.mu.Unlock()
+		defer p.mu.Lock()
+		return decodeModels[T](ctx, page)
+	}()
+	if err != nil {
+		p.done = true
+		if ctx.Err() != nil || errors.Is(err, context.Canceled) || errors.Is(err, context.DeadlineExceeded) {
+			p.finish()
+		}
+		return QueryItemsResponse[T]{}, err
+	}
 	if end {
 		p.finish()
 	}
-	return page, nil
+	return decoded, nil
 }
 
-// ContinuationToken snapshots delivered progress without advancing the query.
+func decodeModels[T any](ctx context.Context, page queryPage) (QueryItemsResponse[T], error) {
+	result := QueryItemsResponse[T]{
+		Response: page.Response, SessionToken: page.SessionToken,
+		IndexMetrics: page.IndexMetrics, QueryMetrics: page.QueryMetrics,
+	}
+	if page.Items != nil {
+		result.Items = make([]T, len(page.Items))
+	}
+	for i, body := range page.Items {
+		if err := ctx.Err(); err != nil {
+			failure := queryResponseError(page.Response, page.SessionToken, err)
+			failure.Code = CodeOperationCancelled
+			return QueryItemsResponse[T]{}, failure
+		}
+		model, err := unmarshalModel[T](body)
+		if err != nil {
+			failure := queryResponseError(page.Response, page.SessionToken, err)
+			failure.Message = fmt.Sprintf("decoding query item at index %d", i)
+			return QueryItemsResponse[T]{}, failure
+		}
+		result.Items[i] = model
+	}
+	if err := ctx.Err(); err != nil {
+		failure := queryResponseError(page.Response, page.SessionToken, err)
+		failure.Code = CodeOperationCancelled
+		return QueryItemsResponse[T]{}, failure
+	}
+	return result, nil
+}
+
+// ContinuationToken snapshots fetched progress without advancing the query.
 // Call after a successful NextPage and before exhaustion or Close. Unsupported snapshots
 // return an error but do not prevent further paging. Resume with the same query and scope.
+// After a model-decoding failure, a supported checkpoint skips the entire undelivered page.
+// Capture it before Close, then use a new pager to resume.
 // The context bounds the Go wait; it does not cancel admitted native checkpoint work.
-func (p *QueryItemsPager) ContinuationToken(ctx context.Context) (string, error) {
+func (p *QueryItemsPager[T]) ContinuationToken(ctx context.Context) (string, error) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	if p.validationErr != nil {
 		return "", p.validationErr
+	}
+	if ctx == nil {
+		return "", errors.New("azcosmos: context must not be nil")
 	}
 	release, err := p.client.acquire()
 	if err != nil {
 		return "", err
 	}
 	defer release()
-	if p.done || p.cursor == nil {
+	if p.converting {
+		return "", &Error{Code: CodeClientError, Message: "azcosmos: query page conversion is in progress"}
+	}
+	if p.cursor == nil {
 		return "", &Error{Code: CodeClientError, Message: "azcosmos: checkpoint requires an open query pager"}
 	}
 	if err := ctx.Err(); err != nil {
 		return "", err
 	}
-	ctx, cancel := contextWithEndToEndTimeout(ctx, p.req.options.Operation.EndToEndTimeout)
+	ctx, cancel, err := p.client.queryContext(ctx, p.req.options.Operation)
+	if err != nil {
+		return "", err
+	}
 	defer cancel()
 	token, err := p.cursor.checkpoint(ctx)
 	if err != nil && !unsupportedQueryCheckpoint(err) {
@@ -135,14 +208,14 @@ func unsupportedQueryCheckpoint(err error) bool {
 }
 
 // Close releases the retained query plan. It is idempotent and safe alongside Client.Close.
-func (p *QueryItemsPager) Close() error {
+func (p *QueryItemsPager[T]) Close() error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	p.finish()
 	return nil
 }
 
-func (p *QueryItemsPager) finish() {
+func (p *QueryItemsPager[T]) finish() {
 	p.done = true
 	if p.cursor != nil {
 		p.cursor.close()
@@ -173,11 +246,7 @@ func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (query
 	}
 	if options != nil {
 		req.options = *options
-		req.options.Operation.ExcludedRegions = slices.Clone(options.Operation.ExcludedRegions)
-		if value := options.Operation.EnableContentResponseOnWrite; value != nil {
-			copied := *value
-			req.options.Operation.EnableContentResponseOnWrite = &copied
-		}
+		req.options.Operation = options.Operation.clone()
 		if value := options.PopulateIndexMetrics; value != nil {
 			copied := *value
 			req.options.PopulateIndexMetrics = &copied
@@ -192,7 +261,7 @@ func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (query
 	default:
 		return req, errors.New("azcosmos: invalid query plan mode")
 	}
-	if err := req.options.Operation.ConsistencyStrategy.validate(); err != nil {
+	if err := req.options.Operation.validate(); err != nil {
 		return req, err
 	}
 	if err := req.options.SessionToken.validate(); err != nil {
@@ -207,17 +276,17 @@ func newQueryRequest(query Query, scope FeedScope, options *QueryOptions) (query
 	return req, nil
 }
 
-func decodeQueryPage(body []byte, response Response, sessionToken SessionToken, continuation string, exhausted bool) (QueryItemsResponse, error) {
-	page := QueryItemsResponse{Response: response, SessionToken: sessionToken}
+func decodeQueryPage(body []byte, response Response, sessionToken SessionToken, continuation string, exhausted bool) (queryPage, error) {
+	page := queryPage{Response: response, SessionToken: sessionToken}
 	if exhausted {
 		if len(body) != 0 || continuation != "" {
-			return QueryItemsResponse{}, queryResponseError(response, sessionToken, errors.New("inconsistent exhausted query completion"))
+			return queryPage{}, queryResponseError(response, sessionToken, errors.New("inconsistent exhausted query completion"))
 		}
 		return page, nil
 	}
 	items, err := decodeFeedItems(body)
 	if err != nil {
-		return QueryItemsResponse{}, queryResponseError(response, sessionToken, err)
+		return queryPage{}, queryResponseError(response, sessionToken, err)
 	}
 	page.Items = items
 	return page, nil
@@ -255,51 +324,37 @@ func queryResponseError(response Response, sessionToken SessionToken, cause erro
 }
 
 func validateQueryPartitionKey(body []byte, partitionKey PartitionKey) error {
-	return validateFeedPartitionKey(body, partitionKey)
+	return validateFeedPartitionKey(body, partitionKey, "query scope")
 }
 
-func validateFeedPartitionKey(body []byte, partitionKey PartitionKey) error {
-	var metadata struct {
-		PartitionKey struct {
-			Paths   []string `json:"paths"`
-			Kind    string   `json:"kind"`
-			Version *int     `json:"version"`
-		} `json:"partitionKey"`
+func validateFeedPartitionKey(body []byte, partitionKey PartitionKey, operation string) error {
+	count, err := partitionKeyPathCount(body, operation)
+	if err != nil {
+		return err
 	}
-	if err := json.Unmarshal(body, &metadata); err != nil {
-		return &Error{Code: CodeSerializationFailed, Message: "decoding container partition key definition", cause: err}
-	}
-	definition := metadata.PartitionKey
-	if len(definition.Paths) == 0 {
-		return &Error{Code: CodeSerializationFailed, Message: "container has no partition key paths"}
-	}
-	if definition.Kind != "Hash" && definition.Kind != "MultiHash" {
-		return &Error{Code: CodeBadRequest, Message: "feed scope requires a Hash or MultiHash partition key definition"}
-	}
-	if (definition.Kind == "Hash" && len(definition.Paths) != 1) ||
-		(definition.Kind == "MultiHash" && (definition.Version == nil || *definition.Version != 2)) ||
-		(definition.Version != nil && *definition.Version != 1 && *definition.Version != 2) {
-		return &Error{Code: CodeBadRequest, Message: "unsupported feed partition key definition"}
-	}
-	if partitionKey.Len() == 0 || partitionKey.Len() > len(definition.Paths) {
+	if partitionKey.Len() == 0 || partitionKey.Len() > count {
 		return &Error{Code: CodeBadRequest, Message: fmt.Sprintf(
-			"feed scope requires between 1 and %d partition key components; got %d",
-			len(definition.Paths), partitionKey.Len())}
+			"%s requires between 1 and %d partition key components; got %d",
+			operation, count, partitionKey.Len())}
 	}
 	return nil
 }
 
 func addQuerySetupCharge(err error, setup Response) error {
-	return addFeedSetupCharge(err, setup, "fetching query page")
+	return addSetupCharge(err, setup, "fetching query page")
 }
 
-func addFeedSetupCharge(err error, setup Response, message string) error {
+func addSetupCharge(err error, setup Response, message string) error {
 	// RequestCharge alone is not a reliable "no setup" sentinel: a successful setup completion can
 	// carry diagnostics/status/attempt metadata even when the charge header is absent or zero.
 	// Only treat the zero Response itself as "nothing to add".
 	if setup == (Response{}) {
 		return err
 	}
+	return setupChargeError(err, setup, message)
+}
+
+func setupChargeError(err error, setup Response, message string) *Error {
 	var cosmosErr *Error
 	if errors.As(err, &cosmosErr) {
 		copied := *cosmosErr

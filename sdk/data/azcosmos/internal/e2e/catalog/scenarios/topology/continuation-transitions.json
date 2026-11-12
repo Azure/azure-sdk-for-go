@@ -1,0 +1,54 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "topology.continuation-transitions",
+    "title": "Feed continuations survive partition transitions",
+    "requirement": "Query and change-feed continuations captured before split and merge resume across replacement ranges with ordered query results and no item loss or duplication.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos/tests/in_memory_emulator_tests/partition_merge.rs",
+            "test": "public_sdk_paths_survive_real_partition_merge"
+        }
+    ],
+    "profiles": [
+        "dynamicTopology"
+    ],
+    "tags": [
+        "topology",
+        "query",
+        "changeFeed",
+        "continuation"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item",
+                "query",
+                "changeFeed",
+                "partitionSplit",
+                "partitionMerge"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "item",
+                "query",
+                "changeFeed",
+                "partitionSplit",
+                "partitionMerge",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "notApplicable",
+            "fidelity": "none",
+            "reason": "The scenario requires deterministic topology transitions between feed pages."
+        }
+    }
+}

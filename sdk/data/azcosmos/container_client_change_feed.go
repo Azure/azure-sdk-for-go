@@ -5,13 +5,14 @@ package azcosmos
 
 import (
 	"context"
+	"errors"
 	"sync"
 )
 
 // NewChangeFeedPager reads changes for an explicit scope and initial position.
 // Construction performs no I/O; NextPage reports argument errors. Nil options use LatestVersion.
 // Complete keys and full-container scopes follow native routing. HPK-prefix routing follows the
-// Rust driver's logical-key path; multi-range prefix fan-out is not established by this ABI.
+// Rust driver's feed-range API; live multi-range prefix isolation is not yet certified.
 // Defer Close. Empty and HTTP 304 pages remain usable; callers choose when to poll again.
 func (c *ContainerClient) NewChangeFeedPager(scope FeedScope, startFrom ChangeFeedStartFrom, options *ChangeFeedOptions) *ChangeFeedPager {
 	req, err := newChangeFeedRequest(scope, startFrom, options)
@@ -53,6 +54,9 @@ func (p *ChangeFeedPager) NextPage(ctx context.Context) (ChangeFeedResponse, err
 	if p.validationErr != nil {
 		return ChangeFeedResponse{}, p.validationErr
 	}
+	if ctx == nil {
+		return ChangeFeedResponse{}, errors.New("azcosmos: context must not be nil")
+	}
 	release, err := p.client.acquire()
 	if err != nil {
 		return ChangeFeedResponse{}, err
@@ -64,20 +68,23 @@ func (p *ChangeFeedPager) NextPage(ctx context.Context) (ChangeFeedResponse, err
 	if err := ctx.Err(); err != nil {
 		return ChangeFeedResponse{}, err
 	}
-	ctx, cancel := contextWithEndToEndTimeout(ctx, p.req.options.Operation.EndToEndTimeout)
+	ctx, cancel, err := p.client.queryContext(ctx, p.req.options.Operation)
+	if err != nil {
+		return ChangeFeedResponse{}, err
+	}
 	defer cancel()
 	var setup Response
 	if p.cursor == nil {
 		p.cursor, setup, err = p.client.openChangeFeed(ctx, &p.req)
 		if err != nil {
 			p.finish()
-			return ChangeFeedResponse{}, addFeedSetupCharge(err, setup, "fetching change feed page")
+			return ChangeFeedResponse{}, addSetupCharge(err, setup, "fetching change feed page")
 		}
 	}
 	page, err := p.cursor.next(ctx)
 	if err != nil {
 		p.finish()
-		return ChangeFeedResponse{}, addFeedSetupCharge(err, setup, "fetching change feed page")
+		return ChangeFeedResponse{}, addSetupCharge(err, setup, "fetching change feed page")
 	}
 	page.RequestCharge += setup.RequestCharge
 	if page.ActivityID == "" && setup.RequestCharge != 0 {
@@ -97,6 +104,9 @@ func (p *ChangeFeedPager) ContinuationToken(ctx context.Context) (string, error)
 	if p.validationErr != nil {
 		return "", p.validationErr
 	}
+	if ctx == nil {
+		return "", errors.New("azcosmos: context must not be nil")
+	}
 	release, err := p.client.acquire()
 	if err != nil {
 		return "", err
@@ -108,7 +118,10 @@ func (p *ChangeFeedPager) ContinuationToken(ctx context.Context) (string, error)
 	if err := ctx.Err(); err != nil {
 		return "", err
 	}
-	ctx, cancel := contextWithEndToEndTimeout(ctx, p.req.options.Operation.EndToEndTimeout)
+	ctx, cancel, err := p.client.queryContext(ctx, p.req.options.Operation)
+	if err != nil {
+		return "", err
+	}
 	defer cancel()
 	token, err := p.cursor.checkpoint(ctx)
 	if err != nil {

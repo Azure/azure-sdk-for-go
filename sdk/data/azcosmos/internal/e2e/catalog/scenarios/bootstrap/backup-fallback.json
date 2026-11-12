@@ -1,0 +1,39 @@
+{
+  "$schema": "../../schema/scenario.v1.json",
+  "specVersion": "1.0",
+  "id": "bootstrap.backup-fallback",
+  "title": "Client bootstrap falls back through ordered unavailable endpoints",
+  "requirement": "When the primary and an earlier backup endpoint return service-unavailable responses, client construction uses the first usable backup endpoint without changing credentials.",
+  "maturity": "candidate",
+  "precedents": [
+    {
+      "sdk": "rust",
+      "path": "sdk/cosmos/azure_data_cosmos/tests/emulator_tests/cosmos_backup_endpoints.rs",
+      "test": "client_boots_via_backup_when_primary_unreachable"
+    }
+  ],
+  "profiles": [
+    "configurationResilience"
+  ],
+  "tags": [
+    "bootstrap",
+    "resilience"
+  ],
+  "backends": {
+    "hostedEmulatorGatewayV1": {
+      "applicability": "required",
+      "fidelity": "full"
+    },
+    "hostedEmulatorGatewayV2": {
+      "applicability": "required",
+      "fidelity": "full",
+      "requires": [
+        "gatewayV2"
+      ]
+    },
+    "azureLive": {
+      "applicability": "supported",
+      "fidelity": "full"
+    }
+  }
+}

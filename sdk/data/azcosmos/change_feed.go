@@ -5,7 +5,6 @@ package azcosmos
 
 import (
 	"errors"
-	"slices"
 	"strings"
 	"time"
 
@@ -102,11 +101,7 @@ func newChangeFeedRequest(scope FeedScope, startFrom ChangeFeedStartFrom, option
 	}
 	if options != nil {
 		req.options = *options
-		req.options.Operation.ExcludedRegions = slices.Clone(options.Operation.ExcludedRegions)
-		if value := options.Operation.EnableContentResponseOnWrite; value != nil {
-			copied := *value
-			req.options.Operation.EnableContentResponseOnWrite = &copied
-		}
+		req.options.Operation = options.Operation.clone()
 	}
 	switch req.options.Mode {
 	case "":
@@ -115,7 +110,7 @@ func newChangeFeedRequest(scope FeedScope, startFrom ChangeFeedStartFrom, option
 	default:
 		return req, errors.New("azcosmos: invalid change feed mode")
 	}
-	if err := req.options.Operation.ConsistencyStrategy.validate(); err != nil {
+	if err := req.options.Operation.validate(); err != nil {
 		return req, err
 	}
 	if err := req.options.SessionToken.validate(); err != nil {

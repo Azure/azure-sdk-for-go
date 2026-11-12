@@ -1,0 +1,40 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "item.optimistic-concurrency",
+    "title": "A stale ETag cannot overwrite a newer item",
+    "requirement": "If-Match accepts the current ETag, rejects a stale ETag with 412, and preserves the successful update.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "dotnet",
+            "path": "Microsoft.Azure.Cosmos/tests/Microsoft.Azure.Cosmos.EmulatorTests/CosmosItemTests.cs",
+            "test": "ItemRequestOptionAccessConditionTest"
+        }
+    ],
+    "profiles": [
+        "smokeTests"
+    ],
+    "tags": [
+        "prSmoke",
+        "item",
+        "negative"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "required",
+            "fidelity": "full"
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "required",
+            "fidelity": "full",
+            "requires": [
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "supported",
+            "fidelity": "full"
+        }
+    }
+}

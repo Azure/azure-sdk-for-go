@@ -15,6 +15,7 @@ import (
 	"context"
 	"errors"
 	"time"
+	"unsafe"
 )
 
 func (c *Client) openChangeFeed(ctx context.Context, req *changeFeedRequest) (changeFeedCursor, Response, error) {
@@ -169,16 +170,18 @@ func syntheticChangeFeedCancellation(cause error) *Error {
 
 func syntheticInvalidChangeFeedItems(kind uint32) (ChangeFeedResponse, error) {
 	completion := C.cosmos_cursor_completion_t{result_kind: 2, body_kind: 2, items_len: 1}
-	item := C.cosmos_cursor_bytes_t{len: 1}
+	item := (*C.cosmos_cursor_bytes_t)(C.calloc(1, C.size_t(unsafe.Sizeof(C.cosmos_cursor_bytes_t{}))))
+	defer C.free(unsafe.Pointer(item))
+	item.len = 1
 	switch kind {
 	case 0:
 	case 1:
 		completion.items_len = ^C.uintptr_t(0)
 	case 2:
-		completion.items = &item
+		completion.items = item
 	case 3:
 		item.len = ^C.uintptr_t(0)
-		completion.items = &item
+		completion.items = item
 	}
 	return decodeChangeFeedCursorPage(&completion, DiagnosticsVerbosityDefault)
 }

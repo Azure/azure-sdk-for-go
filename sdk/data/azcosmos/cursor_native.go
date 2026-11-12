@@ -55,6 +55,21 @@ func (d *nativeDriver) openCursor(ctx context.Context, driver *C.cosmos_driver_t
 }
 
 func (d *nativeDriver) openCursorRequest(ctx context.Context, driver *C.cosmos_driver_t, request C.cosmos_cursor_request_t) (*nativeQueryCursor, error) {
+	cursor, err := d.openCursorWith(ctx, func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, status *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
+		return C.cosmos_cursor_open_submit(driver, &request, queue, cookie, status) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	})
+	if err == nil {
+		cursor.changeFeed = request.change_feed_mode != 0
+	}
+	return cursor, err
+}
+
+// openCursorWith registers a cursor and opens it through submit, which every cursor-producing
+// operation shares because their completions use the same format and ownership rules.
+func (d *nativeDriver) openCursorWith(
+	ctx context.Context,
+	submit func(*C.cosmos_completion_queue_t, C.intptr_t, *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
+) (*nativeQueryCursor, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
@@ -62,7 +77,7 @@ func (d *nativeDriver) openCursorRequest(ctx context.Context, driver *C.cosmos_d
 	if err != nil {
 		return nil, err
 	}
-	q := &nativeQueryCursor{owner: d, queue: reactor.queue, reactor: reactor, changeFeed: request.change_feed_mode != 0}
+	q := &nativeQueryCursor{owner: d, queue: reactor.queue, reactor: reactor}
 	d.mu.Lock()
 	if d.cursors == nil {
 		d.cursors = make(map[*nativeQueryCursor]struct{})
@@ -71,7 +86,7 @@ func (d *nativeDriver) openCursorRequest(ctx context.Context, driver *C.cosmos_d
 	d.mu.Unlock()
 	q.mu.Lock()
 	completion, err := q.submit(ctx, func(cookie C.intptr_t, status *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		return C.cosmos_cursor_open_submit(driver, &request, q.queue, cookie, status) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+		return submit(q.queue, cookie, status)
 	})
 	if err == nil {
 		defer C.cosmos_cursor_completion_free(completion)
@@ -95,8 +110,8 @@ func (d *nativeDriver) openCursorRequest(ctx context.Context, driver *C.cosmos_d
 	return q, nil
 }
 
-func (q *nativeQueryCursor) next(ctx context.Context) (QueryItemsResponse, bool, error) {
-	var page QueryItemsResponse
+func (q *nativeQueryCursor) next(ctx context.Context) (queryPage, bool, error) {
+	var page queryPage
 	var end bool
 	err := q.advance(ctx, func(completion *C.cosmos_cursor_completion_t, verbosity DiagnosticsVerbosity) error {
 		var err error
@@ -234,38 +249,38 @@ func cursorCompletionError(completion *C.cosmos_cursor_completion_t, verbosity D
 	return nil
 }
 
-func decodeCursorPage(completion *C.cosmos_cursor_completion_t, verbosity DiagnosticsVerbosity) (QueryItemsResponse, bool, error) {
+func decodeCursorPage(completion *C.cosmos_cursor_completion_t, verbosity DiagnosticsVerbosity) (queryPage, bool, error) {
 	common := translateCompletionOutcome(&completion.common, verbosity)
 	headers := readCompletionHeaders(&completion.common)
-	page := QueryItemsResponse{
+	page := queryPage{
 		Response: common.response.Response, SessionToken: common.response.SessionToken,
 		IndexMetrics: headers.indexMetrics, QueryMetrics: headers.queryMetrics,
 	}
 
 	if completion.result_kind == 4 {
 		if completion.body_kind != 0 || completion.items_len != 0 || len(common.body) != 0 {
-			return QueryItemsResponse{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("end carried items"))
+			return queryPage{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("end carried items"))
 		}
 		return page, true, nil
 	}
 	if completion.result_kind != 2 {
-		return QueryItemsResponse{}, false, invalidCursorCompletion("expected query page")
+		return queryPage{}, false, invalidCursorCompletion("expected query page")
 	}
 	switch completion.body_kind {
 	case 1:
 		decoded, err := decodeQueryPage(common.body, page.Response, page.SessionToken, "", false)
 		if err != nil {
-			return QueryItemsResponse{}, false, err
+			return queryPage{}, false, err
 		}
 		page.Items = decoded.Items
 	case 2:
 		var err error
 		page.Items, err = copyCursorItems(completion)
 		if err != nil {
-			return QueryItemsResponse{}, false, queryResponseError(page.Response, page.SessionToken, err)
+			return queryPage{}, false, queryResponseError(page.Response, page.SessionToken, err)
 		}
 	default:
-		return QueryItemsResponse{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("unexpected query body kind"))
+		return queryPage{}, false, queryResponseError(page.Response, page.SessionToken, invalidCursorCompletion("unexpected query body kind"))
 	}
 	return page, false, nil
 }
@@ -286,8 +301,8 @@ func copyCursorItems(completion *C.cosmos_cursor_completion_t) ([][]byte, error)
 }
 
 // syntheticCursorPage releases all C-owned input before returning the translated page.
-func syntheticCursorPage(body []byte, items [][]byte, kind, result uint32) (QueryItemsResponse, bool, error) {
-	var page QueryItemsResponse
+func syntheticCursorPage(body []byte, items [][]byte, kind, result uint32) (queryPage, bool, error) {
+	var page queryPage
 	var end bool
 	var err error
 	withSyntheticCursorPage(body, items, kind, result, 0, func(completion *C.cosmos_cursor_completion_t) {
@@ -322,24 +337,27 @@ func withSyntheticCursorPage(body []byte, items [][]byte, kind, result uint32, s
 	query := C.CString("retrievedDocumentCount=2")
 	defer C.free(unsafe.Pointer(index))
 	defer C.free(unsafe.Pointer(query))
-	headers := []C.cosmos_response_header_t{
-		{id: C.COSMOS_HEADER_ID_INDEX_METRICS, value: C.cosmos_cursor_test_string(index)},
-		{id: C.COSMOS_HEADER_ID_QUERY_METRICS, value: C.cosmos_cursor_test_string(query)},
+	headerCount := 2
+	if status != 0 {
+		headerCount += 4
 	}
+	headerMemory := C.malloc(C.size_t(headerCount) * C.size_t(unsafe.Sizeof(C.cosmos_response_header_t{})))
+	defer C.free(headerMemory)
+	headers := unsafe.Slice((*C.cosmos_response_header_t)(headerMemory), headerCount)
+	headers[0] = C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_INDEX_METRICS, value: C.cosmos_cursor_test_string(index)}
+	headers[1] = C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_QUERY_METRICS, value: C.cosmos_cursor_test_string(query)}
 	if status != 0 {
 		etag, session := C.CString("native-position"), C.CString("0:2")
 		activity := C.CString("native-change-activity")
 		defer C.free(unsafe.Pointer(etag))
 		defer C.free(unsafe.Pointer(session))
 		defer C.free(unsafe.Pointer(activity))
-		headers = append(headers,
-			C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_ETAG, value: C.cosmos_cursor_test_string(etag)},
-			C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_SESSION_TOKEN, value: C.cosmos_cursor_test_string(session)},
-			C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_ACTIVITY_ID, value: C.cosmos_cursor_test_string(activity)},
-			C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_REQUEST_CHARGE, value: C.cosmos_cursor_test_charge()},
-		)
+		headers[2] = C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_ETAG, value: C.cosmos_cursor_test_string(etag)}
+		headers[3] = C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_SESSION_TOKEN, value: C.cosmos_cursor_test_string(session)}
+		headers[4] = C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_ACTIVITY_ID, value: C.cosmos_cursor_test_string(activity)}
+		headers[5] = C.cosmos_response_header_t{id: C.COSMOS_HEADER_ID_REQUEST_CHARGE, value: C.cosmos_cursor_test_charge()}
 	}
-	completion.common.headers = &headers[0]
+	completion.common.headers = (*C.cosmos_response_header_t)(headerMemory)
 	completion.common.headers_len = C.uintptr_t(len(headers))
 	decode(&completion)
 }

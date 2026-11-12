@@ -7,14 +7,17 @@ package azcosmos
 
 import "context"
 
+func (c *Client) queryContext(ctx context.Context, _ OperationOptions) (context.Context, func(), error) {
+	return ctx, func() {}, nil
+}
+
 // This is the build of the package that is not bound to the Cosmos driver. It is a diagnostic
 // path, not an alternative implementation: v2 executes every operation through the driver, so
 // there is no pure-Go mode, no degraded mode and no fallback.
 //
 // It exists so that a build without cgo fails with something that names the cause. Without it a
 // caller would get `build constraints exclude all Go files`, which says nothing about what is
-// wrong or how to fix it. Construction still succeeds, so the API can be compiled and explored
-// against, and operations report why they cannot run.
+// wrong or how to fix it. Public constructors fail rather than claiming readiness.
 
 // driverAvailable reports whether this build can reach the Cosmos driver.
 const driverAvailable = false
@@ -30,8 +33,12 @@ func (d *nativeDriver) initialize(context.Context) error {
 	return newDriverUnavailableError()
 }
 
-// openDriver reports success without acquiring anything. Operations fail when they are called,
-// with a message that says what the build is missing, rather than at construction.
+func (d *nativeDriver) resolveContainer(context.Context, string, string) error {
+	return newDriverUnavailableError()
+}
+
+// openDriver supports private offline construction; public constructors subsequently call
+// initialize and report the missing native driver.
 func openDriver(driverConfig) (*nativeDriver, error) {
 	return nil, nil
 }
@@ -53,4 +60,18 @@ func (c *Client) openQuery(context.Context, *queryRequest) (queryCursor, Respons
 
 func (c *Client) openChangeFeed(context.Context, *changeFeedRequest) (changeFeedCursor, Response, error) {
 	return nil, Response{}, newDriverUnavailableError()
+}
+
+func (c *Client) openReadMany(context.Context, *readManyRequest) (queryCursor, error) {
+	return nil, newDriverUnavailableError()
+}
+
+func (c *Client) executeBatch(context.Context, itemRequest, int) (TransactionalBatchResponse, error) {
+	return TransactionalBatchResponse{}, newDriverUnavailableError()
+}
+
+// executeManagement reports that this build cannot reach the driver. The driver-backed build in
+// operation_native.go runs the operation instead.
+func (c *Client) executeManagement(context.Context, operationKind, string, string, []byte, OperationOptions) (ItemResponse, []byte, error) {
+	return ItemResponse{}, nil, newDriverUnavailableError()
 }

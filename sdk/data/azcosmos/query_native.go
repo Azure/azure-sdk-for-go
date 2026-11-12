@@ -18,6 +18,11 @@ import (
 	"unsafe"
 )
 
+func (c *Client) queryContext(ctx context.Context, options OperationOptions) (context.Context, func(), error) {
+	ctx, _, release, err := c.driver.snapshot(ctx, options)
+	return ctx, release, err
+}
+
 func (c *Client) openQuery(ctx context.Context, req *queryRequest) (queryCursor, Response, error) {
 	driver, container, setup, err := c.resolveFeedScope(ctx, req.databaseID, req.containerID,
 		req.partitionKey, req.fullContainer, req.options.Operation)
@@ -40,11 +45,16 @@ func (c *Client) openQuery(ctx context.Context, req *queryRequest) (queryCursor,
 func (c *Client) resolveFeedScope(ctx context.Context, databaseID, containerID string, partitionKey PartitionKey,
 	fullContainer bool, options OperationOptions) (*C.cosmos_driver_t, *C.cosmos_container_ref_t, Response, error) {
 	d := c.driver
+	ctx, snapshot, releaseSnapshot, err := d.snapshot(ctx, options)
+	if err != nil {
+		return nil, nil, Response{}, err
+	}
+	defer releaseSnapshot()
 	driver, err := d.ensureDriver(ctx)
 	if err != nil {
 		return nil, nil, Response{}, err
 	}
-	// Resolve through the native cache each page: Go's lifetime-cached handle can retain a
+	// Resolve through the native cache for each pager: Go's lifetime-cached handle can retain a
 	// deleted container's RID and invalidate tokens issued for its replacement.
 	container, err := d.submitResolveContainer(ctx, driver, databaseID, containerID)
 	if err != nil {
@@ -58,23 +68,16 @@ func (c *Client) resolveFeedScope(ctx context.Context, databaseID, containerID s
 	}()
 	var setup Response
 	if !fullContainer {
-		options.EndToEndTimeout = endToEndTimeout(ctx, 0)
-		metadata, err := d.awaitCompletion(ctx, "reading feed scope metadata",
-			func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, preError *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-				request := newOperationRequest(operationKind(C.COSMOS_OPERATION_KIND_READ_CONTAINER), container)
-				nativeOptions, freeOptions := options.toNative()
-				defer freeOptions()
-				request.options = nativeOptions
-				return C.cosmos_submit_singleton_operation(driver, &request, queue, cookie, preError) //nolint:gocritic // dupSubExpr targets cgo-generated code.
-			})
+		metadata, err := d.readContainerMetadata(ctx, driver, container, options, snapshot)
 		if err != nil {
 			return nil, nil, Response{}, err
 		}
+		defer metadata.release()
 		if metadata.err != nil {
 			return nil, nil, Response{}, metadata.err
 		}
 		setup = metadata.response.Response
-		if err := validateFeedPartitionKey(metadata.body, partitionKey); err != nil {
+		if err := validateFeedPartitionKey(metadata.body, partitionKey, "feed scope"); err != nil {
 			return nil, nil, setup, err
 		}
 	}
@@ -82,7 +85,7 @@ func (c *Client) resolveFeedScope(ctx context.Context, databaseID, containerID s
 	return driver, container, setup, nil
 }
 
-func (result completionResult) queryPage(setup Response) (QueryItemsResponse, error) {
+func (result completionResult) queryPage(setup Response) (queryPage, error) {
 	response := result.response.Response
 	response.RequestCharge += setup.RequestCharge
 	if response.ActivityID == "" && setup.RequestCharge != 0 {
@@ -198,7 +201,7 @@ func inspectNativeFullQuery(req *queryRequest) (nativeQueryOptions, error) {
 }
 
 // syntheticQueryCompletion frees the native buffers before returning, testing copied ownership.
-func syntheticQueryCompletion(body []byte, continuation string, status int) (QueryItemsResponse, error) {
+func syntheticQueryCompletion(body []byte, continuation string, status int) (queryPage, error) {
 	nativeBody := C.CBytes(body)
 	defer C.free(nativeBody)
 	nativeToken := C.CString(continuation)

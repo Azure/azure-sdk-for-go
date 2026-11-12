@@ -11,6 +11,50 @@
   raw change envelopes, pollable idle pages, and opaque checkpoint/resume tokens.
   Change-feed pagers reuse the client-owned cursor reactor and expose `Close` and
   `ContinuationToken(ctx)`.
+* Added `ContainerClient.NewReadManyItemsPager[T]` for reading many items by `ItemIdentity`
+  (ID and partition key, including hierarchical prefixes), with an optional filter predicate.
+  Duplicate identities are deduplicated, missing items are omitted, and result order is unspecified.
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
+* Added `ClientOptions.ResourceNameValidation` to enable or disable client-side validation of
+  database, container, and item names. Nil keeps the native driver default (enabled).
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
+* Upgraded the native Cosmos driver to v0.3.0.
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
+* Added generic item writes using `encoding/json` and model hooks, `ItemResponse.IntoModel[T]()`,
+  and generic query results with metadata-preserving model conversion errors.
+* Query model-conversion failures stop iteration but retain supported checkpoints so callers
+  can explicitly resume after the entire failed page before closing the failed pager.
+* Query model hooks run outside pager and client lifetime locks, allowing reentrant
+  inspection and shutdown without deadlocking.
+* Added transactional batches for create, read, upsert, replace, and delete with complete
+  hierarchical partition keys, owned builders, Rust-compatible conditional options,
+  ordered raw result metadata, and cancellation behavior consistent with point operations.
+  Submitted batches may still commit after cancellation. Results preserve HTTP 304 and
+  207 without inferring transaction commitment or rollback. Prefix batches and transactional PATCH
+  are not exposed.
+  See [PR 27708](https://github.com/Azure/azure-sdk-for-go/pull/27708).
+* Added database/container management: `Client.CreateDatabase`;
+  `DatabaseClient.Read`, `DatabaseClient.Delete`, `DatabaseClient.CreateContainer`;
+  `ContainerClient.Read`, `ContainerClient.Delete`; and the
+  `DatabaseProperties`/`ContainerProperties` model types, including `IndexingPolicy` and
+  `UniqueKeyPolicy`. Creates and deletes require a key-credential client (`NewClientWithKey`);
+  reads also support Microsoft Entra ID identities with the `readMetadata` data action. Container
+  creates infer the partition-key kind and default to partition-key version 2.
+  See [PR 27700](https://github.com/Azure/azure-sdk-for-go/pull/27700).
+* Added all 15 shared driver operation settings through request `OperationOptions`,
+  `ClientOptions.Operation`, and `RuntimeOptions.Operation`, including throughput controls, retry
+  budgets, hedging, session capture, custom headers, and binary encoding.
+  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
+* Added a process-wide default runtime and `NewRuntime` for explicit construction-time defaults.
+  `Runtime.Close` releases the owner's reference; attached clients keep the runtime alive.
+  Same-account clients share native caches and cached credentials. Use separate runtimes for isolation.
+  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
+* Added validated `Precondition` values constructed with `IfMatch` or `IfNoneMatch` for item operations
+  (PATCH retains its If-Match-only option) and client-side patch
+  attempt, tracking ID, capacity, and retention controls. Effective patch tracking IDs are
+  available on native success and error responses. A caller-supplied ID is retained when a
+  submitted patch's Go wait is cancelled.
+  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * Query cursors now share a client-owned completion reactor instead of blocking one OS thread
   per waiting query. Cancellation and client shutdown retain late-completion cleanup.
   See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
@@ -24,17 +68,25 @@
   See [PR 27676](https://github.com/Azure/azure-sdk-for-go/pull/27676).
 * Exposed native retry diagnostics and final status on v2 responses and errors, including Go-owned
   per-attempt details and session-token recovery. See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
-* Added `ClientOptions.DiagnosticsVerbosity` to control how much detail every completion's
-  `Diagnostics.JSON` renders. The zero value, `DiagnosticsVerbosityDefault`, resolves to
-  `DiagnosticsVerbositySummary`; `DiagnosticsVerbosityDetailed` renders the full per-attempt
-  timeline already available losslessly through `Diagnostics.Attempts`.
+* Added `ClientOptions.DiagnosticsVerbosity` to control how much detail `Diagnostics.JSON()`
+  renders on first use. The zero value, `DiagnosticsVerbosityDefault`, resolves to
+  `DiagnosticsVerbositySummary`; `DiagnosticsVerbosityDetailed` additionally renders the retained
+  per-attempt records already available through `Diagnostics.Attempts`. JSON is rendered and
+  cached from the Go-owned snapshot instead of eagerly serialized by the native driver.
   See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 * Added the Go SDK identity to the User-Agent header alongside the native driver identity,
-  preserving the optional `ClientOptions.ApplicationID` suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
+  with an optional runtime application suffix. See [PR 27627](https://github.com/Azure/azure-sdk-for-go/pull/27627).
+* Added optional operation timeouts with Rust's one-second minimum, runtime CPU sampling intervals,
+  native diagnostics snapshots, and item-completion diagnostics handlers.
+  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * Added parameterized queries within a complete logical partition through `Query`, `FeedScope`,
   `QueryOptions`, and `ContainerClient.NewQueryItemsPager`, including page-size hints, raw JSON
   results, and resumable driver continuation tokens.
   See [PR 27635](https://github.com/Azure/azure-sdk-for-go/pull/27635).
+* Query page fetches use shared operation-option validation, immutable input copies, and
+  per-call timeout budgets. Queries honor client/request binary wire preferences; the native driver
+  automatically converts binary item and query responses to text JSON.
+  See [PR 27661](https://github.com/Azure/azure-sdk-for-go/pull/27661).
 * Added the error and response model: `Error` classifies a failure with a `Code` and reports whether
   the service or the client produced it, and `Response`/`ItemResponse` carry what an operation
   returns. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
@@ -51,33 +103,67 @@
 * Added `PatchItemOptions.Strategy` to select automatic, client-side, or server-side PATCH
   execution.
 * Added the Cosmos driver binding for cgo builds on `linux/amd64` and `darwin/arm64`. `ReadItem` and
-  `CreateItem` run against the driver, including `LatestCommitted` reads; `Client.Initialize`
-  eagerly fills account and routing caches, and token credentials are supported.
+  `CreateItem` run against the driver, including `LatestCommitted` reads; account constructors
+  eagerly fill account and routing caches, and token credentials are supported.
   See [PR 27482](https://github.com/Azure/azure-sdk-for-go/pull/27482).
 * Added proximity routing: `ProximityTo` expands an application region to a proximity-sorted
   routing order. See [PR 27589](https://github.com/Azure/azure-sdk-for-go/pull/27589).
 
 ### Breaking Changes
 
+* Both account constructors and both `NewContainer` factories now take context first and initialize
+  account or container metadata before success. Removed `Client.Initialize`; `NewDatabase` stays local.
+  Account startup uses the caller's context, not client/runtime `EndToEndTimeout` defaults.
+  Endpoint and option validation precede cancellation checks and native resource allocation.
+* Replaced `BinaryEncodingOptions.Enabled` with `Disabled bool` and removed the dedicated
+  `ClientOptions.BinaryEncoding` field. Use `ClientOptions.Operation.BinaryEncoding`; precedence is
+  request, client, runtime, then environment captured at runtime construction.
+* Removed serializer injection and retained serializer state. Use model JSON hooks or `json.RawMessage`.
+* Raised the minimum Go version to 1.27 for concrete generic methods.
+* Replaced provisional byte-oriented writes with generic `CreateItem`, `ReplaceItem`, and
+  `UpsertItem`. Pass models directly or use `json.RawMessage` for pre-encoded JSON; plain
+  `[]byte` is now serialized using `encoding/json`.
+* Item writes reject serialized bodies that are not valid JSON objects before submission.
+  This includes plain `[]byte` and nil models.
+* Transactional batch writes accept models or `json.RawMessage` instead of raw `[]byte`.
+  Both batch constructors use `encoding/json` and model hooks.
+  Item serialization and copying occur when appended.
+* `NewQueryItemsPager[T]`, `QueryItemsPager[T]`, and `QueryItemsResponse[T]` require an
+  explicit query result type. There are no separate raw operation variants.
+* Replaced the eager `Diagnostics.JSON` string field with the lazy `Diagnostics.JSON() (string,
+  error)` method. The method renders only fields exposed by the current native ABI and copied into
+  the Go-owned snapshot; it does not reproduce the native driver's full diagnostics JSON schema.
 * This is the first release of `github.com/Azure/azure-sdk-for-go/sdk/data/azcosmos/v2`. The v2
   module replaces the v1 pure-Go implementation with a binding to the shared Rust Cosmos driver,
   so it is a full rewrite of the public surface rather than an incremental change. The complete
   breaking-change list lands here before the beta ships. See [PR 27339](https://github.com/Azure/azure-sdk-for-go/pull/27339).
-* Changed `ClientOptions.EnableContentResponseOnWrite` from `bool` to `*bool`, preserving the
-  difference between inheriting the driver's operation-specific default and explicitly enabling or
-  disabling content responses. See [PR 27597](https://github.com/Azure/azure-sdk-for-go/pull/27597).
 
 ### Bugs Fixed
 
 * Fixed `ReadItem` (and other reads) waiting out the native driver's own retry budget before
   returning on context cancellation, instead of returning promptly. Reads now abandon immediately
-  once the context ends, matching their existing non-authoritative contract; only writes, which may
-  have already committed by the time the context ends, await the real outcome. Also fixed the
-  native `ClientOperationTimeout` error surfacing unwrapped instead of satisfying
-  `errors.Is(err, context.DeadlineExceeded)` when the native driver's own end-to-end timeout raced
-  the caller's context deadline and won. See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
+  once the context ends. Write calls also stop waiting when their context ends, but submitted
+  writes may still commit; native work is drained before releasing client resources.
+  See [PR 27662](https://github.com/Azure/azure-sdk-for-go/pull/27662).
 
 ### Other Changes
+
+* Client-generated service-unavailable failures (substatus 20310, 20311, and 20312) from native
+  driver v0.3.0 map to `CodeServiceUnavailable`. The driver synthesizes these 503s after a service
+  failure that it could not route around.
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
+* The User-Agent header uses the native driver v0.3.0 format:
+  `azsdk-go-azcosmos/<version> (drv=<driver version>; <os>; <arch>; <rustc version>; ft=<features>)`,
+  followed by the optional application ID.
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
+* Native driver v0.3.0 includes routing and session-token fixes and emits new change feed
+  continuation tokens that still accept earlier tokens.
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
+* Moved the reactor's reusable completion batch to C-owned memory, released after draining stops.
+  See [PR 27940](https://github.com/Azure/azure-sdk-for-go/pull/27940).
+* Moved completion response copying and diagnostics conversion onto waiting callers so one
+  caller's response preparation no longer delays unrelated completions.
+  See [PR 27841](https://github.com/Azure/azure-sdk-for-go/pull/27841).
 
 ## 1.6.0-beta.2 (2026-08-03)
 

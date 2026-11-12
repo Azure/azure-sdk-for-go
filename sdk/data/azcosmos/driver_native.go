@@ -3,9 +3,9 @@
 
 //go:build cgo && ((darwin && !ios && arm64) || (linux && !android && amd64))
 
-package azcosmos
-
 // cSpell:ignore gocritic
+
+package azcosmos
 
 /*
 #include <stdlib.h>
@@ -21,6 +21,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"net/http"
 	"sync"
 	"time"
 	"unsafe"
@@ -37,34 +38,36 @@ const driverAvailable = true
 // nativeDriver owns the driver handles a client needs. close releases them in reverse acquisition
 // order.
 //
-// The runtime is per client rather than shared. It caches drivers by endpoint and only evicts that
-// cache when it is freed, so a process-wide runtime would keep a closed client's driver alive and
-// hand it to the next client for the same endpoint, defeating [Client.Close].
+// Runtime ownership belongs to Runtime. Each client retains independent driver/account handles,
+// credentials, options, metadata caches, and a completion queue.
 //
-// The runtime, account reference and completion queue are built locally. Initialize or the first
-// operation creates the driver, which fetches account properties, seeds routing state and creates
-// the account transport.
+// Local setup builds the runtime, account reference and completion queue. The public account
+// constructors then initialize the driver, fetching account properties and seeding routing state.
 //
 // The queue binds to the runtime, not to the driver, so it exists before driver creation and makes
-// that network work cancellable through cosmos_driver_get_or_create_submit.
+// callers can stop waiting without cancelling native work.
 type nativeDriver struct {
 	// cfg is kept across the local setup in openDriver and the asynchronous driver creation that
 	// follows it.
-	cfg     driverConfig
-	runtime *C.cosmos_runtime_t
-	account *C.cosmos_account_ref_t
+	cfg          driverConfig
+	runtime      *C.cosmos_runtime_t
+	ownedRuntime *nativeRuntime
+	account      *C.cosmos_account_ref_t
+
+	// Client defaults are immutable and borrowed read-only while snapshots are captured.
+	clientOptions        *C.cosmos_operation_options_t
+	releaseClientOptions func()
 
 	tokenProvider *tokenProviderState
+	// pending retains resources for submitted work after its Go caller stops waiting.
+	pending sync.WaitGroup
 
-	// mu guards everything below it. It is deliberately not held across driver creation or
-	// container resolution: both wait on the network, and holding it there would make a second
-	// caller block on the mutex where it cannot honor its own context.
+	// mu guards everything below it. It is deliberately not held across driver creation because
+	// that waits on the network, and holding it there would make a second caller block on the mutex
+	// where it cannot honor its own context.
 	//
-	// That means mu does not keep these handles alive for an operation's duration, and close
-	// does not wait for one to finish. Client.mu is what does: Close takes it for write, which
-	// blocks until every operation holding it for read has returned, so close only ever runs
-	// with nothing in flight. Calling into a nativeDriver outside Client.acquire breaks that,
-	// which is why nothing but a test does.
+	// Client.mu protects active callers; pending protects native submissions whose callers
+	// have stopped waiting. Close drains both before freeing handles.
 	mu sync.Mutex
 	// created records that initialization succeeded. Failures are not cached because transport,
 	// service and token acquisition can recover while this long-lived client remains in use.
@@ -87,26 +90,36 @@ type nativeDriver struct {
 	// driver creation itself awaitable.
 	reactor *reactor
 
-	// containers caches resolved container handles by "database/container". Resolving reads
-	// container metadata from the gateway on a miss, so an item operation would otherwise pay
-	// for that lookup on every call.
-	containers    map[string]*C.cosmos_container_ref_t
 	cursors       map[*nativeQueryCursor]struct{}
 	cursorReactor *cursorReactor
-	pending       sync.WaitGroup
 
 	// faultRules is a native-only test seam. Production clients never set it.
 	faultRules []nativeFaultRule
 }
 
 type nativeFaultRule struct {
-	id         string
-	kind       int32
-	errorType  int32
-	hitLimit   int64
-	delayMS    int64
-	retryAfter int64
+	id               string
+	kind             int32
+	region           string
+	containerID      string
+	transportKind    int32
+	errorType        int32
+	hitLimit         *int64
+	delay            *time.Duration
+	customStatusCode *int32
+	customSubStatus  *int32
+	retryAfter       *time.Duration
+	startDelay       *time.Duration
+	expireAfter      *time.Duration
 }
+
+const (
+	nativeFaultOperationReadItem            = int32(C.COSMOS_FAULT_INJECTION_OPERATION_TYPE_READ_ITEM)
+	nativeFaultErrorTooManyRequests         = int32(C.COSMOS_FAULT_INJECTION_ERROR_TYPE_TOO_MANY_REQUESTS)
+	nativeFaultErrorReadSessionNotAvailable = int32(C.COSMOS_FAULT_INJECTION_ERROR_TYPE_READ_SESSION_NOT_AVAILABLE)
+	nativeFaultTransportGatewayV2           = int32(C.COSMOS_FAULT_INJECTION_TRANSPORT_KIND_GATEWAY_V2)
+	nativeFaultThrottleSubStatus            = int32(3200)
+)
 
 type driverCreation struct {
 	done   chan struct{}
@@ -118,13 +131,6 @@ type driverCreation struct {
 func (d *nativeDriver) initialize(ctx context.Context) error {
 	_, err := d.ensureDriver(ctx)
 	return err
-}
-
-// cancel stops host token acquisition before Close waits for in-flight operations.
-func (d *nativeDriver) cancel() {
-	if d != nil && d.tokenProvider != nil {
-		d.tokenProvider.cancel()
-	}
 }
 
 // verifyDriverVersion checks header and library versions before any struct-sensitive ABI call.
@@ -148,17 +154,22 @@ func validateDriverVersions(header, linked string) error {
 }
 
 // openDriver acquires the resources a client can acquire locally: the runtime, the account
-// reference and the completion queue, none of which touch the network. Initialize and operations
-// create the driver separately so that network work receives their context.
+// reference and the completion queue, none of which touch the network. Initialization is awaited
+// separately so the caller's context bounds network waiting without abandoning ownership.
 func openDriver(cfg driverConfig) (*nativeDriver, error) {
 	if err := verifyDriverVersion(); err != nil {
 		return nil, err
 	}
 
 	d := &nativeDriver{cfg: cfg}
-	if err := d.buildRuntime(); err != nil {
-		return nil, err
+	if cfg.runtime != nil {
+		d.runtime = cfg.runtime.native.handle
+	} else {
+		if err := d.buildRuntime(); err != nil {
+			return nil, err
+		}
 	}
+	d.clientOptions, d.releaseClientOptions = cfg.options.Operation.toNative()
 	if err := d.buildAccount(cfg); err != nil {
 		_ = d.close()
 		return nil, err
@@ -298,10 +309,22 @@ func (d *nativeDriver) buildDriverOptions() (*C.cosmos_driver_options_t, error) 
 
 	var options *C.cosmos_driver_options_t
 	var status C.cosmos_status_code_t
-	if len(d.faultRules) == 0 {
+	if len(d.faultRules) == 0 && d.cfg.options.ResourceNameValidation == nil {
 		status = C.cosmos_driver_options_build(d.account, config, &options) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
 	} else {
-		status = d.buildFaultInjectionOptions(config, &options)
+		// The versioned ABI carries settings the flat config cannot: resource name validation and
+		// native fault-injection rules. The driver copies all rule memory before the call returns.
+		rules, releaseRules := nativeFaultInjectionRules(d.faultRules)
+		defer releaseRules()
+		v2 := C.cosmos_driver_options_config_v2_default()
+		v2.preferred_regions = config.preferred_regions
+		v2.preferred_regions_len = config.preferred_regions_len
+		v2.operation_options = config.operation_options
+		v2.fault_injection_rules = rules
+		v2.fault_injection_rules_len = C.uintptr_t(len(d.faultRules))
+		v2.fault_injection_rule_stride = C.uintptr_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))
+		v2.resource_name_validation_enabled = nativeResourceNameValidation(d.cfg.options.ResourceNameValidation)
+		status = C.cosmos_driver_options_build_v2(d.account, &v2, &options) //nolint:gocritic // dupSubExpr targets cgo-generated code.
 	}
 	if err := statusError(status, nil, "building the driver options"); err != nil {
 		return nil, err
@@ -313,91 +336,144 @@ func freeNativeDriverOptions(options *C.cosmos_driver_options_t) {
 	C.cosmos_driver_options_free(options)
 }
 
-// buildFaultInjectionOptions uses the versioned ABI only for native integration tests.
-// The driver copies all rule memory before this call returns.
-func (d *nativeDriver) buildFaultInjectionOptions(
-	config *C.cosmos_driver_options_config_t,
-	out **C.cosmos_driver_options_t,
-) C.cosmos_status_code_t {
-	rules := (*C.cosmos_fault_injection_rule_t)(C.malloc(
-		C.size_t(len(d.faultRules)) * C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))))
-	defer C.free(unsafe.Pointer(rules))
-	var allocations []unsafe.Pointer
-	defer func() {
-		for _, allocation := range allocations {
-			C.free(allocation)
+func nativeOptionalFaultMilliseconds(duration *time.Duration) C.int64_t {
+	if duration == nil {
+		return -1
+	}
+	return C.int64_t(duration.Milliseconds())
+}
+
+func nativeOptionalFaultInt64(value *int64) C.int64_t {
+	if value == nil {
+		return -1
+	}
+	return C.int64_t(*value)
+}
+
+func nativeFaultInjectionRules(rules []nativeFaultRule) (*C.cosmos_fault_injection_rule_t, func()) {
+	if len(rules) == 0 {
+		return nil, func() {}
+	}
+
+	array := (*C.cosmos_fault_injection_rule_t)(C.malloc(
+		C.size_t(len(rules)) * C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))))
+	releases := []func(){func() { C.free(unsafe.Pointer(array)) }}
+	stringView := func(value string) C.cosmos_string_view_t {
+		if value == "" {
+			return C.cosmos_string_view_t{}
 		}
-	}()
-	for i, rule := range d.faultRules {
+		view, allocation := toNativeString(value)
+		releases = append(releases, func() { C.free(allocation) })
+		return view
+	}
+
+	for i, rule := range rules {
+		nativeRule := &unsafe.Slice(array, len(rules))[i]
+		*nativeRule = C.cosmos_fault_injection_rule_default()
+		nativeRule.id = stringView(rule.id)
+		nativeRule.hit_limit = nativeOptionalFaultInt64(rule.hitLimit)
+		nativeRule.start_delay_ms = nativeOptionalFaultMilliseconds(rule.startDelay)
+		nativeRule.expire_after_ms = nativeOptionalFaultMilliseconds(rule.expireAfter)
+
 		condition := (*C.cosmos_fault_injection_condition_t)(C.malloc(
 			C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_condition_t{}))))
+		*condition = C.cosmos_fault_injection_condition_default()
+		releases = append(releases, func() { C.free(unsafe.Pointer(condition)) })
+		condition.operation_type = C.int32_t(rule.kind)
+		condition.region = stringView(rule.region)
+		condition.container_id = stringView(rule.containerID)
+		condition.transport_kind = C.int32_t(rule.transportKind)
+		nativeRule.condition = condition
+
 		result := (*C.cosmos_fault_injection_result_t)(C.malloc(
 			C.size_t(unsafe.Sizeof(C.cosmos_fault_injection_result_t{}))))
-		allocations = append(allocations, unsafe.Pointer(condition), unsafe.Pointer(result))
-		*condition = C.cosmos_fault_injection_condition_default()
-		condition.operation_type = C.int32_t(rule.kind)
 		*result = C.cosmos_fault_injection_result_default()
+		releases = append(releases, func() { C.free(unsafe.Pointer(result)) })
 		result.error_type = C.int32_t(rule.errorType)
 		result.probability = 1
-		result.delay_ms = C.int64_t(rule.delayMS)
-		result.retry_after_ms = C.int64_t(rule.retryAfter)
-		if rule.retryAfter >= 0 {
-			result.custom_status_code = 429
-			result.custom_sub_status = 3200
+		result.delay_ms = nativeOptionalFaultMilliseconds(rule.delay)
+		result.retry_after_ms = nativeOptionalFaultMilliseconds(rule.retryAfter)
+		if rule.retryAfter != nil {
+			result.custom_status_code = http.StatusTooManyRequests
+			result.custom_sub_status = C.int32_t(nativeFaultThrottleSubStatus)
 		}
-		id, allocation := toNativeString(rule.id)
-		allocations = append(allocations, allocation)
-		nativeRule := C.cosmos_fault_injection_rule_default()
-		nativeRule.id = id
-		nativeRule.condition = condition
+		if rule.customStatusCode != nil {
+			result.custom_status_code = C.int32_t(*rule.customStatusCode)
+		}
+		if rule.customSubStatus != nil {
+			result.custom_sub_status = C.int32_t(*rule.customSubStatus)
+		}
 		nativeRule.result = result
-		nativeRule.hit_limit = C.int64_t(rule.hitLimit)
-		unsafe.Slice(rules, len(d.faultRules))[i] = nativeRule
 	}
-	v2 := C.cosmos_driver_options_config_v2_default()
-	v2.preferred_regions = config.preferred_regions
-	v2.preferred_regions_len = config.preferred_regions_len
-	v2.operation_options = config.operation_options
-	v2.fault_injection_rules = rules
-	v2.fault_injection_rules_len = C.uintptr_t(len(d.faultRules))
-	v2.fault_injection_rule_stride = C.uintptr_t(unsafe.Sizeof(C.cosmos_fault_injection_rule_t{}))
-	return C.cosmos_driver_options_build_v2(d.account, &v2, out) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+
+	return array, func() {
+		for i := len(releases) - 1; i >= 0; i-- {
+			releases[i]()
+		}
+	}
+}
+
+type nativeFaultRuleValues struct {
+	id               string
+	kind             int32
+	region           string
+	containerID      string
+	transportKind    int32
+	errorType        int32
+	hitLimit         int64
+	delayMS          int64
+	probability      float32
+	customStatusCode int32
+	customSubStatus  int32
+	retryAfterMS     int64
+	startDelayMS     int64
+	expireAfterMS    int64
+}
+
+// inspectNativeFaultRule converts one rule and reads it back in Go types for ABI mapping tests.
+func inspectNativeFaultRule(rule nativeFaultRule) nativeFaultRuleValues {
+	rules, release := nativeFaultInjectionRules([]nativeFaultRule{rule})
+	defer release()
+
+	nativeRule := unsafe.Slice(rules, 1)[0]
+	return nativeFaultRuleValues{
+		id:               fromNativeString(nativeRule.id),
+		kind:             int32(nativeRule.condition.operation_type),
+		region:           fromNativeString(nativeRule.condition.region),
+		containerID:      fromNativeString(nativeRule.condition.container_id),
+		transportKind:    int32(nativeRule.condition.transport_kind),
+		errorType:        int32(nativeRule.result.error_type),
+		hitLimit:         int64(nativeRule.hit_limit),
+		delayMS:          int64(nativeRule.result.delay_ms),
+		probability:      float32(nativeRule.result.probability),
+		customStatusCode: int32(nativeRule.result.custom_status_code),
+		customSubStatus:  int32(nativeRule.result.custom_sub_status),
+		retryAfterMS:     int64(nativeRule.result.retry_after_ms),
+		startDelayMS:     int64(nativeRule.start_delay_ms),
+		expireAfterMS:    int64(nativeRule.expire_after_ms),
+	}
+}
+
+// nativeResourceNameValidation encodes the driver's tri-state: 0 keeps the default, 1 disables,
+// and 2 enables.
+func nativeResourceNameValidation(enabled *bool) C.int8_t {
+	switch {
+	case enabled == nil:
+		return 0
+	case *enabled:
+		return 2
+	default:
+		return 1
+	}
 }
 
 // buildRuntime creates the Tokio runtime the driver executes on.
-//
-// ApplicationID is applied here rather than with the other client options because the C ABI carries
-// the user agent on the runtime, not on the driver.
 func (d *nativeDriver) buildRuntime() error {
-	// Seeded from the defaults so that fields this binding does not set keep the driver's values
-	// rather than a Go zero.
-	options := C.cosmos_runtime_options_default()
-
-	// Copied into the runtime before the call returns, so freeing it here is safe.
-	identifier, identifierAllocation := toNativeString(wrappingSDKIdentifier())
-	defer C.free(identifierAllocation)
-	options.wrapping_sdk_identifier = identifier
-
-	if d.cfg.options.ApplicationID != "" {
-		// Copied into the runtime before the call returns, so freeing it here is safe.
-		suffix, allocation := toNativeString(d.cfg.options.ApplicationID)
-		defer C.free(allocation)
-		options.user_agent_suffix = suffix
-	}
-
-	var richErr *C.cosmos_error_t
-	status := C.cosmos_runtime_build(&options, &d.runtime, &richErr) //nolint:gocritic // dupSubExpr is reported against cgo-generated code, not this call.
-	err := statusError(status, richErr, "building the driver runtime")
+	native, err := openRuntime(RuntimeOptions{})
 	if err == nil {
-		return err
-	}
-
-	// The C ABI reports invalid options without a field name. Identify the possible sources
-	// without echoing values or duplicating the driver's validation rules.
-	var cosmosErr *Error
-	if errors.As(err, &cosmosErr) &&
-		cosmosErr.SubStatus == int(C.COSMOS_SUB_STATUS_CLIENT_FFI_INVALID_OPTION_VALUE) {
-		cosmosErr.Message = "azcosmos: the Cosmos driver rejected runtime options (SDK identity or ClientOptions.ApplicationID)"
+		d.ownedRuntime = native
+		d.runtime = native.handle
+		return nil
 	}
 	return err
 }
@@ -433,9 +509,7 @@ func (d *nativeDriver) close() error {
 	if d == nil {
 		return nil
 	}
-	// Freeing here is only safe because the caller guarantees no operation is in flight; see
-	// nativeDriver.mu. The lock below orders this against a concurrent state read, not against
-	// an operation, which it can no longer wait for.
+	// Client.mu prevents new submissions while pending drains; mu orders remaining state reads.
 	d.mu.Lock()
 	d.closed = true
 	cursors := make([]*nativeQueryCursor, 0, len(d.cursors))
@@ -460,16 +534,17 @@ func (d *nativeDriver) close() error {
 	d.reactor.close()
 	d.reactor = nil
 
-	for key, container := range d.containers {
-		C.cosmos_container_ref_free(container)
-		delete(d.containers, key)
-	}
-
 	C.cosmos_driver_free(d.driver)
 	d.driver = nil
 	C.cosmos_account_ref_free(d.account)
 	d.account = nil
-	C.cosmos_runtime_free(d.runtime)
+	if d.releaseClientOptions != nil {
+		d.releaseClientOptions()
+		d.releaseClientOptions = nil
+		d.clientOptions = nil
+	}
+	d.ownedRuntime.close()
+	d.ownedRuntime = nil
 	d.runtime = nil
 	return nil
 }

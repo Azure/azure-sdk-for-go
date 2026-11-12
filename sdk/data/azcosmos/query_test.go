@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"math"
 	"testing"
+	"time"
 
 	"github.com/stretchr/testify/require"
 )
@@ -61,6 +62,11 @@ func TestQueryRequestOwnsOptions(t *testing.T) {
 		Operation: OperationOptions{
 			EnableContentResponseOnWrite: &enabled,
 			ExcludedRegions:              []Region{RegionEastUS},
+			CustomHeaders:                map[string]string{"x-test": "original"},
+			BinaryEncoding:               &BinaryEncodingOptions{Disabled: false},
+			MaxFailoverRetryCount:        to(uint32(3)),
+			ThrottlingRetry:              ThrottlingRetryOptions{MaxRetryCount: to(uint32(1))},
+			ThroughputControl:            ThroughputControlOptions{ThroughputBucket: to(uint32(2))},
 		},
 		Feed:                 FeedOptions{PageSizeHint: 5, ContinuationToken: "resume"},
 		SessionToken:         SessionToken("0:1"),
@@ -71,12 +77,22 @@ func TestQueryRequestOwnsOptions(t *testing.T) {
 	require.NoError(t, err)
 	enabled = false
 	options.Operation.ExcludedRegions[0] = RegionWestUS
+	options.Operation.CustomHeaders["x-test"] = "changed"
+	options.Operation.BinaryEncoding.Disabled = true
+	*options.Operation.MaxFailoverRetryCount = 9
+	*options.Operation.ThrottlingRetry.MaxRetryCount = 9
+	*options.Operation.ThroughputControl.ThroughputBucket = 9
 	options.Feed = FeedOptions{}
 	options.SessionToken = ""
 	require.True(t, *req.options.Operation.EnableContentResponseOnWrite)
 	require.True(t, *req.options.PopulateIndexMetrics)
 	require.True(t, *req.options.PopulateQueryMetrics)
 	require.Equal(t, []Region{RegionEastUS}, req.options.Operation.ExcludedRegions)
+	require.Equal(t, "original", req.options.Operation.CustomHeaders["x-test"])
+	require.False(t, req.options.Operation.BinaryEncoding.Disabled)
+	require.Equal(t, uint32(3), *req.options.Operation.MaxFailoverRetryCount)
+	require.Equal(t, uint32(1), *req.options.Operation.ThrottlingRetry.MaxRetryCount)
+	require.Equal(t, uint32(2), *req.options.Operation.ThroughputControl.ThroughputBucket)
 	require.Equal(t, FeedOptions{PageSizeHint: 5, ContinuationToken: "resume"}, req.options.Feed)
 	require.Equal(t, SessionToken("0:1"), req.options.SessionToken)
 }
@@ -100,11 +116,14 @@ func TestQueryPagerArgumentAndLifetimeOrdering(t *testing.T) {
 		{"negative hint", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Feed: FeedOptions{PageSizeHint: -1}}, "page size hint"},
 		{"invalid token", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Feed: FeedOptions{ContinuationToken: "a\x00b"}}, "continuation token"},
 		{"invalid consistency", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{ConsistencyStrategy: "invalid"}}, "consistency"},
+		{"invalid timeout", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{EndToEndTimeout: to(time.Duration(-1))}}, "EndToEndTimeout"},
+		{"invalid header", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{CustomHeaders: map[string]string{"x-test": "\r\n"}}}, "custom header"},
+		{"invalid availability", NewQuery("SELECT * FROM c"), scope, &QueryOptions{Operation: OperationOptions{AvailabilityStrategy: HedgingAvailability(0)}}, "positive threshold"},
 		{"invalid session", NewQuery("SELECT * FROM c"), scope, &QueryOptions{SessionToken: "a\x00b"}, "session"},
 		{"invalid plan mode", NewQuery("SELECT * FROM c"), scope, &QueryOptions{QueryPlanMode: "invalid"}, "query plan mode"},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			pager := container.NewQueryItemsPager(tt.query, tt.scope, tt.options)
+			pager := container.NewQueryItemsPager[json.RawMessage](tt.query, tt.scope, tt.options)
 			page, err := pager.NextPage(ctx)
 			require.ErrorContains(t, err, tt.message)
 			require.Zero(t, page)
@@ -112,14 +131,14 @@ func TestQueryPagerArgumentAndLifetimeOrdering(t *testing.T) {
 			requireNotDriverUnavailable(t, err)
 		})
 	}
-	page, err := container.NewQueryItemsPager(NewQuery("SELECT * FROM c"), scope, nil).NextPage(ctx)
+	page, err := container.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"), scope, nil).NextPage(ctx)
 	require.Zero(t, page)
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Equal(t, CodeClientClosed, cosmosErr.Code)
 
 	open := newTestContainer(t)
-	page, err = open.NewQueryItemsPager(NewQuery("SELECT * FROM c"), scope, nil).NextPage(ctx)
+	page, err = open.NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"), scope, nil).NextPage(ctx)
 	require.Zero(t, page)
 	require.ErrorIs(t, err, context.Canceled)
 }
@@ -131,18 +150,18 @@ type testQueryCursor struct {
 	nextErr       error
 }
 
-func (c *testQueryCursor) next(context.Context) (QueryItemsResponse, bool, error) {
+func (c *testQueryCursor) next(context.Context) (queryPage, bool, error) {
 	c.calls++
 	if c.nextErr != nil {
-		return QueryItemsResponse{}, false, c.nextErr
+		return queryPage{}, false, c.nextErr
 	}
 	switch c.calls {
 	case 1:
-		return QueryItemsResponse{}, false, nil
+		return queryPage{}, false, nil
 	case 2:
-		return QueryItemsResponse{Items: [][]byte{[]byte("1"), []byte("2")}}, false, nil
+		return queryPage{Items: [][]byte{[]byte("1"), []byte("2")}}, false, nil
 	default:
-		return QueryItemsResponse{}, true, nil
+		return queryPage{}, true, nil
 	}
 }
 
@@ -154,7 +173,7 @@ func (c *testQueryCursor) close() { c.closed++ }
 
 func TestQueryPagerRetainsProgressWithoutCheckpoint(t *testing.T) {
 	cursor := &testQueryCursor{checkpointErr: &Error{Code: CodeBadRequest, StatusCode: 400, SubStatus: subStatusBufferedQueryContinuationUnsupported}}
-	pager := &QueryItemsPager{client: newTestContainer(t).database.client, cursor: cursor}
+	pager := &QueryItemsPager[json.RawMessage]{client: newTestContainer(t).database.client, cursor: cursor}
 	require.True(t, pager.More())
 	empty, err := pager.NextPage(t.Context())
 	require.NoError(t, err)
@@ -204,7 +223,7 @@ func TestUnsupportedQueryCheckpoint(t *testing.T) {
 
 func TestQueryPagerTerminalFailureClosesCursor(t *testing.T) {
 	cursor := &testQueryCursor{nextErr: &Error{Code: CodeBadRequest}}
-	pager := &QueryItemsPager{client: newTestContainer(t).database.client, cursor: cursor}
+	pager := &QueryItemsPager[json.RawMessage]{client: newTestContainer(t).database.client, cursor: cursor}
 	page, err := pager.NextPage(t.Context())
 	require.ErrorIs(t, err, cursor.nextErr)
 	require.Zero(t, page)
@@ -215,14 +234,14 @@ func TestQueryPagerTerminalFailureClosesCursor(t *testing.T) {
 func TestQueryPagerCheckpointAndCloseContracts(t *testing.T) {
 	for _, failure := range []error{context.Canceled, &Error{Code: CodeClientError}} {
 		cursor := &testQueryCursor{checkpointErr: failure}
-		pager := &QueryItemsPager{client: newTestContainer(t).database.client, cursor: cursor}
+		pager := &QueryItemsPager[json.RawMessage]{client: newTestContainer(t).database.client, cursor: cursor}
 		_, err := pager.ContinuationToken(t.Context())
 		require.ErrorIs(t, err, failure)
 		require.False(t, pager.More())
 		require.Equal(t, 1, cursor.closed)
 	}
 	cursor := &testQueryCursor{}
-	pager := &QueryItemsPager{client: newTestContainer(t).database.client, cursor: cursor}
+	pager := &QueryItemsPager[json.RawMessage]{client: newTestContainer(t).database.client, cursor: cursor}
 	token, err := pager.ContinuationToken(t.Context())
 	require.NoError(t, err)
 	require.Equal(t, "snapshot", token)
@@ -237,6 +256,20 @@ func TestQueryPagerCheckpointAndCloseContracts(t *testing.T) {
 	require.False(t, pager.More())
 	_, err = pager.ContinuationToken(t.Context())
 	require.Error(t, err)
+}
+
+func TestQueryPagerRejectsNilContextsWithoutAdvancing(t *testing.T) {
+	cursor := &testQueryCursor{}
+	pager := &QueryItemsPager[json.RawMessage]{client: newTestClient(t), cursor: cursor}
+	defer func() { require.NoError(t, pager.Close()) }()
+	page, err := pager.NextPage(nil) //nolint:staticcheck // verifies the boundary guard
+	require.ErrorContains(t, err, "context must not be nil")
+	require.Zero(t, page)
+	token, err := pager.ContinuationToken(nil) //nolint:staticcheck // verifies the boundary guard
+	require.ErrorContains(t, err, "context must not be nil")
+	require.Empty(t, token)
+	require.True(t, pager.More())
+	require.Zero(t, cursor.calls)
 }
 
 func TestDecodeQueryPage(t *testing.T) {
@@ -387,7 +420,7 @@ func TestQueryDiagnosticBuild(t *testing.T) {
 	if driverAvailable {
 		t.Skip("requires the diagnostic build")
 	}
-	page, err := newTestContainer(t).NewQueryItemsPager(NewQuery("SELECT * FROM c"),
+	page, err := newTestContainer(t).NewQueryItemsPager[json.RawMessage](NewQuery("SELECT * FROM c"),
 		NewFeedScopeForPartitionKey(NewPartitionKeyString("pk")), nil).NextPage(t.Context())
 	require.Zero(t, page)
 	require.ErrorContains(t, err, "cannot reach the Cosmos driver")

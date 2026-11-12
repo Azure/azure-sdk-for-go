@@ -1,0 +1,49 @@
+{
+    "$schema": "../../schema/scenario.v1.json",
+    "specVersion": "1.0",
+    "id": "topology.region-lifecycle",
+    "title": "Clients recover across region lifecycle transitions",
+    "requirement": "Reads recover when a preferred region is offlined or removed, and the region can return online or be re-added without restarting the hosted account.",
+    "maturity": "candidate",
+    "precedents": [
+        {
+            "sdk": "rust",
+            "path": "sdk/cosmos/azure_data_cosmos_driver/tests/in_memory_emulator_tests/region_online_offline.rs",
+            "test": "offline and online region behavior"
+        }
+    ],
+    "profiles": [
+        "dynamicTopology"
+    ],
+    "tags": [
+        "topology",
+        "region",
+        "failover"
+    ],
+    "backends": {
+        "hostedEmulatorGatewayV1": {
+            "applicability": "simulated",
+            "fidelity": "simulated",
+            "reason": "Hosted management controls deterministically mutate virtual region membership.",
+            "requires": [
+                "item",
+                "regionLifecycle"
+            ]
+        },
+        "hostedEmulatorGatewayV2": {
+            "applicability": "simulated",
+            "fidelity": "simulated",
+            "reason": "Hosted management controls deterministically mutate virtual region membership.",
+            "requires": [
+                "item",
+                "regionLifecycle",
+                "gatewayV2"
+            ]
+        },
+        "azureLive": {
+            "applicability": "notApplicable",
+            "fidelity": "none",
+            "reason": "The scenario requires deterministic account-level region transitions."
+        }
+    }
+}

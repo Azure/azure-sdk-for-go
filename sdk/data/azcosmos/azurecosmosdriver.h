@@ -11,7 +11,7 @@
 
 // Specifies the version of azurecosmosdriver this header file was generated from.
 // This should match the version of libazurecosmosdriver you are linking against.
-#define AZURECOSMOSDRIVER_H_VERSION "0.2.0"
+#define AZURECOSMOSDRIVER_H_VERSION "0.3.0"
 
 // Packed-status helpers (see cosmos_status_code_t). Emitted as macros so
 // they keep the SCREAMING_SNAKE_CASE spelling shared with the
@@ -755,6 +755,18 @@ enum cosmos_sub_status_t
    */
   COSMOS_SUB_STATUS_SERVICE_RETURNED_OBJECT_WITHOUT_RID = 20306,
   /**
+   * `CLIENT_READ_SESSION_NOT_AVAILABLE` (20310).
+   */
+  COSMOS_SUB_STATUS_CLIENT_READ_SESSION_NOT_AVAILABLE = 20310,
+  /**
+   * `CLIENT_WRITE_FORBIDDEN` (20311).
+   */
+  COSMOS_SUB_STATUS_CLIENT_WRITE_FORBIDDEN = 20311,
+  /**
+   * `CLIENT_DATABASE_ACCOUNT_NOT_FOUND` (20312).
+   */
+  COSMOS_SUB_STATUS_CLIENT_DATABASE_ACCOUNT_NOT_FOUND = 20312,
+  /**
    * `CLIENT_FFI_NULL_ARGUMENT` (20350).
    */
   COSMOS_SUB_STATUS_CLIENT_FFI_NULL_ARGUMENT = 20350,
@@ -1106,6 +1118,9 @@ typedef struct cosmos_string_view_t {
  * Mirrors the inline error fields of `cosmos_completion_t`. Every pointer
  * field is **owned**; free the whole struct — and its strings — with
  * [`cosmos_error_free`]. A `NULL` pointer field means that field was absent.
+ *
+ * Synthetic 503/20310, 503/20311, and 503/20312 wrappers retain metadata from the original
+ * service response, but report `is_from_wire == 0`.
  */
 typedef struct cosmos_error_t {
   /**
@@ -1114,8 +1129,7 @@ typedef struct cosmos_error_t {
    */
   cosmos_status_code_t status;
   /**
-   * Wire HTTP status code (always populated, including for synthetic
-   * errors).
+   * Effective HTTP status code, including synthetic error classifications.
    */
   uint16_t http_status_code;
   /**
@@ -1123,7 +1137,7 @@ typedef struct cosmos_error_t {
    */
   int32_t sub_status;
   /**
-   * `1` iff the error originated from a service wire response.
+   * `1` for a direct wire error; `0` for synthetic errors and wrappers.
    */
   uint8_t is_from_wire;
   /**
@@ -1329,11 +1343,12 @@ typedef struct cosmos_completion_t {
    */
   intptr_t user_data;
   /**
-   * Wire HTTP status code, or `0` when there is no wire response.
+   * Effective HTTP status code, or `0` when absent or error details are suppressed.
    */
   uint16_t http_status_code;
   /**
-   * `1` iff an error completion originated from a service wire response.
+   * `1` for a direct wire error; `0` for synthetic errors or suppressed details.
+   * Synthetic wrappers can still retain original response metadata.
    */
   uint8_t is_from_wire;
   /**
@@ -2071,7 +2086,97 @@ typedef struct cosmos_driver_options_config_v2_t {
   const struct cosmos_fault_injection_rule_t *fault_injection_rules;
   uintptr_t fault_injection_rules_len;
   uintptr_t fault_injection_rule_stride;
+  /**
+   * Whether to reject unsafe user-defined names before request planning,
+   * including item names supplied to Create and Upsert.
+   *
+   * Tri-state bool: `0` leaves the driver default unchanged, `1` disables
+   * validation, and `2` enables validation. The driver default is enabled.
+   */
+  int8_t resource_name_validation_enabled;
 } cosmos_driver_options_config_v2_t;
+
+/**
+ * One selected logical key, with an item id only for item selection.
+ */
+typedef struct cosmos_read_many_identity_t {
+  /**
+   * Counted components in container path order: a complete key or nonempty hierarchical prefix.
+   */
+  const struct cosmos_partition_key_component_t *partition_key;
+  /**
+   * Component count (one to three).
+   */
+  uintptr_t partition_key_len;
+  /**
+   * Required for Items; must be NULL/0 for Partitions.
+   */
+  struct cosmos_string_view_t item_id;
+} cosmos_read_many_identity_t;
+
+/**
+ * A named filter parameter containing one JSON value.
+ */
+typedef struct cosmos_read_many_parameter_t {
+  /**
+   * Parameter name including `@`.
+   */
+  struct cosmos_string_view_t name;
+  /**
+   * UTF-8 JSON encoding of the value.
+   */
+  struct cosmos_string_view_t json_value;
+} cosmos_read_many_parameter_t;
+
+/**
+ * Read-many cursor input. Initialize with [`cosmos_read_many_request_init()`].
+ *
+ * Pointers are borrowed only until submit returns. Results use the existing
+ * cursor completion format and ownership rules. No durable resume is supported.
+ */
+typedef struct cosmos_read_many_request_t {
+  /**
+   * Readable record size, including zero-filled extensions.
+   */
+  uint32_t struct_size_bytes;
+  /**
+   * Must be 1.
+   */
+  uint32_t abi_version;
+  /**
+   * Container, session, activity, page hints, and options; kind must be zero.
+   */
+  struct cosmos_operation_request_t operation;
+  /**
+   * 1: key/id pairs; 2: partition keys. Both allow nonempty hierarchical prefixes.
+   * Prefix/id pairs return every matching item across logical partitions.
+   */
+  uint32_t selection_kind;
+  /**
+   * Selected identities. NULL/0 selects nothing, never the full container.
+   */
+  const struct cosmos_read_many_identity_t *identities;
+  /**
+   * Number of selected identities.
+   */
+  uintptr_t identities_len;
+  /**
+   * Optional scalar predicate using alias `c`, without WHERE.
+   */
+  struct cosmos_string_view_t filter;
+  /**
+   * Named JSON parameters for the predicate.
+   */
+  const struct cosmos_read_many_parameter_t *parameters;
+  /**
+   * Number of parameters.
+   */
+  uintptr_t parameters_len;
+  /**
+   * Must be zero.
+   */
+  uint32_t reserved[4];
+} cosmos_read_many_request_t;
 
 /**
  * Flat C ABI options for building a `cosmos_runtime_t` in a single call.
@@ -2144,7 +2249,7 @@ void cosmos_string_free(const char *s);
  * Creates an account reference authenticated by a Cosmos master key.
  *
  * Mirrors
- * [`azure_data_cosmos_driver::models::AccountReference::with_master_key`].
+ * [`azure_data_cosmos_driver::models::AccountReference::with_account_key()`].
  *
  * # Parameters
  *
@@ -2904,6 +3009,34 @@ uintptr_t cosmos_partition_key_component_count(const struct cosmos_partition_key
  * returning `0`).
  */
 bool cosmos_partition_key_is_empty(const struct cosmos_partition_key_t *pk);
+
+/**
+ * Initializes a caller-owned request. Set selection kind and container before use.
+ *
+ * # Safety
+ *
+ * `out` must be NULL or point to writable, aligned storage for the full record.
+ */
+void cosmos_read_many_request_init(struct cosmos_read_many_request_t *out);
+
+/**
+ * Opens a read-many cursor without consuming its first page.
+ *
+ * Use the existing cursor Next, Free, and completion functions. Checkpoint is
+ * unsupported but does not terminate live iteration.
+ *
+ * # Safety
+ *
+ * Handles must be live and synchronized against release. `request` must
+ * describe an aligned readable size/version prefix and the declared allocation;
+ * nested arrays and strings must remain readable until this call returns.
+ * `out_pre_error`, when non-NULL, must be writable.
+ */
+struct cosmos_operation_handle_t *cosmos_read_many_open_submit(const struct cosmos_driver_t *driver,
+                                                               const struct cosmos_read_many_request_t *request,
+                                                               struct cosmos_completion_queue_t *queue,
+                                                               intptr_t user_data,
+                                                               cosmos_status_code_t *out_pre_error);
 
 /**
  * Returns the canonical wire header name (NUL-terminated UTF-8) for a header

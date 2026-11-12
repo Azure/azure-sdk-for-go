@@ -10,6 +10,7 @@ import (
 	"errors"
 	"fmt"
 	"net"
+	"net/http"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -30,8 +31,9 @@ func TestVerifyDriverVersion(t *testing.T) {
 
 func TestNativeFaultInjectionOptionsBuild(t *testing.T) {
 	d := &nativeDriver{faultRules: []nativeFaultRule{{
-		id: "throttle-read", kind: 1, errorType: 2, hitLimit: 2,
-		delayMS: -1, retryAfter: 1,
+		id: "throttle-read", kind: nativeFaultOperationReadItem,
+		errorType: nativeFaultErrorTooManyRequests, hitLimit: to(int64(2)),
+		retryAfter: to(time.Millisecond),
 	}}}
 	require.NoError(t, d.buildRuntime())
 	require.NoError(t, d.buildAccount(driverConfig{
@@ -42,6 +44,64 @@ func TestNativeFaultInjectionOptionsBuild(t *testing.T) {
 	require.NoError(t, err)
 	require.NotNil(t, options)
 	freeNativeDriverOptions(options)
+}
+
+// The emulator exposes only one gateway path, so transport selection is verified at the ABI
+// mapping boundary while region and container selection are covered behaviorally.
+func TestNativeFaultRuleMapsTransportResultAndLifecycle(t *testing.T) {
+	rule := nativeFaultRule{
+		id:               "availability-rule",
+		kind:             nativeFaultOperationReadItem,
+		region:           "East US",
+		containerID:      "items",
+		transportKind:    nativeFaultTransportGatewayV2,
+		customStatusCode: to(int32(http.StatusServiceUnavailable)),
+		customSubStatus:  to(int32(0)),
+		hitLimit:         to(int64(0)),
+		delay:            to(time.Duration(0)),
+		retryAfter:       to(time.Duration(0)),
+		startDelay:       to(time.Duration(0)),
+		expireAfter:      to(time.Duration(0)),
+	}
+
+	mapped := inspectNativeFaultRule(rule)
+	require.Equal(t, "availability-rule", mapped.id)
+	require.Equal(t, nativeFaultOperationReadItem, mapped.kind)
+	require.Equal(t, "East US", mapped.region)
+	require.Equal(t, "items", mapped.containerID)
+	require.Equal(t, nativeFaultTransportGatewayV2, mapped.transportKind)
+	require.Zero(t, mapped.errorType)
+	require.Zero(t, mapped.hitLimit)
+	require.Zero(t, mapped.delayMS)
+	require.Equal(t, float32(1), mapped.probability)
+	require.Equal(t, int32(http.StatusServiceUnavailable), mapped.customStatusCode)
+	require.Zero(t, mapped.customSubStatus)
+	require.Zero(t, mapped.retryAfterMS)
+	require.Zero(t, mapped.startDelayMS)
+	require.Zero(t, mapped.expireAfterMS)
+}
+
+func TestNativeFaultRulePreservesThrottleResponseDefaults(t *testing.T) {
+	mapped := inspectNativeFaultRule(nativeFaultRule{
+		errorType:  nativeFaultErrorTooManyRequests,
+		retryAfter: to(time.Millisecond),
+	})
+
+	require.Equal(t, int32(http.StatusTooManyRequests), mapped.customStatusCode)
+	require.Equal(t, nativeFaultThrottleSubStatus, mapped.customSubStatus)
+	require.Equal(t, int64(1), mapped.retryAfterMS)
+}
+
+func TestNativeFaultRulePreservesUnsetSentinels(t *testing.T) {
+	mapped := inspectNativeFaultRule(nativeFaultRule{})
+
+	require.Equal(t, int64(-1), mapped.hitLimit)
+	require.Equal(t, int64(-1), mapped.delayMS)
+	require.Zero(t, mapped.customStatusCode)
+	require.Equal(t, int32(-1), mapped.customSubStatus)
+	require.Equal(t, int64(-1), mapped.retryAfterMS)
+	require.Equal(t, int64(-1), mapped.startDelayMS)
+	require.Equal(t, int64(-1), mapped.expireAfterMS)
 }
 
 func TestValidateDriverVersions(t *testing.T) {
@@ -102,17 +162,15 @@ func TestNativeRuntimeRejectsInvalidApplicationID(t *testing.T) {
 		"abcdefghijklmnopqrstuvwxyz",
 	} {
 		t.Run(applicationID, func(t *testing.T) {
-			d := &nativeDriver{cfg: driverConfig{options: ClientOptions{ApplicationID: applicationID}}}
-
-			err := d.buildRuntime()
+			runtime, err := NewRuntime(&RuntimeOptions{ApplicationID: applicationID})
 
 			var cosmosErr *Error
 			require.ErrorAs(t, err, &cosmosErr)
 			require.Equal(t, CodeClientError, cosmosErr.Code)
 			require.Equal(t, nativeInvalidOptionSubStatus(), cosmosErr.SubStatus)
-			require.Equal(t, "azcosmos: the Cosmos driver rejected runtime options (SDK identity or ClientOptions.ApplicationID)", cosmosErr.Message)
+			require.Contains(t, cosmosErr.Message, "ApplicationID")
 			require.NotContains(t, cosmosErr.Message, applicationID, "do not echo telemetry identifiers")
-			require.Nil(t, d.runtime)
+			require.Nil(t, runtime)
 		})
 	}
 }
@@ -152,7 +210,7 @@ func TestNativeAccountRejectsMalformedEndpoint(t *testing.T) {
 }
 
 func TestNativeTokenCredentialAccepted(t *testing.T) {
-	client, err := NewClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", fakeTokenCredential{}, nil)
 	require.NoError(t, err)
 	require.NoError(t, client.Close())
 }
@@ -203,51 +261,55 @@ func (c *blockingTokenCredential) GetToken(
 	return azcore.AccessToken{}, ctx.Err()
 }
 
-// Close signals client-lifetime token cancellation before it waits for Initialize's read lock.
-func TestCloseCancelsTokenAcquisition(t *testing.T) {
-	credential := &blockingTokenCredential{
-		started: make(chan struct{}),
-		stopped: make(chan struct{}),
+// Closing a client must not cancel credentials still retained by a shared native cache.
+func TestCloseWaitsForTokenAcquisition(t *testing.T) {
+	credential := &gatedFailingTokenCredential{
+		started: make(chan struct{}), release: make(chan struct{}),
 	}
-	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", credential, nil)
 	require.NoError(t, err)
 
 	initialized := make(chan error, 1)
-	go func() { initialized <- client.Initialize(context.Background()) }()
+	go func() { initialized <- client.initialize(context.Background()) }()
 	<-credential.started
 
 	closed := make(chan error, 1)
 	go func() { closed <- client.Close() }()
 
 	select {
+	case <-closed:
+		t.Fatal("Close returned before token acquisition completed")
+	case <-time.After(20 * time.Millisecond):
+	}
+	close(credential.release)
+	select {
 	case err := <-initialized:
 		var cosmosErr *Error
 		require.ErrorAs(t, err, &cosmosErr)
 		require.Equal(t, CodeAuthenticationFailed, cosmosErr.Code)
 	case <-time.After(time.Second):
-		t.Fatal("Initialize did not return after Close cancelled token acquisition")
+		t.Fatal("Initialize did not return after token acquisition completed")
 	}
 	select {
 	case err := <-closed:
 		require.NoError(t, err)
 	case <-time.After(time.Second):
-		t.Fatal("Close did not return after token acquisition stopped")
+		t.Fatal("Close did not return after token acquisition completed")
 	}
 }
 
-// The token callback proves driver creation has been submitted before cancellation. Initialize
-// must abandon the wait safely; native v0.2.0 does not cancel admitted operations.
+// The token callback proves driver creation was submitted. Cancellation ends only the Go wait.
 func TestNativeCancellationAfterSubmission(t *testing.T) {
 	credential := &blockingTokenCredential{
 		started: make(chan struct{}),
 		stopped: make(chan struct{}),
 	}
-	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", credential, nil)
 	require.NoError(t, err)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	initialized := make(chan error, 1)
-	go func() { initialized <- client.Initialize(ctx) }()
+	go func() { initialized <- client.initialize(ctx) }()
 	<-credential.started
 	cancel()
 
@@ -258,14 +320,59 @@ func TestNativeCancellationAfterSubmission(t *testing.T) {
 		require.ErrorAs(t, err, &cosmosErr)
 		require.Equal(t, CodeOperationCancelled, cosmosErr.Code)
 	case <-time.After(time.Second):
-		t.Fatal("Initialize did not return after its context was canceled")
+		t.Fatal("Initialize did not stop waiting after context cancellation")
 	}
 
+	select {
+	case <-credential.stopped:
+		t.Fatal("caller cancellation must not cancel the client-wide credential")
+	default:
+	}
+	// This test credential must be explicitly released; client closure does not cancel it.
+	client.driver.tokenProvider.cancel()
 	require.NoError(t, client.Close())
 	select {
 	case <-credential.stopped:
 	case <-time.After(time.Second):
 		t.Fatal("Close did not stop the deliberately blocked token acquisition")
+	}
+
+}
+
+func TestCloseDrainsNativeWorkAfterCallerCancellation(t *testing.T) {
+	credential := &gatedFailingTokenCredential{
+		started: make(chan struct{}), release: make(chan struct{}),
+	}
+	var releaseOnce sync.Once
+	unblock := func() { releaseOnce.Do(func() { close(credential.release) }) }
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", credential, nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { unblock(); require.NoError(t, client.Close()) })
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+	result := make(chan error, 1)
+	go func() { result <- client.initialize(ctx) }()
+	<-credential.started
+	cancel()
+	select {
+	case err := <-result:
+		require.ErrorIs(t, err, context.Canceled)
+	case <-time.After(time.Second):
+		t.Fatal("caller cancellation did not return")
+	}
+	closed := make(chan error, 1)
+	go func() { closed <- client.Close() }()
+	select {
+	case <-closed:
+		t.Fatal("Close released native resources while credential work was still in flight")
+	case <-time.After(50 * time.Millisecond):
+	}
+	unblock()
+	select {
+	case err := <-closed:
+		require.NoError(t, err)
+	case <-time.After(5 * time.Second):
+		t.Fatal("Close failed to drain the terminal completion")
 	}
 }
 
@@ -276,7 +383,7 @@ func TestConcurrentCallersShareFailedInitialization(t *testing.T) {
 		started: make(chan struct{}),
 		release: make(chan struct{}),
 	}
-	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", credential, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 
@@ -287,11 +394,11 @@ func TestConcurrentCallersShareFailedInitialization(t *testing.T) {
 
 	// Start the leader first and wait until its token request proves native initialization is in
 	// flight before releasing the remaining callers.
-	go func() { results <- client.Initialize(context.Background()) }()
+	go func() { results <- client.initialize(context.Background()) }()
 	<-credential.started
 	for range callers - 1 {
 		go func() {
-			results <- client.Initialize(context.Background())
+			results <- client.initialize(context.Background())
 		}()
 	}
 	for range callers - 1 {
@@ -347,11 +454,11 @@ func TestNativeInitializeCreatesTheDriver(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	client, err := NewClientWithKey(endpoint, cred, nil)
+	client, err := newTestClientWithKey(endpoint, cred, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 
-	require.NoError(t, client.Initialize(t.Context()))
+	require.NoError(t, client.initialize(t.Context()))
 	driver, err := client.driver.ensureDriver(context.Background())
 	require.NoError(t, err)
 	require.NotNil(t, driver)
@@ -368,7 +475,7 @@ func TestNativeConstructionDoesNotContactTheAccount(t *testing.T) {
 	require.NoError(t, err)
 
 	// Port 1 is reserved and never listening, so reaching it would fail rather than hang.
-	client, err := NewClientWithKey("https://127.0.0.1:1", cred, nil)
+	client, err := newTestClientWithKey("https://127.0.0.1:1", cred, nil)
 	require.NoError(t, err)
 	require.NoError(t, client.Close())
 }
@@ -474,12 +581,12 @@ func TestNativeDriverCreationHonorsContext(t *testing.T) {
 	ctx, cancel := context.WithTimeout(context.Background(), 200*time.Millisecond)
 	defer cancel()
 
-	client, err := NewClientWithKey(localBlackholeEndpoint(t), cred, nil)
+	client, err := newTestClientWithKey(localBlackholeEndpoint(t), cred, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
 
 	start := time.Now()
-	err = client.Initialize(ctx)
+	err = client.initialize(ctx)
 	elapsed := time.Since(start)
 
 	require.ErrorIs(t, err, context.DeadlineExceeded)
@@ -494,18 +601,17 @@ func TestNativeDriverCreationHonorsContext(t *testing.T) {
 func TestNativeEndToEndTimeoutBoundsLazyInitialization(t *testing.T) {
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
-	client, err := NewClientWithKey(localBlackholeEndpoint(t), cred, nil)
+	client, err := newTestClientWithKey(localBlackholeEndpoint(t), cred, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { _ = client.Close() })
-	container, err := client.NewContainer("db", "items")
-	require.NoError(t, err)
+	container := localTestContainer(client, "db", "items")
 
 	start := time.Now()
 	_, err = container.ReadItem(
 		context.Background(),
 		NewPartitionKeyString("pk"),
 		"item-1",
-		&ReadItemOptions{Operation: OperationOptions{EndToEndTimeout: 200 * time.Millisecond}},
+		&ReadItemOptions{Operation: OperationOptions{EndToEndTimeout: to(time.Duration(200 * time.Millisecond))}},
 	)
 	elapsed := time.Since(start)
 
@@ -540,13 +646,13 @@ func TestPreCancelledInitializeDoesNotSubmit(t *testing.T) {
 		started: make(chan struct{}),
 		stopped: make(chan struct{}),
 	}
-	client, err := NewClient("https://myaccount.documents.azure.com", credential, nil)
+	client, err := newTestTokenClient("https://myaccount.documents.azure.com", credential, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
 
 	ctx, cancel := context.WithCancel(context.Background())
 	cancel()
-	require.ErrorIs(t, client.Initialize(ctx), context.Canceled)
+	require.ErrorIs(t, client.initialize(ctx), context.Canceled)
 
 	select {
 	case <-credential.started:

@@ -67,12 +67,14 @@ func emulatorClientConfigured(
 	cred, err := NewKeyCredential(emulatorKey)
 	require.NoError(t, err)
 
-	client, err := NewClientWithKey(endpoint, cred, options)
+	var client *Client
+	if initialize {
+		client, err = NewClientWithKey(t.Context(), endpoint, cred, options)
+	} else {
+		client, err = newTestClientWithKey(endpoint, cred, options)
+	}
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	if initialize {
-		require.NoError(t, client.Initialize(t.Context()))
-	}
 
 	return client, databaseID, containerID
 }
@@ -127,10 +129,14 @@ type recordingTokenCredential struct {
 }
 
 func (c *recordingTokenCredential) GetToken(
-	_ context.Context,
+	ctx context.Context,
 	options policy.TokenRequestOptions,
 ) (azcore.AccessToken, error) {
-	c.requests <- append([]string(nil), options.Scopes...)
+	select {
+	case c.requests <- append([]string(nil), options.Scopes...):
+	case <-ctx.Done():
+		return azcore.AccessToken{}, ctx.Err()
+	}
 	return azcore.AccessToken{
 		Token:     "emulator-access-token",
 		ExpiresOn: time.Now().Add(time.Hour),
@@ -181,7 +187,7 @@ func emulatorContainer(t *testing.T) *ContainerClient {
 	t.Helper()
 
 	client, databaseID, containerID := emulatorClient(t)
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	return container
 }
@@ -227,7 +233,7 @@ func TestEmulatorCreateThenReadItem(t *testing.T) {
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": 42})
 	require.NoError(t, err)
 
-	created, err := container.CreateItem(ctx, pk, id, item, nil)
+	created, err := container.CreateItem(ctx, pk, id, json.RawMessage(item), nil)
 	require.NoError(t, err)
 	// Cosmos DB bills every request, so a charge of zero means the header never made it back.
 	require.Positive(t, created.RequestCharge, "the request charge has to survive the binding")
@@ -275,10 +281,10 @@ func TestEmulatorCreateItemConflict(t *testing.T) {
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
-	_, err = container.CreateItem(ctx, pk, id, item, nil)
+	_, err = container.CreateItem(ctx, pk, id, json.RawMessage(item), nil)
 	require.NoError(t, err)
 
-	_, err = container.CreateItem(ctx, pk, id, item, nil)
+	_, err = container.CreateItem(ctx, pk, id, json.RawMessage(item), nil)
 	require.Error(t, err)
 
 	var cosmosErr *Error
@@ -310,8 +316,7 @@ func TestEmulatorCreateItemContentResponse(t *testing.T) {
 			item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 			require.NoError(t, err)
 
-			response, err := container.CreateItem(ctx, pk, id, item,
-				&CreateItemOptions{Operation: OperationOptions{EnableContentResponseOnWrite: tt.enabled}})
+			response, err := container.CreateItem(ctx, pk, id, json.RawMessage(item), &CreateItemOptions{Operation: OperationOptions{EnableContentResponseOnWrite: tt.enabled}})
 			require.NoError(t, err)
 
 			if tt.wantContent {
@@ -336,17 +341,21 @@ func TestEmulatorReadItemIfNoneMatch(t *testing.T) {
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
-	created, err := container.CreateItem(ctx, pk, id, item, nil)
+	created, err := container.CreateItem(ctx, pk, id, json.RawMessage(item), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, created.ETag)
 
 	unchanged := created.ETag
-	response, err := container.ReadItem(ctx, pk, id, &ReadItemOptions{IfNoneMatchETag: &unchanged})
+	condition, err := IfNoneMatch(unchanged)
+	require.NoError(t, err)
+	response, err := container.ReadItem(ctx, pk, id, &ReadItemOptions{Precondition: condition})
 	require.NoError(t, err, "an unchanged item is not an error")
 	require.Empty(t, response.Value, "the item has not changed, so it is not sent")
 
 	stale := azcore.ETag("\"00000000-0000-0000-0000-000000000000\"")
-	response, err = container.ReadItem(ctx, pk, id, &ReadItemOptions{IfNoneMatchETag: &stale})
+	condition, err = IfNoneMatch(stale)
+	require.NoError(t, err)
+	response, err = container.ReadItem(ctx, pk, id, &ReadItemOptions{Precondition: condition})
 	require.NoError(t, err)
 	require.NotEmpty(t, response.Value, "the ETag does not match, so the item is sent")
 }
@@ -362,12 +371,12 @@ func TestEmulatorReplaceAndUpsertItem(t *testing.T) {
 
 		original, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": "original"})
 		require.NoError(t, err)
-		created, err := container.CreateItem(ctx, pk, id, original, nil)
+		created, err := container.CreateItem(ctx, pk, id, json.RawMessage(original), nil)
 		require.NoError(t, err)
 
 		replacement, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": "replaced"})
 		require.NoError(t, err)
-		replaced, err := container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{
+		replaced, err := container.ReplaceItem(ctx, pk, id, json.RawMessage(replacement), &ReplaceItemOptions{
 			Operation: OperationOptions{EnableContentResponseOnWrite: to(true)},
 		})
 		require.NoError(t, err)
@@ -399,12 +408,12 @@ func TestEmulatorReplaceAndUpsertItem(t *testing.T) {
 
 		original, err := json.Marshal(map[string]any{"id": existingID, "pk": existingID, "version": 1})
 		require.NoError(t, err)
-		_, err = container.CreateItem(ctx, existingPK, existingID, original, nil)
+		_, err = container.CreateItem(ctx, existingPK, existingID, json.RawMessage(original), nil)
 		require.NoError(t, err)
 
 		updated, err := json.Marshal(map[string]any{"id": existingID, "pk": existingID, "version": 2})
 		require.NoError(t, err)
-		upserted, err := container.UpsertItem(ctx, existingPK, existingID, updated, &UpsertItemOptions{
+		upserted, err := container.UpsertItem(ctx, existingPK, existingID, json.RawMessage(updated), &UpsertItemOptions{
 			Operation: OperationOptions{EnableContentResponseOnWrite: to(true)},
 		})
 		require.NoError(t, err)
@@ -420,7 +429,7 @@ func TestEmulatorReplaceAndUpsertItem(t *testing.T) {
 		trackEmulatorItem(t, container, missingPK, missingID)
 		missing, err := json.Marshal(map[string]any{"id": missingID, "pk": missingID, "version": 1})
 		require.NoError(t, err)
-		created, err := container.UpsertItem(ctx, missingPK, missingID, missing, nil)
+		created, err := container.UpsertItem(ctx, missingPK, missingID, json.RawMessage(missing), nil)
 		require.NoError(t, err)
 		require.NotEmpty(t, created.ETag)
 
@@ -442,7 +451,7 @@ func TestEmulatorConditionalItemWrites(t *testing.T) {
 	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": 1})
 	require.NoError(t, err)
-	created, err := container.CreateItem(ctx, pk, id, item, nil)
+	created, err := container.CreateItem(ctx, pk, id, json.RawMessage(item), nil)
 	require.NoError(t, err)
 
 	replacement, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": 2})
@@ -450,23 +459,26 @@ func TestEmulatorConditionalItemWrites(t *testing.T) {
 	var patch PatchOperations
 	require.NoError(t, patch.AppendSet("/value", 2))
 
-	_, err = container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{IfMatchETag: &stale})
+	staleCondition, err := IfMatch(stale)
+	require.NoError(t, err)
+	_, err = container.ReplaceItem(ctx, pk, id, json.RawMessage(replacement), &ReplaceItemOptions{Precondition: staleCondition})
 	requireWireError(t, err, CodePreconditionFailed, 412)
-	_, err = container.UpsertItem(ctx, pk, id, replacement, &UpsertItemOptions{IfMatchETag: &stale})
+	_, err = container.UpsertItem(ctx, pk, id, json.RawMessage(replacement), &UpsertItemOptions{Precondition: staleCondition})
 	requireWireError(t, err, CodePreconditionFailed, 412)
-	_, err = container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{IfMatchETag: &stale})
+	_, err = container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{Precondition: staleCondition})
 	requirePatchPreconditionError(t, err)
-	_, err = container.DeleteItem(ctx, pk, id, &DeleteItemOptions{IfMatchETag: &stale})
+	_, err = container.DeleteItem(ctx, pk, id, &DeleteItemOptions{Precondition: staleCondition})
 	requireWireError(t, err, CodePreconditionFailed, 412)
 
-	replaced, err := container.ReplaceItem(ctx, pk, id, replacement, &ReplaceItemOptions{
-		IfMatchETag: &created.ETag,
-	})
+	createdCondition, err := IfMatch(created.ETag)
+	require.NoError(t, err)
+	replaced, err := container.ReplaceItem(ctx, pk, id, json.RawMessage(replacement), &ReplaceItemOptions{Precondition: createdCondition})
 	require.NoError(t, err)
 	require.NotEmpty(t, replaced.ETag)
 
-	current := replaced.ETag
-	patched, err := container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{IfMatchETag: &current})
+	current, err := IfMatch(replaced.ETag)
+	require.NoError(t, err)
+	patched, err := container.PatchItem(ctx, pk, id, patch, &PatchItemOptions{Precondition: current})
 	require.NoError(t, err)
 	require.NotEmpty(t, patched.ETag)
 
@@ -475,14 +487,16 @@ func TestEmulatorConditionalItemWrites(t *testing.T) {
 	trackEmulatorItem(t, container, missingPK, missingID)
 	missing, err := json.Marshal(map[string]any{"id": missingID, "pk": missingID})
 	require.NoError(t, err)
-	_, err = container.UpsertItem(ctx, missingPK, missingID, missing, &UpsertItemOptions{
-		IfMatchETag: &stale,
+	_, err = container.UpsertItem(ctx, missingPK, missingID, json.RawMessage(missing), &UpsertItemOptions{
+		Precondition: staleCondition,
 	})
 	require.NoError(t, err, "a missing item is created even with a stale If-Match")
 
 	read, err := container.ReadItem(ctx, pk, id, nil)
 	require.NoError(t, err)
-	deleted, err := container.DeleteItem(ctx, pk, id, &DeleteItemOptions{IfMatchETag: &read.ETag})
+	readCondition, err := IfMatch(read.ETag)
+	require.NoError(t, err)
+	deleted, err := container.DeleteItem(ctx, pk, id, &DeleteItemOptions{Precondition: readCondition})
 	require.NoError(t, err)
 	require.Nil(t, deleted.Value)
 }
@@ -496,7 +510,7 @@ func TestEmulatorDeleteItem(t *testing.T) {
 	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
-	_, err = container.CreateItem(ctx, pk, id, item, nil)
+	_, err = container.CreateItem(ctx, pk, id, json.RawMessage(item), nil)
 	require.NoError(t, err)
 
 	deleted, err := container.DeleteItem(ctx, pk, id, nil)
@@ -527,7 +541,7 @@ func TestEmulatorPatchItem(t *testing.T) {
 		"source":  "move-me",
 	})
 	require.NoError(t, err)
-	_, err = container.CreateItem(ctx, pk, id, item, nil)
+	_, err = container.CreateItem(ctx, pk, id, json.RawMessage(item), nil)
 	require.NoError(t, err)
 
 	var operations PatchOperations
@@ -573,14 +587,14 @@ func TestEmulatorPatchContentResponse(t *testing.T) {
 	} {
 		t.Run(tt.name, func(t *testing.T) {
 			container := emulatorContainerWithOptions(t, &ClientOptions{
-				EnableContentResponseOnWrite: tt.clientEnabled,
+				Operation: OperationOptions{EnableContentResponseOnWrite: tt.clientEnabled},
 			})
 			id := uniqueItemID(t)
 			pk := NewPartitionKeyString(id)
 			trackEmulatorItem(t, container, pk, id)
 			item, err := json.Marshal(map[string]any{"id": id, "pk": id, "value": 1})
 			require.NoError(t, err)
-			_, err = container.CreateItem(t.Context(), pk, id, item, nil)
+			_, err = container.CreateItem(t.Context(), pk, id, json.RawMessage(item), nil)
 			require.NoError(t, err)
 
 			var operations PatchOperations
@@ -612,7 +626,7 @@ func TestEmulatorPatchStrategies(t *testing.T) {
 			trackEmulatorItem(t, container, pk, id)
 			item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 			require.NoError(t, err)
-			_, err = container.CreateItem(t.Context(), pk, id, item, nil)
+			_, err = container.CreateItem(t.Context(), pk, id, json.RawMessage(item), nil)
 			require.NoError(t, err)
 
 			var operations PatchOperations
@@ -661,7 +675,7 @@ func TestEmulatorPatchWholeFloatIncrement(t *testing.T) {
 			trackEmulatorItem(t, container, pk, id)
 			item, err := json.Marshal(map[string]any{"id": id, "pk": id, "amount": 1.5})
 			require.NoError(t, err)
-			_, err = container.CreateItem(t.Context(), pk, id, item, nil)
+			_, err = container.CreateItem(t.Context(), pk, id, json.RawMessage(item), nil)
 			require.NoError(t, err)
 
 			var operations PatchOperations
@@ -686,7 +700,7 @@ func TestEmulatorNewItemOperationsReportMissingItems(t *testing.T) {
 	var operations PatchOperations
 	require.NoError(t, operations.AppendSet("/value", 1))
 
-	_, err := container.ReplaceItem(t.Context(), pk, id, item, nil)
+	_, err := container.ReplaceItem(t.Context(), pk, id, json.RawMessage(item), nil)
 	requireWireStatus(t, err, CodeNotFound, 404)
 	_, err = container.DeleteItem(t.Context(), pk, id, nil)
 	requireWireStatus(t, err, CodeNotFound, 404)
@@ -709,12 +723,12 @@ func TestEmulatorConcurrentItemWriteOperations(t *testing.T) {
 			defer wg.Done()
 			item := []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"value":0}`, id, id))
 
-			if _, err := container.UpsertItem(t.Context(), pk, id, item, nil); err != nil {
+			if _, err := container.UpsertItem(t.Context(), pk, id, json.RawMessage(item), nil); err != nil {
 				errs <- err
 				return
 			}
 			replacement := []byte(fmt.Sprintf(`{"id":%q,"pk":%q,"value":1}`, id, id))
-			if _, err := container.ReplaceItem(t.Context(), pk, id, replacement, nil); err != nil {
+			if _, err := container.ReplaceItem(t.Context(), pk, id, json.RawMessage(replacement), nil); err != nil {
 				errs <- err
 				return
 			}
@@ -813,7 +827,7 @@ func TestEmulatorSessionTokenRoundTrips(t *testing.T) {
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
-	created, err := container.CreateItem(ctx, pk, id, item, nil)
+	created, err := container.CreateItem(ctx, pk, id, json.RawMessage(item), nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, created.SessionToken, "a write reports the session it advanced")
 
@@ -838,7 +852,7 @@ func TestEmulatorLatestCommittedRead(t *testing.T) {
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
-	_, err = container.CreateItem(ctx, pk, id, item, nil)
+	_, err = container.CreateItem(ctx, pk, id, json.RawMessage(item), nil)
 	require.NoError(t, err)
 
 	read, err := container.ReadItem(ctx, pk, id, &ReadItemOptions{
@@ -886,7 +900,7 @@ func TestEmulatorConcurrentOperations(t *testing.T) {
 				errs <- err
 				return
 			}
-			if _, err := container.CreateItem(ctx, pk, id, item, nil); err != nil {
+			if _, err := container.CreateItem(ctx, pk, id, json.RawMessage(item), nil); err != nil {
 				errs <- err
 				return
 			}
@@ -915,10 +929,8 @@ func TestEmulatorConcurrentOperations(t *testing.T) {
 func TestEmulatorUnknownContainer(t *testing.T) {
 	client, databaseID, _ := emulatorClient(t)
 
-	container, err := client.NewContainer(databaseID, "no-such-container")
-	require.NoError(t, err, "naming a container does not contact the service")
-
-	_, err = container.ReadItem(context.Background(), NewPartitionKeyString("pk"), "item-1", nil)
+	container, err := client.NewContainer(t.Context(), databaseID, "no-such-container")
+	require.Nil(t, container)
 	require.Error(t, err)
 
 	var cosmosErr *Error
@@ -926,17 +938,12 @@ func TestEmulatorUnknownContainer(t *testing.T) {
 	require.Equal(t, CodeNotFound, cosmosErr.Code)
 }
 
-// to returns a pointer to v, for the tri-state option fields.
-func to[T any](v T) *T {
-	return &v
-}
-
 // emulatorContainerWithOptions returns a container client built with the options under test.
 func emulatorContainerWithOptions(t *testing.T, options *ClientOptions) *ContainerClient {
 	t.Helper()
 
 	client, databaseID, containerID := emulatorClientWithOptions(t, options)
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	return container
 }
@@ -956,7 +963,7 @@ func createForClientOptions(t *testing.T, container *ContainerClient, operation 
 	if operation != nil {
 		createOptions.Operation = *operation
 	}
-	response, err := container.CreateItem(context.Background(), pk, id, item, createOptions)
+	response, err := container.CreateItem(context.Background(), pk, id, json.RawMessage(item), createOptions)
 	require.NoError(t, err)
 	return len(response.Value) > 0
 }
@@ -974,7 +981,7 @@ func TestEmulatorClientContentResponseOnWrite(t *testing.T) {
 		{"enabled", to(true), true},
 	} {
 		t.Run(tt.name, func(t *testing.T) {
-			container := emulatorContainerWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: tt.enabled})
+			container := emulatorContainerWithOptions(t, &ClientOptions{Operation: OperationOptions{EnableContentResponseOnWrite: tt.enabled}})
 
 			require.Equal(t, tt.want, createForClientOptions(t, container, nil),
 				"an operation that sets nothing inherits the client's setting")
@@ -985,7 +992,7 @@ func TestEmulatorClientContentResponseOnWrite(t *testing.T) {
 // An operation that sets the value overrides the client, which is what makes the client value a
 // default rather than a policy.
 func TestEmulatorOperationContentResponseOverridesTheClient(t *testing.T) {
-	container := emulatorContainerWithOptions(t, &ClientOptions{EnableContentResponseOnWrite: to(true)})
+	container := emulatorContainerWithOptions(t, &ClientOptions{Operation: OperationOptions{EnableContentResponseOnWrite: to(true)}})
 
 	require.False(t, createForClientOptions(t, container, &OperationOptions{
 		EnableContentResponseOnWrite: to(false),
@@ -1008,7 +1015,7 @@ func TestEmulatorRoutingStrategiesRouteReads(t *testing.T) {
 	trackEmulatorItem(t, writer, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
-	_, err = writer.CreateItem(t.Context(), pk, id, item, nil)
+	_, err = writer.CreateItem(t.Context(), pk, id, json.RawMessage(item), nil)
 	require.NoError(t, err)
 
 	for _, tt := range []struct {
@@ -1045,14 +1052,17 @@ func TestEmulatorRoutingStrategiesRouteReads(t *testing.T) {
 // driver accepts survives initialization and a request.
 func TestEmulatorApplicationID(t *testing.T) {
 	// At the driver's 25-byte limit, so a regression in the limit shows up here too.
-	container := emulatorContainerWithOptions(t, &ClientOptions{ApplicationID: "azcosmos-go-v2-e2e-testin"})
+	runtime, err := NewRuntime(&RuntimeOptions{ApplicationID: "azcosmos-go-v2-e2e-testin"})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	container := emulatorContainerWithOptions(t, &ClientOptions{Runtime: runtime})
 
 	createForClientOptions(t, container, nil)
 }
 
-// Initialize does not return until it has fetched account properties and seeded routing state. A
+// Construction does not return until it has fetched account properties and seeded routing state. A
 // later operation therefore sees the same cached driver handle.
-func TestEmulatorInitializeCreatesDriver(t *testing.T) {
+func TestEmulatorConstructorCreatesDriver(t *testing.T) {
 	client, _, _ := emulatorClient(t)
 
 	client.driver.mu.Lock()
@@ -1073,14 +1083,23 @@ func TestEmulatorTokenCredential(t *testing.T) {
 	endpoint, databaseID, containerID := emulatorConfiguration(t)
 	credential := &recordingTokenCredential{requests: make(chan []string, 1)}
 
-	client, err := NewClient(endpoint, credential, nil)
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	client, err := NewClient(t.Context(), endpoint, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
-	require.NoError(t, client.Initialize(t.Context()))
+	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+	defer cancel()
+	require.NoError(t, client.initialize(ctx))
+	select {
+	case scopes := <-credential.requests:
+		require.Equal(t, []string{"https://cosmos.azure.com/.default"}, scopes)
+	case <-ctx.Done():
+		t.Fatal("Initialize did not invoke the supplied credential")
+	}
 
-	require.Equal(t, []string{"https://cosmos.azure.com/.default"}, <-credential.requests)
-
-	container, err := client.NewContainer(databaseID, containerID)
+	container, err := client.NewContainer(t.Context(), databaseID, containerID)
 	require.NoError(t, err)
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
@@ -1088,29 +1107,32 @@ func TestEmulatorTokenCredential(t *testing.T) {
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
-	_, err = container.CreateItem(t.Context(), pk, id, item, nil)
+	_, err = container.CreateItem(t.Context(), pk, id, json.RawMessage(item), nil)
 	require.NoError(t, err)
 	read, err := container.ReadItem(t.Context(), pk, id, nil)
 	require.NoError(t, err)
 	require.NotEmpty(t, read.Value)
 }
 
-// Rust retries token acquisition twice within one initialization. Once those transient failures
-// are exhausted, a later Initialize must start a fresh driver-creation attempt.
+// A failed eager constructor returns nil; a fresh constructor can recover.
 func TestEmulatorInitializationRecoversFromTokenFailure(t *testing.T) {
 	endpoint, _, _ := emulatorConfiguration(t)
 	credential := &recoveringTokenCredential{}
-	client, err := NewClient(endpoint, credential, nil)
+	runtime, err := NewRuntime(nil)
 	require.NoError(t, err)
-	t.Cleanup(func() { require.NoError(t, client.Close()) })
-
-	err = client.Initialize(t.Context())
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+	defer cancel()
+	client, err := NewClient(ctx, endpoint, credential, &ClientOptions{Runtime: runtime})
+	require.Nil(t, client)
 	var cosmosErr *Error
 	require.ErrorAs(t, err, &cosmosErr)
 	require.Equal(t, CodeAuthenticationFailed, cosmosErr.Code)
 	require.Equal(t, int32(2), credential.attempts.Load())
 
-	require.NoError(t, client.Initialize(t.Context()))
+	client, err = NewClient(ctx, endpoint, credential, &ClientOptions{Runtime: runtime})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
 	require.Equal(t, int32(3), credential.attempts.Load())
 }
 
@@ -1122,45 +1144,71 @@ func TestEmulatorInitializationFollowerOutlivesLeader(t *testing.T) {
 		started: make(chan struct{}),
 		release: make(chan struct{}),
 	}
-	client, err := NewClient(endpoint, credential, nil)
+	runtime, err := NewRuntime(nil)
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, runtime.Close()) })
+	client, err := newTestTokenClient(endpoint, credential, &ClientOptions{Runtime: runtime})
 	require.NoError(t, err)
 	t.Cleanup(func() { require.NoError(t, client.Close()) })
+	var releaseOnce sync.Once
+	unblock := func() { releaseOnce.Do(func() { close(credential.release) }) }
+	t.Cleanup(unblock)
+	ctx, cancel := context.WithTimeout(t.Context(), 10*time.Second)
+	defer cancel()
 
 	waiting := make(chan struct{}, 1)
 	client.driver.beforeCreationWait = func() { waiting <- struct{}{} }
 
-	leaderCtx, cancelLeader := context.WithCancel(t.Context())
+	leaderCtx, cancelLeader := context.WithCancel(ctx)
+	defer cancelLeader()
 	leaderResult := make(chan error, 1)
-	go func() { leaderResult <- client.Initialize(leaderCtx) }()
-	<-credential.started
+	go func() { leaderResult <- client.initialize(leaderCtx) }()
+	select {
+	case <-credential.started:
+	case <-ctx.Done():
+		t.Fatal("leader did not reach token acquisition")
+	}
 
 	followerResult := make(chan error, 1)
-	go func() { followerResult <- client.Initialize(t.Context()) }()
-	<-waiting
+	go func() { followerResult <- client.initialize(ctx) }()
+	select {
+	case <-waiting:
+	case <-ctx.Done():
+		t.Fatal("follower did not join the initialization attempt")
+	}
 
 	cancelLeader()
-	require.ErrorIs(t, <-leaderResult, context.Canceled)
-	close(credential.release)
-	require.NoError(t, <-followerResult)
+	select {
+	case err := <-leaderResult:
+		require.ErrorIs(t, err, context.Canceled)
+	case <-ctx.Done():
+		t.Fatal("leader did not stop waiting")
+	}
+	unblock()
+	select {
+	case err := <-followerResult:
+		require.NoError(t, err)
+	case <-ctx.Done():
+		t.Fatal("follower did not finish initialization")
+	}
 }
 
-// Initialize is optional: the first operation performs the same work when callers skip it.
-func TestEmulatorOperationInitializesLazily(t *testing.T) {
+// The private offline seam still exercises the internal lazy initialization guard.
+func TestEmulatorInternalOperationInitializesLazily(t *testing.T) {
 	client, databaseID, containerID := emulatorClientConfigured(t, nil, false)
 
 	client.driver.mu.Lock()
 	require.False(t, client.driver.created)
 	client.driver.mu.Unlock()
 
-	container, err := client.NewContainer(databaseID, containerID)
-	require.NoError(t, err)
+	container := localTestContainer(client, databaseID, containerID)
 	id := uniqueItemID(t)
 	pk := NewPartitionKeyString(id)
 	trackEmulatorItem(t, container, pk, id)
 	item, err := json.Marshal(map[string]any{"id": id, "pk": id})
 	require.NoError(t, err)
 
-	_, err = container.CreateItem(t.Context(), pk, id, item, nil)
+	_, err = container.CreateItem(t.Context(), pk, id, json.RawMessage(item), nil)
 	require.NoError(t, err)
 
 	client.driver.mu.Lock()

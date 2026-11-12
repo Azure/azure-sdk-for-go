@@ -89,22 +89,21 @@ func TestPartitionKeyReleaseIsSafe(t *testing.T) {
 	}
 }
 
-// Unset options preserve driver defaults except binary encoding, since Go returns text JSON.
+// Unset options preserve the driver's binary encoding default.
 func TestOperationOptionsToNativeKeepsDefaults(t *testing.T) {
 	options, release := inspectNativeOperationOptions(OperationOptions{})
 	t.Cleanup(release)
 
 	expected := defaultNativeOperationOptions()
-	expected.binaryEncodingEnabled = 1
 	require.Equal(t, expected, options)
 }
 
-func TestClientOptionsToNativeDisablesBinaryEncoding(t *testing.T) {
+func TestClientOptionsToNativeInheritsBinaryEncoding(t *testing.T) {
 	options, release, err := inspectNativeClientOptions(ClientOptions{})
 	require.NoError(t, err)
 	t.Cleanup(release)
 
-	require.Equal(t, int8(1), options.operationOptions.binaryEncodingEnabled)
+	require.Equal(t, int8(0), options.operationOptions.binaryEncodingEnabled)
 }
 
 // The content-response setting is tri-state at the ABI, so false has to be distinguishable from
@@ -135,7 +134,7 @@ func TestOperationOptionsToNativeCarriesEveryField(t *testing.T) {
 
 	options, release := inspectNativeOperationOptions(OperationOptions{
 		ConsistencyStrategy: ReadConsistencyStrategySession,
-		EndToEndTimeout:     3 * time.Second,
+		EndToEndTimeout:     to(time.Duration(3 * time.Second)),
 		ExcludedRegions:     []Region{RegionEastUS, RegionWestEurope},
 	})
 	t.Cleanup(release)
@@ -148,11 +147,11 @@ func TestOperationOptionsToNativeCarriesEveryField(t *testing.T) {
 
 func TestOperationOptionsClampsSubMillisecondTimeout(t *testing.T) {
 	options, release := inspectNativeOperationOptions(OperationOptions{
-		EndToEndTimeout: time.Nanosecond,
+		EndToEndTimeout: to(time.Duration(time.Nanosecond)),
 	})
 	t.Cleanup(release)
 
-	require.Equal(t, int64(1), options.endToEndTimeoutMillis)
+	require.Equal(t, int64(1000), options.endToEndTimeoutMillis)
 }
 
 // Every strategy has to map to a distinct discriminant, which catches both a mis-mapping and two
@@ -348,7 +347,7 @@ func TestClientOptionsConvertToTheDriversConfig(t *testing.T) {
 		} {
 			t.Run(tt.name, func(t *testing.T) {
 				options, release, err := inspectNativeClientOptions(ClientOptions{
-					EnableContentResponseOnWrite: tt.enabled,
+					Operation: OperationOptions{EnableContentResponseOnWrite: tt.enabled},
 				})
 				require.NoError(t, err)
 				defer release()

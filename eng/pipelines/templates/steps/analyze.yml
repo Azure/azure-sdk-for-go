@@ -180,6 +180,8 @@ steps:
     retryCountOnTaskFailure: 3
 
   - pwsh: |
+      . $(Build.SourcesDirectory)/eng/common/scripts/common.ps1
+      . $(Build.SourcesDirectory)/eng/scripts/analysis-helpers.ps1
       $changedPackages = "$(AnalysisPackages)" -split ","
       $failed = $false
 
@@ -192,11 +194,36 @@ steps:
         $modDirs = & $(Build.SourcesDirectory)/eng/scripts/get_module_dirs.ps1 "$packageDirectory"
 
         foreach ($md in $modDirs) {
-          pushd $md
-          Write-Host "##[command]Executing golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
-          golangci-lint run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml
-
-          if ($LASTEXITCODE) {
+          $lintExitCode = Invoke-WithGoAnalysisTools -PackageDirectory $md -Action {
+            param($settings)
+            $linter = "golangci-lint"
+            if ($settings.LintVersion -and $settings.LintVersion -ne '${{ parameters.LintVersion }}') {
+              if ($settings.LintVersion -notmatch '^v\d+\.\d+\.\d+$') {
+                throw "Invalid LintVersion for ${md}: $($settings.LintVersion)"
+              }
+              $binDir = Join-Path "$(Agent.TempDirectory)" "go-analysis-lint/$($settings.LintVersion)"
+              $linter = Join-Path $binDir "golangci-lint"
+              if (!(Test-Path $linter)) {
+                New-Item -ItemType Directory -Path $binDir -Force | Out-Null
+                $installer = Join-Path $binDir "install.sh"
+                Invoke-WebRequest "https://raw.githubusercontent.com/golangci/golangci-lint/HEAD/install.sh" -OutFile $installer
+                & sh $installer -b $binDir $settings.LintVersion | Out-Host
+                if ($LASTEXITCODE -ne 0) {
+                  throw "Unable to install golangci-lint $($settings.LintVersion)"
+                }
+              }
+            }
+            Push-Location $md
+            try {
+              Write-Host "##[command]Executing $linter run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml in $md"
+              & $linter run -c $(System.DefaultWorkingDirectory)/eng/.golangci.yml | Out-Host
+              return $LASTEXITCODE
+            }
+            finally {
+              Pop-Location
+            }
+          }
+          if ($lintExitCode -ne 0) {
             Write-Host "golangci-lint for $packageDirectory failed. Check above output for details."
             $failed = $true
           }
@@ -312,12 +339,17 @@ steps:
         exit 0
       }
 
+      . $(Build.SourcesDirectory)/eng/common/scripts/common.ps1
+      . $(Build.SourcesDirectory)/eng/scripts/analysis-helpers.ps1
       $changedServices = "$(Packages)" -split ","
       $failed = $false
 
       foreach ($service in $changedServices) {
-        go run . --directory "$(System.DefaultWorkingDirectory)/$service"
-        if ($LASTEXITCODE -ne 0) {
+        $docExitCode = Invoke-WithGoAnalysisTools -PackageDirectory "$(System.DefaultWorkingDirectory)/$service" -Action {
+          go run . --directory "$(System.DefaultWorkingDirectory)/$service" | Out-Host
+          return $LASTEXITCODE
+        }
+        if ($docExitCode -ne 0) {
           $failed = $true
         }
       }

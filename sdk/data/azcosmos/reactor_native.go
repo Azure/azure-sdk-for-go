@@ -15,6 +15,7 @@ import (
 	"runtime"
 	"runtime/cgo"
 	"sync"
+	"unsafe"
 )
 
 // The driver is asynchronous: submitting an operation returns immediately and its result is posted
@@ -34,10 +35,16 @@ const completionBatch = 64
 // rather than a throughput one.
 const completionWaitMillis = 250
 
+// calloc returns nil on allocation failure, unlike cgo's special malloc wrapper.
+var allocateCompletionBatch = func() unsafe.Pointer {
+	return C.calloc(C.size_t(completionBatch), C.size_t(C.sizeof_cosmos_completion_t))
+}
+
 // reactor drains one completion queue and delivers each completion to the operation that submitted
 // it.
 type reactor struct {
 	queue *C.cosmos_completion_queue_t
+	batch []C.cosmos_completion_t
 
 	waitMillis uint32
 	beforeWait func()
@@ -55,19 +62,26 @@ type reactor struct {
 	stopOnce sync.Once
 }
 
-// pendingOperation receives the single completion for one submitted operation.
+// pendingOperation transfers exclusive completion ownership to one waiting caller or discard path.
 //
 // The channel is buffered so the reactor never blocks delivering a result, even if the submitting
 // goroutine has already abandoned the wait because its context was cancelled.
 type pendingOperation struct {
-	result chan completionResult
-	mu     sync.Mutex
-	closed bool
+	result       chan completionResult
+	delivered    chan struct{}
+	deliveryOnce sync.Once
+	mu           sync.Mutex
+	closed       bool
 }
 
 func (p *pendingOperation) deliver(result completionResult) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
+	defer p.deliveryOnce.Do(func() {
+		if p.delivered != nil {
+			close(p.delivered)
+		}
+	})
 	if p.closed {
 		result.release()
 		return
@@ -121,8 +135,18 @@ func newReactorWithWait(
 		}
 	}
 
+	memory := allocateCompletionBatch()
+	if memory == nil {
+		C.cosmos_completion_queue_free(queue)
+		return nil, &Error{
+			Code:    CodeClientError,
+			Message: "azcosmos: allocating the completion batch",
+		}
+	}
+
 	r := &reactor{
 		queue:      queue,
+		batch:      unsafe.Slice((*C.cosmos_completion_t)(memory), completionBatch),
 		waitMillis: waitMillis,
 		beforeWait: beforeWait,
 		verbosity:  verbosity,
@@ -133,9 +157,10 @@ func newReactorWithWait(
 	return r, nil
 }
 
-// run drains the queue until stopped. It owns the queue handle for its lifetime.
+// run drains the queue until stopped. It owns the C-allocated batch for its lifetime.
 func (r *reactor) run() {
 	defer close(r.done)
+	defer C.free(unsafe.Pointer(&r.batch[0]))
 
 	// The wait call blocks in C, which parks the calling thread. Pinning the goroutine to its own
 	// OS thread keeps the Go scheduler from having to grow the thread pool around it, and keeps
@@ -143,7 +168,7 @@ func (r *reactor) run() {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 
-	batch := make([]C.cosmos_completion_t, completionBatch)
+	batch := r.batch
 	for {
 		select {
 		case <-r.stop:
@@ -171,8 +196,7 @@ func (r *reactor) drainOnce(batch []C.cosmos_completion_t, timeoutMillis uint32)
 	if n == 0 {
 		return
 	}
-	// Every completion the wait wrote has to be freed, whether or not it was delivered, and the
-	// whole run can be freed at once. Translation copies out of it first.
+	// Delivered records were moved and zeroed; only unclaimed slots still own native backing.
 	defer C.cosmos_completion_queue_free_completions(&batch[0], n)
 
 	for i := 0; i < int(n); i++ {
@@ -184,7 +208,7 @@ func (r *reactor) drainOnce(batch []C.cosmos_completion_t, timeoutMillis uint32)
 //
 // The cookie is a cgo.Handle for the pendingOperation. A completion whose cookie is zero or no
 // longer valid is dropped: that means the submitting goroutine has already gone away, which is not
-// an error, and dereferencing it would be a use-after-free. Those paths return before translation,
+// an error, and dereferencing it would be a use-after-free. Those paths return before transfer,
 // so the completion still owns anything it carries and the free at the end of the drain reclaims
 // it.
 func (r *reactor) deliver(completion *C.cosmos_completion_t) {
@@ -202,16 +226,15 @@ func (r *reactor) deliver(completion *C.cosmos_completion_t) {
 		return
 	}
 
-	// Translation copies every field it needs, because the completion's memory is reclaimed as
-	// soon as this drain returns, and detaches any handle the completion carries.
-	pending.deliver(translateCompletion(completion, r.verbosity))
+	// Clear the source before publishing: the caller can prepare and free its record immediately,
+	// independently of batch cleanup and the next poll.
+	pending.deliver(moveCompletion(completion, r.verbosity))
 }
 
 // close stops the reactor and releases the queue. It is idempotent.
 //
 // Shutting the queue down first unblocks its wait call and rejects new submissions; it does not
-// cancel operations already in flight. Client.Close reaches this path only after its lifetime lock
-// has drained every operation.
+// cancel operations already in flight. Client.Close drains callers and pending native work first.
 func (r *reactor) close() {
 	if r == nil {
 		return
@@ -223,5 +246,6 @@ func (r *reactor) close() {
 		// Freed only after the loop has returned, so nothing can be waiting on it.
 		C.cosmos_completion_queue_free(r.queue)
 		r.queue = nil
+		r.batch = nil
 	})
 }

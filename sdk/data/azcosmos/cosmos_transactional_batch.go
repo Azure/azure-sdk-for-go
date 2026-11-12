@@ -91,7 +91,7 @@ type batchOperation interface {
 }
 
 func (b TransactionalBatch) validateResourceNames(client *Client) error {
-	if client.disableResourceNameValidation {
+	if !client.enableResourceNameValidation {
 		return nil
 	}
 	for i, operation := range b.operations {

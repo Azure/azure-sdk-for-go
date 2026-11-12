@@ -6,13 +6,14 @@
 
 ### Features Added
 
+* Added optional resource-name validation. Set `ClientOptions.EnableResourceNameValidation` to `true` to validate database, container, and item IDs before requests. Validation rejects invalid UTF-8, empty IDs, exact dot segments, and names containing `/`, `\`, `?`, `#`, tab, line feed, or carriage return. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 * Fixed transactional batch item IDs being inserted into JSON without escaping. IDs now remain a single string value in Read, Replace, Patch, and Delete operations. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
 * Reject malformed transactional batch item bodies before serialization so they cannot alter the surrounding operation. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
-* Database, container, and item IDs are now validated before request construction by default, including IDs in Create, Upsert, Replace, read-many, and transactional batch operations. Empty IDs, exact dot segments, and names containing `/`, `\`, `?`, `#`, tab, line feed, or carriage return are rejected. Set `ClientOptions.DisableResourceNameValidation` to `true` only for compatibility with existing service-accepted names. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
 
 ### Other Changes
 

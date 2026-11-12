@@ -424,9 +424,9 @@ func TestItemConcurrent(t *testing.T) {
 
 func TestItemIdEncodingRoutingGW(t *testing.T) {
 	emulatorTests := newEmulatorTests(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+	client := emulatorTests.getClientWithOptions(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
-	}))
+	}), ClientOptions{EnableResourceNameValidation: true})
 	defer client.Close()
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
@@ -459,8 +459,8 @@ func TestItemIdEncodingRoutingGW(t *testing.T) {
 	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("Disallowed?Chars"), []byte(`{"id":"Disallowed?Chars","pk":"Disallowed?Chars"}`), nil)
 	require.ErrorContains(t, err, "invalid item ID")
 
-	// Preserve the service's legacy encoding scenarios with validation disabled.
-	compatClient := emulatorTests.getClientWithOptions(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}), ClientOptions{DisableResourceNameValidation: true})
+	// Preserve the service's legacy encoding scenarios with default options.
+	compatClient := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
 	defer compatClient.Close()
 	compatContainer, err := compatClient.NewContainer(database.ID(), container.ID())
 	require.NoError(t, err)
@@ -475,9 +475,9 @@ func TestItemIdEncodingRoutingGW(t *testing.T) {
 
 func TestItemIdEncodingComputeGW(t *testing.T) {
 	emulatorTests := newEmulatorTestsWithComputeGateway(t)
-	client := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{
+	client := emulatorTests.getClientWithOptions(t, newSpanValidator(t, &spanMatcher{
 		ExpectedSpans: []string{},
-	}))
+	}), ClientOptions{EnableResourceNameValidation: true})
 	defer client.Close()
 
 	database := emulatorTests.createDatabase(t, context.TODO(), client, "itemCRUD")
@@ -510,8 +510,8 @@ func TestItemIdEncodingComputeGW(t *testing.T) {
 	_, err = container.CreateItem(context.TODO(), NewPartitionKeyString("Disallowed?Chars"), []byte(`{"id":"Disallowed?Chars","pk":"Disallowed?Chars"}`), nil)
 	require.ErrorContains(t, err, "invalid item ID")
 
-	// Preserve the service's legacy encoding scenarios with validation disabled.
-	compatClient := emulatorTests.getClientWithOptions(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}), ClientOptions{DisableResourceNameValidation: true})
+	// Preserve the service's legacy encoding scenarios with default options.
+	compatClient := emulatorTests.getClient(t, newSpanValidator(t, &spanMatcher{ExpectedSpans: []string{}}))
 	defer compatClient.Close()
 	compatContainer, err := compatClient.NewContainer(database.ID(), container.ID())
 	require.NoError(t, err)

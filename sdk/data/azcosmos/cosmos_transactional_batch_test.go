@@ -82,14 +82,36 @@ func TestTransactionalBatchResourceNameValidation(t *testing.T) {
 		batch.ReadItem(id, nil)
 		batch.DeleteItem(id, nil)
 		batch.PatchItem(id, PatchOperations{}, nil)
-		container := &ContainerClient{database: &DatabaseClient{client: &Client{}}}
+		container := &ContainerClient{database: &DatabaseClient{client: &Client{enableResourceNameValidation: true}}}
 		for _, op := range batch.operations {
 			invalid := TransactionalBatch{operations: []batchOperation{batchOperationRead{operationType: "Read", id: "safe"}, op}}
-			require.ErrorContains(t, invalid.validateResourceNames(&Client{}), "batch operation at index 1: invalid item ID")
-			require.NoError(t, invalid.validateResourceNames(&Client{disableResourceNameValidation: true}))
+			require.ErrorContains(t, invalid.validateResourceNames(&Client{enableResourceNameValidation: true}), "batch operation at index 1: invalid item ID")
+			require.NoError(t, invalid.validateResourceNames(&Client{}))
 			_, err := container.ExecuteTransactionalBatch(context.Background(), invalid, nil)
 			require.ErrorContains(t, err, "batch operation at index 1: invalid item ID")
 		}
+	}
+}
+
+func TestTransactionalBatchInvalidUTF8IDs(t *testing.T) {
+	client := &Client{enableResourceNameValidation: true}
+	container := &ContainerClient{database: &DatabaseClient{client: client}}
+	id := "item" + string([]byte{0xff})
+	body := []byte(`{"id":"` + id + `"}`)
+	batch := &TransactionalBatch{}
+	batch.CreateItem(body, nil)
+	batch.UpsertItem(body, nil)
+	batch.ReplaceItem("safe", body, nil)
+	batch.ReplaceItem(id, []byte(`{}`), nil)
+	batch.ReadItem(id, nil)
+	batch.DeleteItem(id, nil)
+	batch.PatchItem(id, PatchOperations{}, nil)
+	for _, op := range batch.operations {
+		b := TransactionalBatch{operations: []batchOperation{op}}
+		_, err := container.ExecuteTransactionalBatch(context.Background(), b, nil)
+		require.ErrorContains(t, err, "invalid item ID")
+		require.ErrorContains(t, err, "valid UTF-8")
+		require.NoError(t, b.validateResourceNames(&Client{}))
 	}
 }
 
@@ -111,10 +133,10 @@ func TestTransactionalBatchRejectsMalformedItemBodies(t *testing.T) {
 }
 
 func TestTransactionalBatchEscapedIDReachesPipeline(t *testing.T) {
-	for _, disabled := range []bool{false, true} {
-		t.Run(map[bool]string{false: "default", true: "disabled"}[disabled], func(t *testing.T) {
+	for _, enabled := range []bool{false, true} {
+		t.Run(map[bool]string{false: "default", true: "enabled"}[enabled], func(t *testing.T) {
 			id := `allowed","id":"victim`
-			if disabled {
+			if !enabled {
 				id = "allowed\\name" + id
 			}
 			reachedPipeline := errors.New("request reached pipeline")
@@ -130,8 +152,8 @@ func TestTransactionalBatchEscapedIDReachesPipeline(t *testing.T) {
 			require.NoError(t, err)
 			client := &Client{
 				endpoint: "https://localhost", internal: internal, gem: &globalEndpointManager{},
-				endpointUrl:                   &url.URL{Scheme: "https", Host: "localhost"},
-				disableResourceNameValidation: disabled,
+				endpointUrl:                  &url.URL{Scheme: "https", Host: "localhost"},
+				enableResourceNameValidation: enabled,
 			}
 			container, err := client.NewContainer("database", "container")
 			require.NoError(t, err)

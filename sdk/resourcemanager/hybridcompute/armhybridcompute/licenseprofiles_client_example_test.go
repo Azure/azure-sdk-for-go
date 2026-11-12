@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15/licenseProfile/LicenseProfile_CreateOrUpdate.json
+// Generated from example definition: 2026-09-01/licenseProfile/LicenseProfile_CreateOrUpdate.json
 func ExampleLicenseProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -100,11 +100,13 @@ func ExampleLicenseProfilesClient_BeginCreateOrUpdate() {
 	// 				SoftwareAssuranceCustomer: to.Ptr(true),
 	// 			},
 	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/licenseProfile/LicenseProfile_Delete.json
+// Generated from example definition: 2026-09-01/licenseProfile/LicenseProfile_Delete.json
 func ExampleLicenseProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +127,7 @@ func ExampleLicenseProfilesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-15/licenseProfile/LicenseProfile_Update.json
+// Generated from example definition: 2026-09-01/licenseProfile/LicenseProfile_Update.json
 func ExampleLicenseProfilesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +217,7 @@ func ExampleLicenseProfilesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/licenseProfile/LicenseProfile_Get.json
+// Generated from example definition: 2026-09-01/licenseProfile/LicenseProfile_Get.json
 func ExampleLicenseProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -278,11 +280,13 @@ func ExampleLicenseProfilesClient_Get() {
 	// 				SoftwareAssuranceCustomer: to.Ptr(true),
 	// 			},
 	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/licenseProfile/LicenseProfile_List.json
+// Generated from example definition: 2026-09-01/licenseProfile/LicenseProfile_List.json
 func ExampleLicenseProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -350,6 +354,8 @@ func ExampleLicenseProfilesClient_NewListPager() {
 		// 					SoftwareAssurance: &armhybridcompute.LicenseProfilePropertiesSoftwareAssurance{
 		// 						SoftwareAssuranceCustomer: to.Ptr(true),
 		// 					},
+		// 				},
+		// 				Tags: map[string]*string{
 		// 				},
 		// 			},
 		// 		},

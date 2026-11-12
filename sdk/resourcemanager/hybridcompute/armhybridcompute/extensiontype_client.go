@@ -19,7 +19,7 @@ import (
 // ExtensionTypeClient contains the methods for the ExtensionType group.
 // Don't use this type directly, use NewExtensionTypeClient() instead.
 //
-// Generated from API version 2026-07-15
+// Generated from API version 2026-09-01
 type ExtensionTypeClient struct {
 	internal *arm.Client
 }
@@ -91,7 +91,7 @@ func (client *ExtensionTypeClient) listCreateRequest(ctx context.Context, locati
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

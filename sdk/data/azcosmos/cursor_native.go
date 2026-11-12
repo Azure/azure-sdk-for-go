@@ -40,6 +40,20 @@ type nativeQueryCursor struct {
 }
 
 func (d *nativeDriver) openCursor(ctx context.Context, driver *C.cosmos_driver_t, operation C.cosmos_operation_request_t) (*nativeQueryCursor, error) {
+	var request C.cosmos_cursor_request_t
+	C.cosmos_cursor_request_init(&request) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	request.operation = operation
+	return d.openCursorWith(ctx, func(queue *C.cosmos_completion_queue_t, cookie C.intptr_t, status *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
+		return C.cosmos_cursor_open_submit(driver, &request, queue, cookie, status) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	})
+}
+
+// openCursorWith registers a cursor and opens it through submit, which every cursor-producing
+// operation shares because their completions use the same format and ownership rules.
+func (d *nativeDriver) openCursorWith(
+	ctx context.Context,
+	submit func(*C.cosmos_completion_queue_t, C.intptr_t, *C.cosmos_status_code_t) *C.cosmos_operation_handle_t,
+) (*nativeQueryCursor, error) {
 	if err := ctx.Err(); err != nil {
 		return nil, err
 	}
@@ -55,11 +69,8 @@ func (d *nativeDriver) openCursor(ctx context.Context, driver *C.cosmos_driver_t
 	d.cursors[q] = struct{}{}
 	d.mu.Unlock()
 	q.mu.Lock()
-	var request C.cosmos_cursor_request_t
-	C.cosmos_cursor_request_init(&request) //nolint:gocritic // dupSubExpr targets cgo-generated code.
-	request.operation = operation
 	completion, err := q.submit(ctx, func(cookie C.intptr_t, status *C.cosmos_status_code_t) *C.cosmos_operation_handle_t {
-		return C.cosmos_cursor_open_submit(driver, &request, q.queue, cookie, status) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+		return submit(q.queue, cookie, status)
 	})
 	if err == nil {
 		defer C.cosmos_cursor_completion_free(completion)

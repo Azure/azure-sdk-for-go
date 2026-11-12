@@ -179,7 +179,9 @@ type Error struct {
 	// for writes, where a wire failure means the operation definitely reached the service and a
 	// client-side one leaves that unknown. Local decoding failures can retain metadata from a
 	// successful response while FromWire is false; this flag identifies the origin of the error,
-	// not whether an earlier write succeeded.
+	// not whether an earlier write succeeded. Likewise, the 503 failures with substatus 20310,
+	// 20311, and 20312 that the driver synthesizes after a service failure keep that response's
+	// metadata, such as RequestCharge and ActivityID, but report FromWire false.
 	FromWire bool
 
 	cause error
@@ -347,6 +349,13 @@ const (
 	// the same class of failure, and so does this.
 	subStatusClientGenerated401   = 20401
 	subStatusAuthenticationFailed = 20402
+	// Synthetic 503s wrapping a service failure the driver could not route around: a read session
+	// that stayed unavailable (404/1002), writes forbidden in a region (403/3), and a database
+	// account that could not be found (403/1008). The wrapped response is real, so these are the
+	// service's unavailability rather than a local failure.
+	subStatusClientReadSessionNotAvailable = 20310
+	subStatusClientWriteForbidden          = 20311
+	subStatusClientDatabaseAccountNotFound = 20312
 )
 
 // codeForSyntheticSubStatus classifies a failure the client produced rather than the service.
@@ -366,6 +375,10 @@ func codeForSyntheticSubStatus(subStatus int) Code {
 		return CodeClientOperationTimeout
 	case subStatus >= subStatusSerializationMin && subStatus <= subStatusSerializationMax:
 		return CodeSerializationFailed
+	case subStatus == subStatusClientReadSessionNotAvailable,
+		subStatus == subStatusClientWriteForbidden,
+		subStatus == subStatusClientDatabaseAccountNotFound:
+		return CodeServiceUnavailable
 	default:
 		return CodeClientError
 	}

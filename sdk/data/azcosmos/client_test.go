@@ -260,6 +260,19 @@ func TestNewClientCopiesContentResponseOption(t *testing.T) {
 	require.True(t, *client.options.Operation.EnableContentResponseOnWrite)
 }
 
+func TestNewClientCopiesResourceNameValidationOption(t *testing.T) {
+	enabled := false
+	client, err := newClient("https://myaccount.documents.azure.com", testAccountKey, nil, &ClientOptions{
+		ResourceNameValidation: &enabled,
+	})
+	require.NoError(t, err)
+	t.Cleanup(func() { require.NoError(t, client.Close()) })
+
+	enabled = true
+	require.NotNil(t, client.options.ResourceNameValidation)
+	require.False(t, *client.options.ResourceNameValidation)
+}
+
 // Close is documented as idempotent, safe to call concurrently, and as reporting the same result
 // to every caller. Storing the teardown error in a local rather than on the client would give it
 // to the first caller alone, which is what this exercises under -race.

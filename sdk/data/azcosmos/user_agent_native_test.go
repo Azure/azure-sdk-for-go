@@ -70,14 +70,13 @@ func TestNativeUserAgentOnWire(t *testing.T) {
 			mu.Lock()
 			defer mu.Unlock()
 			require.NotEmpty(t, agents, "native driver sent no observed service request")
-			suffixPattern := ` ` + regexp.QuoteMeta(tt.applicationID)
-			if tt.applicationID == "" {
-				suffixPattern = ` rustc/[^ |]+`
+			suffixPattern := ""
+			if tt.applicationID != "" {
+				suffixPattern = ` ` + regexp.QuoteMeta(tt.applicationID)
 			}
+			prefix := regexp.QuoteMeta("azsdk-go-azcosmos/" + strings.TrimPrefix(serviceLibVersion, "v"))
 			for _, agent := range agents {
-				require.Contains(t, strings.Fields(agent), "azsdk-go-azcosmos/"+strings.TrimPrefix(serviceLibVersion, "v"))
-				require.Regexp(t, `(?:^| )azsdk-rust-cosmos-driver/\S+(?: |$)`, agent)
-				require.Regexp(t, suffixPattern+`\|F[0-9A-Fa-f]+$`, agent)
+				require.Regexp(t, `^`+prefix+` \(drv=[^;()]+; [^;()]+; [^;()]+; [^;()]+; ft=[^;()]+\)`+suffixPattern+`$`, agent)
 			}
 		})
 	}

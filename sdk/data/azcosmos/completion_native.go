@@ -9,6 +9,7 @@ package azcosmos
 
 /*
 #include <stdlib.h>
+#include <string.h>
 #include "azurecosmosdriver.h"
 
 static cosmos_value_t cosmos_test_string_value(const char *value) {
@@ -30,6 +31,18 @@ static cosmos_value_t cosmos_test_f64_value(double value) {
 	out.kind = COSMOS_VALUE_KIND_F64;
 	out.payload.f64_value = value;
 	return out;
+}
+
+static cosmos_status_code_t cosmos_test_status_roundtrip(cosmos_status_code_t status) {
+	return status;
+}
+
+static int cosmos_test_status_http(cosmos_status_code_t status) {
+	return COSMOS_STATUS_HTTP(status);
+}
+
+static int cosmos_test_status_sub(cosmos_status_code_t status) {
+	return COSMOS_STATUS_SUB(status);
 }
 */
 import "C"
@@ -141,6 +154,7 @@ func translateCompletionOutcome(completion *C.cosmos_completion_t, verbosity Dia
 	if diagnostics != nil {
 		diagnostics.StatusCode = int(completion.http_status_code)
 		diagnostics.SubStatus = subStatus
+		diagnostics.initializeJSON(verbosity)
 	}
 
 	response := ItemResponse{
@@ -365,6 +379,13 @@ func syntheticBatchCompletion(body []byte, httpStatus int) completionResult {
 }
 
 func syntheticCompletionWithHeaders(outcome C.cosmos_completion_outcome_t, httpStatus, packedSubStatus int, body []byte) completionResult {
+	return syntheticErrorMappingCompletion(outcome, uint32(httpStatus)<<16|uint32(packedSubStatus),
+		httpStatus, 3200, true, body)
+}
+
+// syntheticErrorMappingCompletion poisons C-owned buffers after translation, before freeing them.
+// This makes ownership assertions deterministic rather than relying on freed memory staying intact.
+func syntheticErrorMappingCompletion(outcome C.cosmos_completion_outcome_t, bits uint32, httpStatus, headerSubStatus int, fromWire bool, body []byte) completionResult {
 	var allocations []unsafe.Pointer
 	cString := func(value string) *C.char {
 		ptr := C.CString(value)
@@ -374,6 +395,10 @@ func syntheticCompletionWithHeaders(outcome C.cosmos_completion_outcome_t, httpS
 
 	defer func() {
 		for _, allocation := range allocations {
+			bytes := unsafe.Slice((*byte)(allocation), int(C.strlen((*C.char)(allocation))))
+			for i := range bytes {
+				bytes[i] = 'x'
+			}
 			C.free(allocation)
 		}
 	}()
@@ -400,7 +425,7 @@ func syntheticCompletionWithHeaders(outcome C.cosmos_completion_outcome_t, httpS
 	}
 	headers[4] = C.cosmos_response_header_t{
 		id:    C.COSMOS_HEADER_ID_SUB_STATUS,
-		value: C.cosmos_test_i64_value(3200),
+		value: C.cosmos_test_i64_value(C.int64_t(headerSubStatus)),
 	}
 	headers[5] = C.cosmos_response_header_t{
 		id:    C.COSMOS_HEADER_ID_RETRY_AFTER_MS,
@@ -408,20 +433,50 @@ func syntheticCompletionWithHeaders(outcome C.cosmos_completion_outcome_t, httpS
 	}
 
 	bodyMemory := C.CBytes(body)
-	defer C.free(bodyMemory)
+	defer func() {
+		bytes := unsafe.Slice((*byte)(bodyMemory), len(body))
+		for i := range bytes {
+			bytes[i] = 'x'
+		}
+		C.free(bodyMemory)
+	}()
 
-	completion := C.cosmos_completion_t{
+	completion := (*C.cosmos_completion_t)(C.malloc(C.size_t(unsafe.Sizeof(C.cosmos_completion_t{}))))
+	defer C.free(unsafe.Pointer(completion))
+	*completion = C.cosmos_completion_t{
 		outcome:          outcome,
-		status:           C.cosmos_status_code_t((httpStatus << 16) | packedSubStatus),
+		status:           C.cosmos_status_code_t(bits),
 		http_status_code: C.uint16_t(httpStatus),
-		is_from_wire:     1,
 		message:          cString("Request rate is large."),
 		headers:          (*C.cosmos_response_header_t)(headerMemory),
 		headers_len:      headerCount,
 		body:             (*C.uint8_t)(bodyMemory),
 		body_len:         C.uintptr_t(len(body)),
 	}
-	return moveCompletion(&completion, DiagnosticsVerbosityDefault).prepare()
+	if fromWire {
+		completion.is_from_wire = 1
+	}
+	return moveCompletion(completion, DiagnosticsVerbosityDefault).prepare()
+}
+
+// nativeMappingCompletion keeps cgo types out of the table-driven tests.
+func nativeMappingCompletion(bits uint32, httpStatus, headerSubStatus int, fromWire, cancelled bool, body []byte) completionResult {
+	outcome := C.cosmos_completion_outcome_t(C.COSMOS_COMPLETION_OUTCOME_ERROR)
+	if cancelled {
+		outcome = C.COSMOS_COMPLETION_OUTCOME_CANCELLED
+	}
+	return syntheticErrorMappingCompletion(outcome, bits, httpStatus, headerSubStatus, fromWire, body)
+}
+
+func nativeStatusBits(bits uint32) (uint32, int64, int, int, int) {
+	status := C.cosmos_test_status_roundtrip(C.cosmos_status_code_t(bits))
+	httpStatus, subStatus := unpackStatus(status)
+	return uint32(status), int64(status), int(unsafe.Sizeof(status)), httpStatus, subStatus
+}
+
+func nativeStatusMacroParts(bits uint32) (int, int) {
+	status := C.cosmos_status_code_t(bits)
+	return int(C.cosmos_test_status_http(status)), int(C.cosmos_test_status_sub(status))
 }
 
 // syntheticOutcome mirrors cosmos_completion_outcome_t without exposing the cgo type to tests, so
@@ -513,19 +568,24 @@ func syntheticSessionCompletion() ItemResponse {
 // dispatchSyntheticCompletion borrows C buffers, not Rust backing. The caller must keep them
 // alive until preparation finishes; real backing and side handles are exercised by emulator tests.
 func dispatchSyntheticCompletion(r *reactor, cookie uintptr, status int, body string) (bool, func()) {
+	var source C.cosmos_completion_t
+	return dispatchSyntheticCompletionInSlot(r, &source, cookie, status, body)
+}
+
+func dispatchSyntheticCompletionInSlot(r *reactor, source *C.cosmos_completion_t, cookie uintptr, status int, body string) (bool, func()) {
 	var memory unsafe.Pointer
 	if body != "" {
 		memory = C.CBytes([]byte(body))
 	}
-	source := C.cosmos_completion_t{
+	*source = C.cosmos_completion_t{
 		outcome: C.COSMOS_COMPLETION_OUTCOME_OK, user_data: C.intptr_t(cookie),
 		http_status_code: C.uint16_t(status), body: (*C.uint8_t)(memory), body_len: C.uintptr_t(len(body)),
 	}
-	r.deliver(&source)
-	cleared := source == (C.cosmos_completion_t{})
+	r.deliver(source)
+	cleared := *source == (C.cosmos_completion_t{})
 	// Reusing the slot must not change the record handed to the caller.
 	source.http_status_code = 599
-	C.cosmos_completion_queue_free_completions(&source, 1) //nolint:gocritic // dupSubExpr targets cgo-generated code.
+	C.cosmos_completion_queue_free_completions(source, 1)
 	return cleared, func() { C.free(memory) }
 }
 

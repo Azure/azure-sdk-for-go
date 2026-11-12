@@ -41,6 +41,33 @@ extends:
     # Keep the shared build matrix unchanged. Its live path also uses that matrix,
     # including unsupported native targets, so compose the bounded Linux lane below.
     AdditionalStages:
+      # Linux/amd64 executes native tests in DriverEmulator below. The shared PR matrix
+      # has no macOS agent, so separately compile/link the Darwin/arm64 tests without running them.
+      - stage: DarwinNativeCompile
+        displayName: 'Cosmos Darwin/arm64 native compile'
+        dependsOn: []
+        jobs:
+        - job: CompileNativeTests
+          pool:
+            name: Azure Pipelines
+            vmImage: 'macOS-15'
+            os: macOS
+          steps:
+          - task: GoTool@0
+            inputs:
+              version: '1.27.2'
+            displayName: 'Select Go Version'
+          - script: |
+              set -euo pipefail
+              go test -exec /usr/bin/true ./...
+            workingDirectory: sdk/data/azcosmos
+            displayName: 'Compile and link Darwin/arm64 cgo tests (no execution)'
+            env:
+              CGO_ENABLED: '1'
+              GOOS: darwin
+              GOARCH: arm64
+              CC: clang
+
       - stage: Emulator
         displayName: 'Cosmos Emulator'
         variables:
@@ -204,6 +231,29 @@ extends:
               exit 1
             displayName: 'Start the in-memory Cosmos emulator'
 
+          - script: |
+              # cSpell:ignore ppaf PPAF
+              set -euo pipefail
+              config='sdk/data/azcosmos/internal/testdata/emulator-ppaf-config.json'
+              nohup "$(EmulatorBinDir)/azure_data_cosmos_emulator" --config "$config" \
+                > "$(Agent.TempDirectory)/emulator-ppaf-ready.json" \
+                2> "$(Agent.TempDirectory)/emulator-ppaf.log" &
+
+              for _ in $(seq 1 60); do
+                if grep -q '"event":"ready"' "$(Agent.TempDirectory)/emulator-ppaf-ready.json" 2>/dev/null; then
+                  endpoint=$(python3 -c "import json,sys; print(json.load(open(sys.argv[1]))['accountEndpoint'])" \
+                    "$(Agent.TempDirectory)/emulator-ppaf-ready.json")
+                  echo "PPAF emulator ready at $endpoint"
+                  echo "##vso[task.setvariable variable=EmulatorPPAFEndpoint]$endpoint"
+                  exit 0
+                fi
+                sleep 1
+              done
+              echo '##[error] The PPAF emulator did not become ready.'
+              tail -50 "$(Agent.TempDirectory)/emulator-ppaf.log" || true
+              exit 1
+            displayName: 'Start the PPAF Cosmos emulator'
+
           - task: GoTool@0
             inputs:
               version: '1.27.2'
@@ -221,6 +271,7 @@ extends:
                 EMULATOR: 'true'
                 AZCOSMOS_ENDPOINT: $(EmulatorEndpoint)
                 AZCOSMOS_MANAGEMENT_ENDPOINT: $(EmulatorManagementEndpoint)
+                AZCOSMOS_PPAF_ENDPOINT: $(EmulatorPPAFEndpoint)
                 CGO_ENABLED: '1'
 
       - ${{ if and(eq(variables['System.TeamProject'], 'internal'), startsWith(variables['Build.SourceBranch'], 'refs/heads/'), ne(variables['Build.Reason'], 'PullRequest'), or(and(eq(variables['Build.Reason'], 'Manual'), parameters.RunLiveTests), eq(variables['Build.Reason'], 'Schedule'), endsWith(variables['Build.DefinitionName'], '- weekly'))) }}:

@@ -36,10 +36,14 @@ type ClientOptions struct {
 	// DiagnosticsHandler observes completed item calls after their lifetime guard is released.
 	// It must be safe for concurrent calls. Query-specific diagnostics are not configured here.
 	DiagnosticsHandler func(context.Context, OperationDiagnostic)
-	// DiagnosticsVerbosity controls how much detail every completion's [Diagnostics.JSON] renders.
-	// The zero value, DiagnosticsVerbosityDefault, resolves to DiagnosticsVerbositySummary. It
-	// applies to every operation on the client; there is no per-operation override.
+	// DiagnosticsVerbosity controls how much detail [Diagnostics.JSON] renders on first use. The
+	// zero value, DiagnosticsVerbosityDefault, resolves to DiagnosticsVerbositySummary. It applies
+	// to every operation on the client; there is no per-operation override.
 	DiagnosticsVerbosity DiagnosticsVerbosity
+	// ResourceNameValidation controls whether the client rejects unsafe user-defined resource
+	// names, including item IDs supplied to create and upsert, before sending a request. Nil keeps
+	// the driver default, which is enabled.
+	ResourceNameValidation *bool
 }
 
 // Client is a client for an Azure Cosmos DB account. It is the entry point to the databases and
@@ -172,6 +176,10 @@ func newClientWithContext(
 		client.options = *options
 		client.options.Routing = options.Routing.clone()
 		client.options.Operation = options.Operation.clone()
+		if options.ResourceNameValidation != nil {
+			enabled := *options.ResourceNameValidation
+			client.options.ResourceNameValidation = &enabled
+		}
 	}
 	if err := client.options.validate(); err != nil {
 		return nil, err

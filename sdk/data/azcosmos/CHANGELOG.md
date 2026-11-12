@@ -12,7 +12,7 @@
 
 ### Bugs Fixed
 
-* Fixed transactional batch item IDs being inserted into JSON without escaping. IDs now remain a single string value in Read, Replace, Patch, and Delete operations. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
+* Fixed transactional batch item IDs being inserted into JSON without escaping. IDs now remain a single string value in Read, Replace, Patch, and Delete operations. Database and container IDs are also escaped when serializing their properties. This escaping applies regardless of `ClientOptions.EnableResourceNameValidation`. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
 * Reject malformed transactional batch item bodies before serialization so they cannot alter the surrounding operation. See [PR 27997](https://github.com/Azure/azure-sdk-for-go/pull/27997).
 
 ### Other Changes

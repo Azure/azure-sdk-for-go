@@ -66,8 +66,7 @@ type FeedScope struct {
 }
 
 // NewFeedScopeForPartitionKey targets one logical partition or a hierarchical key prefix.
-// For queries a prefix includes all logical partitions sharing the supplied leading components.
-// See NewChangeFeedPager for the released driver's change-feed prefix-routing limitation.
+// A prefix includes all logical partitions sharing the supplied leading components.
 func NewFeedScopeForPartitionKey(partitionKey PartitionKey) FeedScope {
 	return FeedScope{partitionKey: partitionKey}
 }

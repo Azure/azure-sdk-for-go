@@ -23,13 +23,15 @@ import (
 
 // This scripted service exercises the shipped driver's ABI, not service change-log fidelity.
 type changeFeedContractService struct {
-	mu         sync.Mutex
-	url        string
-	ranges     int
-	idleFirst  bool
-	headers    []http.Header
-	unexpected []string
-	fail       bool
+	mu            sync.Mutex
+	url           string
+	ranges        int
+	rangeBoundary string
+	rangeItems    bool
+	idleFirst     bool
+	headers       []http.Header
+	unexpected    []string
+	fail          bool
 }
 
 func newChangeFeedContractService(t *testing.T, ranges int, idleFirst bool) *changeFeedContractService {
@@ -77,6 +79,21 @@ func (s *changeFeedContractService) observed() []http.Header {
 	return headers
 }
 
+func changeFeedContractRangeID(header http.Header) string {
+	rangeID := header.Get("x-ms-documentdb-partitionkeyrangeid")
+	if separator := strings.LastIndexByte(rangeID, ','); separator >= 0 {
+		return rangeID[separator+1:]
+	}
+	return rangeID
+}
+
+func changeFeedContractEPKPrefixSplit(t *testing.T, start, end string) string {
+	t.Helper()
+	require.NotEmpty(t, start)
+	require.Equal(t, start+"FF", end, "prefix EPK range must use the native upper-bound suffix")
+	return start + "80"
+}
+
 func (s *changeFeedContractService) serveHTTP(w http.ResponseWriter, r *http.Request) {
 	if r.UserAgent() == "" {
 		w.WriteHeader(http.StatusOK)
@@ -102,8 +119,12 @@ func (s *changeFeedContractService) serveHTTP(w http.ResponseWriter, r *http.Req
 		}
 		ranges := []map[string]string{{"id": "0", "minInclusive": "", "maxExclusive": "FF"}}
 		if s.ranges == 2 {
-			ranges[0]["maxExclusive"] = "80"
-			ranges = append(ranges, map[string]string{"id": "1", "minInclusive": "80", "maxExclusive": "FF"})
+			boundary := "80"
+			if s.rangeBoundary != "" {
+				boundary = s.rangeBoundary
+			}
+			ranges[0]["maxExclusive"] = boundary
+			ranges = append(ranges, map[string]string{"id": "1", "minInclusive": boundary, "maxExclusive": "FF"})
 		}
 		_ = json.NewEncoder(w).Encode(map[string]any{"PartitionKeyRanges": ranges})
 	case strings.HasSuffix(r.URL.Path, "/docs"):
@@ -119,6 +140,17 @@ func (s *changeFeedContractService) serveHTTP(w http.ResponseWriter, r *http.Req
 			return
 		}
 		rangeID := r.Header.Get("x-ms-documentdb-partitionkeyrangeid")
+		if s.rangeItems {
+			rangeID = changeFeedContractRangeID(r.Header)
+			position := "position-" + rangeID
+			w.Header().Set("ETag", position)
+			if r.Header.Get("If-None-Match") == position || r.Header.Get("If-None-Match") == "*" {
+				w.WriteHeader(http.StatusNotModified)
+				return
+			}
+			_, _ = fmt.Fprintf(w, `{"Documents":[{"current":{"id":"range-%s"}}],"_count":1}`, rangeID)
+			return
+		}
 		idle := s.idleFirst && (rangeID == "0" || strings.HasSuffix(rangeID, ",0"))
 		position := r.Header.Get("If-None-Match")
 		w.Header().Set("ETag", "position-2")
@@ -182,7 +214,7 @@ func TestNativeChangeFeedCheckpointResumeOnFreshClient(t *testing.T) {
 			require.Equal(t, charge, page.RequestCharge, "include the additional scope-metadata read")
 			token, err := pager.ContinuationToken(t.Context())
 			require.NoError(t, err)
-			require.NotEmpty(t, token)
+			require.True(t, strings.HasPrefix(token, "c2."), "new checkpoints must use the current native format")
 			observed := len(service.observed())
 			repeated, err := pager.ContinuationToken(t.Context())
 			require.NoError(t, err)
@@ -208,13 +240,88 @@ func TestNativeChangeFeedCheckpointResumeOnFreshClient(t *testing.T) {
 			require.True(t, resumed.More())
 			idleToken, err := resumed.ContinuationToken(t.Context())
 			require.NoError(t, err)
-			require.NotEmpty(t, idleToken)
+			require.True(t, strings.HasPrefix(idleToken, "c2."), "resumed checkpoints must remain current")
 			for _, header := range service.observed() {
 				require.Equal(t, "7", header.Get("x-ms-max-item-count"))
 				require.NotEmpty(t, header.Get("A-IM"))
 			}
+
+			legacyToken := "c1." + strings.TrimPrefix(token, "c2.")
+			legacy := service.container(t, "items").NewChangeFeedPager(scope, NewChangeFeedStartFromNow(), &ChangeFeedOptions{
+				Feed: FeedOptions{PageSizeHint: 7, ContinuationToken: legacyToken}, SessionToken: "0:1",
+			})
+			defer func() { require.NoError(t, legacy.Close()) }()
+			page, err = legacy.NextPage(t.Context())
+			require.NoError(t, err, "the native driver must continue to decode supported c1 checkpoints")
+			require.Equal(t, [][]byte{[]byte(`{"current":{"id":"second","n":9007199254740993},"previous":{"id":"second","n":1},"metadata":{"operationType":"replace"},"future":true}`)}, page.Items)
 		})
 	}
+}
+
+func TestNativeChangeFeedCheckpointPreservesUntouchedRangeStart(t *testing.T) {
+	service := newChangeFeedContractService(t, 2, false)
+	service.rangeItems = true
+	container := service.container(t, "items")
+	pager := container.NewChangeFeedPager(NewFeedScopeForFullContainer(),
+		NewChangeFeedStartFromBeginning(), nil)
+	page, err := pager.NextPage(t.Context())
+	require.NoError(t, err)
+	require.Len(t, page.Items, 1)
+	var first struct {
+		Current struct {
+			ID string `json:"id"`
+		} `json:"current"`
+	}
+	require.NoError(t, json.Unmarshal(page.Items[0], &first))
+	require.Contains(t, []string{"range-0", "range-1"}, first.Current.ID)
+	initialHeaders := service.observed()
+	require.Len(t, initialHeaders, 1, "the other physical range must remain untouched before checkpointing")
+	firstRange := changeFeedContractRangeID(initialHeaders[0])
+	require.NotEmpty(t, firstRange)
+	token, err := pager.ContinuationToken(t.Context())
+	require.NoError(t, err)
+	require.True(t, strings.HasPrefix(token, "c2."), "new checkpoints must preserve the start state in c2")
+	require.NoError(t, pager.Close())
+	require.NoError(t, container.database.client.Close())
+
+	resumed := service.container(t, "items").NewChangeFeedPager(NewFeedScopeForFullContainer(),
+		NewChangeFeedStartFromNow(), &ChangeFeedOptions{Feed: FeedOptions{ContinuationToken: token}})
+	defer func() { require.NoError(t, resumed.Close()) }()
+	beforeResume := len(service.observed())
+	var resumedIDs []string
+	for range 4 {
+		page, err = resumed.NextPage(t.Context())
+		require.NoError(t, err)
+		for _, item := range page.Items {
+			var envelope struct {
+				Current struct {
+					ID string `json:"id"`
+				} `json:"current"`
+			}
+			require.NoError(t, json.Unmarshal(item, &envelope))
+			resumedIDs = append(resumedIDs, envelope.Current.ID)
+		}
+		if len(resumedIDs) != 0 {
+			break
+		}
+	}
+	expected := "range-0"
+	if first.Current.ID == expected {
+		expected = "range-1"
+	}
+	require.Contains(t, resumedIDs, expected,
+		"the checkpoint must retain the original beginning start for a range not yet delivered")
+	resumedHeaders := service.observed()[beforeResume:]
+	require.NotEmpty(t, resumedHeaders)
+	for _, header := range resumedHeaders {
+		if changeFeedContractRangeID(header) == firstRange {
+			continue
+		}
+		require.Empty(t, header.Get("If-None-Match"),
+			"the checkpoint's Beginning start must override the supplied Now start for untouched ranges")
+		return
+	}
+	t.Fatal("resume did not request the untouched physical range")
 }
 
 func TestNativeChangeFeedIdleRangeDoesNotEndContainer(t *testing.T) {
@@ -371,6 +478,50 @@ func TestNativeChangeFeedForwardsHierarchicalKeys(t *testing.T) {
 				"forward the logical key; this fixture does not certify prefix fan-out")
 		})
 	}
+}
+
+func TestNativeChangeFeedHierarchicalPrefixSpansPhysicalRanges(t *testing.T) {
+	key := NewPartitionKeyString("tenant")
+	probe := newChangeFeedContractService(t, 1, false)
+	probePager := probe.container(t, "hierarchical").NewChangeFeedPager(
+		NewFeedScopeForPartitionKey(key), NewChangeFeedStartFromBeginning(), nil)
+	_, err := probePager.NextPage(t.Context())
+	require.NoError(t, err)
+	probeHeaders := probe.observed()
+	require.Len(t, probeHeaders, 1)
+	prefixStart := probeHeaders[0].Get("x-ms-start-epk")
+	prefixEnd := probeHeaders[0].Get("x-ms-end-epk")
+	split := changeFeedContractEPKPrefixSplit(t, prefixStart, prefixEnd)
+	require.NoError(t, probePager.Close())
+
+	service := newChangeFeedContractService(t, 2, false)
+	service.rangeBoundary = split
+	service.rangeItems = true
+	pager := service.container(t, "hierarchical").NewChangeFeedPager(
+		NewFeedScopeForPartitionKey(key), NewChangeFeedStartFromBeginning(), nil)
+	defer func() { require.NoError(t, pager.Close()) }()
+
+	bounds := make(map[string][2]string)
+	for range 8 {
+		_, err = pager.NextPage(t.Context())
+		require.NoError(t, err)
+		for _, header := range service.observed() {
+			require.Empty(t, header.Get("x-ms-documentdb-partitionkey"))
+			rangeID := changeFeedContractRangeID(header)
+			require.NotEmpty(t, rangeID)
+			bounds[rangeID] = [2]string{
+				header.Get("x-ms-start-epk"),
+				header.Get("x-ms-end-epk"),
+			}
+		}
+		if len(bounds) == 2 {
+			break
+		}
+	}
+	require.Equal(t, map[string][2]string{
+		"0": {prefixStart, split},
+		"1": {split, prefixEnd},
+	}, bounds, "the HPK prefix must fan out across every intersecting physical range")
 }
 
 func TestNativeChangeFeedInitialFanOutLimit(t *testing.T) {

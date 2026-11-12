@@ -512,9 +512,9 @@ and time starts in that mode are passed through for the service to reject. The s
 second precision for time starts. Account enablement, retention, and mode/start restrictions
 remain driver or service errors rather than duplicated Go policy.
 
-Use a complete partition key or full-container scope. Hierarchical prefixes are forwarded
-through the Rust driver's feed-range API; native v0.3.0 sends EPK bounds for prefixes.
-Live multi-range prefix isolation has not yet been certified on this version.
+Use a complete partition key, hierarchical prefix, or full-container scope. Hierarchical prefixes
+are forwarded through the Rust driver's feed-range API; native v0.3.0 sends EPK bounds and fans
+out across every intersecting physical range.
 `ChangeFeedOptions.Feed` supplies the page-size hint and initial
 fan-out limit with the same semantics as queries. Partition-scoped pagers perform the same
 additional container-metadata read and first-page charge accounting as query pagers.
@@ -583,12 +583,13 @@ native decoding, not live-service metric generation. Per-cursor test hooks contr
 delivery and cancellation races without relying on network timing.
 
 Change-feed unit and scripted HTTP contract tests run without an emulator. They cover native
-selectors, payload ownership, idle polling, checkpoint/resume, compatibility errors, and
-cursor cleanup against the pinned driver. Scripted responses are binding evidence, not
-certification of live change history, AllVersionsAndDeletes retention/pre-images, or splits.
+selectors, payload ownership, idle polling, checkpoint/resume (including untouched ranges),
+multi-range HPK-prefix fan-out, compatibility errors, and cursor cleanup against the pinned
+driver. Scripted responses are binding evidence, not certification of live change history,
+AllVersionsAndDeletes retention/pre-images, or splits.
 `TestEmulatorChangeFeed` adds complete-key/complete-HPK isolation and full-container binding
-checks under the existing `EMULATOR` configuration. It does not certify prefix fan-out or
-historical fidelity. Run those separately against a configured endpoint:
+checks under the existing `EMULATOR` configuration. It does not certify live-service prefix
+fan-out or historical fidelity. Run those separately against a configured endpoint:
 
 ```sh
 EMULATOR=1 AZCOSMOS_ENDPOINT=http://127.0.0.1:49151/ go test -run 'TestEmulatorChangeFeed' ./...

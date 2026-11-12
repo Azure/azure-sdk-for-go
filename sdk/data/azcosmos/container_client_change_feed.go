@@ -11,8 +11,8 @@ import (
 
 // NewChangeFeedPager reads changes for an explicit scope and initial position.
 // Construction performs no I/O; NextPage reports argument errors. Nil options use LatestVersion.
-// Complete keys and full-container scopes follow native routing. HPK-prefix routing follows the
-// Rust driver's feed-range API; live multi-range prefix isolation is not yet certified.
+// Complete keys, HPK prefixes and full-container scopes follow native routing. Prefixes fan out
+// across every intersecting physical range.
 // Defer Close. Empty and HTTP 304 pages remain usable; callers choose when to poll again.
 func (c *ContainerClient) NewChangeFeedPager(scope FeedScope, startFrom ChangeFeedStartFrom, options *ChangeFeedOptions) *ChangeFeedPager {
 	req, err := newChangeFeedRequest(scope, startFrom, options)

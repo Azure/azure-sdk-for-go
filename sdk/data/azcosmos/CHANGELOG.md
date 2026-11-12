@@ -8,9 +8,9 @@
 
 * Added change-feed pull reads through `ContainerClient.NewChangeFeedPager`, with explicit
   beginning, now, and point-in-time starts, LatestVersion and AllVersionsAndDeletes modes,
-  raw change envelopes, pollable idle pages, and opaque checkpoint/resume tokens.
-  Change-feed pagers reuse the client-owned cursor reactor and expose `Close` and
-  `ContinuationToken(ctx)`.
+  raw change envelopes, pollable idle pages, opaque checkpoint/resume tokens, HPK-prefix
+  multi-range fan-out, and client-owned cursor lifecycle through `Close` and
+  `ContinuationToken(ctx)`. See [PR 27709](https://github.com/Azure/azure-sdk-for-go/pull/27709).
 * Added `ContainerClient.NewReadManyItemsPager[T]` for reading many items by `ItemIdentity`
   (ID and partition key, including hierarchical prefixes), with an optional filter predicate.
   Duplicate identities are deduplicated, missing items are omitted, and result order is unspecified.

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -161,7 +161,16 @@ func (s *ScenarioConfigurationsServerTransport) dispatchBeginCreateOrUpdate(req 
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := s.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, scenarioNameParam, scenarioConfigurationNameParam, body, nil)
+		ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		var options *armchaos.ScenarioConfigurationsClientBeginCreateOrUpdateOptions
+		if ifNoneMatchParam != nil || ifMatchParam != nil {
+			options = &armchaos.ScenarioConfigurationsClientBeginCreateOrUpdateOptions{
+				IfNoneMatch: ifNoneMatchParam,
+				IfMatch:     ifMatchParam,
+			}
+		}
+		respr, errRespr := s.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, scenarioNameParam, scenarioConfigurationNameParam, body, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

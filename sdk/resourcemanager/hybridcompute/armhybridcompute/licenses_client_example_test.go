@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15/license/License_CreateOrUpdate.json
+// Generated from example definition: 2026-09-01/license/License_CreateOrUpdate.json
 func ExampleLicensesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,11 +65,13 @@ func ExampleLicensesClient_BeginCreateOrUpdate() {
 	// 			LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/license/License_Delete.json
+// Generated from example definition: 2026-09-01/license/License_Delete.json
 func ExampleLicensesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +97,7 @@ func ExampleLicensesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/license/License_Update.json
+// Generated from example definition: 2026-09-01/license/License_Update.json
 func ExampleLicensesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +153,7 @@ func ExampleLicensesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/license/License_ValidateLicense.json
+// Generated from example definition: 2026-09-01/license/License_ValidateLicense.json
 func ExampleLicensesClient_BeginValidateLicense() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,11 +206,13 @@ func ExampleLicensesClient_BeginValidateLicense() {
 	// 			LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/license/License_Get.json
+// Generated from example definition: 2026-09-01/license/License_Get.json
 func ExampleLicensesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,11 +249,13 @@ func ExampleLicensesClient_Get() {
 	// 			LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
 	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-07-15/license/License_ListByResourceGroup.json
+// Generated from example definition: 2026-09-01/license/License_ListByResourceGroup.json
 func ExampleLicensesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -292,6 +298,8 @@ func ExampleLicensesClient_NewListByResourceGroupPager() {
 		// 					LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
 		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -299,7 +307,7 @@ func ExampleLicensesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-15/license/License_ListBySubscription.json
+// Generated from example definition: 2026-09-01/license/License_ListBySubscription.json
 func ExampleLicensesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -341,6 +349,8 @@ func ExampleLicensesClient_NewListBySubscriptionPager() {
 		// 					},
 		// 					LicenseType: to.Ptr(armhybridcompute.LicenseTypeESU),
 		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				},
+		// 				Tags: map[string]*string{
 		// 				},
 		// 			},
 		// 		},

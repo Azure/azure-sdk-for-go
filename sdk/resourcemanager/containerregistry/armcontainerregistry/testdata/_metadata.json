@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.ContainerRegistry": "2026-09-01-preview"
+    "Microsoft.ContainerRegistry": "2026-10-15-preview"
   },
   "emitterVersion": "0.18.0"
 }

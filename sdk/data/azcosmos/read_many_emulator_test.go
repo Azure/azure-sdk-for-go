@@ -8,6 +8,7 @@ package azcosmos
 import (
 	"encoding/json"
 	"fmt"
+	"net/url"
 	"sort"
 	"sync"
 	"testing"
@@ -74,6 +75,20 @@ func drainReadMany(t *testing.T, pager *ReadManyItemsPager[readManyEmulatorItem]
 	return ids, pages
 }
 
+// skipReadManyQueriesOnInMemoryEmulator skips selections the driver serves with a query. The
+// local Rust in-memory emulator answers those with an empty 200: it doesn't plan the
+// c["pk"] selector in multi-item queries and it ignores the EPK range of partition reads.
+// Single-item point reads are unaffected.
+func skipReadManyQueriesOnInMemoryEmulator(t *testing.T) {
+	t.Helper()
+	endpoint, _, _ := emulatorConfiguration(t)
+	account, err := url.Parse(endpoint)
+	require.NoError(t, err)
+	if account.Scheme == "http" && (account.Hostname() == "127.0.0.1" || account.Hostname() == "localhost") {
+		t.Skip("the in-memory Rust emulator doesn't support ReadMany queries")
+	}
+}
+
 func sortedCopy(values []string) []string {
 	out := append([]string(nil), values...)
 	sort.Strings(out)
@@ -85,6 +100,7 @@ func TestEmulatorReadManyItems(t *testing.T) {
 	pks, ids := seedReadManyItems(t, container, 2, 3)
 
 	t.Run("skips missing items and deduplicates", func(t *testing.T) {
+		skipReadManyQueriesOnInMemoryEmulator(t)
 		pk0, pk1 := NewPartitionKeyString(pks[0]), NewPartitionKeyString(pks[1])
 		selection := NewReadManyItemsSelection(
 			NewItemIdentity(pk0, ids[pks[0]][0]),
@@ -125,6 +141,7 @@ func TestEmulatorReadManyItems(t *testing.T) {
 }
 
 func TestEmulatorReadManyPartitions(t *testing.T) {
+	skipReadManyQueriesOnInMemoryEmulator(t)
 	container := emulatorContainer(t)
 	pks, ids := seedReadManyItems(t, container, 3, 4)
 	all := append(append([]string(nil), ids[pks[0]]...), ids[pks[1]]...)
@@ -157,18 +174,23 @@ func TestEmulatorReadManyPartitions(t *testing.T) {
 	t.Run("concurrent pagers", func(t *testing.T) {
 		const readers = 4
 		results := make([][]string, readers)
+		errs := make([]error, readers)
 		var wg sync.WaitGroup
 		for i := range results {
 			wg.Add(1)
 			go func() {
 				defer wg.Done()
 				pager := container.NewReadManyItemsPager[readManyEmulatorItem](selection, nil)
-				defer func() { _ = pager.Close() }()
+				defer func() {
+					if err := pager.Close(); err != nil && errs[i] == nil {
+						errs[i] = err
+					}
+				}()
 				var got []string
 				for pager.More() {
 					page, err := pager.NextPage(t.Context())
 					if err != nil {
-						t.Errorf("reader %d: %v", i, err)
+						errs[i] = err
 						return
 					}
 					for _, item := range page.Items {
@@ -181,6 +203,7 @@ func TestEmulatorReadManyPartitions(t *testing.T) {
 		}
 		wg.Wait()
 		for i, got := range results {
+			require.NoError(t, errs[i], "reader %d", i)
 			require.Equal(t, sortedCopy(all), got, "reader %d", i)
 		}
 	})

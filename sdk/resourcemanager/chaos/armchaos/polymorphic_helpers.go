@@ -112,3 +112,47 @@ func unmarshalTargetSelectorClassificationArray(rawMsg json.RawMessage) ([]Targe
 	}
 	return fArray, nil
 }
+
+func unmarshalWorkspaceDiscoveryWarningClassification(rawMsg json.RawMessage) (WorkspaceDiscoveryWarningClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b WorkspaceDiscoveryWarningClassification
+	switch m["reason"] {
+	case string(WorkspaceDiscoveryWarningReasonAccessIndeterminate):
+		b = &WorkspaceDiscoveryAccessWarning{}
+	case string(WorkspaceDiscoveryWarningReasonRBACValidationFailed):
+		b = &WorkspaceDiscoveryPermissionWarning{}
+	case string(WorkspaceDiscoveryWarningReasonTargetNotFound):
+		b = &WorkspaceDiscoveryResourceWarning{}
+	default:
+		b = &WorkspaceDiscoveryWarning{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalWorkspaceDiscoveryWarningClassificationArray(rawMsg json.RawMessage) ([]WorkspaceDiscoveryWarningClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var rawMessages []json.RawMessage
+	if err := json.Unmarshal(rawMsg, &rawMessages); err != nil {
+		return nil, err
+	}
+	fArray := make([]WorkspaceDiscoveryWarningClassification, len(rawMessages))
+	for index, rawMessage := range rawMessages {
+		f, err := unmarshalWorkspaceDiscoveryWarningClassification(rawMessage)
+		if err != nil {
+			return nil, err
+		}
+		fArray[index] = f
+	}
+	return fArray, nil
+}

@@ -1320,6 +1320,9 @@ type MachineUpdateProperties struct {
 	// The info of the machine w.r.t Agent Upgrade
 	AgentUpgrade *AgentUpgrade
 
+	// Public Key that the client provides to be used during initial resource onboarding
+	ClientPublicKey *string
+
 	// The metadata of the cloud environment (Azure/GCP/AWS/OCI...).
 	CloudMetadata *CloudMetadata
 
@@ -1955,6 +1958,131 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
+}
+
+// VMApplication - A VM application installed on a hybrid machine.
+type VMApplication struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// The VM application properties.
+	Properties *VMApplicationProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// VMApplicationInstanceView - The instance view of a VM application.
+type VMApplicationInstanceView struct {
+	// The recent actions performed for the application.
+	ActionsPerformed []*VMApplicationInstanceViewAction
+
+	// The application name.
+	Name *string
+
+	// The current installation result.
+	Result *string
+
+	// The application version.
+	Version *string
+}
+
+// VMApplicationInstanceViewAction - An action recently performed for a VM application.
+type VMApplicationInstanceViewAction struct {
+	// The operation that was performed.
+	Operation *string
+
+	// The result of the operation.
+	Result *string
+}
+
+// VMApplicationProperties - The properties of a VM application. Exactly one gallery application reference must be specified
+// when creating or replacing the resource.
+type VMApplicationProperties struct {
+	// The identifier of a community gallery application version. Use `/communityGalleries/{communityGalleryPublicName}/applications/{applicationName}/versions/{versionName}`,
+	// where the version name can be `latest` or a specific version. This property is mutually exclusive with packageReferenceId
+	// and sharedGalleryApplicationId.
+	CommunityGalleryApplicationID *string
+
+	// The URI of configuration data that replaces the package's default configuration.
+	ConfigurationReference *string
+
+	// The order in which the application is installed.
+	Order *int32
+
+	// The resource ID of the gallery application version. The version name can be `latest` or a specific version. This property
+	// is mutually exclusive with sharedGalleryApplicationId and communityGalleryApplicationId.
+	PackageReferenceID *string
+
+	// The identifier of a direct shared gallery application version. Use `/sharedGalleries/{sharedGalleryUniqueName}/applications/{applicationName}/versions/{versionName}`,
+	// where the version name can be `latest` or a specific version. This property is mutually exclusive with packageReferenceId
+	// and communityGalleryApplicationId.
+	SharedGalleryApplicationID *string
+
+	// Indicates whether an application operation failure causes the deployment to fail.
+	TreatFailureAsDeploymentFailure *bool
+
+	// READ-ONLY; The instance view of the VM application.
+	InstanceView *VMApplicationInstanceView
+
+	// READ-ONLY; The provisioning state of the VM application.
+	ProvisioningState *ProvisioningState
+}
+
+// VMApplicationUpdate - The update request for a VM application.
+type VMApplicationUpdate struct {
+	// The resource-specific properties for this resource.
+	Properties *VMApplicationUpdateProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// VMApplicationUpdateProperties - The updatable properties of the VmApplication.
+type VMApplicationUpdateProperties struct {
+	// The identifier of a community gallery application version. Use `/communityGalleries/{communityGalleryPublicName}/applications/{applicationName}/versions/{versionName}`,
+	// where the version name can be `latest` or a specific version. This property is mutually exclusive with packageReferenceId
+	// and sharedGalleryApplicationId.
+	CommunityGalleryApplicationID *string
+
+	// The URI of configuration data that replaces the package's default configuration.
+	ConfigurationReference *string
+
+	// The order in which the application is installed.
+	Order *int32
+
+	// The resource ID of the gallery application version. The version name can be `latest` or a specific version. This property
+	// is mutually exclusive with sharedGalleryApplicationId and communityGalleryApplicationId.
+	PackageReferenceID *string
+
+	// The identifier of a direct shared gallery application version. Use `/sharedGalleries/{sharedGalleryUniqueName}/applications/{applicationName}/versions/{versionName}`,
+	// where the version name can be `latest` or a specific version. This property is mutually exclusive with packageReferenceId
+	// and communityGalleryApplicationId.
+	SharedGalleryApplicationID *string
+
+	// Indicates whether an application operation failure causes the deployment to fail.
+	TreatFailureAsDeploymentFailure *bool
+}
+
+// VMApplicationsListResult - A page of VM applications.
+type VMApplicationsListResult struct {
+	// REQUIRED; The VmApplication items on this page
+	Value []*VMApplication
+
+	// The link to the next page of items
+	NextLink *string
 }
 
 type VolumeLicenseDetails struct {

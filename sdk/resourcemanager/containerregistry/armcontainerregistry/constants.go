@@ -5,7 +5,7 @@
 package armcontainerregistry
 
 const (
-	version20260901Preview string = "2026-09-01-preview"
+	version20261015Preview string = "2026-10-15-preview"
 )
 
 // Action - The action of IP ACL rule.
@@ -58,6 +58,13 @@ func PossibleActivationStatusValues() []ActivationStatus {
 type AdditionalAuthenticationType string
 
 const (
+	// AdditionalAuthenticationTypeAWSElasticContainerRegistry - Amazon Elastic Container Registry (ECR) authentication via workload
+	// identity federation.
+	AdditionalAuthenticationTypeAWSElasticContainerRegistry AdditionalAuthenticationType = "AwsElasticContainerRegistry"
+	// AdditionalAuthenticationTypeEntraFederatedIdentityCredential - Microsoft Entra authentication via a federated identity
+	// credential on an application
+	// in another tenant.
+	AdditionalAuthenticationTypeEntraFederatedIdentityCredential AdditionalAuthenticationType = "EntraFederatedIdentityCredential"
 	// AdditionalAuthenticationTypeGoogleArtifactRegistry - Google Artifact Registry (GAR) authentication via workload identity
 	// federation.
 	AdditionalAuthenticationTypeGoogleArtifactRegistry AdditionalAuthenticationType = "GoogleArtifactRegistry"
@@ -66,6 +73,8 @@ const (
 // PossibleAdditionalAuthenticationTypeValues returns the possible values for the AdditionalAuthenticationType const type.
 func PossibleAdditionalAuthenticationTypeValues() []AdditionalAuthenticationType {
 	return []AdditionalAuthenticationType{
+		AdditionalAuthenticationTypeAWSElasticContainerRegistry,
+		AdditionalAuthenticationTypeEntraFederatedIdentityCredential,
 		AdditionalAuthenticationTypeGoogleArtifactRegistry,
 	}
 }

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceCreate.json
+// Generated from example definition: 2026-07-15/CosmosDBNotebookWorkspaceCreate.json
 func ExampleNotebookWorkspacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,9 +35,9 @@ func ExampleNotebookWorkspacesClient_BeginCreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.NotebookWorkspacesClientCreateOrUpdateResponse{
 	// 	NotebookWorkspace: armcosmos.NotebookWorkspace{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
 	// 		Properties: &armcosmos.NotebookWorkspaceProperties{
 	// 			NotebookServerEndpoint: to.Ptr("endpoint"),
 	// 			Status: to.Ptr("Online"),
@@ -46,7 +46,7 @@ func ExampleNotebookWorkspacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceDelete.json
+// Generated from example definition: 2026-07-15/CosmosDBNotebookWorkspaceDelete.json
 func ExampleNotebookWorkspacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleNotebookWorkspacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceRegenerateAuthToken.json
+// Generated from example definition: 2026-07-15/CosmosDBNotebookWorkspaceRegenerateAuthToken.json
 func ExampleNotebookWorkspacesClient_BeginRegenerateAuthToken() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleNotebookWorkspacesClient_BeginRegenerateAuthToken() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceStart.json
+// Generated from example definition: 2026-07-15/CosmosDBNotebookWorkspaceStart.json
 func ExampleNotebookWorkspacesClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleNotebookWorkspacesClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceGet.json
+// Generated from example definition: 2026-07-15/CosmosDBNotebookWorkspaceGet.json
 func ExampleNotebookWorkspacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,9 +139,9 @@ func ExampleNotebookWorkspacesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.NotebookWorkspacesClientGetResponse{
 	// 	NotebookWorkspace: armcosmos.NotebookWorkspace{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
 	// 		Properties: &armcosmos.NotebookWorkspaceProperties{
 	// 			NotebookServerEndpoint: to.Ptr("endpoint"),
 	// 			Status: to.Ptr("Online"),
@@ -150,7 +150,7 @@ func ExampleNotebookWorkspacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceListConnectionInfo.json
+// Generated from example definition: 2026-07-15/CosmosDBNotebookWorkspaceListConnectionInfo.json
 func ExampleNotebookWorkspacesClient_ListConnectionInfo() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -176,7 +176,7 @@ func ExampleNotebookWorkspacesClient_ListConnectionInfo() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBNotebookWorkspaceList.json
+// Generated from example definition: 2026-07-15/CosmosDBNotebookWorkspaceList.json
 func ExampleNotebookWorkspacesClient_NewListByDatabaseAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -202,9 +202,9 @@ func ExampleNotebookWorkspacesClient_NewListByDatabaseAccountPager() {
 		// 	NotebookWorkspaceListResult: armcosmos.NotebookWorkspaceListResult{
 		// 		Value: []*armcosmos.NotebookWorkspace{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
 		// 				Name: to.Ptr("default"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/notebookWorkspaces"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/notebookWorkspaces/default"),
 		// 				Properties: &armcosmos.NotebookWorkspaceProperties{
 		// 					NotebookServerEndpoint: to.Ptr("endpoint"),
 		// 					Status: to.Ptr("Online"),

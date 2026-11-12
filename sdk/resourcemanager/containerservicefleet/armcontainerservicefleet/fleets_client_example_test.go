@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/Fleets_CreateOrUpdate.json
+// Generated from example definition: 2026-11-01/Fleets_CreateOrUpdate.json
 func ExampleFleetsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleFleetsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Fleets_Delete.json
+// Generated from example definition: 2026-11-01/Fleets_Delete.json
 func ExampleFleetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleFleetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Fleets_PatchTags.json
+// Generated from example definition: 2026-11-01/Fleets_PatchTags.json
 func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Fleets_Update.json
+// Generated from example definition: 2026-11-01/Fleets_Update.json
 func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -286,7 +286,7 @@ func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Fleets_Get.json
+// Generated from example definition: 2026-11-01/Fleets_Get.json
 func ExampleFleetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -354,7 +354,7 @@ func ExampleFleetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Fleets_ListCredentialsResult.json
+// Generated from example definition: 2026-11-01/Fleets_ListCredentialsResult.json
 func ExampleFleetsClient_ListCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -384,7 +384,7 @@ func ExampleFleetsClient_ListCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Fleets_ListByResourceGroup.json
+// Generated from example definition: 2026-11-01/Fleets_ListByResourceGroup.json
 func ExampleFleetsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -462,7 +462,7 @@ func ExampleFleetsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-02-preview/Fleets_ListBySub.json
+// Generated from example definition: 2026-11-01/Fleets_ListBySub.json
 func ExampleFleetsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

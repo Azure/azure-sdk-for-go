@@ -1,6 +1,6 @@
 # Release History
 
-## 1.9.0-beta.1 (Unreleased)
+## 1.9.0-beta.1 (2026-11-12)
 
 ### Features Added
 * Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
@@ -40,7 +40,7 @@
 ### Other Changes
 * Corrected doc comments on `ListBlobsFlatOptions`, `ListBlobsHierarchyOptions`, `FilterBlobsOptions` and the page blob `GetPageRanges*Options` that incorrectly referred to "containers".
 * Updated the service version to `2027-03-07`.
-* Updated `sdk/storage/internal` version to `0.2.0`
+* Updated `sdk/storage/internal` version to `0.2.0-beta.1`
 
 ## 1.8.3 (2026-11-02)
 

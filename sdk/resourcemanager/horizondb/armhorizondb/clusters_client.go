@@ -48,10 +48,12 @@ func NewClustersClient(subscriptionID string, credential azcore.TokenCredential,
 // new Cluster resource and hydrates its service-owned database storage from an available source backup. It does not clone
 // source pools, Pool-scoped endpoints, firewall rules, parameter-group associations, or other child resources. The new Cluster
 // receives its service-generated Cluster-scoped Endpoint named cluster. For restore, postgreSqlVersion must be omitted because
-// the service obtains it from backup metadata; all other new-cluster configuration comes from the request or service defaults.
-// Same-location restore requires and honors pointInTimeUtc and allows creationSourceClusterLocation to be omitted. Cross-location
-// restore requires creationSourceClusterLocation to identify the source cluster's Azure location and requires pointInTimeUtc,
-// but ignores the supplied timestamp and restores the latest available backup. Cross-location responses omit pointInTimeUtc.
+// the service obtains it from backup metadata. During restore creation, the service ignores the requested backup.geoRedundancy
+// value and configures the new cluster with the same geo-redundancy setting as the source cluster; this applies to both same-location
+// and cross-location restores. All remaining new-cluster configuration comes from the request or service defaults. Same-location
+// restore requires and honors pointInTimeUtc and allows creationSourceClusterLocation to be omitted. Cross-location restore
+// requires creationSourceClusterLocation to identify the source cluster's Azure location and requires pointInTimeUtc, but
+// ignores the supplied timestamp and restores the latest available backup. Cross-location responses omit pointInTimeUtc.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
@@ -79,10 +81,12 @@ func (client *ClustersClient) BeginCreateOrReplace(ctx context.Context, resource
 // resource and hydrates its service-owned database storage from an available source backup. It does not clone source pools,
 // Pool-scoped endpoints, firewall rules, parameter-group associations, or other child resources. The new Cluster receives
 // its service-generated Cluster-scoped Endpoint named cluster. For restore, postgreSqlVersion must be omitted because the
-// service obtains it from backup metadata; all other new-cluster configuration comes from the request or service defaults.
-// Same-location restore requires and honors pointInTimeUtc and allows creationSourceClusterLocation to be omitted. Cross-location
-// restore requires creationSourceClusterLocation to identify the source cluster's Azure location and requires pointInTimeUtc,
-// but ignores the supplied timestamp and restores the latest available backup. Cross-location responses omit pointInTimeUtc.
+// service obtains it from backup metadata. During restore creation, the service ignores the requested backup.geoRedundancy
+// value and configures the new cluster with the same geo-redundancy setting as the source cluster; this applies to both same-location
+// and cross-location restores. All remaining new-cluster configuration comes from the request or service defaults. Same-location
+// restore requires and honors pointInTimeUtc and allows creationSourceClusterLocation to be omitted. Cross-location restore
+// requires creationSourceClusterLocation to identify the source cluster's Azure location and requires pointInTimeUtc, but
+// ignores the supplied timestamp and restores the latest available backup. Cross-location responses omit pointInTimeUtc.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ClustersClient) createOrReplace(ctx context.Context, resourceGroupName string, clusterName string, resource Cluster, options *ClustersClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error

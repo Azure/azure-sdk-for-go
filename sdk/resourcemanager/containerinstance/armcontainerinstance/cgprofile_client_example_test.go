@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfileCreateOrUpdate_CreateConfidential.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfileCreateOrUpdate_CreateConfidential.json
 func ExampleCGProfileClient_CreateOrUpdate_confidentialContainerGroupProfile() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleCGProfileClient_CreateOrUpdate_confidentialContainerGroupProfile() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfileCreateOrUpdate_EncryptionProperties.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfileCreateOrUpdate_EncryptionProperties.json
 func ExampleCGProfileClient_CreateOrUpdate_containerGroupProfileWithEncryptionProperties() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +269,7 @@ func ExampleCGProfileClient_CreateOrUpdate_containerGroupProfileWithEncryptionPr
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfileCreateOrUpdate_Extensions.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfileCreateOrUpdate_Extensions.json
 func ExampleCGProfileClient_CreateOrUpdate_containerGroupProfileCreateWithExtensions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -414,7 +414,7 @@ func ExampleCGProfileClient_CreateOrUpdate_containerGroupProfileCreateWithExtens
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfilesCreateOrUpdate.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfilesCreateOrUpdate.json
 func ExampleCGProfileClient_CreateOrUpdate_containerGroupProfilesCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -626,7 +626,7 @@ func ExampleCGProfileClient_CreateOrUpdate_containerGroupProfilesCreateOrUpdate(
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfilesDelete.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfilesDelete.json
 func ExampleCGProfileClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -648,7 +648,7 @@ func ExampleCGProfileClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfilesGet.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfilesGet.json
 func ExampleCGProfileClient_Get_containerGroupProfilesGetSucceeded() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -740,7 +740,7 @@ func ExampleCGProfileClient_Get_containerGroupProfilesGetSucceeded() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfilesGetPriority.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfilesGetPriority.json
 func ExampleCGProfileClient_Get_containerGroupProfilesGetWithPriority() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -833,7 +833,7 @@ func ExampleCGProfileClient_Get_containerGroupProfilesGetWithPriority() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfileGetByRevisionNumber.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfileGetByRevisionNumber.json
 func ExampleCGProfileClient_GetByRevisionNumber() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -925,7 +925,7 @@ func ExampleCGProfileClient_GetByRevisionNumber() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfileListAllRevisions.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfileListAllRevisions.json
 func ExampleCGProfileClient_NewListAllRevisionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1026,7 +1026,7 @@ func ExampleCGProfileClient_NewListAllRevisionsPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfilesPatch.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfilesPatch.json
 func ExampleCGProfileClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

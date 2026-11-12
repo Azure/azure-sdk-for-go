@@ -179,64 +179,6 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
-// PrivateAccessesClientCreateOrUpdateResponse contains the response from method PrivateAccessesClient.BeginCreateOrUpdate.
-type PrivateAccessesClientCreateOrUpdateResponse struct {
-	// PrivateAccesses tracked resource.
-	PrivateAccess
-}
-
-// PrivateAccessesClientDeleteAPrivateEndpointConnectionResponse contains the response from method PrivateAccessesClient.BeginDeleteAPrivateEndpointConnection.
-type PrivateAccessesClientDeleteAPrivateEndpointConnectionResponse struct {
-	// placeholder for future response values
-}
-
-// PrivateAccessesClientDeleteResponse contains the response from method PrivateAccessesClient.BeginDelete.
-type PrivateAccessesClientDeleteResponse struct {
-	// placeholder for future response values
-}
-
-// PrivateAccessesClientGetAPrivateEndpointConnectionResponse contains the response from method PrivateAccessesClient.GetAPrivateEndpointConnection.
-type PrivateAccessesClientGetAPrivateEndpointConnectionResponse struct {
-	// The private endpoint connection resource.
-	PrivateEndpointConnection
-}
-
-// PrivateAccessesClientGetPrivateLinkResourcesResponse contains the response from method PrivateAccessesClient.GetPrivateLinkResources.
-type PrivateAccessesClientGetPrivateLinkResourcesResponse struct {
-	// A list of private link resources
-	PrivateLinkResourceListResult
-}
-
-// PrivateAccessesClientGetResponse contains the response from method PrivateAccessesClient.Get.
-type PrivateAccessesClientGetResponse struct {
-	// PrivateAccesses tracked resource.
-	PrivateAccess
-}
-
-// PrivateAccessesClientListAllResponse contains the response from method PrivateAccessesClient.NewListAllPager.
-type PrivateAccessesClientListAllResponse struct {
-	// Model that represents a list of private access resources and a link for pagination.
-	PrivateAccessListResult
-}
-
-// PrivateAccessesClientListPrivateEndpointConnectionsResponse contains the response from method PrivateAccessesClient.NewListPrivateEndpointConnectionsPager.
-type PrivateAccessesClientListPrivateEndpointConnectionsResponse struct {
-	// A list of private link resources
-	PrivateEndpointConnectionListResult
-}
-
-// PrivateAccessesClientListResponse contains the response from method PrivateAccessesClient.NewListPager.
-type PrivateAccessesClientListResponse struct {
-	// Model that represents a list of private access resources and a link for pagination.
-	PrivateAccessListResult
-}
-
-// PrivateAccessesClientUpdateResponse contains the response from method PrivateAccessesClient.BeginUpdate.
-type PrivateAccessesClientUpdateResponse struct {
-	// PrivateAccesses tracked resource.
-	PrivateAccess
-}
-
 // ScenarioConfigurationsClientCreateOrUpdateResponse contains the response from method ScenarioConfigurationsClient.BeginCreateOrUpdate.
 type ScenarioConfigurationsClientCreateOrUpdateResponse struct {
 	// Model that represents the scenario.
@@ -302,6 +244,38 @@ type ScenarioRunsClientListAllResponse struct {
 	ScenarioRunListResult
 }
 
+// ScenarioTemplateVersionsClientGetResponse contains the response from method ScenarioTemplateVersionsClient.Get.
+type ScenarioTemplateVersionsClientGetResponse struct {
+	// Model that represents a single published version of a scenario template. A published version
+	// is immutable: corrections are shipped as a new version rather than by changing an existing
+	// one, so a scenario that records the version it was created from always resolves to the same
+	// content.
+	ScenarioTemplateVersion
+}
+
+// ScenarioTemplateVersionsClientListResponse contains the response from method ScenarioTemplateVersionsClient.NewListPager.
+type ScenarioTemplateVersionsClientListResponse struct {
+	// Model that represents a list of scenario template versions and a link for pagination.
+	ScenarioTemplateVersionListResult
+}
+
+// ScenarioTemplatesClientGetResponse contains the response from method ScenarioTemplatesClient.Get.
+type ScenarioTemplatesClientGetResponse struct {
+	// Model that represents a built-in scenario template. A scenario template is a versioned,
+	// read-only blueprint published by Microsoft that can be used to create a scenario. Templates
+	// are the same shape as the scenarios they produce, so an action read from a template is valid
+	// input to a scenario create.
+	// The template is addressed without a version, and always describes its newest published
+	// version. Address a specific version through the child versions resource.
+	ScenarioTemplate
+}
+
+// ScenarioTemplatesClientListResponse contains the response from method ScenarioTemplatesClient.NewListPager.
+type ScenarioTemplatesClientListResponse struct {
+	// Model that represents a list of scenario templates and a link for pagination.
+	ScenarioTemplateListResult
+}
+
 // ScenariosClientCreateOrUpdateResponse contains the response from method ScenariosClient.CreateOrUpdate.
 type ScenariosClientCreateOrUpdateResponse struct {
 	// Model that represents the scenario.
@@ -360,6 +334,30 @@ type TargetsClientListResponse struct {
 	TargetListResult
 }
 
+// WorkspaceDiscoveriesClientGetResponse contains the response from method WorkspaceDiscoveriesClient.Get.
+type WorkspaceDiscoveriesClientGetResponse struct {
+	// A retained workspace discovery result and its accepted coverage facts.
+	WorkspaceDiscovery
+}
+
+// WorkspaceDiscoveriesClientListResponse contains the response from method WorkspaceDiscoveriesClient.NewListPager.
+type WorkspaceDiscoveriesClientListResponse struct {
+	// The response of a WorkspaceDiscovery list operation.
+	WorkspaceDiscoveryListResult
+}
+
+// WorkspaceEvaluationsClientGetResponse contains the response from method WorkspaceEvaluationsClient.Get.
+type WorkspaceEvaluationsClientGetResponse struct {
+	// A retained workspace evaluation of published scenario-template versions.
+	WorkspaceEvaluation
+}
+
+// WorkspaceEvaluationsClientListResponse contains the response from method WorkspaceEvaluationsClient.NewListPager.
+type WorkspaceEvaluationsClientListResponse struct {
+	// The response of a WorkspaceEvaluation list operation.
+	WorkspaceEvaluationListResult
+}
+
 // WorkspacesClientCreateOrUpdateResponse contains the response from method WorkspacesClient.BeginCreateOrUpdate.
 type WorkspacesClientCreateOrUpdateResponse struct {
 	// Model that represents a Workspace resource.
@@ -373,13 +371,13 @@ type WorkspacesClientDeleteResponse struct {
 
 // WorkspacesClientDiscoverResponse contains the response from method WorkspacesClient.BeginDiscover.
 type WorkspacesClientDiscoverResponse struct {
-	// Model that represents the latest workspace discovery result.
+	// A retained workspace discovery result and its accepted coverage facts.
 	WorkspaceDiscovery
 }
 
 // WorkspacesClientEvaluateResponse contains the response from method WorkspacesClient.BeginEvaluate.
 type WorkspacesClientEvaluateResponse struct {
-	// Model that represents the latest workspace evaluation result.
+	// A retained workspace evaluation of published scenario-template versions.
 	WorkspaceEvaluation
 }
 

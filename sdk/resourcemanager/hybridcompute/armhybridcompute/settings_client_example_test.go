@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-15/settings/SettingsGet.json
+// Generated from example definition: 2026-09-01/settings/SettingsGet.json
 func ExampleSettingsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleSettingsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridcompute.SettingsClientGetResponse{
 	// 	Settings: armhybridcompute.Settings{
-	// 		Name: to.Ptr("current"),
+	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/settings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridCompute/settings/default"),
 	// 		Properties: &armhybridcompute.SettingsProperties{
@@ -45,7 +45,7 @@ func ExampleSettingsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/settings/SettingsPatch.json
+// Generated from example definition: 2026-09-01/settings/SettingsPatch.json
 func ExampleSettingsClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleSettingsClient_Patch() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridcompute.SettingsClientPatchResponse{
 	// 	Settings: armhybridcompute.Settings{
-	// 		Name: to.Ptr("current"),
+	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/settings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridCompute/settings/default"),
 	// 		Properties: &armhybridcompute.SettingsProperties{
@@ -84,7 +84,7 @@ func ExampleSettingsClient_Patch() {
 	// }
 }
 
-// Generated from example definition: 2026-07-15/settings/SettingsUpdate.json
+// Generated from example definition: 2026-09-01/settings/SettingsUpdate.json
 func ExampleSettingsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleSettingsClient_Update() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armhybridcompute.SettingsClientUpdateResponse{
 	// 	Settings: armhybridcompute.Settings{
-	// 		Name: to.Ptr("current"),
+	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.HybridCompute/settings"),
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/hybridRG/providers/Microsoft.HybridCompute/machines/testMachine/providers/Microsoft.HybridCompute/settings/default"),
 	// 		Properties: &armhybridcompute.SettingsProperties{

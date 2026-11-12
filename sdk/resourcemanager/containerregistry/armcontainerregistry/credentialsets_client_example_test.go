@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v4"
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/CredentialSetCreate.json
+// Generated from example definition: 2026-10-15-preview/CredentialSetCreate.json
 func ExampleCredentialSetsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleCredentialSetsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/CredentialSetDelete.json
+// Generated from example definition: 2026-10-15-preview/CredentialSetDelete.json
 func ExampleCredentialSetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,7 +98,7 @@ func ExampleCredentialSetsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/CredentialSetUpdate.json
+// Generated from example definition: 2026-10-15-preview/CredentialSetUpdate.json
 func ExampleCredentialSetsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleCredentialSetsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/CredentialSetGet.json
+// Generated from example definition: 2026-10-15-preview/CredentialSetGet.json
 func ExampleCredentialSetsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +206,7 @@ func ExampleCredentialSetsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/CredentialSetList.json
+// Generated from example definition: 2026-10-15-preview/CredentialSetList.json
 func ExampleCredentialSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

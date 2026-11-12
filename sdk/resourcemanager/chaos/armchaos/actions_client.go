@@ -19,7 +19,7 @@ import (
 // ActionsClient contains the methods for the Actions group.
 // Don't use this type directly, use NewActionsClient() instead.
 //
-// Generated from API version 2026-08-01-preview
+// Generated from API version 2026-11-01
 type ActionsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -87,7 +87,7 @@ func (client *ActionsClient) getCreateRequest(ctx context.Context, location stri
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -157,7 +157,7 @@ func (client *ActionsClient) listCreateRequest(ctx context.Context, location str
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260801Preview)
+		reqQP.Set("api-version", version20261101)
 		if options != nil && options.ContinuationToken != nil {
 			reqQP.Set("continuationToken", *options.ContinuationToken)
 		}

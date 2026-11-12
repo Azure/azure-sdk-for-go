@@ -183,6 +183,7 @@ func (p *readManyV1PartitionPolicy) Do(req *policy.Request) (*http.Response, err
 		return nil, err
 	}
 	rangeID := req.Raw().Header.Get(cosmosHeaderPartitionKeyRangeId)
+	partitionKey := req.Raw().Header.Get(cosmosHeaderPartitionKey)
 	p.rangeIDs = append(p.rangeIDs, rangeID)
 	documents := make([]map[string]string, 0)
 	for _, parameter := range query.Parameters {
@@ -191,11 +192,11 @@ func (p *readManyV1PartitionPolicy) Do(req *policy.Request) (*http.Response, err
 		}
 		switch parameter.Value {
 		case "low":
-			if rangeID == "0" {
+			if rangeID == "0" || partitionKey == `[""]` {
 				documents = append(documents, map[string]string{"id": "low", "pk": ""})
 			}
 		case "high", "high2":
-			if rangeID == "1" {
+			if rangeID == "1" || partitionKey == `["asdf"]` {
 				documents = append(documents, map[string]string{"id": parameter.Value.(string), "pk": "asdf"})
 			}
 		}
@@ -228,8 +229,8 @@ func TestReadManyItems_V1PhysicalPartitions(t *testing.T) {
 		ranges   []string
 	}{
 		{"mixed keys with missing item", []ItemIdentity{low, high, missing}, []string{"low", "high"}, []string{"0", "1"}},
-		{"single item", []ItemIdentity{high}, []string{"high"}, []string{"1"}},
-		{"same logical partition", []ItemIdentity{high, high2}, []string{"high", "high2"}, []string{"1"}},
+		{"single item", []ItemIdentity{high}, []string{"high"}, []string{""}},
+		{"same logical partition", []ItemIdentity{high, high2}, []string{"high", "high2"}, []string{""}},
 	}
 	for _, version := range []int{0, 1} {
 		name := "explicit V1"
@@ -242,7 +243,7 @@ func TestReadManyItems_V1PhysicalPartitions(t *testing.T) {
 					srv, closeSrv := mock.NewTLSServer()
 					defer closeSrv()
 					service := &readManyV1PartitionPolicy{}
-					client := createReadManyTestClient(t, srv, []policy.Policy{service})
+					client := createReadManyTestClient(t, srv, []policy.Policy{&headerPolicies{}, service})
 					containerLink := "dbs/databaseId/colls/containerId"
 					client.getContainerCache().set(containerLink, &ContainerProperties{
 						ID:         "containerId",
@@ -347,6 +348,7 @@ func TestReadManyItems_PartitionKeyHeader(t *testing.T) {
 		partitionKeyDef  PartitionKeyDefinition
 		items            []ItemIdentity
 		expectedPKHeader string
+		expectedRangeID  string
 	}{
 		{
 			name: "same logical partition key",
@@ -372,6 +374,7 @@ func TestReadManyItems_PartitionKeyHeader(t *testing.T) {
 				{ID: "1", PartitionKey: NewPartitionKeyString("pk1")},
 				{ID: "2", PartitionKey: NewPartitionKeyString("pk2")},
 			},
+			expectedRangeID: "0",
 		},
 		{
 			name: "different signed zero partition keys",
@@ -384,6 +387,7 @@ func TestReadManyItems_PartitionKeyHeader(t *testing.T) {
 				{ID: "1", PartitionKey: NewPartitionKeyNumber(0)},
 				{ID: "2", PartitionKey: NewPartitionKeyNumber(math.Copysign(0, -1))},
 			},
+			expectedRangeID: "0",
 		},
 		{
 			name: "same hierarchical partition key",
@@ -409,6 +413,7 @@ func TestReadManyItems_PartitionKeyHeader(t *testing.T) {
 				{ID: "1", PartitionKey: hierarchicalPK},
 				{ID: "2", PartitionKey: NewPartitionKeyString("tenant").AppendString("other")},
 			},
+			expectedRangeID: "0",
 		},
 		{
 			name: "same partial hierarchical partition key",
@@ -421,6 +426,7 @@ func TestReadManyItems_PartitionKeyHeader(t *testing.T) {
 				{ID: "1", PartitionKey: NewPartitionKeyString("tenant")},
 				{ID: "2", PartitionKey: NewPartitionKeyString("tenant")},
 			},
+			expectedRangeID: "0",
 		},
 	}
 
@@ -477,7 +483,7 @@ func TestReadManyItems_PartitionKeyHeader(t *testing.T) {
 			require.NoError(t, err)
 			require.Len(t, verifier.requests, 3)
 			require.Equal(t, tc.expectedPKHeader, verifier.requests[2].headers.Get(cosmosHeaderPartitionKey))
-			require.Equal(t, "0", verifier.requests[2].headers.Get(cosmosHeaderPartitionKeyRangeId))
+			require.Equal(t, tc.expectedRangeID, verifier.requests[2].headers.Get(cosmosHeaderPartitionKeyRangeId))
 		})
 	}
 }

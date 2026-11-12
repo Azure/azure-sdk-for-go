@@ -1,6 +1,6 @@
 # Release History
 
-## 3.1.0-beta.1 (2026-09-03)
+## 3.1.0 (2026-11-11)
 ### Features Added
 
 - New value `GateTypeScheduledStart` added to enum type `GateType`
@@ -48,11 +48,8 @@
 - New field `MeshProperties` in struct `FleetMemberProperties`
 - New field `ScheduledStartConfiguration` in struct `GateConfiguration`
 - New field `ScheduledStartProperties` in struct `GateProperties`
-- New field `MaxAllowedFailures`, `MemberSelector` in struct `UpdateGroup`
-- New field `FailureCount`, `MaxAllowedFailures` in struct `UpdateGroupStatus`
-- New field `FailureCount` in struct `UpdateRunStatus`
-- New field `MaxAllowedFailures`, `MemberSelector` in struct `UpdateStage`
-- New field `FailureCount`, `MaxAllowedFailures` in struct `UpdateStageStatus`
+- New field `MemberSelector` in struct `UpdateGroup`
+- New field `MemberSelector` in struct `UpdateStage`
 
 
 ## 3.0.0 (2026-08-03)

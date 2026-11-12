@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_CreateOrUpdate.json
+// Generated from example definition: 2026-11-01/UpdateRuns_CreateOrUpdate.json
 func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -294,7 +294,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_Delete.json
+// Generated from example definition: 2026-11-01/UpdateRuns_Delete.json
 func ExampleUpdateRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +320,7 @@ func ExampleUpdateRunsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_Skip.json
+// Generated from example definition: 2026-11-01/UpdateRuns_Skip.json
 func ExampleUpdateRunsClient_BeginSkip() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -489,7 +489,7 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_Start.json
+// Generated from example definition: 2026-11-01/UpdateRuns_Start.json
 func ExampleUpdateRunsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -623,7 +623,7 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_Stop.json
+// Generated from example definition: 2026-11-01/UpdateRuns_Stop.json
 func ExampleUpdateRunsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -757,7 +757,7 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_Get.json
+// Generated from example definition: 2026-11-01/UpdateRuns_Get.json
 func ExampleUpdateRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -941,7 +941,7 @@ func ExampleUpdateRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/UpdateRuns_ListByFleet.json
+// Generated from example definition: 2026-11-01/UpdateRuns_ListByFleet.json
 func ExampleUpdateRunsClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

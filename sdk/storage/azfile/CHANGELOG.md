@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (2026-11-12)
 
 ### Features Added
 * Exported `ShareNFSSettings` and `ShareNFSSettingsEncryptionInTransit` types.
@@ -15,8 +15,6 @@
 * Added Files Change Feed support on shares: `EnableChangeFeed` and `ChangeFeedRetentionInDays` in share `CreateOptions` and `SetPropertiesOptions`, and `EnableChangeFeed`, `ChangeFeedRetentionInDays` and `ChangeFeedBlobContainerName` in the share `GetProperties` response.
 * Added support for share creation time for service version `2027-03-07`. The creation time of a share is returned in `CreationTime` by `GetProperties` on share `Client` and in `ShareProperties` by `NewListSharesPager` on service `Client`.
 
-### Breaking Changes
-
 ### Bugs Fixed
 * Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
 * Fixed `NewListFilesAndDirectoriesPager` failing the whole page when the service returned a file name, directory name or prefix with a malformed URL encoding. The value is now returned as sent by the service.
@@ -24,6 +22,16 @@
 ### Other Changes
 * Updated `azcore` version to `1.23.2`
 * Updated `sdk/storage/internal` version to `0.2.0-beta.1`
+
+## 1.7.2 (2026-11-05)
+
+### Bugs Fixed
+* Fixed SAS signing to convert `StartTime` and `ExpiryTime` values to UTC before encoding them, so non-UTC times keep the intended instant.
+
+### Other Changes
+* Updated `azcore` version to `1.23.3`
+* Updated `azidentity` version to `1.14.0`
+* Updated `azblob` version to `1.8.3`
 
 ## 1.7.1 (2026-10-05)
 

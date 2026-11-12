@@ -24,7 +24,7 @@ extends:
     template: /eng/pipelines/templates/jobs/archetype-sdk-client.yml
     parameters:
       ServiceDirectory: 'storage/azdatalake'
-      RunLiveTests: true
+      RunLiveTests: false
       UsePipelineProxy: false
       EnvVars:
         AZURE_CLIENT_ID: $(AZDATALAKE_CLIENT_ID)

@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.Chaos": "2026-08-01-preview"
+    "Microsoft.Chaos": "2026-11-01"
   },
   "emitterVersion": "0.18.0"
 }

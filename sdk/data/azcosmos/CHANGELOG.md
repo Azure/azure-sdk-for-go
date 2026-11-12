@@ -154,6 +154,8 @@
 * Native driver v0.3.0 includes routing and session-token fixes and emits new change feed
   continuation tokens that still accept earlier tokens.
   See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
+* Moved the reactor's reusable completion batch to C-owned memory, released after draining stops.
+  See [PR 27940](https://github.com/Azure/azure-sdk-for-go/pull/27940).
 * Moved completion response copying and diagnostics conversion onto waiting callers so one
   caller's response preparation no longer delays unrelated completions.
   See [PR 27841](https://github.com/Azure/azure-sdk-for-go/pull/27841).

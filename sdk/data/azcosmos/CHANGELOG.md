@@ -9,9 +9,12 @@
 * Added `ContainerClient.NewReadManyItemsPager[T]` for reading many items by `ItemIdentity`
   (ID and partition key, including hierarchical prefixes), with an optional filter predicate.
   Duplicate identities are deduplicated, missing items are omitted, and result order is unspecified.
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
 * Added `ClientOptions.ResourceNameValidation` to enable or disable client-side validation of
   database, container, and item names. Nil keeps the native driver default (enabled).
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
 * Upgraded the native Cosmos driver to v0.3.0.
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
 * Added generic item writes using `encoding/json` and model hooks, `ItemResponse.IntoModel[T]()`,
   and generic query results with metadata-preserving model conversion errors.
 * Query model-conversion failures stop iteration but retain supported checkpoints so callers
@@ -143,11 +146,14 @@
 * Client-generated service-unavailable failures (substatus 20310, 20311, and 20312) from native
   driver v0.3.0 map to `CodeServiceUnavailable`. The driver synthesizes these 503s after a service
   failure that it could not route around.
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
 * The User-Agent header uses the native driver v0.3.0 format:
   `azsdk-go-azcosmos/<version> (drv=<driver version>; <os>; <arch>; <rustc version>; ft=<features>)`,
   followed by the optional application ID.
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
 * Native driver v0.3.0 includes routing and session-token fixes and emits new change feed
   continuation tokens that still accept earlier tokens.
+  See [PR 28011](https://github.com/Azure/azure-sdk-for-go/pull/28011).
 * Moved completion response copying and diagnostics conversion onto waiting callers so one
   caller's response preparation no longer delays unrelated completions.
   See [PR 27841](https://github.com/Azure/azure-sdk-for-go/pull/27841).

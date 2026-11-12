@@ -56,6 +56,35 @@ func ExampleContainerClient_NewQueryItemsPager() {
 	closeClient()
 }
 
+func ExampleContainerClient_NewReadManyItemsPager() {
+	container, closeClient := exampleContainer()
+	catalog := azcosmos.NewPartitionKeyString("catalog")
+	// Missing items are omitted, and items can arrive in any order.
+	selection := azcosmos.NewReadManyItemsSelection(
+		azcosmos.NewItemIdentity(catalog, "item1"),
+		azcosmos.NewItemIdentity(catalog, "item2"),
+	)
+	pager := container.NewReadManyItemsPager[catalogItem](selection, nil)
+	for pager.More() {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			closeErr := pager.Close()
+			closeClient()
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", errors.Join(err, closeErr))
+		}
+		for _, item := range page.Items {
+			log.Printf("read %s (quantity %d)", item.ID, item.Quantity)
+		}
+	}
+	if err := pager.Close(); err != nil {
+		closeClient()
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	closeClient()
+}
+
 // exampleContainer builds the client and container the operation examples below work against, so
 // that each of those can show the operation rather than repeating the setup. ExampleNewClient
 // shows the construction it stands in for.

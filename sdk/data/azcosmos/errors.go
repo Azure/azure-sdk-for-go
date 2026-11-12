@@ -179,7 +179,9 @@ type Error struct {
 	// for writes, where a wire failure means the operation definitely reached the service and a
 	// client-side one leaves that unknown. Local decoding failures can retain metadata from a
 	// successful response while FromWire is false; this flag identifies the origin of the error,
-	// not whether an earlier write succeeded.
+	// not whether an earlier write succeeded. Likewise, the 503 failures with substatus 20310,
+	// 20311, and 20312 that the driver synthesizes after a service failure keep that response's
+	// metadata, such as RequestCharge and ActivityID, but report FromWire false.
 	FromWire bool
 
 	cause error

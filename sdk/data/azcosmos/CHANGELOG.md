@@ -134,6 +134,8 @@
 
 ### Other Changes
 
+* Moved the reactor's reusable completion batch to C-owned memory, released after draining stops.
+  See [PR 27940](https://github.com/Azure/azure-sdk-for-go/pull/27940).
 * Moved completion response copying and diagnostics conversion onto waiting callers so one
   caller's response preparation no longer delays unrelated completions.
   See [PR 27841](https://github.com/Azure/azure-sdk-for-go/pull/27841).

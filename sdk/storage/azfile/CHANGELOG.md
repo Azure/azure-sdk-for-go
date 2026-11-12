@@ -23,6 +23,7 @@
 
 ### Other Changes
 * Updated `azcore` version to `1.23.2`
+* Updated `sdk/storage/internal` version to `0.2.0-beta.1`
 
 ## 1.7.1 (2026-10-05)
 

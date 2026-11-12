@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+* Fixed `ReadManyItems` requests for a shared logical partition key being rejected with HTTP 400 because both the partition key and partition key range ID headers were sent. The SDK now omits the range ID header when the partition key header is present.
+
 ### Other Changes
 
 ## 1.6.0-beta.5 (2026-11-06)

@@ -302,7 +302,9 @@ func (c *ContainerClient) executeOneChunkPage(
 		operationContext,
 		queryOpts,
 		func(req *policy.Request) {
-			req.Raw().Header.Set(cosmosHeaderPartitionKeyRangeId, rangeID)
+			if operationContext.headerOptionsOverride == nil || operationContext.headerOptionsOverride.partitionKey == nil {
+				req.Raw().Header.Set(cosmosHeaderPartitionKeyRangeId, rangeID)
+			}
 		},
 	)
 	if err != nil {

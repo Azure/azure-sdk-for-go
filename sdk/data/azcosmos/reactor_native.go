@@ -15,6 +15,7 @@ import (
 	"runtime"
 	"runtime/cgo"
 	"sync"
+	"unsafe"
 )
 
 // The driver is asynchronous: submitting an operation returns immediately and its result is posted
@@ -34,10 +35,16 @@ const completionBatch = 64
 // rather than a throughput one.
 const completionWaitMillis = 250
 
+// calloc returns nil on allocation failure, unlike cgo's special malloc wrapper.
+var allocateCompletionBatch = func() unsafe.Pointer {
+	return C.calloc(C.size_t(completionBatch), C.size_t(C.sizeof_cosmos_completion_t))
+}
+
 // reactor drains one completion queue and delivers each completion to the operation that submitted
 // it.
 type reactor struct {
 	queue *C.cosmos_completion_queue_t
+	batch []C.cosmos_completion_t
 
 	waitMillis uint32
 	beforeWait func()
@@ -128,8 +135,18 @@ func newReactorWithWait(
 		}
 	}
 
+	memory := allocateCompletionBatch()
+	if memory == nil {
+		C.cosmos_completion_queue_free(queue)
+		return nil, &Error{
+			Code:    CodeClientError,
+			Message: "azcosmos: allocating the completion batch",
+		}
+	}
+
 	r := &reactor{
 		queue:      queue,
+		batch:      unsafe.Slice((*C.cosmos_completion_t)(memory), completionBatch),
 		waitMillis: waitMillis,
 		beforeWait: beforeWait,
 		verbosity:  verbosity,
@@ -140,9 +157,10 @@ func newReactorWithWait(
 	return r, nil
 }
 
-// run drains the queue until stopped. It owns the queue handle for its lifetime.
+// run drains the queue until stopped. It owns the C-allocated batch for its lifetime.
 func (r *reactor) run() {
 	defer close(r.done)
+	defer C.free(unsafe.Pointer(&r.batch[0]))
 
 	// The wait call blocks in C, which parks the calling thread. Pinning the goroutine to its own
 	// OS thread keeps the Go scheduler from having to grow the thread pool around it, and keeps
@@ -150,7 +168,7 @@ func (r *reactor) run() {
 	runtime.LockOSThread()
 	defer runtime.UnlockOSThread()
 
-	batch := make([]C.cosmos_completion_t, completionBatch)
+	batch := r.batch
 	for {
 		select {
 		case <-r.stop:
@@ -228,5 +246,6 @@ func (r *reactor) close() {
 		// Freed only after the loop has returned, so nothing can be waiting on it.
 		C.cosmos_completion_queue_free(r.queue)
 		r.queue = nil
+		r.batch = nil
 	})
 }

@@ -30,3 +30,12 @@ type TargetSelectorClassification interface {
 	// GetTargetSelector returns the TargetSelector content of the underlying type.
 	GetTargetSelector() *TargetSelector
 }
+
+// WorkspaceDiscoveryWarningClassification provides polymorphic access to related types.
+// Call the interface's GetWorkspaceDiscoveryWarning() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *WorkspaceDiscoveryAccessWarning, *WorkspaceDiscoveryPermissionWarning, *WorkspaceDiscoveryResourceWarning, *WorkspaceDiscoveryWarning
+type WorkspaceDiscoveryWarningClassification interface {
+	// GetWorkspaceDiscoveryWarning returns the WorkspaceDiscoveryWarning content of the underlying type.
+	GetWorkspaceDiscoveryWarning() *WorkspaceDiscoveryWarning
+}

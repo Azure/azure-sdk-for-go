@@ -20,13 +20,29 @@ type Actor struct {
 
 // AdditionalAuthenticationProperties - Authentication configuration used by a cache rule to access an upstream registry.
 type AdditionalAuthenticationProperties struct {
-	// REQUIRED; Authentication type discriminator.
+	// REQUIRED; Authentication type discriminator. The authentication type cannot change once configured.
 	AuthenticationType *AdditionalAuthenticationType
 }
 
 // GetAdditionalAuthenticationProperties implements the AdditionalAuthenticationPropertiesClassification interface for type
 // AdditionalAuthenticationProperties.
 func (a *AdditionalAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
+	return a
+}
+
+// AdditionalAuthenticationUpdateProperties - Partial authentication configuration for a cache rule. Omitted fields retain
+// their current
+// values. When authentication is first configured, all required fields of the selected
+// authentication type must be supplied. Changing an existing authentication type is not supported.
+type AdditionalAuthenticationUpdateProperties struct {
+	// REQUIRED; The existing authentication type, or the type to configure when no authentication exists.
+	// This discriminator is required, but changing an existing authentication type is not supported.
+	AuthenticationType *AdditionalAuthenticationType
+}
+
+// GetAdditionalAuthenticationUpdateProperties implements the AdditionalAuthenticationUpdatePropertiesClassification interface
+// for type AdditionalAuthenticationUpdateProperties.
+func (a *AdditionalAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
 	return a
 }
 
@@ -208,7 +224,10 @@ type CacheRuleUpdateParameters struct {
 // CacheRuleUpdateProperties - The parameters for updating cache rule properties.
 type CacheRuleUpdateProperties struct {
 	// Authentication configuration used by the cache rule to access the upstream source repository.
-	AdditionalAuthenticationProperties AdditionalAuthenticationPropertiesClassification
+	// Omitted fields retain their current values. When authentication is first configured, all
+	// required fields of the selected authentication type must be supplied. Changing an existing
+	// authentication type is not supported.
+	AdditionalAuthenticationProperties AdditionalAuthenticationUpdatePropertiesClassification
 
 	// The ARM resource ID of the credential store which is associated with the Cache rule.
 	CredentialSetResourceID *string
@@ -413,12 +432,149 @@ type CredentialSetUpdateProperties struct {
 	AuthCredentials []*AuthCredential
 }
 
+// ECRAuthenticationProperties - Amazon Elastic Container Registry (ECR) authentication configuration.
+type ECRAuthenticationProperties struct {
+	// REQUIRED; The AWS account that owns the IAM role used for authentication.
+	// The IAM role is assumed via AWS Security Token Service (STS) when exchanging a
+	// federated Entra access token for an ECR access token. The full IAM role ARN is
+	// derived from `accountNumber`, `rolePath`, and `roleName` as
+	// `arn:aws:iam::{accountNumber}:role{rolePath}{roleName}` (the initial path defaults to `/`).
+	AccountNumber *string
+
+	// CONSTANT; Field has constant value AdditionalAuthenticationTypeAWSElasticContainerRegistry, any specified value is ignored.
+	AuthenticationType *AdditionalAuthenticationType
+
+	// REQUIRED; The AWS region of the upstream Elastic Container Registry (e.g. `us-west-2`).
+	// Only commercial AWS regions are supported; the GovCloud (`us-gov-*`), China
+	// (`cn-*`), and Secret/Top Secret ISO (`us-iso*`) partitions are rejected. The
+	// pattern stays forward-compatible for new commercial regions without requiring a
+	// contract change.
+	Region *string
+
+	// REQUIRED; The name of the AWS IAM role assumed for authentication.
+	// This is the role name only, not the full ARN; the IAM path is supplied separately
+	// via `rolePath`, so '/' is not permitted here.
+	RoleName *string
+
+	// Optional IAM path of the role (for example `/team/` or `/division/team/`). The value
+	// must be supplied in canonical form with a leading and trailing '/'; it is validated
+	// as-is and is never normalized. A non-root path must contain at least one character
+	// between the surrounding slashes. When authentication is first configured, an omitted
+	// path defaults to the root (`/`). When updating an existing authentication configuration,
+	// an omitted path retains its current value.
+	RolePath *string
+}
+
+// GetAdditionalAuthenticationProperties implements the AdditionalAuthenticationPropertiesClassification interface for type
+// ECRAuthenticationProperties.
+func (e *ECRAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
+	return &AdditionalAuthenticationProperties{
+		AuthenticationType: e.AuthenticationType,
+	}
+}
+
+// ECRAuthenticationUpdateProperties - Partial Amazon Elastic Container Registry (ECR) authentication configuration.
+// When authentication is first configured, accountNumber, region, and roleName must be supplied.
+type ECRAuthenticationUpdateProperties struct {
+	// CONSTANT; Field has constant value AdditionalAuthenticationTypeAWSElasticContainerRegistry, any specified value is ignored.
+	AuthenticationType *AdditionalAuthenticationType
+
+	// The AWS account that owns the IAM role used for authentication.
+	// The IAM role is assumed via AWS Security Token Service (STS) when exchanging a
+	// federated Entra access token for an ECR access token. The full IAM role ARN is
+	// derived from `accountNumber`, `rolePath`, and `roleName` as
+	// `arn:aws:iam::{accountNumber}:role{rolePath}{roleName}` (the initial path defaults to `/`).
+	AccountNumber *string
+
+	// The AWS region of the upstream Elastic Container Registry (e.g. `us-west-2`).
+	// Only commercial AWS regions are supported; the GovCloud (`us-gov-*`), China
+	// (`cn-*`), and Secret/Top Secret ISO (`us-iso*`) partitions are rejected. The
+	// pattern stays forward-compatible for new commercial regions without requiring a
+	// contract change.
+	Region *string
+
+	// The name of the AWS IAM role assumed for authentication.
+	// This is the role name only, not the full ARN; the IAM path is supplied separately
+	// via `rolePath`, so '/' is not permitted here.
+	RoleName *string
+
+	// Optional IAM path of the role (for example `/team/` or `/division/team/`). The value
+	// must be supplied in canonical form with a leading and trailing '/'; it is validated
+	// as-is and is never normalized. A non-root path must contain at least one character
+	// between the surrounding slashes. When authentication is first configured, an omitted
+	// path defaults to the root (`/`). When updating an existing authentication configuration,
+	// an omitted path retains its current value.
+	RolePath *string
+}
+
+// GetAdditionalAuthenticationUpdateProperties implements the AdditionalAuthenticationUpdatePropertiesClassification interface
+// for type ECRAuthenticationUpdateProperties.
+func (e *ECRAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
+	return &AdditionalAuthenticationUpdateProperties{
+		AuthenticationType: e.AuthenticationType,
+	}
+}
+
 type EncryptionProperty struct {
 	// Key vault properties.
 	KeyVaultProperties *KeyVaultProperties
 
 	// Indicates whether or not the encryption is enabled for container registry.
 	Status *EncryptionStatus
+}
+
+// EntraFederatedIdentityCredentialAuthenticationProperties - Microsoft Entra federated identity credential authentication
+// configuration.
+type EntraFederatedIdentityCredentialAuthenticationProperties struct {
+	// CONSTANT; Field has constant value AdditionalAuthenticationTypeEntraFederatedIdentityCredential, any specified value is
+	// ignored.
+	AuthenticationType *AdditionalAuthenticationType
+
+	// REQUIRED; The client ID of the multi-tenant application. Its application registration and
+	// federated identity credential must be in the cache rule managed identity's home tenant.
+	// The credential's subject is the managed identity's principal/object ID, not its client ID.
+	// Its enterprise application (service principal) must exist in `sourceTenantId`.
+	FederatedApplicationClientID *string
+
+	// REQUIRED; The upstream tenant that issues the token for `federatedApplicationClientId` and contains
+	// the application's enterprise application (service principal).
+	SourceTenantID *string
+}
+
+// GetAdditionalAuthenticationProperties implements the AdditionalAuthenticationPropertiesClassification interface for type
+// EntraFederatedIdentityCredentialAuthenticationProperties.
+func (e *EntraFederatedIdentityCredentialAuthenticationProperties) GetAdditionalAuthenticationProperties() *AdditionalAuthenticationProperties {
+	return &AdditionalAuthenticationProperties{
+		AuthenticationType: e.AuthenticationType,
+	}
+}
+
+// EntraFederatedIdentityCredentialAuthenticationUpdateProperties - Partial Microsoft Entra federated identity credential
+// authentication configuration.
+// When authentication is first configured, sourceTenantId and federatedApplicationClientId
+// must be supplied.
+type EntraFederatedIdentityCredentialAuthenticationUpdateProperties struct {
+	// CONSTANT; Field has constant value AdditionalAuthenticationTypeEntraFederatedIdentityCredential, any specified value is
+	// ignored.
+	AuthenticationType *AdditionalAuthenticationType
+
+	// The client ID of the multi-tenant application. Its application registration and
+	// federated identity credential must be in the cache rule managed identity's home tenant.
+	// The credential's subject is the managed identity's principal/object ID, not its client ID.
+	// Its enterprise application (service principal) must exist in `sourceTenantId`.
+	FederatedApplicationClientID *string
+
+	// The upstream tenant that issues the token for `federatedApplicationClientId` and contains
+	// the application's enterprise application (service principal).
+	SourceTenantID *string
+}
+
+// GetAdditionalAuthenticationUpdateProperties implements the AdditionalAuthenticationUpdatePropertiesClassification interface
+// for type EntraFederatedIdentityCredentialAuthenticationUpdateProperties.
+func (e *EntraFederatedIdentityCredentialAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
+	return &AdditionalAuthenticationUpdateProperties{
+		AuthenticationType: e.AuthenticationType,
+	}
 }
 
 // Event - The event for a webhook.
@@ -576,6 +732,32 @@ type ExportPipelineTargetProperties struct {
 type ExportPolicy struct {
 	// The value that indicates whether the policy is enabled or not.
 	Status *ExportPolicyStatus
+}
+
+// GARAuthenticationUpdateProperties - Partial Google Artifact Registry (GAR) authentication configuration.
+// When authentication is first configured, projectNumber, workloadIdentityPool, and
+// workloadIdentityProvider must be supplied.
+type GARAuthenticationUpdateProperties struct {
+	// CONSTANT; Field has constant value AdditionalAuthenticationTypeGoogleArtifactRegistry, any specified value is ignored.
+	AuthenticationType *AdditionalAuthenticationType
+
+	// The Google Cloud Platform project that is configured for authentication
+	// Permissions should be granted to principal://iam.googleapis.com/projects/{ProjectNumber}/locations/global/workloadIdentityPools/{WorkloadIdentityPool}/providers/{WorkloadIdentityProvider}/subject/{ManagedIdentityPrincipal}
+	ProjectNumber *string
+
+	// The Google Cloud platform workload identity pool used for authentication.
+	WorkloadIdentityPool *string
+
+	// The Google Cloud Platform workload identity provider used for authentication.
+	WorkloadIdentityProvider *string
+}
+
+// GetAdditionalAuthenticationUpdateProperties implements the AdditionalAuthenticationUpdatePropertiesClassification interface
+// for type GARAuthenticationUpdateProperties.
+func (g *GARAuthenticationUpdateProperties) GetAdditionalAuthenticationUpdateProperties() *AdditionalAuthenticationUpdateProperties {
+	return &AdditionalAuthenticationUpdateProperties{
+		AuthenticationType: g.AuthenticationType,
+	}
 }
 
 // GarAuthenticationProperties - Google Artifact Registry (GAR) authentication configuration.

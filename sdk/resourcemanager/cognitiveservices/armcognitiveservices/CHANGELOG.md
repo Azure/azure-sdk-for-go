@@ -1,6 +1,6 @@
 # Release History
 
-## 4.0.0 (2026-11-11)
+## 4.0.0 (2026-11-12)
 ### Breaking Changes
 
 - Function `*AccountConnectionsClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, accountName string, connectionName string, options *AccountConnectionsClientCreateOptions)` to `(ctx context.Context, resourceGroupName string, accountName string, connectionName string, connection ConnectionPropertiesV2BasicResource, options *AccountConnectionsClientCreateOptions)`

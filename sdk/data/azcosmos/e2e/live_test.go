@@ -336,7 +336,8 @@ func liveConcurrency(t *testing.T, f *liveFixture) {
 		&azcosmos.ReplaceItemOptions{Precondition: condition})
 	liveNoError(t, "conditional replacement", err)
 	require.NotEqual(t, created.ETag, updated.ETag)
-	_, err = f.container.ReplaceItem(f.ctx, f.pk, f.prefix+"-etag", body,
+	_, err = f.container.ReplaceItem(f.ctx, f.pk, f.prefix+"-etag",
+		item(f.prefix+"-etag", f.prefix, 3),
 		&azcosmos.ReplaceItemOptions{Precondition: condition})
 	_ = liveCode(t, err, azcosmos.CodePreconditionFailed, 412)
 	read, err := f.container.ReadItem(f.ctx, f.pk, f.prefix+"-etag", nil)
@@ -349,6 +350,7 @@ func liveDiagnostics(t *testing.T, f *liveFixture) {
 	read, err := f.container.ReadItem(f.ctx, f.pk, f.prefix+"-diagnostics", nil)
 	liveNoError(t, "read for success diagnostics", err)
 	requireCriticalDiagnostics(t, read.Diagnostics, 200)
+	require.NotEmpty(t, read.Diagnostics.RegionsContacted)
 	require.NotEmpty(t, read.ActivityID)
 	require.Positive(t, read.RequestCharge)
 	_, err = f.container.ReadItem(f.ctx, f.pk, f.prefix+"-missing", nil)
@@ -372,8 +374,8 @@ func livePagination(t *testing.T, f *liveFixture) {
 		SessionToken: session, Feed: azcosmos.FeedOptions{PageSizeHint: 1},
 	})
 	t.Cleanup(func() { liveNoError(t, "close first pager", pager.Close()) })
-	first, err := pager.NextPage(f.ctx)
-	liveNoError(t, "fetch first page", err)
+	first, err := nextNonEmptyLivePage(f.ctx, pager)
+	liveNoError(t, "fetch first nonempty page", err)
 	require.NotEmpty(t, first.Items)
 	require.Less(t, len(first.Items), count)
 	token, err := pager.ContinuationToken(f.ctx)
@@ -393,5 +395,70 @@ func livePagination(t *testing.T, f *liveFixture) {
 	require.Len(t, items, count)
 	for i, value := range items {
 		require.Equal(t, int64(i), value.Value, "ordered resume must not lose or duplicate results")
+	}
+}
+
+type liveItemPager interface {
+	More() bool
+	NextPage(context.Context) (azcosmos.QueryItemsResponse[Item], error)
+}
+
+func nextNonEmptyLivePage(ctx context.Context, pager liveItemPager) (azcosmos.QueryItemsResponse[Item], error) {
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil || len(page.Items) != 0 {
+			return page, err
+		}
+	}
+	return azcosmos.QueryItemsResponse[Item]{}, nil
+}
+
+type liveQueryPageSequence struct {
+	pages []azcosmos.QueryItemsResponse[Item]
+	err   error
+	calls int
+}
+
+func (p *liveQueryPageSequence) More() bool {
+	return len(p.pages) != 0 || p.err != nil
+}
+
+func (p *liveQueryPageSequence) NextPage(ctx context.Context) (azcosmos.QueryItemsResponse[Item], error) {
+	p.calls++
+	if err := ctx.Err(); err != nil {
+		return azcosmos.QueryItemsResponse[Item]{}, err
+	}
+	if len(p.pages) == 0 {
+		return azcosmos.QueryItemsResponse[Item]{}, p.err
+	}
+	page := p.pages[0]
+	p.pages = p.pages[1:]
+	return page, nil
+}
+
+func TestNextNonEmptyLivePage(t *testing.T) {
+	first := azcosmos.QueryItemsResponse[Item]{Items: []Item{{ID: "first", Value: 1}}}
+	second := azcosmos.QueryItemsResponse[Item]{Items: []Item{{ID: "second", Value: 2}}}
+	failure := errors.New("query failed")
+	for _, tc := range []struct {
+		name      string
+		pages     []azcosmos.QueryItemsResponse[Item]
+		err       error
+		want      azcosmos.QueryItemsResponse[Item]
+		wantCalls int
+	}{
+		{"nonempty first page", []azcosmos.QueryItemsResponse[Item]{first, second}, nil, first, 1},
+		{"empty nonterminal pages", []azcosmos.QueryItemsResponse[Item]{{}, {}, first, second}, nil, first, 3},
+		{"empty exhausted feed", []azcosmos.QueryItemsResponse[Item]{{}, {}}, nil, azcosmos.QueryItemsResponse[Item]{}, 2},
+		{"already exhausted", nil, nil, azcosmos.QueryItemsResponse[Item]{}, 0},
+		{"error after empty page", []azcosmos.QueryItemsResponse[Item]{{}}, failure, azcosmos.QueryItemsResponse[Item]{}, 2},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			pager := &liveQueryPageSequence{pages: tc.pages, err: tc.err}
+			page, err := nextNonEmptyLivePage(t.Context(), pager)
+			require.ErrorIs(t, err, tc.err)
+			require.Equal(t, tc.want, page)
+			require.Equal(t, tc.wantCalls, pager.calls, "stop at the first items, exhaustion, or error")
+		})
 	}
 }

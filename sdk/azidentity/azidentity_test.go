@@ -603,12 +603,8 @@ func Test_SetEnvEnvironment(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 			setEnvironmentVariables(t, map[string]string{azureAuthorityHost: "", azureEnvironment: name})
 			authorityHost, err := setAuthorityHost(cloud.Configuration{})
-			if err != nil {
-				t.Fatal(err)
-			}
-			if authorityHost != expected.ActiveDirectoryAuthorityHost {
-				t.Fatalf(`expected "%s", got "%s"`, expected.ActiveDirectoryAuthorityHost, authorityHost)
-			}
+			require.NoError(t, err)
+			require.Equal(t, expected.ActiveDirectoryAuthorityHost, authorityHost)
 		})
 	}
 }
@@ -616,24 +612,16 @@ func Test_SetEnvEnvironment(t *testing.T) {
 func Test_SetEnvEnvironmentWhitespace(t *testing.T) {
 	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: "", azureEnvironment: " AzureChina\n"})
 	authorityHost, err := setAuthorityHost(cloud.Configuration{})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if authorityHost != cloud.AzureChina.ActiveDirectoryAuthorityHost {
-		t.Fatalf(`unexpected host "%s"`, authorityHost)
-	}
+	require.NoError(t, err)
+	require.Equal(t, cloud.AzureChina.ActiveDirectoryAuthorityHost, authorityHost)
 }
 
 func Test_CustomAuthorityHostWithEnvEnvironment(t *testing.T) {
 	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: "", azureEnvironment: "AzureChina"})
 	authorityHost, err := setAuthorityHost(cloud.Configuration{ActiveDirectoryAuthorityHost: testHost})
-	if err != nil {
-		t.Fatal(err)
-	}
+	require.NoError(t, err)
 	// ensure env var doesn't override explicit value
-	if authorityHost != testHost {
-		t.Fatalf(`expected "%s", got "%s"`, testHost, authorityHost)
-	}
+	require.Equal(t, testHost, authorityHost)
 }
 
 func Test_SetEnvAuthorityHostWithEnvEnvironment(t *testing.T) {
@@ -641,12 +629,8 @@ func Test_SetEnvAuthorityHostWithEnvEnvironment(t *testing.T) {
 	for _, name := range []string{"AzureChina", "invalid"} {
 		setEnvironmentVariables(t, map[string]string{azureAuthorityHost: testHost, azureEnvironment: name})
 		authorityHost, err := setAuthorityHost(cloud.Configuration{})
-		if err != nil {
-			t.Fatal(err)
-		}
-		if authorityHost != testHost {
-			t.Fatalf(`expected "%s", got "%s"`, testHost, authorityHost)
-		}
+		require.NoError(t, err)
+		require.Equal(t, testHost, authorityHost)
 	}
 }
 
@@ -654,24 +638,12 @@ func Test_InvalidEnvEnvironment(t *testing.T) {
 	for _, name := range []string{"AzureGermanCloud", "Azure China", "invalid"} {
 		setEnvironmentVariables(t, map[string]string{azureAuthorityHost: "", azureEnvironment: name})
 		authorityHost, err := setAuthorityHost(cloud.Configuration{})
-		if err == nil {
-			t.Fatalf(`expected an error for "%s"`, name)
-		}
-		if !strings.Contains(err.Error(), azureEnvironment) {
-			t.Fatalf(`expected the error to mention %s, got "%s"`, azureEnvironment, err.Error())
-		}
-		if authorityHost != "" {
-			t.Fatalf(`unexpected host "%s"`, authorityHost)
-		}
+		require.ErrorContains(t, err, azureEnvironment, name)
+		require.Empty(t, authorityHost)
 	}
 	// credential constructors return the error
 	_, err := NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, nil)
-	if err == nil {
-		t.Fatal("expected an error")
-	}
-	if !strings.Contains(err.Error(), azureEnvironment) {
-		t.Fatalf(`expected the error to mention %s, got "%s"`, azureEnvironment, err.Error())
-	}
+	require.ErrorContains(t, err, azureEnvironment)
 }
 
 func TestGetTokenRequiresScopes(t *testing.T) {

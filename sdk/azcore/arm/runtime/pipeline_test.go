@@ -242,29 +242,16 @@ func TestPipelineAudienceIgnoresEnvironment(t *testing.T) {
 		getTokenCalled := false
 		cred := mockCredential{getTokenImpl: func(ctx context.Context, options policy.TokenRequestOptions) (azcore.AccessToken, error) {
 			getTokenCalled = true
-			if n := len(options.Scopes); n != 1 {
-				t.Fatalf("expected 1 scope, got %d", n)
-			}
-			if options.Scopes[0] != audience+"/.default" {
-				t.Fatalf(`unexpected scope "%s"`, options.Scopes[0])
-			}
+			require.Equal(t, []string{audience + "/.default"}, options.Scopes)
 			return azcore.AccessToken{Token: "...", ExpiresOn: time.Now().Add(time.Hour)}, nil
 		}}
 		req, err := azruntime.NewRequest(context.Background(), http.MethodGet, srv.URL())
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
 		pl, err := NewPipeline("test", "v0.1.0", cred, azruntime.PipelineOptions{}, opts)
-		if err != nil {
-			t.Fatal(err)
-		}
+		require.NoError(t, err)
 		_, err = pl.Do(req)
-		if err != nil {
-			t.Fatal(err)
-		}
-		if !getTokenCalled {
-			t.Fatal("mock credential's GetToken method wasn't called")
-		}
+		require.NoError(t, err)
+		require.True(t, getTokenCalled, "mock credential's GetToken method wasn't called")
 	}
 }
 

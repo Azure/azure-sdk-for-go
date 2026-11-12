@@ -70,6 +70,7 @@ func (sc scopeCredential) GetToken(ctx context.Context, options policy.TokenRequ
 
 // requireClientCloud asserts that a client created with opts uses expected's endpoint and token audience
 func requireClientCloud(t *testing.T, expected cloud.Configuration, opts *ClientOptions) {
+	t.Helper()
 	srv, close := mock.NewTLSServer()
 	defer close()
 	srv.AppendResponse()

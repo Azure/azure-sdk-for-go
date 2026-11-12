@@ -10,7 +10,7 @@
 
 ### Bugs Fixed
 
-* Fixed `ReadManyItems` requests for a shared logical partition key being rejected with HTTP 400 because both the partition key and partition key range ID headers were sent. The SDK now omits the range ID header when the partition key header is present.
+* Fixed `ReadManyItems` requests for a shared logical partition key being rejected with HTTP 400 because both the partition key and partition key range ID headers were sent. The SDK now omits the range ID header when the partition key header is present. See [PR 28027](https://github.com/Azure/azure-sdk-for-go/pull/28027).
 
 ### Other Changes
 

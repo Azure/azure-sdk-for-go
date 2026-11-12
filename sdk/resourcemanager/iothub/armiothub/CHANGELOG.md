@@ -1,6 +1,6 @@
 # Release History
 
-## 2.0.0 (2026-11-09)
+## 2.0.0 (2026-11-12)
 ### Breaking Changes
 
 - Type of `FallbackRouteProperties.Source` has been changed from `*RoutingSource` to `*FallbackRouteSource`

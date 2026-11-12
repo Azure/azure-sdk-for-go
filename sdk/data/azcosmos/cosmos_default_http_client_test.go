@@ -24,15 +24,18 @@ func TestDefaultCosmosHTTPClient_Timeouts(t *testing.T) {
 	require.NotNil(t, c)
 	require.Equal(t, defaultHTTPRoundTripTimeout, c.Timeout)
 
-	transport, ok := c.Transport.(*http.Transport)
-	require.True(t, ok, "expected *http.Transport, got %T", c.Transport)
+	pool, ok := c.Transport.(*cosmosConnectionPool)
+	require.True(t, ok, "expected *cosmosConnectionPool, got %T", c.Transport)
+	transport := pool.transport
 	require.NotNil(t, transport.DialContext)
 }
 
 func TestDefaultCosmosHTTPClient_TransportSettings(t *testing.T) {
 	c := newDefaultCosmosHTTPClient()
-	transport, ok := c.Transport.(*http.Transport)
+	pool, ok := c.Transport.(*cosmosConnectionPool)
 	require.True(t, ok)
+	transport := pool.transport
+	assert.Equal(t, 32, pool.limit)
 
 	assert.NotNil(t, transport.Proxy)
 	assert.True(t, transport.ForceAttemptHTTP2)
@@ -75,8 +78,9 @@ func TestDefaultCosmosHTTPClient_Protocols(t *testing.T) {
 
 			c := newDefaultCosmosHTTPClient()
 			t.Cleanup(c.CloseIdleConnections)
-			transport, ok := c.Transport.(*http.Transport)
+			pool, ok := c.Transport.(*cosmosConnectionPool)
 			require.True(t, ok)
+			transport := pool.transport
 			if tt.tls {
 				serverTransport, ok := server.Client().Transport.(*http.Transport)
 				require.True(t, ok)
@@ -88,6 +92,8 @@ func TestDefaultCosmosHTTPClient_Protocols(t *testing.T) {
 			defer func() { assert.NoError(t, resp.Body.Close()) }()
 			assert.Equal(t, http.StatusNoContent, resp.StatusCode)
 			assert.Equal(t, tt.protoMajor, resp.ProtoMajor)
+			require.NotNil(t, resp.Request)
+			assert.Equal(t, server.URL, resp.Request.URL.String())
 		})
 	}
 }

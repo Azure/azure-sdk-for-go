@@ -6,7 +6,11 @@
 
 ### Features Added
 
+* Added `NewHTTPClient` and `HTTPClientOptions.MaxConnectionsPerEndpoint` to customize the Cosmos HTTP connection budget while retaining Cosmos-specific transport settings.
+
 ### Breaking Changes
+
+* The default native HTTP transport now limits each scheme/host/port to 32 connections, including dialing, active, idle, and draining connections. HTTP/2 streams share these connections; HTTP/1.1 fallback uses the same budget. Saturated requests wait within the existing HTTP-attempt timeout, which can increase latency or cause timeouts under load. Use `NewHTTPClient` with a different positive budget, or `MaxConnectionsPerEndpoint: -1` to restore the previous unbounded transport. Custom transports remain unchanged. Bounded dialing uses sequential address attempts instead of parallel IPv4/IPv6 attempts, and leaves request retries to the SDK pipeline. WebAssembly retains platform-managed networking. See the [connection management migration guidance](https://github.com/Azure/azure-sdk-for-go/blob/main/sdk/data/azcosmos/README.md#connection-management).
 
 ### Bugs Fixed
 

@@ -232,7 +232,11 @@ address=203.0.113.47 tenant=00000000-1111-2222-3333-444444444444
 				Code: azcosmos.CodeTransportFailure, StatusCode: 503, SubStatus: 20010,
 				AttemptCount: 3, Message: message,
 				Body: []byte(sensitive), SessionToken: azcosmos.SessionToken(sensitive),
-				ActivityID: sensitive, Diagnostics: &azcosmos.Diagnostics{JSON: sensitive},
+				ActivityID: sensitive,
+				Diagnostics: &azcosmos.Diagnostics{
+					RegionsContacted: []string{sensitive},
+					Attempts:         []azcosmos.DiagnosticAttempt{{Endpoint: sensitive, Region: sensitive}},
+				},
 			}
 			err := fmt.Errorf("%s: %w", sensitive, nativeErr)
 			require.Equal(t, "code=TransportFailure status=503 substatus=20010 attempts=3 fromWire=false causeHints="+tc.want,

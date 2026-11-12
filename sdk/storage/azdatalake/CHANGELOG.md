@@ -29,6 +29,7 @@
 
 ### Other Changes
 * Updated `azblob` version to `1.9.0-beta.1`
+* Updated `sdk/storage/internal` version to `0.2.0-beta.1`
 
 ## 1.7.1 (2026-11-03)
 

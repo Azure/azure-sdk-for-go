@@ -30,6 +30,10 @@ const (
 
 const BearerTokenPrefix = "Bearer "
 
+// EnvAzureEnvironment is the name of the environment variable that selects a well-known
+// Azure cloud for clients whose options don't specify one.
+const EnvAzureEnvironment = "AZURE_ENVIRONMENT"
+
 const TracingNamespaceAttrName = "az.namespace"
 
 const (

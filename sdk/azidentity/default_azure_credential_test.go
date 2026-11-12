@@ -176,6 +176,99 @@ func TestDefaultAzureCredential_AzurePowerShellCredentialOptions(t *testing.T) {
 	require.True(azurePowerShell.opts.inDefaultChain)
 }
 
+func TestDefaultAzureCredential_InvalidEnvironment(t *testing.T) {
+	// EnvironmentCredential would be available but for the invalid cloud name. The chain
+	// mustn't skip it and authenticate a different identity
+	for k, v := range map[string]string{
+		azureAuthorityHost: "",
+		azureClientID:      fakeClientID,
+		azureClientSecret:  fakeSecret,
+		azureEnvironment:   "invalid",
+		azureTenantID:      fakeTenantID,
+	} {
+		t.Setenv(k, v)
+	}
+	cred, err := NewDefaultAzureCredential(nil)
+	require.ErrorContains(t, err, azureEnvironment)
+	require.Nil(t, cred)
+
+	// the variable is ignored when the application or AZURE_AUTHORITY_HOST specifies a cloud
+	_, err = NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+		ClientOptions: azcore.ClientOptions{Cloud: cloud.AzureGovernment},
+	})
+	require.NoError(t, err)
+	t.Setenv(azureAuthorityHost, cloud.AzureChina.ActiveDirectoryAuthorityHost)
+	_, err = NewDefaultAzureCredential(nil)
+	require.NoError(t, err)
+
+	// a cloud configuration having only services counts as specified, as it does in setAuthorityHost
+	t.Setenv(azureAuthorityHost, "")
+	_, err = NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+		ClientOptions: azcore.ClientOptions{
+			Cloud: cloud.Configuration{
+				Services: map[cloud.ServiceName]cloud.ServiceConfiguration{
+					cloud.ResourceManager: {Audience: "https://localhost", Endpoint: "https://localhost"},
+				},
+			},
+		},
+	})
+	require.NoError(t, err)
+
+	// and when the chain contains no credential that would read it
+	t.Setenv(azureAuthorityHost, "")
+	for _, name := range []string{credNameManagedIdentity, credNameAzureCLI, "dev"} {
+		t.Setenv(azureTokenCredentials, name)
+		_, err = NewDefaultAzureCredential(nil)
+		require.NoError(t, err, "%s=%s", azureTokenCredentials, name)
+	}
+	for _, name := range []string{credNameEnvironment, credNameWorkloadIdentity, "prod"} {
+		t.Setenv(azureTokenCredentials, name)
+		_, err = NewDefaultAzureCredential(nil)
+		require.Error(t, err, "%s=%s", azureTokenCredentials, name)
+	}
+}
+
+func TestDefaultAzureCredential_Environment(t *testing.T) {
+	for name, expected := range map[string]cloud.Configuration{
+		"AzureChina":        cloud.AzureChina,
+		"AzureUSGovernment": cloud.AzureGovernment,
+	} {
+		t.Run(name, func(t *testing.T) {
+			for k, v := range map[string]string{
+				azureAuthorityHost: "",
+				azureClientID:      fakeClientID,
+				azureClientSecret:  fakeSecret,
+				azureEnvironment:   name,
+				azureTenantID:      fakeTenantID,
+			} {
+				t.Setenv(k, v)
+			}
+			tokenRequests := 0
+			sts := mockSTS{tokenRequestCallback: func(r *http.Request) *http.Response {
+				tokenRequests++
+				require.Equal(t, expected.ActiveDirectoryAuthorityHost, "https://"+r.URL.Host+"/")
+				return nil
+			}}
+			// DefaultAzureCredential should authenticate with EnvironmentCredential in the named cloud
+			dac, err := NewDefaultAzureCredential(&DefaultAzureCredentialOptions{
+				ClientOptions: azcore.ClientOptions{Transport: &sts},
+			})
+			require.NoError(t, err)
+			// so should a credential the application constructs directly
+			csc, err := NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, &ClientSecretCredentialOptions{
+				ClientOptions: azcore.ClientOptions{Transport: &sts},
+			})
+			require.NoError(t, err)
+			for i, cred := range []azcore.TokenCredential{dac, csc} {
+				tk, err := cred.GetToken(context.Background(), testTRO)
+				require.NoError(t, err)
+				require.Equal(t, tokenValue, tk.Token)
+				require.Equal(t, i+1, tokenRequests)
+			}
+		})
+	}
+}
+
 func TestDefaultAzureCredential_ConstructorErrors(t *testing.T) {
 	// ensure NewEnvironmentCredential returns an error
 	t.Setenv(azureTenantID, "")

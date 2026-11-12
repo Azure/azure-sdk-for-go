@@ -4,6 +4,8 @@
 
 ### Features Added
 
+* Azure Resource Manager clients whose options don't specify a cloud use the well-known cloud named by the environment variable `AZURE_ENVIRONMENT`. Valid values are `AzureChina`, `AzureGovernment`, and `AzurePublic`. Values are case insensitive, surrounding whitespace is ignored, and the names earlier Azure SDKs and the Azure CLI use for these clouds, such as `AzureUSGovernmentCloud`, are also accepted. Client constructors return an error when the variable has any other value.
+
 ### Breaking Changes
 
 ### Bugs Fixed

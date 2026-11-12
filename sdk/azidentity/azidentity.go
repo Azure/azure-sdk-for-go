@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"strings"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/cloud"
@@ -30,6 +31,7 @@ const (
 	azureClientCertificatePath      = "AZURE_CLIENT_CERTIFICATE_PATH"
 	azureClientID                   = "AZURE_CLIENT_ID"
 	azureClientSecret               = "AZURE_CLIENT_SECRET"
+	azureEnvironment                = "AZURE_ENVIRONMENT"
 	azureFederatedTokenFile         = "AZURE_FEDERATED_TOKEN_FILE"
 	azurePassword                   = "AZURE_PASSWORD"
 	azureRegionalAuthorityName      = "AZURE_REGIONAL_AUTHORITY_NAME"
@@ -65,16 +67,21 @@ type Cache = internal.Cache
 // setAuthorityHost initializes the authority host for credentials. Precedence is:
 //  1. cloud.Configuration.ActiveDirectoryAuthorityHost value set by user
 //  2. value of AZURE_AUTHORITY_HOST
-//  3. default: Azure Public Cloud
+//  3. authority host of the well-known cloud named by AZURE_ENVIRONMENT
+//  4. default: Azure Public Cloud
 func setAuthorityHost(cc cloud.Configuration) (string, error) {
 	host := cc.ActiveDirectoryAuthorityHost
 	if host == "" {
 		if len(cc.Services) > 0 {
 			return "", errors.New("missing ActiveDirectoryAuthorityHost for specified cloud")
 		}
-		host = cloud.AzurePublic.ActiveDirectoryAuthorityHost
 		if envAuthorityHost := os.Getenv(azureAuthorityHost); envAuthorityHost != "" {
 			host = envAuthorityHost
+		} else {
+			var err error
+			if host, err = environmentAuthorityHost(); err != nil {
+				return "", err
+			}
 		}
 	}
 	u, err := url.Parse(host)
@@ -85,6 +92,36 @@ func setAuthorityHost(cc cloud.Configuration) (string, error) {
 		return "", errors.New("cannot use an authority host without https")
 	}
 	return host, nil
+}
+
+// environmentAuthorityHost returns the authority host of the well-known cloud named by
+// AZURE_ENVIRONMENT, or that of Azure Public Cloud when the variable has no value.
+func environmentAuthorityHost() (string, error) {
+	// names are case insensitive and include those accepted by earlier Azure SDKs and the Azure CLI
+	name := os.Getenv(azureEnvironment)
+	switch strings.ToLower(strings.TrimSpace(name)) {
+	case "", "azurepublic", "azurepubliccloud", "azurecloud":
+		return cloud.AzurePublic.ActiveDirectoryAuthorityHost, nil
+	case "azurechina", "azurechinacloud":
+		return cloud.AzureChina.ActiveDirectoryAuthorityHost, nil
+	case "azuregovernment", "azureusgovernment", "azureusgovernmentcloud":
+		return cloud.AzureGovernment.ActiveDirectoryAuthorityHost, nil
+	default:
+		return "", fmt.Errorf(
+			"invalid value %q for environment variable %s. Valid values are AzureChina, AzureGovernment, and AzurePublic",
+			name, azureEnvironment,
+		)
+	}
+}
+
+// validateEnvironment returns an error when a credential configured with cc would
+// consult AZURE_ENVIRONMENT and that variable has an invalid value.
+func validateEnvironment(cc cloud.Configuration) error {
+	if cc.ActiveDirectoryAuthorityHost != "" || len(cc.Services) > 0 || os.Getenv(azureAuthorityHost) != "" {
+		return nil
+	}
+	_, err := environmentAuthorityHost()
+	return err
 }
 
 // resolveAdditionalTenants returns a copy of tenants, simplified when tenants contains a wildcard

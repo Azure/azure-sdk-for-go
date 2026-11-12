@@ -406,6 +406,21 @@ func TestUserAuthentication(t *testing.T) {
 				} else {
 					require.NoError(t, err)
 				}
+
+				// a well-known cloud named by AZURE_ENVIRONMENT should determine the default scope, too
+				t.Setenv(azureAuthorityHost, "")
+				if name, ok := map[string]string{
+					cloud.AzureChina.ActiveDirectoryAuthorityHost:      "AzureChina",
+					cloud.AzureGovernment.ActiveDirectoryAuthorityHost: "AzureGovernment",
+					cloud.AzurePublic.ActiveDirectoryAuthorityHost:     "AzurePublic",
+				}[cc.ActiveDirectoryAuthorityHost]; ok {
+					t.Setenv(azureEnvironment, name)
+					cred, err = credential.new(Cache{}, azcore.ClientOptions{Transport: &sts}, AuthenticationRecord{}, false)
+					require.NoError(t, err)
+					_, err = cred.Authenticate(context.Background(), nil)
+					require.NoError(t, err)
+					t.Setenv(azureEnvironment, "")
+				}
 			}
 		})
 
@@ -562,7 +577,7 @@ func Test_CustomAuthorityHost(t *testing.T) {
 }
 
 func Test_DefaultAuthorityHost(t *testing.T) {
-	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: ""})
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: "", azureEnvironment: ""})
 	authorityHost, err := setAuthorityHost(cloud.Configuration{})
 	if err != nil {
 		t.Fatal(err)
@@ -570,6 +585,65 @@ func Test_DefaultAuthorityHost(t *testing.T) {
 	if authorityHost != cloud.AzurePublic.ActiveDirectoryAuthorityHost {
 		t.Fatal("unexpected default host: " + authorityHost)
 	}
+}
+
+func Test_SetEnvEnvironment(t *testing.T) {
+	for name, expected := range map[string]cloud.Configuration{
+		"AzureChina":             cloud.AzureChina,
+		"AzureChinaCloud":        cloud.AzureChina,
+		"AzureCloud":             cloud.AzurePublic,
+		"AzureGovernment":        cloud.AzureGovernment,
+		"AzurePublic":            cloud.AzurePublic,
+		"AzurePublicCloud":       cloud.AzurePublic,
+		"AzureUSGovernment":      cloud.AzureGovernment,
+		"AzureUSGovernmentCloud": cloud.AzureGovernment,
+		"azurechina":             cloud.AzureChina,
+		"AZUREUSGOVERNMENT":      cloud.AzureGovernment,
+	} {
+		t.Run(name, func(t *testing.T) {
+			setEnvironmentVariables(t, map[string]string{azureAuthorityHost: "", azureEnvironment: name})
+			authorityHost, err := setAuthorityHost(cloud.Configuration{})
+			require.NoError(t, err)
+			require.Equal(t, expected.ActiveDirectoryAuthorityHost, authorityHost)
+		})
+	}
+}
+
+func Test_SetEnvEnvironmentWhitespace(t *testing.T) {
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: "", azureEnvironment: " AzureChina\n"})
+	authorityHost, err := setAuthorityHost(cloud.Configuration{})
+	require.NoError(t, err)
+	require.Equal(t, cloud.AzureChina.ActiveDirectoryAuthorityHost, authorityHost)
+}
+
+func Test_CustomAuthorityHostWithEnvEnvironment(t *testing.T) {
+	setEnvironmentVariables(t, map[string]string{azureAuthorityHost: "", azureEnvironment: "AzureChina"})
+	authorityHost, err := setAuthorityHost(cloud.Configuration{ActiveDirectoryAuthorityHost: testHost})
+	require.NoError(t, err)
+	// ensure env var doesn't override explicit value
+	require.Equal(t, testHost, authorityHost)
+}
+
+func Test_SetEnvAuthorityHostWithEnvEnvironment(t *testing.T) {
+	// AZURE_AUTHORITY_HOST takes precedence, and the credential then ignores AZURE_ENVIRONMENT entirely
+	for _, name := range []string{"AzureChina", "invalid"} {
+		setEnvironmentVariables(t, map[string]string{azureAuthorityHost: testHost, azureEnvironment: name})
+		authorityHost, err := setAuthorityHost(cloud.Configuration{})
+		require.NoError(t, err)
+		require.Equal(t, testHost, authorityHost)
+	}
+}
+
+func Test_InvalidEnvEnvironment(t *testing.T) {
+	for _, name := range []string{"AzureGermanCloud", "Azure China", "invalid"} {
+		setEnvironmentVariables(t, map[string]string{azureAuthorityHost: "", azureEnvironment: name})
+		authorityHost, err := setAuthorityHost(cloud.Configuration{})
+		require.ErrorContains(t, err, azureEnvironment, name)
+		require.Empty(t, authorityHost)
+	}
+	// credential constructors return the error
+	_, err := NewClientSecretCredential(fakeTenantID, fakeClientID, fakeSecret, nil)
+	require.ErrorContains(t, err, azureEnvironment)
 }
 
 func TestGetTokenRequiresScopes(t *testing.T) {

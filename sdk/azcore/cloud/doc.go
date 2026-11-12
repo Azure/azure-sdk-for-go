@@ -23,6 +23,18 @@ example, configuring a credential and ARM client for Azure Government:
 	)
 	handle(err)
 
+Azure Resource Manager clients whose options don't specify a cloud use the well-known cloud named by the
+environment variable AZURE_ENVIRONMENT, when it's set. Valid values are "AzureChina", "AzureGovernment",
+and "AzurePublic". Values are case insensitive, surrounding whitespace is ignored, and the names
+earlier Azure SDKs and the Azure CLI use for these clouds, such as "AzureUSGovernmentCloud", are also
+accepted. Constructors of these clients return an error when the variable has any other value.
+Configuration set in code always takes precedence over the environment variable. Clients for other
+services don't read the variable; continue to configure them in code.
+
+Azure Resource Manager clients don't read AZURE_AUTHORITY_HOST, which configures only azidentity
+credentials. An application that sets AZURE_AUTHORITY_HOST for a sovereign cloud must also set
+AZURE_ENVIRONMENT, or specify the cloud in code, to direct its Resource Manager clients to that cloud.
+
 Applications deployed to a private cloud such as Azure Stack create a Configuration object with
 appropriate values:
 

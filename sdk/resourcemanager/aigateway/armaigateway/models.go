@@ -6,16 +6,488 @@ package armaigateway
 
 import "time"
 
+// APIKeyProperties - Properties of an AI Gateway API key.
+type APIKeyProperties struct {
+	// Display name of the key.
+	DisplayName *string
+
+	// Optional expiration time.
+	ExpirationDate *time.Time
+
+	// Primary key value. Omitted from ordinary read responses.
+	PrimaryKey *string
+
+	// Secondary key value. Omitted from ordinary read responses.
+	SecondaryKey *string
+
+	// Subscription state.
+	State *string
+
+	// READ-ONLY; Creation time.
+	CreatedDate *time.Time
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// APIKeyResource - An AI Gateway API key resource.
+type APIKeyResource struct {
+	// The resource-specific properties for this resource.
+	Properties *APIKeyProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// APIKeyResourceListResult - The response of a AiGatewayApiKeyResource list operation.
+type APIKeyResourceListResult struct {
+	// REQUIRED; The AiGatewayApiKeyResource items on this page
+	Value []*APIKeyResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// APIKeyUpdateParameters - Parameters for updating an AI Gateway API key.
+type APIKeyUpdateParameters struct {
+	// API key properties to update.
+	Properties *APIKeyUpdateProperties
+}
+
+// APIKeyUpdateProperties - Properties for updating an AI Gateway API key.
+type APIKeyUpdateProperties struct {
+	// Display name of the key.
+	DisplayName *string
+
+	// Optional expiration time.
+	ExpirationDate *time.Time
+
+	// Replacement primary key value.
+	PrimaryKey *string
+
+	// Replacement secondary key value.
+	SecondaryKey *string
+
+	// Subscription state.
+	State *string
+}
+
+// APIKeyValues - Primary and secondary API key values.
+type APIKeyValues struct {
+	// REQUIRED; Primary API key value.
+	PrimaryKey *string
+
+	// REQUIRED; Secondary API key value.
+	SecondaryKey *string
+}
+
+// AgentHook - External hook settings; omitted fields inherit policy-level settings.
+type AgentHook struct {
+	// Hook authentication settings.
+	Authentication *AgentHookAuthentication
+
+	// Hook destination URL.
+	Endpoint *DestinationEndpoint
+
+	// Literal, non-secret HTTP headers, returned by read operations.
+	Headers []*NameValuePair
+
+	// Failure mode when the hook call fails.
+	Mode *FailureMode
+}
+
+// AgentHookAuthentication - Outbound authentication settings for an external agent hook.
+type AgentHookAuthentication struct {
+	// Secret HTTP headers injected when calling the hook endpoint.
+	Headers []*SecretHeader
+
+	// Managed identity configuration for the hook endpoint.
+	ManagedIdentity *ManagedIdentityAuthentication
+}
+
+// AgentHookAuthenticationUpdate - Outbound authentication settings to update on an external agent hook.
+type AgentHookAuthenticationUpdate struct {
+	// Secret HTTP headers injected when calling the hook endpoint.
+	Headers []*SecretHeaderUpdate
+
+	// Managed identity configuration for the hook endpoint.
+	ManagedIdentity *ManagedIdentityAuthentication
+}
+
+// AgentHookUpdate - External hook settings to update.
+type AgentHookUpdate struct {
+	// Hook authentication settings.
+	Authentication *AgentHookAuthenticationUpdate
+
+	// Hook destination URL.
+	Endpoint *DestinationEndpointUpdate
+
+	// Literal, non-secret HTTP headers.
+	Headers []*NameValuePairUpdate
+
+	// Failure mode when the hook call fails.
+	Mode *FailureMode
+}
+
+// AgentHooks - Lifecycle hooks supported on models and tool servers.
+type AgentHooks struct {
+	// Hook invoked after calling a model.
+	PostModelCall *AgentHook
+
+	// Hook invoked after calling a tool.
+	PostToolCall *AgentHook
+
+	// Hook invoked before calling a model.
+	PreModelCall *AgentHook
+
+	// Hook invoked before calling a tool.
+	PreToolCall *AgentHook
+}
+
+// AgentHooksUpdate - Lifecycle hook settings to update.
+type AgentHooksUpdate struct {
+	// Hook invoked after calling a model.
+	PostModelCall *AgentHookUpdate
+
+	// Hook invoked after calling a tool.
+	PostToolCall *AgentHookUpdate
+
+	// Hook invoked before calling a model.
+	PreModelCall *AgentHookUpdate
+
+	// Hook invoked before calling a tool.
+	PreToolCall *AgentHookUpdate
+}
+
+// AliasFailureRule - An ordered failure rule for an AI Gateway alias.
+type AliasFailureRule struct {
+	// REQUIRED; Boolean @cel(...) expression evaluated against the current routing failure.
+	When *string
+
+	// Optional ISO 8601 duration or duration-valued @cel(...) expression for excluding the failed backend.
+	ExcludeFor *string
+
+	// Maximum additional attempts on the same backend; defaults to zero.
+	RetryAttempts *int32
+}
+
+// AliasFailureRuleUpdate - An ordered failure rule to update on an AI Gateway alias.
+type AliasFailureRuleUpdate struct {
+	// Optional ISO 8601 duration or duration-valued @cel(...) expression for excluding the failed backend.
+	ExcludeFor *string
+
+	// Maximum additional attempts on the same backend; defaults to zero.
+	RetryAttempts *int32
+
+	// Boolean @cel(...) expression evaluated against the current routing failure.
+	When *string
+}
+
+// AliasProperties - Properties of a stable client-facing model alias.
+type AliasProperties struct {
+	// REQUIRED; Ordered target models used for routing.
+	BackendModels []*AliasTarget
+
+	// Client-facing routing name sent in the request model field.
+	AliasName *string
+
+	// Automatic model selection settings used with the autoModelSelection stage.
+	AutoModelSelection *ModelSelection
+
+	// Description of the alias.
+	Description *string
+
+	// Ordered failure rules; only the first matching rule is applied.
+	Failures []*AliasFailureRule
+
+	// Maximum additional backend attempts after the first request.
+	MaxRetryAttempts *int32
+
+	// Inline policies applied to requests routed through the alias.
+	Policies []*Policy
+
+	// Ordered routing stages.
+	SelectionOrder []*AliasSelectionStage
+
+	// Stateless backend preference using an existing caller session key.
+	SessionBackendPreference *SessionBackendPreference
+
+	// READ-ONLY; Invocation endpoints, when endpoint metadata is enabled for this gateway.
+	GatewayEndpoints []*Endpoint
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+
+	// READ-ONLY; Native endpoints common to every target model; translated endpoints are excluded.
+	SupportedEndpoints []*string
+}
+
+// AliasResource - A stable client-facing model identity backed by an ordered pool of models.
+type AliasResource struct {
+	// The resource-specific properties for this resource.
+	Properties *AliasProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// AliasResourceListResult - The response of a AiGatewayAliasResource list operation.
+type AliasResourceListResult struct {
+	// REQUIRED; The AiGatewayAliasResource items on this page
+	Value []*AliasResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// AliasTarget - A model targeted by an AI Gateway alias.
+type AliasTarget struct {
+	// REQUIRED; Azure resource identifier of the target model in the default workspace.
+	ResourceID *string
+
+	// Routing priority. Lower values are preferred; the effective default is zero.
+	Priority *int32
+
+	// Unversioned canonical model name grouping equivalent serving deployments.
+	SelectorModelName *string
+
+	// Relative selection weight within a priority group. The effective default is one.
+	Weight *int32
+
+	// Optional Boolean CEL expression wrapped in @cel(...) controlling eligibility for new backend selections.
+	When *string
+}
+
+// AliasTargetUpdate - A model target to update on an AI Gateway alias.
+type AliasTargetUpdate struct {
+	// Routing priority. Lower values are preferred; the effective default is zero.
+	Priority *int32
+
+	// Azure resource identifier of the target model in the default workspace.
+	ResourceID *string
+
+	// Unversioned canonical model name grouping equivalent serving deployments.
+	SelectorModelName *string
+
+	// Relative selection weight within a priority group. The effective default is one.
+	Weight *int32
+
+	// Optional Boolean CEL expression wrapped in @cel(...) controlling eligibility for new backend selections.
+	When *string
+}
+
+// AliasUpdateParameters - Parameters for updating an AI Gateway alias.
+type AliasUpdateParameters struct {
+	// Alias properties to update.
+	Properties *AliasUpdateProperties
+}
+
+// AliasUpdateProperties - Properties to update on an AI Gateway alias.
+type AliasUpdateProperties struct {
+	// Client-facing routing name sent in the request model field.
+	AliasName *string
+
+	// Automatic model selection settings used with the autoModelSelection stage.
+	AutoModelSelection *ModelSelectionUpdate
+
+	// Ordered target models used for routing.
+	BackendModels []*AliasTargetUpdate
+
+	// Description of the alias.
+	Description *string
+
+	// Ordered failure rules; only the first matching rule is applied.
+	Failures []*AliasFailureRuleUpdate
+
+	// Maximum additional backend attempts after the first request.
+	MaxRetryAttempts *int32
+
+	// Inline policies applied to requests routed through the alias.
+	Policies []*PolicyUpdate
+
+	// Ordered routing stages.
+	SelectionOrder []*AliasSelectionStage
+
+	// Stateless backend preference using an existing caller session key.
+	SessionBackendPreference *SessionBackendPreferenceUpdate
+}
+
+// ApplicationInsightsConfiguration - Application Insights export destination.
+type ApplicationInsightsConfiguration struct {
+	// Application Insights connection string. Required when creating this exporter kind.
+	ConnectionString *string
+
+	// Azure resource identifier of the Application Insights component.
+	ResourceID *string
+}
+
 // Backend networking configuration of an AI Gateway.
 type Backend struct {
 	// Subnet through which the AI Gateway reaches backends.
 	Subnet *Subnet
 }
 
+// BackendUpdate - Backend networking configuration to update on an AI Gateway.
+type BackendUpdate struct {
+	// Subnet through which the AI Gateway reaches backends. Omit it to keep the current subnet, or set it to null to remove it.
+	Subnet *SubnetUpdate
+}
+
+// CheckNameAvailabilityRequest - Parameters for checking an AI Gateway name in a location.
+type CheckNameAvailabilityRequest struct {
+	// REQUIRED; Name to validate and check for availability.
+	Name *string
+
+	// CONSTANT; Resource type to check.
+	// Field has constant value "Microsoft.ApiManagement/aigateways", any specified value is ignored.
+	Type *string
+}
+
+// CheckNameAvailabilityResponse - Availability of an AI Gateway name in a location.
+type CheckNameAvailabilityResponse struct {
+	// REQUIRED; Whether the name is valid and available.
+	NameAvailable *bool
+
+	// Additional information about the availability result.
+	Message *string
+
+	// Reason for the availability result.
+	Reason *NameAvailabilityReason
+}
+
+// CostLimitOverride - An ordered cost-budget override; exactly one selector must be specified.
+type CostLimitOverride struct {
+	// REQUIRED; Override budget in US dollars.
+	Amount *float64
+
+	// Azure resource identifier of the API key selecting this override.
+	APIKeyResourceID *string
+
+	// Authenticated token claims that must all match; claim names are case-sensitive.
+	Claims []*NameValuePair
+}
+
+// CostLimitOverrideUpdate - An ordered cost-budget override to update.
+type CostLimitOverrideUpdate struct {
+	// Azure resource identifier of the API key selecting this override.
+	APIKeyResourceID *string
+
+	// Override budget in US dollars.
+	Amount *float64
+
+	// Authenticated token claims that must all match; claim names are case-sensitive.
+	Claims []*NameValuePairUpdate
+}
+
+// CustomProviderConfiguration - Custom model provider configuration.
+type CustomProviderConfiguration struct {
+	// REQUIRED; Provider base endpoint.
+	Endpoint *DestinationEndpoint
+}
+
+// CustomProviderConfigurationUpdate - Custom model provider settings to update.
+type CustomProviderConfigurationUpdate struct {
+	// Provider base endpoint.
+	Endpoint *DestinationEndpointUpdate
+}
+
+// DestinationEndpoint - An outbound service destination URL.
+type DestinationEndpoint struct {
+	// REQUIRED; Destination HTTPS or HTTP URL.
+	URL *string
+}
+
+// DestinationEndpointUpdate - An outbound service destination URL to update.
+type DestinationEndpointUpdate struct {
+	// Destination HTTPS or HTTP URL.
+	URL *string
+}
+
+// Endpoint - A client-facing endpoint for invoking an AI Gateway resource.
+type Endpoint struct {
+	// READ-ONLY; Complete HTTPS invocation URL.
+	URL *string
+
+	// READ-ONLY; API identifier relative to the provider prefix, when metadata is enabled.
+	API *string
+
+	// READ-ONLY; HTTPS base URL for SDKs that construct operation paths, when metadata is enabled.
+	BaseURL *string
+}
+
+// FallbackTarget - A fallback target for a model policy.
+type FallbackTarget struct {
+	// REQUIRED; Resource identifier of a model in the same workspace.
+	ModelID *string
+}
+
+// FallbackTargetUpdate - A fallback target to update on a model policy.
+type FallbackTargetUpdate struct {
+	// Resource identifier of a model in the same workspace.
+	ModelID *string
+}
+
+// FoundryProviderConfiguration - Foundry model provider configuration.
+type FoundryProviderConfiguration struct {
+	// REQUIRED; Cognitive Services account resource identifiers available to this provider.
+	ResourceIDs []*string
+
+	// Foundry endpoint.
+	Endpoint *DestinationEndpoint
+}
+
+// FoundryProviderConfigurationUpdate - Foundry model provider settings to update.
+type FoundryProviderConfigurationUpdate struct {
+	// Foundry endpoint.
+	Endpoint *DestinationEndpointUpdate
+
+	// Cognitive Services account resource identifiers available to this provider.
+	ResourceIDs []*string
+}
+
 // Frontend configuration of an AI Gateway.
 type Frontend struct {
 	// READ-ONLY; Default hostname used to invoke the AI Gateway.
 	DefaultHostname *string
+}
+
+// GitHubAppAuthentication - GitHub App credentials for a GitHub model provider.
+type GitHubAppAuthentication struct {
+	// GitHub App identifier.
+	AppID *string
+
+	// GitHub App installation identifier.
+	InstallationID *string
+
+	// GitHub App private key. Omitted from ordinary read responses.
+	PrivateKey *string
+}
+
+// ManagedIdentityAuthentication - Managed identity settings for an outbound connection.
+type ManagedIdentityAuthentication struct {
+	// Client ID of a user-assigned managed identity; omit for system-assigned identity.
+	ClientID *string
+
+	// Target Entra resource or audience URI requested for managed identity authentication.
+	Resource *string
 }
 
 // ManagedServiceIdentity - Managed service identity (system assigned and/or user assigned identities)
@@ -32,6 +504,374 @@ type ManagedServiceIdentity struct {
 
 	// READ-ONLY; The tenant ID of the system assigned identity. This property will only be provided for a system assigned identity.
 	TenantID *string
+}
+
+// McpURLConfiguration - MCP endpoint configuration.
+type McpURLConfiguration struct {
+	// REQUIRED; Backend MCP server endpoint.
+	Endpoint *DestinationEndpoint
+
+	// MCP transport.
+	Transport *ToolServerMcpTransport
+}
+
+// McpURLConfigurationUpdate - MCP endpoint settings to update.
+type McpURLConfigurationUpdate struct {
+	// Backend MCP server endpoint.
+	Endpoint *DestinationEndpointUpdate
+
+	// MCP transport.
+	Transport *ToolServerMcpTransport
+}
+
+// ModelDeployment - Deployment details for an AI Gateway model.
+type ModelDeployment struct {
+	// REQUIRED; Provider-side model name.
+	ModelName *string
+
+	// Provider-side model version.
+	ModelVersion *string
+
+	// ARM resource identifier of the provider deployment.
+	ResourceID *string
+}
+
+// ModelDeploymentUpdate - Deployment details to update on an AI Gateway model.
+type ModelDeploymentUpdate struct {
+	// Provider-side model name.
+	ModelName *string
+
+	// Provider-side model version.
+	ModelVersion *string
+
+	// ARM resource identifier of the provider deployment.
+	ResourceID *string
+}
+
+// ModelEndpoint - Maps a canonical AI Gateway API identifier to a relative backend path served by the model provider.
+type ModelEndpoint struct {
+	// REQUIRED; Canonical AI Gateway API identifier (for example, v1/chat/completions, v1/responses, v1/messages, or v1/embeddings).
+	API *string
+
+	// REQUIRED; Backend path relative to the model provider's base endpoint, starting with '/'.
+	Path *string
+}
+
+// ModelEndpointUpdate - A model endpoint mapping to update.
+type ModelEndpointUpdate struct {
+	// Canonical AI Gateway API identifier (for example, v1/chat/completions, v1/responses, v1/messages, or v1/embeddings).
+	API *string
+
+	// Backend path relative to the model provider's base endpoint, starting with '/'.
+	Path *string
+}
+
+// ModelProperties - Properties of an AI Gateway model.
+type ModelProperties struct {
+	// REQUIRED; Provider deployment details.
+	Deployment *ModelDeployment
+
+	// REQUIRED; Display name of the model.
+	DisplayName *string
+
+	// Description of the model.
+	Description *string
+
+	// API-to-backend-path mappings served by this model.
+	Endpoints []*ModelEndpoint
+
+	// Inline policies applied to this model.
+	Policies []*Policy
+
+	// Runtime endpoints supported by this model.
+	SupportedEndpoints []*string
+
+	// READ-ONLY; Parent model provider type.
+	ProviderKind *ModelProviderKind
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ModelProviderAuthentication - Outbound authentication configuration for a model provider.
+type ModelProviderAuthentication struct {
+	// GitHub App credentials when modelProviderType is GitHub.
+	GithubApp *GitHubAppAuthentication
+
+	// Secret HTTP headers injected when calling the model provider.
+	Headers []*SecretHeader
+
+	// Managed identity configuration when modelProviderType is Foundry.
+	ManagedIdentity *ManagedIdentityAuthentication
+}
+
+// ModelProviderAuthenticationUpdate - Outbound authentication configuration to update on a model provider.
+type ModelProviderAuthenticationUpdate struct {
+	// GitHub App credentials when modelProviderType is GitHub.
+	GithubApp *GitHubAppAuthentication
+
+	// Secret HTTP headers injected when calling the model provider.
+	Headers []*SecretHeaderUpdate
+
+	// Managed identity configuration when modelProviderType is Foundry.
+	ManagedIdentity *ManagedIdentityAuthentication
+}
+
+// ModelProviderProperties - Properties of an AI Gateway model provider.
+type ModelProviderProperties struct {
+	// REQUIRED; Display name of the model provider.
+	DisplayName *string
+
+	// REQUIRED; Model provider type. This value cannot be changed after creation.
+	ModelProviderType *ModelProviderKind
+
+	// Outbound authentication configuration.
+	Authentication *ModelProviderAuthentication
+
+	// Custom provider configuration. Required when modelProviderType is Custom.
+	Custom *CustomProviderConfiguration
+
+	// Description of the model provider.
+	Description *string
+
+	// Foundry configuration. Required when modelProviderType is Foundry.
+	Foundry *FoundryProviderConfiguration
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ModelProviderResource - An AI Gateway model provider resource.
+type ModelProviderResource struct {
+	// The resource-specific properties for this resource.
+	Properties *ModelProviderProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ModelProviderResourceListResult - The response of a AiGatewayModelProviderResource list operation.
+type ModelProviderResourceListResult struct {
+	// REQUIRED; The AiGatewayModelProviderResource items on this page
+	Value []*ModelProviderResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ModelProviderSecretAuthentication - Authentication settings returned by the model-provider secret retrieval action.
+type ModelProviderSecretAuthentication struct {
+	// GitHub App credentials when modelProviderType is GitHub.
+	GithubApp *ModelProviderSecretGitHubAppAuthentication
+
+	// Secret HTTP headers injected when calling the model provider.
+	Headers []*SecretHeaderValue
+
+	// Managed identity configuration when modelProviderType is Foundry.
+	ManagedIdentity *ManagedIdentityAuthentication
+}
+
+// ModelProviderSecretGitHubAppAuthentication - GitHub App credentials returned by the model-provider secret retrieval action.
+type ModelProviderSecretGitHubAppAuthentication struct {
+	// GitHub App identifier.
+	AppID *string
+
+	// GitHub App installation identifier.
+	InstallationID *string
+
+	// GitHub App private key.
+	PrivateKey *string
+}
+
+// ModelProviderSecrets - Secret values configured on a model provider.
+type ModelProviderSecrets struct {
+	// Outbound authentication configuration including secret values.
+	Authentication *ModelProviderSecretAuthentication
+}
+
+// ModelProviderUpdateParameters - Parameters for updating an AI Gateway model provider.
+type ModelProviderUpdateParameters struct {
+	// Model provider properties to update.
+	Properties *ModelProviderUpdateProperties
+}
+
+// ModelProviderUpdateProperties - Properties for updating an AI Gateway model provider.
+type ModelProviderUpdateProperties struct {
+	// Outbound authentication configuration.
+	Authentication *ModelProviderAuthenticationUpdate
+
+	// Custom provider configuration.
+	Custom *CustomProviderConfigurationUpdate
+
+	// Description of the model provider.
+	Description *string
+
+	// Display name of the model provider.
+	DisplayName *string
+
+	// Foundry configuration.
+	Foundry *FoundryProviderConfigurationUpdate
+}
+
+// ModelResource - An AI Gateway model resource.
+type ModelResource struct {
+	// The resource-specific properties for this resource.
+	Properties *ModelProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ModelResourceListResult - The response of a AiGatewayModelResource list operation.
+type ModelResourceListResult struct {
+	// REQUIRED; The AiGatewayModelResource items on this page
+	Value []*ModelResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ModelSelection - Automatic model selection configuration for an AI Gateway alias.
+type ModelSelection struct {
+	// REQUIRED; Configured quality/cost objective.
+	Objective *ModelSelectionObjective
+
+	// Allowed per-request behaviors. Omitting the property or sending an empty array denies overrides and disables function-tool
+	// compatibility filtering.
+	AllowedRequestOverrides []*AllowedRequestOverride
+}
+
+// ModelSelectionUpdate - Automatic model selection configuration to update.
+type ModelSelectionUpdate struct {
+	// Allowed per-request behaviors. Omitting the property or sending an empty array denies overrides and disables function-tool
+	// compatibility filtering.
+	AllowedRequestOverrides []*AllowedRequestOverride
+
+	// Configured quality/cost objective.
+	Objective *ModelSelectionObjective
+}
+
+// ModelUpdateParameters - Parameters for updating an AI Gateway model.
+type ModelUpdateParameters struct {
+	// Model properties to update.
+	Properties *ModelUpdateProperties
+}
+
+// ModelUpdateProperties - Properties for updating an AI Gateway model.
+type ModelUpdateProperties struct {
+	// Provider deployment details.
+	Deployment *ModelDeploymentUpdate
+
+	// Description of the model.
+	Description *string
+
+	// Display name of the model.
+	DisplayName *string
+
+	// API-to-backend-path mappings served by this model.
+	Endpoints []*ModelEndpointUpdate
+
+	// Inline policies applied to this model.
+	Policies []*PolicyUpdate
+
+	// Runtime endpoints supported by this model.
+	SupportedEndpoints []*string
+}
+
+// NameValuePair - A name/value pair entry.
+type NameValuePair struct {
+	// REQUIRED; Entry name.
+	Name *string
+
+	// REQUIRED; Entry value.
+	Value *string
+}
+
+// NameValuePairUpdate - A name/value pair entry to update.
+type NameValuePairUpdate struct {
+	// Entry name.
+	Name *string
+
+	// Entry value.
+	Value *string
+}
+
+// OpenAPIConfiguration - OpenAPI-backed MCP endpoint configuration.
+type OpenAPIConfiguration struct {
+	// REQUIRED; OpenAPI document source.
+	SpecSource *OpenAPISpecSource
+}
+
+// OpenAPIConfigurationUpdate - OpenAPI-backed MCP endpoint settings to update.
+type OpenAPIConfigurationUpdate struct {
+	// OpenAPI document source.
+	SpecSource *OpenAPISpecSourceUpdate
+}
+
+// OpenAPISpecSource - Source of an OpenAPI document.
+type OpenAPISpecSource struct {
+	// REQUIRED; Source type.
+	Type *ToolServerOpenAPISourceType
+
+	// Base64-encoded OpenAPI document. Required when type is inline.
+	ContentBase64 []byte
+
+	// URL of the OpenAPI document. Required when type is url.
+	URL *string
+}
+
+// OpenAPISpecSourceUpdate - OpenAPI document source settings to update.
+type OpenAPISpecSourceUpdate struct {
+	// Base64-encoded OpenAPI document.
+	ContentBase64 []byte
+
+	// Source type.
+	Type *ToolServerOpenAPISourceType
+
+	// URL of the OpenAPI document.
+	URL *string
+}
+
+// OpenTelemetryConfiguration - OpenTelemetry export signal destinations.
+type OpenTelemetryConfiguration struct {
+	// Full OTLP logs endpoint URL, used without appending a signal path.
+	LogsEndpoint *DestinationEndpoint
+
+	// Full OTLP metrics endpoint URL, used without appending a signal path.
+	MetricsEndpoint *DestinationEndpoint
+
+	// Full OTLP traces endpoint URL, used without appending a signal path.
+	TracesEndpoint *DestinationEndpoint
+}
+
+// OpenTelemetryConfigurationUpdate - OpenTelemetry export signal destinations to update.
+type OpenTelemetryConfigurationUpdate struct {
+	// Full OTLP logs endpoint URL, used without appending a signal path.
+	LogsEndpoint *DestinationEndpointUpdate
+
+	// Full OTLP metrics endpoint URL, used without appending a signal path.
+	MetricsEndpoint *DestinationEndpointUpdate
+
+	// Full OTLP traces endpoint URL, used without appending a signal path.
+	TracesEndpoint *DestinationEndpointUpdate
 }
 
 // Operation - REST API Operation
@@ -85,13 +925,314 @@ type OperationListResult struct {
 	NextLink *string
 }
 
+// Policy - An inline policy. Supported policy types and scopes depend on the parent resource.
+type Policy struct {
+	// REQUIRED; Policy type.
+	Type *PolicyType
+
+	// IP filtering action.
+	Action *IPFilterAction
+
+	// Whether browsers may send credentials.
+	AllowCredentials *bool
+
+	// HTTP headers allowed by a CORS policy.
+	AllowedHeaders []*string
+
+	// HTTP methods allowed by a CORS policy.
+	AllowedMethods []*string
+
+	// Origins allowed by a CORS policy.
+	AllowedOrigins []*string
+
+	// Cost budget in US dollars.
+	Amount *float64
+
+	// Default outbound authentication for agent hooks.
+	Authentication *AgentHookAuthentication
+
+	// CIDR ranges to allow or deny.
+	CidrRanges []*string
+
+	// Token or request count allowed during a tokenLimit or requestRateLimit period.
+	Count *int32
+
+	// Unique public dimensions used to partition a token, cost, or request counter.
+	CounterKey []*CounterDimension
+
+	// Default destination URL for agent hooks.
+	Endpoint *DestinationEndpoint
+
+	// Response headers exposed to the browser.
+	ExposeHeaders []*string
+
+	// Ordered fallback model targets.
+	FallbackTargets []*FallbackTarget
+
+	// Hate-content severity threshold.
+	HateSeverity *ContentSafetySeverity
+
+	// Literal non-secret default HTTP headers for agent hooks.
+	Headers []*NameValuePair
+
+	// Lifecycle hooks; requires agent-hook authoring to be enabled on the gateway.
+	Hooks *AgentHooks
+
+	// Stable identifier, required for costLimit and agentHooks policies.
+	ID *string
+
+	// Default failure mode for agent hooks.
+	Mode *FailureMode
+
+	// Ordered cost-budget overrides; supported only for counterKey [identity]. The first match wins.
+	Overrides []*CostLimitOverride
+
+	// Counter period. Token limits support minute/hour/day; request rate limits support minute/hour/day or whole-second ISO 8601
+	// durations (e.g., PT37S); cost limits support hour/day/week/month/year.
+	Period *PolicyPeriod
+
+	// Whether to check tool responses for threats.
+	PostInvocation *bool
+
+	// Whether to check tool requests for threats.
+	PreInvocation *bool
+
+	// Browser preflight cache duration in seconds.
+	PreflightResultMaxAge *int32
+
+	// Policy scope. Workspace counter policies use workspace; other policies use resource. Agent hooks require an explicit resource
+	// scope.
+	Scope *PolicyScope
+
+	// Self-harm-content severity threshold.
+	SelfHarmSeverity *ContentSafetySeverity
+
+	// Sexual-content severity threshold.
+	SexualSeverity *ContentSafetySeverity
+
+	// Whether unmatched CORS requests are terminated.
+	TerminateUnmatchedRequest *bool
+
+	// Consecutive failure count that opens a fallback circuit.
+	Threshold *int32
+
+	// Duration for which the fallback circuit remains open.
+	TripDurationSeconds *int32
+
+	// Violence-content severity threshold.
+	ViolenceSeverity *ContentSafetySeverity
+}
+
+// PolicyUpdate - An inline policy to update on an AI Gateway model or tool server.
+type PolicyUpdate struct {
+	// IP filtering action.
+	Action *IPFilterAction
+
+	// Whether browsers may send credentials.
+	AllowCredentials *bool
+
+	// HTTP headers allowed by a CORS policy.
+	AllowedHeaders []*string
+
+	// HTTP methods allowed by a CORS policy.
+	AllowedMethods []*string
+
+	// Origins allowed by a CORS policy.
+	AllowedOrigins []*string
+
+	// Cost budget in US dollars.
+	Amount *float64
+
+	// Default outbound authentication for agent hooks.
+	Authentication *AgentHookAuthenticationUpdate
+
+	// CIDR ranges to allow or deny.
+	CidrRanges []*string
+
+	// Token or request count allowed during a tokenLimit or requestRateLimit period.
+	Count *int32
+
+	// Public dimensions used to partition a token, cost, or request counter.
+	CounterKey []*CounterDimension
+
+	// Default destination URL for agent hooks.
+	Endpoint *DestinationEndpointUpdate
+
+	// Response headers exposed to the browser.
+	ExposeHeaders []*string
+
+	// Ordered fallback model targets.
+	FallbackTargets []*FallbackTargetUpdate
+
+	// Hate-content severity threshold.
+	HateSeverity *ContentSafetySeverity
+
+	// Literal non-secret default HTTP headers for agent hooks.
+	Headers []*NameValuePairUpdate
+
+	// Lifecycle hooks to update.
+	Hooks *AgentHooksUpdate
+
+	// Stable identifier for costLimit or agentHooks.
+	ID *string
+
+	// Default failure mode for agent hooks.
+	Mode *FailureMode
+
+	// Ordered cost-budget overrides.
+	Overrides []*CostLimitOverrideUpdate
+
+	// Counter period. Token limits support minute/hour/day; request rate limits support minute/hour/day or whole-second ISO 8601
+	// durations (e.g., PT37S); cost limits support hour/day/week/month/year.
+	Period *PolicyPeriod
+
+	// Whether to check tool responses for threats.
+	PostInvocation *bool
+
+	// Whether to check tool requests for threats.
+	PreInvocation *bool
+
+	// Browser preflight cache duration in seconds.
+	PreflightResultMaxAge *int32
+
+	// Aggregation scope supported by the policy and its parent resource.
+	Scope *PolicyScope
+
+	// Self-harm-content severity threshold.
+	SelfHarmSeverity *ContentSafetySeverity
+
+	// Sexual-content severity threshold.
+	SexualSeverity *ContentSafetySeverity
+
+	// Whether unmatched CORS requests are terminated.
+	TerminateUnmatchedRequest *bool
+
+	// Consecutive failure count that opens a fallback circuit.
+	Threshold *int32
+
+	// Duration for which the fallback circuit remains open.
+	TripDurationSeconds *int32
+
+	// Policy type.
+	Type *PolicyType
+
+	// Violence-content severity threshold.
+	ViolenceSeverity *ContentSafetySeverity
+}
+
+// PrivateEndpoint - The private endpoint resource.
+type PrivateEndpoint struct {
+	// READ-ONLY; The resource identifier of the private endpoint
+	ID *string
+}
+
+// PrivateEndpointConnection - A private endpoint connection of an AI Gateway.
+type PrivateEndpointConnection struct {
+	// The private endpoint connection properties
+	Properties *PrivateEndpointConnectionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateEndpointConnectionListResult - The response of a AiGatewayPrivateEndpointConnection list operation.
+type PrivateEndpointConnectionListResult struct {
+	// REQUIRED; The AiGatewayPrivateEndpointConnection items on this page
+	Value []*PrivateEndpointConnection
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
+type PrivateEndpointConnectionProperties struct {
+	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
+	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
+
+	// The private endpoint resource.
+	PrivateEndpoint *PrivateEndpoint
+
+	// READ-ONLY; The group ids for the private endpoint resource.
+	GroupIDs []*string
+
+	// READ-ONLY; The provisioning state of the private endpoint connection resource.
+	ProvisioningState *PrivateEndpointConnectionProvisioningState
+}
+
+// PrivateLinkResource - A private link resource of an AI Gateway.
+type PrivateLinkResource struct {
+	// Resource properties.
+	Properties *PrivateLinkResourceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PrivateLinkResourceListResult - The response of a AiGatewayPrivateLinkResource list operation.
+type PrivateLinkResourceListResult struct {
+	// REQUIRED; The AiGatewayPrivateLinkResource items on this page
+	Value []*PrivateLinkResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// PrivateLinkResourceProperties - Properties of a private link resource.
+type PrivateLinkResourceProperties struct {
+	// The private link resource private link DNS zone name.
+	RequiredZoneNames []*string
+
+	// READ-ONLY; The private link resource group id.
+	GroupID *string
+
+	// READ-ONLY; The private link resource required member names.
+	RequiredMembers []*string
+}
+
+// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
+// and provider.
+type PrivateLinkServiceConnectionState struct {
+	// A message indicating if changes on the service provider require any updates on the consumer.
+	ActionsRequired *string
+
+	// The reason for approval/rejection of the connection.
+	Description *string
+
+	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
+	Status *PrivateEndpointServiceConnectionStatus
+}
+
 // Properties of an AI Gateway.
 type Properties struct {
-	// Backend networking configuration. Can only be set when the AI Gateway is created.
+	// Backend networking configuration.
 	Backend *Backend
+
+	// Whether public network access is allowed for the AI Gateway.
+	PublicNetworkAccess *PublicNetworkAccess
 
 	// READ-ONLY; Frontend configuration of the AI Gateway.
 	Frontend *Frontend
+
+	// READ-ONLY; Private endpoint connections associated with the AI Gateway.
+	PrivateEndpointConnections []*PrivateEndpointConnection
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
@@ -182,10 +1323,56 @@ type SKUUpdate struct {
 	Tier *SKUTier
 }
 
+// SecretHeader - A secret HTTP header injected into an outbound request.
+type SecretHeader struct {
+	// REQUIRED; HTTP header name.
+	Name *string
+
+	// Secret HTTP header value. Omitted from ordinary read responses.
+	Value *string
+}
+
+// SecretHeaderUpdate - A secret HTTP header to update.
+type SecretHeaderUpdate struct {
+	// HTTP header name.
+	Name *string
+
+	// Secret HTTP header value.
+	Value *string
+}
+
+// SecretHeaderValue - A secret HTTP header returned by a secret-retrieval action.
+type SecretHeaderValue struct {
+	// REQUIRED; HTTP header name.
+	Name *string
+
+	// Secret HTTP header value.
+	Value *string
+}
+
+// SessionBackendPreference - Stateless backend preference using an existing caller session key.
+type SessionBackendPreference struct {
+	// REQUIRED; CEL expression returning the caller session key.
+	Key *string
+}
+
+// SessionBackendPreferenceUpdate - Stateless backend preference settings to update.
+type SessionBackendPreferenceUpdate struct {
+	// CEL expression returning the caller session key.
+	Key *string
+}
+
 // Subnet used by an AI Gateway.
 type Subnet struct {
 	// REQUIRED; Resource identifier of the subnet. The subnet must be delegated to Microsoft.App/environments and be in the same
 	// region as the AI Gateway.
+	ID *string
+}
+
+// SubnetUpdate - Subnet fields to update on an AI Gateway.
+type SubnetUpdate struct {
+	// Resource identifier of the subnet. The subnet must be delegated to Microsoft.App/environments and be in the same region
+	// as the AI Gateway.
 	ID *string
 }
 
@@ -210,16 +1397,568 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// TelemetryAttributeMapping - A claim mapping to azure.ai_gateway.identity.claims.{claim}.
+type TelemetryAttributeMapping struct {
+	// REQUIRED; Claim source. Source claim names must be unique across mappings.
+	Source *TelemetryAttributeSource
+
+	// Distinct signals to enrich. Omit to select all configured signals.
+	Signals []*TelemetrySignal
+}
+
+// TelemetryAttributeMappingUpdate - A claim mapping to update.
+type TelemetryAttributeMappingUpdate struct {
+	// Distinct signals to enrich.
+	Signals []*TelemetrySignal
+
+	// Claim source.
+	Source *TelemetryAttributeSourceUpdate
+}
+
+// TelemetryAttributeSource - A request JWT claim observed for telemetry only, not authentication or billing.
+type TelemetryAttributeSource struct {
+	// CONSTANT; Source kind. Only claims is currently supported.
+	// Field has constant value "claims", any specified value is ignored.
+	Kind *string
+
+	// REQUIRED; Nonempty, case-sensitive claim name.
+	Value *string
+}
+
+// TelemetryAttributeSourceUpdate - A claim source to update.
+type TelemetryAttributeSourceUpdate struct {
+	// FLAG; CONSTANT; Source kind. Only claims is currently supported.
+	// Field has constant value "claims", any specified value is ignored.
+	Kind *string
+
+	// Nonempty, case-sensitive claim name.
+	Value *string
+}
+
+// TelemetryAuthentication - Outbound authentication settings for an OpenTelemetry exporter.
+type TelemetryAuthentication struct {
+	// Secret HTTP headers sent with export requests.
+	Headers []*SecretHeader
+
+	// Managed identity authentication for export requests.
+	ManagedIdentity *TelemetryManagedIdentity
+}
+
+// TelemetryAuthenticationUpdate - Outbound authentication settings to update on an OpenTelemetry exporter.
+type TelemetryAuthenticationUpdate struct {
+	// Secret HTTP headers sent with export requests.
+	Headers []*SecretHeaderUpdate
+
+	// Managed identity authentication for export requests.
+	ManagedIdentity *TelemetryManagedIdentity
+}
+
+// TelemetryConfiguration - Optional telemetry enrichment on a native AI Gateway OpenTelemetry exporter.
+type TelemetryConfiguration struct {
+	// Observed-claim mappings; an empty array removes existing mappings.
+	Attributes []*TelemetryAttributeMapping
+}
+
+// TelemetryConfigurationUpdate - Telemetry enrichment settings to update.
+type TelemetryConfigurationUpdate struct {
+	// Observed-claim mappings; an empty array removes existing mappings.
+	Attributes []*TelemetryAttributeMappingUpdate
+}
+
+// TelemetryExporterProperties - Properties of an AI Gateway telemetry exporter.
+type TelemetryExporterProperties struct {
+	// REQUIRED; Exporter type, which cannot change after creation.
+	TelemetryExporterType *TelemetryExporterKind
+
+	// Configuration required for the ApplicationInsights exporter type.
+	ApplicationInsights *ApplicationInsightsConfiguration
+
+	// Outbound authentication for OpenTelemetry export requests.
+	Authentication *TelemetryAuthentication
+
+	// Configuration required for the OpenTelemetry exporter type. At least one signal endpoint is required.
+	OpenTelemetry *OpenTelemetryConfiguration
+
+	// Capture prompts, completions, and tool input/output; no built-in PII redaction is applied.
+	PayloadCapture *bool
+
+	// Optional observed-claim mappings, supported on native AI Gateway OpenTelemetry exporters.
+	Telemetry *TelemetryConfiguration
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// TelemetryExporterResource - A telemetry export destination in the default AI Gateway workspace.
+type TelemetryExporterResource struct {
+	// The resource-specific properties for this resource.
+	Properties *TelemetryExporterProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// TelemetryExporterResourceListResult - The response of a AiGatewayTelemetryExporterResource list operation.
+type TelemetryExporterResourceListResult struct {
+	// REQUIRED; The AiGatewayTelemetryExporterResource items on this page
+	Value []*TelemetryExporterResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// TelemetryExporterUpdateParameters - Parameters for updating an AI Gateway telemetry exporter.
+type TelemetryExporterUpdateParameters struct {
+	// Exporter properties to update.
+	Properties *TelemetryExporterUpdateProperties
+}
+
+// TelemetryExporterUpdateProperties - Properties to update on an AI Gateway telemetry exporter.
+type TelemetryExporterUpdateProperties struct {
+	// Application Insights configuration.
+	ApplicationInsights *ApplicationInsightsConfiguration
+
+	// Outbound authentication for OpenTelemetry export requests.
+	Authentication *TelemetryAuthenticationUpdate
+
+	// OpenTelemetry configuration.
+	OpenTelemetry *OpenTelemetryConfigurationUpdate
+
+	// Capture prompts, completions, and tool input/output.
+	PayloadCapture *bool
+
+	// Observed-claim mappings to update.
+	Telemetry *TelemetryConfigurationUpdate
+}
+
+// TelemetryManagedIdentity - Managed identity used to authenticate telemetry export requests.
+type TelemetryManagedIdentity struct {
+	// User-assigned managed identity client ID; omit for the system-assigned identity.
+	ClientID *string
+
+	// Token audience requested for the managed identity.
+	Resource *string
+}
+
+// ToolServerAuthentication - Outbound authentication for a tool server endpoint.
+type ToolServerAuthentication struct {
+	// Static headers injected when calling the endpoint.
+	Headers []*SecretHeader
+
+	// Managed identity configuration.
+	ManagedIdentity *ToolServerManagedIdentityAuthentication
+
+	// OAuth 2.0 configuration.
+	Oauth2 *ToolServerOauth2Authentication
+}
+
+// ToolServerAuthenticationUpdate - Tool server authentication settings to update.
+type ToolServerAuthenticationUpdate struct {
+	// Static headers injected when calling the endpoint.
+	Headers []*SecretHeaderUpdate
+
+	// Managed identity configuration.
+	ManagedIdentity *ToolServerManagedIdentityAuthentication
+
+	// OAuth 2.0 configuration.
+	Oauth2 *ToolServerOauth2Authentication
+}
+
+// ToolServerEndpoint - A tool server endpoint.
+type ToolServerEndpoint struct {
+	// REQUIRED; Endpoint type.
+	Kind *ToolServerEndpointSourceKind
+
+	// Backend authentication configuration.
+	Authentication *ToolServerAuthentication
+
+	// Stable endpoint identifier. Up to 64 alphanumeric characters or hyphens, starting and ending with an alphanumeric character.
+	// Generated when omitted.
+	ID *string
+
+	// Backend MCP configuration. Required when kind is mcp.
+	Mcp *McpURLConfiguration
+
+	// Failure mode when the endpoint fails. Defaults to failOpen.
+	Mode *FailureMode
+
+	// Optional namespace used to prefix tool names.
+	Namespace *string
+
+	// OpenAPI configuration. Required when kind is openApi.
+	OpenAPI *OpenAPIConfiguration
+
+	// Upstream tool names or glob patterns to expose.
+	Tools []*string
+}
+
+// ToolServerEndpointUpdate - A tool server endpoint to update.
+type ToolServerEndpointUpdate struct {
+	// Backend authentication configuration.
+	Authentication *ToolServerAuthenticationUpdate
+
+	// Stable endpoint identifier.
+	ID *string
+
+	// Endpoint type.
+	Kind *ToolServerEndpointSourceKind
+
+	// Backend MCP configuration.
+	Mcp *McpURLConfigurationUpdate
+
+	// Failure mode when the endpoint fails.
+	Mode *FailureMode
+
+	// Optional namespace used to prefix tool names.
+	Namespace *string
+
+	// OpenAPI configuration.
+	OpenAPI *OpenAPIConfigurationUpdate
+
+	// Upstream tool names or glob patterns to expose.
+	Tools []*string
+}
+
+// ToolServerFederation - Customer-owned federation application identity for a tool server endpoint.
+type ToolServerFederation struct {
+	// Credential used to authenticate the federation application.
+	AppCredential *ToolServerFederationAppCredential
+
+	// Application (client) ID of the customer-owned federation application.
+	ApplicationID *string
+}
+
+// ToolServerFederationAppCredential - Credential used to authenticate a tool server endpoint federation application.
+type ToolServerFederationAppCredential struct {
+	// REQUIRED; Federation application credential type.
+	Type *ToolServerFederationAppCredentialType
+
+	// Client ID of a user-assigned managed identity available to this AI Gateway.
+	ClientID *string
+}
+
+// ToolServerLoginLinksRequest - Parameters for getting OAuth consent links for a tool server endpoint.
+type ToolServerLoginLinksRequest struct {
+	// REQUIRED; Identifier of the endpoint configured on the tool server.
+	EndpointID *string
+}
+
+// ToolServerManagedIdentityAuthentication - Managed identity authentication for a tool server endpoint.
+type ToolServerManagedIdentityAuthentication struct {
+	// Client ID of a user-assigned managed identity.
+	ClientID *string
+
+	// Token audience for managed identity authentication.
+	Resource *string
+}
+
+// ToolServerOauth2Authentication - OAuth 2.0 authentication for a tool server endpoint.
+type ToolServerOauth2Authentication struct {
+	// OAuth authorization endpoint.
+	AuthorizationEndpoint *DestinationEndpoint
+
+	// Additional authorization endpoint parameters.
+	AuthorizationParameters []*ToolServerOauth2Parameter
+
+	// OAuth client identifier.
+	ClientID *string
+
+	// OAuth client secret.
+	ClientSecret *string
+
+	// OAuth grant type.
+	GrantType *ToolServerOauth2GrantType
+
+	// Expected OAuth authorization-server issuer for remote MCP discovery.
+	Issuer *string
+
+	// OAuth scopes to request.
+	Scopes []*string
+
+	// OAuth token endpoint.
+	TokenEndpoint *DestinationEndpoint
+
+	// Chained token-exchange configuration.
+	TokenExchange *ToolServerTokenExchange
+
+	// Additional token endpoint parameters.
+	TokenParameters []*ToolServerOauth2Parameter
+
+	// READ-ONLY; Login link used to complete interactive authorization.
+	LoginLink *string
+
+	// READ-ONLY; Current OAuth connection status.
+	Status *string
+
+	// READ-ONLY; UTC timestamp of the last OAuth connection-status transition.
+	StatusUpdatedUTC *time.Time
+}
+
+// ToolServerOauth2LoginLinks - Links for completing OAuth consent for a tool-server endpoint.
+type ToolServerOauth2LoginLinks struct {
+	// REQUIRED; UTC expiry of the signed start capability.
+	ExpiresUTC *time.Time
+
+	// Gateway URL to open to begin consent; includes an expiring signed capability.
+	LoginLink *string
+
+	// Gateway callback URI to register with the identity provider.
+	RedirectURI *string
+}
+
+// ToolServerOauth2Parameter - An additional parameter sent to an OAuth 2.0 endpoint.
+type ToolServerOauth2Parameter struct {
+	// REQUIRED; OAuth parameter name.
+	Name *string
+
+	// REQUIRED; OAuth parameter value.
+	Value *string
+}
+
+// ToolServerProperties - Properties of an AI Gateway tool server.
+type ToolServerProperties struct {
+	// REQUIRED; Tool server type.
+	ToolServerType *ToolServerType
+
+	// Whether the tool server is available to callers.
+	AccessState *ToolServerAccessState
+
+	// Tool names or patterns explicitly allowed.
+	AllowList []*string
+
+	// Tool names or patterns explicitly blocked.
+	BlockList []*string
+
+	// Description of the tool server.
+	Description *string
+
+	// Display name of the tool server.
+	DisplayName *string
+
+	// Endpoint configurations exposed by this tool server.
+	Endpoints []*ToolServerEndpoint
+
+	// Runtime path for the tool server.
+	Path *string
+
+	// Inline policies applied to this tool server.
+	Policies []*Policy
+
+	// Whether a subscription is required to invoke the tool server.
+	SubscriptionRequired *bool
+
+	// Runtime API versions exposed by this tool server.
+	Versions []*string
+
+	// READ-ONLY; Read-only invocation URLs, with optional SDK metadata when endpoint enrichment is enabled.
+	GatewayEndpoints []*Endpoint
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// ToolServerResource - An AI Gateway tool server resource.
+type ToolServerResource struct {
+	// The resource-specific properties for this resource.
+	Properties *ToolServerProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ToolServerResourceListResult - The response of a AiGatewayToolServerResource list operation.
+type ToolServerResourceListResult struct {
+	// REQUIRED; The AiGatewayToolServerResource items on this page
+	Value []*ToolServerResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ToolServerSecret - Secret value configured on one tool server endpoint.
+type ToolServerSecret struct {
+	// REQUIRED; Stable endpoint identifier.
+	ID *string
+
+	// Endpoint authentication including secret values.
+	Authentication *ToolServerSecretAuthentication
+
+	// OpenAPI configuration including inline content.
+	OpenAPI *ToolServerSecretOpenAPIConfiguration
+}
+
+// ToolServerSecretAuthentication - Endpoint authentication returned by the secret retrieval action.
+type ToolServerSecretAuthentication struct {
+	// Static headers injected when calling the endpoint.
+	Headers []*SecretHeaderValue
+
+	// Managed identity configuration.
+	ManagedIdentity *ToolServerManagedIdentityAuthentication
+
+	// OAuth 2.0 configuration.
+	Oauth2 *ToolServerSecretOauth2Authentication
+}
+
+// ToolServerSecretOauth2Authentication - OAuth settings returned by the secret retrieval action.
+type ToolServerSecretOauth2Authentication struct {
+	// OAuth authorization endpoint.
+	AuthorizationEndpoint *DestinationEndpoint
+
+	// Additional authorization endpoint parameters.
+	AuthorizationParameters []*ToolServerOauth2Parameter
+
+	// OAuth client identifier.
+	ClientID *string
+
+	// OAuth client secret.
+	ClientSecret *string
+
+	// OAuth grant type.
+	GrantType *ToolServerOauth2GrantType
+
+	// Expected OAuth authorization-server issuer for remote MCP discovery.
+	Issuer *string
+
+	// OAuth scopes to request.
+	Scopes []*string
+
+	// OAuth token endpoint.
+	TokenEndpoint *DestinationEndpoint
+
+	// Chained token-exchange configuration.
+	TokenExchange *ToolServerTokenExchange
+
+	// Additional token endpoint parameters.
+	TokenParameters []*ToolServerOauth2Parameter
+
+	// READ-ONLY; Login link used to complete interactive authorization.
+	LoginLink *string
+
+	// READ-ONLY; Current OAuth connection status.
+	Status *string
+
+	// READ-ONLY; UTC timestamp of the last OAuth connection-status transition.
+	StatusUpdatedUTC *time.Time
+}
+
+// ToolServerSecretOpenAPIConfiguration - OpenAPI settings returned by the secret retrieval action.
+type ToolServerSecretOpenAPIConfiguration struct {
+	// REQUIRED; OpenAPI document source.
+	SpecSource *ToolServerSecretOpenAPISpecSource
+}
+
+// ToolServerSecretOpenAPISpecSource - OpenAPI document source returned by the secret retrieval action.
+type ToolServerSecretOpenAPISpecSource struct {
+	// REQUIRED; Source type.
+	Type *ToolServerOpenAPISourceType
+
+	// Base64-encoded OpenAPI document. Required when type is inline.
+	ContentBase64 []byte
+
+	// URL of the OpenAPI document. Required when type is url.
+	URL *string
+}
+
+// ToolServerSecrets - Secret values configured on tool server endpoints.
+type ToolServerSecrets struct {
+	// REQUIRED; Endpoint secret values.
+	Endpoints []*ToolServerSecret
+}
+
+// ToolServerTokenExchange - Chained token-exchange configuration for a tool server endpoint.
+type ToolServerTokenExchange struct {
+	// REQUIRED; Token-exchange profile.
+	Profile *ToolServerTokenExchangeProfile
+
+	// Customer-owned federated client application identity.
+	FederatedClientApplication *ToolServerFederation
+
+	// Delegated scopes requested from the target tool server resource.
+	Scopes []*string
+}
+
+// ToolServerUpdateParameters - Parameters for updating an AI Gateway tool server.
+type ToolServerUpdateParameters struct {
+	// Tool server properties to update.
+	Properties *ToolServerUpdateProperties
+}
+
+// ToolServerUpdateProperties - Properties for updating an AI Gateway tool server.
+type ToolServerUpdateProperties struct {
+	// Whether the tool server is available to callers.
+	AccessState *ToolServerAccessState
+
+	// Tool names or patterns explicitly allowed.
+	AllowList []*string
+
+	// Tool names or patterns explicitly blocked.
+	BlockList []*string
+
+	// Description of the tool server.
+	Description *string
+
+	// Display name of the tool server.
+	DisplayName *string
+
+	// Endpoint configurations exposed by this tool server.
+	Endpoints []*ToolServerEndpointUpdate
+
+	// Runtime path for the tool server.
+	Path *string
+
+	// Inline policies applied to this tool server.
+	Policies []*PolicyUpdate
+
+	// Whether a subscription is required to invoke the tool server.
+	SubscriptionRequired *bool
+
+	// Tool server type.
+	ToolServerType *ToolServerType
+
+	// Runtime API versions exposed by this tool server.
+	Versions []*string
+}
+
 // UpdateParameters - Parameters for updating an AI Gateway.
 type UpdateParameters struct {
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
+
+	// AI Gateway properties to update.
+	Properties *UpdateProperties
 
 	// The SKU (Stock Keeping Unit) assigned to this resource.
 	SKU *SKUUpdate
 
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// UpdateProperties - Properties for updating an AI Gateway.
+type UpdateProperties struct {
+	// Backend networking configuration.
+	Backend *BackendUpdate
+
+	// Whether public network access is allowed for the AI Gateway.
+	PublicNetworkAccess *PublicNetworkAccess
 }
 
 // UserAssignedIdentity - User assigned identity properties
@@ -229,4 +1968,58 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
+}
+
+// WorkspaceProperties - Properties of an AI Gateway workspace.
+type WorkspaceProperties struct {
+	// Inline governance policies for the default workspace.
+	Policies []*Policy
+
+	// READ-ONLY; Description of the workspace.
+	Description *string
+
+	// READ-ONLY; Display name of the workspace.
+	DisplayName *string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
+// WorkspaceResource - An AI Gateway workspace resource.
+type WorkspaceResource struct {
+	// The resource-specific properties for this resource.
+	Properties *WorkspaceProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// WorkspaceResourceListResult - The response of a AiGatewayWorkspaceResource list operation.
+type WorkspaceResourceListResult struct {
+	// REQUIRED; The AiGatewayWorkspaceResource items on this page
+	Value []*WorkspaceResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// WorkspaceUpdateParameters - Parameters for updating an AI Gateway workspace.
+type WorkspaceUpdateParameters struct {
+	// Workspace properties to update.
+	Properties *WorkspaceUpdateProperties
+}
+
+// WorkspaceUpdateProperties - Properties for updating an AI Gateway workspace.
+type WorkspaceUpdateProperties struct {
+	// Inline governance policies to replace on the default workspace.
+	Policies []*PolicyUpdate
 }

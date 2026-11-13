@@ -1,6 +1,6 @@
 {
   "apiVersions": {
-    "Microsoft.ApiManagement": "2026-09-01-preview"
+    "Microsoft.ApiManagement": "2026-11-01"
   },
-  "emitterVersion": "0.18.0"
+  "emitterVersion": "0.19.0"
 }

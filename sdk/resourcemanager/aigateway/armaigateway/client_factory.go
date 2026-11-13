@@ -32,6 +32,46 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAPIKeyResourcesClient creates a new instance of APIKeyResourcesClient.
+func (c *ClientFactory) NewAPIKeyResourcesClient() *APIKeyResourcesClient {
+	return &APIKeyResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewAliasResourcesClient creates a new instance of AliasResourcesClient.
+func (c *ClientFactory) NewAliasResourcesClient() *AliasResourcesClient {
+	return &AliasResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewModelProviderResourcesClient creates a new instance of ModelProviderResourcesClient.
+func (c *ClientFactory) NewModelProviderResourcesClient() *ModelProviderResourcesClient {
+	return &ModelProviderResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewModelResourcesClient creates a new instance of ModelResourcesClient.
+func (c *ClientFactory) NewModelResourcesClient() *ModelResourcesClient {
+	return &ModelResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewNameAvailabilityOperationsClient creates a new instance of NameAvailabilityOperationsClient.
+func (c *ClientFactory) NewNameAvailabilityOperationsClient() *NameAvailabilityOperationsClient {
+	return &NameAvailabilityOperationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
@@ -39,9 +79,57 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewPrivateEndpointConnectionsClient creates a new instance of PrivateEndpointConnectionsClient.
+func (c *ClientFactory) NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient {
+	return &PrivateEndpointConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewPrivateLinkResourcesClient creates a new instance of PrivateLinkResourcesClient.
+func (c *ClientFactory) NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient {
+	return &PrivateLinkResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewResourcesClient creates a new instance of ResourcesClient.
 func (c *ClientFactory) NewResourcesClient() *ResourcesClient {
 	return &ResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewTelemetryExporterResourcesClient creates a new instance of TelemetryExporterResourcesClient.
+func (c *ClientFactory) NewTelemetryExporterResourcesClient() *TelemetryExporterResourcesClient {
+	return &TelemetryExporterResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewToolServerResourcesClient creates a new instance of ToolServerResourcesClient.
+func (c *ClientFactory) NewToolServerResourcesClient() *ToolServerResourcesClient {
+	return &ToolServerResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewWorkspaceModelOperationsClient creates a new instance of WorkspaceModelOperationsClient.
+func (c *ClientFactory) NewWorkspaceModelOperationsClient() *WorkspaceModelOperationsClient {
+	return &WorkspaceModelOperationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewWorkspaceResourcesClient creates a new instance of WorkspaceResourcesClient.
+func (c *ClientFactory) NewWorkspaceResourcesClient() *WorkspaceResourcesClient {
+	return &WorkspaceResourcesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

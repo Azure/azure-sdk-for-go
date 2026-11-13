@@ -1,5 +1,241 @@
 # Release History
 
+## 1.0.0 (2026-11-13)
+### Features Added
+
+- New enum type `AliasSelectionStage` with values `AliasSelectionStageAutoModelSelection`, `AliasSelectionStagePriority`, `AliasSelectionStageSessionBackendPreference`
+- New enum type `AllowedRequestOverride` with values `AllowedRequestOverrideFilterModelsForToolCompatibility`, `AllowedRequestOverrideModel`, `AllowedRequestOverrideObjective`
+- New enum type `ContentSafetySeverity` with values `ContentSafetySeverityHigh`, `ContentSafetySeverityLow`, `ContentSafetySeverityMedium`, `ContentSafetySeverityNone`
+- New enum type `CounterDimension` with values `CounterDimensionIPAddress`, `CounterDimensionIdentity`
+- New enum type `FailureMode` with values `FailureModeFailClosed`, `FailureModeFailOpen`
+- New enum type `IPFilterAction` with values `IPFilterActionAllow`, `IPFilterActionDeny`
+- New enum type `ModelProviderKind` with values `ModelProviderKindCustom`, `ModelProviderKindFoundry`, `ModelProviderKindGitHub`
+- New enum type `ModelSelectionObjective` with values `ModelSelectionObjectiveBalanced`, `ModelSelectionObjectiveCost`, `ModelSelectionObjectiveQuality`
+- New enum type `NameAvailabilityReason` with values `NameAvailabilityReasonAlreadyExists`, `NameAvailabilityReasonInvalid`
+- New enum type `PolicyPeriod` with values `PolicyPeriodDay`, `PolicyPeriodHour`, `PolicyPeriodMinute`, `PolicyPeriodMonth`, `PolicyPeriodWeek`, `PolicyPeriodYear`
+- New enum type `PolicyScope` with values `PolicyScopeResource`, `PolicyScopeWorkspace`
+- New enum type `PolicyType` with values `PolicyTypeAgentHooks`, `PolicyTypeContentSafety`, `PolicyTypeCors`, `PolicyTypeCostLimit`, `PolicyTypeFallback`, `PolicyTypeIPFilter`, `PolicyTypeRequestRateLimit`, `PolicyTypeTokenLimit`, `PolicyTypeToolThreatProtection`
+- New enum type `PrivateEndpointConnectionProvisioningState` with values `PrivateEndpointConnectionProvisioningStateCreating`, `PrivateEndpointConnectionProvisioningStateDeleting`, `PrivateEndpointConnectionProvisioningStateFailed`, `PrivateEndpointConnectionProvisioningStateSucceeded`
+- New enum type `PrivateEndpointServiceConnectionStatus` with values `PrivateEndpointServiceConnectionStatusApproved`, `PrivateEndpointServiceConnectionStatusPending`, `PrivateEndpointServiceConnectionStatusRejected`
+- New enum type `PublicNetworkAccess` with values `PublicNetworkAccessDisabled`, `PublicNetworkAccessEnabled`
+- New enum type `TelemetryExporterKind` with values `TelemetryExporterKindApplicationInsights`, `TelemetryExporterKindOpenTelemetry`
+- New enum type `TelemetrySignal` with values `TelemetrySignalLogs`, `TelemetrySignalMetrics`, `TelemetrySignalTraces`
+- New enum type `ToolServerAccessState` with values `ToolServerAccessStateActive`, `ToolServerAccessStateBlocked`
+- New enum type `ToolServerEndpointSourceKind` with values `ToolServerEndpointSourceKindMcp`, `ToolServerEndpointSourceKindOpenAPI`
+- New enum type `ToolServerFederationAppCredentialType` with values `ToolServerFederationAppCredentialTypeUserAssignedManagedIdentity`
+- New enum type `ToolServerMcpTransport` with values `ToolServerMcpTransportStreamableHTTP`
+- New enum type `ToolServerOauth2GrantType` with values `ToolServerOauth2GrantTypeAuthorizationCode`, `ToolServerOauth2GrantTypeClientCredentials`
+- New enum type `ToolServerOpenAPISourceType` with values `ToolServerOpenAPISourceTypeInline`, `ToolServerOpenAPISourceTypeURL`
+- New enum type `ToolServerTokenExchangeProfile` with values `ToolServerTokenExchangeProfileEntraOnBehalfOf`
+- New enum type `ToolServerType` with values `ToolServerTypeConnector`, `ToolServerTypeMcp`, `ToolServerTypeOpenAPI`
+- New function `NewAPIKeyResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*APIKeyResourcesClient, error)`
+- New function `*APIKeyResourcesClient.CheckExistence(ctx context.Context, resourceGroupName string, aiGatewayName string, apiKeyName string, options *APIKeyResourcesClientCheckExistenceOptions) (APIKeyResourcesClientCheckExistenceResponse, error)`
+- New function `*APIKeyResourcesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, aiGatewayName string, apiKeyName string, resource APIKeyResource, options *APIKeyResourcesClientCreateOrUpdateOptions) (APIKeyResourcesClientCreateOrUpdateResponse, error)`
+- New function `*APIKeyResourcesClient.Delete(ctx context.Context, resourceGroupName string, aiGatewayName string, apiKeyName string, ifMatch string, options *APIKeyResourcesClientDeleteOptions) (APIKeyResourcesClientDeleteResponse, error)`
+- New function `*APIKeyResourcesClient.Get(ctx context.Context, resourceGroupName string, aiGatewayName string, apiKeyName string, options *APIKeyResourcesClientGetOptions) (APIKeyResourcesClientGetResponse, error)`
+- New function `*APIKeyResourcesClient.NewListByAiGatewayPager(resourceGroupName string, aiGatewayName string, options *APIKeyResourcesClientListByAiGatewayOptions) *runtime.Pager[APIKeyResourcesClientListByAiGatewayResponse]`
+- New function `*APIKeyResourcesClient.ListSecrets(ctx context.Context, resourceGroupName string, aiGatewayName string, apiKeyName string, options *APIKeyResourcesClientListSecretsOptions) (APIKeyResourcesClientListSecretsResponse, error)`
+- New function `*APIKeyResourcesClient.RegeneratePrimaryKey(ctx context.Context, resourceGroupName string, aiGatewayName string, apiKeyName string, options *APIKeyResourcesClientRegeneratePrimaryKeyOptions) (APIKeyResourcesClientRegeneratePrimaryKeyResponse, error)`
+- New function `*APIKeyResourcesClient.RegenerateSecondaryKey(ctx context.Context, resourceGroupName string, aiGatewayName string, apiKeyName string, options *APIKeyResourcesClientRegenerateSecondaryKeyOptions) (APIKeyResourcesClientRegenerateSecondaryKeyResponse, error)`
+- New function `*APIKeyResourcesClient.Update(ctx context.Context, resourceGroupName string, aiGatewayName string, apiKeyName string, ifMatch string, properties APIKeyUpdateParameters, options *APIKeyResourcesClientUpdateOptions) (APIKeyResourcesClientUpdateResponse, error)`
+- New function `NewAliasResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AliasResourcesClient, error)`
+- New function `*AliasResourcesClient.CheckExistence(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, aliasID string, options *AliasResourcesClientCheckExistenceOptions) (AliasResourcesClientCheckExistenceResponse, error)`
+- New function `*AliasResourcesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, aliasID string, resource AliasResource, options *AliasResourcesClientCreateOrUpdateOptions) (AliasResourcesClientCreateOrUpdateResponse, error)`
+- New function `*AliasResourcesClient.Delete(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, aliasID string, ifMatch string, options *AliasResourcesClientDeleteOptions) (AliasResourcesClientDeleteResponse, error)`
+- New function `*AliasResourcesClient.Get(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, aliasID string, options *AliasResourcesClientGetOptions) (AliasResourcesClientGetResponse, error)`
+- New function `*AliasResourcesClient.NewListByWorkspacePager(resourceGroupName string, aiGatewayName string, workspaceName string, options *AliasResourcesClientListByWorkspaceOptions) *runtime.Pager[AliasResourcesClientListByWorkspaceResponse]`
+- New function `*AliasResourcesClient.Update(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, aliasID string, ifMatch string, properties AliasUpdateParameters, options *AliasResourcesClientUpdateOptions) (AliasResourcesClientUpdateResponse, error)`
+- New function `*ClientFactory.NewAPIKeyResourcesClient() *APIKeyResourcesClient`
+- New function `*ClientFactory.NewAliasResourcesClient() *AliasResourcesClient`
+- New function `*ClientFactory.NewModelProviderResourcesClient() *ModelProviderResourcesClient`
+- New function `*ClientFactory.NewModelResourcesClient() *ModelResourcesClient`
+- New function `*ClientFactory.NewNameAvailabilityOperationsClient() *NameAvailabilityOperationsClient`
+- New function `*ClientFactory.NewPrivateEndpointConnectionsClient() *PrivateEndpointConnectionsClient`
+- New function `*ClientFactory.NewPrivateLinkResourcesClient() *PrivateLinkResourcesClient`
+- New function `*ClientFactory.NewTelemetryExporterResourcesClient() *TelemetryExporterResourcesClient`
+- New function `*ClientFactory.NewToolServerResourcesClient() *ToolServerResourcesClient`
+- New function `*ClientFactory.NewWorkspaceModelOperationsClient() *WorkspaceModelOperationsClient`
+- New function `*ClientFactory.NewWorkspaceResourcesClient() *WorkspaceResourcesClient`
+- New function `NewModelProviderResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ModelProviderResourcesClient, error)`
+- New function `*ModelProviderResourcesClient.CheckExistence(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, options *ModelProviderResourcesClientCheckExistenceOptions) (ModelProviderResourcesClientCheckExistenceResponse, error)`
+- New function `*ModelProviderResourcesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, resource ModelProviderResource, options *ModelProviderResourcesClientCreateOrUpdateOptions) (ModelProviderResourcesClientCreateOrUpdateResponse, error)`
+- New function `*ModelProviderResourcesClient.Delete(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, ifMatch string, options *ModelProviderResourcesClientDeleteOptions) (ModelProviderResourcesClientDeleteResponse, error)`
+- New function `*ModelProviderResourcesClient.Get(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, options *ModelProviderResourcesClientGetOptions) (ModelProviderResourcesClientGetResponse, error)`
+- New function `*ModelProviderResourcesClient.NewListByWorkspacePager(resourceGroupName string, aiGatewayName string, workspaceName string, options *ModelProviderResourcesClientListByWorkspaceOptions) *runtime.Pager[ModelProviderResourcesClientListByWorkspaceResponse]`
+- New function `*ModelProviderResourcesClient.ListSecrets(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, options *ModelProviderResourcesClientListSecretsOptions) (ModelProviderResourcesClientListSecretsResponse, error)`
+- New function `*ModelProviderResourcesClient.Update(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, ifMatch string, properties ModelProviderUpdateParameters, options *ModelProviderResourcesClientUpdateOptions) (ModelProviderResourcesClientUpdateResponse, error)`
+- New function `NewModelResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ModelResourcesClient, error)`
+- New function `*ModelResourcesClient.CheckExistence(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, modelName string, options *ModelResourcesClientCheckExistenceOptions) (ModelResourcesClientCheckExistenceResponse, error)`
+- New function `*ModelResourcesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, modelName string, resource ModelResource, options *ModelResourcesClientCreateOrUpdateOptions) (ModelResourcesClientCreateOrUpdateResponse, error)`
+- New function `*ModelResourcesClient.Delete(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, modelName string, ifMatch string, options *ModelResourcesClientDeleteOptions) (ModelResourcesClientDeleteResponse, error)`
+- New function `*ModelResourcesClient.Get(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, modelName string, options *ModelResourcesClientGetOptions) (ModelResourcesClientGetResponse, error)`
+- New function `*ModelResourcesClient.NewListByModelProviderPager(resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, options *ModelResourcesClientListByModelProviderOptions) *runtime.Pager[ModelResourcesClientListByModelProviderResponse]`
+- New function `*ModelResourcesClient.Update(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, modelProviderName string, modelName string, ifMatch string, properties ModelUpdateParameters, options *ModelResourcesClientUpdateOptions) (ModelResourcesClientUpdateResponse, error)`
+- New function `NewPrivateEndpointConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateEndpointConnectionsClient, error)`
+- New function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, aiGatewayName string, privateEndpointConnectionName string, resource PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*runtime.Poller[PrivateEndpointConnectionsClientCreateOrUpdateResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.BeginDelete(ctx context.Context, resourceGroupName string, aiGatewayName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions) (*runtime.Poller[PrivateEndpointConnectionsClientDeleteResponse], error)`
+- New function `*PrivateEndpointConnectionsClient.Get(ctx context.Context, resourceGroupName string, aiGatewayName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions) (PrivateEndpointConnectionsClientGetResponse, error)`
+- New function `*PrivateEndpointConnectionsClient.NewListByAiGatewayPager(resourceGroupName string, aiGatewayName string, options *PrivateEndpointConnectionsClientListByAiGatewayOptions) *runtime.Pager[PrivateEndpointConnectionsClientListByAiGatewayResponse]`
+- New function `NewPrivateLinkResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*PrivateLinkResourcesClient, error)`
+- New function `*PrivateLinkResourcesClient.Get(ctx context.Context, resourceGroupName string, aiGatewayName string, privateLinkResourceName string, options *PrivateLinkResourcesClientGetOptions) (PrivateLinkResourcesClientGetResponse, error)`
+- New function `*PrivateLinkResourcesClient.NewListByAiGatewayPager(resourceGroupName string, aiGatewayName string, options *PrivateLinkResourcesClientListByAiGatewayOptions) *runtime.Pager[PrivateLinkResourcesClientListByAiGatewayResponse]`
+- New function `NewTelemetryExporterResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TelemetryExporterResourcesClient, error)`
+- New function `*TelemetryExporterResourcesClient.CheckExistence(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, telemetryExporterName string, options *TelemetryExporterResourcesClientCheckExistenceOptions) (TelemetryExporterResourcesClientCheckExistenceResponse, error)`
+- New function `*TelemetryExporterResourcesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, telemetryExporterName string, resource TelemetryExporterResource, options *TelemetryExporterResourcesClientCreateOrUpdateOptions) (TelemetryExporterResourcesClientCreateOrUpdateResponse, error)`
+- New function `*TelemetryExporterResourcesClient.Delete(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, telemetryExporterName string, ifMatch string, options *TelemetryExporterResourcesClientDeleteOptions) (TelemetryExporterResourcesClientDeleteResponse, error)`
+- New function `*TelemetryExporterResourcesClient.Get(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, telemetryExporterName string, options *TelemetryExporterResourcesClientGetOptions) (TelemetryExporterResourcesClientGetResponse, error)`
+- New function `*TelemetryExporterResourcesClient.NewListByWorkspacePager(resourceGroupName string, aiGatewayName string, workspaceName string, options *TelemetryExporterResourcesClientListByWorkspaceOptions) *runtime.Pager[TelemetryExporterResourcesClientListByWorkspaceResponse]`
+- New function `*TelemetryExporterResourcesClient.Update(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, telemetryExporterName string, ifMatch string, properties TelemetryExporterUpdateParameters, options *TelemetryExporterResourcesClientUpdateOptions) (TelemetryExporterResourcesClientUpdateResponse, error)`
+- New function `NewToolServerResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ToolServerResourcesClient, error)`
+- New function `*ToolServerResourcesClient.CheckExistence(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, options *ToolServerResourcesClientCheckExistenceOptions) (ToolServerResourcesClientCheckExistenceResponse, error)`
+- New function `*ToolServerResourcesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, resource ToolServerResource, options *ToolServerResourcesClientCreateOrUpdateOptions) (ToolServerResourcesClientCreateOrUpdateResponse, error)`
+- New function `*ToolServerResourcesClient.Delete(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, ifMatch string, options *ToolServerResourcesClientDeleteOptions) (ToolServerResourcesClientDeleteResponse, error)`
+- New function `*ToolServerResourcesClient.Get(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, options *ToolServerResourcesClientGetOptions) (ToolServerResourcesClientGetResponse, error)`
+- New function `*ToolServerResourcesClient.GetOauth2LoginLinks(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, body ToolServerLoginLinksRequest, options *ToolServerResourcesClientGetOauth2LoginLinksOptions) (ToolServerResourcesClientGetOauth2LoginLinksResponse, error)`
+- New function `*ToolServerResourcesClient.NewListByWorkspacePager(resourceGroupName string, aiGatewayName string, workspaceName string, options *ToolServerResourcesClientListByWorkspaceOptions) *runtime.Pager[ToolServerResourcesClientListByWorkspaceResponse]`
+- New function `*ToolServerResourcesClient.ListSecrets(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, options *ToolServerResourcesClientListSecretsOptions) (ToolServerResourcesClientListSecretsResponse, error)`
+- New function `*ToolServerResourcesClient.Update(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, ifMatch string, properties ToolServerUpdateParameters, options *ToolServerResourcesClientUpdateOptions) (ToolServerResourcesClientUpdateResponse, error)`
+- New function `NewWorkspaceModelOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceModelOperationsClient, error)`
+- New function `*WorkspaceModelOperationsClient.NewListByWorkspacePager(resourceGroupName string, aiGatewayName string, workspaceName string, options *WorkspaceModelOperationsClientListByWorkspaceOptions) *runtime.Pager[WorkspaceModelOperationsClientListByWorkspaceResponse]`
+- New function `NewWorkspaceResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkspaceResourcesClient, error)`
+- New function `*WorkspaceResourcesClient.CheckExistence(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, options *WorkspaceResourcesClientCheckExistenceOptions) (WorkspaceResourcesClientCheckExistenceResponse, error)`
+- New function `*WorkspaceResourcesClient.Get(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, options *WorkspaceResourcesClientGetOptions) (WorkspaceResourcesClientGetResponse, error)`
+- New function `*WorkspaceResourcesClient.NewListByAiGatewayPager(resourceGroupName string, aiGatewayName string, options *WorkspaceResourcesClientListByAiGatewayOptions) *runtime.Pager[WorkspaceResourcesClientListByAiGatewayResponse]`
+- New function `*WorkspaceResourcesClient.Update(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, ifMatch string, properties WorkspaceUpdateParameters, options *WorkspaceResourcesClientUpdateOptions) (WorkspaceResourcesClientUpdateResponse, error)`
+- New function `NewNameAvailabilityOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NameAvailabilityOperationsClient, error)`
+- New function `*NameAvailabilityOperationsClient.CheckNameAvailability(ctx context.Context, location string, body CheckNameAvailabilityRequest, options *NameAvailabilityOperationsClientCheckNameAvailabilityOptions) (NameAvailabilityOperationsClientCheckNameAvailabilityResponse, error)`
+- New struct `APIKeyProperties`
+- New struct `APIKeyResource`
+- New struct `APIKeyResourceListResult`
+- New struct `APIKeyUpdateParameters`
+- New struct `APIKeyUpdateProperties`
+- New struct `APIKeyValues`
+- New struct `AgentHook`
+- New struct `AgentHookAuthentication`
+- New struct `AgentHookAuthenticationUpdate`
+- New struct `AgentHookUpdate`
+- New struct `AgentHooks`
+- New struct `AgentHooksUpdate`
+- New struct `AliasFailureRule`
+- New struct `AliasFailureRuleUpdate`
+- New struct `AliasProperties`
+- New struct `AliasResource`
+- New struct `AliasResourceListResult`
+- New struct `AliasTarget`
+- New struct `AliasTargetUpdate`
+- New struct `AliasUpdateParameters`
+- New struct `AliasUpdateProperties`
+- New struct `ApplicationInsightsConfiguration`
+- New struct `BackendUpdate`
+- New struct `CheckNameAvailabilityRequest`
+- New struct `CheckNameAvailabilityResponse`
+- New struct `CostLimitOverride`
+- New struct `CostLimitOverrideUpdate`
+- New struct `CustomProviderConfiguration`
+- New struct `CustomProviderConfigurationUpdate`
+- New struct `DestinationEndpoint`
+- New struct `DestinationEndpointUpdate`
+- New struct `Endpoint`
+- New struct `FallbackTarget`
+- New struct `FallbackTargetUpdate`
+- New struct `FoundryProviderConfiguration`
+- New struct `FoundryProviderConfigurationUpdate`
+- New struct `GitHubAppAuthentication`
+- New struct `ManagedIdentityAuthentication`
+- New struct `McpURLConfiguration`
+- New struct `McpURLConfigurationUpdate`
+- New struct `ModelDeployment`
+- New struct `ModelDeploymentUpdate`
+- New struct `ModelEndpoint`
+- New struct `ModelEndpointUpdate`
+- New struct `ModelProperties`
+- New struct `ModelProviderAuthentication`
+- New struct `ModelProviderAuthenticationUpdate`
+- New struct `ModelProviderProperties`
+- New struct `ModelProviderResource`
+- New struct `ModelProviderResourceListResult`
+- New struct `ModelProviderSecretAuthentication`
+- New struct `ModelProviderSecretGitHubAppAuthentication`
+- New struct `ModelProviderSecrets`
+- New struct `ModelProviderUpdateParameters`
+- New struct `ModelProviderUpdateProperties`
+- New struct `ModelResource`
+- New struct `ModelResourceListResult`
+- New struct `ModelSelection`
+- New struct `ModelSelectionUpdate`
+- New struct `ModelUpdateParameters`
+- New struct `ModelUpdateProperties`
+- New struct `NameValuePair`
+- New struct `NameValuePairUpdate`
+- New struct `OpenAPIConfiguration`
+- New struct `OpenAPIConfigurationUpdate`
+- New struct `OpenAPISpecSource`
+- New struct `OpenAPISpecSourceUpdate`
+- New struct `OpenTelemetryConfiguration`
+- New struct `OpenTelemetryConfigurationUpdate`
+- New struct `Policy`
+- New struct `PolicyUpdate`
+- New struct `PrivateEndpoint`
+- New struct `PrivateEndpointConnection`
+- New struct `PrivateEndpointConnectionListResult`
+- New struct `PrivateEndpointConnectionProperties`
+- New struct `PrivateLinkResource`
+- New struct `PrivateLinkResourceListResult`
+- New struct `PrivateLinkResourceProperties`
+- New struct `PrivateLinkServiceConnectionState`
+- New struct `SecretHeader`
+- New struct `SecretHeaderUpdate`
+- New struct `SecretHeaderValue`
+- New struct `SessionBackendPreference`
+- New struct `SessionBackendPreferenceUpdate`
+- New struct `SubnetUpdate`
+- New struct `TelemetryAttributeMapping`
+- New struct `TelemetryAttributeMappingUpdate`
+- New struct `TelemetryAttributeSource`
+- New struct `TelemetryAttributeSourceUpdate`
+- New struct `TelemetryAuthentication`
+- New struct `TelemetryAuthenticationUpdate`
+- New struct `TelemetryConfiguration`
+- New struct `TelemetryConfigurationUpdate`
+- New struct `TelemetryExporterProperties`
+- New struct `TelemetryExporterResource`
+- New struct `TelemetryExporterResourceListResult`
+- New struct `TelemetryExporterUpdateParameters`
+- New struct `TelemetryExporterUpdateProperties`
+- New struct `TelemetryManagedIdentity`
+- New struct `ToolServerAuthentication`
+- New struct `ToolServerAuthenticationUpdate`
+- New struct `ToolServerEndpoint`
+- New struct `ToolServerEndpointUpdate`
+- New struct `ToolServerFederation`
+- New struct `ToolServerFederationAppCredential`
+- New struct `ToolServerLoginLinksRequest`
+- New struct `ToolServerManagedIdentityAuthentication`
+- New struct `ToolServerOauth2Authentication`
+- New struct `ToolServerOauth2LoginLinks`
+- New struct `ToolServerOauth2Parameter`
+- New struct `ToolServerProperties`
+- New struct `ToolServerResource`
+- New struct `ToolServerResourceListResult`
+- New struct `ToolServerSecret`
+- New struct `ToolServerSecretAuthentication`
+- New struct `ToolServerSecretOauth2Authentication`
+- New struct `ToolServerSecretOpenAPIConfiguration`
+- New struct `ToolServerSecretOpenAPISpecSource`
+- New struct `ToolServerSecrets`
+- New struct `ToolServerTokenExchange`
+- New struct `ToolServerUpdateParameters`
+- New struct `ToolServerUpdateProperties`
+- New struct `UpdateProperties`
+- New struct `WorkspaceProperties`
+- New struct `WorkspaceResource`
+- New struct `WorkspaceResourceListResult`
+- New struct `WorkspaceUpdateParameters`
+- New struct `WorkspaceUpdateProperties`
+- New field `PrivateEndpointConnections`, `PublicNetworkAccess` in struct `Properties`
+- New field `Properties` in struct `UpdateParameters`
+
+
 ## 0.1.0 (2026-10-13)
 ### Other Changes
 

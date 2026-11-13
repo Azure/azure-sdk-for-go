@@ -5,7 +5,7 @@
 package armiothub
 
 const (
-	version20261001Preview string = "2026-10-01-preview"
+	version20261101 string = "2026-11-01"
 )
 
 // AccessRights - The permissions assigned to the shared access policy.
@@ -98,24 +98,6 @@ func PossibleCapabilitiesValues() []Capabilities {
 	return []Capabilities{
 		CapabilitiesDeviceManagement,
 		CapabilitiesNone,
-	}
-}
-
-// ConnectionProfile - The connection profile that the IoT hub uses for device connections.
-type ConnectionProfile string
-
-const (
-	// ConnectionProfileClassic - Classic connection profile.
-	ConnectionProfileClassic ConnectionProfile = "Classic"
-	// ConnectionProfileMqttV5 - MQTT v5 connection profile.
-	ConnectionProfileMqttV5 ConnectionProfile = "MqttV5"
-)
-
-// PossibleConnectionProfileValues returns the possible values for the ConnectionProfile const type.
-func PossibleConnectionProfileValues() []ConnectionProfile {
-	return []ConnectionProfile{
-		ConnectionProfileClassic,
-		ConnectionProfileMqttV5,
 	}
 }
 
@@ -251,6 +233,21 @@ func PossibleEventStreamAuthenticationTypeValues() []EventStreamAuthenticationTy
 	}
 }
 
+// FallbackRouteSource - The source to which the fallback route is applied.
+type FallbackRouteSource string
+
+const (
+	// FallbackRouteSourceDeviceMessages - Device-to-cloud messages sent by devices.
+	FallbackRouteSourceDeviceMessages FallbackRouteSource = "DeviceMessages"
+)
+
+// PossibleFallbackRouteSourceValues returns the possible values for the FallbackRouteSource const type.
+func PossibleFallbackRouteSourceValues() []FallbackRouteSource {
+	return []FallbackRouteSource{
+		FallbackRouteSourceDeviceMessages,
+	}
+}
+
 // GatewayVersion - The IoT hub Gateway version.
 type GatewayVersion string
 
@@ -284,27 +281,6 @@ func PossibleIPFilterActionTypeValues() []IPFilterActionType {
 	return []IPFilterActionType{
 		IPFilterActionTypeAccept,
 		IPFilterActionTypeReject,
-	}
-}
-
-// IPVersion - This property specifies the IP Version the hub is currently utilizing.
-type IPVersion string
-
-const (
-	// IPVersionIPv4 - ipv4
-	IPVersionIPv4 IPVersion = "ipv4"
-	// IPVersionIPv4IPv6 - ipv4ipv6
-	IPVersionIPv4IPv6 IPVersion = "ipv4ipv6"
-	// IPVersionIPv6 - ipv6
-	IPVersionIPv6 IPVersion = "ipv6"
-)
-
-// PossibleIPVersionValues returns the possible values for the IPVersion const type.
-func PossibleIPVersionValues() []IPVersion {
-	return []IPVersion{
-		IPVersionIPv4,
-		IPVersionIPv4IPv6,
-		IPVersionIPv6,
 	}
 }
 
@@ -493,24 +469,6 @@ func PossibleJobTypeValues() []JobType {
 	}
 }
 
-// MessagePayloadFormat - The supported formats for message payloads delivered to routing endpoints.
-type MessagePayloadFormat string
-
-const (
-	// MessagePayloadFormatDOObservationV1 - Formats the message as a com.do.telemetry.observation.v1 payload.
-	MessagePayloadFormatDOObservationV1 MessagePayloadFormat = "DOObservationV1"
-	// MessagePayloadFormatNone - Preserves the original message payload.
-	MessagePayloadFormatNone MessagePayloadFormat = "None"
-)
-
-// PossibleMessagePayloadFormatValues returns the possible values for the MessagePayloadFormat const type.
-func PossibleMessagePayloadFormatValues() []MessagePayloadFormat {
-	return []MessagePayloadFormat{
-		MessagePayloadFormatDOObservationV1,
-		MessagePayloadFormatNone,
-	}
-}
-
 // NetworkRuleIPAction - IP Filter Action
 type NetworkRuleIPAction string
 
@@ -624,12 +582,8 @@ const (
 	RoutingSourceDeviceLifecycleEvents RoutingSource = "DeviceLifecycleEvents"
 	// RoutingSourceDeviceMessages - DeviceMessages
 	RoutingSourceDeviceMessages RoutingSource = "DeviceMessages"
-	// RoutingSourceDigitalTwinChangeEvents - DigitalTwinChangeEvents
-	RoutingSourceDigitalTwinChangeEvents RoutingSource = "DigitalTwinChangeEvents"
 	// RoutingSourceInvalid - Invalid
 	RoutingSourceInvalid RoutingSource = "Invalid"
-	// RoutingSourceMqttBrokerMessages - MqttBrokerMessages
-	RoutingSourceMqttBrokerMessages RoutingSource = "MqttBrokerMessages"
 	// RoutingSourceTwinChangeEvents - TwinChangeEvents
 	RoutingSourceTwinChangeEvents RoutingSource = "TwinChangeEvents"
 )
@@ -641,9 +595,7 @@ func PossibleRoutingSourceValues() []RoutingSource {
 		RoutingSourceDeviceJobLifecycleEvents,
 		RoutingSourceDeviceLifecycleEvents,
 		RoutingSourceDeviceMessages,
-		RoutingSourceDigitalTwinChangeEvents,
 		RoutingSourceInvalid,
-		RoutingSourceMqttBrokerMessages,
 		RoutingSourceTwinChangeEvents,
 	}
 }

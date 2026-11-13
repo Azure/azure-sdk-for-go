@@ -13,7 +13,7 @@ import (
 	"strings"
 )
 
-// Client manages the External Key Manager (EKM) connection of a Managed HSM.
+// Client - Manages the External Key Manager (EKM) connection of a Managed HSM.
 // Don't use this type directly, use a constructor function instead.
 //
 // Generated from API version 2026-04-01

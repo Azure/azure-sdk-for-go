@@ -12,13 +12,13 @@ type CheckConnectionResponse struct {
 
 // CreateConnectionResponse contains the response from method Client.CreateConnection.
 type CreateConnectionResponse struct {
-	// A Connection model object.
+	// A EkmConnection model object.
 	Connection
 }
 
 // DeleteConnectionResponse contains the response from method Client.DeleteConnection.
 type DeleteConnectionResponse struct {
-	// A Connection model object.
+	// A EkmConnection model object.
 	Connection
 }
 
@@ -30,12 +30,12 @@ type GetCertificateResponse struct {
 
 // GetConnectionResponse contains the response from method Client.GetConnection.
 type GetConnectionResponse struct {
-	// A Connection model object.
+	// A EkmConnection model object.
 	Connection
 }
 
 // UpdateConnectionResponse contains the response from method Client.UpdateConnection.
 type UpdateConnectionResponse struct {
-	// A Connection model object.
+	// A EkmConnection model object.
 	Connection
 }

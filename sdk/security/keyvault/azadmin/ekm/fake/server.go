@@ -57,17 +57,17 @@ type ServerTransport struct {
 }
 
 // Do implements the policy.Transporter interface for ServerTransport.
-func (k *ServerTransport) Do(req *http.Request) (*http.Response, error) {
+func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
 		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
-	return k.dispatchToMethodFake(req, method)
+	return s.dispatchToMethodFake(req, method)
 }
 
-func (k *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (s *ServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -78,17 +78,17 @@ func (k *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 		if !intercepted {
 			switch method {
 			case "Client.CheckConnection":
-				res.resp, res.err = k.dispatchCheckConnection(req)
+				res.resp, res.err = s.dispatchCheckConnection(req)
 			case "Client.CreateConnection":
-				res.resp, res.err = k.dispatchCreateConnection(req)
+				res.resp, res.err = s.dispatchCreateConnection(req)
 			case "Client.DeleteConnection":
-				res.resp, res.err = k.dispatchDeleteConnection(req)
+				res.resp, res.err = s.dispatchDeleteConnection(req)
 			case "Client.GetCertificate":
-				res.resp, res.err = k.dispatchGetCertificate(req)
+				res.resp, res.err = s.dispatchGetCertificate(req)
 			case "Client.GetConnection":
-				res.resp, res.err = k.dispatchGetConnection(req)
+				res.resp, res.err = s.dispatchGetConnection(req)
 			case "Client.UpdateConnection":
-				res.resp, res.err = k.dispatchUpdateConnection(req)
+				res.resp, res.err = s.dispatchUpdateConnection(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -105,11 +105,11 @@ func (k *ServerTransport) dispatchToMethodFake(req *http.Request, method string)
 	}
 }
 
-func (k *ServerTransport) dispatchCheckConnection(req *http.Request) (*http.Response, error) {
-	if k.srv.CheckConnection == nil {
+func (s *ServerTransport) dispatchCheckConnection(req *http.Request) (*http.Response, error) {
+	if s.srv.CheckConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CheckConnection not implemented")}
 	}
-	respr, errRespr := k.srv.CheckConnection(req.Context(), nil)
+	respr, errRespr := s.srv.CheckConnection(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -124,15 +124,15 @@ func (k *ServerTransport) dispatchCheckConnection(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
-func (k *ServerTransport) dispatchCreateConnection(req *http.Request) (*http.Response, error) {
-	if k.srv.CreateConnection == nil {
+func (s *ServerTransport) dispatchCreateConnection(req *http.Request) (*http.Response, error) {
+	if s.srv.CreateConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateConnection not implemented")}
 	}
 	body, err := server.UnmarshalRequestAsJSON[ekm.Connection](req)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := k.srv.CreateConnection(req.Context(), body, nil)
+	respr, errRespr := s.srv.CreateConnection(req.Context(), body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -147,11 +147,11 @@ func (k *ServerTransport) dispatchCreateConnection(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (k *ServerTransport) dispatchDeleteConnection(req *http.Request) (*http.Response, error) {
-	if k.srv.DeleteConnection == nil {
+func (s *ServerTransport) dispatchDeleteConnection(req *http.Request) (*http.Response, error) {
+	if s.srv.DeleteConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method DeleteConnection not implemented")}
 	}
-	respr, errRespr := k.srv.DeleteConnection(req.Context(), nil)
+	respr, errRespr := s.srv.DeleteConnection(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -166,11 +166,11 @@ func (k *ServerTransport) dispatchDeleteConnection(req *http.Request) (*http.Res
 	return resp, nil
 }
 
-func (k *ServerTransport) dispatchGetCertificate(req *http.Request) (*http.Response, error) {
-	if k.srv.GetCertificate == nil {
+func (s *ServerTransport) dispatchGetCertificate(req *http.Request) (*http.Response, error) {
+	if s.srv.GetCertificate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetCertificate not implemented")}
 	}
-	respr, errRespr := k.srv.GetCertificate(req.Context(), nil)
+	respr, errRespr := s.srv.GetCertificate(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -185,11 +185,11 @@ func (k *ServerTransport) dispatchGetCertificate(req *http.Request) (*http.Respo
 	return resp, nil
 }
 
-func (k *ServerTransport) dispatchGetConnection(req *http.Request) (*http.Response, error) {
-	if k.srv.GetConnection == nil {
+func (s *ServerTransport) dispatchGetConnection(req *http.Request) (*http.Response, error) {
+	if s.srv.GetConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetConnection not implemented")}
 	}
-	respr, errRespr := k.srv.GetConnection(req.Context(), nil)
+	respr, errRespr := s.srv.GetConnection(req.Context(), nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -204,15 +204,15 @@ func (k *ServerTransport) dispatchGetConnection(req *http.Request) (*http.Respon
 	return resp, nil
 }
 
-func (k *ServerTransport) dispatchUpdateConnection(req *http.Request) (*http.Response, error) {
-	if k.srv.UpdateConnection == nil {
+func (s *ServerTransport) dispatchUpdateConnection(req *http.Request) (*http.Response, error) {
+	if s.srv.UpdateConnection == nil {
 		return nil, &nonRetriableError{errors.New("fake for method UpdateConnection not implemented")}
 	}
 	body, err := server.UnmarshalRequestAsJSON[ekm.Connection](req)
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := k.srv.UpdateConnection(req.Context(), body, nil)
+	respr, errRespr := s.srv.UpdateConnection(req.Context(), body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

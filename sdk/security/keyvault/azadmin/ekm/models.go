@@ -4,7 +4,7 @@
 
 package ekm
 
-// Connection - A Connection model object.
+// Connection - A EkmConnection model object.
 type Connection struct {
 	// REQUIRED; EKM proxy FQDN (Fully Qualified Domain Name). Only allowed characters are a-z, A-Z, 0-9, hyphen (-), dot (.),
 	// and colon (:).

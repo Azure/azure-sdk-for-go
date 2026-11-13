@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Administration rule operations no longer panic when a response omits the action, filter, or content. An omitted action returns as nil; missing filter or content returns an error.
+
 ### Other Changes
 
 ## 1.11.0 (2026-10-06)

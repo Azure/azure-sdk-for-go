@@ -125,6 +125,10 @@ regenerate them.
 - Keep examples in `example_test.go`, make them compile, and avoid credentials or customer data.
 - Emulator tests use the repository's Cosmos emulator pipeline and `EMULATOR=true`; do not make
   ordinary unit tests depend on an emulator or live account.
+- Azure live smoke tests are opt-in (`AZURE_COSMOS_E2E_BACKEND=azureLive`) and run through
+  `eng/scripts/Invoke-LiveTests.ps1`; see [CONTRIBUTING.md](CONTRIBUTING.md#azure-live-smoke-tests).
+  They authenticate only with Microsoft Entra ID; `test-resources.bicep` sets
+  `disableLocalAuth: true`, so never add account-key paths or key outputs.
 
 ## Validation
 

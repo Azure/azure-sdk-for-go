@@ -74,6 +74,8 @@ network:
     - "raw.githubusercontent.com"
 tools:
   github:
+    allowed-repos: "${{ github.repository }}"
+    min-integrity: none
     toolsets: [context, repos, pull_requests, actions]
   bash: true
 safe-outputs:

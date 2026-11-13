@@ -428,18 +428,18 @@ test("compiled blocker reporting is independent of the agent and threat detectio
   assert.doesNotMatch(report, /needs\.(agent|activation|detection)|GH_AW_AGENT_OUTPUT|GH_AW_DETECTION/);
 });
 
-test("reviewer can read PR content without allowing private repository data", () => {
+test("reviewer can read current PR content without allowing other repositories", () => {
   const source = text("mgmt-review.md");
   const github = source.match(/^tools:\n  github:\n((?:    [^\n]*\n)+)/m)?.[1];
   assert.ok(github, "source configures GitHub tools");
   assert.match(github, /^    min-integrity: none$/m);
-  assert.match(github, /^    allowed-repos: public$/m);
+  assert.match(github, /^    allowed-repos: "\$\{\{ github.repository \}\}"$/m);
   const compiled = text("mgmt-review.lock.yml");
   const config = compiled.match(/"guard-policies": \{\s*"allow-only": (\{[\s\S]*?\n\s+\})/);
   assert.ok(config, "compiled reviewer configures a GitHub guard policy");
   const policy = JSON.parse(config[1].replace(/\$\{GH_AW_GUARD_[A-Z_]+\}/g, "[]"));
   assert.equal(policy["min-integrity"], "none", "PR files and diffs must not be filtered");
-  assert.equal(policy.repos, "public", "private repository content stays inaccessible");
+  assert.deepEqual(policy.repos, ["${{ github.repository }}"], "only the workflow repository is accessible");
 });
 
 test("collector credentials stay outside the agent and detection environments", () => {

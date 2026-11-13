@@ -147,7 +147,7 @@ tools:
     toolsets: [context, repos, pull_requests, actions]
     # PR files and diffs have "none" integrity, including automation-authored PRs.
     min-integrity: none
-    allowed-repos: public
+    allowed-repos: "${{ github.repository }}"
   bash: true
 safe-outputs:
   steps:

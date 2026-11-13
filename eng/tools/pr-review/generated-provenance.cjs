@@ -1,20 +1,8 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-const { createHash } = require("node:crypto");
 const { matchesGlob } = require("node:path").posix;
-
-function requireSHA(value) {
-  if (typeof value !== "string" || !/^[a-f0-9]{40}$/i.test(value)) {
-    throw new Error("Missing or invalid commit/blob SHA.");
-  }
-  return value;
-}
-
-function requireCount(value, name) {
-  if (!Number.isSafeInteger(value) || value < 0) throw new Error(`Missing or invalid ${name}.`);
-  return value;
-}
+const { requireSHA, requireCount, blob, previousBlob } = require("./github-data.cjs");
 
 async function commitFiles(github, repo, sha) {
   const files = [];
@@ -39,26 +27,6 @@ async function commitFiles(github, repo, sha) {
     }
   }
   throw new Error(`Commit ${sha} reached GitHub's 3000-file response limit.`);
-}
-
-async function blob(github, repo, sha) {
-  requireSHA(sha);
-  const { data } = await github.rest.git.getBlob({ ...repo, file_sha: sha });
-  if (data.sha !== sha || data.encoding !== "base64" || typeof data.content !== "string") {
-    throw new Error(`Incomplete blob response for ${sha}.`);
-  }
-  const content = Buffer.from(data.content, "base64");
-  const hash = createHash("sha1").update(`blob ${content.length}\0`).update(content).digest("hex");
-  if (content.length !== data.size || hash !== sha) throw new Error(`Truncated or invalid blob ${sha}.`);
-  return content;
-}
-
-async function previousBlob(github, repo, parent, filename) {
-  const { data } = await github.rest.repos.getContent({ ...repo, path: filename, ref: parent });
-  if (Array.isArray(data) || data.type !== "file") {
-    throw new Error(`Cannot read ${filename} at parent ${parent} as a file.`);
-  }
-  return blob(github, repo, data.sha);
 }
 
 async function checkProvenance({ github, context, core }, { prNumber, headSHA, protectedFileMarker, filePatterns }) {
@@ -200,8 +168,12 @@ async function assertReviewCurrent(api, result, prNumber, headSHA) {
 async function publishProvenance(api, { result, prNumber, headSHA }) {
   await assertReviewCurrent(api, result, prNumber, headSHA);
   if (result.status === "pass") throw new Error("Passing provenance must use the normal review publisher.");
+  await publishReviewComment(api, prNumber, renderProvenance(result));
+}
+
+async function publishReviewComment(api, prNumber, body) {
   await api.github.rest.issues.createComment({
-    ...api.context.repo, issue_number: prNumber, body: renderProvenance(result),
+    ...api.context.repo, issue_number: prNumber, body,
   });
   await removeInProgress(api, prNumber);
   await api.github.rest.issues.addLabels({
@@ -209,4 +181,4 @@ async function publishProvenance(api, { result, prNumber, headSHA }) {
   });
 }
 
-module.exports = { checkProvenance, assertReviewCurrent, publishProvenance, renderProvenance };
+module.exports = { checkProvenance, assertReviewCurrent, publishProvenance, renderProvenance, publishReviewComment };

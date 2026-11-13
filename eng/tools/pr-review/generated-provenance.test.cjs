@@ -346,7 +346,7 @@ test("report publication errors surface without applying completion labels", asy
 test("the actual workflow configures Go-only protected-file checking", async () => {
   const workflow = path.resolve(__dirname, "..", "..", "..", ".github", "workflows", "mgmt-review.md");
   const workflowSource = readFileSync(workflow, "utf8").replace(/\r\n/g, "\n");
-  const step = workflowSource.split("      - name: Check generated-file provenance\n")[1].split("\n  provenance_report:")[0];
+  const step = workflowSource.split("      - name: Check generated-file provenance\n")[1].split(/\n  [\w-]+:/)[0];
   const script = step.split("          script: |\n")[1].split("\n").map((line) => line.slice(12)).join("\n");
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
   const checker = new AsyncFunction("require", "github", "context", "core", "process", script);

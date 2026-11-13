@@ -58,6 +58,8 @@ jobs:
             const result = await checkProvenance({ github, context, core }, {
               prNumber: Number(process.env.REVIEW_PR_NUMBER),
               headSHA: process.env.REVIEW_HEAD_SHA,
+              protectedFileMarker: 'DO NOT EDIT',
+              filePatterns: ['*.go'],
             });
             core.setOutput('result', JSON.stringify(result));
             core.setOutput('status', result.status);
@@ -263,7 +265,7 @@ Use the **trusted deterministic result** below. Do not repeat the diff check wit
 ${{ needs.provenance.outputs.result }}
 ```
 
-The checker uses complete GitHub API commit/file lists and full blobs, never executes PR code, and exempts only commits linked by GitHub to the `azure-sdk` login. It checks for a `DO NOT EDIT` comment on either side of each non-automation commit and compares the file contents byte for byte, without parsing Go or any other language. Any content change, including whitespace or copyright-header changes, is flagged; marked-file additions, deletions, renames, and copies are also flagged. Merge commits and incomplete data require manual review.
+The checker uses complete GitHub API commit lists, per-commit file lists, and full blobs, never executes PR code, and exempts only commits linked by GitHub to the `azure-sdk` login. Its rules are configured in the trusted provenance job: `protectedFileMarker` is case-sensitive literal text matched anywhere in a file, and `filePatterns` selects the files to inspect. Filename globs apply at any directory depth; patterns containing `/` match repository-relative paths. This workflow checks only `*.go` files containing `DO NOT EDIT` in either version, without parsing Go or comments. Unselected files are skipped before reading their contents. Any content change, including whitespace or copyright-header changes, is flagged; marked-file additions, deletions, renames, and copies are also flagged. Merge commits and incomplete commit data require manual review.
 
 - **`pass`**: generated-file provenance passed; continue with the other checks.
 - **`manual-edits`**: the findings identify blocking non-automation edits.

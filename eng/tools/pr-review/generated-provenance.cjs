@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 const { createHash } = require("node:crypto");
+const { matchesGlob } = require("node:path").posix;
 
 function requireSHA(value) {
   if (typeof value !== "string" || !/^[a-f0-9]{40}$/i.test(value)) {
@@ -60,19 +61,7 @@ async function previousBlob(github, repo, parent, filename) {
   return blob(github, repo, data.sha);
 }
 
-function compareFile(file, before, after) {
-  const generated = [before, after].some((content) => {
-    if (content === null) return false;
-    const text = content.toString("utf8");
-    return /^[ \t]*(?:\/\/|#)[^\r\n]*\bDO NOT EDIT\b/im.test(text) ||
-      /^[ \t]*\/\*(?:(?!\*\/)[\s\S])*?\bDO NOT EDIT\b/im.test(text) ||
-      /^[ \t]*<!--(?:(?!-->)[\s\S])*?\bDO NOT EDIT\b/im.test(text);
-  });
-  return generated && (before === null || after === null || !before.equals(after) ||
-    file.status === "renamed" || file.status === "copied");
-}
-
-async function checkProvenance({ github, context, core }, { prNumber, headSHA }) {
+async function checkProvenance({ github, context, core }, { prNumber, headSHA, protectedFileMarker, filePatterns }) {
   const result = {
     status: "unverifiable",
     pr_number: prNumber,
@@ -85,6 +74,14 @@ async function checkProvenance({ github, context, core }, { prNumber, headSHA })
   try {
     requireSHA(headSHA);
     if (!Number.isSafeInteger(prNumber) || prNumber <= 0) throw new Error("Invalid PR number.");
+    if (typeof protectedFileMarker !== "string" || protectedFileMarker.trim().length === 0) {
+      throw new Error("protectedFileMarker must be non-empty literal text.");
+    }
+    if (!Array.isArray(filePatterns) || filePatterns.length === 0 ||
+        filePatterns.some((pattern) => typeof pattern !== "string" || pattern.trim().length === 0)) {
+      throw new Error("filePatterns must contain at least one non-empty filename glob.");
+    }
+    const patterns = filePatterns.map((pattern) => pattern.includes("/") ? pattern : `**/${pattern}`);
     const repo = context.repo;
     const { data: pr } = await github.rest.pulls.get({ ...repo, pull_number: prNumber });
     if (pr.state !== "open" || pr.head.sha !== headSHA) throw new Error("The PR head changed or the PR closed.");
@@ -92,12 +89,6 @@ async function checkProvenance({ github, context, core }, { prNumber, headSHA })
     if (typeof pr.base.ref !== "string" || pr.base.ref.length === 0) throw new Error("Missing PR base ref.");
     result.base_sha = baseSHA;
     result.base_ref = pr.base.ref;
-    const files = await github.paginate(github.rest.pulls.listFiles, { ...repo, pull_number: prNumber, per_page: 100 });
-    if (files.length !== requireCount(pr.changed_files, "PR changed-file count") ||
-        files.some((file) => typeof file.filename !== "string" || file.filename.length === 0) ||
-        new Set(files.map((file) => file.filename)).size !== files.length) {
-      throw new Error("The PR changed-file list is incomplete.");
-    }
     const commits = await github.paginate(github.rest.pulls.listCommits, { ...repo, pull_number: prNumber, per_page: 100 });
     if (commits.length === 0 || commits.length !== requireCount(pr.commits, "PR commit count") ||
         new Set(commits.map((commit) => commit.sha)).size !== commits.length || commits.at(-1).sha !== headSHA) {
@@ -110,18 +101,23 @@ async function checkProvenance({ github, context, core }, { prNumber, headSHA })
       const { commit, files: changed } = await commitFiles(github, repo, sha);
       const parent = commit.parents.length === 1 ? requireSHA(commit.parents[0].sha) : null;
       const author = entry.author?.login || "unlinked author";
-      core.info(`Checking ${changed.length} files in non-automation commit ${sha}.`);
+      core.info(`Filtering ${changed.length} files in non-automation commit ${sha}.`);
       for (const file of changed) {
-        if (typeof file.filename !== "string" ||
+        if (typeof file.filename !== "string" || file.filename.length === 0 ||
             !["added", "removed", "modified", "renamed", "copied"].includes(file.status) ||
-            (["renamed", "copied"].includes(file.status) && typeof file.previous_filename !== "string")) {
+            (["renamed", "copied"].includes(file.status) &&
+              (typeof file.previous_filename !== "string" || file.previous_filename.length === 0))) {
           throw new Error(`Incomplete file metadata in ${sha}.`);
         }
+        if (![file.filename, file.previous_filename].some((name) =>
+          typeof name === "string" && patterns.some((pattern) => matchesGlob(name, pattern)))) continue;
         if (!parent && file.status !== "added") throw new Error(`Missing parent for ${file.filename} in ${sha}.`);
         const before = file.status === "added" ? null :
           await previousBlob(github, repo, parent, file.previous_filename || file.filename);
         const after = file.status === "removed" ? null : await blob(github, repo, file.sha);
-        if (compareFile(file, before, after)) {
+        const protectedFile = [before, after].some((content) => content?.includes(protectedFileMarker));
+        if (protectedFile && (before === null || after === null || !before.equals(after) ||
+            file.status === "renamed" || file.status === "copied")) {
           result.findings.push({ file: file.filename, sha, author });
         }
       }
@@ -148,7 +144,7 @@ function renderProvenance(result) {
   const lines = ["<!-- gh-aw-workflow-id: mgmt-review -->"];
   if (result.findings.length > 0) {
     lines.push("## Manual Edits to Auto-Generated Files Detected", "",
-      "Non-automation commits changed files marked DO NOT EDIT:", "");
+      "Non-automation commits changed protected files:", "");
     for (const finding of result.findings) {
       lines.push(`- ${markdown(finding.file)} - commit ${markdown(finding.sha.slice(0, 12))}, author ${markdown(finding.author)}`);
     }

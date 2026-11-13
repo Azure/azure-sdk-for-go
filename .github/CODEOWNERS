@@ -63,10 +63,10 @@
 # ServiceOwners:                                                   @rajeshka @shankarsama
 
 # PRLabel: %Event Hubs
-/sdk/messaging/azeventhubs/                                        @axisc @hmlam @sjkwak @j7nw4r @SwayGom @sagar0207
+/sdk/messaging/azeventhubs/                                        @axisc @hmlam @sjkwak @j7nw4r @ayush1252 @SwayGom @sagar0207
 
 # ServiceLabel: %Event Hubs
-# ServiceOwners:                                                   @axisc @hmlam @sjkwak @j7nw4r @SwayGom @sagar0207
+# ServiceOwners:                                                   @axisc @hmlam @sjkwak @j7nw4r @ayush1252 @SwayGom @sagar0207
 
 # PRLabel: %Internal
 /sdk/internal/                                                     @jhendrixMSFT @richardpark-msft @rickwinter @xirzec
@@ -661,7 +661,7 @@
 /eng/config.json                   @richardpark-msft @jhendrixMSFT @rickwinter @xirzec
 /.config/1espt/                    @Azure/azure-sdk-eng
 /.github/workflows/                @Azure/azure-sdk-eng
-/.github/CODEOWNERS                @rickwinter @xirzec @sandeep-sen @Azure/azure-sdk-eng
+/.github/CODEOWNERS                @rickwinter @xirzec @sandeep-sen @Azure/azure-sdk-eng @j7nw4r
 /.github/copilot-instructions.md   @richardpark-msft @praveenkuttappan @maririos
 
 # Add owners for go sdk tool

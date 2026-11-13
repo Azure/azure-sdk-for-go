@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Challenge authentication returns an error instead of panicking when the `authorization` value in a `WWW-Authenticate` challenge has fewer than four `/`-separated segments
 
 ### Other Changes
 

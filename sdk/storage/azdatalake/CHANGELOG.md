@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (2026-11-13)
 
 ### Features Added
 * Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
@@ -21,8 +21,6 @@
   hint, the remaining chunks are routed to the endpoint that serves each one. The default, nil, currently resolves to
   disabled; false disables it explicitly. When the service can't provide a layout, downloads use the client's
   configured endpoint.
-
-### Breaking Changes
 
 ### Bugs Fixed
 * The token credential constructors now return the error from creating their blob client instead of discarding it.

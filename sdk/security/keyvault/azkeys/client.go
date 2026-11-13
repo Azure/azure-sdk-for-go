@@ -51,7 +51,8 @@ func (client *Client) BackupKey(ctx context.Context, name string, options *Backu
 	if err != nil {
 		return BackupKeyResponse{}, err
 	}
-	return client.backupKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.backupKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // backupKeyCreateRequest creates the BackupKey request.
@@ -108,7 +109,8 @@ func (client *Client) CreateKey(ctx context.Context, name string, parameters Cre
 	if err != nil {
 		return CreateKeyResponse{}, err
 	}
-	return client.createKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createKeyCreateRequest creates the CreateKey request.
@@ -172,7 +174,8 @@ func (client *Client) Decrypt(ctx context.Context, name string, version string, 
 	if err != nil {
 		return DecryptResponse{}, err
 	}
-	return client.decryptHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.decryptHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // decryptCreateRequest creates the Decrypt request.
@@ -232,7 +235,8 @@ func (client *Client) DeleteKey(ctx context.Context, name string, options *Delet
 	if err != nil {
 		return DeleteKeyResponse{}, err
 	}
-	return client.deleteKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteKeyCreateRequest creates the DeleteKey request.
@@ -292,7 +296,8 @@ func (client *Client) Encrypt(ctx context.Context, name string, version string, 
 	if err != nil {
 		return EncryptResponse{}, err
 	}
-	return client.encryptHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.encryptHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // encryptCreateRequest creates the Encrypt request.
@@ -351,7 +356,8 @@ func (client *Client) GetDeletedKey(ctx context.Context, name string, options *G
 	if err != nil {
 		return GetDeletedKeyResponse{}, err
 	}
-	return client.getDeletedKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDeletedKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDeletedKeyCreateRequest creates the GetDeletedKey request.
@@ -407,7 +413,8 @@ func (client *Client) GetKey(ctx context.Context, name string, version string, o
 	if err != nil {
 		return GetKeyResponse{}, err
 	}
-	return client.getKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getKeyCreateRequest creates the GetKey request.
@@ -464,7 +471,8 @@ func (client *Client) GetKeyAttestation(ctx context.Context, name string, versio
 	if err != nil {
 		return GetKeyAttestationResponse{}, err
 	}
-	return client.getKeyAttestationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getKeyAttestationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getKeyAttestationCreateRequest creates the GetKeyAttestation request.
@@ -519,7 +527,8 @@ func (client *Client) GetKeyRotationPolicy(ctx context.Context, name string, opt
 	if err != nil {
 		return GetKeyRotationPolicyResponse{}, err
 	}
-	return client.getKeyRotationPolicyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getKeyRotationPolicyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getKeyRotationPolicyCreateRequest creates the GetKeyRotationPolicy request.
@@ -572,7 +581,8 @@ func (client *Client) GetRandomBytes(ctx context.Context, parameters GetRandomBy
 	if err != nil {
 		return GetRandomBytesResponse{}, err
 	}
-	return client.getRandomBytesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRandomBytesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRandomBytesCreateRequest creates the GetRandomBytes request.
@@ -628,7 +638,8 @@ func (client *Client) ImportKey(ctx context.Context, name string, parameters Imp
 	if err != nil {
 		return ImportKeyResponse{}, err
 	}
-	return client.importKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.importKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // importKeyCreateRequest creates the ImportKey request.
@@ -891,7 +902,8 @@ func (client *Client) PurgeDeletedKey(ctx context.Context, name string, options 
 		return PurgeDeletedKeyResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return PurgeDeletedKeyResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PurgeDeletedKeyResponse{}, err
 	}
 	return PurgeDeletedKeyResponse{}, nil
 }
@@ -935,7 +947,8 @@ func (client *Client) RecoverDeletedKey(ctx context.Context, name string, option
 	if err != nil {
 		return RecoverDeletedKeyResponse{}, err
 	}
-	return client.recoverDeletedKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.recoverDeletedKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // recoverDeletedKeyCreateRequest creates the RecoverDeletedKey request.
@@ -991,7 +1004,8 @@ func (client *Client) Release(ctx context.Context, name string, version string, 
 	if err != nil {
 		return ReleaseResponse{}, err
 	}
-	return client.releaseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.releaseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // releaseCreateRequest creates the Release request.
@@ -1056,7 +1070,8 @@ func (client *Client) RestoreKey(ctx context.Context, parameters RestoreKeyParam
 	if err != nil {
 		return RestoreKeyResponse{}, err
 	}
-	return client.restoreKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.restoreKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // restoreKeyCreateRequest creates the RestoreKey request.
@@ -1109,7 +1124,8 @@ func (client *Client) RotateKey(ctx context.Context, name string, options *Rotat
 	if err != nil {
 		return RotateKeyResponse{}, err
 	}
-	return client.rotateKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.rotateKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // rotateKeyCreateRequest creates the RotateKey request.
@@ -1169,7 +1185,8 @@ func (client *Client) SecureUnwrapKey(ctx context.Context, name string, version 
 	if err != nil {
 		return SecureUnwrapKeyResponse{}, err
 	}
-	return client.secureUnwrapKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.secureUnwrapKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // secureUnwrapKeyCreateRequest creates the SecureUnwrapKey request.
@@ -1234,7 +1251,8 @@ func (client *Client) SecureWrapKey(ctx context.Context, name string, version st
 	if err != nil {
 		return SecureWrapKeyResponse{}, err
 	}
-	return client.secureWrapKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.secureWrapKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // secureWrapKeyCreateRequest creates the SecureWrapKey request.
@@ -1295,7 +1313,8 @@ func (client *Client) Sign(ctx context.Context, name string, version string, par
 	if err != nil {
 		return SignResponse{}, err
 	}
-	return client.signHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.signHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // signCreateRequest creates the Sign request.
@@ -1357,7 +1376,8 @@ func (client *Client) UnwrapKey(ctx context.Context, name string, version string
 	if err != nil {
 		return UnwrapKeyResponse{}, err
 	}
-	return client.unwrapKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.unwrapKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // unwrapKeyCreateRequest creates the UnwrapKey request.
@@ -1419,7 +1439,8 @@ func (client *Client) UpdateKey(ctx context.Context, name string, version string
 	if err != nil {
 		return UpdateKeyResponse{}, err
 	}
-	return client.updateKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateKeyCreateRequest creates the UpdateKey request.
@@ -1478,7 +1499,8 @@ func (client *Client) UpdateKeyRotationPolicy(ctx context.Context, name string, 
 	if err != nil {
 		return UpdateKeyRotationPolicyResponse{}, err
 	}
-	return client.updateKeyRotationPolicyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateKeyRotationPolicyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateKeyRotationPolicyCreateRequest creates the UpdateKeyRotationPolicy request.
@@ -1540,7 +1562,8 @@ func (client *Client) Verify(ctx context.Context, name string, version string, p
 	if err != nil {
 		return VerifyResponse{}, err
 	}
-	return client.verifyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.verifyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // verifyCreateRequest creates the Verify request.
@@ -1604,7 +1627,8 @@ func (client *Client) WrapKey(ctx context.Context, name string, version string, 
 	if err != nil {
 		return WrapKeyResponse{}, err
 	}
-	return client.wrapKeyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.wrapKeyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // wrapKeyCreateRequest creates the WrapKey request.

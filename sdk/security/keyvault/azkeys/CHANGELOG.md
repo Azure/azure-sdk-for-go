@@ -10,6 +10,7 @@
 
 ### Other Changes
 * Upgraded to API service version `2026-04-01`
+* Upgraded dependencies
 
 ## 1.6.0-beta.1 (2026-06-09)
 

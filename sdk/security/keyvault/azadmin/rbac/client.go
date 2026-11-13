@@ -45,7 +45,8 @@ func (client *Client) CreateOrUpdateRoleDefinition(ctx context.Context, scope Ro
 	if err != nil {
 		return CreateOrUpdateRoleDefinitionResponse{}, err
 	}
-	return client.createOrUpdateRoleDefinitionHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createOrUpdateRoleDefinitionHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateRoleDefinitionCreateRequest creates the CreateOrUpdateRoleDefinition request.
@@ -106,7 +107,8 @@ func (client *Client) CreateRoleAssignment(ctx context.Context, scope RoleScope,
 	if err != nil {
 		return CreateRoleAssignmentResponse{}, err
 	}
-	return client.createRoleAssignmentHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createRoleAssignmentHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createRoleAssignmentCreateRequest creates the CreateRoleAssignment request.
@@ -166,7 +168,8 @@ func (client *Client) DeleteRoleAssignment(ctx context.Context, scope RoleScope,
 	if err != nil {
 		return DeleteRoleAssignmentResponse{}, err
 	}
-	return client.deleteRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteRoleAssignmentCreateRequest creates the DeleteRoleAssignment request.
@@ -222,7 +225,8 @@ func (client *Client) DeleteRoleDefinition(ctx context.Context, scope RoleScope,
 	if err != nil {
 		return DeleteRoleDefinitionResponse{}, err
 	}
-	return client.deleteRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteRoleDefinitionCreateRequest creates the DeleteRoleDefinition request.
@@ -278,7 +282,8 @@ func (client *Client) GetRoleAssignment(ctx context.Context, scope RoleScope, ro
 	if err != nil {
 		return GetRoleAssignmentResponse{}, err
 	}
-	return client.getRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRoleAssignmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRoleAssignmentCreateRequest creates the GetRoleAssignment request.
@@ -334,7 +339,8 @@ func (client *Client) GetRoleDefinition(ctx context.Context, scope RoleScope, ro
 	if err != nil {
 		return GetRoleDefinitionResponse{}, err
 	}
-	return client.getRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRoleDefinitionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRoleDefinitionCreateRequest creates the GetRoleDefinition request.

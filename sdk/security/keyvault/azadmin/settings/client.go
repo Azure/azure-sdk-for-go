@@ -46,7 +46,8 @@ func (client *Client) GetSetting(ctx context.Context, settingName string, option
 	if err != nil {
 		return GetSettingResponse{}, err
 	}
-	return client.getSettingHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSettingHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSettingCreateRequest creates the GetSetting request.
@@ -98,7 +99,8 @@ func (client *Client) GetSettings(ctx context.Context, options *GetSettingsOptio
 	if err != nil {
 		return GetSettingsResponse{}, err
 	}
-	return client.getSettingsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSettingsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSettingsCreateRequest creates the GetSettings request.
@@ -148,7 +150,8 @@ func (client *Client) UpdateSetting(ctx context.Context, settingName string, par
 	if err != nil {
 		return UpdateSettingResponse{}, err
 	}
-	return client.updateSettingHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateSettingHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateSettingCreateRequest creates the UpdateSetting request.

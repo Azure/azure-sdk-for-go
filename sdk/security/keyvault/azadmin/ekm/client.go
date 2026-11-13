@@ -42,7 +42,8 @@ func (client *Client) CheckConnection(ctx context.Context, options *CheckConnect
 	if err != nil {
 		return CheckConnectionResponse{}, err
 	}
-	return client.checkConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkConnectionCreateRequest creates the CheckConnection request.
@@ -92,7 +93,8 @@ func (client *Client) CreateConnection(ctx context.Context, ekmConnection Connec
 	if err != nil {
 		return CreateConnectionResponse{}, err
 	}
-	return client.createConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createConnectionCreateRequest creates the CreateConnection request.
@@ -145,7 +147,8 @@ func (client *Client) DeleteConnection(ctx context.Context, options *DeleteConne
 	if err != nil {
 		return DeleteConnectionResponse{}, err
 	}
-	return client.deleteConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteConnectionCreateRequest creates the DeleteConnection request.
@@ -194,7 +197,8 @@ func (client *Client) GetCertificate(ctx context.Context, options *GetCertificat
 	if err != nil {
 		return GetCertificateResponse{}, err
 	}
-	return client.getCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCertificateCreateRequest creates the GetCertificate request.
@@ -242,7 +246,8 @@ func (client *Client) GetConnection(ctx context.Context, options *GetConnectionO
 	if err != nil {
 		return GetConnectionResponse{}, err
 	}
-	return client.getConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getConnectionCreateRequest creates the GetConnection request.
@@ -292,7 +297,8 @@ func (client *Client) UpdateConnection(ctx context.Context, ekmConnection Connec
 	if err != nil {
 		return UpdateConnectionResponse{}, err
 	}
-	return client.updateConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateConnectionCreateRequest creates the UpdateConnection request.

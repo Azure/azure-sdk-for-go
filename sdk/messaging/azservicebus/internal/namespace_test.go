@@ -435,3 +435,19 @@ func TestNamespaceDisablingAMQPS(t *testing.T) {
 		require.Equal(t, "amqps://localhost:6765/hub1", audience)
 	})
 }
+
+type sessionErrorClient struct {
+	amqpwrap.AMQPClient
+}
+
+func (*sessionErrorClient) NewSession(context.Context, *amqp.SessionOptions) (amqpwrap.AMQPSession, error) {
+	return nil, &amqp.ConnError{}
+}
+
+func TestNamespaceFailedSessionRevision(t *testing.T) {
+	ns := &Namespace{client: &sessionErrorClient{}, connID: 42}
+	session, revision, err := ns.NewAMQPSession(context.Background())
+	require.Error(t, err)
+	require.Nil(t, session)
+	require.EqualValues(t, 42, revision)
+}

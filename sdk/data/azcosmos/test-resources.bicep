@@ -24,6 +24,8 @@ resource account 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {
   properties: {
     databaseAccountOfferType: 'Standard'
     publicNetworkAccess: 'Enabled'
+    // Entra ID only: reject account-key auth so live tests cannot regress to keys.
+    disableLocalAuth: true
     enableMultipleWriteLocations: false
     enableAutomaticFailover: false
     consistencyPolicy: {

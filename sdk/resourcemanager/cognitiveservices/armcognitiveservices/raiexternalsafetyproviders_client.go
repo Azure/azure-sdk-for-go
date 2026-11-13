@@ -19,7 +19,7 @@ import (
 // RaiExternalSafetyProvidersClient contains the methods for the RaiExternalSafetyProviders group.
 // Don't use this type directly, use NewRaiExternalSafetyProvidersClient() instead.
 //
-// Generated from API version 2026-11-01
+// Generated from API version 2026-11-15-preview
 type RaiExternalSafetyProvidersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -92,7 +92,7 @@ func (client *RaiExternalSafetyProvidersClient) listCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20261101)
+		reqQP.Set("api-version", version20261115Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

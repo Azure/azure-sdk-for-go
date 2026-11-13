@@ -1,5 +1,261 @@
 # Release History
 
+## 4.1.0-beta.1 (2026-11-13)
+### Features Added
+
+- New value `ConnectionCategoryOpenAPI` added to enum type `ConnectionCategory`
+- New value `ProvisioningStateExtensionUnreachable` added to enum type `ProvisioningState`
+- New value `RaiPolicyContentSourceAgentShutdown`, `RaiPolicyContentSourceAgentStartup`, `RaiPolicyContentSourcePostModelCall`, `RaiPolicyContentSourcePreModelCall` added to enum type `RaiPolicyContentSource`
+- New enum type `AdapterDeploymentOperationState` with values `AdapterDeploymentOperationStateAccepted`, `AdapterDeploymentOperationStateFailed`, `AdapterDeploymentOperationStateRunning`, `AdapterDeploymentOperationStateSucceeded`
+- New enum type `AdapterDeploymentOperationType` with values `AdapterDeploymentOperationTypeCreate`, `AdapterDeploymentOperationTypeDelete`, `AdapterDeploymentOperationTypeUpdate`
+- New enum type `AgentHostingType` with values `AgentHostingTypeManagedCluster`
+- New enum type `ArcDeploymentComputeType` with values `ArcDeploymentComputeTypeCPU`, `ArcDeploymentComputeTypeGpu`
+- New enum type `ArcDeploymentRuntime` with values `ArcDeploymentRuntimeOnnx`, `ArcDeploymentRuntimeVllm`
+- New enum type `ArcDeploymentSKUName` with values `ArcDeploymentSKUNameArc`
+- New enum type `AttachedAksClusterCapability` with values `AttachedAksClusterCapabilityAiManager`, `AttachedAksClusterCapabilityFoundryNative`, `AttachedAksClusterCapabilityKuberay`
+- New enum type `AttachedAksClusterExtensionInstallationMode` with values `AttachedAksClusterExtensionInstallationModeManaged`, `AttachedAksClusterExtensionInstallationModeManual`
+- New enum type `AttachedAksClusterHealthState` with values `AttachedAksClusterHealthStateDegraded`, `AttachedAksClusterHealthStateHealthy`, `AttachedAksClusterHealthStateUnhealthy`, `AttachedAksClusterHealthStateUnknown`
+- New enum type `AttachedAksClusterProjectBindingStage` with values `AttachedAksClusterProjectBindingStageBlocked`, `AttachedAksClusterProjectBindingStageDegraded`, `AttachedAksClusterProjectBindingStageReady`, `AttachedAksClusterProjectBindingStageReconciling`
+- New enum type `AttachedAksClusterProvisioningStage` with values `AttachedAksClusterProvisioningStageAccepted`, `AttachedAksClusterProvisioningStageBlocked`, `AttachedAksClusterProvisioningStageClusterReady`, `AttachedAksClusterProvisioningStageDegraded`, `AttachedAksClusterProvisioningStageDeleting`, `AttachedAksClusterProvisioningStageFailed`, `AttachedAksClusterProvisioningStagePendingBootstrap`, `AttachedAksClusterProvisioningStageProvisioningCluster`, `AttachedAksClusterProvisioningStageProvisioningIdentity`, `AttachedAksClusterProvisioningStageReady`, `AttachedAksClusterProvisioningStageValidating`
+- New enum type `ComputeOperationStatusType` with values `ComputeOperationStatusTypeCanceled`, `ComputeOperationStatusTypeFailed`, `ComputeOperationStatusTypeInProgress`, `ComputeOperationStatusTypeSucceeded`
+- New enum type `ComputeProvisioningState` with values `ComputeProvisioningStateAccepted`, `ComputeProvisioningStateCanceled`, `ComputeProvisioningStateDeleting`, `ComputeProvisioningStateDisabled`, `ComputeProvisioningStateFailed`, `ComputeProvisioningStateRestarting`, `ComputeProvisioningStateScaling`, `ComputeProvisioningStateStarting`, `ComputeProvisioningStateStopped`, `ComputeProvisioningStateStopping`, `ComputeProvisioningStateSucceeded`
+- New enum type `ComputeType` with values `ComputeTypeCluster`, `ComputeTypeContainerInstance`
+- New enum type `CostControlCategory` with values `CostControlCategoryCost`, `CostControlCategoryTokens`
+- New enum type `CostControlFilterName` with values `CostControlFilterNameAgent`, `CostControlFilterNameDeployment`, `CostControlFilterNameProject`, `CostControlFilterNameSessionID`, `CostControlFilterNameTokenType`
+- New enum type `CostControlGroupingName` with values `CostControlGroupingNameAgent`, `CostControlGroupingNameProject`, `CostControlGroupingNameSessionID`
+- New enum type `CostControlThresholdType` with values `CostControlThresholdTypeAbsolute`, `CostControlThresholdTypePercentage`
+- New enum type `CostControlTimeGrain` with values `CostControlTimeGrainDaily`, `CostControlTimeGrainMonthly`, `CostControlTimeGrainWeekly`
+- New enum type `FoundryAutoUpgradeMode` with values `FoundryAutoUpgradeModeDisabled`, `FoundryAutoUpgradeModeEnabled`
+- New enum type `PolicyEvaluationOutcome` with values `PolicyEvaluationOutcomeCompliant`, `PolicyEvaluationOutcomeError`, `PolicyEvaluationOutcomeNonCompliant`
+- New enum type `RaiAcsAnnotatorType` with values `RaiAcsAnnotatorTypeClassifier`, `RaiAcsAnnotatorTypeEndpoint`, `RaiAcsAnnotatorTypeLlm`
+- New enum type `RaiAcsHarmCategory` with values `RaiAcsHarmCategoryHate`, `RaiAcsHarmCategoryPromptInjection`, `RaiAcsHarmCategoryProtectedMaterialCode`, `RaiAcsHarmCategoryProtectedMaterialText`, `RaiAcsHarmCategorySelfHarm`, `RaiAcsHarmCategorySexual`, `RaiAcsHarmCategoryViolence`
+- New enum type `RaiAcsModerationSubjectFormat` with values `RaiAcsModerationSubjectFormatCanonicalJSON`, `RaiAcsModerationSubjectFormatText`
+- New enum type `RaiAcsPolicyDefinitionType` with values `RaiAcsPolicyDefinitionTypeRego`
+- New enum type `RaiAcsPolicyTarget` with values `RaiAcsPolicyTargetAgentInitialization`, `RaiAcsPolicyTargetAgentSummary`, `RaiAcsPolicyTargetInput`, `RaiAcsPolicyTargetModelMessages`, `RaiAcsPolicyTargetModelResponse`, `RaiAcsPolicyTargetOutput`, `RaiAcsPolicyTargetToolArguments`, `RaiAcsPolicyTargetToolResult`
+- New enum type `RaiAcsPolicyTargetKind` with values `RaiAcsPolicyTargetKindAgentInitialization`, `RaiAcsPolicyTargetKindAgentSummary`, `RaiAcsPolicyTargetKindAssistantOutput`, `RaiAcsPolicyTargetKindModelMessages`, `RaiAcsPolicyTargetKindModelResponse`, `RaiAcsPolicyTargetKindToolArguments`, `RaiAcsPolicyTargetKindToolResult`, `RaiAcsPolicyTargetKindUserInput`
+- New enum type `RaiAcsToolNameSelector` with values `RaiAcsToolNameSelectorToolCallName`, `RaiAcsToolNameSelectorToolCallNameAlias`
+- New enum type `RaiPolicyFormat` with values `RaiPolicyFormatACS`, `RaiPolicyFormatContentFilters`
+- New enum type `RaiRegoEncoding` with values `RaiRegoEncodingBase64`, `RaiRegoEncodingNone`
+- New enum type `ToolControlType` with values `ToolControlTypeA2A`, `ToolControlTypeA2APreview`, `ToolControlTypeApplyPatch`, `ToolControlTypeAzureAiSearch`, `ToolControlTypeAzureFunction`, `ToolControlTypeBingCustomSearchPreview`, `ToolControlTypeBingGrounding`, `ToolControlTypeBrowserAutomation`, `ToolControlTypeBrowserAutomationPreview`, `ToolControlTypeCaptureStructuredOutputs`, `ToolControlTypeCodeInterpreter`, `ToolControlTypeComputerUsePreview`, `ToolControlTypeCustom`, `ToolControlTypeFabricDataagentPreview`, `ToolControlTypeFabricIqPreview`, `ToolControlTypeFileSearch`, `ToolControlTypeFunction`, `ToolControlTypeImageGeneration`, `ToolControlTypeLocalShell`, `ToolControlTypeMcp`, `ToolControlTypeMemorySearchPreview`, `ToolControlTypeOpenapi`, `ToolControlTypeSharepointGroundingPreview`, `ToolControlTypeShell`, `ToolControlTypeToolboxSearchPreview`, `ToolControlTypeWebIqPreview`, `ToolControlTypeWebSearch`, `ToolControlTypeWebSearchPreview`, `ToolControlTypeWorkIqPreview`
+- New enum type `ToolControlsDefaultAction` with values `ToolControlsDefaultActionDeny`
+- New enum type `VMPriority` with values `VMPriorityRegular`, `VMPrioritySpot`
+- New enum type `WorkbenchProvisioningState` with values `WorkbenchProvisioningStateCanceled`, `WorkbenchProvisioningStateCreating`, `WorkbenchProvisioningStateFailed`, `WorkbenchProvisioningStateSucceeded`
+- New enum type `WorkbenchStatus` with values `WorkbenchStatusCreating`, `WorkbenchStatusDeleting`, `WorkbenchStatusFailed`, `WorkbenchStatusRestarting`, `WorkbenchStatusRunning`, `WorkbenchStatusStarting`, `WorkbenchStatusStopped`, `WorkbenchStatusStopping`, `WorkbenchStatusUnknown`, `WorkbenchStatusUpdating`
+- New function `NewAccountCostControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AccountCostControlsClient, error)`
+- New function `*AccountCostControlsClient.CheckExistence(ctx context.Context, resourceGroupName string, accountName string, costControlName string, options *AccountCostControlsClientCheckExistenceOptions) (AccountCostControlsClientCheckExistenceResponse, error)`
+- New function `*AccountCostControlsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, costControlName string, resource AccountCostControl, options *AccountCostControlsClientCreateOrUpdateOptions) (AccountCostControlsClientCreateOrUpdateResponse, error)`
+- New function `*AccountCostControlsClient.Delete(ctx context.Context, resourceGroupName string, accountName string, costControlName string, options *AccountCostControlsClientDeleteOptions) (AccountCostControlsClientDeleteResponse, error)`
+- New function `*AccountCostControlsClient.Get(ctx context.Context, resourceGroupName string, accountName string, costControlName string, options *AccountCostControlsClientGetOptions) (AccountCostControlsClientGetResponse, error)`
+- New function `*AccountCostControlsClient.NewListPager(resourceGroupName string, accountName string, options *AccountCostControlsClientListOptions) *runtime.Pager[AccountCostControlsClientListResponse]`
+- New function `*AccountCostControlsClient.Update(ctx context.Context, resourceGroupName string, accountName string, costControlName string, properties CostControlPatch, options *AccountCostControlsClientUpdateOptions) (AccountCostControlsClientUpdateResponse, error)`
+- New function `*AccountsClient.EvaluateDeploymentPolicies(ctx context.Context, resourceGroupName string, accountName string, body EvaluateDeploymentPoliciesRequest, options *AccountsClientEvaluateDeploymentPoliciesOptions) (AccountsClientEvaluateDeploymentPoliciesResponse, error)`
+- New function `NewAdapterDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AdapterDeploymentsClient, error)`
+- New function `*AdapterDeploymentsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, resource AdapterDeployment, options *AdapterDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[AdapterDeploymentsClientCreateOrUpdateResponse], error)`
+- New function `*AdapterDeploymentsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, options *AdapterDeploymentsClientBeginDeleteOptions) (*runtime.Poller[AdapterDeploymentsClientDeleteResponse], error)`
+- New function `*AdapterDeploymentsClient.Get(ctx context.Context, resourceGroupName string, accountName string, adapterDeploymentName string, options *AdapterDeploymentsClientGetOptions) (AdapterDeploymentsClientGetResponse, error)`
+- New function `*AdapterDeploymentsClient.NewListPager(resourceGroupName string, accountName string, options *AdapterDeploymentsClientListOptions) *runtime.Pager[AdapterDeploymentsClientListResponse]`
+- New function `*AgentHostingConfiguration.GetAgentHostingConfiguration() *AgentHostingConfiguration`
+- New function `NewArcDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ArcDeploymentsClient, error)`
+- New function `*ArcDeploymentsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, resource ArcDeployment, options *ArcDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ArcDeploymentsClientCreateOrUpdateResponse], error)`
+- New function `*ArcDeploymentsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ArcDeploymentsClientBeginDeleteOptions) (*runtime.Poller[ArcDeploymentsClientDeleteResponse], error)`
+- New function `*ArcDeploymentsClient.Get(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ArcDeploymentsClientGetOptions) (ArcDeploymentsClientGetResponse, error)`
+- New function `*ArcDeploymentsClient.NewListPager(resourceGroupName string, accountName string, options *ArcDeploymentsClientListOptions) *runtime.Pager[ArcDeploymentsClientListResponse]`
+- New function `*ArcDeploymentsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties ArcDeploymentUpdate, options *ArcDeploymentsClientBeginUpdateOptions) (*runtime.Poller[ArcDeploymentsClientUpdateResponse], error)`
+- New function `NewAttachedAksClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedAksClustersClient, error)`
+- New function `*AttachedAksClustersClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, resource AttachedAksCluster, options *AttachedAksClustersClientCreateOrUpdateOptions) (AttachedAksClustersClientCreateOrUpdateResponse, error)`
+- New function `*AttachedAksClustersClient.Delete(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAksClustersClientDeleteOptions) (AttachedAksClustersClientDeleteResponse, error)`
+- New function `*AttachedAksClustersClient.Get(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAksClustersClientGetOptions) (AttachedAksClustersClientGetResponse, error)`
+- New function `*AttachedAksClustersClient.NewListPager(resourceGroupName string, accountName string, options *AttachedAksClustersClientListOptions) *runtime.Pager[AttachedAksClustersClientListResponse]`
+- New function `*ClientFactory.NewAccountCostControlsClient() *AccountCostControlsClient`
+- New function `*ClientFactory.NewAdapterDeploymentsClient() *AdapterDeploymentsClient`
+- New function `*ClientFactory.NewArcDeploymentsClient() *ArcDeploymentsClient`
+- New function `*ClientFactory.NewAttachedAksClustersClient() *AttachedAksClustersClient`
+- New function `*ClientFactory.NewComputeOperationsClient() *ComputeOperationsClient`
+- New function `*ClientFactory.NewComputesClient() *ComputesClient`
+- New function `*ClientFactory.NewManagedComputeDeploymentsClient() *ManagedComputeDeploymentsClient`
+- New function `*ClientFactory.NewManagedComputeUsagesOperationGroupClient() *ManagedComputeUsagesOperationGroupClient`
+- New function `*ClientFactory.NewProjectCostControlsClient() *ProjectCostControlsClient`
+- New function `*ClientFactory.NewRaiBindingsClient() *RaiBindingsClient`
+- New function `*ClientFactory.NewRaiRegosClient() *RaiRegosClient`
+- New function `*ClientFactory.NewWorkbenchesClient() *WorkbenchesClient`
+- New function `*ClusterComputeProperties.GetComputeProperties() *ComputeProperties`
+- New function `NewComputeOperationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComputeOperationsClient, error)`
+- New function `*ComputeOperationsClient.Get(ctx context.Context, location string, operationID string, options *ComputeOperationsClientGetOptions) (ComputeOperationsClientGetResponse, error)`
+- New function `*ComputeProperties.GetComputeProperties() *ComputeProperties`
+- New function `NewComputesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ComputesClient, error)`
+- New function `*ComputesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, computeName string, resource Compute, options *ComputesClientBeginCreateOrUpdateOptions) (*runtime.Poller[ComputesClientCreateOrUpdateResponse], error)`
+- New function `*ComputesClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginDeleteOptions) (*runtime.Poller[ComputesClientDeleteResponse], error)`
+- New function `*ComputesClient.Get(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientGetOptions) (ComputesClientGetResponse, error)`
+- New function `*ComputesClient.NewListPager(resourceGroupName string, accountName string, options *ComputesClientListOptions) *runtime.Pager[ComputesClientListResponse]`
+- New function `*ComputesClient.BeginRestart(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginRestartOptions) (*runtime.Poller[ComputesClientRestartResponse], error)`
+- New function `*ComputesClient.BeginStart(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStartOptions) (*runtime.Poller[ComputesClientStartResponse], error)`
+- New function `*ComputesClient.BeginStop(ctx context.Context, resourceGroupName string, accountName string, computeName string, options *ComputesClientBeginStopOptions) (*runtime.Poller[ComputesClientStopResponse], error)`
+- New function `*ContainerInstanceComputeProperties.GetComputeProperties() *ComputeProperties`
+- New function `*ManagedClusterAgentHostingConfiguration.GetAgentHostingConfiguration() *AgentHostingConfiguration`
+- New function `NewManagedComputeDeploymentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedComputeDeploymentsClient, error)`
+- New function `*ManagedComputeDeploymentsClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, resource ManagedComputeDeployment, options *ManagedComputeDeploymentsClientBeginCreateOrUpdateOptions) (*runtime.Poller[ManagedComputeDeploymentsClientCreateOrUpdateResponse], error)`
+- New function `*ManagedComputeDeploymentsClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientBeginDeleteOptions) (*runtime.Poller[ManagedComputeDeploymentsClientDeleteResponse], error)`
+- New function `*ManagedComputeDeploymentsClient.Get(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ManagedComputeDeploymentsClientGetOptions) (ManagedComputeDeploymentsClientGetResponse, error)`
+- New function `*ManagedComputeDeploymentsClient.NewListPager(resourceGroupName string, accountName string, options *ManagedComputeDeploymentsClientListOptions) *runtime.Pager[ManagedComputeDeploymentsClientListResponse]`
+- New function `*ManagedComputeDeploymentsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties PatchResourceSKU, options *ManagedComputeDeploymentsClientBeginUpdateOptions) (*runtime.Poller[ManagedComputeDeploymentsClientUpdateResponse], error)`
+- New function `NewManagedComputeUsagesOperationGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedComputeUsagesOperationGroupClient, error)`
+- New function `*ManagedComputeUsagesOperationGroupClient.NewListPager(location string, options *ManagedComputeUsagesOperationGroupClientListOptions) *runtime.Pager[ManagedComputeUsagesOperationGroupClientListResponse]`
+- New function `PossibleRaiAcsPolicyTargetValues() []RaiAcsPolicyTarget`
+- New function `NewProjectCostControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectCostControlsClient, error)`
+- New function `*ProjectCostControlsClient.CheckExistence(ctx context.Context, resourceGroupName string, accountName string, projectName string, costControlName string, options *ProjectCostControlsClientCheckExistenceOptions) (ProjectCostControlsClientCheckExistenceResponse, error)`
+- New function `*ProjectCostControlsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, costControlName string, resource ProjectCostControl, options *ProjectCostControlsClientCreateOrUpdateOptions) (ProjectCostControlsClientCreateOrUpdateResponse, error)`
+- New function `*ProjectCostControlsClient.Delete(ctx context.Context, resourceGroupName string, accountName string, projectName string, costControlName string, options *ProjectCostControlsClientDeleteOptions) (ProjectCostControlsClientDeleteResponse, error)`
+- New function `*ProjectCostControlsClient.Get(ctx context.Context, resourceGroupName string, accountName string, projectName string, costControlName string, options *ProjectCostControlsClientGetOptions) (ProjectCostControlsClientGetResponse, error)`
+- New function `*ProjectCostControlsClient.NewListPager(resourceGroupName string, accountName string, projectName string, options *ProjectCostControlsClientListOptions) *runtime.Pager[ProjectCostControlsClientListResponse]`
+- New function `*ProjectCostControlsClient.Update(ctx context.Context, resourceGroupName string, accountName string, projectName string, costControlName string, properties CostControlPatch, options *ProjectCostControlsClientUpdateOptions) (ProjectCostControlsClientUpdateResponse, error)`
+- New function `NewRaiBindingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiBindingsClient, error)`
+- New function `*RaiBindingsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, raiBindingName string, raiBinding RaiBinding, options *RaiBindingsClientCreateOrUpdateOptions) (RaiBindingsClientCreateOrUpdateResponse, error)`
+- New function `*RaiBindingsClient.Delete(ctx context.Context, resourceGroupName string, accountName string, raiBindingName string, options *RaiBindingsClientDeleteOptions) (RaiBindingsClientDeleteResponse, error)`
+- New function `*RaiBindingsClient.Get(ctx context.Context, resourceGroupName string, accountName string, raiBindingName string, options *RaiBindingsClientGetOptions) (RaiBindingsClientGetResponse, error)`
+- New function `*RaiBindingsClient.NewListPager(resourceGroupName string, accountName string, options *RaiBindingsClientListOptions) *runtime.Pager[RaiBindingsClientListResponse]`
+- New function `NewRaiRegosClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RaiRegosClient, error)`
+- New function `*RaiRegosClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, raiRegoName string, raiRego RaiRego, options *RaiRegosClientCreateOrUpdateOptions) (RaiRegosClientCreateOrUpdateResponse, error)`
+- New function `*RaiRegosClient.Delete(ctx context.Context, resourceGroupName string, accountName string, raiRegoName string, options *RaiRegosClientDeleteOptions) (RaiRegosClientDeleteResponse, error)`
+- New function `*RaiRegosClient.Get(ctx context.Context, resourceGroupName string, accountName string, raiRegoName string, options *RaiRegosClientGetOptions) (RaiRegosClientGetResponse, error)`
+- New function `*RaiRegosClient.NewListPager(resourceGroupName string, accountName string, options *RaiRegosClientListOptions) *runtime.Pager[RaiRegosClientListResponse]`
+- New function `NewWorkbenchesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*WorkbenchesClient, error)`
+- New function `*WorkbenchesClient.BeginCreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, resource Workbench, options *WorkbenchesClientBeginCreateOrUpdateOptions) (*runtime.Poller[WorkbenchesClientCreateOrUpdateResponse], error)`
+- New function `*WorkbenchesClient.BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginDeleteOptions) (*runtime.Poller[WorkbenchesClientDeleteResponse], error)`
+- New function `*WorkbenchesClient.Get(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientGetOptions) (WorkbenchesClientGetResponse, error)`
+- New function `*WorkbenchesClient.NewListPager(resourceGroupName string, accountName string, projectName string, options *WorkbenchesClientListOptions) *runtime.Pager[WorkbenchesClientListResponse]`
+- New function `*WorkbenchesClient.BeginRestart(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginRestartOptions) (*runtime.Poller[WorkbenchesClientRestartResponse], error)`
+- New function `*WorkbenchesClient.BeginStart(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStartOptions) (*runtime.Poller[WorkbenchesClientStartResponse], error)`
+- New function `*WorkbenchesClient.BeginStop(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, options *WorkbenchesClientBeginStopOptions) (*runtime.Poller[WorkbenchesClientStopResponse], error)`
+- New function `*WorkbenchesClient.Update(ctx context.Context, resourceGroupName string, accountName string, projectName string, workbenchName string, properties WorkbenchUpdate, options *WorkbenchesClientUpdateOptions) (WorkbenchesClientUpdateResponse, error)`
+- New struct `AccountCostControl`
+- New struct `AdapterDeployment`
+- New struct `AdapterDeploymentLastOperation`
+- New struct `AdapterDeploymentListResult`
+- New struct `AdapterDeploymentProperties`
+- New struct `ArcDeployment`
+- New struct `ArcDeploymentCPUMemoryResourceRequirements`
+- New struct `ArcDeploymentKubernetesResources`
+- New struct `ArcDeploymentListResult`
+- New struct `ArcDeploymentModel`
+- New struct `ArcDeploymentPatchCPUMemoryResourceRequirements`
+- New struct `ArcDeploymentPatchKubernetesResources`
+- New struct `ArcDeploymentProperties`
+- New struct `ArcDeploymentProvisioningDetails`
+- New struct `ArcDeploymentResourceRequirements`
+- New struct `ArcDeploymentSKU`
+- New struct `ArcDeploymentUpdate`
+- New struct `ArcDeploymentUpdateProperties`
+- New struct `ArcDeploymentVllmParameters`
+- New struct `AttachedAksCluster`
+- New struct `AttachedAksClusterAccountIdentityStatus`
+- New struct `AttachedAksClusterAiManagerStatus`
+- New struct `AttachedAksClusterCapabilityStatus`
+- New struct `AttachedAksClusterConnectorRegistration`
+- New struct `AttachedAksClusterExtensionConfiguration`
+- New struct `AttachedAksClusterExtensionProfile`
+- New struct `AttachedAksClusterHealthComponent`
+- New struct `AttachedAksClusterHealthReason`
+- New struct `AttachedAksClusterHealthStatus`
+- New struct `AttachedAksClusterIdentityStatus`
+- New struct `AttachedAksClusterIntegrationResourceStatus`
+- New struct `AttachedAksClusterListItem`
+- New struct `AttachedAksClusterListProperties`
+- New struct `AttachedAksClusterListResult`
+- New struct `AttachedAksClusterProjectBinding`
+- New struct `AttachedAksClusterProperties`
+- New struct `AttachedAksClusterReadinessStatus`
+- New struct `AttachedAksClusterRoleAssignmentStatus`
+- New struct `AttachedAksClusterStatus`
+- New struct `CapabilitySettings`
+- New struct `ClusterComputeProperties`
+- New struct `Compute`
+- New struct `ComputeListResult`
+- New struct `ComputeOperationStatus`
+- New struct `ComputeOperationStatusProperties`
+- New struct `ConnectivityEndpoints`
+- New struct `ContainerInstanceComputeProperties`
+- New struct `CostControlAction`
+- New struct `CostControlActionPatch`
+- New struct `CostControlAdditionalInfoFilter`
+- New struct `CostControlConnections`
+- New struct `CostControlFilter`
+- New struct `CostControlGrouping`
+- New struct `CostControlListResult`
+- New struct `CostControlNotification`
+- New struct `CostControlNotificationPatch`
+- New struct `CostControlPatch`
+- New struct `CostControlPatchProperties`
+- New struct `CostControlProperties`
+- New struct `CostControlProviderProperties`
+- New struct `CostControlProviderPropertiesPatch`
+- New struct `CostControlTimePeriod`
+- New struct `CostControlTimePeriodPatch`
+- New struct `DeploymentPolicyEvaluationResult`
+- New struct `DeploymentSpeculativeDecoding`
+- New struct `ErrorAdditionalInfo`
+- New struct `ErrorDetail`
+- New struct `EvaluateDeploymentPoliciesDeployment`
+- New struct `EvaluateDeploymentPoliciesDeploymentProperties`
+- New struct `EvaluateDeploymentPoliciesRequest`
+- New struct `EvaluateDeploymentPoliciesResponse`
+- New struct `FoundryAutoUpgrade`
+- New struct `GatedModelAccessProperties`
+- New struct `ManagedClusterAgentHostingConfiguration`
+- New struct `ManagedComputeDeployment`
+- New struct `ManagedComputeDeploymentInfo`
+- New struct `ManagedComputeDeploymentListResult`
+- New struct `ManagedComputeDeploymentProperties`
+- New struct `ManagedComputeDeploymentProvisioningDetails`
+- New struct `ManagedComputeDeploymentRoutes`
+- New struct `ManagedComputeUsage`
+- New struct `ManagedComputeUsageListResult`
+- New struct `PatchResourceSKU`
+- New struct `PolicyAssignmentEvaluationDetails`
+- New struct `PolicyExpressionEvaluationDetails`
+- New struct `Pool`
+- New struct `ProjectCostControl`
+- New struct `ProjectCostControlListResult`
+- New struct `RaiAcsAgentShutdownInterventionPoint`
+- New struct `RaiAcsAgentStartupInterventionPoint`
+- New struct `RaiAcsAnnotationBinding`
+- New struct `RaiAcsAnnotatorDefinition`
+- New struct `RaiAcsHarmConfiguration`
+- New struct `RaiAcsInterventionPoint`
+- New struct `RaiAcsInterventionPoints`
+- New struct `RaiAcsManifest`
+- New struct `RaiAcsModerationBindingExtension`
+- New struct `RaiAcsPolicyBinding`
+- New struct `RaiAcsPostModelCallInterventionPoint`
+- New struct `RaiAcsPreModelCallInterventionPoint`
+- New struct `RaiAcsRegoPolicyDefinition`
+- New struct `RaiAcsToolDefinition`
+- New struct `RaiAcsToolInterventionPoint`
+- New struct `RaiBinding`
+- New struct `RaiBindingListResult`
+- New struct `RaiBindingProperties`
+- New struct `RaiPolicyCustomExternalSafetyProviderReference`
+- New struct `RaiRego`
+- New struct `RaiRegoListResult`
+- New struct `RaiRegoProperties`
+- New struct `RaiRegoReference`
+- New struct `SSHSettings`
+- New struct `ToolControlEntry`
+- New struct `ToolControls`
+- New struct `Workbench`
+- New struct `WorkbenchListResult`
+- New struct `WorkbenchProperties`
+- New struct `WorkbenchUpdate`
+- New struct `WorkbenchUpdateProperties`
+- New field `AgentHostingConfigurations`, `CapabilitySettings`, `CostControlConnections`, `FoundryAutoUpgrade` in struct `AccountProperties`
+- New field `SpeculativeDecoding` in struct `DeploymentProperties`
+- New field `CapabilitySettings`, `ToolControls` in struct `ProjectProperties`
+- New field `IfMatch` in struct `RaiPoliciesClientBeginDeleteOptions`
+- New field `IfMatch`, `IfNoneMatch` in struct `RaiPoliciesClientCreateOrUpdateOptions`
+- New field `EtagHeader` in struct `RaiPoliciesClientCreateOrUpdateResponse`
+- New field `EtagHeader` in struct `RaiPoliciesClientGetResponse`
+- New field `Acs`, `AcsRegos`, `CustomExternalSafetyProviders`, `Format` in struct `RaiPolicyProperties`
+
+
 ## 4.0.0 (2026-11-12)
 ### Breaking Changes
 

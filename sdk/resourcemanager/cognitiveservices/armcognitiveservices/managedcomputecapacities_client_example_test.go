@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-11-01/ListManagedComputeCapacities.json
+// Generated from example definition: 2026-11-15-preview/ListManagedComputeCapacities.json
 func ExampleManagedComputeCapacitiesClient_NewListPager_listManagedComputeCapacities() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleManagedComputeCapacitiesClient_NewListPager_listManagedComputeCapaci
 	}
 }
 
-// Generated from example definition: 2026-11-01/ListManagedComputeCapacitiesWithDeployment.json
+// Generated from example definition: 2026-11-15-preview/ListManagedComputeCapacitiesWithDeployment.json
 func ExampleManagedComputeCapacitiesClient_NewListPager_listManagedComputeCapacitiesForDeploymentWithMatchingAccountLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -151,7 +151,7 @@ func ExampleManagedComputeCapacitiesClient_NewListPager_listManagedComputeCapaci
 	}
 }
 
-// Generated from example definition: 2026-11-01/ListManagedComputeCapacitiesWithLocation.json
+// Generated from example definition: 2026-11-15-preview/ListManagedComputeCapacitiesWithLocation.json
 func ExampleManagedComputeCapacitiesClient_NewListPager_listManagedComputeCapacitiesWithLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +222,7 @@ func ExampleManagedComputeCapacitiesClient_NewListPager_listManagedComputeCapaci
 	}
 }
 
-// Generated from example definition: 2026-11-01/ListManagedComputeCapacitiesWithUnsupportedLocation.json
+// Generated from example definition: 2026-11-15-preview/ListManagedComputeCapacitiesWithUnsupportedLocation.json
 func ExampleManagedComputeCapacitiesClient_NewListPager_listManagedComputeCapacitiesWithUnsupportedDataZoneLocation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

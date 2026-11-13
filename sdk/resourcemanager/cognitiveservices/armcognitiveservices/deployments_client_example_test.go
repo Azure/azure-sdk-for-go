@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-11-01/PutDeployment.json
+// Generated from example definition: 2026-11-15-preview/PutDeployment.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeployment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeployment() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/PutDeploymentWithSpeculativeDecoding.json
+// Generated from example definition: 2026-11-15-preview/PutDeploymentWithSpeculativeDecoding.json
 func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeploymentWithSpeculativeDecoding() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,6 +89,15 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeploymentWithSpeculativeDe
 				Format:  to.Ptr("Fireworks"),
 				Name:    to.Ptr("FW-Qwen3-14B"),
 				Version: to.Ptr("1"),
+			},
+			SpeculativeDecoding: &armcognitiveservices.DeploymentSpeculativeDecoding{
+				DraftModel: &armcognitiveservices.DeploymentModel{
+					Format:  to.Ptr("FireworksCustom"),
+					Name:    to.Ptr("testDraftModel"),
+					Version: to.Ptr("1"),
+					Source:  to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/projects/projectName"),
+				},
+				DraftTokenCount: to.Ptr[int32](4),
 			},
 			ServiceTier: to.Ptr(armcognitiveservices.ServiceTierDefault),
 		},
@@ -119,6 +128,15 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeploymentWithSpeculativeDe
 	// 				Name: to.Ptr("FW-Qwen3-14B"),
 	// 				Version: to.Ptr("1"),
 	// 			},
+	// 			SpeculativeDecoding: &armcognitiveservices.DeploymentSpeculativeDecoding{
+	// 				DraftModel: &armcognitiveservices.DeploymentModel{
+	// 					Format: to.Ptr("FireworksCustom"),
+	// 					Name: to.Ptr("testDraftModel"),
+	// 					Version: to.Ptr("1"),
+	// 					Source: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/resourceGroupName/providers/Microsoft.CognitiveServices/accounts/accountName/projects/projectName"),
+	// 				},
+	// 				DraftTokenCount: to.Ptr[int32](4),
+	// 			},
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.DeploymentProvisioningStateSucceeded),
 	// 			ServiceTier: to.Ptr(armcognitiveservices.ServiceTierDefault),
 	// 		},
@@ -130,7 +148,7 @@ func ExampleDeploymentsClient_BeginCreateOrUpdate_putDeploymentWithSpeculativeDe
 	// }
 }
 
-// Generated from example definition: 2026-11-01/DeleteDeployment.json
+// Generated from example definition: 2026-11-15-preview/DeleteDeployment.json
 func ExampleDeploymentsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +174,7 @@ func ExampleDeploymentsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateDeployment.json
+// Generated from example definition: 2026-11-15-preview/UpdateDeployment.json
 func ExampleDeploymentsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -206,7 +224,7 @@ func ExampleDeploymentsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/GetDeployment.json
+// Generated from example definition: 2026-11-15-preview/GetDeployment.json
 func ExampleDeploymentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -247,7 +265,7 @@ func ExampleDeploymentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/ListDeployments.json
+// Generated from example definition: 2026-11-15-preview/ListDeployments.json
 func ExampleDeploymentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -297,7 +315,7 @@ func ExampleDeploymentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-11-01/ListDeploymentSkus.json
+// Generated from example definition: 2026-11-15-preview/ListDeploymentSkus.json
 func ExampleDeploymentsClient_NewListSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +363,7 @@ func ExampleDeploymentsClient_NewListSKUsPager() {
 	}
 }
 
-// Generated from example definition: 2026-11-01/PauseDeployment.json
+// Generated from example definition: 2026-11-15-preview/PauseDeployment.json
 func ExampleDeploymentsClient_Pause() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -385,7 +403,7 @@ func ExampleDeploymentsClient_Pause() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/ResumeDeployment.json
+// Generated from example definition: 2026-11-15-preview/ResumeDeployment.json
 func ExampleDeploymentsClient_Resume() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

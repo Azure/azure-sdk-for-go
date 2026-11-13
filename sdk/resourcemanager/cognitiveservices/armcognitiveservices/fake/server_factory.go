@@ -21,8 +21,14 @@ type ServerFactory struct {
 	// AccountConnectionsServer contains the fakes for client AccountConnectionsClient
 	AccountConnectionsServer AccountConnectionsServer
 
+	// AccountCostControlsServer contains the fakes for client AccountCostControlsClient
+	AccountCostControlsServer AccountCostControlsServer
+
 	// AccountsServer contains the fakes for client AccountsClient
 	AccountsServer AccountsServer
+
+	// AdapterDeploymentsServer contains the fakes for client AdapterDeploymentsClient
+	AdapterDeploymentsServer AdapterDeploymentsServer
 
 	// AgentApplicationsServer contains the fakes for client AgentApplicationsClient
 	AgentApplicationsServer AgentApplicationsServer
@@ -30,11 +36,23 @@ type ServerFactory struct {
 	// AgentDeploymentsServer contains the fakes for client AgentDeploymentsClient
 	AgentDeploymentsServer AgentDeploymentsServer
 
+	// ArcDeploymentsServer contains the fakes for client ArcDeploymentsClient
+	ArcDeploymentsServer ArcDeploymentsServer
+
+	// AttachedAksClustersServer contains the fakes for client AttachedAksClustersClient
+	AttachedAksClustersServer AttachedAksClustersServer
+
 	// CommitmentPlansServer contains the fakes for client CommitmentPlansClient
 	CommitmentPlansServer CommitmentPlansServer
 
 	// CommitmentTiersServer contains the fakes for client CommitmentTiersClient
 	CommitmentTiersServer CommitmentTiersServer
+
+	// ComputeOperationsServer contains the fakes for client ComputeOperationsClient
+	ComputeOperationsServer ComputeOperationsServer
+
+	// ComputesServer contains the fakes for client ComputesClient
+	ComputesServer ComputesServer
 
 	// DefenderForAISettingsServer contains the fakes for client DefenderForAISettingsClient
 	DefenderForAISettingsServer DefenderForAISettingsServer
@@ -53,6 +71,12 @@ type ServerFactory struct {
 
 	// ManagedComputeCapacitiesServer contains the fakes for client ManagedComputeCapacitiesClient
 	ManagedComputeCapacitiesServer ManagedComputeCapacitiesServer
+
+	// ManagedComputeDeploymentsServer contains the fakes for client ManagedComputeDeploymentsClient
+	ManagedComputeDeploymentsServer ManagedComputeDeploymentsServer
+
+	// ManagedComputeUsagesOperationGroupServer contains the fakes for client ManagedComputeUsagesOperationGroupClient
+	ManagedComputeUsagesOperationGroupServer ManagedComputeUsagesOperationGroupServer
 
 	// ManagedNetworkProvisionsServer contains the fakes for client ManagedNetworkProvisionsClient
 	ManagedNetworkProvisionsServer ManagedNetworkProvisionsServer
@@ -93,11 +117,17 @@ type ServerFactory struct {
 	// ProjectConnectionsServer contains the fakes for client ProjectConnectionsClient
 	ProjectConnectionsServer ProjectConnectionsServer
 
+	// ProjectCostControlsServer contains the fakes for client ProjectCostControlsClient
+	ProjectCostControlsServer ProjectCostControlsServer
+
 	// ProjectsServer contains the fakes for client ProjectsClient
 	ProjectsServer ProjectsServer
 
 	// QuotaTiersServer contains the fakes for client QuotaTiersClient
 	QuotaTiersServer QuotaTiersServer
+
+	// RaiBindingsServer contains the fakes for client RaiBindingsClient
+	RaiBindingsServer RaiBindingsServer
 
 	// RaiBlocklistItemsServer contains the fakes for client RaiBlocklistItemsClient
 	RaiBlocklistItemsServer RaiBlocklistItemsServer
@@ -117,6 +147,9 @@ type ServerFactory struct {
 	// RaiPoliciesServer contains the fakes for client RaiPoliciesClient
 	RaiPoliciesServer RaiPoliciesServer
 
+	// RaiRegosServer contains the fakes for client RaiRegosClient
+	RaiRegosServer RaiRegosServer
+
 	// RaiToolLabelsServer contains the fakes for client RaiToolLabelsClient
 	RaiToolLabelsServer RaiToolLabelsServer
 
@@ -134,6 +167,9 @@ type ServerFactory struct {
 
 	// UsagesServer contains the fakes for client UsagesClient
 	UsagesServer UsagesServer
+
+	// WorkbenchesServer contains the fakes for client WorkbenchesClient
+	WorkbenchesServer WorkbenchesServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -152,17 +188,25 @@ type ServerFactoryTransport struct {
 	trMu                                           sync.Mutex
 	trAccountCapabilityHostsServer                 *AccountCapabilityHostsServerTransport
 	trAccountConnectionsServer                     *AccountConnectionsServerTransport
+	trAccountCostControlsServer                    *AccountCostControlsServerTransport
 	trAccountsServer                               *AccountsServerTransport
+	trAdapterDeploymentsServer                     *AdapterDeploymentsServerTransport
 	trAgentApplicationsServer                      *AgentApplicationsServerTransport
 	trAgentDeploymentsServer                       *AgentDeploymentsServerTransport
+	trArcDeploymentsServer                         *ArcDeploymentsServerTransport
+	trAttachedAksClustersServer                    *AttachedAksClustersServerTransport
 	trCommitmentPlansServer                        *CommitmentPlansServerTransport
 	trCommitmentTiersServer                        *CommitmentTiersServerTransport
+	trComputeOperationsServer                      *ComputeOperationsServerTransport
+	trComputesServer                               *ComputesServerTransport
 	trDefenderForAISettingsServer                  *DefenderForAISettingsServerTransport
 	trDeletedAccountsServer                        *DeletedAccountsServerTransport
 	trDeploymentsServer                            *DeploymentsServerTransport
 	trEncryptionScopesServer                       *EncryptionScopesServerTransport
 	trLocationBasedModelCapacitiesServer           *LocationBasedModelCapacitiesServerTransport
 	trManagedComputeCapacitiesServer               *ManagedComputeCapacitiesServerTransport
+	trManagedComputeDeploymentsServer              *ManagedComputeDeploymentsServerTransport
+	trManagedComputeUsagesOperationGroupServer     *ManagedComputeUsagesOperationGroupServerTransport
 	trManagedNetworkProvisionsServer               *ManagedNetworkProvisionsServerTransport
 	trManagedNetworkSettingsServer                 *ManagedNetworkSettingsServerTransport
 	trManagementServer                             *ManagementServerTransport
@@ -176,20 +220,24 @@ type ServerFactoryTransport struct {
 	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
 	trProjectCapabilityHostsServer                 *ProjectCapabilityHostsServerTransport
 	trProjectConnectionsServer                     *ProjectConnectionsServerTransport
+	trProjectCostControlsServer                    *ProjectCostControlsServerTransport
 	trProjectsServer                               *ProjectsServerTransport
 	trQuotaTiersServer                             *QuotaTiersServerTransport
+	trRaiBindingsServer                            *RaiBindingsServerTransport
 	trRaiBlocklistItemsServer                      *RaiBlocklistItemsServerTransport
 	trRaiBlocklistsServer                          *RaiBlocklistsServerTransport
 	trRaiContentFiltersServer                      *RaiContentFiltersServerTransport
 	trRaiExternalSafetyProviderServer              *RaiExternalSafetyProviderServerTransport
 	trRaiExternalSafetyProvidersServer             *RaiExternalSafetyProvidersServerTransport
 	trRaiPoliciesServer                            *RaiPoliciesServerTransport
+	trRaiRegosServer                               *RaiRegosServerTransport
 	trRaiToolLabelsServer                          *RaiToolLabelsServerTransport
 	trRaiTopicsServer                              *RaiTopicsServerTransport
 	trResourceSKUsServer                           *ResourceSKUsServerTransport
 	trSubscriptionRaiPolicyServer                  *SubscriptionRaiPolicyServerTransport
 	trTestRaiExternalSafetyProviderServer          *TestRaiExternalSafetyProviderServerTransport
 	trUsagesServer                                 *UsagesServerTransport
+	trWorkbenchesServer                            *WorkbenchesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -215,9 +263,19 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAccountConnectionsServerTransport(&s.srv.AccountConnectionsServer)
 		})
 		resp, err = s.trAccountConnectionsServer.Do(req)
+	case "AccountCostControlsClient":
+		initServer(&s.trMu, &s.trAccountCostControlsServer, func() *AccountCostControlsServerTransport {
+			return NewAccountCostControlsServerTransport(&s.srv.AccountCostControlsServer)
+		})
+		resp, err = s.trAccountCostControlsServer.Do(req)
 	case "AccountsClient":
 		initServer(&s.trMu, &s.trAccountsServer, func() *AccountsServerTransport { return NewAccountsServerTransport(&s.srv.AccountsServer) })
 		resp, err = s.trAccountsServer.Do(req)
+	case "AdapterDeploymentsClient":
+		initServer(&s.trMu, &s.trAdapterDeploymentsServer, func() *AdapterDeploymentsServerTransport {
+			return NewAdapterDeploymentsServerTransport(&s.srv.AdapterDeploymentsServer)
+		})
+		resp, err = s.trAdapterDeploymentsServer.Do(req)
 	case "AgentApplicationsClient":
 		initServer(&s.trMu, &s.trAgentApplicationsServer, func() *AgentApplicationsServerTransport {
 			return NewAgentApplicationsServerTransport(&s.srv.AgentApplicationsServer)
@@ -228,6 +286,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAgentDeploymentsServerTransport(&s.srv.AgentDeploymentsServer)
 		})
 		resp, err = s.trAgentDeploymentsServer.Do(req)
+	case "ArcDeploymentsClient":
+		initServer(&s.trMu, &s.trArcDeploymentsServer, func() *ArcDeploymentsServerTransport {
+			return NewArcDeploymentsServerTransport(&s.srv.ArcDeploymentsServer)
+		})
+		resp, err = s.trArcDeploymentsServer.Do(req)
+	case "AttachedAksClustersClient":
+		initServer(&s.trMu, &s.trAttachedAksClustersServer, func() *AttachedAksClustersServerTransport {
+			return NewAttachedAksClustersServerTransport(&s.srv.AttachedAksClustersServer)
+		})
+		resp, err = s.trAttachedAksClustersServer.Do(req)
 	case "CommitmentPlansClient":
 		initServer(&s.trMu, &s.trCommitmentPlansServer, func() *CommitmentPlansServerTransport {
 			return NewCommitmentPlansServerTransport(&s.srv.CommitmentPlansServer)
@@ -238,6 +306,14 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewCommitmentTiersServerTransport(&s.srv.CommitmentTiersServer)
 		})
 		resp, err = s.trCommitmentTiersServer.Do(req)
+	case "ComputeOperationsClient":
+		initServer(&s.trMu, &s.trComputeOperationsServer, func() *ComputeOperationsServerTransport {
+			return NewComputeOperationsServerTransport(&s.srv.ComputeOperationsServer)
+		})
+		resp, err = s.trComputeOperationsServer.Do(req)
+	case "ComputesClient":
+		initServer(&s.trMu, &s.trComputesServer, func() *ComputesServerTransport { return NewComputesServerTransport(&s.srv.ComputesServer) })
+		resp, err = s.trComputesServer.Do(req)
 	case "DefenderForAISettingsClient":
 		initServer(&s.trMu, &s.trDefenderForAISettingsServer, func() *DefenderForAISettingsServerTransport {
 			return NewDefenderForAISettingsServerTransport(&s.srv.DefenderForAISettingsServer)
@@ -266,6 +342,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedComputeCapacitiesServerTransport(&s.srv.ManagedComputeCapacitiesServer)
 		})
 		resp, err = s.trManagedComputeCapacitiesServer.Do(req)
+	case "ManagedComputeDeploymentsClient":
+		initServer(&s.trMu, &s.trManagedComputeDeploymentsServer, func() *ManagedComputeDeploymentsServerTransport {
+			return NewManagedComputeDeploymentsServerTransport(&s.srv.ManagedComputeDeploymentsServer)
+		})
+		resp, err = s.trManagedComputeDeploymentsServer.Do(req)
+	case "ManagedComputeUsagesOperationGroupClient":
+		initServer(&s.trMu, &s.trManagedComputeUsagesOperationGroupServer, func() *ManagedComputeUsagesOperationGroupServerTransport {
+			return NewManagedComputeUsagesOperationGroupServerTransport(&s.srv.ManagedComputeUsagesOperationGroupServer)
+		})
+		resp, err = s.trManagedComputeUsagesOperationGroupServer.Do(req)
 	case "ManagedNetworkProvisionsClient":
 		initServer(&s.trMu, &s.trManagedNetworkProvisionsServer, func() *ManagedNetworkProvisionsServerTransport {
 			return NewManagedNetworkProvisionsServerTransport(&s.srv.ManagedNetworkProvisionsServer)
@@ -323,12 +409,20 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewProjectConnectionsServerTransport(&s.srv.ProjectConnectionsServer)
 		})
 		resp, err = s.trProjectConnectionsServer.Do(req)
+	case "ProjectCostControlsClient":
+		initServer(&s.trMu, &s.trProjectCostControlsServer, func() *ProjectCostControlsServerTransport {
+			return NewProjectCostControlsServerTransport(&s.srv.ProjectCostControlsServer)
+		})
+		resp, err = s.trProjectCostControlsServer.Do(req)
 	case "ProjectsClient":
 		initServer(&s.trMu, &s.trProjectsServer, func() *ProjectsServerTransport { return NewProjectsServerTransport(&s.srv.ProjectsServer) })
 		resp, err = s.trProjectsServer.Do(req)
 	case "QuotaTiersClient":
 		initServer(&s.trMu, &s.trQuotaTiersServer, func() *QuotaTiersServerTransport { return NewQuotaTiersServerTransport(&s.srv.QuotaTiersServer) })
 		resp, err = s.trQuotaTiersServer.Do(req)
+	case "RaiBindingsClient":
+		initServer(&s.trMu, &s.trRaiBindingsServer, func() *RaiBindingsServerTransport { return NewRaiBindingsServerTransport(&s.srv.RaiBindingsServer) })
+		resp, err = s.trRaiBindingsServer.Do(req)
 	case "RaiBlocklistItemsClient":
 		initServer(&s.trMu, &s.trRaiBlocklistItemsServer, func() *RaiBlocklistItemsServerTransport {
 			return NewRaiBlocklistItemsServerTransport(&s.srv.RaiBlocklistItemsServer)
@@ -357,6 +451,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "RaiPoliciesClient":
 		initServer(&s.trMu, &s.trRaiPoliciesServer, func() *RaiPoliciesServerTransport { return NewRaiPoliciesServerTransport(&s.srv.RaiPoliciesServer) })
 		resp, err = s.trRaiPoliciesServer.Do(req)
+	case "RaiRegosClient":
+		initServer(&s.trMu, &s.trRaiRegosServer, func() *RaiRegosServerTransport { return NewRaiRegosServerTransport(&s.srv.RaiRegosServer) })
+		resp, err = s.trRaiRegosServer.Do(req)
 	case "RaiToolLabelsClient":
 		initServer(&s.trMu, &s.trRaiToolLabelsServer, func() *RaiToolLabelsServerTransport {
 			return NewRaiToolLabelsServerTransport(&s.srv.RaiToolLabelsServer)
@@ -381,6 +478,9 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "UsagesClient":
 		initServer(&s.trMu, &s.trUsagesServer, func() *UsagesServerTransport { return NewUsagesServerTransport(&s.srv.UsagesServer) })
 		resp, err = s.trUsagesServer.Do(req)
+	case "WorkbenchesClient":
+		initServer(&s.trMu, &s.trWorkbenchesServer, func() *WorkbenchesServerTransport { return NewWorkbenchesServerTransport(&s.srv.WorkbenchesServer) })
+		resp, err = s.trWorkbenchesServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

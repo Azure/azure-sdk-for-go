@@ -5,7 +5,7 @@
 package armaigateway
 
 const (
-	version20260901Preview string = "2026-09-01-preview"
+	version20261101 string = "2026-11-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -20,6 +20,91 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// AliasSelectionStage - Routing stage in an AI Gateway alias selection order.
+type AliasSelectionStage string
+
+const (
+	// AliasSelectionStageAutoModelSelection - Automatic model selection stage.
+	AliasSelectionStageAutoModelSelection AliasSelectionStage = "autoModelSelection"
+	// AliasSelectionStagePriority - Deterministic priority and weight routing stage.
+	AliasSelectionStagePriority AliasSelectionStage = "priority"
+	// AliasSelectionStageSessionBackendPreference - Stateless session backend preference stage.
+	AliasSelectionStageSessionBackendPreference AliasSelectionStage = "sessionBackendPreference"
+)
+
+// PossibleAliasSelectionStageValues returns the possible values for the AliasSelectionStage const type.
+func PossibleAliasSelectionStageValues() []AliasSelectionStage {
+	return []AliasSelectionStage{
+		AliasSelectionStageAutoModelSelection,
+		AliasSelectionStagePriority,
+		AliasSelectionStageSessionBackendPreference,
+	}
+}
+
+// AllowedRequestOverride - Per-request behavior allowed for automatic model selection.
+type AllowedRequestOverride string
+
+const (
+	// AllowedRequestOverrideFilterModelsForToolCompatibility - Enable chat function-tool compatibility filtering without granting
+	// either override.
+	AllowedRequestOverrideFilterModelsForToolCompatibility AllowedRequestOverride = "filterModelsForToolCompatibility"
+	// AllowedRequestOverrideModel - Allow narrowing the configured selector model pool.
+	AllowedRequestOverrideModel AllowedRequestOverride = "model"
+	// AllowedRequestOverrideObjective - Allow overriding the selection objective.
+	AllowedRequestOverrideObjective AllowedRequestOverride = "objective"
+)
+
+// PossibleAllowedRequestOverrideValues returns the possible values for the AllowedRequestOverride const type.
+func PossibleAllowedRequestOverrideValues() []AllowedRequestOverride {
+	return []AllowedRequestOverride{
+		AllowedRequestOverrideFilterModelsForToolCompatibility,
+		AllowedRequestOverrideModel,
+		AllowedRequestOverrideObjective,
+	}
+}
+
+// ContentSafetySeverity - Severity threshold used by a content safety policy.
+type ContentSafetySeverity string
+
+const (
+	// ContentSafetySeverityHigh - High severity.
+	ContentSafetySeverityHigh ContentSafetySeverity = "High"
+	// ContentSafetySeverityLow - Low severity.
+	ContentSafetySeverityLow ContentSafetySeverity = "Low"
+	// ContentSafetySeverityMedium - Medium severity.
+	ContentSafetySeverityMedium ContentSafetySeverity = "Medium"
+	// ContentSafetySeverityNone - Do not filter this category.
+	ContentSafetySeverityNone ContentSafetySeverity = "None"
+)
+
+// PossibleContentSafetySeverityValues returns the possible values for the ContentSafetySeverity const type.
+func PossibleContentSafetySeverityValues() []ContentSafetySeverity {
+	return []ContentSafetySeverity{
+		ContentSafetySeverityHigh,
+		ContentSafetySeverityLow,
+		ContentSafetySeverityMedium,
+		ContentSafetySeverityNone,
+	}
+}
+
+// CounterDimension - Public request dimension used to partition a policy counter.
+type CounterDimension string
+
+const (
+	// CounterDimensionIPAddress - Request source IP address.
+	CounterDimensionIPAddress CounterDimension = "ipAddress"
+	// CounterDimensionIdentity - Authenticated request identity.
+	CounterDimensionIdentity CounterDimension = "identity"
+)
+
+// PossibleCounterDimensionValues returns the possible values for the CounterDimension const type.
+func PossibleCounterDimensionValues() []CounterDimension {
+	return []CounterDimension{
+		CounterDimensionIPAddress,
+		CounterDimensionIdentity,
 	}
 }
 
@@ -47,6 +132,42 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// FailureMode - Resilience failure mode for an outbound endpoint or hook.
+type FailureMode string
+
+const (
+	// FailureModeFailClosed - Fail the request when the endpoint or hook fails.
+	FailureModeFailClosed FailureMode = "failClosed"
+	// FailureModeFailOpen - Continue processing when the endpoint or hook fails.
+	FailureModeFailOpen FailureMode = "failOpen"
+)
+
+// PossibleFailureModeValues returns the possible values for the FailureMode const type.
+func PossibleFailureModeValues() []FailureMode {
+	return []FailureMode{
+		FailureModeFailClosed,
+		FailureModeFailOpen,
+	}
+}
+
+// IPFilterAction - Action performed by an IP filtering policy.
+type IPFilterAction string
+
+const (
+	// IPFilterActionAllow - Allow matching addresses.
+	IPFilterActionAllow IPFilterAction = "Allow"
+	// IPFilterActionDeny - Deny matching addresses.
+	IPFilterActionDeny IPFilterAction = "Deny"
+)
+
+// PossibleIPFilterActionValues returns the possible values for the IPFilterAction const type.
+func PossibleIPFilterActionValues() []IPFilterAction {
+	return []IPFilterAction{
+		IPFilterActionAllow,
+		IPFilterActionDeny,
+	}
+}
+
 // ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
 type ManagedServiceIdentityType string
 
@@ -68,6 +189,66 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// ModelProviderKind - The type of an AI model provider.
+type ModelProviderKind string
+
+const (
+	// ModelProviderKindCustom - Custom model provider.
+	ModelProviderKindCustom ModelProviderKind = "Custom"
+	// ModelProviderKindFoundry - Azure AI Foundry provider.
+	ModelProviderKindFoundry ModelProviderKind = "Foundry"
+	// ModelProviderKindGitHub - GitHub model provider.
+	ModelProviderKindGitHub ModelProviderKind = "GitHub"
+)
+
+// PossibleModelProviderKindValues returns the possible values for the ModelProviderKind const type.
+func PossibleModelProviderKindValues() []ModelProviderKind {
+	return []ModelProviderKind{
+		ModelProviderKindCustom,
+		ModelProviderKindFoundry,
+		ModelProviderKindGitHub,
+	}
+}
+
+// ModelSelectionObjective - Quality and cost objective for automatic model selection.
+type ModelSelectionObjective string
+
+const (
+	// ModelSelectionObjectiveBalanced - Balance quality and cost.
+	ModelSelectionObjectiveBalanced ModelSelectionObjective = "Balanced"
+	// ModelSelectionObjectiveCost - Prefer lower cost.
+	ModelSelectionObjectiveCost ModelSelectionObjective = "Cost"
+	// ModelSelectionObjectiveQuality - Prefer higher quality.
+	ModelSelectionObjectiveQuality ModelSelectionObjective = "Quality"
+)
+
+// PossibleModelSelectionObjectiveValues returns the possible values for the ModelSelectionObjective const type.
+func PossibleModelSelectionObjectiveValues() []ModelSelectionObjective {
+	return []ModelSelectionObjective{
+		ModelSelectionObjectiveBalanced,
+		ModelSelectionObjectiveCost,
+		ModelSelectionObjectiveQuality,
+	}
+}
+
+// NameAvailabilityReason - Result of name validation and availability checking.
+type NameAvailabilityReason string
+
+const (
+	// NameAvailabilityReasonAlreadyExists - A gateway with this name already exists in the location.
+	NameAvailabilityReasonAlreadyExists NameAvailabilityReason = "AlreadyExists"
+	// NameAvailabilityReasonInvalid - The name does not satisfy gateway naming requirements.
+	NameAvailabilityReasonInvalid NameAvailabilityReason = "Invalid"
+)
+
+// PossibleNameAvailabilityReasonValues returns the possible values for the NameAvailabilityReason const type.
+func PossibleNameAvailabilityReasonValues() []NameAvailabilityReason {
+	return []NameAvailabilityReason{
+		NameAvailabilityReasonAlreadyExists,
+		NameAvailabilityReasonInvalid,
 	}
 }
 
@@ -93,6 +274,139 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// PolicyPeriod - Counter period. Token limits support minute/hour/day; request rate limits support minute/hour/day or whole-second
+// ISO 8601 durations (e.g., PT37S); cost limits support hour/day/week/month/year.
+type PolicyPeriod string
+
+const (
+	// PolicyPeriodDay - One day.
+	PolicyPeriodDay PolicyPeriod = "day"
+	// PolicyPeriodHour - One hour.
+	PolicyPeriodHour PolicyPeriod = "hour"
+	// PolicyPeriodMinute - One minute.
+	PolicyPeriodMinute PolicyPeriod = "minute"
+	// PolicyPeriodMonth - One month, for cost limits only.
+	PolicyPeriodMonth PolicyPeriod = "month"
+	// PolicyPeriodWeek - One week, for cost limits only.
+	PolicyPeriodWeek PolicyPeriod = "week"
+	// PolicyPeriodYear - One year, for cost limits only.
+	PolicyPeriodYear PolicyPeriod = "year"
+)
+
+// PossiblePolicyPeriodValues returns the possible values for the PolicyPeriod const type.
+func PossiblePolicyPeriodValues() []PolicyPeriod {
+	return []PolicyPeriod{
+		PolicyPeriodDay,
+		PolicyPeriodHour,
+		PolicyPeriodMinute,
+		PolicyPeriodMonth,
+		PolicyPeriodWeek,
+		PolicyPeriodYear,
+	}
+}
+
+// PolicyScope - Aggregation scope of an inline policy.
+type PolicyScope string
+
+const (
+	// PolicyScopeResource - Apply the policy to its resource.
+	PolicyScopeResource PolicyScope = "resource"
+	// PolicyScopeWorkspace - Aggregate counters across the workspace. Supported for workspace counter policies only.
+	PolicyScopeWorkspace PolicyScope = "workspace"
+)
+
+// PossiblePolicyScopeValues returns the possible values for the PolicyScope const type.
+func PossiblePolicyScopeValues() []PolicyScope {
+	return []PolicyScope{
+		PolicyScopeResource,
+		PolicyScopeWorkspace,
+	}
+}
+
+// PolicyType - The type of an inline AI Gateway policy.
+type PolicyType string
+
+const (
+	// PolicyTypeAgentHooks - Invoke external pre-tool-call and post-tool-call hooks when authoring is enabled.
+	PolicyTypeAgentHooks PolicyType = "agentHooks"
+	// PolicyTypeContentSafety - Filter unsafe content.
+	PolicyTypeContentSafety PolicyType = "contentSafety"
+	// PolicyTypeCors - Configure cross-origin resource sharing.
+	PolicyTypeCors PolicyType = "cors"
+	// PolicyTypeCostLimit - Limit cumulative spending in US dollars.
+	PolicyTypeCostLimit PolicyType = "costLimit"
+	// PolicyTypeFallback - Route to fallback models after failures.
+	PolicyTypeFallback PolicyType = "fallback"
+	// PolicyTypeIPFilter - Filter clients by IP address.
+	PolicyTypeIPFilter PolicyType = "ipFilter"
+	// PolicyTypeRequestRateLimit - Limit requests over time.
+	PolicyTypeRequestRateLimit PolicyType = "requestRateLimit"
+	// PolicyTypeTokenLimit - Limit consumed tokens.
+	PolicyTypeTokenLimit PolicyType = "tokenLimit"
+	// PolicyTypeToolThreatProtection - Check tool requests and responses for threats.
+	PolicyTypeToolThreatProtection PolicyType = "toolThreatProtection"
+)
+
+// PossiblePolicyTypeValues returns the possible values for the PolicyType const type.
+func PossiblePolicyTypeValues() []PolicyType {
+	return []PolicyType{
+		PolicyTypeAgentHooks,
+		PolicyTypeContentSafety,
+		PolicyTypeCors,
+		PolicyTypeCostLimit,
+		PolicyTypeFallback,
+		PolicyTypeIPFilter,
+		PolicyTypeRequestRateLimit,
+		PolicyTypeTokenLimit,
+		PolicyTypeToolThreatProtection,
+	}
+}
+
+// PrivateEndpointConnectionProvisioningState - The current provisioning state.
+type PrivateEndpointConnectionProvisioningState string
+
+const (
+	// PrivateEndpointConnectionProvisioningStateCreating - Connection is being created
+	PrivateEndpointConnectionProvisioningStateCreating PrivateEndpointConnectionProvisioningState = "Creating"
+	// PrivateEndpointConnectionProvisioningStateDeleting - Connection is being deleted
+	PrivateEndpointConnectionProvisioningStateDeleting PrivateEndpointConnectionProvisioningState = "Deleting"
+	// PrivateEndpointConnectionProvisioningStateFailed - Connection provisioning has failed
+	PrivateEndpointConnectionProvisioningStateFailed PrivateEndpointConnectionProvisioningState = "Failed"
+	// PrivateEndpointConnectionProvisioningStateSucceeded - Connection has been provisioned
+	PrivateEndpointConnectionProvisioningStateSucceeded PrivateEndpointConnectionProvisioningState = "Succeeded"
+)
+
+// PossiblePrivateEndpointConnectionProvisioningStateValues returns the possible values for the PrivateEndpointConnectionProvisioningState const type.
+func PossiblePrivateEndpointConnectionProvisioningStateValues() []PrivateEndpointConnectionProvisioningState {
+	return []PrivateEndpointConnectionProvisioningState{
+		PrivateEndpointConnectionProvisioningStateCreating,
+		PrivateEndpointConnectionProvisioningStateDeleting,
+		PrivateEndpointConnectionProvisioningStateFailed,
+		PrivateEndpointConnectionProvisioningStateSucceeded,
+	}
+}
+
+// PrivateEndpointServiceConnectionStatus - The private endpoint connection status.
+type PrivateEndpointServiceConnectionStatus string
+
+const (
+	// PrivateEndpointServiceConnectionStatusApproved - Connection approved
+	PrivateEndpointServiceConnectionStatusApproved PrivateEndpointServiceConnectionStatus = "Approved"
+	// PrivateEndpointServiceConnectionStatusPending - Connection waiting for approval or rejection
+	PrivateEndpointServiceConnectionStatusPending PrivateEndpointServiceConnectionStatus = "Pending"
+	// PrivateEndpointServiceConnectionStatusRejected - Connection Rejected
+	PrivateEndpointServiceConnectionStatusRejected PrivateEndpointServiceConnectionStatus = "Rejected"
+)
+
+// PossiblePrivateEndpointServiceConnectionStatusValues returns the possible values for the PrivateEndpointServiceConnectionStatus const type.
+func PossiblePrivateEndpointServiceConnectionStatusValues() []PrivateEndpointServiceConnectionStatus {
+	return []PrivateEndpointServiceConnectionStatus{
+		PrivateEndpointServiceConnectionStatusApproved,
+		PrivateEndpointServiceConnectionStatusPending,
+		PrivateEndpointServiceConnectionStatusRejected,
+	}
+}
+
 // ProvisioningState - Provisioning state of an AI Gateway resource.
 type ProvisioningState string
 
@@ -111,6 +425,24 @@ func PossibleProvisioningStateValues() []ProvisioningState {
 		ProvisioningStateCanceled,
 		ProvisioningStateFailed,
 		ProvisioningStateSucceeded,
+	}
+}
+
+// PublicNetworkAccess - Public network access state for an AI Gateway.
+type PublicNetworkAccess string
+
+const (
+	// PublicNetworkAccessDisabled - Public network access is disabled.
+	PublicNetworkAccessDisabled PublicNetworkAccess = "Disabled"
+	// PublicNetworkAccessEnabled - Public network access is enabled.
+	PublicNetworkAccessEnabled PublicNetworkAccess = "Enabled"
+)
+
+// PossiblePublicNetworkAccessValues returns the possible values for the PublicNetworkAccess const type.
+func PossiblePublicNetworkAccessValues() []PublicNetworkAccess {
+	return []PublicNetworkAccess{
+		PublicNetworkAccessDisabled,
+		PublicNetworkAccessEnabled,
 	}
 }
 
@@ -136,5 +468,183 @@ func PossibleSKUTierValues() []SKUTier {
 		SKUTierFree,
 		SKUTierPremium,
 		SKUTierStandard,
+	}
+}
+
+// TelemetryExporterKind - Destination kind for gateway telemetry.
+type TelemetryExporterKind string
+
+const (
+	// TelemetryExporterKindApplicationInsights - Export to Application Insights.
+	TelemetryExporterKindApplicationInsights TelemetryExporterKind = "ApplicationInsights"
+	// TelemetryExporterKindOpenTelemetry - Export over OTLP HTTP/protobuf.
+	TelemetryExporterKindOpenTelemetry TelemetryExporterKind = "OpenTelemetry"
+)
+
+// PossibleTelemetryExporterKindValues returns the possible values for the TelemetryExporterKind const type.
+func PossibleTelemetryExporterKindValues() []TelemetryExporterKind {
+	return []TelemetryExporterKind{
+		TelemetryExporterKindApplicationInsights,
+		TelemetryExporterKindOpenTelemetry,
+	}
+}
+
+// TelemetrySignal - Telemetry signal receiving a claim attribute.
+type TelemetrySignal string
+
+const (
+	// TelemetrySignalLogs - Log records.
+	TelemetrySignalLogs TelemetrySignal = "logs"
+	// TelemetrySignalMetrics - Token-usage and token-cost metrics.
+	TelemetrySignalMetrics TelemetrySignal = "metrics"
+	// TelemetrySignalTraces - Trace spans.
+	TelemetrySignalTraces TelemetrySignal = "traces"
+)
+
+// PossibleTelemetrySignalValues returns the possible values for the TelemetrySignal const type.
+func PossibleTelemetrySignalValues() []TelemetrySignal {
+	return []TelemetrySignal{
+		TelemetrySignalLogs,
+		TelemetrySignalMetrics,
+		TelemetrySignalTraces,
+	}
+}
+
+// ToolServerAccessState - Tool server access state.
+type ToolServerAccessState string
+
+const (
+	// ToolServerAccessStateActive - Tool server is available.
+	ToolServerAccessStateActive ToolServerAccessState = "active"
+	// ToolServerAccessStateBlocked - Tool server is blocked.
+	ToolServerAccessStateBlocked ToolServerAccessState = "blocked"
+)
+
+// PossibleToolServerAccessStateValues returns the possible values for the ToolServerAccessState const type.
+func PossibleToolServerAccessStateValues() []ToolServerAccessState {
+	return []ToolServerAccessState{
+		ToolServerAccessStateActive,
+		ToolServerAccessStateBlocked,
+	}
+}
+
+// ToolServerEndpointSourceKind - Endpoint source kind.
+type ToolServerEndpointSourceKind string
+
+const (
+	// ToolServerEndpointSourceKindMcp - MCP server endpoint.
+	ToolServerEndpointSourceKindMcp ToolServerEndpointSourceKind = "mcp"
+	// ToolServerEndpointSourceKindOpenAPI - OpenAPI document endpoint.
+	ToolServerEndpointSourceKindOpenAPI ToolServerEndpointSourceKind = "openApi"
+)
+
+// PossibleToolServerEndpointSourceKindValues returns the possible values for the ToolServerEndpointSourceKind const type.
+func PossibleToolServerEndpointSourceKindValues() []ToolServerEndpointSourceKind {
+	return []ToolServerEndpointSourceKind{
+		ToolServerEndpointSourceKindMcp,
+		ToolServerEndpointSourceKindOpenAPI,
+	}
+}
+
+// ToolServerFederationAppCredentialType - Supported federation application credential types for a tool server endpoint.
+type ToolServerFederationAppCredentialType string
+
+const (
+	// ToolServerFederationAppCredentialTypeUserAssignedManagedIdentity - A user-assigned managed identity assigned to the AI
+	// Gateway.
+	ToolServerFederationAppCredentialTypeUserAssignedManagedIdentity ToolServerFederationAppCredentialType = "userAssignedManagedIdentity"
+)
+
+// PossibleToolServerFederationAppCredentialTypeValues returns the possible values for the ToolServerFederationAppCredentialType const type.
+func PossibleToolServerFederationAppCredentialTypeValues() []ToolServerFederationAppCredentialType {
+	return []ToolServerFederationAppCredentialType{
+		ToolServerFederationAppCredentialTypeUserAssignedManagedIdentity,
+	}
+}
+
+// ToolServerMcpTransport - MCP transport protocol.
+type ToolServerMcpTransport string
+
+const (
+	// ToolServerMcpTransportStreamableHTTP - Streamable HTTP transport.
+	ToolServerMcpTransportStreamableHTTP ToolServerMcpTransport = "streamableHttp"
+)
+
+// PossibleToolServerMcpTransportValues returns the possible values for the ToolServerMcpTransport const type.
+func PossibleToolServerMcpTransportValues() []ToolServerMcpTransport {
+	return []ToolServerMcpTransport{
+		ToolServerMcpTransportStreamableHTTP,
+	}
+}
+
+// ToolServerOauth2GrantType - OAuth 2.0 grant type.
+type ToolServerOauth2GrantType string
+
+const (
+	// ToolServerOauth2GrantTypeAuthorizationCode - Authorization code grant.
+	ToolServerOauth2GrantTypeAuthorizationCode ToolServerOauth2GrantType = "authorizationCode"
+	// ToolServerOauth2GrantTypeClientCredentials - Client credentials grant.
+	ToolServerOauth2GrantTypeClientCredentials ToolServerOauth2GrantType = "clientCredentials"
+)
+
+// PossibleToolServerOauth2GrantTypeValues returns the possible values for the ToolServerOauth2GrantType const type.
+func PossibleToolServerOauth2GrantTypeValues() []ToolServerOauth2GrantType {
+	return []ToolServerOauth2GrantType{
+		ToolServerOauth2GrantTypeAuthorizationCode,
+		ToolServerOauth2GrantTypeClientCredentials,
+	}
+}
+
+// ToolServerOpenAPISourceType - OpenAPI document source type.
+type ToolServerOpenAPISourceType string
+
+const (
+	// ToolServerOpenAPISourceTypeInline - Inline OpenAPI document.
+	ToolServerOpenAPISourceTypeInline ToolServerOpenAPISourceType = "inline"
+	// ToolServerOpenAPISourceTypeURL - OpenAPI document fetched from a URL.
+	ToolServerOpenAPISourceTypeURL ToolServerOpenAPISourceType = "url"
+)
+
+// PossibleToolServerOpenAPISourceTypeValues returns the possible values for the ToolServerOpenAPISourceType const type.
+func PossibleToolServerOpenAPISourceTypeValues() []ToolServerOpenAPISourceType {
+	return []ToolServerOpenAPISourceType{
+		ToolServerOpenAPISourceTypeInline,
+		ToolServerOpenAPISourceTypeURL,
+	}
+}
+
+// ToolServerTokenExchangeProfile - Supported token-exchange profiles for a tool server endpoint.
+type ToolServerTokenExchangeProfile string
+
+const (
+	// ToolServerTokenExchangeProfileEntraOnBehalfOf - Microsoft Entra chained on-behalf-of token exchange.
+	ToolServerTokenExchangeProfileEntraOnBehalfOf ToolServerTokenExchangeProfile = "entraOnBehalfOf"
+)
+
+// PossibleToolServerTokenExchangeProfileValues returns the possible values for the ToolServerTokenExchangeProfile const type.
+func PossibleToolServerTokenExchangeProfileValues() []ToolServerTokenExchangeProfile {
+	return []ToolServerTokenExchangeProfile{
+		ToolServerTokenExchangeProfileEntraOnBehalfOf,
+	}
+}
+
+// ToolServerType - How a tool server is exposed.
+type ToolServerType string
+
+const (
+	// ToolServerTypeConnector - Exposes a connector-backed tool server.
+	ToolServerTypeConnector ToolServerType = "connector"
+	// ToolServerTypeMcp - Federates one or more MCP servers.
+	ToolServerTypeMcp ToolServerType = "mcp"
+	// ToolServerTypeOpenAPI - Exposes tools generated from OpenAPI documents.
+	ToolServerTypeOpenAPI ToolServerType = "openApi"
+)
+
+// PossibleToolServerTypeValues returns the possible values for the ToolServerType const type.
+func PossibleToolServerTypeValues() []ToolServerType {
+	return []ToolServerType{
+		ToolServerTypeConnector,
+		ToolServerTypeMcp,
+		ToolServerTypeOpenAPI,
 	}
 }

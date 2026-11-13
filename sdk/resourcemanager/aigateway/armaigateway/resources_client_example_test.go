@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/AiGatewayCreate.json
+// Generated from example definition: 2026-11-01/AiGatewayCreate.json
 func ExampleResourcesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,12 +29,13 @@ func ExampleResourcesClient_BeginCreateOrUpdate() {
 			"environment": to.Ptr("development"),
 		},
 		SKU: &armaigateway.SKU{
-			Name: to.Ptr("AIGateway"),
+			Name: to.Ptr("Standard"),
 		},
 		Identity: &armaigateway.ManagedServiceIdentity{
 			Type: to.Ptr(armaigateway.ManagedServiceIdentityTypeSystemAssigned),
 		},
 		Properties: &armaigateway.Properties{
+			PublicNetworkAccess: to.Ptr(armaigateway.PublicNetworkAccessEnabled),
 			Backend: &armaigateway.Backend{
 				Subnet: &armaigateway.Subnet{
 					ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/example-rg/providers/Microsoft.Network/virtualNetworks/example-vnet/subnets/example-subnet"),
@@ -62,7 +63,7 @@ func ExampleResourcesClient_BeginCreateOrUpdate() {
 	// 			"environment": to.Ptr("development"),
 	// 		},
 	// 		SKU: &armaigateway.SKU{
-	// 			Name: to.Ptr("AIGateway"),
+	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		Identity: &armaigateway.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armaigateway.ManagedServiceIdentityTypeSystemAssigned),
@@ -72,6 +73,7 @@ func ExampleResourcesClient_BeginCreateOrUpdate() {
 	// 		ETag: to.Ptr("\"AAAAAAAAAAE=\""),
 	// 		Properties: &armaigateway.Properties{
 	// 			ProvisioningState: to.Ptr(armaigateway.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armaigateway.PublicNetworkAccessEnabled),
 	// 			Frontend: &armaigateway.Frontend{
 	// 				DefaultHostname: to.Ptr("example-gateway.westus2.aigateway.azure-api.net"),
 	// 			},
@@ -85,7 +87,7 @@ func ExampleResourcesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/AiGatewayDelete.json
+// Generated from example definition: 2026-11-01/AiGatewayDelete.json
 func ExampleResourcesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +108,7 @@ func ExampleResourcesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/AiGatewayUpdate.json
+// Generated from example definition: 2026-11-01/AiGatewayUpdate.json
 func ExampleResourcesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +124,10 @@ func ExampleResourcesClient_BeginUpdate() {
 			"environment": to.Ptr("production"),
 		},
 		SKU: &armaigateway.SKUUpdate{
-			Name: to.Ptr("AIGateway"),
+			Name: to.Ptr("Standard"),
+		},
+		Properties: &armaigateway.UpdateProperties{
+			PublicNetworkAccess: to.Ptr(armaigateway.PublicNetworkAccessDisabled),
 		},
 	}, nil)
 	if err != nil {
@@ -145,7 +150,7 @@ func ExampleResourcesClient_BeginUpdate() {
 	// 			"environment": to.Ptr("production"),
 	// 		},
 	// 		SKU: &armaigateway.SKU{
-	// 			Name: to.Ptr("AIGateway"),
+	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		Identity: &armaigateway.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armaigateway.ManagedServiceIdentityTypeSystemAssigned),
@@ -155,6 +160,7 @@ func ExampleResourcesClient_BeginUpdate() {
 	// 		ETag: to.Ptr("\"AAAAAAAAAAI=\""),
 	// 		Properties: &armaigateway.Properties{
 	// 			ProvisioningState: to.Ptr(armaigateway.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armaigateway.PublicNetworkAccessDisabled),
 	// 			Frontend: &armaigateway.Frontend{
 	// 				DefaultHostname: to.Ptr("example-gateway.westus2.aigateway.azure-api.net"),
 	// 			},
@@ -163,7 +169,7 @@ func ExampleResourcesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/AiGatewayGet.json
+// Generated from example definition: 2026-11-01/AiGatewayGet.json
 func ExampleResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -191,7 +197,7 @@ func ExampleResourcesClient_Get() {
 	// 			"environment": to.Ptr("development"),
 	// 		},
 	// 		SKU: &armaigateway.SKU{
-	// 			Name: to.Ptr("AIGateway"),
+	// 			Name: to.Ptr("Standard"),
 	// 		},
 	// 		Identity: &armaigateway.ManagedServiceIdentity{
 	// 			Type: to.Ptr(armaigateway.ManagedServiceIdentityTypeSystemAssigned),
@@ -201,6 +207,7 @@ func ExampleResourcesClient_Get() {
 	// 		ETag: to.Ptr("\"AAAAAAAAAAE=\""),
 	// 		Properties: &armaigateway.Properties{
 	// 			ProvisioningState: to.Ptr(armaigateway.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armaigateway.PublicNetworkAccessEnabled),
 	// 			Frontend: &armaigateway.Frontend{
 	// 				DefaultHostname: to.Ptr("example-gateway.westus2.aigateway.azure-api.net"),
 	// 			},
@@ -209,7 +216,7 @@ func ExampleResourcesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/AiGatewayListByResourceGroup.json
+// Generated from example definition: 2026-11-01/AiGatewayListByResourceGroup.json
 func ExampleResourcesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,11 +250,12 @@ func ExampleResourcesClient_NewListByResourceGroupPager() {
 		// 					"environment": to.Ptr("development"),
 		// 				},
 		// 				SKU: &armaigateway.SKU{
-		// 					Name: to.Ptr("AIGateway"),
+		// 					Name: to.Ptr("Standard"),
 		// 				},
 		// 				ETag: to.Ptr("\"AAAAAAAAAAE=\""),
 		// 				Properties: &armaigateway.Properties{
 		// 					ProvisioningState: to.Ptr(armaigateway.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armaigateway.PublicNetworkAccessEnabled),
 		// 					Frontend: &armaigateway.Frontend{
 		// 						DefaultHostname: to.Ptr("example-gateway.westus2.aigateway.azure-api.net"),
 		// 					},
@@ -259,7 +267,7 @@ func ExampleResourcesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/AiGatewayListBySubscription.json
+// Generated from example definition: 2026-11-01/AiGatewayListBySubscription.json
 func ExampleResourcesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -293,11 +301,12 @@ func ExampleResourcesClient_NewListBySubscriptionPager() {
 		// 					"environment": to.Ptr("development"),
 		// 				},
 		// 				SKU: &armaigateway.SKU{
-		// 					Name: to.Ptr("AIGateway"),
+		// 					Name: to.Ptr("Standard"),
 		// 				},
 		// 				ETag: to.Ptr("\"AAAAAAAAAAE=\""),
 		// 				Properties: &armaigateway.Properties{
 		// 					ProvisioningState: to.Ptr(armaigateway.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armaigateway.PublicNetworkAccessEnabled),
 		// 					Frontend: &armaigateway.Frontend{
 		// 						DefaultHostname: to.Ptr("example-gateway.westus2.aigateway.azure-api.net"),
 		// 					},

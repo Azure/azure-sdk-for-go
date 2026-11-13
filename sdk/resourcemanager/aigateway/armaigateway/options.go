@@ -4,8 +4,224 @@
 
 package armaigateway
 
+// APIKeyResourcesClientCheckExistenceOptions contains the optional parameters for the APIKeyResourcesClient.CheckExistence
+// method.
+type APIKeyResourcesClientCheckExistenceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIKeyResourcesClientCreateOrUpdateOptions contains the optional parameters for the APIKeyResourcesClient.CreateOrUpdate
+// method.
+type APIKeyResourcesClientCreateOrUpdateOptions struct {
+	// ETag of the resource. Required for an update.
+	IfMatch *string
+
+	// Set to '*' to allow creating a new resource, but prevent updating an existing resource.
+	IfNoneMatch *string
+}
+
+// APIKeyResourcesClientDeleteOptions contains the optional parameters for the APIKeyResourcesClient.Delete method.
+type APIKeyResourcesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIKeyResourcesClientGetOptions contains the optional parameters for the APIKeyResourcesClient.Get method.
+type APIKeyResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIKeyResourcesClientListByAiGatewayOptions contains the optional parameters for the APIKeyResourcesClient.NewListByAiGatewayPager
+// method.
+type APIKeyResourcesClientListByAiGatewayOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIKeyResourcesClientListSecretsOptions contains the optional parameters for the APIKeyResourcesClient.ListSecrets method.
+type APIKeyResourcesClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIKeyResourcesClientRegeneratePrimaryKeyOptions contains the optional parameters for the APIKeyResourcesClient.RegeneratePrimaryKey
+// method.
+type APIKeyResourcesClientRegeneratePrimaryKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIKeyResourcesClientRegenerateSecondaryKeyOptions contains the optional parameters for the APIKeyResourcesClient.RegenerateSecondaryKey
+// method.
+type APIKeyResourcesClientRegenerateSecondaryKeyOptions struct {
+	// placeholder for future optional parameters
+}
+
+// APIKeyResourcesClientUpdateOptions contains the optional parameters for the APIKeyResourcesClient.Update method.
+type APIKeyResourcesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AliasResourcesClientCheckExistenceOptions contains the optional parameters for the AliasResourcesClient.CheckExistence
+// method.
+type AliasResourcesClientCheckExistenceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AliasResourcesClientCreateOrUpdateOptions contains the optional parameters for the AliasResourcesClient.CreateOrUpdate
+// method.
+type AliasResourcesClientCreateOrUpdateOptions struct {
+	// ETag of the resource. Required for an update.
+	IfMatch *string
+
+	// Set to '*' to allow creating a new resource, but prevent updating an existing resource.
+	IfNoneMatch *string
+}
+
+// AliasResourcesClientDeleteOptions contains the optional parameters for the AliasResourcesClient.Delete method.
+type AliasResourcesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AliasResourcesClientGetOptions contains the optional parameters for the AliasResourcesClient.Get method.
+type AliasResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AliasResourcesClientListByWorkspaceOptions contains the optional parameters for the AliasResourcesClient.NewListByWorkspacePager
+// method.
+type AliasResourcesClientListByWorkspaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// AliasResourcesClientUpdateOptions contains the optional parameters for the AliasResourcesClient.Update method.
+type AliasResourcesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelProviderResourcesClientCheckExistenceOptions contains the optional parameters for the ModelProviderResourcesClient.CheckExistence
+// method.
+type ModelProviderResourcesClientCheckExistenceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelProviderResourcesClientCreateOrUpdateOptions contains the optional parameters for the ModelProviderResourcesClient.CreateOrUpdate
+// method.
+type ModelProviderResourcesClientCreateOrUpdateOptions struct {
+	// ETag of the resource. Required for an update.
+	IfMatch *string
+
+	// Set to '*' to allow creating a new resource, but prevent updating an existing resource.
+	IfNoneMatch *string
+}
+
+// ModelProviderResourcesClientDeleteOptions contains the optional parameters for the ModelProviderResourcesClient.Delete
+// method.
+type ModelProviderResourcesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelProviderResourcesClientGetOptions contains the optional parameters for the ModelProviderResourcesClient.Get method.
+type ModelProviderResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelProviderResourcesClientListByWorkspaceOptions contains the optional parameters for the ModelProviderResourcesClient.NewListByWorkspacePager
+// method.
+type ModelProviderResourcesClientListByWorkspaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelProviderResourcesClientListSecretsOptions contains the optional parameters for the ModelProviderResourcesClient.ListSecrets
+// method.
+type ModelProviderResourcesClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelProviderResourcesClientUpdateOptions contains the optional parameters for the ModelProviderResourcesClient.Update
+// method.
+type ModelProviderResourcesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelResourcesClientCheckExistenceOptions contains the optional parameters for the ModelResourcesClient.CheckExistence
+// method.
+type ModelResourcesClientCheckExistenceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelResourcesClientCreateOrUpdateOptions contains the optional parameters for the ModelResourcesClient.CreateOrUpdate
+// method.
+type ModelResourcesClientCreateOrUpdateOptions struct {
+	// ETag of the resource. Required for an update.
+	IfMatch *string
+
+	// Set to '*' to allow creating a new resource, but prevent updating an existing resource.
+	IfNoneMatch *string
+}
+
+// ModelResourcesClientDeleteOptions contains the optional parameters for the ModelResourcesClient.Delete method.
+type ModelResourcesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelResourcesClientGetOptions contains the optional parameters for the ModelResourcesClient.Get method.
+type ModelResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelResourcesClientListByModelProviderOptions contains the optional parameters for the ModelResourcesClient.NewListByModelProviderPager
+// method.
+type ModelResourcesClientListByModelProviderOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ModelResourcesClientUpdateOptions contains the optional parameters for the ModelResourcesClient.Update method.
+type ModelResourcesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// NameAvailabilityOperationsClientCheckNameAvailabilityOptions contains the optional parameters for the NameAvailabilityOperationsClient.CheckNameAvailability
+// method.
+type NameAvailabilityOperationsClientCheckNameAvailabilityOptions struct {
+	// placeholder for future optional parameters
+}
+
 // OperationsClientListOptions contains the optional parameters for the OperationsClient.NewListPager method.
 type OperationsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginCreateOrUpdate
+// method.
+type PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientBeginDeleteOptions contains the optional parameters for the PrivateEndpointConnectionsClient.BeginDelete
+// method.
+type PrivateEndpointConnectionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// PrivateEndpointConnectionsClientGetOptions contains the optional parameters for the PrivateEndpointConnectionsClient.Get
+// method.
+type PrivateEndpointConnectionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateEndpointConnectionsClientListByAiGatewayOptions contains the optional parameters for the PrivateEndpointConnectionsClient.NewListByAiGatewayPager
+// method.
+type PrivateEndpointConnectionsClientListByAiGatewayOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesClientGetOptions contains the optional parameters for the PrivateLinkResourcesClient.Get method.
+type PrivateLinkResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// PrivateLinkResourcesClientListByAiGatewayOptions contains the optional parameters for the PrivateLinkResourcesClient.NewListByAiGatewayPager
+// method.
+type PrivateLinkResourcesClientListByAiGatewayOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -42,5 +258,122 @@ type ResourcesClientListByResourceGroupOptions struct {
 // ResourcesClientListBySubscriptionOptions contains the optional parameters for the ResourcesClient.NewListBySubscriptionPager
 // method.
 type ResourcesClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TelemetryExporterResourcesClientCheckExistenceOptions contains the optional parameters for the TelemetryExporterResourcesClient.CheckExistence
+// method.
+type TelemetryExporterResourcesClientCheckExistenceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TelemetryExporterResourcesClientCreateOrUpdateOptions contains the optional parameters for the TelemetryExporterResourcesClient.CreateOrUpdate
+// method.
+type TelemetryExporterResourcesClientCreateOrUpdateOptions struct {
+	// ETag of the resource. Required for an update.
+	IfMatch *string
+
+	// Set to '*' to allow creating a new resource, but prevent updating an existing resource.
+	IfNoneMatch *string
+}
+
+// TelemetryExporterResourcesClientDeleteOptions contains the optional parameters for the TelemetryExporterResourcesClient.Delete
+// method.
+type TelemetryExporterResourcesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TelemetryExporterResourcesClientGetOptions contains the optional parameters for the TelemetryExporterResourcesClient.Get
+// method.
+type TelemetryExporterResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TelemetryExporterResourcesClientListByWorkspaceOptions contains the optional parameters for the TelemetryExporterResourcesClient.NewListByWorkspacePager
+// method.
+type TelemetryExporterResourcesClientListByWorkspaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// TelemetryExporterResourcesClientUpdateOptions contains the optional parameters for the TelemetryExporterResourcesClient.Update
+// method.
+type TelemetryExporterResourcesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ToolServerResourcesClientCheckExistenceOptions contains the optional parameters for the ToolServerResourcesClient.CheckExistence
+// method.
+type ToolServerResourcesClientCheckExistenceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ToolServerResourcesClientCreateOrUpdateOptions contains the optional parameters for the ToolServerResourcesClient.CreateOrUpdate
+// method.
+type ToolServerResourcesClientCreateOrUpdateOptions struct {
+	// ETag of the resource. Required for an update.
+	IfMatch *string
+
+	// Set to '*' to allow creating a new resource, but prevent updating an existing resource.
+	IfNoneMatch *string
+}
+
+// ToolServerResourcesClientDeleteOptions contains the optional parameters for the ToolServerResourcesClient.Delete method.
+type ToolServerResourcesClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ToolServerResourcesClientGetOauth2LoginLinksOptions contains the optional parameters for the ToolServerResourcesClient.GetOauth2LoginLinks
+// method.
+type ToolServerResourcesClientGetOauth2LoginLinksOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ToolServerResourcesClientGetOptions contains the optional parameters for the ToolServerResourcesClient.Get method.
+type ToolServerResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ToolServerResourcesClientListByWorkspaceOptions contains the optional parameters for the ToolServerResourcesClient.NewListByWorkspacePager
+// method.
+type ToolServerResourcesClientListByWorkspaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ToolServerResourcesClientListSecretsOptions contains the optional parameters for the ToolServerResourcesClient.ListSecrets
+// method.
+type ToolServerResourcesClientListSecretsOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ToolServerResourcesClientUpdateOptions contains the optional parameters for the ToolServerResourcesClient.Update method.
+type ToolServerResourcesClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspaceModelOperationsClientListByWorkspaceOptions contains the optional parameters for the WorkspaceModelOperationsClient.NewListByWorkspacePager
+// method.
+type WorkspaceModelOperationsClientListByWorkspaceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspaceResourcesClientCheckExistenceOptions contains the optional parameters for the WorkspaceResourcesClient.CheckExistence
+// method.
+type WorkspaceResourcesClientCheckExistenceOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspaceResourcesClientGetOptions contains the optional parameters for the WorkspaceResourcesClient.Get method.
+type WorkspaceResourcesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspaceResourcesClientListByAiGatewayOptions contains the optional parameters for the WorkspaceResourcesClient.NewListByAiGatewayPager
+// method.
+type WorkspaceResourcesClientListByAiGatewayOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspaceResourcesClientUpdateOptions contains the optional parameters for the WorkspaceResourcesClient.Update method.
+type WorkspaceResourcesClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }

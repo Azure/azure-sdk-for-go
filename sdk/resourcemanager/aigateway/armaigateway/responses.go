@@ -4,10 +4,225 @@
 
 package armaigateway
 
+// APIKeyResourcesClientCheckExistenceResponse contains the response from method APIKeyResourcesClient.CheckExistence.
+type APIKeyResourcesClientCheckExistenceResponse struct {
+	// Entity tag of the resource.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// APIKeyResourcesClientCreateOrUpdateResponse contains the response from method APIKeyResourcesClient.CreateOrUpdate.
+type APIKeyResourcesClientCreateOrUpdateResponse struct {
+	// An AI Gateway API key resource.
+	APIKeyResource
+}
+
+// APIKeyResourcesClientDeleteResponse contains the response from method APIKeyResourcesClient.Delete.
+type APIKeyResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// APIKeyResourcesClientGetResponse contains the response from method APIKeyResourcesClient.Get.
+type APIKeyResourcesClientGetResponse struct {
+	// An AI Gateway API key resource.
+	APIKeyResource
+}
+
+// APIKeyResourcesClientListByAiGatewayResponse contains the response from method APIKeyResourcesClient.NewListByAiGatewayPager.
+type APIKeyResourcesClientListByAiGatewayResponse struct {
+	// The response of a AiGatewayApiKeyResource list operation.
+	APIKeyResourceListResult
+}
+
+// APIKeyResourcesClientListSecretsResponse contains the response from method APIKeyResourcesClient.ListSecrets.
+type APIKeyResourcesClientListSecretsResponse struct {
+	// Primary and secondary API key values.
+	APIKeyValues
+}
+
+// APIKeyResourcesClientRegeneratePrimaryKeyResponse contains the response from method APIKeyResourcesClient.RegeneratePrimaryKey.
+type APIKeyResourcesClientRegeneratePrimaryKeyResponse struct {
+	// placeholder for future response values
+}
+
+// APIKeyResourcesClientRegenerateSecondaryKeyResponse contains the response from method APIKeyResourcesClient.RegenerateSecondaryKey.
+type APIKeyResourcesClientRegenerateSecondaryKeyResponse struct {
+	// placeholder for future response values
+}
+
+// APIKeyResourcesClientUpdateResponse contains the response from method APIKeyResourcesClient.Update.
+type APIKeyResourcesClientUpdateResponse struct {
+	// An AI Gateway API key resource.
+	APIKeyResource
+}
+
+// AliasResourcesClientCheckExistenceResponse contains the response from method AliasResourcesClient.CheckExistence.
+type AliasResourcesClientCheckExistenceResponse struct {
+	// Entity tag of the resource.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// AliasResourcesClientCreateOrUpdateResponse contains the response from method AliasResourcesClient.CreateOrUpdate.
+type AliasResourcesClientCreateOrUpdateResponse struct {
+	// A stable client-facing model identity backed by an ordered pool of models.
+	AliasResource
+}
+
+// AliasResourcesClientDeleteResponse contains the response from method AliasResourcesClient.Delete.
+type AliasResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AliasResourcesClientGetResponse contains the response from method AliasResourcesClient.Get.
+type AliasResourcesClientGetResponse struct {
+	// A stable client-facing model identity backed by an ordered pool of models.
+	AliasResource
+}
+
+// AliasResourcesClientListByWorkspaceResponse contains the response from method AliasResourcesClient.NewListByWorkspacePager.
+type AliasResourcesClientListByWorkspaceResponse struct {
+	// The response of a AiGatewayAliasResource list operation.
+	AliasResourceListResult
+}
+
+// AliasResourcesClientUpdateResponse contains the response from method AliasResourcesClient.Update.
+type AliasResourcesClientUpdateResponse struct {
+	// A stable client-facing model identity backed by an ordered pool of models.
+	AliasResource
+}
+
+// ModelProviderResourcesClientCheckExistenceResponse contains the response from method ModelProviderResourcesClient.CheckExistence.
+type ModelProviderResourcesClientCheckExistenceResponse struct {
+	// Entity tag of the resource.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// ModelProviderResourcesClientCreateOrUpdateResponse contains the response from method ModelProviderResourcesClient.CreateOrUpdate.
+type ModelProviderResourcesClientCreateOrUpdateResponse struct {
+	// An AI Gateway model provider resource.
+	ModelProviderResource
+}
+
+// ModelProviderResourcesClientDeleteResponse contains the response from method ModelProviderResourcesClient.Delete.
+type ModelProviderResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ModelProviderResourcesClientGetResponse contains the response from method ModelProviderResourcesClient.Get.
+type ModelProviderResourcesClientGetResponse struct {
+	// An AI Gateway model provider resource.
+	ModelProviderResource
+}
+
+// ModelProviderResourcesClientListByWorkspaceResponse contains the response from method ModelProviderResourcesClient.NewListByWorkspacePager.
+type ModelProviderResourcesClientListByWorkspaceResponse struct {
+	// The response of a AiGatewayModelProviderResource list operation.
+	ModelProviderResourceListResult
+}
+
+// ModelProviderResourcesClientListSecretsResponse contains the response from method ModelProviderResourcesClient.ListSecrets.
+type ModelProviderResourcesClientListSecretsResponse struct {
+	// Secret values configured on a model provider.
+	ModelProviderSecrets
+}
+
+// ModelProviderResourcesClientUpdateResponse contains the response from method ModelProviderResourcesClient.Update.
+type ModelProviderResourcesClientUpdateResponse struct {
+	// An AI Gateway model provider resource.
+	ModelProviderResource
+}
+
+// ModelResourcesClientCheckExistenceResponse contains the response from method ModelResourcesClient.CheckExistence.
+type ModelResourcesClientCheckExistenceResponse struct {
+	// Entity tag of the resource.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// ModelResourcesClientCreateOrUpdateResponse contains the response from method ModelResourcesClient.CreateOrUpdate.
+type ModelResourcesClientCreateOrUpdateResponse struct {
+	// An AI Gateway model resource.
+	ModelResource
+}
+
+// ModelResourcesClientDeleteResponse contains the response from method ModelResourcesClient.Delete.
+type ModelResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ModelResourcesClientGetResponse contains the response from method ModelResourcesClient.Get.
+type ModelResourcesClientGetResponse struct {
+	// An AI Gateway model resource.
+	ModelResource
+}
+
+// ModelResourcesClientListByModelProviderResponse contains the response from method ModelResourcesClient.NewListByModelProviderPager.
+type ModelResourcesClientListByModelProviderResponse struct {
+	// The response of a AiGatewayModelResource list operation.
+	ModelResourceListResult
+}
+
+// ModelResourcesClientUpdateResponse contains the response from method ModelResourcesClient.Update.
+type ModelResourcesClientUpdateResponse struct {
+	// An AI Gateway model resource.
+	ModelResource
+}
+
+// NameAvailabilityOperationsClientCheckNameAvailabilityResponse contains the response from method NameAvailabilityOperationsClient.CheckNameAvailability.
+type NameAvailabilityOperationsClientCheckNameAvailabilityResponse struct {
+	// Availability of an AI Gateway name in a location.
+	CheckNameAvailabilityResponse
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
 	OperationListResult
+}
+
+// PrivateEndpointConnectionsClientCreateOrUpdateResponse contains the response from method PrivateEndpointConnectionsClient.BeginCreateOrUpdate.
+type PrivateEndpointConnectionsClientCreateOrUpdateResponse struct {
+	// A private endpoint connection of an AI Gateway.
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientDeleteResponse contains the response from method PrivateEndpointConnectionsClient.BeginDelete.
+type PrivateEndpointConnectionsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// PrivateEndpointConnectionsClientGetResponse contains the response from method PrivateEndpointConnectionsClient.Get.
+type PrivateEndpointConnectionsClientGetResponse struct {
+	// A private endpoint connection of an AI Gateway.
+	PrivateEndpointConnection
+}
+
+// PrivateEndpointConnectionsClientListByAiGatewayResponse contains the response from method PrivateEndpointConnectionsClient.NewListByAiGatewayPager.
+type PrivateEndpointConnectionsClientListByAiGatewayResponse struct {
+	// The response of a AiGatewayPrivateEndpointConnection list operation.
+	PrivateEndpointConnectionListResult
+}
+
+// PrivateLinkResourcesClientGetResponse contains the response from method PrivateLinkResourcesClient.Get.
+type PrivateLinkResourcesClientGetResponse struct {
+	// A private link resource of an AI Gateway.
+	PrivateLinkResource
+}
+
+// PrivateLinkResourcesClientListByAiGatewayResponse contains the response from method PrivateLinkResourcesClient.NewListByAiGatewayPager.
+type PrivateLinkResourcesClientListByAiGatewayResponse struct {
+	// The response of a AiGatewayPrivateLinkResource list operation.
+	PrivateLinkResourceListResult
 }
 
 // ResourcesClientCreateOrUpdateResponse contains the response from method ResourcesClient.BeginCreateOrUpdate.
@@ -43,4 +258,125 @@ type ResourcesClientListBySubscriptionResponse struct {
 type ResourcesClientUpdateResponse struct {
 	// An AI Gateway resource.
 	Resource
+}
+
+// TelemetryExporterResourcesClientCheckExistenceResponse contains the response from method TelemetryExporterResourcesClient.CheckExistence.
+type TelemetryExporterResourcesClientCheckExistenceResponse struct {
+	// Entity tag of the resource.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// TelemetryExporterResourcesClientCreateOrUpdateResponse contains the response from method TelemetryExporterResourcesClient.CreateOrUpdate.
+type TelemetryExporterResourcesClientCreateOrUpdateResponse struct {
+	// A telemetry export destination in the default AI Gateway workspace.
+	TelemetryExporterResource
+}
+
+// TelemetryExporterResourcesClientDeleteResponse contains the response from method TelemetryExporterResourcesClient.Delete.
+type TelemetryExporterResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// TelemetryExporterResourcesClientGetResponse contains the response from method TelemetryExporterResourcesClient.Get.
+type TelemetryExporterResourcesClientGetResponse struct {
+	// A telemetry export destination in the default AI Gateway workspace.
+	TelemetryExporterResource
+}
+
+// TelemetryExporterResourcesClientListByWorkspaceResponse contains the response from method TelemetryExporterResourcesClient.NewListByWorkspacePager.
+type TelemetryExporterResourcesClientListByWorkspaceResponse struct {
+	// The response of a AiGatewayTelemetryExporterResource list operation.
+	TelemetryExporterResourceListResult
+}
+
+// TelemetryExporterResourcesClientUpdateResponse contains the response from method TelemetryExporterResourcesClient.Update.
+type TelemetryExporterResourcesClientUpdateResponse struct {
+	// A telemetry export destination in the default AI Gateway workspace.
+	TelemetryExporterResource
+}
+
+// ToolServerResourcesClientCheckExistenceResponse contains the response from method ToolServerResourcesClient.CheckExistence.
+type ToolServerResourcesClientCheckExistenceResponse struct {
+	// Entity tag of the resource.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// ToolServerResourcesClientCreateOrUpdateResponse contains the response from method ToolServerResourcesClient.CreateOrUpdate.
+type ToolServerResourcesClientCreateOrUpdateResponse struct {
+	// An AI Gateway tool server resource.
+	ToolServerResource
+}
+
+// ToolServerResourcesClientDeleteResponse contains the response from method ToolServerResourcesClient.Delete.
+type ToolServerResourcesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ToolServerResourcesClientGetOauth2LoginLinksResponse contains the response from method ToolServerResourcesClient.GetOauth2LoginLinks.
+type ToolServerResourcesClientGetOauth2LoginLinksResponse struct {
+	// Links for completing OAuth consent for a tool-server endpoint.
+	ToolServerOauth2LoginLinks
+}
+
+// ToolServerResourcesClientGetResponse contains the response from method ToolServerResourcesClient.Get.
+type ToolServerResourcesClientGetResponse struct {
+	// An AI Gateway tool server resource.
+	ToolServerResource
+}
+
+// ToolServerResourcesClientListByWorkspaceResponse contains the response from method ToolServerResourcesClient.NewListByWorkspacePager.
+type ToolServerResourcesClientListByWorkspaceResponse struct {
+	// The response of a AiGatewayToolServerResource list operation.
+	ToolServerResourceListResult
+}
+
+// ToolServerResourcesClientListSecretsResponse contains the response from method ToolServerResourcesClient.ListSecrets.
+type ToolServerResourcesClientListSecretsResponse struct {
+	// Secret values configured on tool server endpoints.
+	ToolServerSecrets
+}
+
+// ToolServerResourcesClientUpdateResponse contains the response from method ToolServerResourcesClient.Update.
+type ToolServerResourcesClientUpdateResponse struct {
+	// An AI Gateway tool server resource.
+	ToolServerResource
+}
+
+// WorkspaceModelOperationsClientListByWorkspaceResponse contains the response from method WorkspaceModelOperationsClient.NewListByWorkspacePager.
+type WorkspaceModelOperationsClientListByWorkspaceResponse struct {
+	// The response of a AiGatewayModelResource list operation.
+	ModelResourceListResult
+}
+
+// WorkspaceResourcesClientCheckExistenceResponse contains the response from method WorkspaceResourcesClient.CheckExistence.
+type WorkspaceResourcesClientCheckExistenceResponse struct {
+	// Entity tag of the resource.
+	ETag *string
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// WorkspaceResourcesClientGetResponse contains the response from method WorkspaceResourcesClient.Get.
+type WorkspaceResourcesClientGetResponse struct {
+	// An AI Gateway workspace resource.
+	WorkspaceResource
+}
+
+// WorkspaceResourcesClientListByAiGatewayResponse contains the response from method WorkspaceResourcesClient.NewListByAiGatewayPager.
+type WorkspaceResourcesClientListByAiGatewayResponse struct {
+	// The response of a AiGatewayWorkspaceResource list operation.
+	WorkspaceResourceListResult
+}
+
+// WorkspaceResourcesClientUpdateResponse contains the response from method WorkspaceResourcesClient.Update.
+type WorkspaceResourcesClientUpdateResponse struct {
+	// An AI Gateway workspace resource.
+	WorkspaceResource
 }

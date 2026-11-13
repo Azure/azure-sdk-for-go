@@ -39,6 +39,9 @@ type ServerFactory struct {
 	// GatesServer contains the fakes for client GatesClient
 	GatesServer GatesServer
 
+	// IdentityBindingProfilesServer contains the fakes for client IdentityBindingProfilesClient
+	IdentityBindingProfilesServer IdentityBindingProfilesServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -68,6 +71,7 @@ type ServerFactoryTransport struct {
 	trFleetUpdateStrategiesServer        *FleetUpdateStrategiesServerTransport
 	trFleetsServer                       *FleetsServerTransport
 	trGatesServer                        *GatesServerTransport
+	trIdentityBindingProfilesServer      *IdentityBindingProfilesServerTransport
 	trOperationsServer                   *OperationsServerTransport
 	trUpdateRunsServer                   *UpdateRunsServerTransport
 }
@@ -119,6 +123,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "GatesClient":
 		initServer(&s.trMu, &s.trGatesServer, func() *GatesServerTransport { return NewGatesServerTransport(&s.srv.GatesServer) })
 		resp, err = s.trGatesServer.Do(req)
+	case "IdentityBindingProfilesClient":
+		initServer(&s.trMu, &s.trIdentityBindingProfilesServer, func() *IdentityBindingProfilesServerTransport {
+			return NewIdentityBindingProfilesServerTransport(&s.srv.IdentityBindingProfilesServer)
+		})
+		resp, err = s.trIdentityBindingProfilesServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

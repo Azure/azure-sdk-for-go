@@ -202,6 +202,35 @@ type GatesClientUpdateResponse struct {
 	Gate
 }
 
+// IdentityBindingProfilesClientApplyResponse contains the response from method IdentityBindingProfilesClient.BeginApply.
+type IdentityBindingProfilesClientApplyResponse struct {
+	// A fleet identity binding profile.
+	IdentityBindingProfile
+}
+
+// IdentityBindingProfilesClientCreateOrUpdateResponse contains the response from method IdentityBindingProfilesClient.BeginCreateOrUpdate.
+type IdentityBindingProfilesClientCreateOrUpdateResponse struct {
+	// A fleet identity binding profile.
+	IdentityBindingProfile
+}
+
+// IdentityBindingProfilesClientDeleteResponse contains the response from method IdentityBindingProfilesClient.BeginDelete.
+type IdentityBindingProfilesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// IdentityBindingProfilesClientGetResponse contains the response from method IdentityBindingProfilesClient.Get.
+type IdentityBindingProfilesClientGetResponse struct {
+	// A fleet identity binding profile.
+	IdentityBindingProfile
+}
+
+// IdentityBindingProfilesClientListByFleetResponse contains the response from method IdentityBindingProfilesClient.NewListByFleetPager.
+type IdentityBindingProfilesClientListByFleetResponse struct {
+	// The response of a IdentityBindingProfile list operation.
+	IdentityBindingProfileListResult
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.

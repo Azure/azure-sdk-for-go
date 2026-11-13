@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-11-01/Gates_Update.json
+// Generated from example definition: 2026-11-02-preview/Gates_Update.json
 func ExampleGatesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleGatesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/Gates_Get.json
+// Generated from example definition: 2026-11-02-preview/Gates_Get.json
 func ExampleGatesClient_Get_getsAGateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleGatesClient_Get_getsAGateResource() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/Gates_Get_ScheduledStart.json
+// Generated from example definition: 2026-11-02-preview/Gates_Get_ScheduledStart.json
 func ExampleGatesClient_Get_getsAScheduledStartGateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -179,7 +179,7 @@ func ExampleGatesClient_Get_getsAScheduledStartGateResource() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/Gates_ListByFleet.json
+// Generated from example definition: 2026-11-02-preview/Gates_ListByFleet.json
 func ExampleGatesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

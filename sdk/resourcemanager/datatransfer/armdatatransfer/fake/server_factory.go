@@ -27,11 +27,17 @@ type ServerFactory struct {
 	// FlowsServer contains the fakes for client FlowsClient
 	FlowsServer FlowsServer
 
+	// MessagingTransferFlowsServer contains the fakes for client MessagingTransferFlowsClient
+	MessagingTransferFlowsServer MessagingTransferFlowsServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
 	// PipelinesServer contains the fakes for client PipelinesClient
 	PipelinesServer PipelinesServer
+
+	// StorageTransferFlowsServer contains the fakes for client StorageTransferFlowsClient
+	StorageTransferFlowsServer StorageTransferFlowsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -46,14 +52,16 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armdatatransfer.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                       *ServerFactory
-	trMu                      sync.Mutex
-	trAzureDataTransferServer *AzureDataTransferServerTransport
-	trConnectionsServer       *ConnectionsServerTransport
-	trFlowProfilesServer      *FlowProfilesServerTransport
-	trFlowsServer             *FlowsServerTransport
-	trOperationsServer        *OperationsServerTransport
-	trPipelinesServer         *PipelinesServerTransport
+	srv                            *ServerFactory
+	trMu                           sync.Mutex
+	trAzureDataTransferServer      *AzureDataTransferServerTransport
+	trConnectionsServer            *ConnectionsServerTransport
+	trFlowProfilesServer           *FlowProfilesServerTransport
+	trFlowsServer                  *FlowsServerTransport
+	trMessagingTransferFlowsServer *MessagingTransferFlowsServerTransport
+	trOperationsServer             *OperationsServerTransport
+	trPipelinesServer              *PipelinesServerTransport
+	trStorageTransferFlowsServer   *StorageTransferFlowsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -83,12 +91,22 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "FlowsClient":
 		initServer(&s.trMu, &s.trFlowsServer, func() *FlowsServerTransport { return NewFlowsServerTransport(&s.srv.FlowsServer) })
 		resp, err = s.trFlowsServer.Do(req)
+	case "MessagingTransferFlowsClient":
+		initServer(&s.trMu, &s.trMessagingTransferFlowsServer, func() *MessagingTransferFlowsServerTransport {
+			return NewMessagingTransferFlowsServerTransport(&s.srv.MessagingTransferFlowsServer)
+		})
+		resp, err = s.trMessagingTransferFlowsServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
 	case "PipelinesClient":
 		initServer(&s.trMu, &s.trPipelinesServer, func() *PipelinesServerTransport { return NewPipelinesServerTransport(&s.srv.PipelinesServer) })
 		resp, err = s.trPipelinesServer.Do(req)
+	case "StorageTransferFlowsClient":
+		initServer(&s.trMu, &s.trStorageTransferFlowsServer, func() *StorageTransferFlowsServerTransport {
+			return NewStorageTransferFlowsServerTransport(&s.srv.StorageTransferFlowsServer)
+		})
+		resp, err = s.trStorageTransferFlowsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

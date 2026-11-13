@@ -19,7 +19,7 @@ import (
 // PipelinesClient - Defines the set of operations available for managing Pipeline resources.
 // Don't use this type directly, use NewPipelinesClient() instead.
 //
-// Generated from API version 2026-02-06-preview
+// Generated from API version 2026-06-29-preview
 type PipelinesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -111,11 +111,88 @@ func (client *PipelinesClient) approveConnectionCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connection); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginApproveTransferFlow - Approves pending flow request(s) associated with the specified Pipeline.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - pipelineName - The name of the pipeline on which to operate.
+//   - body - The content of the action request
+//   - options - PipelinesClientBeginApproveTransferFlowOptions contains the optional parameters for the PipelinesClient.BeginApproveTransferFlow
+//     method.
+func (client *PipelinesClient) BeginApproveTransferFlow(ctx context.Context, resourceGroupName string, pipelineName string, body TransferFlowRequestBody, options *PipelinesClientBeginApproveTransferFlowOptions) (*runtime.Poller[PipelinesClientApproveTransferFlowResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.approveTransferFlow(ctx, resourceGroupName, pipelineName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PipelinesClientApproveTransferFlowResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PipelinesClientApproveTransferFlowResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// approveTransferFlow - Approves pending flow request(s) associated with the specified Pipeline.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PipelinesClient) approveTransferFlow(ctx context.Context, resourceGroupName string, pipelineName string, body TransferFlowRequestBody, options *PipelinesClientBeginApproveTransferFlowOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PipelinesClient.BeginApproveTransferFlow"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.approveTransferFlowCreateRequest(ctx, resourceGroupName, pipelineName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// approveTransferFlowCreateRequest creates the approveTransferFlow request.
+func (client *PipelinesClient) approveTransferFlowCreateRequest(ctx context.Context, resourceGroupName string, pipelineName string, body TransferFlowRequestBody, _ *PipelinesClientBeginApproveTransferFlowOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/approveTransferFlow"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if pipelineName == "" {
+		return nil, errors.New("parameter pipelineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{pipelineName}", url.PathEscape(pipelineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260629Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -190,7 +267,7 @@ func (client *PipelinesClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -265,7 +342,7 @@ func (client *PipelinesClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -337,7 +414,7 @@ func (client *PipelinesClient) executeActionCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -414,11 +491,88 @@ func (client *PipelinesClient) rejectConnectionCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, connection); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// BeginRejectTransferFlow - Rejects pending flow request(s) associated with the specified Pipeline.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - pipelineName - The name of the pipeline on which to operate.
+//   - body - The content of the action request
+//   - options - PipelinesClientBeginRejectTransferFlowOptions contains the optional parameters for the PipelinesClient.BeginRejectTransferFlow
+//     method.
+func (client *PipelinesClient) BeginRejectTransferFlow(ctx context.Context, resourceGroupName string, pipelineName string, body TransferFlowRequestBody, options *PipelinesClientBeginRejectTransferFlowOptions) (*runtime.Poller[PipelinesClientRejectTransferFlowResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.rejectTransferFlow(ctx, resourceGroupName, pipelineName, body, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[PipelinesClientRejectTransferFlowResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[PipelinesClientRejectTransferFlowResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// rejectTransferFlow - Rejects pending flow request(s) associated with the specified Pipeline.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *PipelinesClient) rejectTransferFlow(ctx context.Context, resourceGroupName string, pipelineName string, body TransferFlowRequestBody, options *PipelinesClientBeginRejectTransferFlowOptions) (*http.Response, error) {
+	var err error
+	const operationName = "PipelinesClient.BeginRejectTransferFlow"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.rejectTransferFlowCreateRequest(ctx, resourceGroupName, pipelineName, body, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// rejectTransferFlowCreateRequest creates the rejectTransferFlow request.
+func (client *PipelinesClient) rejectTransferFlowCreateRequest(ctx context.Context, resourceGroupName string, pipelineName string, body TransferFlowRequestBody, _ *PipelinesClientBeginRejectTransferFlowOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/rejectTransferFlow"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if pipelineName == "" {
+		return nil, errors.New("parameter pipelineName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{pipelineName}", url.PathEscape(pipelineName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260629Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, body); err != nil {
 		return nil, err
 	}
 	return req, nil
@@ -492,7 +646,7 @@ func (client *PipelinesClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -545,7 +699,7 @@ func (client *PipelinesClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -606,7 +760,7 @@ func (client *PipelinesClient) listCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.Connections != nil {
@@ -677,7 +831,7 @@ func (client *PipelinesClient) listSchemasListCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -752,7 +906,7 @@ func (client *PipelinesClient) listByResourceGroupCreateRequest(ctx context.Cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260206Preview)
+		reqQP.Set("api-version", version20260629Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -819,7 +973,7 @@ func (client *PipelinesClient) listBySubscriptionCreateRequest(ctx context.Conte
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260206Preview)
+		reqQP.Set("api-version", version20260629Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -834,6 +988,93 @@ func (client *PipelinesClient) listBySubscriptionHandleResponse(resp *http.Respo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PipelineListResult); err != nil {
 		return PipelinesClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListTransferFlowsPager - Lists the storage and messaging transfer flows that use the specified Pipeline, across all
+// subscriptions and tenants that use it. This is the pipeline approver view; it differs from the subscription and resource
+// group list operations, which only return the caller's own transfer flows. Results do not cross clouds; the remote side
+// of each flow is referenced only through remoteTransferFlowResourceId.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - pipelineName - The name of the pipeline on which to operate.
+//   - options - PipelinesClientListTransferFlowsOptions contains the optional parameters for the PipelinesClient.NewListTransferFlowsPager
+//     method.
+func (client *PipelinesClient) NewListTransferFlowsPager(resourceGroupName string, pipelineName string, options *PipelinesClientListTransferFlowsOptions) *runtime.Pager[PipelinesClientListTransferFlowsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PipelinesClientListTransferFlowsResponse]{
+		More: func(page PipelinesClientListTransferFlowsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PipelinesClientListTransferFlowsResponse) (PipelinesClientListTransferFlowsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PipelinesClient.NewListTransferFlowsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listTransferFlowsCreateRequest(ctx, resourceGroupName, pipelineName, nextLink, options)
+			if err != nil {
+				return PipelinesClientListTransferFlowsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PipelinesClientListTransferFlowsResponse{}, err
+			}
+			return client.listTransferFlowsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listTransferFlowsCreateRequest creates the ListTransferFlows request.
+func (client *PipelinesClient) listTransferFlowsCreateRequest(ctx context.Context, resourceGroupName string, pipelineName string, nextLink string, options *PipelinesClientListTransferFlowsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureDataTransfer/pipelines/{pipelineName}/listTransferFlows"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if pipelineName == "" {
+			return nil, errors.New("parameter pipelineName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{pipelineName}", url.PathEscape(pipelineName))
+		req, err = runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260629Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+		if options != nil && options.Body != nil {
+			req.Raw().Header["Content-Type"] = []string{"application/json"}
+			if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+				return nil, err
+			}
+			return req, nil
+		}
+	}
+	return req, nil
+}
+
+// listTransferFlowsHandleResponse handles the ListTransferFlows response.
+func (client *PipelinesClient) listTransferFlowsHandleResponse(resp *http.Response, successCodes ...int) (PipelinesClientListTransferFlowsResponse, error) {
+	result := PipelinesClientListTransferFlowsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListTransferFlowsByPipelineResult); err != nil {
+		return PipelinesClientListTransferFlowsResponse{}, err
 	}
 	return result, nil
 }

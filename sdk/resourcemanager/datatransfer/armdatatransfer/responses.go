@@ -214,6 +214,59 @@ type FlowsClientUpdateResponse struct {
 	// placeholder for future response values
 }
 
+// MessagingTransferFlowsClientCreateOrUpdateResponse contains the response from method MessagingTransferFlowsClient.BeginCreateOrUpdate.
+type MessagingTransferFlowsClientCreateOrUpdateResponse struct {
+	// The messaging transfer flow resource definition.
+	MessagingTransferFlow
+}
+
+// MessagingTransferFlowsClientDeleteResponse contains the response from method MessagingTransferFlowsClient.BeginDelete.
+type MessagingTransferFlowsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// MessagingTransferFlowsClientDisableTransferResponse contains the response from method MessagingTransferFlowsClient.BeginDisableTransfer.
+type MessagingTransferFlowsClientDisableTransferResponse struct {
+	// The messaging transfer flow resource definition.
+	MessagingTransferFlow
+}
+
+// MessagingTransferFlowsClientEnableTransferResponse contains the response from method MessagingTransferFlowsClient.BeginEnableTransfer.
+type MessagingTransferFlowsClientEnableTransferResponse struct {
+	// The messaging transfer flow resource definition.
+	MessagingTransferFlow
+}
+
+// MessagingTransferFlowsClientGetResponse contains the response from method MessagingTransferFlowsClient.Get.
+type MessagingTransferFlowsClientGetResponse struct {
+	// The messaging transfer flow resource definition.
+	MessagingTransferFlow
+}
+
+// MessagingTransferFlowsClientLinkRemoteFlowResponse contains the response from method MessagingTransferFlowsClient.BeginLinkRemoteFlow.
+type MessagingTransferFlowsClientLinkRemoteFlowResponse struct {
+	// The messaging transfer flow resource definition.
+	MessagingTransferFlow
+}
+
+// MessagingTransferFlowsClientListByResourceGroupResponse contains the response from method MessagingTransferFlowsClient.NewListByResourceGroupPager.
+type MessagingTransferFlowsClientListByResourceGroupResponse struct {
+	// The response of a MessagingTransferFlow list operation.
+	MessagingTransferFlowListResult
+}
+
+// MessagingTransferFlowsClientListBySubscriptionResponse contains the response from method MessagingTransferFlowsClient.NewListBySubscriptionPager.
+type MessagingTransferFlowsClientListBySubscriptionResponse struct {
+	// The response of a MessagingTransferFlow list operation.
+	MessagingTransferFlowListResult
+}
+
+// MessagingTransferFlowsClientUpdateResponse contains the response from method MessagingTransferFlowsClient.BeginUpdate.
+type MessagingTransferFlowsClientUpdateResponse struct {
+	// The messaging transfer flow resource definition.
+	MessagingTransferFlow
+}
+
 // OperationsClientListResponse contains the response from method OperationsClient.NewListPager.
 type OperationsClientListResponse struct {
 	// A list of REST API operations supported by an Azure Resource Provider. It contains an URL link to get the next set of results.
@@ -224,6 +277,12 @@ type OperationsClientListResponse struct {
 type PipelinesClientApproveConnectionResponse struct {
 	// The connection resource definition.
 	Connection
+}
+
+// PipelinesClientApproveTransferFlowResponse contains the response from method PipelinesClient.BeginApproveTransferFlow.
+type PipelinesClientApproveTransferFlowResponse struct {
+	// The resource response body to reference.
+	TransferFlowResponseBody
 }
 
 // PipelinesClientCreateOrUpdateResponse contains the response from method PipelinesClient.BeginCreateOrUpdate.
@@ -277,13 +336,78 @@ type PipelinesClientListSchemasListResponse struct {
 	SchemasListResult
 }
 
+// PipelinesClientListTransferFlowsResponse contains the response from method PipelinesClient.NewListTransferFlowsPager.
+type PipelinesClientListTransferFlowsResponse struct {
+	// A page of transfer flow summaries associated with a pipeline.
+	ListTransferFlowsByPipelineResult
+}
+
 // PipelinesClientRejectConnectionResponse contains the response from method PipelinesClient.BeginRejectConnection.
 type PipelinesClientRejectConnectionResponse struct {
 	// The connection resource definition.
 	Connection
 }
 
+// PipelinesClientRejectTransferFlowResponse contains the response from method PipelinesClient.BeginRejectTransferFlow.
+type PipelinesClientRejectTransferFlowResponse struct {
+	// The resource response body to reference.
+	TransferFlowResponseBody
+}
+
 // PipelinesClientUpdateResponse contains the response from method PipelinesClient.BeginUpdate.
 type PipelinesClientUpdateResponse struct {
 	// placeholder for future response values
+}
+
+// StorageTransferFlowsClientCreateOrUpdateResponse contains the response from method StorageTransferFlowsClient.BeginCreateOrUpdate.
+type StorageTransferFlowsClientCreateOrUpdateResponse struct {
+	// The storage flow resource definition.
+	StorageTransferFlow
+}
+
+// StorageTransferFlowsClientDeleteResponse contains the response from method StorageTransferFlowsClient.BeginDelete.
+type StorageTransferFlowsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// StorageTransferFlowsClientDisableTransferResponse contains the response from method StorageTransferFlowsClient.BeginDisableTransfer.
+type StorageTransferFlowsClientDisableTransferResponse struct {
+	// The storage flow resource definition.
+	StorageTransferFlow
+}
+
+// StorageTransferFlowsClientEnableTransferResponse contains the response from method StorageTransferFlowsClient.BeginEnableTransfer.
+type StorageTransferFlowsClientEnableTransferResponse struct {
+	// The storage flow resource definition.
+	StorageTransferFlow
+}
+
+// StorageTransferFlowsClientGetResponse contains the response from method StorageTransferFlowsClient.Get.
+type StorageTransferFlowsClientGetResponse struct {
+	// The storage flow resource definition.
+	StorageTransferFlow
+}
+
+// StorageTransferFlowsClientLinkRemoteFlowResponse contains the response from method StorageTransferFlowsClient.BeginLinkRemoteFlow.
+type StorageTransferFlowsClientLinkRemoteFlowResponse struct {
+	// The storage flow resource definition.
+	StorageTransferFlow
+}
+
+// StorageTransferFlowsClientListByResourceGroupResponse contains the response from method StorageTransferFlowsClient.NewListByResourceGroupPager.
+type StorageTransferFlowsClientListByResourceGroupResponse struct {
+	// The response of a StorageTransferFlow list operation.
+	StorageTransferFlowListResult
+}
+
+// StorageTransferFlowsClientListBySubscriptionResponse contains the response from method StorageTransferFlowsClient.NewListBySubscriptionPager.
+type StorageTransferFlowsClientListBySubscriptionResponse struct {
+	// The response of a StorageTransferFlow list operation.
+	StorageTransferFlowListResult
+}
+
+// StorageTransferFlowsClientUpdateResponse contains the response from method StorageTransferFlowsClient.BeginUpdate.
+type StorageTransferFlowsClientUpdateResponse struct {
+	// The storage flow resource definition.
+	StorageTransferFlow
 }

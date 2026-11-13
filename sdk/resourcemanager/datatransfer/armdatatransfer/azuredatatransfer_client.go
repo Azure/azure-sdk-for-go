@@ -18,7 +18,7 @@ import (
 // schemas and FlowProfiles in Azure Data Transfer.
 // Don't use this type directly, use NewAzureDataTransferClient() instead.
 //
-// Generated from API version 2026-02-06-preview
+// Generated from API version 2026-06-29-preview
 type AzureDataTransferClient struct {
 	internal *arm.Client
 }
@@ -69,7 +69,7 @@ func (client *AzureDataTransferClient) listApprovedSchemasCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -122,7 +122,7 @@ func (client *AzureDataTransferClient) listFlowProfilesCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -175,7 +175,7 @@ func (client *AzureDataTransferClient) listPipelineMetadataCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -229,7 +229,7 @@ func (client *AzureDataTransferClient) validateSchemaCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260206Preview)
+	reqQP.Set("api-version", version20260629Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

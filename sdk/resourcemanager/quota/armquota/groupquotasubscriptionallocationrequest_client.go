@@ -7,18 +7,19 @@ package armquota
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // GroupQuotaSubscriptionAllocationRequestClient contains the methods for the GroupQuotaSubscriptionAllocationRequest group.
 // Don't use this type directly, use NewGroupQuotaSubscriptionAllocationRequestClient() instead.
+//
+// Generated from API version 2026-09-01-preview
 type GroupQuotaSubscriptionAllocationRequestClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -29,6 +30,9 @@ type GroupQuotaSubscriptionAllocationRequestClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGroupQuotaSubscriptionAllocationRequestClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GroupQuotaSubscriptionAllocationRequestClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -40,167 +44,12 @@ func NewGroupQuotaSubscriptionAllocationRequestClient(subscriptionID string, cre
 	return client, nil
 }
 
-// Get - Get the quota allocation request status for the subscriptionId by allocationId.
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
-//   - managementGroupID - The management group ID.
-//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-//   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
-//     provider supports this API.
-//   - allocationID - Request Id.
-//   - options - GroupQuotaSubscriptionAllocationRequestClientGetOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationRequestClient.Get
-//     method.
-func (client *GroupQuotaSubscriptionAllocationRequestClient) Get(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, allocationID string, options *GroupQuotaSubscriptionAllocationRequestClientGetOptions) (GroupQuotaSubscriptionAllocationRequestClientGetResponse, error) {
-	var err error
-	const operationName = "GroupQuotaSubscriptionAllocationRequestClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, allocationID, options)
-	if err != nil {
-		return GroupQuotaSubscriptionAllocationRequestClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GroupQuotaSubscriptionAllocationRequestClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GroupQuotaSubscriptionAllocationRequestClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *GroupQuotaSubscriptionAllocationRequestClient) getCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, allocationID string, _ *GroupQuotaSubscriptionAllocationRequestClientGetOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/subscriptions/{subscriptionId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/quotaAllocationRequests/{allocationId}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if groupQuotaName == "" {
-		return nil, errors.New("parameter groupQuotaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
-	if resourceProviderName == "" {
-		return nil, errors.New("parameter resourceProviderName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
-	if allocationID == "" {
-		return nil, errors.New("parameter allocationID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{allocationId}", url.PathEscape(allocationID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *GroupQuotaSubscriptionAllocationRequestClient) getHandleResponse(resp *http.Response) (GroupQuotaSubscriptionAllocationRequestClientGetResponse, error) {
-	result := GroupQuotaSubscriptionAllocationRequestClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AllocationRequestStatus); err != nil {
-		return GroupQuotaSubscriptionAllocationRequestClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Get all the quotaAllocationRequests for a resourceProvider/location. The filter paramter for location is
-// required.
-//
-// Generated from API version 2025-09-01
-//   - managementGroupID - The management group ID.
-//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
-//   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
-//     provider supports this API.
-//   - Filter - | Field | Supported operators
-//     |---------------------|------------------------
-//     location eq {location}
-//     Example: $filter=location eq eastus
-//   - options - GroupQuotaSubscriptionAllocationRequestClientListOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationRequestClient.NewListPager
-//     method.
-func (client *GroupQuotaSubscriptionAllocationRequestClient) NewListPager(managementGroupID string, groupQuotaName string, resourceProviderName string, filter string, options *GroupQuotaSubscriptionAllocationRequestClientListOptions) *runtime.Pager[GroupQuotaSubscriptionAllocationRequestClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[GroupQuotaSubscriptionAllocationRequestClientListResponse]{
-		More: func(page GroupQuotaSubscriptionAllocationRequestClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *GroupQuotaSubscriptionAllocationRequestClientListResponse) (GroupQuotaSubscriptionAllocationRequestClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GroupQuotaSubscriptionAllocationRequestClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, filter, options)
-			}, nil)
-			if err != nil {
-				return GroupQuotaSubscriptionAllocationRequestClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *GroupQuotaSubscriptionAllocationRequestClient) listCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, filter string, _ *GroupQuotaSubscriptionAllocationRequestClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/subscriptions/{subscriptionId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/quotaAllocationRequests"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if managementGroupID == "" {
-		return nil, errors.New("parameter managementGroupID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
-	if groupQuotaName == "" {
-		return nil, errors.New("parameter groupQuotaName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
-	if resourceProviderName == "" {
-		return nil, errors.New("parameter resourceProviderName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("$filter", filter)
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *GroupQuotaSubscriptionAllocationRequestClient) listHandleResponse(resp *http.Response) (GroupQuotaSubscriptionAllocationRequestClientListResponse, error) {
-	result := GroupQuotaSubscriptionAllocationRequestClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AllocationRequestStatusList); err != nil {
-		return GroupQuotaSubscriptionAllocationRequestClientListResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginUpdate - Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions
 // or reduce the quota allocated to subscription to give back the unused quota ( quota >= usages) to the groupQuota. So, this
 // API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can be assigned to
 // another subscriptions in the GroupQuota. User can collect unused quotas from multiple subscriptions within the groupQuota
 // and assign the groupQuota to the subscription, where it's needed.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -226,14 +75,12 @@ func (client *GroupQuotaSubscriptionAllocationRequestClient) BeginUpdate(ctx con
 	}
 }
 
-// Update - Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
+// update - Request to assign quota from group quota to a specific Subscription. The assign GroupQuota to subscriptions or
 // reduce the quota allocated to subscription to give back the unused quota ( quota >= usages) to the groupQuota. So, this
 // API can be used to assign Quota to subscriptions and assign back unused quota to group quota, which can be assigned to
 // another subscriptions in the GroupQuota. User can collect unused quotas from multiple subscriptions within the groupQuota
 // and assign the groupQuota to the subscription, where it's needed.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 func (client *GroupQuotaSubscriptionAllocationRequestClient) update(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, allocateQuotaRequest SubscriptionQuotaAllocationsList, options *GroupQuotaSubscriptionAllocationRequestClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "GroupQuotaSubscriptionAllocationRequestClient.BeginUpdate"
@@ -255,11 +102,11 @@ func (client *GroupQuotaSubscriptionAllocationRequestClient) update(ctx context.
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *GroupQuotaSubscriptionAllocationRequestClient) updateCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, allocateQuotaRequest SubscriptionQuotaAllocationsList, _ *GroupQuotaSubscriptionAllocationRequestClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/subscriptions/{subscriptionId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/quotaAllocations/{location}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if managementGroupID == "" {
@@ -283,12 +130,174 @@ func (client *GroupQuotaSubscriptionAllocationRequestClient) updateCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, allocateQuotaRequest); err != nil {
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Get the quota allocation request status for the subscriptionId by allocationId.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - managementGroupID - The management group ID.
+//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+//   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
+//     provider supports this API.
+//   - allocationID - Request Id.
+//   - options - GroupQuotaSubscriptionAllocationRequestClientGetOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationRequestClient.Get
+//     method.
+func (client *GroupQuotaSubscriptionAllocationRequestClient) Get(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, allocationID string, options *GroupQuotaSubscriptionAllocationRequestClientGetOptions) (GroupQuotaSubscriptionAllocationRequestClientGetResponse, error) {
+	var err error
+	const operationName = "GroupQuotaSubscriptionAllocationRequestClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, allocationID, options)
+	if err != nil {
+		return GroupQuotaSubscriptionAllocationRequestClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GroupQuotaSubscriptionAllocationRequestClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *GroupQuotaSubscriptionAllocationRequestClient) getCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, allocationID string, _ *GroupQuotaSubscriptionAllocationRequestClientGetOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/subscriptions/{subscriptionId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/quotaAllocationRequests/{allocationId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if managementGroupID == "" {
+		return nil, errors.New("parameter managementGroupID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+	if groupQuotaName == "" {
+		return nil, errors.New("parameter groupQuotaName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
+	if resourceProviderName == "" {
+		return nil, errors.New("parameter resourceProviderName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
+	if allocationID == "" {
+		return nil, errors.New("parameter allocationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{allocationId}", url.PathEscape(allocationID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *GroupQuotaSubscriptionAllocationRequestClient) getHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotaSubscriptionAllocationRequestClientGetResponse, error) {
+	result := GroupQuotaSubscriptionAllocationRequestClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AllocationRequestStatus); err != nil {
+		return GroupQuotaSubscriptionAllocationRequestClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Get all the quotaAllocationRequests for a resourceProvider/location. The filter paramter for location is
+// required.
+//   - managementGroupID - The management group ID.
+//   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
+//   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
+//     provider supports this API.
+//   - filter - | Field | Supported operators
+//     |---------------------|------------------------
+//     location eq {location}
+//     Example: $filter=location eq eastus
+//   - options - GroupQuotaSubscriptionAllocationRequestClientListOptions contains the optional parameters for the GroupQuotaSubscriptionAllocationRequestClient.NewListPager
+//     method.
+func (client *GroupQuotaSubscriptionAllocationRequestClient) NewListPager(managementGroupID string, groupQuotaName string, resourceProviderName string, filter string, options *GroupQuotaSubscriptionAllocationRequestClientListOptions) *runtime.Pager[GroupQuotaSubscriptionAllocationRequestClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[GroupQuotaSubscriptionAllocationRequestClientListResponse]{
+		More: func(page GroupQuotaSubscriptionAllocationRequestClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *GroupQuotaSubscriptionAllocationRequestClientListResponse) (GroupQuotaSubscriptionAllocationRequestClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "GroupQuotaSubscriptionAllocationRequestClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, managementGroupID, groupQuotaName, resourceProviderName, filter, nextLink, options)
+			if err != nil {
+				return GroupQuotaSubscriptionAllocationRequestClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return GroupQuotaSubscriptionAllocationRequestClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *GroupQuotaSubscriptionAllocationRequestClient) listCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, filter string, nextLink string, _ *GroupQuotaSubscriptionAllocationRequestClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/subscriptions/{subscriptionId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/quotaAllocationRequests"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if managementGroupID == "" {
+			return nil, errors.New("parameter managementGroupID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{managementGroupId}", url.PathEscape(managementGroupID))
+		if groupQuotaName == "" {
+			return nil, errors.New("parameter groupQuotaName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{groupQuotaName}", url.PathEscape(groupQuotaName))
+		if resourceProviderName == "" {
+			return nil, errors.New("parameter resourceProviderName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceProviderName}", url.PathEscape(resourceProviderName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("$filter", filter)
+		reqQP.Set("api-version", version20260901Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *GroupQuotaSubscriptionAllocationRequestClient) listHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotaSubscriptionAllocationRequestClientListResponse, error) {
+	result := GroupQuotaSubscriptionAllocationRequestClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AllocationRequestStatusList); err != nil {
+		return GroupQuotaSubscriptionAllocationRequestClientListResponse{}, err
+	}
+	return result, nil
 }

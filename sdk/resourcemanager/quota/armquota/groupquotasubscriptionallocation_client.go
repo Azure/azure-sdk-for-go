@@ -18,6 +18,8 @@ import (
 
 // GroupQuotaSubscriptionAllocationClient contains the methods for the GroupQuotaSubscriptionAllocation group.
 // Don't use this type directly, use NewGroupQuotaSubscriptionAllocationClient() instead.
+//
+// Generated from API version 2026-09-01-preview
 type GroupQuotaSubscriptionAllocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -28,6 +30,9 @@ type GroupQuotaSubscriptionAllocationClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGroupQuotaSubscriptionAllocationClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GroupQuotaSubscriptionAllocationClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -43,8 +48,6 @@ func NewGroupQuotaSubscriptionAllocationClient(subscriptionID string, credential
 // passed in $filter=resourceName eq {SKU}. This will include the GroupQuota and total quota allocated to the subscription.
 // Only the Group quota allocated to the subscription can be allocated back to the MG Group Quota.
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-09-01
 //   - managementGroupID - The management group ID.
 //   - groupQuotaName - The GroupQuota name. The name should be unique for the provided context tenantId/MgId.
 //   - resourceProviderName - The resource provider name, such as - Microsoft.Compute. Currently only Microsoft.Compute resource
@@ -66,11 +69,7 @@ func (client *GroupQuotaSubscriptionAllocationClient) List(ctx context.Context, 
 	if err != nil {
 		return GroupQuotaSubscriptionAllocationClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return GroupQuotaSubscriptionAllocationClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -78,7 +77,7 @@ func (client *GroupQuotaSubscriptionAllocationClient) List(ctx context.Context, 
 func (client *GroupQuotaSubscriptionAllocationClient) listCreateRequest(ctx context.Context, managementGroupID string, groupQuotaName string, resourceProviderName string, location string, _ *GroupQuotaSubscriptionAllocationClientListOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{managementGroupId}/subscriptions/{subscriptionId}/providers/Microsoft.Quota/groupQuotas/{groupQuotaName}/resourceProviders/{resourceProviderName}/quotaAllocations/{location}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if managementGroupID == "" {
@@ -102,15 +101,18 @@ func (client *GroupQuotaSubscriptionAllocationClient) listCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-09-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260901Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *GroupQuotaSubscriptionAllocationClient) listHandleResponse(resp *http.Response) (GroupQuotaSubscriptionAllocationClientListResponse, error) {
+func (client *GroupQuotaSubscriptionAllocationClient) listHandleResponse(resp *http.Response, successCodes ...int) (GroupQuotaSubscriptionAllocationClientListResponse, error) {
 	result := GroupQuotaSubscriptionAllocationClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SubscriptionQuotaAllocationsList); err != nil {
 		return GroupQuotaSubscriptionAllocationClientListResponse{}, err
 	}

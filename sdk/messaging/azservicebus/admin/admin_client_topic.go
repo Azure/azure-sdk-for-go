@@ -71,7 +71,7 @@ type TopicRuntimeProperties struct {
 	// UpdatedAt is when the entity was last updated.
 	UpdatedAt time.Time
 
-	// AccessedAt is when the entity was last updated.
+	// AccessedAt is when a message was last sent to the topic.
 	AccessedAt time.Time
 
 	// SubscriptionCount is the number of subscriptions to the topic.

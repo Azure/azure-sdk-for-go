@@ -10,6 +10,8 @@
 
 ### Other Changes
 
+- Clarified the `AccessedAt` documentation for queue, topic, and subscription runtime properties. ([#27849](https://github.com/Azure/azure-sdk-for-go/issues/27849))
+
 ## 1.11.0 (2026-10-06)
 
 ### Features Added

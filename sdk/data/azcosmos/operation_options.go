@@ -26,7 +26,7 @@ type OperationOptions struct {
 	// EndToEndTimeout bounds the operation. Nil inherits; explicit values below one second
 	// clamp to one second, including zero. Context deadlines can stop waiting earlier.
 	// For item operations with no configured or inherited timeout, the caller's remaining
-	// deadline supplies the native timeout. Query-page deadlines only bound the Go wait.
+	// deadline supplies the native timeout. Query and change-feed page deadlines only bound the Go wait.
 	// Account construction uses its context rather than this timeout.
 	EndToEndTimeout *time.Duration
 	// PatchStrategy selects patch execution. A patch-specific Strategy takes precedence.

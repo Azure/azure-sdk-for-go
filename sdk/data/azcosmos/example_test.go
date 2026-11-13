@@ -12,6 +12,7 @@ import (
 	"errors"
 	"io"
 	"log"
+	"net/http"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -56,6 +57,32 @@ func ExampleContainerClient_NewQueryItemsPager() {
 	closeClient()
 }
 
+func ExampleContainerClient_NewChangeFeedPager() {
+	container, closeClient := exampleContainer()
+	scope := azcosmos.NewFeedScopeForPartitionKey(azcosmos.NewPartitionKeyString("catalog"))
+	pager := container.NewChangeFeedPager(scope, azcosmos.NewChangeFeedStartFromNow(), nil)
+	for poll := 0; poll < 3 && pager.More(); poll++ {
+		page, err := pager.NextPage(context.TODO())
+		if err != nil {
+			closeErr := pager.Close()
+			closeClient()
+			// TODO: Update the following line with your application specific error handling logic
+			log.Fatalf("ERROR: %s", errors.Join(err, closeErr))
+		}
+		log.Printf("received %d raw change envelopes, charge %.2f RU", len(page.Items), page.RequestCharge)
+		if page.StatusCode == http.StatusNotModified {
+			// An idle page is not EOF; the application chooses its polling cadence.
+			time.Sleep(time.Second)
+		}
+	}
+	if err := pager.Close(); err != nil {
+		closeClient()
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	closeClient()
+}
+
 func ExampleContainerClient_NewReadManyItemsPager() {
 	container, closeClient := exampleContainer()
 	catalog := azcosmos.NewPartitionKeyString("catalog")
@@ -78,6 +105,52 @@ func ExampleContainerClient_NewReadManyItemsPager() {
 		}
 	}
 	if err := pager.Close(); err != nil {
+		closeClient()
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+	closeClient()
+}
+
+func ExampleChangeFeedPager_ContinuationToken() {
+	container, closeClient := exampleContainer()
+	scope := azcosmos.NewFeedScopeForFullContainer()
+	mode := azcosmos.ChangeFeedModeLatestVersion
+	pager := container.NewChangeFeedPager(scope, azcosmos.NewChangeFeedStartFromBeginning(),
+		&azcosmos.ChangeFeedOptions{Mode: mode})
+	page, err := pager.NextPage(context.TODO())
+	if err != nil {
+		closeErr := pager.Close()
+		closeClient()
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", errors.Join(err, closeErr))
+	}
+	log.Printf("process %d raw change envelopes before saving progress", len(page.Items))
+	token, err := pager.ContinuationToken(context.TODO())
+	if err != nil {
+		closeErr := pager.Close()
+		closeClient()
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", errors.Join(err, closeErr))
+	}
+	if err := pager.Close(); err != nil {
+		closeClient()
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Persist token according to the application's processing policy. It is not an acknowledgement.
+	resumed := container.NewChangeFeedPager(scope, azcosmos.NewChangeFeedStartFromNow(),
+		&azcosmos.ChangeFeedOptions{Mode: mode, Feed: azcosmos.FeedOptions{ContinuationToken: token}})
+	page, err = resumed.NextPage(context.TODO())
+	if err != nil {
+		closeErr := resumed.Close()
+		closeClient()
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", errors.Join(err, closeErr))
+	}
+	log.Printf("resumed with %d raw change envelopes", len(page.Items))
+	if err := resumed.Close(); err != nil {
 		closeClient()
 		// TODO: Update the following line with your application specific error handling logic
 		log.Fatalf("ERROR: %s", err)

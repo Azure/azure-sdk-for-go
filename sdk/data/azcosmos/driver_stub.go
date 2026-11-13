@@ -58,6 +58,10 @@ func (c *Client) openQuery(context.Context, *queryRequest) (queryCursor, Respons
 	return nil, Response{}, newDriverUnavailableError()
 }
 
+func (c *Client) openChangeFeed(context.Context, *changeFeedRequest) (changeFeedCursor, Response, error) {
+	return nil, Response{}, newDriverUnavailableError()
+}
+
 func (c *Client) openReadMany(context.Context, *readManyRequest) (queryCursor, error) {
 	return nil, newDriverUnavailableError()
 }

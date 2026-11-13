@@ -346,13 +346,44 @@ func TestChallengePolicy_TwoCAEChallenges(t *testing.T) {
 }
 
 func TestParseTenant(t *testing.T) {
-	actual := parseTenant("")
+	actual, err := parseTenant("")
+	require.NoError(t, err)
 	require.Empty(t, actual)
 
 	expected := "00000000-0000-0000-0000-000000000000"
 	sampleURL := "https://login.microsoftonline.com/" + expected
-	actual = parseTenant(sampleURL)
+	actual, err = parseTenant(sampleURL)
+	require.NoError(t, err)
 	require.Equal(t, expected, actual, "tenant was not properly parsed, got %s, expected %s", actual, expected)
+
+	for _, malformed := range []string{"x", "https:", "https://login.microsoftonline.com"} {
+		actual, err = parseTenant(malformed)
+		require.Error(t, err, "expected an error for %q", malformed)
+		require.Empty(t, actual)
+	}
+}
+
+func TestChallengePolicy_MalformedAuthorization(t *testing.T) {
+	srv, close := mock.NewServer(mock.WithTransformAllRequestsToTestServerUrl())
+	defer close()
+	srv.AppendResponse(
+		mock.WithHeader("WWW-Authenticate", `Bearer authorization="x" resource="https://vault.azure.net"`),
+		mock.WithStatusCode(401),
+	)
+
+	cred := credentialFunc(func(ctx context.Context, tro policy.TokenRequestOptions) (azcore.AccessToken, error) {
+		t.Fatal("unexpected token request")
+		return azcore.AccessToken{}, nil
+	})
+	p := NewKeyVaultChallengePolicy(cred, nil)
+	pl := runtime.NewPipeline("", "",
+		runtime.PipelineOptions{PerRetry: []policy.Policy{p}},
+		&policy.ClientOptions{Transport: srv},
+	)
+	req, err := runtime.NewRequest(context.Background(), "GET", "https://42.vault.azure.net")
+	require.NoError(t, err)
+	_, err = pl.Do(req)
+	require.ErrorContains(t, err, "authorization")
 }
 
 func TestChallengePolicy_ConcurrentRequests(t *testing.T) {

@@ -8,8 +8,10 @@ import (
 	"errors"
 	"net/http"
 	"regexp"
+	"slices"
 	"strings"
 	"sync"
+	"sync/atomic"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/internal/exported"
@@ -27,7 +29,8 @@ import (
 // [Continuous Access Evaluation]: https://learn.microsoft.com/entra/identity/conditional-access/concept-continuous-access-evaluation
 type BearerTokenPolicy struct {
 	// mainResource is the resource to be retreived using the tenant specified in the credential
-	mainResource *temporal.Resource[exported.AccessToken, acquiringResourceState]
+	mainResource atomic.Pointer[temporal.Resource[exported.AccessToken, acquiringResourceState]]
+	refreshMu    sync.Mutex
 	// the following fields are read-only
 	authzHandler policy.AuthorizationHandler
 	cred         exported.TokenCredential
@@ -41,8 +44,14 @@ type acquiringResourceState struct {
 	tro policy.TokenRequestOptions
 }
 
-// acquire acquires or updates the resource; only one
-// thread/goroutine at a time ever calls this function
+type tokenRefreshEntry struct {
+	policy  *BearerTokenPolicy
+	options policy.TokenRequestOptions
+}
+
+type tokenRefreshState []tokenRefreshEntry
+
+// acquire acquires or updates a cache entry.
 func acquire(state acquiringResourceState) (newResource exported.AccessToken, newExpiration time.Time, err error) {
 	tk, err := state.p.cred.GetToken(&shared.ContextWithDeniedValues{Context: state.req.Raw().Context()}, state.tro)
 	if err != nil {
@@ -78,28 +87,68 @@ func NewBearerTokenPolicy(cred exported.TokenCredential, scopes []string, opts *
 			return authNZ(policy.TokenRequestOptions{Scopes: scopes})
 		}
 	}
-	mr := temporal.NewResourceWithOptions(acquire, temporal.ResourceOptions[exported.AccessToken, acquiringResourceState]{
-		ShouldRefresh: shouldRefresh,
-	})
-	return &BearerTokenPolicy{
+	b := &BearerTokenPolicy{
 		authzHandler: ah,
 		cred:         cred,
 		scopes:       scopes,
-		mainResource: mr,
 		allowHTTP:    opts.InsecureAllowCredentialWithHTTP,
 	}
+	b.mainResource.Store(newBearerTokenResource())
+	return b
+}
+
+func newBearerTokenResource() *temporal.Resource[exported.AccessToken, acquiringResourceState] {
+	return temporal.NewResourceWithOptions(acquire, temporal.ResourceOptions[exported.AccessToken, acquiringResourceState]{
+		ShouldRefresh: shouldRefresh,
+	})
+}
+
+func (b *BearerTokenPolicy) getToken(state acquiringResourceState, refresh bool) (exported.AccessToken, error) {
+	if !refresh {
+		return b.mainResource.Load().Get(state)
+	}
+	b.refreshMu.Lock()
+	defer b.refreshMu.Unlock()
+
+	// A separate resource prevents stale-token fallback on failure and isolates
+	// any acquisition already in flight against the previous cache entry.
+	resource := newBearerTokenResource()
+	tk, err := resource.Get(state)
+	if err == nil {
+		b.mainResource.Store(resource)
+	}
+	return tk, err
 }
 
 // authenticateAndAuthorize returns a function which authorizes req with a token from the policy's credential
 func (b *BearerTokenPolicy) authenticateAndAuthorize(req *policy.Request) func(policy.TokenRequestOptions) error {
 	return func(tro policy.TokenRequestOptions) error {
 		tro.EnableCAE = true
+		refresh, _ := req.Raw().Context().Value(shared.CtxWithTokenRefreshKey{}).(bool)
+		var refreshed tokenRefreshState
+		if refresh {
+			req.OperationValue(&refreshed)
+			for _, entry := range refreshed {
+				if entry.policy == b && entry.options.TenantID == tro.TenantID &&
+					entry.options.Claims == tro.Claims && slices.Equal(entry.options.Scopes, tro.Scopes) {
+					refresh = false
+					break
+				}
+			}
+		}
 		as := acquiringResourceState{p: b, req: req, tro: tro}
-		tk, err := b.mainResource.Get(as)
+		if refresh && as.tro.Claims == "" {
+			as.tro.Claims = "{}"
+		}
+		tk, err := b.getToken(as, refresh)
 		if err != nil {
 			// consider this error non-retriable because if it could be resolved by
 			// retrying authentication, the credential would have done so already
 			return errorinfo.NonRetriableError(err)
+		}
+		if refresh {
+			tro.Scopes = slices.Clone(tro.Scopes)
+			req.SetOperationValue(append(refreshed, tokenRefreshEntry{b, tro}))
 		}
 		req.Raw().Header.Set(shared.HeaderAuthorization, shared.BearerTokenPrefix+tk.Token)
 		return nil
@@ -140,7 +189,7 @@ func (b *BearerTokenPolicy) Do(req *policy.Request) (*http.Response, error) {
 func (b *BearerTokenPolicy) handleChallenge(req *policy.Request, res *http.Response, recursed bool) (*http.Response, error) {
 	var err error
 	if res.StatusCode == http.StatusUnauthorized {
-		b.mainResource.Expire()
+		b.mainResource.Load().Expire()
 		if res.Header.Get(shared.HeaderWWWAuthenticate) != "" {
 			caeChallenge, parseErr := parseCAEChallenge(res)
 			if parseErr != nil {

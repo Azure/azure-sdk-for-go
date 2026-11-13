@@ -19,7 +19,7 @@ import (
 // RaiPoliciesClient contains the methods for the RaiPolicies group.
 // Don't use this type directly, use NewRaiPoliciesClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-01
 type RaiPoliciesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -91,7 +91,7 @@ func (client *RaiPoliciesClient) deleteOperation(ctx context.Context, resourceGr
 }
 
 // deleteCreateRequest creates the delete request.
-func (client *RaiPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, options *RaiPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
+func (client *RaiPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, _ *RaiPoliciesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -114,11 +114,8 @@ func (client *RaiPoliciesClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
 	return req, nil
 }
 
@@ -149,7 +146,7 @@ func (client *RaiPoliciesClient) CreateOrUpdate(ctx context.Context, resourceGro
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *RaiPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, raiPolicy RaiPolicy, options *RaiPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *RaiPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, raiPolicyName string, raiPolicy RaiPolicy, _ *RaiPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/raiPolicies/{raiPolicyName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -172,15 +169,9 @@ func (client *RaiPoliciesClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.IfMatch != nil {
-		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
-	}
-	if options != nil && options.IfNoneMatch != nil {
-		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
-	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, raiPolicy); err != nil {
 		return nil, err
@@ -193,9 +184,6 @@ func (client *RaiPoliciesClient) createOrUpdateHandleResponse(resp *http.Respons
 	result := RaiPoliciesClientCreateOrUpdateResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
-	}
-	if val := resp.Header.Get("Etag"); val != "" {
-		result.EtagHeader = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiPolicy); err != nil {
 		return RaiPoliciesClientCreateOrUpdateResponse{}, err
@@ -251,7 +239,7 @@ func (client *RaiPoliciesClient) getCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -262,9 +250,6 @@ func (client *RaiPoliciesClient) getHandleResponse(resp *http.Response, successC
 	result := RaiPoliciesClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
-	}
-	if val := resp.Header.Get("Etag"); val != "" {
-		result.EtagHeader = &val
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RaiPolicy); err != nil {
 		return RaiPoliciesClientGetResponse{}, err
@@ -329,7 +314,7 @@ func (client *RaiPoliciesClient) listCreateRequest(ctx context.Context, resource
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260915Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

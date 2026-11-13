@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/CapabilityHost/createOrUpdate.json
+// Generated from example definition: 2026-07-01/CapabilityHost/createOrUpdate.json
 func ExampleCapabilityHostsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleCapabilityHostsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/CapabilityHost/delete.json
+// Generated from example definition: 2026-07-01/CapabilityHost/delete.json
 func ExampleCapabilityHostsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleCapabilityHostsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/CapabilityHost/get.json
+// Generated from example definition: 2026-07-01/CapabilityHost/get.json
 func ExampleCapabilityHostsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,4 +173,73 @@ func ExampleCapabilityHostsClient_Get() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-07-01/CapabilityHost/list.json
+func ExampleCapabilityHostsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewCapabilityHostsClient().NewListPager("test-rg", "my-aml-workspace", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armmachinelearning.CapabilityHostsClientListResponse{
+		// 	CapabilityHostListResult: armmachinelearning.CapabilityHostListResult{
+		// 		Value: []*armmachinelearning.CapabilityHost{
+		// 			{
+		// 				Name: to.Ptr("capabilityHostName"),
+		// 				Type: to.Ptr("Microsoft.MachineLearningServices/workspaces/capabilityHosts"),
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/capabilityHosts/capabilityHostName"),
+		// 				Properties: &armmachinelearning.CapabilityHostProperties{
+		// 					Description: to.Ptr("Capability host for workspace connections."),
+		// 					AcaEnvironmentConnections: []*string{
+		// 						to.Ptr("sampleAcaEnvironmentConnection"),
+		// 					},
+		// 					AiServicesConnections: []*string{
+		// 						to.Ptr("sampleAIServiceConnection"),
+		// 					},
+		// 					CustomerSubnet: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/test-rg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+		// 					Messages: []*string{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armmachinelearning.CapabilityHostProvisioningStateSucceeded),
+		// 					StorageConnections: []*string{
+		// 						to.Ptr("sampleStorageConnection"),
+		// 					},
+		// 					Tags: map[string]*string{
+		// 						"purpose": to.Ptr("workspace"),
+		// 					},
+		// 					ThreadStorageConnections: []*string{
+		// 						to.Ptr("sampleThreadStorageConnection"),
+		// 					},
+		// 					VectorStoreConnections: []*string{
+		// 						to.Ptr("sampleVectorStoreConnection"),
+		// 					},
+		// 				},
+		// 				SystemData: &armmachinelearning.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.September, 15, 12, 0, 0, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("user@example.com"),
+		// 					CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.September, 15, 12, 0, 0, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user@example.com"),
+		// 					LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

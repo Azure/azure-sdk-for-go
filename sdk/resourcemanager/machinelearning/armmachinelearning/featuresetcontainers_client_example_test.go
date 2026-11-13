@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetContainer/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturesetContainer/createOrUpdate.json
 func ExampleFeaturesetContainersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleFeaturesetContainersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetContainer/delete.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturesetContainer/delete.json
 func ExampleFeaturesetContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleFeaturesetContainersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetContainer/getEntity.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturesetContainer/getEntity.json
 func ExampleFeaturesetContainersClient_GetEntity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,7 +149,7 @@ func ExampleFeaturesetContainersClient_GetEntity() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/FeaturesetContainer/list.json
+// Generated from example definition: 2026-07-01/Workspace/FeaturesetContainer/list.json
 func ExampleFeaturesetContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,7 +175,7 @@ func ExampleFeaturesetContainersClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.FeaturesetContainersClientListResponse{
 		// 	FeaturesetContainerResourceArmPaginatedResult: armmachinelearning.FeaturesetContainerResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/featuresets?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/featuresets?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.FeaturesetContainer{
 		// 			{
 		// 				Name: to.Ptr("string"),

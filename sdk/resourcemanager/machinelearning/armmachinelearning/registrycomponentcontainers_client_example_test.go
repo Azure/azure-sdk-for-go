@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentContainer/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Registry/ComponentContainer/createOrUpdate.json
 func ExampleRegistryComponentContainersClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -70,7 +70,7 @@ func ExampleRegistryComponentContainersClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentContainer/delete.json
+// Generated from example definition: 2026-07-01/Registry/ComponentContainer/delete.json
 func ExampleRegistryComponentContainersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleRegistryComponentContainersClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentContainer/get.json
+// Generated from example definition: 2026-07-01/Registry/ComponentContainer/get.json
 func ExampleRegistryComponentContainersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleRegistryComponentContainersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Registry/ComponentContainer/list.json
+// Generated from example definition: 2026-07-01/Registry/ComponentContainer/list.json
 func ExampleRegistryComponentContainersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -164,7 +164,7 @@ func ExampleRegistryComponentContainersClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.RegistryComponentContainersClientListResponse{
 		// 	ComponentContainerResourceArmPaginatedResult: armmachinelearning.ComponentContainerResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/components?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/registries/registries123/components?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.ComponentContainer{
 		// 			{
 		// 				Name: to.Ptr("string"),

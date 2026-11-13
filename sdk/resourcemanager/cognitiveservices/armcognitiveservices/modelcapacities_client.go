@@ -19,7 +19,7 @@ import (
 // ModelCapacitiesClient contains the methods for the ModelCapacities group.
 // Don't use this type directly, use NewModelCapacitiesClient() instead.
 //
-// Generated from API version 2026-11-01
+// Generated from API version 2026-11-15-preview
 type ModelCapacitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -95,7 +95,7 @@ func (client *ModelCapacitiesClient) listCreateRequest(ctx context.Context, mode
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20261101)
+		reqQP.Set("api-version", version20261115Preview)
 		reqQP.Set("modelFormat", modelFormat)
 		reqQP.Set("modelName", modelName)
 		reqQP.Set("modelVersion", modelVersion)

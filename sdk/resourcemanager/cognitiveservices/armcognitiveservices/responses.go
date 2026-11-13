@@ -4,6 +4,8 @@
 
 package armcognitiveservices
 
+import "github.com/Azure/azure-sdk-for-go/sdk/azcore"
+
 // AccountCapabilityHostsClientCreateOrUpdateResponse contains the response from method AccountCapabilityHostsClient.BeginCreateOrUpdate.
 type AccountCapabilityHostsClientCreateOrUpdateResponse struct {
 	// Azure Resource Manager resource envelope.
@@ -55,6 +57,59 @@ type AccountConnectionsClientUpdateResponse struct {
 	ConnectionPropertiesV2BasicResource
 }
 
+// AccountCostControlsClientCheckExistenceResponse contains the response from method AccountCostControlsClient.CheckExistence.
+type AccountCostControlsClientCheckExistenceResponse struct {
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// AccountCostControlsClientCreateOrUpdateResponse contains the response from method AccountCostControlsClient.CreateOrUpdate.
+type AccountCostControlsClientCreateOrUpdateResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within an account.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	AccountCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
+// AccountCostControlsClientDeleteResponse contains the response from method AccountCostControlsClient.Delete.
+type AccountCostControlsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AccountCostControlsClientGetResponse contains the response from method AccountCostControlsClient.Get.
+type AccountCostControlsClientGetResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within an account.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	AccountCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
+// AccountCostControlsClientListResponse contains the response from method AccountCostControlsClient.NewListPager.
+type AccountCostControlsClientListResponse struct {
+	// A page of cost controls owned by an account.
+	CostControlListResult
+}
+
+// AccountCostControlsClientUpdateResponse contains the response from method AccountCostControlsClient.Update.
+type AccountCostControlsClientUpdateResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within an account.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	AccountCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
 // AccountsClientCreateResponse contains the response from method AccountsClient.BeginCreate.
 type AccountsClientCreateResponse struct {
 	// Cognitive Services account is an Azure resource representing the provisioned account, it's type, location and SKU.
@@ -64,6 +119,12 @@ type AccountsClientCreateResponse struct {
 // AccountsClientDeleteResponse contains the response from method AccountsClient.BeginDelete.
 type AccountsClientDeleteResponse struct {
 	// placeholder for future response values
+}
+
+// AccountsClientEvaluateDeploymentPoliciesResponse contains the response from method AccountsClient.EvaluateDeploymentPolicies.
+type AccountsClientEvaluateDeploymentPoliciesResponse struct {
+	// Response body for the evaluateDeploymentPolicies action.
+	EvaluateDeploymentPoliciesResponse
 }
 
 // AccountsClientGetResponse contains the response from method AccountsClient.Get.
@@ -118,6 +179,32 @@ type AccountsClientRegenerateKeyResponse struct {
 type AccountsClientUpdateResponse struct {
 	// Cognitive Services account is an Azure resource representing the provisioned account, it's type, location and SKU.
 	Account
+}
+
+// AdapterDeploymentsClientCreateOrUpdateResponse contains the response from method AdapterDeploymentsClient.BeginCreateOrUpdate.
+type AdapterDeploymentsClientCreateOrUpdateResponse struct {
+	// An independently managed LoRA adapter attached to a managed compute deployment.
+	AdapterDeployment
+}
+
+// AdapterDeploymentsClientDeleteResponse contains the response from method AdapterDeploymentsClient.BeginDelete.
+type AdapterDeploymentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AdapterDeploymentsClientGetResponse contains the response from method AdapterDeploymentsClient.Get.
+type AdapterDeploymentsClientGetResponse struct {
+	// An independently managed LoRA adapter attached to a managed compute deployment.
+	AdapterDeployment
+
+	// The concurrency token for the adapter deployment.
+	Etag *string
+}
+
+// AdapterDeploymentsClientListResponse contains the response from method AdapterDeploymentsClient.NewListPager.
+type AdapterDeploymentsClientListResponse struct {
+	// A paginated collection of adapter deployments.
+	AdapterDeploymentListResult
 }
 
 // AgentApplicationsClientCreateOrUpdateResponse contains the response from method AgentApplicationsClient.BeginCreateOrUpdate.
@@ -190,6 +277,59 @@ type AgentDeploymentsClientStartResponse struct {
 // AgentDeploymentsClientStopResponse contains the response from method AgentDeploymentsClient.Stop.
 type AgentDeploymentsClientStopResponse struct {
 	// placeholder for future response values
+}
+
+// ArcDeploymentsClientCreateOrUpdateResponse contains the response from method ArcDeploymentsClient.BeginCreateOrUpdate.
+type ArcDeploymentsClientCreateOrUpdateResponse struct {
+	// Cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
+	ArcDeployment
+}
+
+// ArcDeploymentsClientDeleteResponse contains the response from method ArcDeploymentsClient.BeginDelete.
+type ArcDeploymentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ArcDeploymentsClientGetResponse contains the response from method ArcDeploymentsClient.Get.
+type ArcDeploymentsClientGetResponse struct {
+	// Cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
+	ArcDeployment
+}
+
+// ArcDeploymentsClientListResponse contains the response from method ArcDeploymentsClient.NewListPager.
+type ArcDeploymentsClientListResponse struct {
+	// The list of Arc deployments.
+	ArcDeploymentListResult
+}
+
+// ArcDeploymentsClientUpdateResponse contains the response from method ArcDeploymentsClient.BeginUpdate.
+type ArcDeploymentsClientUpdateResponse struct {
+	// Cognitive Services account Arc deployment, backed by customer-managed Arc-enabled Kubernetes resources.
+	ArcDeployment
+}
+
+// AttachedAksClustersClientCreateOrUpdateResponse contains the response from method AttachedAksClustersClient.CreateOrUpdate.
+type AttachedAksClustersClientCreateOrUpdateResponse struct {
+	// An existing Azure Kubernetes Service cluster attached to a Cognitive Services account.
+	AttachedAksCluster
+}
+
+// AttachedAksClustersClientDeleteResponse contains the response from method AttachedAksClustersClient.Delete.
+type AttachedAksClustersClientDeleteResponse struct {
+	// An existing Azure Kubernetes Service cluster attached to a Cognitive Services account.
+	AttachedAksCluster
+}
+
+// AttachedAksClustersClientGetResponse contains the response from method AttachedAksClustersClient.Get.
+type AttachedAksClustersClientGetResponse struct {
+	// An existing Azure Kubernetes Service cluster attached to a Cognitive Services account.
+	AttachedAksCluster
+}
+
+// AttachedAksClustersClientListResponse contains the response from method AttachedAksClustersClient.NewListPager.
+type AttachedAksClustersClientListResponse struct {
+	// A page of lightweight attachment summaries.
+	AttachedAksClusterListResult
 }
 
 // CommitmentPlansClientCreateOrUpdateAssociationResponse contains the response from method CommitmentPlansClient.BeginCreateOrUpdateAssociation.
@@ -277,6 +417,52 @@ type CommitmentPlansClientUpdatePlanResponse struct {
 type CommitmentTiersClientListResponse struct {
 	// The list of cognitive services accounts operation response.
 	CommitmentTierListResult
+}
+
+// ComputeOperationsClientGetResponse contains the response from method ComputeOperationsClient.Get.
+type ComputeOperationsClientGetResponse struct {
+	// The status of an async compute operation.
+	ComputeOperationStatus
+}
+
+// ComputesClientCreateOrUpdateResponse contains the response from method ComputesClient.BeginCreateOrUpdate.
+type ComputesClientCreateOrUpdateResponse struct {
+	// Cognitive Services compute resource. Supports polymorphic compute types
+	// (Cluster, ContainerInstance) via the computeType discriminator in properties.
+	Compute
+}
+
+// ComputesClientDeleteResponse contains the response from method ComputesClient.BeginDelete.
+type ComputesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ComputesClientGetResponse contains the response from method ComputesClient.Get.
+type ComputesClientGetResponse struct {
+	// Cognitive Services compute resource. Supports polymorphic compute types
+	// (Cluster, ContainerInstance) via the computeType discriminator in properties.
+	Compute
+}
+
+// ComputesClientListResponse contains the response from method ComputesClient.NewListPager.
+type ComputesClientListResponse struct {
+	// The list of cognitive services computes operation response.
+	ComputeListResult
+}
+
+// ComputesClientRestartResponse contains the response from method ComputesClient.BeginRestart.
+type ComputesClientRestartResponse struct {
+	// placeholder for future response values
+}
+
+// ComputesClientStartResponse contains the response from method ComputesClient.BeginStart.
+type ComputesClientStartResponse struct {
+	// placeholder for future response values
+}
+
+// ComputesClientStopResponse contains the response from method ComputesClient.BeginStop.
+type ComputesClientStopResponse struct {
+	// placeholder for future response values
 }
 
 // DefenderForAISettingsClientCreateOrUpdateResponse contains the response from method DefenderForAISettingsClient.CreateOrUpdate.
@@ -400,6 +586,41 @@ type LocationBasedModelCapacitiesClientListResponse struct {
 type ManagedComputeCapacitiesClientListResponse struct {
 	// The list of managed compute capacities response.
 	ManagedComputeCapacityListResult
+}
+
+// ManagedComputeDeploymentsClientCreateOrUpdateResponse contains the response from method ManagedComputeDeploymentsClient.BeginCreateOrUpdate.
+type ManagedComputeDeploymentsClientCreateOrUpdateResponse struct {
+	// Cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
+	ManagedComputeDeployment
+}
+
+// ManagedComputeDeploymentsClientDeleteResponse contains the response from method ManagedComputeDeploymentsClient.BeginDelete.
+type ManagedComputeDeploymentsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ManagedComputeDeploymentsClientGetResponse contains the response from method ManagedComputeDeploymentsClient.Get.
+type ManagedComputeDeploymentsClientGetResponse struct {
+	// Cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
+	ManagedComputeDeployment
+}
+
+// ManagedComputeDeploymentsClientListResponse contains the response from method ManagedComputeDeploymentsClient.NewListPager.
+type ManagedComputeDeploymentsClientListResponse struct {
+	// The list of managed compute deployments.
+	ManagedComputeDeploymentListResult
+}
+
+// ManagedComputeDeploymentsClientUpdateResponse contains the response from method ManagedComputeDeploymentsClient.BeginUpdate.
+type ManagedComputeDeploymentsClientUpdateResponse struct {
+	// Cognitive Services account managed compute deployment, backed by managed compute (GPU) resources.
+	ManagedComputeDeployment
+}
+
+// ManagedComputeUsagesOperationGroupClientListResponse contains the response from method ManagedComputeUsagesOperationGroupClient.NewListPager.
+type ManagedComputeUsagesOperationGroupClientListResponse struct {
+	// List of managed compute quota entries.
+	ManagedComputeUsageListResult
 }
 
 // ManagedNetworkProvisionsClientProvisionManagedNetworkResponse contains the response from method ManagedNetworkProvisionsClient.BeginProvisionManagedNetwork.
@@ -600,6 +821,62 @@ type ProjectConnectionsClientUpdateResponse struct {
 	ConnectionPropertiesV2BasicResource
 }
 
+// ProjectCostControlsClientCheckExistenceResponse contains the response from method ProjectCostControlsClient.CheckExistence.
+type ProjectCostControlsClientCheckExistenceResponse struct {
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+
+	// Success indicates if the operation succeeded or failed.
+	Success bool
+}
+
+// ProjectCostControlsClientCreateOrUpdateResponse contains the response from method ProjectCostControlsClient.CreateOrUpdate.
+type ProjectCostControlsClientCreateOrUpdateResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within its owning Foundry project.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	ProjectCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
+// ProjectCostControlsClientDeleteResponse contains the response from method ProjectCostControlsClient.Delete.
+type ProjectCostControlsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// ProjectCostControlsClientGetResponse contains the response from method ProjectCostControlsClient.Get.
+type ProjectCostControlsClientGetResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within its owning Foundry project.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	ProjectCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
+// ProjectCostControlsClientListResponse contains the response from method ProjectCostControlsClient.NewListPager.
+type ProjectCostControlsClientListResponse struct {
+	// A page of cost controls owned by a Foundry project.
+	ProjectCostControlListResult
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
+// ProjectCostControlsClientUpdateResponse contains the response from method ProjectCostControlsClient.Update.
+type ProjectCostControlsClientUpdateResponse struct {
+	// A budget that measures consumption and optionally alerts or blocks requests within its owning Foundry project.
+	// Reading, deleting, and enforcing stored identity selections requires Microsoft.CognitiveServices/CostControlsByIdentity
+	// registration.
+	ProjectCostControl
+
+	// The current opaque entity tag for this representation.
+	Etag *azcore.ETag
+}
+
 // ProjectsClientCreateResponse contains the response from method ProjectsClient.BeginCreate.
 type ProjectsClientCreateResponse struct {
 	// Cognitive Services project is an Azure resource representing the provisioned account's project, it's type, location and
@@ -654,6 +931,35 @@ type QuotaTiersClientListBySubscriptionResponse struct {
 type QuotaTiersClientUpdateResponse struct {
 	// The quota tier information for the subscription
 	QuotaTier
+}
+
+// RaiBindingsClientCreateOrUpdateResponse contains the response from method RaiBindingsClient.CreateOrUpdate.
+type RaiBindingsClientCreateOrUpdateResponse struct {
+	// An account-scoped binding from an Azure resource to an Agent Control Specification policy.
+	RaiBinding
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
+}
+
+// RaiBindingsClientDeleteResponse contains the response from method RaiBindingsClient.Delete.
+type RaiBindingsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RaiBindingsClientGetResponse contains the response from method RaiBindingsClient.Get.
+type RaiBindingsClientGetResponse struct {
+	// An account-scoped binding from an Azure resource to an Agent Control Specification policy.
+	RaiBinding
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
+}
+
+// RaiBindingsClientListResponse contains the response from method RaiBindingsClient.NewListPager.
+type RaiBindingsClientListResponse struct {
+	// The list of account-scoped RAI bindings.
+	RaiBindingListResult
 }
 
 // RaiBlocklistItemsClientBatchAddResponse contains the response from method RaiBlocklistItemsClient.BatchAdd.
@@ -752,6 +1058,9 @@ type RaiExternalSafetyProvidersClientListResponse struct {
 type RaiPoliciesClientCreateOrUpdateResponse struct {
 	// Cognitive Services RaiPolicy.
 	RaiPolicy
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
 }
 
 // RaiPoliciesClientDeleteResponse contains the response from method RaiPoliciesClient.BeginDelete.
@@ -763,12 +1072,44 @@ type RaiPoliciesClientDeleteResponse struct {
 type RaiPoliciesClientGetResponse struct {
 	// Cognitive Services RaiPolicy.
 	RaiPolicy
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
 }
 
 // RaiPoliciesClientListResponse contains the response from method RaiPoliciesClient.NewListPager.
 type RaiPoliciesClientListResponse struct {
 	// The list of cognitive services RaiPolicies.
 	RaiPolicyListResult
+}
+
+// RaiRegosClientCreateOrUpdateResponse contains the response from method RaiRegosClient.CreateOrUpdate.
+type RaiRegosClientCreateOrUpdateResponse struct {
+	// An account-scoped reusable Rego artifact.
+	RaiRego
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
+}
+
+// RaiRegosClientDeleteResponse contains the response from method RaiRegosClient.Delete.
+type RaiRegosClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// RaiRegosClientGetResponse contains the response from method RaiRegosClient.Get.
+type RaiRegosClientGetResponse struct {
+	// An account-scoped reusable Rego artifact.
+	RaiRego
+
+	// The entity tag for the returned resource representation.
+	EtagHeader *string
+}
+
+// RaiRegosClientListResponse contains the response from method RaiRegosClient.NewListPager.
+type RaiRegosClientListResponse struct {
+	// The list of account-scoped reusable Rego resources.
+	RaiRegoListResult
 }
 
 // RaiToolLabelsClientCreateOrUpdateResponse contains the response from method RaiToolLabelsClient.CreateOrUpdate.
@@ -850,4 +1191,51 @@ type TestRaiExternalSafetyProviderClientCreateOrUpdateResponse struct {
 type UsagesClientListResponse struct {
 	// The response to a list usage request.
 	UsageListResult
+}
+
+// WorkbenchesClientCreateOrUpdateResponse contains the response from method WorkbenchesClient.BeginCreateOrUpdate.
+type WorkbenchesClientCreateOrUpdateResponse struct {
+	// Workbench resource under a Cognitive Services project.
+	// Provides interactive compute with data access for AI development.
+	Workbench
+}
+
+// WorkbenchesClientDeleteResponse contains the response from method WorkbenchesClient.BeginDelete.
+type WorkbenchesClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// WorkbenchesClientGetResponse contains the response from method WorkbenchesClient.Get.
+type WorkbenchesClientGetResponse struct {
+	// Workbench resource under a Cognitive Services project.
+	// Provides interactive compute with data access for AI development.
+	Workbench
+}
+
+// WorkbenchesClientListResponse contains the response from method WorkbenchesClient.NewListPager.
+type WorkbenchesClientListResponse struct {
+	// The list of workbenches operation response.
+	WorkbenchListResult
+}
+
+// WorkbenchesClientRestartResponse contains the response from method WorkbenchesClient.BeginRestart.
+type WorkbenchesClientRestartResponse struct {
+	// placeholder for future response values
+}
+
+// WorkbenchesClientStartResponse contains the response from method WorkbenchesClient.BeginStart.
+type WorkbenchesClientStartResponse struct {
+	// placeholder for future response values
+}
+
+// WorkbenchesClientStopResponse contains the response from method WorkbenchesClient.BeginStop.
+type WorkbenchesClientStopResponse struct {
+	// placeholder for future response values
+}
+
+// WorkbenchesClientUpdateResponse contains the response from method WorkbenchesClient.Update.
+type WorkbenchesClientUpdateResponse struct {
+	// Workbench resource under a Cognitive Services project.
+	// Provides interactive compute with data access for AI development.
+	Workbench
 }

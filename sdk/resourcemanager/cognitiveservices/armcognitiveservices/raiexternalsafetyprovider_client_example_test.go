@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-11-01/DeleteRaiExternalSafetyProvider.json
+// Generated from example definition: 2026-11-15-preview/DeleteRaiExternalSafetyProvider.json
 func ExampleRaiExternalSafetyProviderClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleRaiExternalSafetyProviderClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-11-01/PutRaiExternalSafetyProvider.json
+// Generated from example definition: 2026-11-15-preview/PutRaiExternalSafetyProvider.json
 func ExampleRaiExternalSafetyProviderClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -80,7 +80,7 @@ func ExampleRaiExternalSafetyProviderClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/GetRaiExternalSafetyProvider.json
+// Generated from example definition: 2026-11-15-preview/GetRaiExternalSafetyProvider.json
 func ExampleRaiExternalSafetyProviderClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -48,9 +48,25 @@ func (c *ClientFactory) NewAccountConnectionsClient() *AccountConnectionsClient 
 	}
 }
 
+// NewAccountCostControlsClient creates a new instance of AccountCostControlsClient.
+func (c *ClientFactory) NewAccountCostControlsClient() *AccountCostControlsClient {
+	return &AccountCostControlsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewAccountsClient creates a new instance of AccountsClient.
 func (c *ClientFactory) NewAccountsClient() *AccountsClient {
 	return &AccountsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewAdapterDeploymentsClient creates a new instance of AdapterDeploymentsClient.
+func (c *ClientFactory) NewAdapterDeploymentsClient() *AdapterDeploymentsClient {
+	return &AdapterDeploymentsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -72,6 +88,22 @@ func (c *ClientFactory) NewAgentDeploymentsClient() *AgentDeploymentsClient {
 	}
 }
 
+// NewArcDeploymentsClient creates a new instance of ArcDeploymentsClient.
+func (c *ClientFactory) NewArcDeploymentsClient() *ArcDeploymentsClient {
+	return &ArcDeploymentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewAttachedAksClustersClient creates a new instance of AttachedAksClustersClient.
+func (c *ClientFactory) NewAttachedAksClustersClient() *AttachedAksClustersClient {
+	return &AttachedAksClustersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewCommitmentPlansClient creates a new instance of CommitmentPlansClient.
 func (c *ClientFactory) NewCommitmentPlansClient() *CommitmentPlansClient {
 	return &CommitmentPlansClient{
@@ -83,6 +115,22 @@ func (c *ClientFactory) NewCommitmentPlansClient() *CommitmentPlansClient {
 // NewCommitmentTiersClient creates a new instance of CommitmentTiersClient.
 func (c *ClientFactory) NewCommitmentTiersClient() *CommitmentTiersClient {
 	return &CommitmentTiersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewComputeOperationsClient creates a new instance of ComputeOperationsClient.
+func (c *ClientFactory) NewComputeOperationsClient() *ComputeOperationsClient {
+	return &ComputeOperationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewComputesClient creates a new instance of ComputesClient.
+func (c *ClientFactory) NewComputesClient() *ComputesClient {
+	return &ComputesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -131,6 +179,22 @@ func (c *ClientFactory) NewLocationBasedModelCapacitiesClient() *LocationBasedMo
 // NewManagedComputeCapacitiesClient creates a new instance of ManagedComputeCapacitiesClient.
 func (c *ClientFactory) NewManagedComputeCapacitiesClient() *ManagedComputeCapacitiesClient {
 	return &ManagedComputeCapacitiesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagedComputeDeploymentsClient creates a new instance of ManagedComputeDeploymentsClient.
+func (c *ClientFactory) NewManagedComputeDeploymentsClient() *ManagedComputeDeploymentsClient {
+	return &ManagedComputeDeploymentsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagedComputeUsagesOperationGroupClient creates a new instance of ManagedComputeUsagesOperationGroupClient.
+func (c *ClientFactory) NewManagedComputeUsagesOperationGroupClient() *ManagedComputeUsagesOperationGroupClient {
+	return &ManagedComputeUsagesOperationGroupClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -239,6 +303,14 @@ func (c *ClientFactory) NewProjectConnectionsClient() *ProjectConnectionsClient 
 	}
 }
 
+// NewProjectCostControlsClient creates a new instance of ProjectCostControlsClient.
+func (c *ClientFactory) NewProjectCostControlsClient() *ProjectCostControlsClient {
+	return &ProjectCostControlsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewProjectsClient creates a new instance of ProjectsClient.
 func (c *ClientFactory) NewProjectsClient() *ProjectsClient {
 	return &ProjectsClient{
@@ -250,6 +322,14 @@ func (c *ClientFactory) NewProjectsClient() *ProjectsClient {
 // NewQuotaTiersClient creates a new instance of QuotaTiersClient.
 func (c *ClientFactory) NewQuotaTiersClient() *QuotaTiersClient {
 	return &QuotaTiersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewRaiBindingsClient creates a new instance of RaiBindingsClient.
+func (c *ClientFactory) NewRaiBindingsClient() *RaiBindingsClient {
+	return &RaiBindingsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}
@@ -303,6 +383,14 @@ func (c *ClientFactory) NewRaiPoliciesClient() *RaiPoliciesClient {
 	}
 }
 
+// NewRaiRegosClient creates a new instance of RaiRegosClient.
+func (c *ClientFactory) NewRaiRegosClient() *RaiRegosClient {
+	return &RaiRegosClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewRaiToolLabelsClient creates a new instance of RaiToolLabelsClient.
 func (c *ClientFactory) NewRaiToolLabelsClient() *RaiToolLabelsClient {
 	return &RaiToolLabelsClient{
@@ -346,6 +434,14 @@ func (c *ClientFactory) NewTestRaiExternalSafetyProviderClient() *TestRaiExterna
 // NewUsagesClient creates a new instance of UsagesClient.
 func (c *ClientFactory) NewUsagesClient() *UsagesClient {
 	return &UsagesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewWorkbenchesClient creates a new instance of WorkbenchesClient.
+func (c *ClientFactory) NewWorkbenchesClient() *WorkbenchesClient {
+	return &WorkbenchesClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

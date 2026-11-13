@@ -1,5 +1,18 @@
 # Release History
 
+## 5.0.0-beta.2 (2026-11-11)
+### Features Added
+
+- New function `*CapabilityHostsClient.NewListPager(resourceGroupName string, workspaceName string, options *CapabilityHostsClientListOptions) *runtime.Pager[CapabilityHostsClientListResponse]`
+- New struct `CapabilityHostListResult`
+- New field `AssetVersion`, `PathOnCompute` in struct `CustomModelJobOutput`
+- New field `AssetVersion`, `PathOnCompute` in struct `MLFlowModelJobOutput`
+- New field `AssetVersion`, `PathOnCompute` in struct `MLTableJobOutput`
+- New field `AssetVersion`, `PathOnCompute` in struct `TritonModelJobOutput`
+- New field `AssetVersion`, `PathOnCompute` in struct `URIFileJobOutput`
+- New field `AssetVersion`, `PathOnCompute` in struct `URIFolderJobOutput`
+
+
 ## 5.0.0-beta.1 (2026-06-10)
 ### Breaking Changes
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataVersionBase/publish.json
+// Generated from example definition: 2026-05-15-preview/Workspace/DataVersionBase/publish.json
 func ExampleDataVersionsClient_BeginPublish() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleDataVersionsClient_BeginPublish() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataVersionBase/createOrUpdate.json
+// Generated from example definition: 2026-05-15-preview/Workspace/DataVersionBase/createOrUpdate.json
 func ExampleDataVersionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -102,7 +102,7 @@ func ExampleDataVersionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataVersionBase/delete.json
+// Generated from example definition: 2026-05-15-preview/Workspace/DataVersionBase/delete.json
 func ExampleDataVersionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -124,7 +124,7 @@ func ExampleDataVersionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataVersionBase/get.json
+// Generated from example definition: 2026-05-15-preview/Workspace/DataVersionBase/get.json
 func ExampleDataVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleDataVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/DataVersionBase/list.json
+// Generated from example definition: 2026-05-15-preview/Workspace/DataVersionBase/list.json
 func ExampleDataVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

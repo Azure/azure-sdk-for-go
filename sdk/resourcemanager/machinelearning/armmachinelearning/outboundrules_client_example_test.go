@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/ManagedNetwork/postOutboundRulesV2.json
+// Generated from example definition: 2026-05-15-preview/ManagedNetwork/postOutboundRulesV2.json
 func ExampleOutboundRulesClient_BeginPost() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

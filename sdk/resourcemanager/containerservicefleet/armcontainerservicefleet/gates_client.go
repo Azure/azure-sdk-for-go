@@ -20,7 +20,7 @@ import (
 // GatesClient contains the methods for the Gates group.
 // Don't use this type directly, use NewGatesClient() instead.
 //
-// Generated from API version 2026-11-01
+// Generated from API version 2026-11-02-preview
 type GatesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -117,7 +117,7 @@ func (client *GatesClient) updateCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261101)
+	reqQP.Set("api-version", version20261102Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -181,7 +181,7 @@ func (client *GatesClient) getCreateRequest(ctx context.Context, resourceGroupNa
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261101)
+	reqQP.Set("api-version", version20261102Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -265,7 +265,7 @@ func (client *GatesClient) listByFleetCreateRequest(ctx context.Context, resourc
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20261101)
+		reqQP.Set("api-version", version20261102Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

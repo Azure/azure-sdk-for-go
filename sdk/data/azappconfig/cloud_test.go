@@ -78,6 +78,11 @@ func TestNewClient_AutoDetectAudience(t *testing.T) {
 			scope:    "https://appconfig-staging.azure.com/.default",
 		},
 		{
+			name:     "Regional staging",
+			endpoint: "https://example.s1.westus2.appconfig-stage.azure.com",
+			scope:    "https://appconfig-staging.azure.com/.default",
+		},
+		{
 			name:     "HyphenatedMarker",
 			endpoint: "https://example.appconfig-test.azure.com",
 			scope:    "https://appconfig.azure.com/.default",

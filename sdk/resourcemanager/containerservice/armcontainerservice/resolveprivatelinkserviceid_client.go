@@ -19,7 +19,7 @@ import (
 // ResolvePrivateLinkServiceIDClient contains the methods for the ResolvePrivateLinkServiceID group.
 // Don't use this type directly, use NewResolvePrivateLinkServiceIDClient() instead.
 //
-// Generated from API version 2026-08-02-preview
+// Generated from API version 2026-09-01
 type ResolvePrivateLinkServiceIDClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -89,7 +89,7 @@ func (client *ResolvePrivateLinkServiceIDClient) postCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/DeletedBackupInstanceOperations/UndeleteDeletedBackupInstance.json
+// Generated from example definition: 2026-08-31-preview/DeletedBackupInstanceOperations/UndeleteDeletedBackupInstance.json
 func ExampleDeletedBackupInstancesClient_BeginUndelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -37,7 +37,7 @@ func ExampleDeletedBackupInstancesClient_BeginUndelete() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
+// Generated from example definition: 2026-08-31-preview/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
 func ExampleDeletedBackupInstancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -99,7 +99,7 @@ func ExampleDeletedBackupInstancesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/DeletedBackupInstanceOperations/ListDeletedBackupInstances.json
+// Generated from example definition: 2026-08-31-preview/DeletedBackupInstanceOperations/ListDeletedBackupInstances.json
 func ExampleDeletedBackupInstancesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

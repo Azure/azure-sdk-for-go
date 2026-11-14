@@ -4,6 +4,31 @@
 
 package armdataprotection
 
+// BackupInstanceFromDPPCrossTenantVaultClientGetResponse contains the response from method BackupInstanceFromDPPCrossTenantVaultClient.Get.
+type BackupInstanceFromDPPCrossTenantVaultClientGetResponse struct {
+	// BackupInstance resource as returned by the cross-tenant read surface; its
+	// properties exclude SecretStoreResource.value.
+	CrossTenantBackupInstanceResource
+}
+
+// BackupInstanceOperationResultFromDPPCrossTenantVaultClientGetResponse contains the response from method BackupInstanceOperationResultFromDPPCrossTenantVaultClient.Get.
+type BackupInstanceOperationResultFromDPPCrossTenantVaultClientGetResponse struct {
+	// Operation Job Extended Info
+	OperationJobExtendedInfo
+
+	// The URL to poll for the operation result while it is still in progress.
+	Location *string
+
+	// The recommended number of seconds to wait before polling again.
+	RetryAfter *int32
+}
+
+// BackupInstanceOperationStatusFromDPPCrossTenantVaultClientGetResponse contains the response from method BackupInstanceOperationStatusFromDPPCrossTenantVaultClient.Get.
+type BackupInstanceOperationStatusFromDPPCrossTenantVaultClientGetResponse struct {
+	// Operation Resource
+	OperationResource
+}
+
 // BackupInstancesClientAdhocBackupResponse contains the response from method BackupInstancesClient.BeginAdhocBackup.
 type BackupInstancesClientAdhocBackupResponse struct {
 	// Operation Job Extended Info
@@ -110,6 +135,18 @@ type BackupInstancesExtensionRoutingClientListResponse struct {
 	BackupInstanceResourceList
 }
 
+// BackupInstancesFromDPPCrossTenantVaultClientListResponse contains the response from method BackupInstancesFromDPPCrossTenantVaultClient.NewListPager.
+type BackupInstancesFromDPPCrossTenantVaultClientListResponse struct {
+	// Cross-tenant BackupInstance resource list response.
+	CrossTenantBackupInstanceResourceList
+}
+
+// BackupJobsFromDPPCrossTenantVaultClientListResponse contains the response from method BackupJobsFromDPPCrossTenantVaultClient.NewListPager.
+type BackupJobsFromDPPCrossTenantVaultClientListResponse struct {
+	// List of AzureBackup Job resources
+	AzureBackupJobResourceList
+}
+
 // BackupPoliciesClientCreateOrUpdateResponse contains the response from method BackupPoliciesClient.CreateOrUpdate.
 type BackupPoliciesClientCreateOrUpdateResponse struct {
 	// BaseBackupPolicy resource
@@ -187,6 +224,35 @@ type BackupVaultsClientUpdateResponse struct {
 type ClientCheckFeatureSupportResponse struct {
 	// Base class for Backup Feature support
 	FeatureValidationResponseBaseClassification
+}
+
+// DPPCrossTenantVaultMappingStatusClientCheckResponse contains the response from method DPPCrossTenantVaultMappingStatusClient.Check.
+type DPPCrossTenantVaultMappingStatusClientCheckResponse struct {
+	// Response for the cross-tenant vault mapping status check, from the source vault side.
+	CrossTenantVaultMappingStatusResponse
+}
+
+// DPPCrossTenantVaultMappingsClientCreateOrUpdateResponse contains the response from method DPPCrossTenantVaultMappingsClient.CreateOrUpdate.
+type DPPCrossTenantVaultMappingsClientCreateOrUpdateResponse struct {
+	// Cross-tenant vault mapping resource for cross-tenant restore.
+	CrossTenantVaultMapping
+}
+
+// DPPCrossTenantVaultMappingsClientGetResponse contains the response from method DPPCrossTenantVaultMappingsClient.Get.
+type DPPCrossTenantVaultMappingsClientGetResponse struct {
+	// Cross-tenant vault mapping resource for cross-tenant restore.
+	CrossTenantVaultMapping
+}
+
+// DPPCrossTenantVaultMappingsClientListResponse contains the response from method DPPCrossTenantVaultMappingsClient.NewListPager.
+type DPPCrossTenantVaultMappingsClientListResponse struct {
+	// List of cross-tenant vault mapping resources.
+	CrossTenantVaultMappingList
+}
+
+// DPPCrossTenantVaultMappingsClientRemoveResponse contains the response from method DPPCrossTenantVaultMappingsClient.Remove.
+type DPPCrossTenantVaultMappingsClientRemoveResponse struct {
+	// placeholder for future response values
 }
 
 // DeletedBackupInstancesClientGetResponse contains the response from method DeletedBackupInstancesClient.Get.
@@ -276,6 +342,12 @@ type FetchSecondaryRecoveryPointsClientListResponse struct {
 	AzureBackupRecoveryPointResourceList
 }
 
+// JobFromDPPCrossTenantVaultClientGetResponse contains the response from method JobFromDPPCrossTenantVaultClient.Get.
+type JobFromDPPCrossTenantVaultClientGetResponse struct {
+	// AzureBackup Job Resource Class
+	AzureBackupJobResource
+}
+
 // JobsClientGetResponse contains the response from method JobsClient.Get.
 type JobsClientGetResponse struct {
 	// AzureBackup Job Resource Class
@@ -321,6 +393,12 @@ type OperationsClientListResponse struct {
 	OperationListResult
 }
 
+// RecoveryPointFromDPPCrossTenantVaultClientGetResponse contains the response from method RecoveryPointFromDPPCrossTenantVaultClient.Get.
+type RecoveryPointFromDPPCrossTenantVaultClientGetResponse struct {
+	// Azure backup recoveryPoint resource
+	AzureBackupRecoveryPointResource
+}
+
 // RecoveryPointsClientGetResponse contains the response from method RecoveryPointsClient.Get.
 type RecoveryPointsClientGetResponse struct {
 	// Azure backup recoveryPoint resource
@@ -329,6 +407,12 @@ type RecoveryPointsClientGetResponse struct {
 
 // RecoveryPointsClientListResponse contains the response from method RecoveryPointsClient.NewListPager.
 type RecoveryPointsClientListResponse struct {
+	// Azure backup recoveryPoint resource list
+	AzureBackupRecoveryPointResourceList
+}
+
+// RecoveryPointsFromDPPCrossTenantVaultClientListResponse contains the response from method RecoveryPointsFromDPPCrossTenantVaultClient.NewListPager.
+type RecoveryPointsFromDPPCrossTenantVaultClientListResponse struct {
 	// Azure backup recoveryPoint resource list
 	AzureBackupRecoveryPointResourceList
 }
@@ -444,4 +528,22 @@ type ResourceGuardsClientPutResponse struct {
 type RestorableTimeRangesClientFindResponse struct {
 	// List Restore Ranges Response
 	AzureBackupFindRestorableTimeRangesResponseResource
+}
+
+// RestorableTimeRangesFromDPPCrossTenantVaultClientFindResponse contains the response from method RestorableTimeRangesFromDPPCrossTenantVaultClient.Find.
+type RestorableTimeRangesFromDPPCrossTenantVaultClientFindResponse struct {
+	// List Restore Ranges Response
+	AzureBackupFindRestorableTimeRangesResponseResource
+}
+
+// RestoresFromDPPCrossTenantVaultClientTriggerResponse contains the response from method RestoresFromDPPCrossTenantVaultClient.BeginTrigger.
+type RestoresFromDPPCrossTenantVaultClientTriggerResponse struct {
+	// Operation Job Extended Info
+	OperationJobExtendedInfo
+}
+
+// ValidateRestoreFromDPPCrossTenantVaultClientTriggerResponse contains the response from method ValidateRestoreFromDPPCrossTenantVaultClient.BeginTrigger.
+type ValidateRestoreFromDPPCrossTenantVaultClientTriggerResponse struct {
+	// Operation Job Extended Info
+	OperationJobExtendedInfo
 }

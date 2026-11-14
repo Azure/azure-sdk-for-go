@@ -295,6 +295,27 @@ func unmarshalCopyOptionClassification(rawMsg json.RawMessage) (CopyOptionClassi
 	return b, nil
 }
 
+func unmarshalCrossTenantAuthCredentialsClassification(rawMsg json.RawMessage) (CrossTenantAuthCredentialsClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b CrossTenantAuthCredentialsClassification
+	switch m["objectType"] {
+	case "SecretStoreBasedAuthCredentials":
+		b = &CrossTenantSecretStoreBasedAuthCredentials{}
+	default:
+		b = &CrossTenantAuthCredentials{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalDataStoreParametersClassification(rawMsg json.RawMessage) (DataStoreParametersClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

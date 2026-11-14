@@ -1,4 +1,4 @@
-directory: specification/azurestackhci/AzureStackHCI.StackHCIVM.Management
-commit: 7eedf0843327d688a23ed89a7c2921cbfc129dfe
+directory: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCIVM
+commit: c8190fb3d1d89e788cb5b36edbc386588521153c
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

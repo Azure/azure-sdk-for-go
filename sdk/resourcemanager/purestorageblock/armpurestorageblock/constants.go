@@ -5,7 +5,7 @@
 package armpurestorageblock
 
 const (
-	version20260501Preview string = "2026-05-01-preview"
+	version20261001 string = "2026-10-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

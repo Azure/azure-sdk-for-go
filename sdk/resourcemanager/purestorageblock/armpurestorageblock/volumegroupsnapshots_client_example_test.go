@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroupSnapshots_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroupSnapshots_Create_MaximumSet_Gen.json
 func ExampleVolumeGroupSnapshotsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleVolumeGroupSnapshotsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroupSnapshots_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroupSnapshots_Delete_MaximumSet_Gen.json
 func ExampleVolumeGroupSnapshotsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleVolumeGroupSnapshotsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroupSnapshots_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroupSnapshots_Get_MaximumSet_Gen.json
 func ExampleVolumeGroupSnapshotsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleVolumeGroupSnapshotsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroupSnapshots_ListSnapshots_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroupSnapshots_ListSnapshots_MaximumSet_Gen.json
 func ExampleVolumeGroupSnapshotsClient_ListSnapshots() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleVolumeGroupSnapshotsClient_ListSnapshots() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroupSnapshots_ListByVolumeGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroupSnapshots_ListByVolumeGroup_MaximumSet_Gen.json
 func ExampleVolumeGroupSnapshotsClient_NewListByVolumeGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

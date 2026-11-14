@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/AvsVmVolumes_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AvsVmVolumes_Delete_MaximumSet_Gen.json
 func ExampleAvsVMVolumesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleAvsVMVolumesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/AvsVmVolumes_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AvsVmVolumes_Update_MaximumSet_Gen.json
 func ExampleAvsVMVolumesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -107,7 +107,7 @@ func ExampleAvsVMVolumesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/AvsVmVolumes_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AvsVmVolumes_Get_MaximumSet_Gen.json
 func ExampleAvsVMVolumesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -171,7 +171,7 @@ func ExampleAvsVMVolumesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AvsVmVolumes_ListByAvsVm_MaximumSet_Gen.json
 func ExampleAvsVMVolumesClient_NewListByAvsVMPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

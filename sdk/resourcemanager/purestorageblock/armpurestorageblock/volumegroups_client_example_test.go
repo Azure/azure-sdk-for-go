@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_Create_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroups_Create_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -85,7 +85,7 @@ func ExampleVolumeGroupsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroups_Delete_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -106,7 +106,7 @@ func ExampleVolumeGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_Overwrite_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroups_Overwrite_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginOverwrite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleVolumeGroupsClient_BeginOverwrite() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroups_Update_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -200,7 +200,7 @@ func ExampleVolumeGroupsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroups_Get_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -252,7 +252,7 @@ func ExampleVolumeGroupsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_GetStatus_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroups_GetStatus_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_GetStatus() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -283,7 +283,7 @@ func ExampleVolumeGroupsClient_GetStatus() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_ListConnectionParameters_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroups_ListConnectionParameters_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_ListConnectionParameters() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +316,7 @@ func ExampleVolumeGroupsClient_ListConnectionParameters() {
 	// }
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_ListByStoragePool_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/VolumeGroups_ListByStoragePool_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_NewListByStoragePoolPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

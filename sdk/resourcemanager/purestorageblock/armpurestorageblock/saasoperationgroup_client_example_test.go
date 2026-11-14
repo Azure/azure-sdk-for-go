@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-01-preview/SaaSOperationGroup_ActivateSaaS_MaximumSet.json
+// Generated from example definition: 2026-10-01/SaaSOperationGroup_ActivateSaaS_MaximumSet.json
 func ExampleSaaSOperationGroupClient_BeginActivateResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

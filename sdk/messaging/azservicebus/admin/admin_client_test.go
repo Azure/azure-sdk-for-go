@@ -1959,6 +1959,118 @@ func TestAdminClient_unknownFilterSerde(t *testing.T) {
 	require.Error(t, err)
 }
 
+func TestAdminClient_unknownRuleNamespaces(t *testing.T) {
+	const instanceNS = "http://www.w3.org/2001/XMLSchema-instance"
+	for _, element := range []string{"Filter", "Action"} {
+		t.Run(element, func(t *testing.T) {
+			for _, tc := range []struct {
+				name       string
+				attributes string
+				innerXML   string
+				childNS    string
+			}{
+				{
+					name:       "declared instance prefix",
+					attributes: `xmlns:i="` + instanceNS + `" i:type="FutureType" custom="value"`,
+					innerXML:   `<Thing>1</Thing>`,
+				},
+				{
+					name:       "alternate instance prefix",
+					attributes: `xmlns:xsi="` + instanceNS + `" xsi:type="FutureType" custom="value"`,
+					innerXML:   `<Thing>1</Thing>`,
+				},
+				{
+					name:       "encoder prefix collision",
+					attributes: `xmlns:i="` + instanceNS + `" xmlns:_XMLSchema-instance="urn:custom" _XMLSchema-instance:type="metadata" i:type="FutureType" custom="value"`,
+					innerXML:   `<_XMLSchema-instance:Thing _XMLSchema-instance:value="1">Value</_XMLSchema-instance:Thing>`,
+					childNS:    "urn:custom",
+				},
+				{
+					name:       "encoder instance prefix",
+					attributes: `xmlns:_XMLSchema-instance="` + instanceNS + `" _XMLSchema-instance:type="FutureType" custom="value"`,
+					innerXML:   `<Thing>1</Thing>`,
+				},
+				{
+					name:       "custom instance-like prefix",
+					attributes: `xmlns:i="urn:custom" xmlns:xsi="` + instanceNS + `" i:type="metadata" xsi:type="FutureType" custom="value"`,
+					innerXML:   `<i:Thing i:value="1">Value</i:Thing>`,
+					childNS:    "urn:custom",
+				},
+				{
+					name:       "legacy undeclared prefix",
+					attributes: `i:type="FutureType" custom="value"`,
+					innerXML:   `<Thing>1</Thing>`,
+				},
+				{
+					name:       "preserved child and attribute namespaces",
+					attributes: `xmlns="urn:rule" xmlns:i="` + instanceNS + `" xmlns:c="urn:custom" c:type="metadata" i:type="FutureType" custom="value"`,
+					innerXML:   `<c:Thing c:value="1">c:Value</c:Thing>`,
+					childNS:    "urn:custom",
+				},
+			} {
+				t.Run(tc.name, func(t *testing.T) {
+					input := []byte("<" + element + " " + tc.attributes + ">" + tc.innerXML + "</" + element + ">")
+					description := atom.RuleDescription{XMLNSI: instanceNS}
+					switch element {
+					case "Filter":
+						fd, err := convertUnknownRuleFilterToFilterDescription(&UnknownRuleFilter{RawXML: input})
+						require.NoError(t, err)
+						require.Equal(t, "FutureType", fd.Type)
+						require.Equal(t, tc.innerXML, string(fd.RawXML))
+						description.Filter = fd
+					case "Action":
+						ad, err := convertUnknownRuleActionToActionDescription(&UnknownRuleAction{RawXML: input})
+						require.NoError(t, err)
+						require.Equal(t, "FutureType", ad.Type)
+						require.Equal(t, tc.innerXML, string(ad.RawXML))
+						description.Action = ad
+					}
+
+					output, err := xml.Marshal(description)
+					require.NoError(t, err)
+					t.Logf("XML: %s", output)
+					decoder := xml.NewDecoder(bytes.NewReader(output))
+					typeCount := 0
+					childCount := 0
+					for {
+						token, err := decoder.Token()
+						if err == io.EOF {
+							break
+						}
+						require.NoError(t, err)
+						start, ok := token.(xml.StartElement)
+						if !ok {
+							continue
+						}
+						attrs := map[xml.Name]string{}
+						for _, attr := range start.Attr {
+							require.NotContains(t, attrs, attr.Name, "duplicate attribute in %s", output)
+							attrs[attr.Name] = attr.Value
+						}
+						if start.Name.Local == element {
+							require.Equal(t, "FutureType", attrs[xml.Name{Space: instanceNS, Local: "type"}])
+							require.Equal(t, "value", attrs[xml.Name{Local: "custom"}])
+							typeCount++
+							if tc.childNS != "" {
+								require.Equal(t, "metadata", attrs[xml.Name{Space: tc.childNS, Local: "type"}])
+							}
+						}
+						if start.Name.Local == "Thing" {
+							require.Equal(t, tc.childNS, start.Name.Space)
+							if tc.childNS != "" {
+								require.Equal(t, "1", attrs[xml.Name{Space: tc.childNS, Local: "value"}])
+							}
+							childCount++
+						}
+					}
+					require.Equal(t, 1, typeCount)
+					require.Equal(t, 1, childCount)
+				})
+			}
+		})
+	}
+}
+
 func deleteQueue(t *testing.T, ac *Client, queueName string) {
 	_, err := ac.DeleteQueue(context.Background(), queueName, nil)
 	require.NoError(t, err)

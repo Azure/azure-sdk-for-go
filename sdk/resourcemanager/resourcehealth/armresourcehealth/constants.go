@@ -5,7 +5,7 @@
 package armresourcehealth
 
 const (
-	version20250501 string = "2025-05-01"
+	version20260701 string = "2026-07-01"
 )
 
 // AvailabilityStateValues - Impacted resource status of the resource.

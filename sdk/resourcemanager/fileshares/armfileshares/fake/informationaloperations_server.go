@@ -14,6 +14,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/fileshares/armfileshares"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 	"slices"
 )
@@ -99,11 +100,21 @@ func (i *InformationalOperationsServerTransport) dispatchGetLimits(req *http.Req
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
+	body, err := server.UnmarshalRequestAsJSON[armfileshares.FileShareLimitsRequest](req)
+	if err != nil {
+		return nil, err
+	}
 	locationParam, err := url.PathUnescape(matches[regex.SubexpIndex("location")])
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := i.srv.GetLimits(req.Context(), locationParam, nil)
+	var options *armfileshares.InformationalOperationsClientGetLimitsOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armfileshares.InformationalOperationsClientGetLimitsOptions{
+			Body: &body,
+		}
+	}
+	respr, errRespr := i.srv.GetLimits(req.Context(), locationParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

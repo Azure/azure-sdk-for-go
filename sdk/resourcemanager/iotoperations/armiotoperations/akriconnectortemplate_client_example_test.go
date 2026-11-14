@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AkriConnectorTemplate_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleAkriConnectorTemplateClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleAkriConnectorTemplateClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AkriConnectorTemplate_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AkriConnectorTemplate_Delete_MaximumSet_Gen.json
 func ExampleAkriConnectorTemplateClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -214,7 +214,7 @@ func ExampleAkriConnectorTemplateClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/AkriConnectorTemplate_Get_Managed_Rest.json
+// Generated from example definition: 2026-10-01/AkriConnectorTemplate_Get_Managed_Rest.json
 func ExampleAkriConnectorTemplateClient_Get_akriConnectorTemplateGetManagedRest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -303,7 +303,7 @@ func ExampleAkriConnectorTemplateClient_Get_akriConnectorTemplateGetManagedRest(
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AkriConnectorTemplate_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AkriConnectorTemplate_Get_MaximumSet_Gen.json
 func ExampleAkriConnectorTemplateClient_Get_akriConnectorTemplateGetMaximumSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -409,7 +409,7 @@ func ExampleAkriConnectorTemplateClient_Get_akriConnectorTemplateGetMaximumSet()
 	// }
 }
 
-// Generated from example definition: 2026-07-01/AkriConnectorTemplate_ListByInstanceResource_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/AkriConnectorTemplate_ListByInstanceResource_MaximumSet_Gen.json
 func ExampleAkriConnectorTemplateClient_NewListByInstanceResourcePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

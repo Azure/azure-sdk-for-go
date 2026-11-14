@@ -90,6 +90,12 @@ type RecommendationsClientGenerateResponse struct {
 	RetryAfter *int32
 }
 
+// RecommendationsClientGetByServiceGroupResponse contains the response from method RecommendationsClient.GetByServiceGroup.
+type RecommendationsClientGetByServiceGroupResponse struct {
+	// Advisor Recommendation.
+	ResourceRecommendationBase
+}
+
 // RecommendationsClientGetGenerateStatusResponse contains the response from method RecommendationsClient.GetGenerateStatus.
 type RecommendationsClientGetGenerateStatusResponse struct {
 	// The Retry-After header can indicate how long the client should wait before polling the operation status.
@@ -100,6 +106,12 @@ type RecommendationsClientGetGenerateStatusResponse struct {
 type RecommendationsClientGetResponse struct {
 	// Advisor Recommendation.
 	ResourceRecommendationBase
+}
+
+// RecommendationsClientListByServiceGroupResponse contains the response from method RecommendationsClient.NewListByServiceGroupPager.
+type RecommendationsClientListByServiceGroupResponse struct {
+	// The response of a ResourceRecommendationBase list operation.
+	ResourceRecommendationBaseListResult
 }
 
 // RecommendationsClientListByTenantResponse contains the response from method RecommendationsClient.NewListByTenantPager.
@@ -114,8 +126,14 @@ type RecommendationsClientListResponse struct {
 	ResourceRecommendationBaseListResult
 }
 
-// RecommendationsClientPatchResponse contains the response from method RecommendationsClient.Patch.
-type RecommendationsClientPatchResponse struct {
+// RecommendationsClientUpdateByServiceGroupResponse contains the response from method RecommendationsClient.UpdateByServiceGroup.
+type RecommendationsClientUpdateByServiceGroupResponse struct {
+	// Advisor Recommendation.
+	ResourceRecommendationBase
+}
+
+// RecommendationsClientUpdateResponse contains the response from method RecommendationsClient.Update.
+type RecommendationsClientUpdateResponse struct {
 	// Advisor Recommendation.
 	ResourceRecommendationBase
 }
@@ -164,45 +182,6 @@ type SuppressionsClientGetResponse struct {
 type SuppressionsClientListResponse struct {
 	// The response of a SuppressionContract list operation.
 	SuppressionContractListResult
-}
-
-// TriageRecommendationsClientApproveTriageRecommendationResponse contains the response from method TriageRecommendationsClient.ApproveTriageRecommendation.
-type TriageRecommendationsClientApproveTriageRecommendationResponse struct {
-	// placeholder for future response values
-}
-
-// TriageRecommendationsClientGetResponse contains the response from method TriageRecommendationsClient.Get.
-type TriageRecommendationsClientGetResponse struct {
-	// Triage recommendation data structure.
-	TriageRecommendation
-}
-
-// TriageRecommendationsClientListResponse contains the response from method TriageRecommendationsClient.NewListPager.
-type TriageRecommendationsClientListResponse struct {
-	// Collection of Advisor triage recommendations.
-	TriageRecommendationCollection
-}
-
-// TriageRecommendationsClientRejectTriageRecommendationResponse contains the response from method TriageRecommendationsClient.RejectTriageRecommendation.
-type TriageRecommendationsClientRejectTriageRecommendationResponse struct {
-	// placeholder for future response values
-}
-
-// TriageRecommendationsClientResetTriageRecommendationResponse contains the response from method TriageRecommendationsClient.ResetTriageRecommendation.
-type TriageRecommendationsClientResetTriageRecommendationResponse struct {
-	// placeholder for future response values
-}
-
-// TriageResourcesClientGetResponse contains the response from method TriageResourcesClient.Get.
-type TriageResourcesClientGetResponse struct {
-	// Triage resource data structure.
-	TriageResource
-}
-
-// TriageResourcesClientListResponse contains the response from method TriageResourcesClient.NewListPager.
-type TriageResourcesClientListResponse struct {
-	// Collection of Advisor triage resources.
-	TriageResourceCollection
 }
 
 // WorkloadsClientListResponse contains the response from method WorkloadsClient.NewListPager.

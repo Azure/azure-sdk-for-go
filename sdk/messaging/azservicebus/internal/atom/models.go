@@ -5,8 +5,82 @@ package atom
 
 import (
 	"encoding/xml"
+	"strconv"
+	"strings"
 	"time"
 )
+
+func (fd FilterDescription) MarshalXML(encoder *xml.Encoder, start xml.StartElement) error {
+	type filterDescription FilterDescription
+	if fd.RawAttrs == nil {
+		return encoder.EncodeElement(filterDescription(fd), start)
+	}
+	fd.RawAttrs = rawRuleAttributes(fd.RawAttrs, fd.Type)
+	return encoder.EncodeElement(struct {
+		filterDescription
+		// The raw attributes carry the type using a preserved namespace prefix.
+		Type string `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr,omitempty"`
+	}{filterDescription: filterDescription(fd)}, start)
+}
+
+func (ad ActionDescription) MarshalXML(encoder *xml.Encoder, start xml.StartElement) error {
+	type actionDescription ActionDescription
+	if ad.RawAttrs == nil {
+		return encoder.EncodeElement(actionDescription(ad), start)
+	}
+	ad.RawAttrs = rawRuleAttributes(ad.RawAttrs, ad.Type)
+	return encoder.EncodeElement(struct {
+		actionDescription
+		Type string `xml:"http://www.w3.org/2001/XMLSchema-instance type,attr,omitempty"`
+	}{actionDescription: actionDescription(ad)}, start)
+}
+
+func rawRuleAttributes(rawAttrs []xml.Attr, ruleType string) []xml.Attr {
+	prefixes := map[string]string{"xml": "http://www.w3.org/XML/1998/namespace"}
+	namespaces := map[string]string{"http://www.w3.org/XML/1998/namespace": "xml"}
+	for _, attr := range rawAttrs {
+		var prefix string
+		if attr.Name.Space == "xmlns" {
+			prefix = attr.Name.Local
+		} else if strings.HasPrefix(attr.Name.Local, "xmlns:") && attr.Name.Space == "" {
+			prefix = strings.TrimPrefix(attr.Name.Local, "xmlns:")
+		}
+		if prefix != "" {
+			prefixes[prefix] = attr.Value
+			namespaces[attr.Value] = prefix
+		}
+	}
+
+	attrs := make([]xml.Attr, 0, len(rawAttrs)+2)
+	prefixFor := func(namespace string) string {
+		if prefix, ok := namespaces[namespace]; ok {
+			return prefix
+		}
+		prefix := "i"
+		for suffix := 1; prefixes[prefix] != ""; suffix++ {
+			prefix = "i" + strconv.Itoa(suffix)
+		}
+		prefixes[prefix] = namespace
+		namespaces[namespace] = prefix
+		attrs = append(attrs, xml.Attr{Name: xml.Name{Local: "xmlns:" + prefix}, Value: namespace})
+		return prefix
+	}
+	for _, attr := range rawAttrs {
+		if attr.Name.Space == "xmlns" {
+			// Keep declarations and raw child prefixes out of the encoder's prefix generator.
+			attr.Name = xml.Name{Local: "xmlns:" + attr.Name.Local}
+		} else if attr.Name.Space != "" {
+			attr.Name = xml.Name{Local: prefixFor(attr.Name.Space) + ":" + attr.Name.Local}
+		}
+		attrs = append(attrs, attr)
+	}
+	typePrefix := prefixFor("http://www.w3.org/2001/XMLSchema-instance")
+	attrs = append(attrs, xml.Attr{
+		Name:  xml.Name{Local: typePrefix + ":type"},
+		Value: ruleType,
+	})
+	return attrs
+}
 
 // All
 type (

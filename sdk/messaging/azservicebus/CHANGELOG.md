@@ -10,6 +10,8 @@
 
 ### Bugs Fixed
 
+- Fixed duplicate type attributes when serializing `UnknownRuleFilter` and `UnknownRuleAction` whose `RawXML` declares the XML Schema instance namespace.
+
 ### Other Changes
 
 ## 1.11.0 (2026-10-06)

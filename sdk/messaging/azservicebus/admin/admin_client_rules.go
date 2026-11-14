@@ -4,6 +4,7 @@
 package admin
 
 import (
+	"bytes"
 	"context"
 	"encoding/xml"
 	"fmt"
@@ -692,20 +693,15 @@ func newUnknownRuleFilterFromFilterDescription(fd *atom.FilterDescription) (*Unk
 }
 
 func convertUnknownRuleFilterToFilterDescription(urf *UnknownRuleFilter) (*atom.FilterDescription, error) {
-	var fdXML struct {
-		Type  string     `xml:"i type,attr"`
-		Attrs []xml.Attr `xml:",any,attr"`
-		XML   []byte     `xml:",innerxml"`
-	}
-
-	if err := xml.Unmarshal([]byte(urf.RawXML), &fdXML); err != nil {
+	ruleType, attrs, innerXML, err := unmarshalUnknownRuleXML(urf.RawXML)
+	if err != nil {
 		return nil, err
 	}
 
 	return &atom.FilterDescription{
-		Type:     fdXML.Type,
-		RawAttrs: fdXML.Attrs,
-		RawXML:   fdXML.XML,
+		Type:     ruleType,
+		RawAttrs: attrs,
+		RawXML:   innerXML,
 	}, nil
 }
 
@@ -744,19 +740,59 @@ func newUnknownRuleActionFromActionDescription(ad *atom.ActionDescription) (*Unk
 // convertUnknownRuleActionToActionDescription creates an atom.ActionDescription.
 // This XML was originally
 func convertUnknownRuleActionToActionDescription(urf *UnknownRuleAction) (*atom.ActionDescription, error) {
-	var adXML struct {
-		Type  string     `xml:"i type,attr"`
-		Attrs []xml.Attr `xml:",any,attr"`
-		XML   []byte     `xml:",innerxml"`
-	}
-
-	if err := xml.Unmarshal([]byte(urf.RawXML), &adXML); err != nil {
+	ruleType, attrs, innerXML, err := unmarshalUnknownRuleXML(urf.RawXML)
+	if err != nil {
 		return nil, err
 	}
 
 	return &atom.ActionDescription{
-		Type:     adXML.Type,
-		RawXML:   adXML.XML,
-		RawAttrs: adXML.Attrs,
+		Type:     ruleType,
+		RawXML:   innerXML,
+		RawAttrs: attrs,
 	}, nil
+}
+
+func unmarshalUnknownRuleXML(rawXML []byte) (string, []xml.Attr, []byte, error) {
+	var ruleXML struct {
+		Attrs []xml.Attr `xml:",any,attr"`
+		XML   []byte     `xml:",innerxml"`
+	}
+
+	if err := xml.Unmarshal(rawXML, &ruleXML); err != nil {
+		return "", nil, nil, err
+	}
+
+	// Decoded namespace URI "i" is indistinguishable from an undeclared i prefix.
+	decoder := xml.NewDecoder(bytes.NewReader(rawXML))
+	var start xml.StartElement
+	for {
+		token, err := decoder.RawToken()
+		if err != nil {
+			return "", nil, nil, err
+		}
+		if element, ok := token.(xml.StartElement); ok {
+			start = element
+			break
+		}
+	}
+	iDeclared := false
+	for _, attr := range start.Attr {
+		if attr.Name.Space == "xmlns" && attr.Name.Local == "i" && attr.Value != "" {
+			iDeclared = true
+			break
+		}
+	}
+
+	var ruleType string
+	attrs := ruleXML.Attrs[:0]
+	for index, attr := range ruleXML.Attrs {
+		legacyType := !iDeclared && start.Attr[index].Name == (xml.Name{Space: "i", Local: "type"})
+		if attr.Name.Local == "type" && (attr.Name.Space == "http://www.w3.org/2001/XMLSchema-instance" || legacyType) {
+			// The SDK's existing round-trip XML uses an undeclared i prefix.
+			ruleType = attr.Value
+			continue
+		}
+		attrs = append(attrs, attr)
+	}
+	return ruleType, attrs, ruleXML.XML, nil
 }

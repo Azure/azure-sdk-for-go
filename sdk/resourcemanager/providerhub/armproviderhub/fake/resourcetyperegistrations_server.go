@@ -25,13 +25,25 @@ type ResourceTypeRegistrationsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
 	BeginCreateOrUpdate func(ctx context.Context, providerNamespace string, resourceType string, properties armproviderhub.ResourceTypeRegistration, options *armproviderhub.ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
+	// BeginCreateOrUpdateNestedResourceTypeFirst is the fake for method ResourceTypeRegistrationsClient.BeginCreateOrUpdateNestedResourceTypeFirst
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateNestedResourceTypeFirst func(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, properties armproviderhub.ResourceTypeRegistration, options *armproviderhub.ResourceTypeRegistrationsClientBeginCreateOrUpdateNestedResourceTypeFirstOptions) (resp azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse], errResp azfake.ErrorResponder)
+
 	// BeginDelete is the fake for method ResourceTypeRegistrationsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, providerNamespace string, resourceType string, options *armproviderhub.ResourceTypeRegistrationsClientBeginDeleteOptions) (resp azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginDeleteNestedResourceTypeFirst is the fake for method ResourceTypeRegistrationsClient.BeginDeleteNestedResourceTypeFirst
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeleteNestedResourceTypeFirst func(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, options *armproviderhub.ResourceTypeRegistrationsClientBeginDeleteNestedResourceTypeFirstOptions) (resp azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientDeleteNestedResourceTypeFirstResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method ResourceTypeRegistrationsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, providerNamespace string, resourceType string, options *armproviderhub.ResourceTypeRegistrationsClientGetOptions) (resp azfake.Responder[armproviderhub.ResourceTypeRegistrationsClientGetResponse], errResp azfake.ErrorResponder)
+
+	// GetNestedResourceTypeFirst is the fake for method ResourceTypeRegistrationsClient.GetNestedResourceTypeFirst
+	// HTTP status codes to indicate success: http.StatusOK
+	GetNestedResourceTypeFirst func(ctx context.Context, providerNamespace string, resourceType string, nestedResourceTypeFirst string, options *armproviderhub.ResourceTypeRegistrationsClientGetNestedResourceTypeFirstOptions) (resp azfake.Responder[armproviderhub.ResourceTypeRegistrationsClientGetNestedResourceTypeFirstResponse], errResp azfake.ErrorResponder)
 
 	// NewListByProviderRegistrationPager is the fake for method ResourceTypeRegistrationsClient.NewListByProviderRegistrationPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -43,9 +55,11 @@ type ResourceTypeRegistrationsServer struct {
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
 func NewResourceTypeRegistrationsServerTransport(srv *ResourceTypeRegistrationsServer) *ResourceTypeRegistrationsServerTransport {
 	return &ResourceTypeRegistrationsServerTransport{
-		srv:                                srv,
-		beginCreateOrUpdate:                newTracker[azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientCreateOrUpdateResponse]](),
+		srv:                 srv,
+		beginCreateOrUpdate: newTracker[azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientCreateOrUpdateResponse]](),
+		beginCreateOrUpdateNestedResourceTypeFirst: newTracker[azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse]](),
 		beginDelete:                        newTracker[azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientDeleteResponse]](),
+		beginDeleteNestedResourceTypeFirst: newTracker[azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientDeleteNestedResourceTypeFirstResponse]](),
 		newListByProviderRegistrationPager: newTracker[azfake.PagerResponder[armproviderhub.ResourceTypeRegistrationsClientListByProviderRegistrationResponse]](),
 	}
 }
@@ -53,10 +67,12 @@ func NewResourceTypeRegistrationsServerTransport(srv *ResourceTypeRegistrationsS
 // ResourceTypeRegistrationsServerTransport connects instances of armproviderhub.ResourceTypeRegistrationsClient to instances of ResourceTypeRegistrationsServer.
 // Don't use this type directly, use NewResourceTypeRegistrationsServerTransport instead.
 type ResourceTypeRegistrationsServerTransport struct {
-	srv                                *ResourceTypeRegistrationsServer
-	beginCreateOrUpdate                *tracker[azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientCreateOrUpdateResponse]]
-	beginDelete                        *tracker[azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientDeleteResponse]]
-	newListByProviderRegistrationPager *tracker[azfake.PagerResponder[armproviderhub.ResourceTypeRegistrationsClientListByProviderRegistrationResponse]]
+	srv                                        *ResourceTypeRegistrationsServer
+	beginCreateOrUpdate                        *tracker[azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientCreateOrUpdateResponse]]
+	beginCreateOrUpdateNestedResourceTypeFirst *tracker[azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientCreateOrUpdateNestedResourceTypeFirstResponse]]
+	beginDelete                                *tracker[azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientDeleteResponse]]
+	beginDeleteNestedResourceTypeFirst         *tracker[azfake.PollerResponder[armproviderhub.ResourceTypeRegistrationsClientDeleteNestedResourceTypeFirstResponse]]
+	newListByProviderRegistrationPager         *tracker[azfake.PagerResponder[armproviderhub.ResourceTypeRegistrationsClientListByProviderRegistrationResponse]]
 }
 
 // Do implements the policy.Transporter interface for ResourceTypeRegistrationsServerTransport.
@@ -82,10 +98,16 @@ func (r *ResourceTypeRegistrationsServerTransport) dispatchToMethodFake(req *htt
 			switch method {
 			case "ResourceTypeRegistrationsClient.BeginCreateOrUpdate":
 				res.resp, res.err = r.dispatchBeginCreateOrUpdate(req)
+			case "ResourceTypeRegistrationsClient.BeginCreateOrUpdateNestedResourceTypeFirst":
+				res.resp, res.err = r.dispatchBeginCreateOrUpdateNestedResourceTypeFirst(req)
 			case "ResourceTypeRegistrationsClient.BeginDelete":
 				res.resp, res.err = r.dispatchBeginDelete(req)
+			case "ResourceTypeRegistrationsClient.BeginDeleteNestedResourceTypeFirst":
+				res.resp, res.err = r.dispatchBeginDeleteNestedResourceTypeFirst(req)
 			case "ResourceTypeRegistrationsClient.Get":
 				res.resp, res.err = r.dispatchGet(req)
+			case "ResourceTypeRegistrationsClient.GetNestedResourceTypeFirst":
+				res.resp, res.err = r.dispatchGetNestedResourceTypeFirst(req)
 			case "ResourceTypeRegistrationsClient.NewListByProviderRegistrationPager":
 				res.resp, res.err = r.dispatchNewListByProviderRegistrationPager(req)
 			default:
@@ -152,6 +174,58 @@ func (r *ResourceTypeRegistrationsServerTransport) dispatchBeginCreateOrUpdate(r
 	return resp, nil
 }
 
+func (r *ResourceTypeRegistrationsServerTransport) dispatchBeginCreateOrUpdateNestedResourceTypeFirst(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginCreateOrUpdateNestedResourceTypeFirst == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginCreateOrUpdateNestedResourceTypeFirst not implemented")}
+	}
+	beginCreateOrUpdateNestedResourceTypeFirst := r.beginCreateOrUpdateNestedResourceTypeFirst.get(req)
+	if beginCreateOrUpdateNestedResourceTypeFirst == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		body, err := server.UnmarshalRequestAsJSON[armproviderhub.ResourceTypeRegistration](req)
+		if err != nil {
+			return nil, err
+		}
+		providerNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("providerNamespace")])
+		if err != nil {
+			return nil, err
+		}
+		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
+		if err != nil {
+			return nil, err
+		}
+		nestedResourceTypeFirstParam, err := url.PathUnescape(matches[regex.SubexpIndex("nestedResourceTypeFirst")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginCreateOrUpdateNestedResourceTypeFirst(req.Context(), providerNamespaceParam, resourceTypeParam, nestedResourceTypeFirstParam, body, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginCreateOrUpdateNestedResourceTypeFirst = &respr
+		r.beginCreateOrUpdateNestedResourceTypeFirst.add(req, beginCreateOrUpdateNestedResourceTypeFirst)
+	}
+
+	resp, err := server.PollerResponderNext(beginCreateOrUpdateNestedResourceTypeFirst, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusCreated}, resp.StatusCode) {
+		r.beginCreateOrUpdateNestedResourceTypeFirst.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginCreateOrUpdateNestedResourceTypeFirst) {
+		r.beginCreateOrUpdateNestedResourceTypeFirst.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (r *ResourceTypeRegistrationsServerTransport) dispatchBeginDelete(req *http.Request) (*http.Response, error) {
 	if r.srv.BeginDelete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginDelete not implemented")}
@@ -196,6 +270,54 @@ func (r *ResourceTypeRegistrationsServerTransport) dispatchBeginDelete(req *http
 	return resp, nil
 }
 
+func (r *ResourceTypeRegistrationsServerTransport) dispatchBeginDeleteNestedResourceTypeFirst(req *http.Request) (*http.Response, error) {
+	if r.srv.BeginDeleteNestedResourceTypeFirst == nil {
+		return nil, &nonRetriableError{errors.New("fake for method BeginDeleteNestedResourceTypeFirst not implemented")}
+	}
+	beginDeleteNestedResourceTypeFirst := r.beginDeleteNestedResourceTypeFirst.get(req)
+	if beginDeleteNestedResourceTypeFirst == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 5 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		providerNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("providerNamespace")])
+		if err != nil {
+			return nil, err
+		}
+		resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
+		if err != nil {
+			return nil, err
+		}
+		nestedResourceTypeFirstParam, err := url.PathUnescape(matches[regex.SubexpIndex("nestedResourceTypeFirst")])
+		if err != nil {
+			return nil, err
+		}
+		respr, errRespr := r.srv.BeginDeleteNestedResourceTypeFirst(req.Context(), providerNamespaceParam, resourceTypeParam, nestedResourceTypeFirstParam, nil)
+		if respErr := server.GetError(errRespr, req); respErr != nil {
+			return nil, respErr
+		}
+		beginDeleteNestedResourceTypeFirst = &respr
+		r.beginDeleteNestedResourceTypeFirst.add(req, beginDeleteNestedResourceTypeFirst)
+	}
+
+	resp, err := server.PollerResponderNext(beginDeleteNestedResourceTypeFirst, req)
+	if err != nil {
+		return nil, err
+	}
+
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted, http.StatusNoContent}, resp.StatusCode) {
+		r.beginDeleteNestedResourceTypeFirst.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted, http.StatusNoContent", resp.StatusCode)}
+	}
+	if !server.PollerResponderMore(beginDeleteNestedResourceTypeFirst) {
+		r.beginDeleteNestedResourceTypeFirst.remove(req)
+	}
+
+	return resp, nil
+}
+
 func (r *ResourceTypeRegistrationsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if r.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
@@ -215,6 +337,43 @@ func (r *ResourceTypeRegistrationsServerTransport) dispatchGet(req *http.Request
 		return nil, err
 	}
 	respr, errRespr := r.srv.Get(req.Context(), providerNamespaceParam, resourceTypeParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ResourceTypeRegistration, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (r *ResourceTypeRegistrationsServerTransport) dispatchGetNestedResourceTypeFirst(req *http.Request) (*http.Response, error) {
+	if r.srv.GetNestedResourceTypeFirst == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetNestedResourceTypeFirst not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ProviderHub/providerRegistrations/(?P<providerNamespace>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<resourceType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcetypeRegistrations/(?P<nestedResourceTypeFirst>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 5 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	providerNamespaceParam, err := url.PathUnescape(matches[regex.SubexpIndex("providerNamespace")])
+	if err != nil {
+		return nil, err
+	}
+	resourceTypeParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceType")])
+	if err != nil {
+		return nil, err
+	}
+	nestedResourceTypeFirstParam, err := url.PathUnescape(matches[regex.SubexpIndex("nestedResourceTypeFirst")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := r.srv.GetNestedResourceTypeFirst(req.Context(), providerNamespaceParam, resourceTypeParam, nestedResourceTypeFirstParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

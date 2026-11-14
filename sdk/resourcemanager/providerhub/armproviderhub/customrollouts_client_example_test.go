@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-10-01/CustomRollouts_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01/CustomRollouts_CreateOrUpdate.json
 func ExampleCustomRolloutsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,10 +40,18 @@ func ExampleCustomRolloutsClient_BeginCreateOrUpdate() {
 					ManifestCheckinParams: &armproviderhub.CheckinManifestParams{
 						BaselineArmManifestLocation: to.Ptr("EastUS2EUAP"),
 						Environment:                 to.Ptr("Prod"),
+						SwaggerURI:                  to.Ptr("https://github.com/Azure/azure-rest-api-specs/pull/123456"),
 					},
 				},
 				RefreshSubscriptionRegistration: to.Ptr(true),
-				RolloutID:                       to.Ptr("Ev2RolloutIdGuid"),
+				RolloutID:                       to.Ptr("rollout-0001"),
+				RolloutOrchestrationMetadata: &armproviderhub.RolloutOrchestrationMetadata{
+					IsForManifestBuildout: to.Ptr(true),
+					DeploymentType:        to.Ptr("RegionAgnosticRollout"),
+					TrafficRing:           to.Ptr("Canary"),
+					ServiceGroup:          to.Ptr("Microsoft.Contoso.ManifestRollout"),
+					ServiceIdentifier:     to.Ptr("00000000-0000-0000-0000-000000000000"),
+				},
 			},
 		},
 	}, nil)
@@ -92,7 +100,14 @@ func ExampleCustomRolloutsClient_BeginCreateOrUpdate() {
 	// 					},
 	// 				},
 	// 				RefreshSubscriptionRegistration: to.Ptr(true),
-	// 				RolloutID: to.Ptr("Ev2RolloutIdGuid"),
+	// 				RolloutID: to.Ptr("rollout-0001"),
+	// 				RolloutOrchestrationMetadata: &armproviderhub.RolloutOrchestrationMetadata{
+	// 					IsForManifestBuildout: to.Ptr(true),
+	// 					DeploymentType: to.Ptr("RegionAgnosticRollout"),
+	// 					TrafficRing: to.Ptr("Canary"),
+	// 					ServiceGroup: to.Ptr("Microsoft.Contoso.ManifestRollout"),
+	// 					ServiceIdentifier: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				},
 	// 			},
 	// 			Status: &armproviderhub.CustomRolloutPropertiesStatus{
 	// 				CompletedRegions: []*string{
@@ -111,7 +126,7 @@ func ExampleCustomRolloutsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/CustomRollouts_Delete.json
+// Generated from example definition: 2026-10-01/CustomRollouts_Delete.json
 func ExampleCustomRolloutsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -133,7 +148,7 @@ func ExampleCustomRolloutsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/CustomRollouts_Get.json
+// Generated from example definition: 2026-10-01/CustomRollouts_Get.json
 func ExampleCustomRolloutsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,6 +193,13 @@ func ExampleCustomRolloutsClient_Get() {
 	// 					},
 	// 				},
 	// 				RefreshSubscriptionRegistration: to.Ptr(true),
+	// 				RolloutOrchestrationMetadata: &armproviderhub.RolloutOrchestrationMetadata{
+	// 					IsForManifestBuildout: to.Ptr(true),
+	// 					DeploymentType: to.Ptr("RegionAgnosticRollout"),
+	// 					TrafficRing: to.Ptr("Canary"),
+	// 					ServiceGroup: to.Ptr("Microsoft.Contoso.ManifestRollout"),
+	// 					ServiceIdentifier: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				},
 	// 				ProviderRegistration: &armproviderhub.CustomRolloutSpecificationProviderRegistration{
 	// 					ID: to.Ptr("/subscriptions/ab7a8701-f7ef-471a-a2f4-d0ebbf494f77/providers/Microsoft.ProviderHub/providerRegistrations/Microsoft.Contoso"),
 	// 					Name: to.Ptr("Microsoft.Contoso"),
@@ -292,6 +314,7 @@ func ExampleCustomRolloutsClient_Get() {
 	// 						ManifestAppliedAt: to.Ptr(time.Date(2020, time.February, 1, 1, 1, 1, 107505600, time.UTC)),
 	// 						PreviousCommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
 	// 						AppliedCommitID: to.Ptr("47317892d4edf22f08704f6b595105c4fd7a8db7"),
+	// 						RootProviderNamespace: to.Ptr("Microsoft.Contoso"),
 	// 					},
 	// 					{
 	// 						Region: to.Ptr("centraluseuap"),
@@ -311,7 +334,7 @@ func ExampleCustomRolloutsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/CustomRollouts_ListByProviderRegistration.json
+// Generated from example definition: 2026-10-01/CustomRollouts_ListByProviderRegistration.json
 func ExampleCustomRolloutsClient_NewListByProviderRegistrationPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -362,7 +385,14 @@ func ExampleCustomRolloutsClient_NewListByProviderRegistrationPager() {
 		// 							},
 		// 						},
 		// 						RefreshSubscriptionRegistration: to.Ptr(true),
-		// 						RolloutID: to.Ptr("Ev2RolloutIdGuid"),
+		// 						RolloutID: to.Ptr("rollout-0001"),
+		// 						RolloutOrchestrationMetadata: &armproviderhub.RolloutOrchestrationMetadata{
+		// 							IsForManifestBuildout: to.Ptr(true),
+		// 							DeploymentType: to.Ptr("RegionAgnosticRollout"),
+		// 							TrafficRing: to.Ptr("Canary"),
+		// 							ServiceGroup: to.Ptr("Microsoft.Contoso.ManifestRollout"),
+		// 							ServiceIdentifier: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						},
 		// 					},
 		// 					Status: &armproviderhub.CustomRolloutPropertiesStatus{
 		// 						CompletedRegions: []*string{
@@ -416,7 +446,14 @@ func ExampleCustomRolloutsClient_NewListByProviderRegistrationPager() {
 		// 							},
 		// 						},
 		// 						RefreshSubscriptionRegistration: to.Ptr(true),
-		// 						RolloutID: to.Ptr("Ev2RolloutIdGuid2"),
+		// 						RolloutID: to.Ptr("rollout-0002"),
+		// 						RolloutOrchestrationMetadata: &armproviderhub.RolloutOrchestrationMetadata{
+		// 							IsForManifestBuildout: to.Ptr(true),
+		// 							DeploymentType: to.Ptr("RegionAgnosticRollout"),
+		// 							TrafficRing: to.Ptr("Canary"),
+		// 							ServiceGroup: to.Ptr("Microsoft.Contoso.ManifestRollout"),
+		// 							ServiceIdentifier: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						},
 		// 					},
 		// 					Status: &armproviderhub.CustomRolloutPropertiesStatus{
 		// 						FailedOrSkippedRegions: map[string]*armproviderhub.ExtendedErrorInfo{
@@ -439,7 +476,7 @@ func ExampleCustomRolloutsClient_NewListByProviderRegistrationPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/CustomRollouts_Stop.json
+// Generated from example definition: 2026-10-01/CustomRollouts_Stop.json
 func ExampleCustomRolloutsClient_Stop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

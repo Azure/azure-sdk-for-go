@@ -94,6 +94,100 @@ type DefaultRolloutsClientStopOptions struct {
 	// placeholder for future optional parameters
 }
 
+// EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeFirstOptions contains the optional parameters for the EndpointRegistrationsClient.CreateOrUpdateNestedResourceTypeFirst
+// method.
+type EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeFirstOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeSecondOptions contains the optional parameters for the EndpointRegistrationsClient.CreateOrUpdateNestedResourceTypeSecond
+// method.
+type EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeSecondOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeThirdOptions contains the optional parameters for the EndpointRegistrationsClient.CreateOrUpdateNestedResourceTypeThird
+// method.
+type EndpointRegistrationsClientCreateOrUpdateNestedResourceTypeThirdOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientCreateOrUpdateOptions contains the optional parameters for the EndpointRegistrationsClient.CreateOrUpdate
+// method.
+type EndpointRegistrationsClientCreateOrUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientDeleteNestedResourceTypeFirstOptions contains the optional parameters for the EndpointRegistrationsClient.DeleteNestedResourceTypeFirst
+// method.
+type EndpointRegistrationsClientDeleteNestedResourceTypeFirstOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientDeleteNestedResourceTypeSecondOptions contains the optional parameters for the EndpointRegistrationsClient.DeleteNestedResourceTypeSecond
+// method.
+type EndpointRegistrationsClientDeleteNestedResourceTypeSecondOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientDeleteNestedResourceTypeThirdOptions contains the optional parameters for the EndpointRegistrationsClient.DeleteNestedResourceTypeThird
+// method.
+type EndpointRegistrationsClientDeleteNestedResourceTypeThirdOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientDeleteOptions contains the optional parameters for the EndpointRegistrationsClient.Delete method.
+type EndpointRegistrationsClientDeleteOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientGetNestedResourceTypeFirstOptions contains the optional parameters for the EndpointRegistrationsClient.GetNestedResourceTypeFirst
+// method.
+type EndpointRegistrationsClientGetNestedResourceTypeFirstOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientGetNestedResourceTypeSecondOptions contains the optional parameters for the EndpointRegistrationsClient.GetNestedResourceTypeSecond
+// method.
+type EndpointRegistrationsClientGetNestedResourceTypeSecondOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientGetNestedResourceTypeThirdOptions contains the optional parameters for the EndpointRegistrationsClient.GetNestedResourceTypeThird
+// method.
+type EndpointRegistrationsClientGetNestedResourceTypeThirdOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientGetOptions contains the optional parameters for the EndpointRegistrationsClient.Get method.
+type EndpointRegistrationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeFirstOptions contains the optional parameters
+// for the EndpointRegistrationsClient.NewListByResourceTypeRegistrationNestedResourceTypeFirstPager method.
+type EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeFirstOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeSecondOptions contains the optional parameters
+// for the EndpointRegistrationsClient.NewListByResourceTypeRegistrationNestedResourceTypeSecondPager method.
+type EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeSecondOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeThirdOptions contains the optional parameters
+// for the EndpointRegistrationsClient.NewListByResourceTypeRegistrationNestedResourceTypeThirdPager method.
+type EndpointRegistrationsClientListByResourceTypeRegistrationNestedResourceTypeThirdOptions struct {
+	// placeholder for future optional parameters
+}
+
+// EndpointRegistrationsClientListByResourceTypeRegistrationOptions contains the optional parameters for the EndpointRegistrationsClient.NewListByResourceTypeRegistrationPager
+// method.
+type EndpointRegistrationsClientListByResourceTypeRegistrationOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ManifestsClientCreateOrUpdateOptions contains the optional parameters for the ManifestsClient.CreateOrUpdate method.
 type ManifestsClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
@@ -221,9 +315,23 @@ type ResourceActionsClientBeginDeleteResourcesOptions struct {
 	ResumeToken string
 }
 
+// ResourceTypeRegistrationsClientBeginCreateOrUpdateNestedResourceTypeFirstOptions contains the optional parameters for the
+// ResourceTypeRegistrationsClient.BeginCreateOrUpdateNestedResourceTypeFirst method.
+type ResourceTypeRegistrationsClientBeginCreateOrUpdateNestedResourceTypeFirstOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ResourceTypeRegistrationsClient.BeginCreateOrUpdate
 // method.
 type ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ResourceTypeRegistrationsClientBeginDeleteNestedResourceTypeFirstOptions contains the optional parameters for the ResourceTypeRegistrationsClient.BeginDeleteNestedResourceTypeFirst
+// method.
+type ResourceTypeRegistrationsClientBeginDeleteNestedResourceTypeFirstOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -233,6 +341,12 @@ type ResourceTypeRegistrationsClientBeginCreateOrUpdateOptions struct {
 type ResourceTypeRegistrationsClientBeginDeleteOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
+}
+
+// ResourceTypeRegistrationsClientGetNestedResourceTypeFirstOptions contains the optional parameters for the ResourceTypeRegistrationsClient.GetNestedResourceTypeFirst
+// method.
+type ResourceTypeRegistrationsClientGetNestedResourceTypeFirstOptions struct {
+	// placeholder for future optional parameters
 }
 
 // ResourceTypeRegistrationsClientGetOptions contains the optional parameters for the ResourceTypeRegistrationsClient.Get

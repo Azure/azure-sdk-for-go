@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/DetachTrafficFilters_Update.json
+// Generated from example definition: 2026-03-15-preview/DetachTrafficFilters_Update.json
 func ExampleDetachTrafficFilterClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

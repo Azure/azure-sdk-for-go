@@ -6,14 +6,13 @@ package armfrontdoor_test
 
 import (
 	"context"
-	"log"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/frontdoor/armfrontdoor/v2"
+	"log"
 )
 
-// Generated from example definition: 2025-10-01/NetworkExperimentCreateProfile.json
+// Generated from example definition: 2026-04-01/NetworkExperimentCreateProfile.json
 func ExampleNetworkExperimentProfilesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -35,13 +34,13 @@ func ExampleNetworkExperimentProfilesClient_BeginCreateOrUpdate() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armfrontdoor.NetworkExperimentProfilesClientCreateOrUpdateResponse{
-	// 	Profile: &armfrontdoor.Profile{
+	// 	Profile: armfrontdoor.Profile{
 	// 		Name: to.Ptr("MyProfile"),
 	// 		Type: to.Ptr("Microsoft.Network/NetworkExperimentprofiles"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/MyResourceGroup/providers/Microsoft.Network/NetworkExperimentProfiles/MyProfile"),
@@ -58,7 +57,7 @@ func ExampleNetworkExperimentProfilesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/NetworkExperimentDeleteProfile.json
+// Generated from example definition: 2026-04-01/NetworkExperimentDeleteProfile.json
 func ExampleNetworkExperimentProfilesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +74,7 @@ func ExampleNetworkExperimentProfilesClient_BeginDelete() {
 	}
 	res, err := poller.PollUntilDone(ctx, nil)
 	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
+		log.Fatalf("failed to poll the result: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
@@ -84,7 +83,55 @@ func ExampleNetworkExperimentProfilesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/NetworkExperimentGetProfile.json
+// Generated from example definition: 2026-04-01/NetworkExperimentUpdateProfile.json
+func ExampleNetworkExperimentProfilesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armfrontdoor.NewClientFactory("subid", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewNetworkExperimentProfilesClient().BeginUpdate(ctx, "MyResourceGroup", "MyProfile", armfrontdoor.ProfileUpdateModel{
+		Properties: &armfrontdoor.ProfileUpdateProperties{
+			EnabledState: to.Ptr(armfrontdoor.StateEnabled),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("value1"),
+			"key2": to.Ptr("value2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armfrontdoor.NetworkExperimentProfilesClientUpdateResponse{
+	// 	Profile: armfrontdoor.Profile{
+	// 		Name: to.Ptr("MyProfile"),
+	// 		Type: to.Ptr("Microsoft.Network/NetworkExperimentprofiles"),
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/MyResourceGroup/providers/Microsoft.Network/NetworkExperimentProfiles/MyProfile"),
+	// 		Location: to.Ptr("WestUs"),
+	// 		Properties: &armfrontdoor.ProfileProperties{
+	// 			EnabledState: to.Ptr(armfrontdoor.StateEnabled),
+	// 			ResourceState: to.Ptr(armfrontdoor.NetworkExperimentResourceStateCreating),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("value1"),
+	// 			"key2": to.Ptr("value2"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-04-01/NetworkExperimentGetProfile.json
 func ExampleNetworkExperimentProfilesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +150,7 @@ func ExampleNetworkExperimentProfilesClient_Get() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armfrontdoor.NetworkExperimentProfilesClientGetResponse{
-	// 	Profile: &armfrontdoor.Profile{
+	// 	Profile: armfrontdoor.Profile{
 	// 		Name: to.Ptr("MyProfile"),
 	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/MyResourceGroup/providers/Microsoft.Network/NetworkExperimentProfiles/MyProfile"),
 	// 		Location: to.Ptr("WestUs"),
@@ -119,52 +166,7 @@ func ExampleNetworkExperimentProfilesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01/NetworkExperimentListProfiles.json
-func ExampleNetworkExperimentProfilesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armfrontdoor.NewClientFactory("subid", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewNetworkExperimentProfilesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armfrontdoor.NetworkExperimentProfilesClientListResponse{
-		// 	ProfileList: armfrontdoor.ProfileList{
-		// 		Value: []*armfrontdoor.Profile{
-		// 			{
-		// 				Name: to.Ptr("MyProfile"),
-		// 				Type: to.Ptr("Microsoft.Network/NetworkExperimentprofiles"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/MyResourceGroup/providers/Microsoft.Network/NetworkExperimentProfiles/"),
-		// 				Location: to.Ptr("WestUs"),
-		// 				Properties: &armfrontdoor.ProfileProperties{
-		// 					EnabledState: to.Ptr(armfrontdoor.StateEnabled),
-		// 					ResourceState: to.Ptr(armfrontdoor.NetworkExperimentResourceStateCreating),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"key1": to.Ptr("value1"),
-		// 					"key2": to.Ptr("value2"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-10-01/NetworkExperimentListByResourceGroupProfiles.json
+// Generated from example definition: 2026-04-01/NetworkExperimentListByResourceGroupProfiles.json
 func ExampleNetworkExperimentProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -209,8 +211,8 @@ func ExampleNetworkExperimentProfilesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-10-01/NetworkExperimentUpdateProfile.json
-func ExampleNetworkExperimentProfilesClient_BeginUpdate() {
+// Generated from example definition: 2026-04-01/NetworkExperimentListProfiles.json
+func ExampleNetworkExperimentProfilesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -220,39 +222,36 @@ func ExampleNetworkExperimentProfilesClient_BeginUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewNetworkExperimentProfilesClient().BeginUpdate(ctx, "MyResourceGroup", "MyProfile", armfrontdoor.ProfileUpdateModel{
-		Properties: &armfrontdoor.ProfileUpdateProperties{
-			EnabledState: to.Ptr(armfrontdoor.StateEnabled),
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("value1"),
-			"key2": to.Ptr("value2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewNetworkExperimentProfilesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armfrontdoor.NetworkExperimentProfilesClientListResponse{
+		// 	ProfileList: armfrontdoor.ProfileList{
+		// 		Value: []*armfrontdoor.Profile{
+		// 			{
+		// 				Name: to.Ptr("MyProfile"),
+		// 				Type: to.Ptr("Microsoft.Network/NetworkExperimentprofiles"),
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/MyResourceGroup/providers/Microsoft.Network/NetworkExperimentProfiles/"),
+		// 				Location: to.Ptr("WestUs"),
+		// 				Properties: &armfrontdoor.ProfileProperties{
+		// 					EnabledState: to.Ptr(armfrontdoor.StateEnabled),
+		// 					ResourceState: to.Ptr(armfrontdoor.NetworkExperimentResourceStateCreating),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"key1": to.Ptr("value1"),
+		// 					"key2": to.Ptr("value2"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to pull the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armfrontdoor.NetworkExperimentProfilesClientUpdateResponse{
-	// 	Profile: &armfrontdoor.Profile{
-	// 		Name: to.Ptr("MyProfile"),
-	// 		Type: to.Ptr("Microsoft.Network/NetworkExperimentprofiles"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/MyResourceGroup/providers/Microsoft.Network/NetworkExperimentProfiles/MyProfile"),
-	// 		Location: to.Ptr("WestUs"),
-	// 		Properties: &armfrontdoor.ProfileProperties{
-	// 			EnabledState: to.Ptr(armfrontdoor.StateEnabled),
-	// 			ResourceState: to.Ptr(armfrontdoor.NetworkExperimentResourceStateCreating),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("value1"),
-	// 			"key2": to.Ptr("value2"),
-	// 		},
-	// 	},
-	// }
 }

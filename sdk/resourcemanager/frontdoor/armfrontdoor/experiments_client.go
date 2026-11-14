@@ -7,18 +7,19 @@ package armfrontdoor
 import (
 	"context"
 	"errors"
-	"net/http"
-	"net/url"
-	"strings"
-
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/arm"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
+	"net/http"
+	"net/url"
+	"strings"
 )
 
 // ExperimentsClient contains the methods for the Experiments group.
 // Don't use this type directly, use NewExperimentsClient() instead.
+//
+// Generated from API version 2026-04-01
 type ExperimentsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -29,6 +30,9 @@ type ExperimentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExperimentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -44,8 +48,6 @@ func NewExperimentsClient(subscriptionID string, credential azcore.TokenCredenti
 //
 // Creates or updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -69,12 +71,10 @@ func (client *ExperimentsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Creates or updates an Experiment
+// createOrUpdate - Creates or updates an Experiment
 //
 // Creates or updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 func (client *ExperimentsClient) createOrUpdate(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, options *ExperimentsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExperimentsClient.BeginCreateOrUpdate"
@@ -96,11 +96,11 @@ func (client *ExperimentsClient) createOrUpdate(ctx context.Context, resourceGro
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters Experiment, _ *ExperimentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -120,8 +120,8 @@ func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -134,8 +134,6 @@ func (client *ExperimentsClient) createOrUpdateCreateRequest(ctx context.Context
 //
 // Deletes an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -157,12 +155,10 @@ func (client *ExperimentsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes an Experiment
+// deleteOperation - Deletes an Experiment
 //
 // Deletes an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 func (client *ExperimentsClient) deleteOperation(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExperimentsClient.BeginDelete"
@@ -184,11 +180,11 @@ func (client *ExperimentsClient) deleteOperation(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, _ *ExperimentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -208,155 +204,15 @@ func (client *ExperimentsClient) deleteCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Gets an Experiment by ExperimentName
-//
-// Gets an Experiment by ExperimentName
-// If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - The Profile identifier associated with the Tenant and Partner
-//   - experimentName - The Experiment identifier associated with the Experiment
-//   - options - ExperimentsClientGetOptions contains the optional parameters for the ExperimentsClient.Get method.
-func (client *ExperimentsClient) Get(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientGetOptions) (ExperimentsClientGetResponse, error) {
-	var err error
-	const operationName = "ExperimentsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, experimentName, options)
-	if err != nil {
-		return ExperimentsClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return ExperimentsClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExperimentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *ExperimentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, _ *ExperimentsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	if experimentName == "" {
-		return nil, errors.New("parameter experimentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{experimentName}", url.PathEscape(experimentName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *ExperimentsClient) getHandleResponse(resp *http.Response) (ExperimentsClientGetResponse, error) {
-	result := ExperimentsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.Experiment); err != nil {
-		return ExperimentsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByProfilePager - Gets a list of Experiments
-//
-// # Gets a list of Experiments
-//
-// Generated from API version 2025-10-01
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - profileName - The Profile identifier associated with the Tenant and Partner
-//   - options - ExperimentsClientListByProfileOptions contains the optional parameters for the ExperimentsClient.NewListByProfilePager
-//     method.
-func (client *ExperimentsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *ExperimentsClientListByProfileOptions) *runtime.Pager[ExperimentsClientListByProfileResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ExperimentsClientListByProfileResponse]{
-		More: func(page ExperimentsClientListByProfileResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ExperimentsClientListByProfileResponse) (ExperimentsClientListByProfileResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExperimentsClient.NewListByProfilePager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, options)
-			}, nil)
-			if err != nil {
-				return ExperimentsClientListByProfileResponse{}, err
-			}
-			return client.listByProfileHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByProfileCreateRequest creates the ListByProfile request.
-func (client *ExperimentsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, _ *ExperimentsClientListByProfileOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if profileName == "" {
-		return nil, errors.New("parameter profileName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listByProfileHandleResponse handles the ListByProfile response.
-func (client *ExperimentsClient) listByProfileHandleResponse(resp *http.Response) (ExperimentsClientListByProfileResponse, error) {
-	result := ExperimentsClientListByProfileResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExperimentList); err != nil {
-		return ExperimentsClientListByProfileResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginUpdate - Updates an Experiment by Experiment id
 //
 // Updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - profileName - The Profile identifier associated with the Tenant and Partner
 //   - experimentName - The Experiment identifier associated with the Experiment
@@ -379,12 +235,10 @@ func (client *ExperimentsClient) BeginUpdate(ctx context.Context, resourceGroupN
 	}
 }
 
-// Update - Updates an Experiment by Experiment id
+// update - Updates an Experiment by Experiment id
 //
 // Updates an Experiment
 // If the operation fails it returns an *azcore.ResponseError type.
-//
-// Generated from API version 2025-10-01
 func (client *ExperimentsClient) update(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, options *ExperimentsClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExperimentsClient.BeginUpdate"
@@ -406,11 +260,11 @@ func (client *ExperimentsClient) update(ctx context.Context, resourceGroupName s
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *ExperimentsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, parameters ExperimentUpdateModel, _ *ExperimentsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -430,12 +284,159 @@ func (client *ExperimentsClient) updateCreateRequest(ctx context.Context, resour
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", "2025-10-01")
-	req.Raw().URL.RawQuery = reqQP.Encode()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Gets an Experiment by ExperimentName
+//
+// Gets an Experiment by ExperimentName
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - The Profile identifier associated with the Tenant and Partner
+//   - experimentName - The Experiment identifier associated with the Experiment
+//   - options - ExperimentsClientGetOptions contains the optional parameters for the ExperimentsClient.Get method.
+func (client *ExperimentsClient) Get(ctx context.Context, resourceGroupName string, profileName string, experimentName string, options *ExperimentsClientGetOptions) (ExperimentsClientGetResponse, error) {
+	var err error
+	const operationName = "ExperimentsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, profileName, experimentName, options)
+	if err != nil {
+		return ExperimentsClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return ExperimentsClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *ExperimentsClient) getCreateRequest(ctx context.Context, resourceGroupName string, profileName string, experimentName string, _ *ExperimentsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments/{experimentName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if profileName == "" {
+		return nil, errors.New("parameter profileName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+	if experimentName == "" {
+		return nil, errors.New("parameter experimentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{experimentName}", url.PathEscape(experimentName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *ExperimentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExperimentsClientGetResponse, error) {
+	result := ExperimentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.Experiment); err != nil {
+		return ExperimentsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByProfilePager - Gets a list of Experiments
+//
+// Gets a list of Experiments
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - profileName - The Profile identifier associated with the Tenant and Partner
+//   - options - ExperimentsClientListByProfileOptions contains the optional parameters for the ExperimentsClient.NewListByProfilePager
+//     method.
+func (client *ExperimentsClient) NewListByProfilePager(resourceGroupName string, profileName string, options *ExperimentsClientListByProfileOptions) *runtime.Pager[ExperimentsClientListByProfileResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ExperimentsClientListByProfileResponse]{
+		More: func(page ExperimentsClientListByProfileResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ExperimentsClientListByProfileResponse) (ExperimentsClientListByProfileResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExperimentsClient.NewListByProfilePager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByProfileCreateRequest(ctx, resourceGroupName, profileName, nextLink, options)
+			if err != nil {
+				return ExperimentsClientListByProfileResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ExperimentsClientListByProfileResponse{}, err
+			}
+			return client.listByProfileHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByProfileCreateRequest creates the ListByProfile request.
+func (client *ExperimentsClient) listByProfileCreateRequest(ctx context.Context, resourceGroupName string, profileName string, nextLink string, _ *ExperimentsClientListByProfileOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/NetworkExperimentProfiles/{profileName}/Experiments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if profileName == "" {
+			return nil, errors.New("parameter profileName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{profileName}", url.PathEscape(profileName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20260401)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByProfileHandleResponse handles the ListByProfile response.
+func (client *ExperimentsClient) listByProfileHandleResponse(resp *http.Response, successCodes ...int) (ExperimentsClientListByProfileResponse, error) {
+	result := ExperimentsClientListByProfileResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExperimentList); err != nil {
+		return ExperimentsClientListByProfileResponse{}, err
+	}
+	return result, nil
 }

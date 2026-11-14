@@ -4,6 +4,10 @@
 
 package armfrontdoor
 
+const (
+	version20260401 string = "2026-04-01"
+)
+
 // ActionType - Defines the action to take on rule match.
 type ActionType string
 
@@ -237,6 +241,73 @@ func PossibleEnforceCertificateNameCheckEnabledStateValues() []EnforceCertificat
 	return []EnforceCertificateNameCheckEnabledState{
 		EnforceCertificateNameCheckEnabledStateDisabled,
 		EnforceCertificateNameCheckEnabledStateEnabled,
+	}
+}
+
+// ExceptionMatchVariable - The variable to be evaluated for excluding the request.
+type ExceptionMatchVariable string
+
+const (
+	// ExceptionMatchVariableRequestHeaderNames - Request Header Names Exception Match Variable
+	ExceptionMatchVariableRequestHeaderNames ExceptionMatchVariable = "RequestHeaderNames"
+	// ExceptionMatchVariableRequestURI - Request Uri Exception Match Variable
+	ExceptionMatchVariableRequestURI ExceptionMatchVariable = "RequestUri"
+	// ExceptionMatchVariableSocketAddr - Socket Address Exception Match Variable
+	ExceptionMatchVariableSocketAddr ExceptionMatchVariable = "SocketAddr"
+)
+
+// PossibleExceptionMatchVariableValues returns the possible values for the ExceptionMatchVariable const type.
+func PossibleExceptionMatchVariableValues() []ExceptionMatchVariable {
+	return []ExceptionMatchVariable{
+		ExceptionMatchVariableRequestHeaderNames,
+		ExceptionMatchVariableRequestURI,
+		ExceptionMatchVariableSocketAddr,
+	}
+}
+
+// ExceptionSelectorMatchOperator - Comparison operator to apply to the selector when specifying which elements in the collection
+// this exception applies to..
+type ExceptionSelectorMatchOperator string
+
+const (
+	// ExceptionSelectorMatchOperatorEquals - Equals Selector Match Operator
+	ExceptionSelectorMatchOperatorEquals ExceptionSelectorMatchOperator = "Equals"
+)
+
+// PossibleExceptionSelectorMatchOperatorValues returns the possible values for the ExceptionSelectorMatchOperator const type.
+func PossibleExceptionSelectorMatchOperatorValues() []ExceptionSelectorMatchOperator {
+	return []ExceptionSelectorMatchOperator{
+		ExceptionSelectorMatchOperatorEquals,
+	}
+}
+
+// ExceptionValueMatchOperator - Comparison operator to apply to the value to be matched..
+type ExceptionValueMatchOperator string
+
+const (
+	// ExceptionValueMatchOperatorContains - Contains Exception Value Match Operator
+	ExceptionValueMatchOperatorContains ExceptionValueMatchOperator = "Contains"
+	// ExceptionValueMatchOperatorEndsWith - EndsWith Exception Value Match Operator
+	ExceptionValueMatchOperatorEndsWith ExceptionValueMatchOperator = "EndsWith"
+	// ExceptionValueMatchOperatorEquals - Equals Exception Value Match Operator
+	ExceptionValueMatchOperatorEquals ExceptionValueMatchOperator = "Equals"
+	// ExceptionValueMatchOperatorEqualsAny - EqualsAny Exception Value Match Operator
+	ExceptionValueMatchOperatorEqualsAny ExceptionValueMatchOperator = "EqualsAny"
+	// ExceptionValueMatchOperatorIPMatch - IPMatch Exception Value Match Operator
+	ExceptionValueMatchOperatorIPMatch ExceptionValueMatchOperator = "IPMatch"
+	// ExceptionValueMatchOperatorStartsWith - StartsWith Exception Value Match Operator
+	ExceptionValueMatchOperatorStartsWith ExceptionValueMatchOperator = "StartsWith"
+)
+
+// PossibleExceptionValueMatchOperatorValues returns the possible values for the ExceptionValueMatchOperator const type.
+func PossibleExceptionValueMatchOperatorValues() []ExceptionValueMatchOperator {
+	return []ExceptionValueMatchOperator{
+		ExceptionValueMatchOperatorContains,
+		ExceptionValueMatchOperatorEndsWith,
+		ExceptionValueMatchOperatorEquals,
+		ExceptionValueMatchOperatorEqualsAny,
+		ExceptionValueMatchOperatorIPMatch,
+		ExceptionValueMatchOperatorStartsWith,
 	}
 }
 
@@ -622,6 +693,30 @@ func PossibleManagedRuleSetActionTypeValues() []ManagedRuleSetActionType {
 	}
 }
 
+// ManagedRuleSetStatus - Status of a managed rule set.
+type ManagedRuleSetStatus string
+
+const (
+	// ManagedRuleSetStatusDeprecated - The managed rule set is deprecated.
+	ManagedRuleSetStatusDeprecated ManagedRuleSetStatus = "Deprecated"
+	// ManagedRuleSetStatusGA - The managed rule set is generally available.
+	ManagedRuleSetStatusGA ManagedRuleSetStatus = "GA"
+	// ManagedRuleSetStatusPreview - The managed rule set is in preview.
+	ManagedRuleSetStatusPreview ManagedRuleSetStatus = "Preview"
+	// ManagedRuleSetStatusSupported - The managed rule set is supported.
+	ManagedRuleSetStatusSupported ManagedRuleSetStatus = "Supported"
+)
+
+// PossibleManagedRuleSetStatusValues returns the possible values for the ManagedRuleSetStatus const type.
+func PossibleManagedRuleSetStatusValues() []ManagedRuleSetStatus {
+	return []ManagedRuleSetStatus{
+		ManagedRuleSetStatusDeprecated,
+		ManagedRuleSetStatusGA,
+		ManagedRuleSetStatusPreview,
+		ManagedRuleSetStatusSupported,
+	}
+}
+
 // MatchProcessingBehavior - If this rule is a match should the rules engine continue running the remaining rules or stop.
 // If not present, defaults to Continue.
 type MatchProcessingBehavior string
@@ -647,6 +742,8 @@ type MatchVariable string
 const (
 	// MatchVariableCookies - Cookies
 	MatchVariableCookies MatchVariable = "Cookies"
+	// MatchVariableJA4 - JA4 Match Variable
+	MatchVariableJA4 MatchVariable = "JA4"
 	// MatchVariablePostArgs - PostArgs
 	MatchVariablePostArgs MatchVariable = "PostArgs"
 	// MatchVariableQueryString - QueryString
@@ -669,6 +766,7 @@ const (
 func PossibleMatchVariableValues() []MatchVariable {
 	return []MatchVariable{
 		MatchVariableCookies,
+		MatchVariableJA4,
 		MatchVariablePostArgs,
 		MatchVariableQueryString,
 		MatchVariableRemoteAddr,
@@ -734,8 +832,12 @@ type Operator string
 const (
 	// OperatorAny - Any
 	OperatorAny Operator = "Any"
+	// OperatorAsnMatch - Autonomous System Number Match Operator
+	OperatorAsnMatch Operator = "AsnMatch"
 	// OperatorBeginsWith - BeginsWith
 	OperatorBeginsWith Operator = "BeginsWith"
+	// OperatorClientFingerprint - Client Finger print Operator
+	OperatorClientFingerprint Operator = "ClientFingerprint"
 	// OperatorContains - Contains
 	OperatorContains Operator = "Contains"
 	// OperatorEndsWith - EndsWith
@@ -764,7 +866,9 @@ const (
 func PossibleOperatorValues() []Operator {
 	return []Operator{
 		OperatorAny,
+		OperatorAsnMatch,
 		OperatorBeginsWith,
+		OperatorClientFingerprint,
 		OperatorContains,
 		OperatorEndsWith,
 		OperatorEqual,
@@ -776,6 +880,30 @@ func PossibleOperatorValues() []Operator {
 		OperatorLessThanOrEqual,
 		OperatorRegEx,
 		OperatorServiceTagMatch,
+	}
+}
+
+// ParanoiaLevel - OWASP CRS paranoia level of a managed rule. Applicable only for DRS rules.
+type ParanoiaLevel string
+
+const (
+	// ParanoiaLevelPL1 - Paranoia level 1.
+	ParanoiaLevelPL1 ParanoiaLevel = "PL1"
+	// ParanoiaLevelPL2 - Paranoia level 2.
+	ParanoiaLevelPL2 ParanoiaLevel = "PL2"
+	// ParanoiaLevelPL3 - Paranoia level 3.
+	ParanoiaLevelPL3 ParanoiaLevel = "PL3"
+	// ParanoiaLevelPL4 - Paranoia level 4.
+	ParanoiaLevelPL4 ParanoiaLevel = "PL4"
+)
+
+// PossibleParanoiaLevelValues returns the possible values for the ParanoiaLevel const type.
+func PossibleParanoiaLevelValues() []ParanoiaLevel {
+	return []ParanoiaLevel{
+		ParanoiaLevelPL1,
+		ParanoiaLevelPL2,
+		ParanoiaLevelPL3,
+		ParanoiaLevelPL4,
 	}
 }
 
@@ -1290,8 +1418,12 @@ func PossibleTransformTypeValues() []TransformType {
 type VariableName string
 
 const (
+	// VariableNameAsn - Autonomous System Number
+	VariableNameAsn VariableName = "Asn"
 	// VariableNameGeoLocation - GeoLocation
 	VariableNameGeoLocation VariableName = "GeoLocation"
+	// VariableNameJa4 - JA4 TLS fingerprint
+	VariableNameJa4 VariableName = "Ja4"
 	// VariableNameNone - None
 	VariableNameNone VariableName = "None"
 	// VariableNameSocketAddr - SocketAddr
@@ -1301,7 +1433,9 @@ const (
 // PossibleVariableNameValues returns the possible values for the VariableName const type.
 func PossibleVariableNameValues() []VariableName {
 	return []VariableName{
+		VariableNameAsn,
 		VariableNameGeoLocation,
+		VariableNameJa4,
 		VariableNameNone,
 		VariableNameSocketAddr,
 	}

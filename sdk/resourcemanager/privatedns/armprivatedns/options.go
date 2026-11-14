@@ -107,6 +107,12 @@ type RecordSetsClientUpdateOptions struct {
 	IfMatch *string
 }
 
+// ResourceReferenceClientGetByTargetResourcesOptions contains the optional parameters for the ResourceReferenceClient.GetByTargetResources
+// method.
+type ResourceReferenceClientGetByTargetResourcesOptions struct {
+	// placeholder for future optional parameters
+}
+
 // VirtualNetworkLinksClientBeginCreateOrUpdateOptions contains the optional parameters for the VirtualNetworkLinksClient.BeginCreateOrUpdate
 // method.
 type VirtualNetworkLinksClientBeginCreateOrUpdateOptions struct {

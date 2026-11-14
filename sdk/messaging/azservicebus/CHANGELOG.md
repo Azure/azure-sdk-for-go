@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Fixed `CreateSubscription` and `UpdateSubscription` ignoring `SubscriptionProperties.Status`.
+
 ### Other Changes
 
 ## 1.11.0 (2026-10-06)

@@ -30,6 +30,9 @@ type ExportConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExportConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExportConfigurationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,11 +65,7 @@ func (client *ExportConfigurationsClient) Create(ctx context.Context, resourceGr
 	if err != nil {
 		return ExportConfigurationsClientCreateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportConfigurationsClientCreateResponse{}, err
-	}
-	resp, err := client.createHandleResponse(httpResp)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -74,7 +73,7 @@ func (client *ExportConfigurationsClient) Create(ctx context.Context, resourceGr
 func (client *ExportConfigurationsClient) createCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportProperties ComponentExportRequest, _ *ExportConfigurationsClientCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +100,11 @@ func (client *ExportConfigurationsClient) createCreateRequest(ctx context.Contex
 }
 
 // createHandleResponse handles the Create response.
-func (client *ExportConfigurationsClient) createHandleResponse(resp *http.Response) (ExportConfigurationsClientCreateResponse, error) {
+func (client *ExportConfigurationsClient) createHandleResponse(resp *http.Response, successCodes ...int) (ExportConfigurationsClientCreateResponse, error) {
 	result := ExportConfigurationsClientCreateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfigurationArray); err != nil {
 		return ExportConfigurationsClientCreateResponse{}, err
 	}
@@ -130,11 +132,7 @@ func (client *ExportConfigurationsClient) Delete(ctx context.Context, resourceGr
 	if err != nil {
 		return ExportConfigurationsClientDeleteResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportConfigurationsClientDeleteResponse{}, err
-	}
-	resp, err := client.deleteHandleResponse(httpResp)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -142,7 +140,7 @@ func (client *ExportConfigurationsClient) Delete(ctx context.Context, resourceGr
 func (client *ExportConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportID string, _ *ExportConfigurationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -169,8 +167,11 @@ func (client *ExportConfigurationsClient) deleteCreateRequest(ctx context.Contex
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *ExportConfigurationsClient) deleteHandleResponse(resp *http.Response) (ExportConfigurationsClientDeleteResponse, error) {
+func (client *ExportConfigurationsClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (ExportConfigurationsClientDeleteResponse, error) {
 	result := ExportConfigurationsClientDeleteResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfiguration); err != nil {
 		return ExportConfigurationsClientDeleteResponse{}, err
 	}
@@ -198,11 +199,7 @@ func (client *ExportConfigurationsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ExportConfigurationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportConfigurationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -210,7 +207,7 @@ func (client *ExportConfigurationsClient) Get(ctx context.Context, resourceGroup
 func (client *ExportConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportID string, _ *ExportConfigurationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -237,8 +234,11 @@ func (client *ExportConfigurationsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExportConfigurationsClient) getHandleResponse(resp *http.Response) (ExportConfigurationsClientGetResponse, error) {
+func (client *ExportConfigurationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExportConfigurationsClientGetResponse, error) {
 	result := ExportConfigurationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfiguration); err != nil {
 		return ExportConfigurationsClientGetResponse{}, err
 	}
@@ -265,11 +265,7 @@ func (client *ExportConfigurationsClient) List(ctx context.Context, resourceGrou
 	if err != nil {
 		return ExportConfigurationsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportConfigurationsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -277,7 +273,7 @@ func (client *ExportConfigurationsClient) List(ctx context.Context, resourceGrou
 func (client *ExportConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, _ *ExportConfigurationsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -300,8 +296,11 @@ func (client *ExportConfigurationsClient) listCreateRequest(ctx context.Context,
 }
 
 // listHandleResponse handles the List response.
-func (client *ExportConfigurationsClient) listHandleResponse(resp *http.Response) (ExportConfigurationsClientListResponse, error) {
+func (client *ExportConfigurationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ExportConfigurationsClientListResponse, error) {
 	result := ExportConfigurationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfigurationArray); err != nil {
 		return ExportConfigurationsClientListResponse{}, err
 	}
@@ -330,11 +329,7 @@ func (client *ExportConfigurationsClient) Update(ctx context.Context, resourceGr
 	if err != nil {
 		return ExportConfigurationsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExportConfigurationsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -342,7 +337,7 @@ func (client *ExportConfigurationsClient) Update(ctx context.Context, resourceGr
 func (client *ExportConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, resourceName string, exportID string, exportProperties ComponentExportRequest, _ *ExportConfigurationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Insights/components/{resourceName}/exportconfiguration/{exportId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -373,8 +368,11 @@ func (client *ExportConfigurationsClient) updateCreateRequest(ctx context.Contex
 }
 
 // updateHandleResponse handles the Update response.
-func (client *ExportConfigurationsClient) updateHandleResponse(resp *http.Response) (ExportConfigurationsClientUpdateResponse, error) {
+func (client *ExportConfigurationsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (ExportConfigurationsClientUpdateResponse, error) {
 	result := ExportConfigurationsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ComponentExportConfiguration); err != nil {
 		return ExportConfigurationsClientUpdateResponse{}, err
 	}

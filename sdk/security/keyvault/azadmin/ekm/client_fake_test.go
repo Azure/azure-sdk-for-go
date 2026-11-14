@@ -17,7 +17,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-// These tests exercise every KeyVaultClient operation against a mock HTTP
+// These tests exercise every Client operation against a mock HTTP
 // transport so the generated request/response code is covered even when the
 // live EKM tests are skipped (the default in CI, where no EKM proxy is
 // provisioned). They intentionally don't depend on EKM_PROXY_HOST or
@@ -43,12 +43,12 @@ const mockEKMProxyInfoBody = `{
 	"proxy_name":"Contoso Proxy 2.0"
 }`
 
-// newMockClient builds a KeyVaultClient wired to the given mock transport.
+// newMockClient builds a Client wired to the given mock transport.
 // Retries are disabled so each test only needs to enqueue a single response —
 // the challenge auth policy issues a body-less probe first, but that probe
 // receives the same mock response as the main request because we always
 // configure responses via SetResponse or a predicate that matches both.
-func newMockClient(t *testing.T, srv *mock.Server) *ekm.KeyVaultClient {
+func newMockClient(t *testing.T, srv *mock.Server) *ekm.Client {
 	t.Helper()
 	opts := &ekm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
@@ -81,7 +81,7 @@ func TestCreateEkmConnection_Mock(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	res, err := client.CreateEkmConnection(context.Background(), sampleConnection(), nil)
+	res, err := client.CreateConnection(context.Background(), sampleConnection(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, res.Host)
 	require.Equal(t, "ekm-proxy.example.com:443", *res.Host)
@@ -99,7 +99,7 @@ func TestCreateEkmConnection_MockError(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	_, err := client.CreateEkmConnection(context.Background(), sampleConnection(), nil)
+	_, err := client.CreateConnection(context.Background(), sampleConnection(), nil)
 	require.Error(t, err)
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
@@ -115,7 +115,7 @@ func TestGetEkmConnection_Mock(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	res, err := client.GetEkmConnection(context.Background(), nil)
+	res, err := client.GetConnection(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, res.Host)
 	require.Equal(t, "ekm-proxy.example.com:443", *res.Host)
@@ -132,7 +132,7 @@ func TestGetEkmConnection_MockError(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	_, err := client.GetEkmConnection(context.Background(), nil)
+	_, err := client.GetConnection(context.Background(), nil)
 	require.Error(t, err)
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
@@ -148,7 +148,7 @@ func TestGetEkmConnection_MockInvalidBody(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	_, err := client.GetEkmConnection(context.Background(), nil)
+	_, err := client.GetConnection(context.Background(), nil)
 	require.Error(t, err)
 }
 
@@ -161,7 +161,7 @@ func TestUpdateEkmConnection_Mock(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	res, err := client.UpdateEkmConnection(context.Background(), sampleConnection(), nil)
+	res, err := client.UpdateConnection(context.Background(), sampleConnection(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, res.PathPrefix)
 	require.Equal(t, "/v1", *res.PathPrefix)
@@ -176,7 +176,7 @@ func TestUpdateEkmConnection_MockError(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	_, err := client.UpdateEkmConnection(context.Background(), sampleConnection(), nil)
+	_, err := client.UpdateConnection(context.Background(), sampleConnection(), nil)
 	require.Error(t, err)
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
@@ -192,7 +192,7 @@ func TestDeleteEkmConnection_Mock(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	res, err := client.DeleteEkmConnection(context.Background(), nil)
+	res, err := client.DeleteConnection(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, res.Host)
 	require.Equal(t, "ekm-proxy.example.com:443", *res.Host)
@@ -207,7 +207,7 @@ func TestDeleteEkmConnection_MockError(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	_, err := client.DeleteEkmConnection(context.Background(), nil)
+	_, err := client.DeleteConnection(context.Background(), nil)
 	require.Error(t, err)
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
@@ -223,7 +223,7 @@ func TestGetEkmCertificate_Mock(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	res, err := client.GetEkmCertificate(context.Background(), nil)
+	res, err := client.GetCertificate(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, res.SubjectCommonName)
 	require.Equal(t, "CN=hsm-client", *res.SubjectCommonName)
@@ -239,7 +239,7 @@ func TestGetEkmCertificate_MockError(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	_, err := client.GetEkmCertificate(context.Background(), nil)
+	_, err := client.GetCertificate(context.Background(), nil)
 	require.Error(t, err)
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
@@ -255,13 +255,13 @@ func TestCheckEkmConnection_Mock(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	res, err := client.CheckEkmConnection(context.Background(), nil)
+	res, err := client.CheckConnection(context.Background(), nil)
 	require.NoError(t, err)
 	require.NotNil(t, res.APIVersion)
 	require.Equal(t, "1.0", *res.APIVersion)
-	require.NotNil(t, res.EkmVendor)
-	require.Equal(t, "Contoso", *res.EkmVendor)
-	require.NotNil(t, res.EkmProduct)
+	require.NotNil(t, res.EKMVendor)
+	require.Equal(t, "Contoso", *res.EKMVendor)
+	require.NotNil(t, res.EKMProduct)
 	require.NotNil(t, res.ProxyVendor)
 	require.NotNil(t, res.ProxyName)
 }
@@ -275,7 +275,7 @@ func TestCheckEkmConnection_MockError(t *testing.T) {
 	)
 
 	client := newMockClient(t, srv)
-	_, err := client.CheckEkmConnection(context.Background(), nil)
+	_, err := client.CheckConnection(context.Background(), nil)
 	require.Error(t, err)
 	var respErr *azcore.ResponseError
 	require.ErrorAs(t, err, &respErr)
@@ -294,59 +294,59 @@ func TestEkmRequestRouting(t *testing.T) {
 	}
 	for _, tc := range []struct {
 		name   string
-		invoke func(t *testing.T, c *ekm.KeyVaultClient)
+		invoke func(t *testing.T, c *ekm.Client)
 		want   call
 		body   string
 	}{
 		{
-			name: "CheckEkmConnection",
-			invoke: func(t *testing.T, c *ekm.KeyVaultClient) {
-				_, err := c.CheckEkmConnection(context.Background(), nil)
+			name: "CheckConnection",
+			invoke: func(t *testing.T, c *ekm.Client) {
+				_, err := c.CheckConnection(context.Background(), nil)
 				require.NoError(t, err)
 			},
 			want: call{http.MethodPost, "/ekm/check"},
 			body: mockEKMProxyInfoBody,
 		},
 		{
-			name: "CreateEkmConnection",
-			invoke: func(t *testing.T, c *ekm.KeyVaultClient) {
-				_, err := c.CreateEkmConnection(context.Background(), sampleConnection(), nil)
+			name: "CreateConnection",
+			invoke: func(t *testing.T, c *ekm.Client) {
+				_, err := c.CreateConnection(context.Background(), sampleConnection(), nil)
 				require.NoError(t, err)
 			},
 			want: call{http.MethodPost, "/ekm/create"},
 			body: mockEKMConnectionBody,
 		},
 		{
-			name: "DeleteEkmConnection",
-			invoke: func(t *testing.T, c *ekm.KeyVaultClient) {
-				_, err := c.DeleteEkmConnection(context.Background(), nil)
+			name: "DeleteConnection",
+			invoke: func(t *testing.T, c *ekm.Client) {
+				_, err := c.DeleteConnection(context.Background(), nil)
 				require.NoError(t, err)
 			},
 			want: call{http.MethodDelete, "/ekm"},
 			body: mockEKMConnectionBody,
 		},
 		{
-			name: "GetEkmCertificate",
-			invoke: func(t *testing.T, c *ekm.KeyVaultClient) {
-				_, err := c.GetEkmCertificate(context.Background(), nil)
+			name: "GetCertificate",
+			invoke: func(t *testing.T, c *ekm.Client) {
+				_, err := c.GetCertificate(context.Background(), nil)
 				require.NoError(t, err)
 			},
 			want: call{http.MethodGet, "/ekm/certificate"},
 			body: mockEKMCertificateBody,
 		},
 		{
-			name: "GetEkmConnection",
-			invoke: func(t *testing.T, c *ekm.KeyVaultClient) {
-				_, err := c.GetEkmConnection(context.Background(), nil)
+			name: "GetConnection",
+			invoke: func(t *testing.T, c *ekm.Client) {
+				_, err := c.GetConnection(context.Background(), nil)
 				require.NoError(t, err)
 			},
 			want: call{http.MethodGet, "/ekm"},
 			body: mockEKMConnectionBody,
 		},
 		{
-			name: "UpdateEkmConnection",
-			invoke: func(t *testing.T, c *ekm.KeyVaultClient) {
-				_, err := c.UpdateEkmConnection(context.Background(), sampleConnection(), nil)
+			name: "UpdateConnection",
+			invoke: func(t *testing.T, c *ekm.Client) {
+				_, err := c.UpdateConnection(context.Background(), sampleConnection(), nil)
 				require.NoError(t, err)
 			},
 			want: call{http.MethodPatch, "/ekm"},

@@ -71,7 +71,7 @@ func (s *ServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return s.dispatchToMethodFake(req, method)
@@ -255,7 +255,7 @@ func (s *ServerTransport) dispatchBeginSelectiveKeyRestore(req *http.Request) (*
 	}
 	beginSelectiveKeyRestore := s.beginSelectiveKeyRestore.get(req)
 	if beginSelectiveKeyRestore == nil {
-		const regexStr = `/keys/(?P<keyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/restore`
+		const regexStr = `/keys/(?P<keyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/restore`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {

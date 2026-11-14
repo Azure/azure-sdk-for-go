@@ -26,7 +26,7 @@ func TestEkmConnectionLifecycle(t *testing.T) {
 	ctx := context.Background()
 
 	// Best-effort cleanup of any pre-existing connection so the test is repeatable.
-	deleteExistingEkmConnection(ctx, t, client)
+	deleteExistingConnection(ctx, t, client)
 
 	// The Subject Common Name on the proxy's server cert must match the host
 	// portion of the dial target (without the port) for TLS validation.
@@ -41,7 +41,7 @@ func TestEkmConnectionLifecycle(t *testing.T) {
 	}
 	testSerde(t, &createParams)
 
-	created, err := client.CreateEkmConnection(ctx, createParams, nil)
+	created, err := client.CreateConnection(ctx, createParams, nil)
 	require.NoError(t, err)
 	require.NotNil(t, created.Host)
 	require.Equal(t, ekmProxyHost, *created.Host)
@@ -53,7 +53,7 @@ func TestEkmConnectionLifecycle(t *testing.T) {
 	testSerde(t, &created.Connection)
 
 	// GET
-	got, err := client.GetEkmConnection(ctx, nil)
+	got, err := client.GetConnection(ctx, nil)
 	require.NoError(t, err)
 	require.NotNil(t, got.Host)
 	require.Equal(t, ekmProxyHost, *got.Host)
@@ -68,7 +68,7 @@ func TestEkmConnectionLifecycle(t *testing.T) {
 		ServerSubjectCommonName: to.Ptr(expectedCN),
 		PathPrefix:              to.Ptr("/api/v1"),
 	}
-	updated, err := client.UpdateEkmConnection(ctx, updateParams, nil)
+	updated, err := client.UpdateConnection(ctx, updateParams, nil)
 	require.NoError(t, err)
 	require.NotNil(t, updated.PathPrefix)
 	require.Equal(t, "/api/v1", *updated.PathPrefix)
@@ -76,13 +76,13 @@ func TestEkmConnectionLifecycle(t *testing.T) {
 	require.Equal(t, expectedCN, *updated.ServerSubjectCommonName)
 
 	// DELETE
-	deleted, err := client.DeleteEkmConnection(ctx, nil)
+	deleted, err := client.DeleteConnection(ctx, nil)
 	require.NoError(t, err)
 	require.NotNil(t, deleted.Host)
 	require.Equal(t, ekmProxyHost, *deleted.Host)
 
 	// After delete, GET should fail with 4xx.
-	_, err = client.GetEkmConnection(ctx, nil)
+	_, err = client.GetConnection(ctx, nil)
 	require.Error(t, err)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
@@ -96,7 +96,7 @@ func TestCreateEkmConnection_ConflictWhenExists(t *testing.T) {
 	client := startEKMTest(t)
 	ctx := context.Background()
 
-	deleteExistingEkmConnection(ctx, t, client)
+	deleteExistingConnection(ctx, t, client)
 
 	params := ekm.Connection{
 		Host:                    to.Ptr(ekmProxyHost),
@@ -104,13 +104,13 @@ func TestCreateEkmConnection_ConflictWhenExists(t *testing.T) {
 		ServerSubjectCommonName: to.Ptr(serverSubjectCommonNameFor(ekmProxyHost)),
 		PathPrefix:              to.Ptr("/api/v1"),
 	}
-	_, err := client.CreateEkmConnection(ctx, params, nil)
+	_, err := client.CreateConnection(ctx, params, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
-		_, _ = client.DeleteEkmConnection(context.Background(), nil)
+		_, _ = client.DeleteConnection(context.Background(), nil)
 	})
 
-	_, err = client.CreateEkmConnection(ctx, params, nil)
+	_, err = client.CreateConnection(ctx, params, nil)
 	require.Error(t, err)
 	var httpErr *azcore.ResponseError
 	require.ErrorAs(t, err, &httpErr)
@@ -118,15 +118,15 @@ func TestCreateEkmConnection_ConflictWhenExists(t *testing.T) {
 	require.Less(t, httpErr.StatusCode, 500)
 }
 
-// TestGetEkmConnection_NotFound verifies that GetEkmConnection returns a 4xx
+// TestGetEkmConnection_NotFound verifies that GetConnection returns a 4xx
 // error when no EKM connection has been configured on the vault.
 func TestGetEkmConnection_NotFound(t *testing.T) {
 	client := startEKMTest(t)
 	ctx := context.Background()
 
-	deleteExistingEkmConnection(ctx, t, client)
+	deleteExistingConnection(ctx, t, client)
 
-	res, err := client.GetEkmConnection(ctx, nil)
+	res, err := client.GetConnection(ctx, nil)
 	require.Error(t, err)
 	require.Nil(t, res.Host)
 	require.Empty(t, res.ServerCaCertificates)
@@ -143,7 +143,7 @@ func TestGetEkmCertificate(t *testing.T) {
 	client := startEKMTest(t)
 	ctx := context.Background()
 
-	res, err := client.GetEkmCertificate(ctx, nil)
+	res, err := client.GetCertificate(ctx, nil)
 	require.NoError(t, err)
 	require.NotNil(t, res.SubjectCommonName)
 	require.NotEmpty(t, *res.SubjectCommonName)
@@ -159,20 +159,20 @@ func TestCheckEkmConnection(t *testing.T) {
 	client := startEKMTest(t)
 	ctx := context.Background()
 
-	deleteExistingEkmConnection(ctx, t, client)
+	deleteExistingConnection(ctx, t, client)
 	params := ekm.Connection{
 		Host:                    to.Ptr(ekmProxyHost),
 		ServerCaCertificates:    [][]byte{ekmCACert},
 		ServerSubjectCommonName: to.Ptr(serverSubjectCommonNameFor(ekmProxyHost)),
 		PathPrefix:              to.Ptr("/api/v1"),
 	}
-	_, err := client.CreateEkmConnection(ctx, params, nil)
+	_, err := client.CreateConnection(ctx, params, nil)
 	require.NoError(t, err)
 	t.Cleanup(func() {
-		_, _ = client.DeleteEkmConnection(context.Background(), nil)
+		_, _ = client.DeleteConnection(context.Background(), nil)
 	})
 
-	res, err := client.CheckEkmConnection(ctx, nil)
+	res, err := client.CheckConnection(ctx, nil)
 	if err != nil {
 		// The proxy almost certainly isn't reachable from CI; assert the failure
 		// is a transport-level ResponseError (not a panic / client-side issue)
@@ -182,8 +182,8 @@ func TestCheckEkmConnection(t *testing.T) {
 		t.Skipf("EKM proxy unreachable (HTTP %d): %s", httpErr.StatusCode, httpErr.ErrorCode)
 	}
 	require.NotNil(t, res.APIVersion)
-	require.NotNil(t, res.EkmVendor)
-	require.NotNil(t, res.EkmProduct)
+	require.NotNil(t, res.EKMVendor)
+	require.NotNil(t, res.EKMProduct)
 	require.NotNil(t, res.ProxyVendor)
 	require.NotNil(t, res.ProxyName)
 	testSerde(t, &res.ProxyInfo)
@@ -210,8 +210,8 @@ func TestConnectionSerde(t *testing.T) {
 
 	proxyInfo := ekm.ProxyInfo{
 		APIVersion:  to.Ptr("1.0"),
-		EkmVendor:   to.Ptr("Test Vendor"),
-		EkmProduct:  to.Ptr("Test Product v1.0"),
+		EKMVendor:   to.Ptr("Test Vendor"),
+		EKMProduct:  to.Ptr("Test Product v1.0"),
 		ProxyVendor: to.Ptr("Test Proxy Vendor"),
 		ProxyName:   to.Ptr("Test Proxy v2.0"),
 	}
@@ -248,16 +248,16 @@ func TestAPIVersion(t *testing.T) {
 	client, err := ekm.NewClient(hsmURL, &azcred.Fake{}, opts)
 	require.NoError(t, err)
 
-	_, err = client.GetEkmConnection(context.Background(), nil)
+	_, err = client.GetConnection(context.Background(), nil)
 	require.NoError(t, err)
 }
 
-// deleteExistingEkmConnection removes any pre-existing EKM connection so a test
+// deleteExistingConnection removes any pre-existing EKM connection so a test
 // can be re-run cleanly. Errors are tolerated because the most common case is
 // that no connection exists yet (a 4xx response from the service).
-func deleteExistingEkmConnection(ctx context.Context, t *testing.T, client *ekm.KeyVaultClient) {
+func deleteExistingConnection(ctx context.Context, t *testing.T, client *ekm.Client) {
 	t.Helper()
-	_, err := client.DeleteEkmConnection(ctx, nil)
+	_, err := client.DeleteConnection(ctx, nil)
 	if err == nil {
 		// Some services need a short cooldown after delete before another
 		// create succeeds; the test-proxy strips this wait in playback.

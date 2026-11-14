@@ -1364,6 +1364,16 @@ func TestAdminClient_RuleResponseMissingElements(t *testing.T) {
 			name:        "missingContent",
 			expectedErr: "invalid rule response: missing content",
 		},
+		{
+			name:        "emptyContent",
+			content:     `<content/>`,
+			expectedErr: "invalid rule response: missing filter",
+		},
+		{
+			name:        "missingRuleDescription",
+			content:     `<content><Other/></content>`,
+			expectedErr: "invalid rule response: missing filter",
+		},
 	}
 
 	for _, tc := range testCases {

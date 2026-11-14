@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkBootstrapDevices_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkBootstrapDevices_Create.json
 func ExampleNetworkBootstrapDevicesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -30,6 +30,9 @@ func ExampleNetworkBootstrapDevicesClient_BeginCreate() {
 			SerialNumber:        to.Ptr("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX"),
 			NetworkDeviceSKU:    to.Ptr("DeviceSku"),
 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+			ControlPlaneACLs: []*string{
+				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+			},
 		},
 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 			Type: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentityTypeNone),
@@ -58,6 +61,7 @@ func ExampleNetworkBootstrapDevicesClient_BeginCreate() {
 	// 			SerialNumber: to.Ptr("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX"),
 	// 			NetworkDeviceSKU: to.Ptr("DeviceSku"),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 	// 			Version: to.Ptr("1.0"),
 	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 	// 			SecondaryManagementIPv4Address: to.Ptr("10.10.10.10"),
@@ -66,6 +70,45 @@ func ExampleNetworkBootstrapDevicesClient_BeginCreate() {
 	// 			SecondaryManagementIPv6Address: to.Ptr("2F::1/100"),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			PrimaryManagementIPv4Address: to.Ptr("10.10.10.10"),
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			ControlPlaneACLs: []*string{
+	// 				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 			},
+	// 			SecretRotationStatus: []*armmanagednetworkfabric.SecretRotationStatus{
+	// 				{
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusInSync),
+	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-1/7e61b8efbcdd4e28963560dba3021df7"),
+	// 						KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+	// 						SecretName: to.Ptr("example-secret-1"),
+	// 						SecretVersion: to.Ptr("7e61b8efbcdd4e28963560dba3021df7"),
+	// 					},
+	// 					SecretType: to.Ptr("Admin user password"),
+	// 				},
+	// 				{
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
+	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusOutOfSync),
+	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-2/11a536561da34d6b8b452d880df58f3a"),
+	// 						KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+	// 						SecretName: to.Ptr("example-secret-2"),
+	// 						SecretVersion: to.Ptr("11a536561da34d6b8b452d880df58f3a"),
+	// 					},
+	// 					SecretType: to.Ptr("AzureOperatorRW user password"),
+	// 				},
+	// 				{
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
+	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusSynchronizing),
+	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-3/22b646561da34d6b8b452d880df69a4b"),
+	// 						KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+	// 						SecretName: to.Ptr("example-secret-3"),
+	// 						SecretVersion: to.Ptr("22b646561da34d6b8b452d880df69a4b"),
+	// 					},
+	// 					SecretType: to.Ptr("AzureOperatorRO user password"),
+	// 				},
+	// 			},
 	// 		},
 	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -96,7 +139,7 @@ func ExampleNetworkBootstrapDevicesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkBootstrapDevices_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkBootstrapDevices_Delete.json
 func ExampleNetworkBootstrapDevicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -117,7 +160,7 @@ func ExampleNetworkBootstrapDevicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkBootstrapDevices_Reboot.json
+// Generated from example definition: 2026-01-15-preview/NetworkBootstrapDevices_Reboot.json
 func ExampleNetworkBootstrapDevicesClient_BeginReboot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -218,7 +261,7 @@ func ExampleNetworkBootstrapDevicesClient_BeginReboot() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkBootstrapDevices_RefreshConfiguration.json
+// Generated from example definition: 2026-01-15-preview/NetworkBootstrapDevices_RefreshConfiguration.json
 func ExampleNetworkBootstrapDevicesClient_BeginRefreshConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,7 +309,7 @@ func ExampleNetworkBootstrapDevicesClient_BeginRefreshConfiguration() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkBootstrapDevices_ResyncPasswords.json
+// Generated from example definition: 2026-01-15-preview/NetworkBootstrapDevices_ResyncPasswords.json
 func ExampleNetworkBootstrapDevicesClient_BeginResyncPasswords() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,7 +410,7 @@ func ExampleNetworkBootstrapDevicesClient_BeginResyncPasswords() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkBootstrapDevices_Update.json
+// Generated from example definition: 2026-01-15-preview/NetworkBootstrapDevices_Update.json
 func ExampleNetworkBootstrapDevicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -390,6 +433,9 @@ func ExampleNetworkBootstrapDevicesClient_BeginUpdate() {
 			Annotation:   to.Ptr("annotation"),
 			HostName:     to.Ptr("NFA-Device"),
 			SerialNumber: to.Ptr("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX"),
+			ControlPlaneACLs: []*string{
+				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -418,6 +464,45 @@ func ExampleNetworkBootstrapDevicesClient_BeginUpdate() {
 	// 			SecondaryManagementIPv6Address: to.Ptr("2F::1/100"),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			PrimaryManagementIPv4Address: to.Ptr("10.10.10.10"),
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			ControlPlaneACLs: []*string{
+	// 				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 			},
+	// 			SecretRotationStatus: []*armmanagednetworkfabric.SecretRotationStatus{
+	// 				{
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusInSync),
+	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-1/7e61b8efbcdd4e28963560dba3021df7"),
+	// 						KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+	// 						SecretName: to.Ptr("example-secret-1"),
+	// 						SecretVersion: to.Ptr("7e61b8efbcdd4e28963560dba3021df7"),
+	// 					},
+	// 					SecretType: to.Ptr("Admin user password"),
+	// 				},
+	// 				{
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
+	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusOutOfSync),
+	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-2/11a536561da34d6b8b452d880df58f3a"),
+	// 						KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+	// 						SecretName: to.Ptr("example-secret-2"),
+	// 						SecretVersion: to.Ptr("11a536561da34d6b8b452d880df58f3a"),
+	// 					},
+	// 					SecretType: to.Ptr("AzureOperatorRW user password"),
+	// 				},
+	// 				{
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
+	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusSynchronizing),
+	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-3/22b646561da34d6b8b452d880df69a4b"),
+	// 						KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+	// 						SecretName: to.Ptr("example-secret-3"),
+	// 						SecretVersion: to.Ptr("22b646561da34d6b8b452d880df69a4b"),
+	// 					},
+	// 					SecretType: to.Ptr("AzureOperatorRO user password"),
+	// 				},
+	// 			},
 	// 		},
 	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -448,7 +533,7 @@ func ExampleNetworkBootstrapDevicesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkBootstrapDevices_UpdateAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/NetworkBootstrapDevices_UpdateAdministrativeState.json
 func ExampleNetworkBootstrapDevicesClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -554,7 +639,7 @@ func ExampleNetworkBootstrapDevicesClient_BeginUpdateAdministrativeState() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkBootstrapDevices_Upgrade.json
+// Generated from example definition: 2026-01-15-preview/NetworkBootstrapDevices_Upgrade.json
 func ExampleNetworkBootstrapDevicesClient_BeginUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -657,7 +742,7 @@ func ExampleNetworkBootstrapDevicesClient_BeginUpgrade() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkBootstrapDevices_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkBootstrapDevices_Get.json
 func ExampleNetworkBootstrapDevicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -683,6 +768,7 @@ func ExampleNetworkBootstrapDevicesClient_Get() {
 	// 			SerialNumber: to.Ptr("Vendor;DCS-7280XXX-24;12.05;JPE2111XXXX"),
 	// 			NetworkDeviceSKU: to.Ptr("DeviceSku"),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 	// 			Version: to.Ptr("1.0"),
 	// 			NetworkFabricID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-fabric"),
 	// 			SecondaryManagementIPv4Address: to.Ptr("10.10.10.10"),
@@ -691,6 +777,45 @@ func ExampleNetworkBootstrapDevicesClient_Get() {
 	// 			SecondaryManagementIPv6Address: to.Ptr("2F::1/100"),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			PrimaryManagementIPv4Address: to.Ptr("10.10.10.10"),
+	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			ControlPlaneACLs: []*string{
+	// 				to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+	// 			},
+	// 			SecretRotationStatus: []*armmanagednetworkfabric.SecretRotationStatus{
+	// 				{
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 4, 51, 41, 251000000, time.UTC)),
+	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusInSync),
+	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-1/7e61b8efbcdd4e28963560dba3021df7"),
+	// 						KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+	// 						SecretName: to.Ptr("example-secret-1"),
+	// 						SecretVersion: to.Ptr("7e61b8efbcdd4e28963560dba3021df7"),
+	// 					},
+	// 					SecretType: to.Ptr("Admin user password"),
+	// 				},
+	// 				{
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
+	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusOutOfSync),
+	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-2/11a536561da34d6b8b452d880df58f3a"),
+	// 						KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+	// 						SecretName: to.Ptr("example-secret-2"),
+	// 						SecretVersion: to.Ptr("11a536561da34d6b8b452d880df58f3a"),
+	// 					},
+	// 					SecretType: to.Ptr("AzureOperatorRW user password"),
+	// 				},
+	// 				{
+	// 					LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
+	// 					SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusSynchronizing),
+	// 					SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+	// 						KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-3/22b646561da34d6b8b452d880df69a4b"),
+	// 						KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+	// 						SecretName: to.Ptr("example-secret-3"),
+	// 						SecretVersion: to.Ptr("22b646561da34d6b8b452d880df69a4b"),
+	// 					},
+	// 					SecretType: to.Ptr("AzureOperatorRO user password"),
+	// 				},
+	// 			},
 	// 		},
 	// 		Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 	// 			PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -721,7 +846,7 @@ func ExampleNetworkBootstrapDevicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkBootstrapDevices_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/NetworkBootstrapDevices_ListByResourceGroup.json
 func ExampleNetworkBootstrapDevicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -761,6 +886,46 @@ func ExampleNetworkBootstrapDevicesClient_NewListByResourceGroupPager() {
 		// 					SecondaryManagementIPv6Address: to.Ptr("2F::1/100"),
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 					ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 					OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+		// 					ControlPlaneACLs: []*string{
+		// 						to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+		// 					},
+		// 					SecretRotationStatus: []*armmanagednetworkfabric.SecretRotationStatus{
+		// 						{
+		// 							LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 4, 51, 41, 251000000, time.UTC)),
+		// 							SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusInSync),
+		// 							SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+		// 								KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-1/7e61b8efbcdd4e28963560dba3021df7"),
+		// 								KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+		// 								SecretName: to.Ptr("example-secret-1"),
+		// 								SecretVersion: to.Ptr("7e61b8efbcdd4e28963560dba3021df7"),
+		// 							},
+		// 							SecretType: to.Ptr("Admin user password"),
+		// 						},
+		// 						{
+		// 							LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
+		// 							SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusOutOfSync),
+		// 							SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+		// 								KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-2/11a536561da34d6b8b452d880df58f3a"),
+		// 								KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+		// 								SecretName: to.Ptr("example-secret-2"),
+		// 								SecretVersion: to.Ptr("11a536561da34d6b8b452d880df58f3a"),
+		// 							},
+		// 							SecretType: to.Ptr("AzureOperatorRW user password"),
+		// 						},
+		// 						{
+		// 							LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
+		// 							SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusSynchronizing),
+		// 							SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+		// 								KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-3/22b646561da34d6b8b452d880df69a4b"),
+		// 								KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+		// 								SecretName: to.Ptr("example-secret-3"),
+		// 								SecretVersion: to.Ptr("22b646561da34d6b8b452d880df69a4b"),
+		// 							},
+		// 							SecretType: to.Ptr("AzureOperatorRO user password"),
+		// 						},
+		// 					},
 		// 				},
 		// 				Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),
@@ -795,7 +960,7 @@ func ExampleNetworkBootstrapDevicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkBootstrapDevices_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NetworkBootstrapDevices_ListBySubscription.json
 func ExampleNetworkBootstrapDevicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -835,6 +1000,46 @@ func ExampleNetworkBootstrapDevicesClient_NewListBySubscriptionPager() {
 		// 					SecondaryManagementIPv6Address: to.Ptr("2F::1/100"),
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 					ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 					OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
+		// 					ControlPlaneACLs: []*string{
+		// 						to.Ptr("/subscriptions/xxxxxx/resourceGroups/resourcegroupname/providers/Microsoft.ManagedNetworkFabric/accessControlLists/example-acl"),
+		// 					},
+		// 					SecretRotationStatus: []*armmanagednetworkfabric.SecretRotationStatus{
+		// 						{
+		// 							LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 4, 51, 41, 251000000, time.UTC)),
+		// 							SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusInSync),
+		// 							SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+		// 								KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-1/7e61b8efbcdd4e28963560dba3021df7"),
+		// 								KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+		// 								SecretName: to.Ptr("example-secret-1"),
+		// 								SecretVersion: to.Ptr("7e61b8efbcdd4e28963560dba3021df7"),
+		// 							},
+		// 							SecretType: to.Ptr("Admin user password"),
+		// 						},
+		// 						{
+		// 							LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
+		// 							SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusOutOfSync),
+		// 							SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+		// 								KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-2/11a536561da34d6b8b452d880df58f3a"),
+		// 								KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+		// 								SecretName: to.Ptr("example-secret-2"),
+		// 								SecretVersion: to.Ptr("11a536561da34d6b8b452d880df58f3a"),
+		// 							},
+		// 							SecretType: to.Ptr("AzureOperatorRW user password"),
+		// 						},
+		// 						{
+		// 							LastRotationTime: to.Ptr(time.Date(2025, time.August, 9, 2, 32, 12, 904000000, time.UTC)),
+		// 							SynchronizationStatus: to.Ptr(armmanagednetworkfabric.SynchronizationStatusSynchronizing),
+		// 							SecretArchiveReference: &armmanagednetworkfabric.SecretArchiveReference{
+		// 								KeyVaultURI: to.Ptr("https://example-kv.vault.azure.net/secrets/example-secret-3/22b646561da34d6b8b452d880df69a4b"),
+		// 								KeyVaultID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourceGroups/example-rg/providers/Microsoft.KeyVault/vaults/example-kv"),
+		// 								SecretName: to.Ptr("example-secret-3"),
+		// 								SecretVersion: to.Ptr("22b646561da34d6b8b452d880df69a4b"),
+		// 							},
+		// 							SecretType: to.Ptr("AzureOperatorRO user password"),
+		// 						},
+		// 					},
 		// 				},
 		// 				Identity: &armmanagednetworkfabric.ManagedServiceIdentity{
 		// 					PrincipalID: to.Ptr("0000ABCD-0A0B-0000-0000-000000ABCDEF"),

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/ExternalNetworks_Create.json
+// Generated from example definition: 2026-01-15-preview/ExternalNetworks_Create.json
 func ExampleExternalNetworksClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -251,7 +251,7 @@ func ExampleExternalNetworksClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/ExternalNetworks_Delete.json
+// Generated from example definition: 2026-01-15-preview/ExternalNetworks_Delete.json
 func ExampleExternalNetworksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -272,7 +272,7 @@ func ExampleExternalNetworksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/ExternalNetworks_Update.json
+// Generated from example definition: 2026-01-15-preview/ExternalNetworks_Update.json
 func ExampleExternalNetworksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -488,7 +488,7 @@ func ExampleExternalNetworksClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/ExternalNetworks_UpdateAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/ExternalNetworks_UpdateAdministrativeState.json
 func ExampleExternalNetworksClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -536,7 +536,7 @@ func ExampleExternalNetworksClient_BeginUpdateAdministrativeState() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/ExternalNetworks_UpdateBfdAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/ExternalNetworks_UpdateBfdAdministrativeState.json
 func ExampleExternalNetworksClient_BeginUpdateBfdAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -586,7 +586,7 @@ func ExampleExternalNetworksClient_BeginUpdateBfdAdministrativeState() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/ExternalNetworks_UpdateStaticRouteBfdAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/ExternalNetworks_UpdateStaticRouteBfdAdministrativeState.json
 func ExampleExternalNetworksClient_BeginUpdateStaticRouteBfdAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -634,7 +634,7 @@ func ExampleExternalNetworksClient_BeginUpdateStaticRouteBfdAdministrativeState(
 	// }
 }
 
-// Generated from example definition: 2025-07-15/ExternalNetworks_Get.json
+// Generated from example definition: 2026-01-15-preview/ExternalNetworks_Get.json
 func ExampleExternalNetworksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -774,7 +774,7 @@ func ExampleExternalNetworksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/ExternalNetworks_ListByL3IsolationDomain.json
+// Generated from example definition: 2026-01-15-preview/ExternalNetworks_ListByL3IsolationDomain.json
 func ExampleExternalNetworksClient_NewListByL3IsolationDomainPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

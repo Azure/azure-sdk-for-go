@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkToNetworkInterconnects_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkToNetworkInterconnects_Create.json
 func ExampleNetworkToNetworkInterconnectsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +267,7 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkToNetworkInterconnects_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkToNetworkInterconnects_Delete.json
 func ExampleNetworkToNetworkInterconnectsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +288,7 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkToNetworkInterconnects_Update.json
+// Generated from example definition: 2026-01-15-preview/NetworkToNetworkInterconnects_Update.json
 func ExampleNetworkToNetworkInterconnectsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -514,7 +514,7 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkToNetworkInterconnects_UpdateAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/NetworkToNetworkInterconnects_UpdateAdministrativeState.json
 func ExampleNetworkToNetworkInterconnectsClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -527,7 +527,7 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginUpdateAdministrativeState()
 	}
 	poller, err := clientFactory.NewNetworkToNetworkInterconnectsClient().BeginUpdateAdministrativeState(ctx, "example-rg", "example-nf", "example-nni", armmanagednetworkfabric.UpdateAdministrativeState{
 		ResourceIDs: []*string{
-			to.Ptr("/subscriptions/0000ABCD-0A0B-0000-0000-000000ABCDEF/resourceGroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkFabrics/example-nf/networkToNetworkInterconnects/example-nni"),
+			to.Ptr(""),
 		},
 		State: to.Ptr(armmanagednetworkfabric.EnableDisableStateEnable),
 	}, nil)
@@ -562,7 +562,7 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginUpdateAdministrativeState()
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkToNetworkInterconnects_UpdateBfdAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/NetworkToNetworkInterconnects_UpdateBfdAdministrativeState.json
 func ExampleNetworkToNetworkInterconnectsClient_BeginUpdateBfdAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -608,7 +608,7 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginUpdateBfdAdministrativeStat
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkToNetworkInterconnects_UpdateNpbStaticRouteBfdAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/NetworkToNetworkInterconnects_UpdateNpbStaticRouteBfdAdministrativeState.json
 func ExampleNetworkToNetworkInterconnectsClient_BeginUpdateNpbStaticRouteBfdAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -656,7 +656,7 @@ func ExampleNetworkToNetworkInterconnectsClient_BeginUpdateNpbStaticRouteBfdAdmi
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkToNetworkInterconnects_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkToNetworkInterconnects_Get.json
 func ExampleNetworkToNetworkInterconnectsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -803,7 +803,7 @@ func ExampleNetworkToNetworkInterconnectsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkToNetworkInterconnects_ListByNetworkFabric.json
+// Generated from example definition: 2026-01-15-preview/NetworkToNetworkInterconnects_ListByNetworkFabric.json
 func ExampleNetworkToNetworkInterconnectsClient_NewListByNetworkFabricPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -7,11 +7,11 @@ package armmanagednetworkfabric_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkDeviceSkus_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkDeviceSkus_Get.json
 func ExampleNetworkDeviceSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -74,7 +74,7 @@ func ExampleNetworkDeviceSKUsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDeviceSkus_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NetworkDeviceSkus_ListBySubscription.json
 func ExampleNetworkDeviceSKUsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_Create.json
 func ExampleNetworkPacketBrokersClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -64,6 +64,7 @@ func ExampleNetworkPacketBrokersClient_BeginCreate() {
 	// 			NeighborGroupIDs: []*string{
 	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup"),
 	// 			},
+	// 			SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 		},
@@ -97,7 +98,7 @@ func ExampleNetworkPacketBrokersClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_Delete.json
 func ExampleNetworkPacketBrokersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +119,7 @@ func ExampleNetworkPacketBrokersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_Update.json
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_Update.json
 func ExampleNetworkPacketBrokersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,6 +131,9 @@ func ExampleNetworkPacketBrokersClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewNetworkPacketBrokersClient().BeginUpdate(ctx, "example-rg", "example-networkPacketBroker", armmanagednetworkfabric.NetworkPacketBrokerPatch{
+		Properties: &armmanagednetworkfabric.NetworkPacketBrokerPatchProperties{
+			SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
+		},
 		Tags: map[string]*string{
 			"keyId": to.Ptr("keyValue"),
 		},
@@ -166,6 +170,7 @@ func ExampleNetworkPacketBrokersClient_BeginUpdate() {
 	// 			NeighborGroupIDs: []*string{
 	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup"),
 	// 			},
+	// 			SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 		},
@@ -199,7 +204,7 @@ func ExampleNetworkPacketBrokersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_Get.json
 func ExampleNetworkPacketBrokersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -233,6 +238,7 @@ func ExampleNetworkPacketBrokersClient_Get() {
 	// 			NeighborGroupIDs: []*string{
 	// 				to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup"),
 	// 			},
+	// 			SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
 	// 			LastOperation: &armmanagednetworkfabric.LastOperationProperties{
 	// 				Details: to.Ptr("Succeeded"),
 	// 			},
@@ -269,7 +275,7 @@ func ExampleNetworkPacketBrokersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_ListByResourceGroup.json
 func ExampleNetworkPacketBrokersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -309,6 +315,7 @@ func ExampleNetworkPacketBrokersClient_NewListByResourceGroupPager() {
 		// 					NeighborGroupIDs: []*string{
 		// 						to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup"),
 		// 					},
+		// 					SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
 		// 					LastOperation: &armmanagednetworkfabric.LastOperationProperties{
 		// 						Details: to.Ptr("Succeeded"),
 		// 					},
@@ -349,7 +356,7 @@ func ExampleNetworkPacketBrokersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkPacketBrokers_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NetworkPacketBrokers_ListBySubscription.json
 func ExampleNetworkPacketBrokersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -389,6 +396,7 @@ func ExampleNetworkPacketBrokersClient_NewListBySubscriptionPager() {
 		// 					NeighborGroupIDs: []*string{
 		// 						to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/neighborGroups/example-neighborGroup"),
 		// 					},
+		// 					SourceNetworkTapRuleID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkTapRules/example-networkTapRule"),
 		// 					LastOperation: &armmanagednetworkfabric.LastOperationProperties{
 		// 						Details: to.Ptr("Succeeded"),
 		// 					},

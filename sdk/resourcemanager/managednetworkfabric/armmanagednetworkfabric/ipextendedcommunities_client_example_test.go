@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/IpExtendedCommunities_Create.json
+// Generated from example definition: 2026-01-15-preview/IpExtendedCommunities_Create.json
 func ExampleIPExtendedCommunitiesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleIPExtendedCommunitiesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/IpExtendedCommunities_Delete.json
+// Generated from example definition: 2026-01-15-preview/IpExtendedCommunities_Delete.json
 func ExampleIPExtendedCommunitiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleIPExtendedCommunitiesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/IpExtendedCommunities_Update.json
+// Generated from example definition: 2026-01-15-preview/IpExtendedCommunities_Update.json
 func ExampleIPExtendedCommunitiesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleIPExtendedCommunitiesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/IpExtendedCommunities_Get.json
+// Generated from example definition: 2026-01-15-preview/IpExtendedCommunities_Get.json
 func ExampleIPExtendedCommunitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleIPExtendedCommunitiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/IpExtendedCommunities_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/IpExtendedCommunities_ListByResourceGroup.json
 func ExampleIPExtendedCommunitiesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleIPExtendedCommunitiesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/IpExtendedCommunities_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/IpExtendedCommunities_ListBySubscription.json
 func ExampleIPExtendedCommunitiesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -743,6 +743,10 @@ func (n *NetworkFabricsServerTransport) dispatchBeginRefreshConfiguration(req *h
 		if len(matches) < 4 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
+		body, err := server.UnmarshalRequestAsJSON[armmanagednetworkfabric.RefreshConfigurationRequestProperties](req)
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -751,7 +755,13 @@ func (n *NetworkFabricsServerTransport) dispatchBeginRefreshConfiguration(req *h
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := n.srv.BeginRefreshConfiguration(req.Context(), resourceGroupNameParam, networkFabricNameParam, nil)
+		var options *armmanagednetworkfabric.NetworkFabricsClientBeginRefreshConfigurationOptions
+		if !reflect.ValueOf(body).IsZero() {
+			options = &armmanagednetworkfabric.NetworkFabricsClientBeginRefreshConfigurationOptions{
+				Body: &body,
+			}
+		}
+		respr, errRespr := n.srv.BeginRefreshConfiguration(req.Context(), resourceGroupNameParam, networkFabricNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}

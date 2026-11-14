@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/IpCommunities_Create.json
+// Generated from example definition: 2026-01-15-preview/IpCommunities_Create.json
 func ExampleIPCommunitiesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleIPCommunitiesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/IpCommunities_Delete.json
+// Generated from example definition: 2026-01-15-preview/IpCommunities_Delete.json
 func ExampleIPCommunitiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExampleIPCommunitiesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/IpCommunities_Update.json
+// Generated from example definition: 2026-01-15-preview/IpCommunities_Update.json
 func ExampleIPCommunitiesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleIPCommunitiesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/IpCommunities_Get.json
+// Generated from example definition: 2026-01-15-preview/IpCommunities_Get.json
 func ExampleIPCommunitiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -257,7 +257,7 @@ func ExampleIPCommunitiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/IpCommunities_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/IpCommunities_ListByResourceGroup.json
 func ExampleIPCommunitiesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -328,7 +328,7 @@ func ExampleIPCommunitiesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/IpCommunities_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/IpCommunities_ListBySubscription.json
 func ExampleIPCommunitiesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

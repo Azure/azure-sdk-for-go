@@ -7,11 +7,11 @@ package armmanagednetworkfabric_test
 import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkFabricSkus_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabricSkus_Get.json
 func ExampleNetworkFabricSKUsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -22,7 +22,7 @@ func ExampleNetworkFabricSKUsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewNetworkFabricSKUsClient().Get(ctx, "example-fabricsku", nil)
+	res, err := clientFactory.NewNetworkFabricSKUsClient().Get(ctx, "wxample-fabricsku", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -56,7 +56,7 @@ func ExampleNetworkFabricSKUsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkFabricSkus_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NetworkFabricSkus_ListBySubscription.json
 func ExampleNetworkFabricSKUsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

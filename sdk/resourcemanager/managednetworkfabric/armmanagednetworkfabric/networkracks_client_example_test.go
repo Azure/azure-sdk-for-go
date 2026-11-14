@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkRacks_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkRacks_Create.json
 func ExampleNetworkRacksClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleNetworkRacksClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkRacks_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkRacks_Delete.json
 func ExampleNetworkRacksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -96,7 +96,7 @@ func ExampleNetworkRacksClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkRacks_Update.json
+// Generated from example definition: 2026-01-15-preview/NetworkRacks_Update.json
 func ExampleNetworkRacksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleNetworkRacksClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkRacks_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkRacks_Get.json
 func ExampleNetworkRacksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleNetworkRacksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkRacks_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/NetworkRacks_ListByResourceGroup.json
 func ExampleNetworkRacksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -267,7 +267,7 @@ func ExampleNetworkRacksClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkRacks_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NetworkRacks_ListBySubscription.json
 func ExampleNetworkRacksClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

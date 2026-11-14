@@ -1211,6 +1211,72 @@ type DiscardCommitBatchResponseProperties struct {
 	CommitBatchID *string
 }
 
+// EdgeConnector represents the mechanism by which a collection of on-prem infrastructure (Fabric) is connected to Azure.
+type EdgeConnector struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; EdgeConnector properties.
+	Properties *EdgeConnectorProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// EdgeConnectorListResult - The response of a EdgeConnector list operation.
+type EdgeConnectorListResult struct {
+	// REQUIRED; The EdgeConnector items on this page
+	Value []*EdgeConnector
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// EdgeConnectorPatch - EdgeConnector patch body.
+type EdgeConnectorPatch struct {
+	// Resource properties.
+	Properties *EdgeConnectorPatchableProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// EdgeConnectorPatchableProperties - EdgeConnector patchable properties.
+type EdgeConnectorPatchableProperties struct {
+	// How the EdgeConnector establishes connectivity to on-prem infrastructure.
+	ConnectivityModel *ConnectivityModel
+
+	// Software version of the control plane.
+	Version *string
+}
+
+// EdgeConnectorProperties defines the resource properties.
+type EdgeConnectorProperties struct {
+	// How the EdgeConnector establishes connectivity to on-prem infrastructure.
+	ConnectivityModel *ConnectivityModel
+
+	// Software version of the control plane.
+	Version *string
+
+	// READ-ONLY; ARM resource IDs of Fabric resources managed by this EdgeConnector.
+	ManagedFabricIDs []*string
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
+}
+
 // ErrorAdditionalInfo - The resource management error additional info.
 type ErrorAdditionalInfo struct {
 	// READ-ONLY; The additional info.
@@ -1578,6 +1644,39 @@ type ExternalNetworksList struct {
 	NextLink *string
 }
 
+// Fabric - Represents a physical network deployment hosting infrastructure network configuration.
+type Fabric struct {
+	// REQUIRED; The geo-location where the resource lives
+	Location *string
+
+	// REQUIRED; Fabric properties.
+	Properties *FabricProperties
+
+	// Resource tags.
+	Tags map[string]*string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// FabricListResult - The response of a Fabric list operation.
+type FabricListResult struct {
+	// REQUIRED; The Fabric items on this page
+	Value []*Fabric
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // FabricLockProperties - Network Fabric Lock Configuration.
 type FabricLockProperties struct {
 	// NetworkFabric Lock State.
@@ -1585,6 +1684,75 @@ type FabricLockProperties struct {
 
 	// NetworkFabric Lock Type.
 	LockType *NetworkFabricLockType
+}
+
+// FabricPatch - Fabric patch body.
+type FabricPatch struct {
+	// Resource properties.
+	Properties *FabricPatchableProperties
+
+	// Resource tags.
+	Tags map[string]*string
+}
+
+// FabricPatchableProperties - Fabric patchable properties.
+type FabricPatchableProperties struct {
+	// ARM resource ID of the Key Vault secret for controller credentials.
+	ControllerCredentialRef *string
+
+	// URL of the SDN controller API endpoint.
+	ControllerEndpoint *string
+
+	// Infrastructure network definitions.
+	InfrastructureNetworks *PatchInfrastructureNetworks
+
+	// Infrastructure service endpoints.
+	InfrastructureServices *PatchInfrastructureServices
+
+	// Operation policy for device interaction.
+	OperationPolicy *OperationPolicy
+}
+
+// FabricProperties defines the resource properties.
+type FabricProperties struct {
+	// REQUIRED; Management mode.
+	ManagementMode *ManagementMode
+
+	// ARM resource ID of the Key Vault secret for controller credentials.
+	ControllerCredentialRef *string
+
+	// URL of the SDN controller API endpoint.
+	ControllerEndpoint *string
+
+	// Controller type for device interaction.
+	ControllerType *ControllerType
+
+	// ARM ID of the customer's subnet.
+	CustomerSubnetID *string
+
+	// ARM ID of the customer's Azure VNet.
+	CustomerVnetID *string
+
+	// ARM resource ID of the EdgeConnector.
+	EdgeConnectorID *string
+
+	// Predefined topology identifier.
+	FabricSKU *string
+
+	// Infrastructure network definitions.
+	InfrastructureNetworks *InfrastructureNetworks
+
+	// Infrastructure service endpoints.
+	InfrastructureServices *InfrastructureServices
+
+	// Operation policy for device interaction.
+	OperationPolicy *OperationPolicy
+
+	// Number of physical racks.
+	RackCount *int32
+
+	// READ-ONLY; Provisioning state of the resource.
+	ProvisioningState *ProvisioningState
 }
 
 // FeatureFlagProperties - Feature flag properties.
@@ -2080,6 +2248,81 @@ type ImportRoutePolicyPatch struct {
 
 	// ARM resource ID of RoutePolicy.
 	ImportIPv6RoutePolicyID *string
+}
+
+// InfraNetwork - Infrastructure network definition.
+type InfraNetwork struct {
+	// REQUIRED; End of allocatable IP range.
+	IPv4EndAddr *string
+
+	// REQUIRED; Default gateway IP.
+	IPv4Gateway *string
+
+	// REQUIRED; Start of allocatable IP range.
+	IPv4StartAddr *string
+
+	// REQUIRED; IPv4 subnet in CIDR notation.
+	IPv4Subnet *string
+
+	// REQUIRED; 802.1Q VLAN ID.
+	VlanID *int32
+
+	// Maximum Transmission Unit.
+	Mtu *int32
+}
+
+// InfraNetworkOptionalIP - Infrastructure network with optional IP fields.
+type InfraNetworkOptionalIP struct {
+	// REQUIRED; 802.1Q VLAN ID.
+	VlanID *int32
+
+	// End of allocatable IP range.
+	IPv4EndAddr *string
+
+	// Default gateway IP.
+	IPv4Gateway *string
+
+	// Start of allocatable IP range.
+	IPv4StartAddr *string
+
+	// IPv4 subnet in CIDR notation.
+	IPv4Subnet *string
+
+	// Maximum Transmission Unit.
+	Mtu *int32
+}
+
+// InfrastructureNetworks - Named infrastructure network definitions.
+type InfrastructureNetworks struct {
+	// REQUIRED; BMC/iDRAC network. Typical VLAN: 41.
+	Bmc *InfraNetwork
+
+	// REQUIRED; OAM management network. Typical VLAN: 39.
+	Management *InfraNetwork
+
+	// REQUIRED; PXE boot network. Typical VLAN: 40.
+	Pxe *InfraNetwork
+
+	// REQUIRED; Storage data plane network. Typical VLAN: 42.
+	Storage *InfraNetwork
+
+	// PDU management network. Typical VLAN: 43.
+	Pdu *InfraNetwork
+
+	// Storage management plane network. Typical VLAN: 37.
+	StorageMgmt *InfraNetworkOptionalIP
+}
+
+// InfrastructureServices - Infrastructure service endpoints.
+type InfrastructureServices struct {
+	// REQUIRED; DNS server IPs.
+	DNSServers []*string
+
+	// REQUIRED; NTP server IPs or hostnames.
+	NtpServers []*string
+
+	// REQUIRED; Platform proxy configuration.
+	PlatformProxy *PlatformProxy
 }
 
 // InternalNetwork - Defines the Internal Network resource.
@@ -2991,6 +3234,9 @@ type NeighborGroupProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
+	// READ-ONLY; Administrative state of the resource.
+	AdministrativeState *AdministrativeState
+
 	// READ-ONLY; Configuration state of the resource.
 	ConfigurationState *ConfigurationState
 
@@ -3102,6 +3348,9 @@ type NetworkBootstrapDevicePatchProperties struct {
 	// Switch configuration description.
 	Annotation *string
 
+	// Control Plane Access Control List ARM resource IDs.
+	ControlPlaneACLs []*string
+
 	// The host name of the device.
 	HostName *string
 
@@ -3113,6 +3362,9 @@ type NetworkBootstrapDevicePatchProperties struct {
 type NetworkBootstrapDeviceProperties struct {
 	// Switch configuration description.
 	Annotation *string
+
+	// Control Plane Access Control List ARM resource IDs.
+	ControlPlaneACLs []*string
 
 	// The host name of the device.
 	HostName *string
@@ -3135,6 +3387,9 @@ type NetworkBootstrapDeviceProperties struct {
 	// READ-ONLY; Associated Network Fabric Resource ID
 	NetworkFabricID *string
 
+	// READ-ONLY; Operational state of networkBootstrapDevice indicating if the device is reachable and services are available.
+	OperationalState *OperationalState
+
 	// READ-ONLY; Primary Management IPv4 Address.
 	PrimaryManagementIPv4Address *string
 
@@ -3149,6 +3404,9 @@ type NetworkBootstrapDeviceProperties struct {
 
 	// READ-ONLY; Secondary Management IPv6 Address.
 	SecondaryManagementIPv6Address *string
+
+	// READ-ONLY; Secret rotation status for the terminal server's secrets.
+	SecretRotationStatus []*SecretRotationStatus
 
 	// READ-ONLY; Current version of the device as defined in SKU.
 	Version *string
@@ -3381,6 +3639,9 @@ type NetworkBootstrapInterfaceProperties struct {
 	// READ-ONLY; Type of the interface.
 	InterfaceType *InterfaceType
 
+	// READ-ONLY; Operational state of networkBootstrapInterface indicating if the interface is reachable
+	OperationalState *OperationalState
+
 	// READ-ONLY; Physical identifier of the device.
 	PhysicalIdentifier *string
 
@@ -3487,6 +3748,9 @@ type NetworkDeviceProperties struct {
 
 	// READ-ONLY; Reference to network rack resource id.
 	NetworkRackID *string
+
+	// READ-ONLY; Operational state of networkDevice indicating if the device is reachable and services are available.
+	OperationalState *OperationalState
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
@@ -3831,6 +4095,9 @@ type NetworkFabricControllerProperties struct {
 	// Network Fabric Controller SKU.
 	NfcSKU *NfcSKU
 
+	// The VM profile configuration for the NFC's associated compute (VM) resources.
+	VMProfile *VMProfile
+
 	// As part of an update, the workload ExpressRoute CircuitID should be provided to create and Provision a NFC. This Express
 	// route is dedicated for Workload services. (This is a Mandatory attribute).
 	WorkloadExpressRouteConnections []*ExpressRouteConnectionInformation
@@ -3843,6 +4110,10 @@ type NetworkFabricControllerProperties struct {
 
 	// READ-ONLY; The NF-ID will be an input parameter used by the NF to link and get associated with the parent NFC Service.
 	NetworkFabricIDs []*string
+
+	// READ-ONLY; Operational state of networkFabricController indicating if the resources of the controller are reachable and
+	// services are available.
+	OperationalState *OperationalState
 
 	// READ-ONLY; Provides you the latest status of the NFC service, whether it is Accepted, updating, Succeeded or Failed. During
 	// this process, the states keep changing based on the status of NFC provisioning.
@@ -3920,6 +4191,9 @@ type NetworkFabricPatchProperties struct {
 	// Number of compute racks associated to Network Fabric.
 	RackCount *int32
 
+	// The settings for a customer secret archive that may be used to hold copies of credentials for the Network Fabric.
+	SecretArchiveSettings *SecretArchivePatchSettings
+
 	// Number of servers.Possible values are from 1-16.
 	ServerCountPerRack *int32
 
@@ -3934,6 +4208,9 @@ type NetworkFabricPatchProperties struct {
 
 	// Unique Route Distinguisher configuration
 	UniqueRdConfiguration *UniqueRouteDistinguisherPatchProperties
+
+	// The upgrade profile to be used by devices in the network fabric during device operations
+	UpgradeProfile []*UpgradeProfilePropertiesPatchProperties
 }
 
 // NetworkFabricProperties - Network Fabric Properties defines the properties of the resource.
@@ -3987,6 +4264,9 @@ type NetworkFabricProperties struct {
 	// Number of compute racks associated to Network Fabric.
 	RackCount *int32
 
+	// The settings for a customer secret archive that may be used to hold copies of credentials for the Network Fabric.
+	SecretArchiveSettings *SecretArchiveSettings
+
 	// Bring your own storage account configurations for Network Fabric.
 	StorageAccountConfiguration *StorageAccountConfiguration
 
@@ -3998,6 +4278,9 @@ type NetworkFabricProperties struct {
 
 	// Unique Route Distinguisher configuration
 	UniqueRdConfiguration *UniqueRouteDistinguisherProperties
+
+	// The upgrade profile to be used by devices in the network fabric during device operations
+	UpgradeProfile []*UpgradeProfileProperties
 
 	// READ-ONLY; Active commit batch identifiers
 	ActiveCommitBatches []*string
@@ -4019,6 +4302,13 @@ type NetworkFabricProperties struct {
 
 	// READ-ONLY; Details of the last operation performed on the resource
 	LastOperation *LastOperationProperties
+
+	// READ-ONLY; Azure resource ID for the NetworkBootstrapDevice belonging to this Network Fabric.
+	NetworkBootstrapDeviceID *string
+
+	// READ-ONLY; Operational state of networkFabric indicating if the resources of the fabric are reachable and services are
+	// available.
+	OperationalState *OperationalState
 
 	// READ-ONLY; Provides you the latest status of the NFC service, whether it is Accepted, updating, Succeeded or Failed. During
 	// this process, the states keep changing based on the status of NFC provisioning.
@@ -4287,6 +4577,9 @@ type NetworkInterfaceProperties struct {
 	// READ-ONLY; Associated Network Fabric Resource ID
 	NetworkFabricID *string
 
+	// READ-ONLY; Operational state of networkInterface indicating if the interface is reachable
+	OperationalState *OperationalState
+
 	// READ-ONLY; Physical Identifier of the network interface.
 	PhysicalIdentifier *string
 
@@ -4404,14 +4697,26 @@ type NetworkPacketBrokerPatch struct {
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentityPatch
 
+	// NetworkPacketBroker patch properties.
+	Properties *NetworkPacketBrokerPatchProperties
+
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// NetworkPacketBrokerPatchProperties - The NetworkPacketBroker patch properties.
+type NetworkPacketBrokerPatchProperties struct {
+	// ARM resource ID of the source Network Tap Rule.
+	SourceNetworkTapRuleID *string
 }
 
 // NetworkPacketBrokerProperties - Network Packet Broker Properties defines the properties of the resource.
 type NetworkPacketBrokerProperties struct {
 	// REQUIRED; ARM resource ID of the Network Fabric.
 	NetworkFabricID *string
+
+	// ARM resource ID of the source Network Tap Rule.
+	SourceNetworkTapRuleID *string
 
 	// READ-ONLY; Configuration state of the resource.
 	ConfigurationState *ConfigurationState
@@ -5291,6 +5596,84 @@ type OptionBLayer3PrefixLimitProperties struct {
 	MaximumRoutes *int32
 }
 
+// PatchInfraNetwork - Infrastructure network definition for PATCH. All fields optional.
+type PatchInfraNetwork struct {
+	// End of allocatable IP range.
+	IPv4EndAddr *string
+
+	// Default gateway IP.
+	IPv4Gateway *string
+
+	// Start of allocatable IP range.
+	IPv4StartAddr *string
+
+	// IPv4 subnet in CIDR notation.
+	IPv4Subnet *string
+
+	// Maximum Transmission Unit.
+	Mtu *int32
+
+	// 802.1Q VLAN ID.
+	VlanID *int32
+}
+
+// PatchInfrastructureNetworks - Infrastructure network definitions for PATCH. No networks required.
+type PatchInfrastructureNetworks struct {
+	// BMC/iDRAC network.
+	Bmc *PatchInfraNetwork
+
+	// OAM management network.
+	Management *PatchInfraNetwork
+
+	// PDU management network.
+	Pdu *PatchInfraNetwork
+
+	// PXE boot network.
+	Pxe *PatchInfraNetwork
+
+	// Storage data plane network.
+	Storage *PatchInfraNetwork
+
+	// Storage management plane network.
+	StorageMgmt *PatchInfraNetwork
+}
+
+// PatchInfrastructureServices - Infrastructure service endpoints for PATCH. All fields optional.
+type PatchInfrastructureServices struct {
+	// DNS server IPs.
+	DNSServers []*string
+
+	// NTP server IPs or hostnames.
+	NtpServers []*string
+
+	// Platform proxy configuration.
+	PlatformProxy *PatchPlatformProxy
+}
+
+// PatchPlatformProxy - Platform proxy configuration for PATCH. All fields optional.
+type PatchPlatformProxy struct {
+	// HTTP proxy endpoint URL, or proxy bare host:port
+	HTTPProxy *string
+
+	// HTTPS proxy endpoint URL, or proxy bare host:port for 443
+	HTTPSProxy *string
+
+	// CIDRs, hostnames, and domain suffixes that bypass the proxy.
+	NoProxy []*string
+}
+
+// PlatformProxy - Platform proxy configuration.
+type PlatformProxy struct {
+	// REQUIRED; HTTP proxy endpoint URL, or proxy bare host:port
+	HTTPProxy *string
+
+	// REQUIRED; HTTPS proxy endpoint URL, or proxy bare host:port for 443
+	HTTPSProxy *string
+
+	// REQUIRED; CIDRs, hostnames, and domain suffixes that bypass the proxy.
+	NoProxy []*string
+}
+
 // PoliceRateConfigurationProperties - Police rate configuration properties
 type PoliceRateConfigurationProperties struct {
 	// Rate limit in bits per second.
@@ -5348,6 +5731,44 @@ type PortGroupProperties struct {
 	Ports []*string
 }
 
+// PostUpgradeProfilePatchProperties - The post-upgrade configuration parameters to be used by devices in the network fabric
+// during device upgrade operations
+type PostUpgradeProfilePatchProperties struct {
+	// Maximum wait time in seconds for during the post-upgrade process for devices in the network fabric to successfully move
+	// out of maintenance mode.
+	MaxExitingMaintenanceTimeoutInSeconds *int32
+
+	// Maximum time in seconds to wait for MLAG reload delay on devices in the network fabric.
+	MlagReloadDelayTimeoutInSeconds *int32
+}
+
+// PostUpgradeProfileProperties - The post-upgrade configuration parameters to be used by devices in the network fabric during
+// device upgrade operations
+type PostUpgradeProfileProperties struct {
+	// Maximum wait time in seconds for during the post-upgrade process for devices in the network fabric to successfully move
+	// out of maintenance mode.
+	MaxExitingMaintenanceTimeoutInSeconds *int32
+
+	// Maximum time in seconds to wait for MLAG reload delay on devices in the network fabric.
+	MlagReloadDelayTimeoutInSeconds *int32
+}
+
+// PreUpgradeProfilePatchProperties - The pre-upgrade configuration parameters to be used by devices in the network fabric
+// during device upgrade operations
+type PreUpgradeProfilePatchProperties struct {
+	// Maximum wait time in seconds for during the pre-upgrade process for devices in the network fabric to successfully move
+	// into maintenance mode.
+	MaxEnteringMaintenanceTimeoutInSeconds *int32
+}
+
+// PreUpgradeProfileProperties - The pre-upgrade configuration parameters to be used by devices in the network fabric during
+// device upgrade operations
+type PreUpgradeProfileProperties struct {
+	// Maximum wait time in seconds for during the pre-upgrade process for devices in the network fabric to successfully move
+	// into maintenance mode.
+	MaxEnteringMaintenanceTimeoutInSeconds *int32
+}
+
 // PrefixLimitPatchProperties - Prefix Limit Patch properties.
 type PrefixLimitPatchProperties struct {
 	// Idle time expiry in seconds.
@@ -5388,6 +5809,19 @@ type QosProperties struct {
 type RebootProperties struct {
 	// Type of reboot to be performed. Example: GracefulRebootWithZTP
 	RebootType *RebootType
+}
+
+// RefreshConfigurationRequestProperties - Refresh configuration request properties.
+type RefreshConfigurationRequestProperties struct {
+	// REQUIRED; Type of configuration regeneration to be performed.
+	ConfigurationRegenerationType *ConfigurationRegenerationType
+
+	// REQUIRED; Indicates if base configuration needs to be generated afresh.
+	GenerateBaseConfiguration *GenerateBaseConfiguration
+
+	// The types of devices for which the configuration needs to be refreshed. If not provided, configuration will be refreshed
+	// for all device types.
+	DeviceTypes []*NetworkFabricRefreshDeviceTypes
 }
 
 // RoutePoliciesListResult - Paged collection of RoutePolicy items
@@ -5570,6 +6004,16 @@ type RuleProperties struct {
 	SourceAddressList []*string
 }
 
+// SecretArchivePatchSettings - Represents the settings for a secret archive used to hold credentials for the Network Fabric.
+type SecretArchivePatchSettings struct {
+	// The selection of the managed identity to use with this vault URI. The identity type must be either system assigned or user
+	// assigned.
+	AssociatedIdentity *IdentitySelectorPatch
+
+	// The URI for the key vault used as the secret archive.
+	VaultURI *string
+}
+
 // SecretArchiveReference - A reference to a version of a secret in a key vault.
 type SecretArchiveReference struct {
 	// READ-ONLY; The resource ID of the key vault containing the secret.
@@ -5583,6 +6027,16 @@ type SecretArchiveReference struct {
 
 	// READ-ONLY; The version of the secret in the key vault.
 	SecretVersion *string
+}
+
+// SecretArchiveSettings - Represents the settings for a secret archive used to hold credentials for the Network Fabric.
+type SecretArchiveSettings struct {
+	// REQUIRED; The selection of the managed identity to use with this vault URI. The identity type must be either system assigned
+	// or user assigned.
+	AssociatedIdentity *IdentitySelector
+
+	// REQUIRED; The URI for the key vault used as the secret archive.
+	VaultURI *string
 }
 
 // SecretRotationStatus - Status of a secret rotation for a device (Network Device or Terminal Server).
@@ -5963,6 +6417,25 @@ type UpgradeNetworkFabricProperties struct {
 	Version *string
 }
 
+// UpgradeProfileProperties - The upgrade profile to be used by devices in the network fabric during device upgrade operations
+type UpgradeProfileProperties struct {
+	// The post-upgrade configuration parameters to be used by devices in the network fabric during device upgrade operations
+	PostUpgradeProfile *PostUpgradeProfileProperties
+
+	// The pre-upgrade configuration parameters to be used by devices in the network fabric during device upgrade operations
+	PreUpgradeProfile *PreUpgradeProfileProperties
+}
+
+// UpgradeProfilePropertiesPatchProperties - The upgrade profile patch parameters that can be patched which are used by devices
+// in the network fabric during device upgrade operations
+type UpgradeProfilePropertiesPatchProperties struct {
+	// The post-upgrade configuration parameters to be used by devices in the network fabric during device upgrade operations
+	PostUpgradeProfile *PostUpgradeProfilePatchProperties
+
+	// The pre-upgrade configuration parameters to be used by devices in the network fabric during device upgrade operations
+	PreUpgradeProfile *PreUpgradeProfilePatchProperties
+}
+
 // UserAssignedIdentity - User assigned identity properties
 type UserAssignedIdentity struct {
 	// READ-ONLY; The client ID of the assigned identity.
@@ -5970,6 +6443,12 @@ type UserAssignedIdentity struct {
 
 	// READ-ONLY; The principal ID of the assigned identity.
 	PrincipalID *string
+}
+
+// VMProfile - The VM profile configuration for the NFC's associated compute (VM) resources.
+type VMProfile struct {
+	// REQUIRED; The SKU that will be used for creating the VMS for AKS cluster.
+	VMSKUName *string
 }
 
 // VPNConfigurationPatchableProperties - Network and credential configuration currently applied on terminal server.
@@ -6089,16 +6568,46 @@ type ValidateConfigurationProperties struct {
 	ValidateAction *ValidateAction
 }
 
-// ValidateConfigurationResponse - The response of the action validate configuration.
-type ValidateConfigurationResponse struct {
-	// The error object.
-	Error *ErrorDetail
-
+// ValidateConfigurationResponseProperties - The response of the action validate configuration.
+type ValidateConfigurationResponseProperties struct {
 	// URL for the details of the response.
 	URL *string
 
 	// READ-ONLY; Gets the configuration state.
 	ConfigurationState *ConfigurationState
+}
+
+// ValidateConfigurationResponseV2 - The response of the action validate configuration.
+type ValidateConfigurationResponseV2 struct {
+	// REQUIRED; Operation status.
+	Status *string
+
+	// The end time of the operation.
+	EndTime *time.Time
+
+	// If present, details of the operation error.
+	Error *ErrorDetail
+
+	// Fully qualified ID for the async operation.
+	ID *string
+
+	// Name of the async operation.
+	Name *string
+
+	// The operations list.
+	Operations []*OperationStatusResult
+
+	// Percent of the operation that is complete.
+	PercentComplete *float64
+
+	// Network Device Run Rw Command Response properties.
+	Properties *ValidateConfigurationResponseProperties
+
+	// The start time of the operation.
+	StartTime *time.Time
+
+	// READ-ONLY; Fully qualified ID of the resource against which the original async operation was started.
+	ResourceID *string
 }
 
 // ViewDeviceConfigurationOperationResponse - View Device Configuration Response V2.

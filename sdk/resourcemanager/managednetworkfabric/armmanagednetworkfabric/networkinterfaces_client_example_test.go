@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkInterfaces_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_Create.json
 func ExampleNetworkInterfacesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -54,6 +54,7 @@ func ExampleNetworkInterfacesClient_BeginCreate() {
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
 	// 		Name: to.Ptr("example-interface"),
@@ -70,7 +71,7 @@ func ExampleNetworkInterfacesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkInterfaces_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_Delete.json
 func ExampleNetworkInterfacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -91,7 +92,7 @@ func ExampleNetworkInterfacesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkInterfaces_Update.json
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_Update.json
 func ExampleNetworkInterfacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -132,6 +133,7 @@ func ExampleNetworkInterfacesClient_BeginUpdate() {
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
 	// 		Name: to.Ptr("example-interface"),
@@ -148,7 +150,7 @@ func ExampleNetworkInterfacesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkInterfaces_UpdateAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_UpdateAdministrativeState.json
 func ExampleNetworkInterfacesClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +198,7 @@ func ExampleNetworkInterfacesClient_BeginUpdateAdministrativeState() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkInterfaces_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_Get.json
 func ExampleNetworkInterfacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -232,6 +234,7 @@ func ExampleNetworkInterfacesClient_Get() {
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 	// 		},
 	// 		ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
 	// 		Name: to.Ptr("example-interface"),
@@ -248,7 +251,7 @@ func ExampleNetworkInterfacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkInterfaces_ListByNetworkDevice.json
+// Generated from example definition: 2026-01-15-preview/NetworkInterfaces_ListByNetworkDevice.json
 func ExampleNetworkInterfacesClient_NewListByNetworkDevicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -290,6 +293,7 @@ func ExampleNetworkInterfacesClient_NewListByNetworkDevicePager() {
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
 		// 					ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
+		// 					OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 		// 				},
 		// 				ID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedNetworkFabric/networkDevices/example-device/networkInterfaces/example-interface"),
 		// 				Name: to.Ptr("example-interface"),

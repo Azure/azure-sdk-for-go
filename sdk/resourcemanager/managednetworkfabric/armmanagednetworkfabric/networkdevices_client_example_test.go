@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/NetworkDevices_Create.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_Create.json
 func ExampleNetworkDevicesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -72,6 +72,7 @@ func ExampleNetworkDevicesClient_BeginCreate() {
 	// 			RwDeviceConfig: to.Ptr("hostname access-switch1\n enable secret somestrongpass"),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 	// 			IdentitySelector: &armmanagednetworkfabric.IdentitySelector{
 	// 				IdentityType: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 				UserAssignedIdentityResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity"),
@@ -106,7 +107,7 @@ func ExampleNetworkDevicesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_Delete.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_Delete.json
 func ExampleNetworkDevicesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -127,7 +128,7 @@ func ExampleNetworkDevicesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_Reboot.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_Reboot.json
 func ExampleNetworkDevicesClient_BeginReboot() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -172,7 +173,7 @@ func ExampleNetworkDevicesClient_BeginReboot() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_RefreshConfiguration.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_RefreshConfiguration.json
 func ExampleNetworkDevicesClient_BeginRefreshConfiguration() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -273,7 +274,7 @@ func ExampleNetworkDevicesClient_BeginRefreshConfiguration() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_ResyncCertificates.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_ResyncCertificates.json
 func ExampleNetworkDevicesClient_BeginResyncCertificates_successfulCertificateResync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,7 +307,7 @@ func ExampleNetworkDevicesClient_BeginResyncCertificates_successfulCertificateRe
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_ResyncCertificates_Error.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_ResyncCertificates_Error.json
 func ExampleNetworkDevicesClient_BeginResyncCertificates_errorWhilePerformingCertificateResync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -343,7 +344,7 @@ func ExampleNetworkDevicesClient_BeginResyncCertificates_errorWhilePerformingCer
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_ResyncPasswords.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_ResyncPasswords.json
 func ExampleNetworkDevicesClient_BeginResyncPasswords_successfulPasswordResync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -376,7 +377,7 @@ func ExampleNetworkDevicesClient_BeginResyncPasswords_successfulPasswordResync()
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_ResyncPasswords_Error.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_ResyncPasswords_Error.json
 func ExampleNetworkDevicesClient_BeginResyncPasswords_errorWhilePerformingPasswordResync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -413,7 +414,7 @@ func ExampleNetworkDevicesClient_BeginResyncPasswords_errorWhilePerformingPasswo
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_RunRoCommand.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_RunRoCommand.json
 func ExampleNetworkDevicesClient_BeginRunRoCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -468,7 +469,7 @@ func ExampleNetworkDevicesClient_BeginRunRoCommand() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_RunRwCommand.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_RunRwCommand.json
 func ExampleNetworkDevicesClient_BeginRunRwCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -524,7 +525,7 @@ func ExampleNetworkDevicesClient_BeginRunRwCommand() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_Update.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_Update.json
 func ExampleNetworkDevicesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -580,6 +581,7 @@ func ExampleNetworkDevicesClient_BeginUpdate() {
 	// 			RwDeviceConfig: to.Ptr("hostname access-switch1\n enable secret somestrongpass"),
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 	// 			IdentitySelector: &armmanagednetworkfabric.IdentitySelector{
 	// 				IdentityType: to.Ptr(armmanagednetworkfabric.ManagedServiceIdentitySelectorTypeUserAssignedIdentity),
 	// 				UserAssignedIdentityResourceID: to.Ptr("/subscriptions/1234ABCD-0A1B-1234-5678-123456ABCDEF/resourcegroups/example-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/example-identity"),
@@ -614,7 +616,7 @@ func ExampleNetworkDevicesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_UpdateAdministrativeState.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_UpdateAdministrativeState.json
 func ExampleNetworkDevicesClient_BeginUpdateAdministrativeState() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -662,7 +664,7 @@ func ExampleNetworkDevicesClient_BeginUpdateAdministrativeState() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_Upgrade.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_Upgrade.json
 func ExampleNetworkDevicesClient_BeginUpgrade() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -701,7 +703,7 @@ func ExampleNetworkDevicesClient_BeginUpgrade() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_Get.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_Get.json
 func ExampleNetworkDevicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -787,6 +789,7 @@ func ExampleNetworkDevicesClient_Get() {
 	// 			ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 	// 			ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 	// 			AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+	// 			OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 	// 		},
 	// 		Tags: map[string]*string{
 	// 			"KeyId": to.Ptr("KeyValue"),
@@ -807,7 +810,7 @@ func ExampleNetworkDevicesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_ListByResourceGroup.json
 func ExampleNetworkDevicesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -851,6 +854,7 @@ func ExampleNetworkDevicesClient_NewListByResourceGroupPager() {
 		// 					ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 					OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"KeyId": to.Ptr("KeyValue"),
@@ -875,7 +879,7 @@ func ExampleNetworkDevicesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/NetworkDevices_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/NetworkDevices_ListBySubscription.json
 func ExampleNetworkDevicesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -919,6 +923,7 @@ func ExampleNetworkDevicesClient_NewListBySubscriptionPager() {
 		// 					ConfigurationState: to.Ptr(armmanagednetworkfabric.ConfigurationStateSucceeded),
 		// 					ProvisioningState: to.Ptr(armmanagednetworkfabric.ProvisioningStateAccepted),
 		// 					AdministrativeState: to.Ptr(armmanagednetworkfabric.AdministrativeStateEnabled),
+		// 					OperationalState: to.Ptr(armmanagednetworkfabric.OperationalStateUp),
 		// 				},
 		// 				Tags: map[string]*string{
 		// 					"KeyId": to.Ptr("KeyValue"),

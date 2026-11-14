@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/managednetworkfabric/armmanagednetworkfabric/v3"
 	"log"
 )
 
-// Generated from example definition: 2025-07-15/IpPrefixes_Create.json
+// Generated from example definition: 2026-01-15-preview/IpPrefixes_Create.json
 func ExampleIPPrefixesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleIPPrefixesClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/IpPrefixes_Delete.json
+// Generated from example definition: 2026-01-15-preview/IpPrefixes_Delete.json
 func ExampleIPPrefixesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -110,7 +110,7 @@ func ExampleIPPrefixesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/IpPrefixes_Update.json
+// Generated from example definition: 2026-01-15-preview/IpPrefixes_Update.json
 func ExampleIPPrefixesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -185,7 +185,7 @@ func ExampleIPPrefixesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/IpPrefixes_Get.json
+// Generated from example definition: 2026-01-15-preview/IpPrefixes_Get.json
 func ExampleIPPrefixesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleIPPrefixesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15/IpPrefixes_ListByResourceGroup.json
+// Generated from example definition: 2026-01-15-preview/IpPrefixes_ListByResourceGroup.json
 func ExampleIPPrefixesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -311,7 +311,7 @@ func ExampleIPPrefixesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15/IpPrefixes_ListBySubscription.json
+// Generated from example definition: 2026-01-15-preview/IpPrefixes_ListBySubscription.json
 func ExampleIPPrefixesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

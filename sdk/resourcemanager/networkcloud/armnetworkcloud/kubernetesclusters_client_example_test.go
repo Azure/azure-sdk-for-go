@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/KubernetesClusters_Create.json
+// Generated from example definition: 2026-08-01-preview/KubernetesClusters_Create.json
 func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernetesCluster() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -518,7 +518,7 @@ func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernete
 	// }
 }
 
-// Generated from example definition: 2026-07-01/KubernetesClusters_L2LoadBalancer_Create.json
+// Generated from example definition: 2026-08-01-preview/KubernetesClusters_L2LoadBalancer_Create.json
 func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernetesClusterWithALayer2LoadBalancer() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -966,7 +966,7 @@ func ExampleKubernetesClustersClient_BeginCreateOrUpdate_createOrUpdateKubernete
 	// }
 }
 
-// Generated from example definition: 2026-07-01/KubernetesClusters_Delete.json
+// Generated from example definition: 2026-08-01-preview/KubernetesClusters_Delete.json
 func ExampleKubernetesClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -987,7 +987,7 @@ func ExampleKubernetesClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/KubernetesClusters_RestartNode.json
+// Generated from example definition: 2026-08-01-preview/KubernetesClusters_RestartNode.json
 func ExampleKubernetesClustersClient_BeginRestartNode() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1010,7 +1010,7 @@ func ExampleKubernetesClustersClient_BeginRestartNode() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/KubernetesClusters_Patch.json
+// Generated from example definition: 2026-08-01-preview/KubernetesClusters_Patch.json
 func ExampleKubernetesClustersClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1361,7 +1361,7 @@ func ExampleKubernetesClustersClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/KubernetesClusters_Get.json
+// Generated from example definition: 2026-08-01-preview/KubernetesClusters_Get.json
 func ExampleKubernetesClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1683,7 +1683,7 @@ func ExampleKubernetesClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/KubernetesClusters_ListByResourceGroup.json
+// Generated from example definition: 2026-08-01-preview/KubernetesClusters_ListByResourceGroup.json
 func ExampleKubernetesClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2015,7 +2015,7 @@ func ExampleKubernetesClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/KubernetesClusters_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/KubernetesClusters_ListBySubscription.json
 func ExampleKubernetesClustersClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

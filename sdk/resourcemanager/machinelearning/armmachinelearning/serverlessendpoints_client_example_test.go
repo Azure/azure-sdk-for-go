@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ServerlessEndpoint/createOrUpdate.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/createOrUpdate.json
 func ExampleServerlessEndpointsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleServerlessEndpointsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ServerlessEndpoint/delete.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/delete.json
 func ExampleServerlessEndpointsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleServerlessEndpointsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ServerlessEndpoint/regenerateKeys.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/regenerateKeys.json
 func ExampleServerlessEndpointsClient_BeginRegenerateKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -173,7 +173,7 @@ func ExampleServerlessEndpointsClient_BeginRegenerateKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ServerlessEndpoint/update.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/update.json
 func ExampleServerlessEndpointsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -268,7 +268,7 @@ func ExampleServerlessEndpointsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ServerlessEndpoint/get.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/get.json
 func ExampleServerlessEndpointsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -344,7 +344,7 @@ func ExampleServerlessEndpointsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ServerlessEndpoint/listKeys.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/listKeys.json
 func ExampleServerlessEndpointsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +370,7 @@ func ExampleServerlessEndpointsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/ServerlessEndpoint/list.json
+// Generated from example definition: 2026-09-15-preview/Workspace/ServerlessEndpoint/list.json
 func ExampleServerlessEndpointsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -1491,6 +1491,15 @@ type CapabilityHost struct {
 	Type *string
 }
 
+// CapabilityHostListResult - The response of a CapabilityHost list operation.
+type CapabilityHostListResult struct {
+	// REQUIRED; The CapabilityHost items on this page
+	Value []*CapabilityHost
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 type CapabilityHostProperties struct {
 	// List of Aca Environment connections.
 	AcaEnvironmentConnections []*string
@@ -2893,11 +2902,17 @@ type CustomModelJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string
@@ -6970,11 +6985,17 @@ type MLFlowModelJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string
@@ -7060,11 +7081,17 @@ type MLTableJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string
@@ -9441,6 +9468,9 @@ type Ray struct {
 	// The port to bind the dashboard server to.
 	DashboardPort *int32
 
+	// Whether to expose the Ray Client server through the AML proxy on the default port 10001.
+	EnableRemoteAccessClientServer *bool
+
 	// Additional arguments passed to ray start in head node.
 	HeadNodeAdditionalArgs *string
 
@@ -11531,11 +11561,17 @@ type TritonModelJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string
@@ -11644,11 +11680,17 @@ type URIFileJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string
@@ -11731,11 +11773,17 @@ type URIFolderJobOutput struct {
 	// Output Asset Name.
 	AssetName *string
 
+	// Output Asset Version.
+	AssetVersion *string
+
 	// Description for the output.
 	Description *string
 
 	// Output data delivery mode enums.
 	Mode *OutputDeliveryMode
+
+	// Output Asset Delivery Path.
+	PathOnCompute *string
 
 	// Output Asset URI.
 	URI *string

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopicEventSubscriptions_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopicEventSubscriptions_CreateOrUpdate.json
 func ExampleNamespaceTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleNamespaceTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopicEventSubscriptions_Delete.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopicEventSubscriptions_Delete.json
 func ExampleNamespaceTopicEventSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleNamespaceTopicEventSubscriptionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopicEventSubscriptions_Update.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopicEventSubscriptions_Update.json
 func ExampleNamespaceTopicEventSubscriptionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -148,7 +148,7 @@ func ExampleNamespaceTopicEventSubscriptionsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopicEventSubscriptions_Get.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopicEventSubscriptions_Get.json
 func ExampleNamespaceTopicEventSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleNamespaceTopicEventSubscriptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopicEventSubscriptions_GetDeliveryAttributes.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopicEventSubscriptions_GetDeliveryAttributes.json
 func ExampleNamespaceTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -236,7 +236,7 @@ func ExampleNamespaceTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopicEventSubscriptions_GetFullUrl.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopicEventSubscriptions_GetFullUrl.json
 func ExampleNamespaceTopicEventSubscriptionsClient_GetFullURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -261,7 +261,7 @@ func ExampleNamespaceTopicEventSubscriptionsClient_GetFullURL() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopicEventSubscriptions_ListByNamespaceTopic.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopicEventSubscriptions_ListByNamespaceTopic.json
 func ExampleNamespaceTopicEventSubscriptionsClient_NewListByNamespaceTopicPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

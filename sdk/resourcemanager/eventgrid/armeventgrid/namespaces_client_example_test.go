@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/Namespaces_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/Namespaces_CreateOrUpdate.json
 func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -26,6 +26,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	poller, err := clientFactory.NewNamespacesClient().BeginCreateOrUpdate(ctx, "examplerg", "exampleNamespaceName1", armeventgrid.Namespace{
 		Location: to.Ptr("westus"),
 		Properties: &armeventgrid.NamespaceProperties{
+			IPAddressType: to.Ptr(armeventgrid.IPAddressTypeDualStack),
 			TopicSpacesConfiguration: &armeventgrid.TopicSpacesConfiguration{
 				RouteTopicResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"),
 				State:                to.Ptr(armeventgrid.TopicSpacesConfigurationStateEnabled),
@@ -54,6 +55,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armeventgrid.NamespaceProperties{
 	// 			ProvisioningState: to.Ptr(armeventgrid.NamespaceProvisioningStateCreating),
+	// 			IPAddressType: to.Ptr(armeventgrid.IPAddressTypeDualStack),
 	// 			TopicSpacesConfiguration: &armeventgrid.TopicSpacesConfiguration{
 	// 				RouteTopicResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"),
 	// 				State: to.Ptr(armeventgrid.TopicSpacesConfigurationStateEnabled),
@@ -67,7 +69,7 @@ func ExampleNamespacesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Namespaces_Delete.json
+// Generated from example definition: 2026-06-15-preview/Namespaces_Delete.json
 func ExampleNamespacesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +95,7 @@ func ExampleNamespacesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Namespaces_RegenerateKey.json
+// Generated from example definition: 2026-06-15-preview/Namespaces_RegenerateKey.json
 func ExampleNamespacesClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -125,7 +127,7 @@ func ExampleNamespacesClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Namespaces_Update.json
+// Generated from example definition: 2026-06-15-preview/Namespaces_Update.json
 func ExampleNamespacesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,6 +139,9 @@ func ExampleNamespacesClient_BeginUpdate() {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewNamespacesClient().BeginUpdate(ctx, "examplerg", "exampleNamespaceName1", armeventgrid.NamespaceUpdateParameters{
+		Properties: &armeventgrid.NamespaceUpdateParameterProperties{
+			IPAddressType: to.Ptr(armeventgrid.IPAddressTypeDualStack),
+		},
 		Tags: map[string]*string{
 			"tag1": to.Ptr("value1Updated"),
 		},
@@ -159,6 +164,7 @@ func ExampleNamespacesClient_BeginUpdate() {
 	// 		Location: to.Ptr("westus"),
 	// 		Properties: &armeventgrid.NamespaceProperties{
 	// 			ProvisioningState: to.Ptr(armeventgrid.NamespaceProvisioningStateSucceeded),
+	// 			IPAddressType: to.Ptr(armeventgrid.IPAddressTypeDualStack),
 	// 			TopicSpacesConfiguration: &armeventgrid.TopicSpacesConfiguration{
 	// 				Hostname: to.Ptr("exampleNamespaceName1.westus-1.mqtt.eventgrid-int.azure.net"),
 	// 				RouteTopicResourceID: to.Ptr("/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"),
@@ -169,7 +175,7 @@ func ExampleNamespacesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Namespaces_ValidateCustomDomainOwnership.json
+// Generated from example definition: 2026-06-15-preview/Namespaces_ValidateCustomDomainOwnership.json
 func ExampleNamespacesClient_BeginValidateCustomDomainOwnership() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -221,7 +227,7 @@ func ExampleNamespacesClient_BeginValidateCustomDomainOwnership() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Namespaces_Get.json
+// Generated from example definition: 2026-06-15-preview/Namespaces_Get.json
 func ExampleNamespacesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +268,7 @@ func ExampleNamespacesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Namespaces_ListSharedAccessKeys.json
+// Generated from example definition: 2026-06-15-preview/Namespaces_ListSharedAccessKeys.json
 func ExampleNamespacesClient_ListSharedAccessKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -288,7 +294,7 @@ func ExampleNamespacesClient_ListSharedAccessKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Namespaces_ListByResourceGroup.json
+// Generated from example definition: 2026-06-15-preview/Namespaces_ListByResourceGroup.json
 func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -339,7 +345,7 @@ func ExampleNamespacesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/Namespaces_ListBySubscription.json
+// Generated from example definition: 2026-06-15-preview/Namespaces_ListBySubscription.json
 func ExampleNamespacesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

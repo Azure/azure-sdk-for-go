@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/DomainTopicEventSubscriptions_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/DomainTopicEventSubscriptions_CreateOrUpdate.json
 func ExampleDomainTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -77,7 +77,7 @@ func ExampleDomainTopicEventSubscriptionsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainTopicEventSubscriptions_Delete.json
+// Generated from example definition: 2026-06-15-preview/DomainTopicEventSubscriptions_Delete.json
 func ExampleDomainTopicEventSubscriptionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -103,7 +103,7 @@ func ExampleDomainTopicEventSubscriptionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainTopicEventSubscriptions_Update.json
+// Generated from example definition: 2026-06-15-preview/DomainTopicEventSubscriptions_Update.json
 func ExampleDomainTopicEventSubscriptionsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -140,7 +140,7 @@ func ExampleDomainTopicEventSubscriptionsClient_BeginUpdate() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainTopicEventSubscriptions_Get.json
+// Generated from example definition: 2026-06-15-preview/DomainTopicEventSubscriptions_Get.json
 func ExampleDomainTopicEventSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +196,7 @@ func ExampleDomainTopicEventSubscriptionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainTopicEventSubscriptions_GetDeliveryAttributes.json
+// Generated from example definition: 2026-06-15-preview/DomainTopicEventSubscriptions_GetDeliveryAttributes.json
 func ExampleDomainTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExampleDomainTopicEventSubscriptionsClient_GetDeliveryAttributes() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainTopicEventSubscriptions_GetFullUrl.json
+// Generated from example definition: 2026-06-15-preview/DomainTopicEventSubscriptions_GetFullUrl.json
 func ExampleDomainTopicEventSubscriptionsClient_GetFullURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -270,7 +270,7 @@ func ExampleDomainTopicEventSubscriptionsClient_GetFullURL() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/DomainTopicEventSubscriptions_List.json
+// Generated from example definition: 2026-06-15-preview/DomainTopicEventSubscriptions_List.json
 func ExampleDomainTopicEventSubscriptionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

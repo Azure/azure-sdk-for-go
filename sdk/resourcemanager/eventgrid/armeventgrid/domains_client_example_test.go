@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/Domains_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/Domains_CreateOrUpdate.json
 func ExampleDomainsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +52,7 @@ func ExampleDomainsClient_BeginCreateOrUpdate() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/Domains_Delete.json
+// Generated from example definition: 2026-06-15-preview/Domains_Delete.json
 func ExampleDomainsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -78,7 +78,7 @@ func ExampleDomainsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Domains_Update.json
+// Generated from example definition: 2026-06-15-preview/Domains_Update.json
 func ExampleDomainsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -122,7 +122,7 @@ func ExampleDomainsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Domains_Get.json
+// Generated from example definition: 2026-06-15-preview/Domains_Get.json
 func ExampleDomainsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -158,7 +158,7 @@ func ExampleDomainsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Domains_ListSharedAccessKeys.json
+// Generated from example definition: 2026-06-15-preview/Domains_ListSharedAccessKeys.json
 func ExampleDomainsClient_ListSharedAccessKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +184,7 @@ func ExampleDomainsClient_ListSharedAccessKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Domains_ListByResourceGroup.json
+// Generated from example definition: 2026-06-15-preview/Domains_ListByResourceGroup.json
 func ExampleDomainsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -243,7 +243,7 @@ func ExampleDomainsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/Domains_ListBySubscription.json
+// Generated from example definition: 2026-06-15-preview/Domains_ListBySubscription.json
 func ExampleDomainsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleDomainsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/Domains_RegenerateKey.json
+// Generated from example definition: 2026-06-15-preview/Domains_RegenerateKey.json
 func ExampleDomainsClient_RegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2025-07-15-preview/Channels_Delete.json
+// Generated from example definition: 2026-06-15-preview/Channels_Delete.json
 func ExampleChannelsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -39,7 +39,7 @@ func ExampleChannelsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Channels_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/Channels_CreateOrUpdate.json
 func ExampleChannelsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -89,7 +89,7 @@ func ExampleChannelsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Channels_Get.json
+// Generated from example definition: 2026-06-15-preview/Channels_Get.json
 func ExampleChannelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleChannelsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Channels_GetFullUrl.json
+// Generated from example definition: 2026-06-15-preview/Channels_GetFullUrl.json
 func ExampleChannelsClient_GetFullURL() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleChannelsClient_GetFullURL() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/Channels_ListByPartnerNamespace.json
+// Generated from example definition: 2026-06-15-preview/Channels_ListByPartnerNamespace.json
 func ExampleChannelsClient_NewListByPartnerNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -203,7 +203,7 @@ func ExampleChannelsClient_NewListByPartnerNamespacePager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/Channels_Update.json
+// Generated from example definition: 2026-06-15-preview/Channels_Update.json
 func ExampleChannelsClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_CreateOrUpdate.json
 func ExamplePartnerRegistrationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -60,7 +60,7 @@ func ExamplePartnerRegistrationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_Delete.json
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_Delete.json
 func ExamplePartnerRegistrationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -86,7 +86,7 @@ func ExamplePartnerRegistrationsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_Update.json
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_Update.json
 func ExamplePartnerRegistrationsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -116,7 +116,7 @@ func ExamplePartnerRegistrationsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_Get.json
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_Get.json
 func ExamplePartnerRegistrationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExamplePartnerRegistrationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_ListByResourceGroup.json
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_ListByResourceGroup.json
 func ExamplePartnerRegistrationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -199,7 +199,7 @@ func ExamplePartnerRegistrationsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/PartnerRegistrations_ListBySubscription.json
+// Generated from example definition: 2026-06-15-preview/PartnerRegistrations_ListBySubscription.json
 func ExamplePartnerRegistrationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

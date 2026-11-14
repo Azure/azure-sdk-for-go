@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/SystemTopics_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/SystemTopics_CreateOrUpdate.json
 func ExampleSystemTopicsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleSystemTopicsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/SystemTopics_Delete.json
+// Generated from example definition: 2026-06-15-preview/SystemTopics_Delete.json
 func ExampleSystemTopicsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,7 +135,7 @@ func ExampleSystemTopicsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/SystemTopics_Update.json
+// Generated from example definition: 2026-06-15-preview/SystemTopics_Update.json
 func ExampleSystemTopicsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -178,7 +178,7 @@ func ExampleSystemTopicsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/SystemTopics_Get.json
+// Generated from example definition: 2026-06-15-preview/SystemTopics_Get.json
 func ExampleSystemTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -239,7 +239,7 @@ func ExampleSystemTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/SystemTopics_ListByResourceGroup.json
+// Generated from example definition: 2026-06-15-preview/SystemTopics_ListByResourceGroup.json
 func ExampleSystemTopicsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -282,7 +282,7 @@ func ExampleSystemTopicsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-07-15-preview/SystemTopics_ListBySubscription.json
+// Generated from example definition: 2026-06-15-preview/SystemTopics_ListBySubscription.json
 func ExampleSystemTopicsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

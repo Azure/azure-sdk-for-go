@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_CreateOrUpdate.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_CreateOrUpdate.json
 func ExampleNamespaceTopicsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -55,7 +55,7 @@ func ExampleNamespaceTopicsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_Delete.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_Delete.json
 func ExampleNamespaceTopicsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleNamespaceTopicsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_RegenerateKey.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_RegenerateKey.json
 func ExampleNamespaceTopicsClient_BeginRegenerateKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -113,7 +113,7 @@ func ExampleNamespaceTopicsClient_BeginRegenerateKey() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_Update.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_Update.json
 func ExampleNamespaceTopicsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -154,7 +154,7 @@ func ExampleNamespaceTopicsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_Get.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_Get.json
 func ExampleNamespaceTopicsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -187,7 +187,7 @@ func ExampleNamespaceTopicsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_ListSharedAccessKeys.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_ListSharedAccessKeys.json
 func ExampleNamespaceTopicsClient_ListSharedAccessKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,7 +213,7 @@ func ExampleNamespaceTopicsClient_ListSharedAccessKeys() {
 	// }
 }
 
-// Generated from example definition: 2025-07-15-preview/NamespaceTopics_ListByNamespace.json
+// Generated from example definition: 2026-06-15-preview/NamespaceTopics_ListByNamespace.json
 func ExampleNamespaceTopicsClient_NewListByNamespacePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

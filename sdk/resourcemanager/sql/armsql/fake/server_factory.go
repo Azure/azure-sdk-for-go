@@ -264,6 +264,9 @@ type ServerFactory struct {
 	// ManagedInstanceKeysServer contains the fakes for client ManagedInstanceKeysClient
 	ManagedInstanceKeysServer ManagedInstanceKeysServer
 
+	// ManagedInstanceLongTermRetentionBackupsServer contains the fakes for client ManagedInstanceLongTermRetentionBackupsClient
+	ManagedInstanceLongTermRetentionBackupsServer ManagedInstanceLongTermRetentionBackupsServer
+
 	// ManagedInstanceLongTermRetentionPoliciesServer contains the fakes for client ManagedInstanceLongTermRetentionPoliciesClient
 	ManagedInstanceLongTermRetentionPoliciesServer ManagedInstanceLongTermRetentionPoliciesServer
 
@@ -557,6 +560,7 @@ type ServerFactoryTransport struct {
 	trManagedInstanceDtcsServer                                              *ManagedInstanceDtcsServerTransport
 	trManagedInstanceEncryptionProtectorsServer                              *ManagedInstanceEncryptionProtectorsServerTransport
 	trManagedInstanceKeysServer                                              *ManagedInstanceKeysServerTransport
+	trManagedInstanceLongTermRetentionBackupsServer                          *ManagedInstanceLongTermRetentionBackupsServerTransport
 	trManagedInstanceLongTermRetentionPoliciesServer                         *ManagedInstanceLongTermRetentionPoliciesServerTransport
 	trManagedInstanceOperationsServer                                        *ManagedInstanceOperationsServerTransport
 	trManagedInstancePrivateEndpointConnectionsServer                        *ManagedInstancePrivateEndpointConnectionsServerTransport
@@ -1036,6 +1040,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewManagedInstanceKeysServerTransport(&s.srv.ManagedInstanceKeysServer)
 		})
 		resp, err = s.trManagedInstanceKeysServer.Do(req)
+	case "ManagedInstanceLongTermRetentionBackupsClient":
+		initServer(&s.trMu, &s.trManagedInstanceLongTermRetentionBackupsServer, func() *ManagedInstanceLongTermRetentionBackupsServerTransport {
+			return NewManagedInstanceLongTermRetentionBackupsServerTransport(&s.srv.ManagedInstanceLongTermRetentionBackupsServer)
+		})
+		resp, err = s.trManagedInstanceLongTermRetentionBackupsServer.Do(req)
 	case "ManagedInstanceLongTermRetentionPoliciesClient":
 		initServer(&s.trMu, &s.trManagedInstanceLongTermRetentionPoliciesServer, func() *ManagedInstanceLongTermRetentionPoliciesServerTransport {
 			return NewManagedInstanceLongTermRetentionPoliciesServerTransport(&s.srv.ManagedInstanceLongTermRetentionPoliciesServer)

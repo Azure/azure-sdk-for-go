@@ -696,6 +696,14 @@ func (c *ClientFactory) NewManagedInstanceKeysClient() *ManagedInstanceKeysClien
 	}
 }
 
+// NewManagedInstanceLongTermRetentionBackupsClient creates a new instance of ManagedInstanceLongTermRetentionBackupsClient.
+func (c *ClientFactory) NewManagedInstanceLongTermRetentionBackupsClient() *ManagedInstanceLongTermRetentionBackupsClient {
+	return &ManagedInstanceLongTermRetentionBackupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewManagedInstanceLongTermRetentionPoliciesClient creates a new instance of ManagedInstanceLongTermRetentionPoliciesClient.
 func (c *ClientFactory) NewManagedInstanceLongTermRetentionPoliciesClient() *ManagedInstanceLongTermRetentionPoliciesClient {
 	return &ManagedInstanceLongTermRetentionPoliciesClient{

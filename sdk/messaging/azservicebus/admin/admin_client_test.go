@@ -1997,6 +1997,18 @@ func TestAdminClient_unknownRuleNamespaces(t *testing.T) {
 					childNS:    "urn:custom",
 				},
 				{
+					name:       "custom namespace matches legacy prefix",
+					attributes: `xmlns:i="i" xmlns:xsi="` + instanceNS + `" xsi:type="FutureType" i:type="metadata" custom="value"`,
+					innerXML:   `<i:Thing i:value="1">Value</i:Thing>`,
+					childNS:    "i",
+				},
+				{
+					name:       "custom namespace uses another prefix",
+					attributes: `xmlns:c="i" xmlns:xsi="` + instanceNS + `" c:type="metadata" xsi:type="FutureType" custom="value"`,
+					innerXML:   `<c:Thing c:value="1">Value</c:Thing>`,
+					childNS:    "i",
+				},
+				{
 					name:       "legacy undeclared prefix",
 					attributes: `i:type="FutureType" custom="value"`,
 					innerXML:   `<Thing>1</Thing>`,

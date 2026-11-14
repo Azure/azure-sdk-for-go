@@ -4,6 +4,7 @@
 package admin
 
 import (
+	"bytes"
 	"context"
 	"encoding/xml"
 	"fmt"
@@ -761,10 +762,32 @@ func unmarshalUnknownRuleXML(rawXML []byte) (string, []xml.Attr, []byte, error) 
 		return "", nil, nil, err
 	}
 
+	// Decoded namespace URI "i" is indistinguishable from an undeclared i prefix.
+	decoder := xml.NewDecoder(bytes.NewReader(rawXML))
+	var start xml.StartElement
+	for {
+		token, err := decoder.RawToken()
+		if err != nil {
+			return "", nil, nil, err
+		}
+		if element, ok := token.(xml.StartElement); ok {
+			start = element
+			break
+		}
+	}
+	iDeclared := false
+	for _, attr := range start.Attr {
+		if attr.Name.Space == "xmlns" && attr.Name.Local == "i" && attr.Value != "" {
+			iDeclared = true
+			break
+		}
+	}
+
 	var ruleType string
 	attrs := ruleXML.Attrs[:0]
-	for _, attr := range ruleXML.Attrs {
-		if attr.Name.Local == "type" && (attr.Name.Space == "http://www.w3.org/2001/XMLSchema-instance" || attr.Name.Space == "i") {
+	for index, attr := range ruleXML.Attrs {
+		legacyType := !iDeclared && start.Attr[index].Name == (xml.Name{Space: "i", Local: "type"})
+		if attr.Name.Local == "type" && (attr.Name.Space == "http://www.w3.org/2001/XMLSchema-instance" || legacyType) {
 			// The SDK's existing round-trip XML uses an undeclared i prefix.
 			ruleType = attr.Value
 			continue

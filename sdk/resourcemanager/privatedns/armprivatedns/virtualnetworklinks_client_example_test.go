@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-06-01/VirtualNetworkLinkPut.json
+// Generated from example definition: 2026-06-01-preview/VirtualNetworkLinkPut.json
 func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -67,7 +67,7 @@ func ExampleVirtualNetworkLinksClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/VirtualNetworkLinkDelete.json
+// Generated from example definition: 2026-06-01-preview/VirtualNetworkLinkDelete.json
 func ExampleVirtualNetworkLinksClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleVirtualNetworkLinksClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/VirtualNetworkLinkPatch.json
+// Generated from example definition: 2026-06-01-preview/VirtualNetworkLinkPatch.json
 func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -146,7 +146,7 @@ func ExampleVirtualNetworkLinksClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/VirtualNetworkLinkGet.json
+// Generated from example definition: 2026-06-01-preview/VirtualNetworkLinkGet.json
 func ExampleVirtualNetworkLinksClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -186,7 +186,7 @@ func ExampleVirtualNetworkLinksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/VirtualNetworkLinkList.json
+// Generated from example definition: 2026-06-01-preview/VirtualNetworkLinkList.json
 func ExampleVirtualNetworkLinksClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -210,7 +210,7 @@ func ExampleVirtualNetworkLinksClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armprivatedns.VirtualNetworkLinksClientListResponse{
 		// 	VirtualNetworkLinkListResult: armprivatedns.VirtualNetworkLinkListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/virtualNetworkLinks?api-version=2024-06-01&$skipToken=skipToken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/virtualNetworkLinks?api-version=2026-06-01-preview&$skipToken=skipToken"),
 		// 		Value: []*armprivatedns.VirtualNetworkLink{
 		// 			{
 		// 				Name: to.Ptr("virtualNetworkLink1"),

@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
@@ -164,6 +165,45 @@ func ExampleReceiver_ReceiveMessages_receiveAndDelete() {
 			}
 		}
 	}
+}
+
+func ExampleReceiver_DeleteMessages() {
+	requestedCount := 100
+	result, err := receiver.DeleteMessages(context.TODO(), requestedCount, nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Any request can return fewer deletions than requested, especially when messages are large.
+	fmt.Printf("Requested %d; the service deleted %d.\n", requestedCount, result.DeletedCount)
+}
+
+func ExampleReceiver_PurgeMessages() {
+	// The default purge uses 500-message batches.
+	result, err := receiver.PurgeMessages(context.TODO(), nil)
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	fmt.Printf("The service purged %d messages.\n", result.DeletedCount)
+}
+
+func ExampleReceiver_PurgeMessages_premiumBatchSize() {
+	enqueueTimeThreshold := time.Now().UTC()
+	maxMessageCountPerBatch := 4000
+	result, err := receiver.PurgeMessages(context.TODO(), &azservicebus.PurgeMessagesOptions{
+		BeforeEnqueueTime:       &enqueueTimeThreshold,
+		MaxMessageCountPerBatch: &maxMessageCountPerBatch,
+	})
+	if err != nil {
+		// TODO: Update the following line with your application specific error handling logic
+		log.Fatalf("ERROR: %s", err)
+	}
+
+	// Premium supports up to 4,000 messages per request.
+	fmt.Printf("Purged %d messages enqueued before %s.\n", result.DeletedCount, enqueueTimeThreshold)
 }
 
 func ExampleReceiver_ReceiveMessages_amqpMessage() {

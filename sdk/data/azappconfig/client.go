@@ -23,8 +23,9 @@ import (
 const timeFormat = time.RFC3339Nano
 
 const (
-	appConfigStagingDomain = "appconfig-staging.azure.com"
-	defaultAudience        = "https://appconfig.azure.com"
+	appConfigStagingDomain         = "appconfig-staging.azure.com"
+	appConfigRegionalStagingDomain = "appconfig-stage.azure.com"
+	defaultAudience                = "https://appconfig.azure.com"
 )
 
 // Client is the struct for interacting with an Azure App Configuration instance.
@@ -57,7 +58,8 @@ func NewClient(endpoint string, cred azcore.TokenCredential, options *ClientOpti
 
 func getAudience(endpoint *url.URL) string {
 	host := strings.ToLower(endpoint.Hostname())
-	if strings.HasSuffix(host, "."+appConfigStagingDomain) {
+	// Regional staging endpoints use "appconfig-stage" but share the staging audience.
+	if strings.HasSuffix(host, "."+appConfigStagingDomain) || strings.HasSuffix(host, "."+appConfigRegionalStagingDomain) {
 		return "https://" + appConfigStagingDomain
 	}
 

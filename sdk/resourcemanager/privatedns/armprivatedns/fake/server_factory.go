@@ -21,6 +21,9 @@ type ServerFactory struct {
 	// RecordSetsServer contains the fakes for client RecordSetsClient
 	RecordSetsServer RecordSetsServer
 
+	// ResourceReferenceServer contains the fakes for client ResourceReferenceClient
+	ResourceReferenceServer ResourceReferenceServer
+
 	// VirtualNetworkLinksServer contains the fakes for client VirtualNetworkLinksClient
 	VirtualNetworkLinksServer VirtualNetworkLinksServer
 }
@@ -41,6 +44,7 @@ type ServerFactoryTransport struct {
 	trMu                        sync.Mutex
 	trPrivateZonesServer        *PrivateZonesServerTransport
 	trRecordSetsServer          *RecordSetsServerTransport
+	trResourceReferenceServer   *ResourceReferenceServerTransport
 	trVirtualNetworkLinksServer *VirtualNetworkLinksServerTransport
 }
 
@@ -63,6 +67,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "RecordSetsClient":
 		initServer(&s.trMu, &s.trRecordSetsServer, func() *RecordSetsServerTransport { return NewRecordSetsServerTransport(&s.srv.RecordSetsServer) })
 		resp, err = s.trRecordSetsServer.Do(req)
+	case "ResourceReferenceClient":
+		initServer(&s.trMu, &s.trResourceReferenceServer, func() *ResourceReferenceServerTransport {
+			return NewResourceReferenceServerTransport(&s.srv.ResourceReferenceServer)
+		})
+		resp, err = s.trResourceReferenceServer.Do(req)
 	case "VirtualNetworkLinksClient":
 		initServer(&s.trMu, &s.trVirtualNetworkLinksServer, func() *VirtualNetworkLinksServerTransport {
 			return NewVirtualNetworkLinksServerTransport(&s.srv.VirtualNetworkLinksServer)

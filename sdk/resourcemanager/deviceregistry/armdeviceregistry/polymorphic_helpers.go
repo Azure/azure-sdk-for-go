@@ -6,6 +6,52 @@ package armdeviceregistry
 
 import "encoding/json"
 
+func unmarshalCertificateAuthorityIssuerClassification(rawMsg json.RawMessage) (CertificateAuthorityIssuerClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b CertificateAuthorityIssuerClassification
+	switch m["issuerType"] {
+	case string(CertificateAuthorityIssuerTypeExternal):
+		b = &ExternalCertificateAuthorityIssuer{}
+	case string(CertificateAuthorityIssuerTypeMicrosoft):
+		b = &MicrosoftCertificateAuthorityIssuer{}
+	default:
+		b = &CertificateAuthorityIssuer{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
+func unmarshalCertificateAuthorityPropertiesClassification(rawMsg json.RawMessage) (CertificateAuthorityPropertiesClassification, error) {
+	if rawMsg == nil || string(rawMsg) == "null" {
+		return nil, nil
+	}
+	var m map[string]any
+	if err := json.Unmarshal(rawMsg, &m); err != nil {
+		return nil, err
+	}
+	var b CertificateAuthorityPropertiesClassification
+	switch m["certificateAuthorityType"] {
+	case string(CertificateAuthorityTypeICA):
+		b = &IntermediateCertificateAuthorityProperties{}
+	case string(CertificateAuthorityTypeRoot):
+		b = &RootCertificateAuthorityProperties{}
+	default:
+		b = &CertificateAuthorityProperties{}
+	}
+	if err := json.Unmarshal(rawMsg, b); err != nil {
+		return nil, err
+	}
+	return b, nil
+}
+
 func unmarshalDatasetDestinationClassification(rawMsg json.RawMessage) (DatasetDestinationClassification, error) {
 	if rawMsg == nil || string(rawMsg) == "null" {
 		return nil, nil

@@ -1,5 +1,90 @@
 # Release History
 
+## 1.1.0-beta.1 (2026-11-11)
+### Features Added
+
+- New value `RecoveryPlanTypeCyberRecovery` added to enum type `RecoveryPlanType`
+- New value `ResourceProtectionSolutionTypeAzureCosmosDB`, `ResourceProtectionSolutionTypeAzureNetAppFiles`, `ResourceProtectionSolutionTypeAzureServiceBus`, `ResourceProtectionSolutionTypeAzureStorageAccount`, `ResourceProtectionSolutionTypeAzureTemplate` added to enum type `ResourceProtectionSolutionType`
+- New enum type `BackupType` with values `BackupTypeLog`, `BackupTypeSnapshot`, `BackupTypeStreaming`
+- New enum type `CopyOptions` with values `CopyOptionsOverwrite`, `CopyOptionsSkip`
+- New enum type `FaultEligibility` with values `FaultEligibilityEligible`, `FaultEligibilityIneligible`, `FaultEligibilityUnknown`
+- New enum type `FaultIneligibleReason` with values `FaultIneligibleReasonRecoveryPlanNotConfigured`, `FaultIneligibleReasonResourceNotIncludedInRecoveryPlan`
+- New enum type `ISODuration` with values `ISODurationPT15M`, `ISODurationPT1H`, `ISODurationPT24H`, `ISODurationPT4H`
+- New enum type `RecoveryPointHealthStatus` with values `RecoveryPointHealthStatusAll`, `RecoveryPointHealthStatusHealthyAndUnknown`, `RecoveryPointHealthStatusHealthyOnly`
+- New enum type `RecoveryPointPolicyType` with values `RecoveryPointPolicyTypeLatest`, `RecoveryPointPolicyTypeRandom`
+- New enum type `RecoveryResourceInclusionEligibility` with values `RecoveryResourceInclusionEligibilityCanBeIncluded`, `RecoveryResourceInclusionEligibilityCannotBeIncluded`
+- New enum type `RecoveryType` with values `RecoveryTypeAlternateLocation`, `RecoveryTypeCreateNewVM`, `RecoveryTypeRestoreAsDisks`, `RecoveryTypeRestoreAsFiles`
+- New enum type `RegionalResiliencyStatus` with values `RegionalResiliencyStatusNotResilient`, `RegionalResiliencyStatusResilient`
+- New enum type `ReplicationMode` with values `ReplicationModeActiveActive`, `ReplicationModeActivePassive`, `ReplicationModeNone`
+- New enum type `ResiliencyType` with values `ResiliencyTypeCyberResiliency`, `ResiliencyTypeInfrastructureResiliency`
+- New enum type `ResourceInclusionDisabledReason` with values `ResourceInclusionDisabledReasonResourceActiveActiveProtection`, `ResourceInclusionDisabledReasonResourceHighlyAvailable`
+- New enum type `ResourceProtectionState` with values `ResourceProtectionStateNotProtected`, `ResourceProtectionStateProtected`, `ResourceProtectionStateUnknown`
+- New enum type `TargetProvisioningMode` with values `TargetProvisioningModeExisting`
+- New enum type `WorkloadType` with values `WorkloadTypeAzureFileShare`, `WorkloadTypeAzureVM`, `WorkloadTypeOracleInAzureVM`, `WorkloadTypeSAPASEInAzureVM`, `WorkloadTypeSAPHANAInAzureVM`, `WorkloadTypeSQLDatabaseInAzureVM`
+- New function `*ClientFactory.NewRecoveryConfigProfilesClient() *RecoveryConfigProfilesClient`
+- New function `*CyberResiliencyGroupProperties.GetRecoveryGroupResiliencyProperties() *RecoveryGroupResiliencyProperties`
+- New function `*CyberResiliencyPlanProperties.GetRecoveryPlanResiliencyProperties() *RecoveryPlanResiliencyProperties`
+- New function `*CyberResiliencyResourceProperties.GetRecoveryResourceResiliencyProperties() *RecoveryResourceResiliencyProperties`
+- New function `*FileShareRecoveryConfig.GetWorkloadConfig() *WorkloadConfig`
+- New function `*InfrastructureResiliencyGroupProperties.GetRecoveryGroupResiliencyProperties() *RecoveryGroupResiliencyProperties`
+- New function `*InfrastructureResiliencyPlanProperties.GetRecoveryPlanResiliencyProperties() *RecoveryPlanResiliencyProperties`
+- New function `*InfrastructureResiliencyResourceProperties.GetRecoveryResourceResiliencyProperties() *RecoveryResourceResiliencyProperties`
+- New function `NewRecoveryConfigProfilesClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*RecoveryConfigProfilesClient, error)`
+- New function `*RecoveryConfigProfilesClient.BeginCreateOrUpdate(ctx context.Context, serviceGroupName string, recoveryPlanName string, recoveryConfigProfileName string, resource RecoveryConfigProfile, options *RecoveryConfigProfilesClientBeginCreateOrUpdateOptions) (*runtime.Poller[RecoveryConfigProfilesClientCreateOrUpdateResponse], error)`
+- New function `*RecoveryConfigProfilesClient.BeginDelete(ctx context.Context, serviceGroupName string, recoveryPlanName string, recoveryConfigProfileName string, options *RecoveryConfigProfilesClientBeginDeleteOptions) (*runtime.Poller[RecoveryConfigProfilesClientDeleteResponse], error)`
+- New function `*RecoveryConfigProfilesClient.Get(ctx context.Context, serviceGroupName string, recoveryPlanName string, recoveryConfigProfileName string, options *RecoveryConfigProfilesClientGetOptions) (RecoveryConfigProfilesClientGetResponse, error)`
+- New function `*RecoveryConfigProfilesClient.NewListPager(serviceGroupName string, recoveryPlanName string, options *RecoveryConfigProfilesClientListOptions) *runtime.Pager[RecoveryConfigProfilesClientListResponse]`
+- New function `*RecoveryConfigProfilesClient.BeginUpdate(ctx context.Context, serviceGroupName string, recoveryPlanName string, recoveryConfigProfileName string, properties RecoveryConfigProfile, options *RecoveryConfigProfilesClientBeginUpdateOptions) (*runtime.Poller[RecoveryConfigProfilesClientUpdateResponse], error)`
+- New function `*RecoveryGroupResiliencyProperties.GetRecoveryGroupResiliencyProperties() *RecoveryGroupResiliencyProperties`
+- New function `*RecoveryPlanResiliencyProperties.GetRecoveryPlanResiliencyProperties() *RecoveryPlanResiliencyProperties`
+- New function `*RecoveryResourceResiliencyProperties.GetRecoveryResourceResiliencyProperties() *RecoveryResourceResiliencyProperties`
+- New function `*ResourceAzureTemplateProtectionSetting.GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting`
+- New function `*ResourceCosmosDBProtectionSetting.GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting`
+- New function `*ResourceNetAppFilesProtectionSetting.GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting`
+- New function `*ResourceServiceBusProtectionSetting.GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting`
+- New function `*ResourceStorageAccountProtectionSetting.GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting`
+- New function `*VMRecoveryConfig.GetWorkloadConfig() *WorkloadConfig`
+- New function `*WorkloadConfig.GetWorkloadConfig() *WorkloadConfig`
+- New struct `CyberResiliencyGroupProperties`
+- New struct `CyberResiliencyPlanProperties`
+- New struct `CyberResiliencyResourceProperties`
+- New struct `EffectiveConfiguration`
+- New struct `FileShareRecoveryConfig`
+- New struct `InfrastructureResiliencyGroupProperties`
+- New struct `InfrastructureResiliencyPlanProperties`
+- New struct `InfrastructureResiliencyResourceProperties`
+- New struct `ProtectedItemDetails`
+- New struct `RecoveryConfigProfile`
+- New struct `RecoveryConfigProfileAssociation`
+- New struct `RecoveryConfigProfileListResult`
+- New struct `RecoveryConfigProfileProperties`
+- New struct `RecoveryPointPolicy`
+- New struct `RegionalObjectives`
+- New struct `ResourceAzureTemplateProtectionSetting`
+- New struct `ResourceCosmosDBProtectionSetting`
+- New struct `ResourceNetAppFilesProtectionSetting`
+- New struct `ResourceServiceBusProtectionSetting`
+- New struct `ResourceStorageAccountProtectionSetting`
+- New struct `TargetEnvironment`
+- New struct `TargetResourceSpec`
+- New struct `TargetScope`
+- New struct `UnifiedResilienceItemRegionalResiliencyPosture`
+- New struct `VMRecoveryConfig`
+- New field `FaultEligibility`, `FaultIneligibleReason` in struct `DrillResourceProperties`
+- New field `RecoveryTimeObjective` in struct `DrillRunProperties`
+- New field `RegionalObjectives`, `RequireRegionalResiliency` in struct `GoalAssignmentProperties`
+- New field `RegionalResiliency` in struct `GoalResourceProperties`
+- New field `RegionalResiliency` in struct `GoalsData`
+- New field `LastRunRecoveryTimeActual` in struct `LastRunProperties`
+- New field `ResiliencyGroupProperties` in struct `RecoveryGroupProperties`
+- New field `ResiliencyPlanProperties` in struct `RecoveryPlanProperties`
+- New field `InclusionDisabledReasons`, `ResiliencyResourceProperties` in struct `RecoveryResourceProperties`
+- New field `AdvisorRegionalRecommendationID`, `FaultEligibility`, `FaultIneligibleReason`, `RegionalResiliencyStatus`, `ReplicationMode` in struct `RegionalDrillResourceProperties`
+- New field `ReplicationMode` in struct `ResourceProtectionSolutionSettings`
+- New field `RegionalResiliency` in struct `UnifiedResilienceItemResiliencyPosture`
+- New field `FaultEligibility`, `FaultIneligibleReason` in struct `ZonalDrillResourceProperties`
+
+
 ## 1.0.0 (2026-10-07)
 ### Breaking Changes
 

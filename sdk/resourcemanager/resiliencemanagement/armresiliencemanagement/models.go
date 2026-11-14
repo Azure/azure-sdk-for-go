@@ -173,6 +173,71 @@ type CustomFaultDetails struct {
 	ScriptResourceID *string
 }
 
+// CyberResiliencyGroupProperties - Cyber resiliency properties for a recovery orchestration group.
+type CyberResiliencyGroupProperties struct {
+	// CONSTANT; The resiliency type represented by these properties.
+	// Field has constant value ResiliencyTypeCyberResiliency, any specified value is ignored.
+	ResiliencyType *ResiliencyType
+
+	// Recovery configuration profiles associated by workload type.
+	RecoveryConfigProfileAssociations []*RecoveryConfigProfileAssociation
+}
+
+// GetRecoveryGroupResiliencyProperties implements the RecoveryGroupResiliencyPropertiesClassification interface for type
+// CyberResiliencyGroupProperties.
+func (c *CyberResiliencyGroupProperties) GetRecoveryGroupResiliencyProperties() *RecoveryGroupResiliencyProperties {
+	return &RecoveryGroupResiliencyProperties{
+		ResiliencyType: c.ResiliencyType,
+	}
+}
+
+// CyberResiliencyPlanProperties - Cyber resiliency properties for a recovery plan.
+type CyberResiliencyPlanProperties struct {
+	// CONSTANT; The resiliency type represented by these properties.
+	// Field has constant value ResiliencyTypeCyberResiliency, any specified value is ignored.
+	ResiliencyType *ResiliencyType
+
+	// REQUIRED; The required subscriptions and locations where recovery is targeted.
+	TargetEnvironment *TargetEnvironment
+}
+
+// GetRecoveryPlanResiliencyProperties implements the RecoveryPlanResiliencyPropertiesClassification interface for type CyberResiliencyPlanProperties.
+func (c *CyberResiliencyPlanProperties) GetRecoveryPlanResiliencyProperties() *RecoveryPlanResiliencyProperties {
+	return &RecoveryPlanResiliencyProperties{
+		ResiliencyType: c.ResiliencyType,
+	}
+}
+
+// CyberResiliencyResourceProperties - Cyber resiliency properties for a recovery resource.
+type CyberResiliencyResourceProperties struct {
+	// CONSTANT; The resiliency type represented by these properties.
+	// Field has constant value ResiliencyTypeCyberResiliency, any specified value is ignored.
+	ResiliencyType *ResiliencyType
+
+	// The Azure resource identifier of the per-resource recovery configuration profile override.
+	RecoveryConfigProfileID *string
+
+	// READ-ONLY; The resource's eligibility for inclusion for the configured targets.
+	InclusionEligibility *RecoveryResourceInclusionEligibility
+
+	// READ-ONLY; The service group member identifiers through which this resource was discovered.
+	MembershipThroughServiceGroupMembers []*string
+
+	// READ-ONLY; The backup protection details for the protected items associated with this resource.
+	ProtectedItemDetails []*ProtectedItemDetails
+
+	// READ-ONLY; The workload type of the Azure resource linked to the recovery resource.
+	WorkloadType *WorkloadType
+}
+
+// GetRecoveryResourceResiliencyProperties implements the RecoveryResourceResiliencyPropertiesClassification interface for
+// type CyberResiliencyResourceProperties.
+func (c *CyberResiliencyResourceProperties) GetRecoveryResourceResiliencyProperties() *RecoveryResourceResiliencyProperties {
+	return &RecoveryResourceResiliencyProperties{
+		ResiliencyType: c.ResiliencyType,
+	}
+}
+
 // DiskReprotectInputDetails - Disk Reprotect Input Details
 type DiskReprotectInputDetails struct {
 	// Disk Resource Id to Reprotect
@@ -374,6 +439,18 @@ type DrillResourceProperties struct {
 	// READ-ONLY; Attention reason if the Status is 'NeedsAttention'.
 	AttentionReason *DrillResourceAttentionReason
 
+	// READ-ONLY; Normal fault eligibility for a drill resource. Currently populated for regional resources only.
+	// Omitted until evaluated. Eligibility does not indicate inclusion or readiness,
+	// and force inclusion does not change this value.
+	FaultEligibility *FaultEligibility
+
+	// READ-ONLY; Reason the resource is ineligible under normal fault inclusion policy. Currently populated for regional resources
+	// only.
+	// Contains the single applicable recovery-plan reason when Ineligible.
+	// Omitted when Eligible, Unknown, or not yet evaluated. Failed or incomplete recovery-plan reads do not establish non-inclusion.
+	// Binding and permission errors are reported separately in attentionReason and error fields.
+	FaultIneligibleReason *FaultIneligibleReason
+
 	// READ-ONLY; Fault Properties
 	FaultProperties *FaultProperties
 
@@ -499,6 +576,9 @@ type DrillRunProperties struct {
 
 	// READ-ONLY; The operation that this job is intended to perform.
 	Operation *string
+
+	// READ-ONLY; Recovery time objective for the drill run.
+	RecoveryTimeObjective *ISODuration
 
 	// READ-ONLY; Summary of report generation for this Drill Run.
 	Report *DrillReportSummary
@@ -686,6 +766,12 @@ type DrillUpdateProperties struct {
 	SliMonitoringProperties *SliMonitoringProperties
 }
 
+// EffectiveConfiguration - The effective, resolved recovery configuration.
+type EffectiveConfiguration struct {
+	// READ-ONLY; The effective workload configuration.
+	WorkloadConfig WorkloadConfigClassification
+}
+
 // Enrollment - An enrollment that links a usage plan to a service group.
 type Enrollment struct {
 	// The resource-specific properties for this resource.
@@ -828,6 +914,35 @@ type FaultProperties struct {
 	DefaultFault *FaultDetails
 }
 
+// FileShareRecoveryConfig - Recovery configuration for an Azure Files workload.
+type FileShareRecoveryConfig struct {
+	// REQUIRED; The target storage account.
+	StorageAccount *TargetResourceSpec
+
+	// CONSTANT; The workload type represented by this configuration.
+	// Field has constant value WorkloadTypeAzureFileShare, any specified value is ignored.
+	WorkloadType *WorkloadType
+
+	// The behavior when a copied file already exists.
+	CopyOptions *CopyOptions
+
+	// The system-assigned and/or user-assigned managed identities used for restore.
+	Identity *ManagedServiceIdentity
+
+	// The destination folder path in the target file share.
+	TargetFolderPath *string
+
+	// The prefix used when naming recovered file shares.
+	TargetNamePrefix *string
+}
+
+// GetWorkloadConfig implements the WorkloadConfigClassification interface for type FileShareRecoveryConfig.
+func (f *FileShareRecoveryConfig) GetWorkloadConfig() *WorkloadConfig {
+	return &WorkloadConfig{
+		WorkloadType: f.WorkloadType,
+	}
+}
+
 // GoalAssignment - A goal assignment resource in the Azure Resilience Management provider.
 type GoalAssignment struct {
 	// The resource-specific properties for this resource.
@@ -859,6 +974,12 @@ type GoalAssignmentListResult struct {
 type GoalAssignmentProperties struct {
 	// REQUIRED; Whether zonal resiliency is required for this goal assignment.
 	RequireZonalResiliency *bool
+
+	// Recovery objectives targeted for regional resiliency.
+	RegionalObjectives *RegionalObjectives
+
+	// Whether regional resiliency is required for this goal assignment.
+	RequireRegionalResiliency *bool
 
 	// List of service level resources.
 	ServiceLevelResources []*ServiceLevelResource
@@ -911,6 +1032,10 @@ type GoalResourceProperties struct {
 	// REQUIRED; The fully qualified ARM resource ID represented by this goal resource.
 	ResourceArmID *string
 
+	// The regional resiliency posture for the ARM resource, including participation, attestation, exclusion reason, and user
+	// confirmations.
+	RegionalResiliency *ResiliencyProperties
+
 	// The zonal resiliency posture for the ARM resource, including participation, attestation, exclusion reason, and user confirmations.
 	ZonalResiliency *ResiliencyProperties
 
@@ -922,6 +1047,9 @@ type GoalResourceProperties struct {
 type GoalsData struct {
 	// REQUIRED; Arm id of the goal assignment.
 	AssignmentID *string
+
+	// Regional resiliency goal copied from the goal assignment.
+	RegionalResiliency *UnifiedResilienceItemGoalRequirement
 
 	// Zonal resiliency goal copied from the goal assignment.
 	ZonalResiliency *UnifiedResilienceItemGoalRequirement
@@ -945,6 +1073,50 @@ type IncludeOrUpdateResource struct {
 
 	// Fault properties.
 	FaultProperties *FaultProperties
+}
+
+// InfrastructureResiliencyGroupProperties - Infrastructure resiliency properties for a recovery orchestration group.
+type InfrastructureResiliencyGroupProperties struct {
+	// CONSTANT; The resiliency type represented by these properties.
+	// Field has constant value ResiliencyTypeInfrastructureResiliency, any specified value is ignored.
+	ResiliencyType *ResiliencyType
+}
+
+// GetRecoveryGroupResiliencyProperties implements the RecoveryGroupResiliencyPropertiesClassification interface for type
+// InfrastructureResiliencyGroupProperties.
+func (i *InfrastructureResiliencyGroupProperties) GetRecoveryGroupResiliencyProperties() *RecoveryGroupResiliencyProperties {
+	return &RecoveryGroupResiliencyProperties{
+		ResiliencyType: i.ResiliencyType,
+	}
+}
+
+// InfrastructureResiliencyPlanProperties - Infrastructure resiliency properties for a recovery plan.
+type InfrastructureResiliencyPlanProperties struct {
+	// CONSTANT; The resiliency type represented by these properties.
+	// Field has constant value ResiliencyTypeInfrastructureResiliency, any specified value is ignored.
+	ResiliencyType *ResiliencyType
+}
+
+// GetRecoveryPlanResiliencyProperties implements the RecoveryPlanResiliencyPropertiesClassification interface for type InfrastructureResiliencyPlanProperties.
+func (i *InfrastructureResiliencyPlanProperties) GetRecoveryPlanResiliencyProperties() *RecoveryPlanResiliencyProperties {
+	return &RecoveryPlanResiliencyProperties{
+		ResiliencyType: i.ResiliencyType,
+	}
+}
+
+// InfrastructureResiliencyResourceProperties - Infrastructure resiliency properties for a recovery resource.
+type InfrastructureResiliencyResourceProperties struct {
+	// CONSTANT; The resiliency type represented by these properties.
+	// Field has constant value ResiliencyTypeInfrastructureResiliency, any specified value is ignored.
+	ResiliencyType *ResiliencyType
+}
+
+// GetRecoveryResourceResiliencyProperties implements the RecoveryResourceResiliencyPropertiesClassification interface for
+// type InfrastructureResiliencyResourceProperties.
+func (i *InfrastructureResiliencyResourceProperties) GetRecoveryResourceResiliencyProperties() *RecoveryResourceResiliencyProperties {
+	return &RecoveryResourceResiliencyProperties{
+		ResiliencyType: i.ResiliencyType,
+	}
 }
 
 // JobErrorInfo - Job Error information.
@@ -1143,6 +1315,9 @@ type LastRunProperties struct {
 	// READ-ONLY; Timespan of the last run of this Drill.
 	LastRunDuration *string
 
+	// READ-ONLY; Actual recovery time of the last run of this Drill.
+	LastRunRecoveryTimeActual *string
+
 	// READ-ONLY; Status of the last run of this Drill.
 	LastRunState *JobStatus
 
@@ -1304,6 +1479,27 @@ type OperationStatusResult struct {
 	ResourceID *string
 }
 
+// ProtectedItemDetails - Backup protection details for a protected item.
+type ProtectedItemDetails struct {
+	// READ-ONLY; The Azure resource identifier of the container for a non-Azure-resource child.
+	ContainerResourceID *string
+
+	// READ-ONLY; The location of the protected resource.
+	Location *string
+
+	// READ-ONLY; The Azure resource identifier of the protected item in the backup vault.
+	ProtectedItemID *string
+
+	// READ-ONLY; The current backup protection state of the item.
+	ProtectionState *ResourceProtectionState
+
+	// READ-ONLY; The locations that support recovery of the protected item.
+	RecoveryLocations []*string
+
+	// READ-ONLY; The Azure resource identifier of the backup vault protecting the item.
+	VaultResourceID *string
+}
+
 // RecommendCapacityRequest - Request body for the recommend capacity action. Provide specific resource IDs to evaluate, or
 // pass an empty array to let the service automatically select non-resilient resources from the goal assignment.
 type RecommendCapacityRequest struct {
@@ -1316,6 +1512,69 @@ type RecommendCapacityRequest struct {
 type RecoveryActionRequest struct {
 	// User-provided input for the action.
 	Description *string
+}
+
+// RecoveryConfigProfile - A reusable, plan-scoped clean-room recovery configuration.
+type RecoveryConfigProfile struct {
+	// The resource-specific properties for this resource.
+	Properties *RecoveryConfigProfileProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// RecoveryConfigProfileAssociation - Associates a workload type with a plan-scoped recovery configuration profile.
+type RecoveryConfigProfileAssociation struct {
+	// REQUIRED; The Azure resource identifier of the plan-scoped recovery configuration profile.
+	RecoveryConfigProfileID *string
+
+	// REQUIRED; The workload type configured by the profile.
+	WorkloadType *WorkloadType
+}
+
+// RecoveryConfigProfileListResult - The response of a RecoveryConfigProfile list operation.
+type RecoveryConfigProfileListResult struct {
+	// REQUIRED; The RecoveryConfigProfile items on this page
+	Value []*RecoveryConfigProfile
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// RecoveryConfigProfileProperties - Properties of a plan-scoped recovery configuration profile.
+type RecoveryConfigProfileProperties struct {
+	// REQUIRED; The subscription and location targeted by this profile.
+	TargetScope *TargetScope
+
+	// REQUIRED; The workload-specific recovery configuration.
+	WorkloadConfig WorkloadConfigClassification
+
+	// READ-ONLY; The workload type configured by this profile. This response-only value is populated by the service from workloadConfig.workloadType.
+	WorkloadType *WorkloadType
+
+	// Default recovery point selection.
+	RecoveryPointPolicy *RecoveryPointPolicy
+
+	// READ-ONLY; Structured reasons that the profile requires attention.
+	AttentionReasons []*string
+
+	// READ-ONLY; The effective profile configuration resolved at read time.
+	EffectiveConfiguration *EffectiveConfiguration
+
+	// READ-ONLY; Indicates whether the profile requires user attention.
+	NeedsAttention *bool
+
+	// READ-ONLY; The provisioning state of the recovery configuration profile.
+	ProvisioningState *ProvisioningState
 }
 
 // RecoveryGroup - Represents a recovery orchestration group resource in the Azure Resilience Management provider namespace.
@@ -1449,6 +1708,21 @@ type RecoveryGroupProperties struct {
 
 	// Pre-actions for the recovery orchestration group.
 	PreActions []RecoveryGroupBaseActionClassification
+
+	// Resiliency-specific properties for the recovery orchestration group.
+	ResiliencyGroupProperties RecoveryGroupResiliencyPropertiesClassification
+}
+
+// RecoveryGroupResiliencyProperties - Resiliency-specific properties for a recovery orchestration group.
+type RecoveryGroupResiliencyProperties struct {
+	// REQUIRED; The resiliency type represented by these properties.
+	ResiliencyType *ResiliencyType
+}
+
+// GetRecoveryGroupResiliencyProperties implements the RecoveryGroupResiliencyPropertiesClassification interface for type
+// RecoveryGroupResiliencyProperties.
+func (r *RecoveryGroupResiliencyProperties) GetRecoveryGroupResiliencyProperties() *RecoveryGroupResiliencyProperties {
+	return r
 }
 
 // RecoveryGroupsSetting - Settings for the recovery orchestration groups.
@@ -1730,6 +2004,9 @@ type RecoveryPlanProperties struct {
 	// REQUIRED; Settings for the recovery orchestration groups associated with the recovery orchestration plan.
 	RecoveryGroupsSetting *RecoveryGroupsSetting
 
+	// Resiliency-specific properties for the recovery plan.
+	ResiliencyPlanProperties RecoveryPlanResiliencyPropertiesClassification
+
 	// READ-ONLY; Error details associated with the resource.
 	ErrorDetails *ErrorDetail
 
@@ -1756,6 +2033,43 @@ type RecoveryPlanPropertiesOfDrill struct {
 
 	// READ-ONLY; Excluded resource count in RecoveryPlan.
 	RecoveryPlanResourceExcludedCount *int32
+}
+
+// RecoveryPlanResiliencyProperties - Resiliency-specific properties for a recovery plan.
+type RecoveryPlanResiliencyProperties struct {
+	// REQUIRED; The resiliency type represented by these properties.
+	ResiliencyType *ResiliencyType
+}
+
+// GetRecoveryPlanResiliencyProperties implements the RecoveryPlanResiliencyPropertiesClassification interface for type RecoveryPlanResiliencyProperties.
+func (r *RecoveryPlanResiliencyProperties) GetRecoveryPlanResiliencyProperties() *RecoveryPlanResiliencyProperties {
+	return r
+}
+
+// RecoveryPointPolicy - Default recovery point selection for a recovery configuration profile.
+type RecoveryPointPolicy struct {
+	// REQUIRED; The explicit, non-empty list of unique backup mechanisms to consider. Random selection cannot include Log, even
+	// when other mechanisms are also selected.
+	BackupType []*BackupType
+
+	// REQUIRED; The recovery point selection policy type.
+	Type *RecoveryPointPolicyType
+
+	// The inclusive upper time bound. Required with startTime for Random selection when lookbackDuration is omitted; optional
+	// for Latest selection. Mutually exclusive with lookbackDuration.
+	EndTime *time.Time
+
+	// A positive, fixed ISO 8601 duration for relative Random selection, such as P10D or PT12H. Only days, hours, minutes, and
+	// seconds are supported; calendar-dependent months and years are not supported. Mutually exclusive with startTime and endTime.
+	// The service resolves the duration to absolute bounds at execution time without modifying the saved profile.
+	LookbackDuration *string
+
+	// The health filter for discrete recovery points. Omission means All. Log and point-in-time recovery candidates are not health-filtered.
+	RecoveryPointHealthStatus *RecoveryPointHealthStatus
+
+	// The inclusive lower time bound. Required with endTime for Random selection when lookbackDuration is omitted; optional for
+	// Latest selection. Mutually exclusive with lookbackDuration.
+	StartTime *time.Time
 }
 
 // RecoveryResource - RecoveryPlan Resource a AzureResilienceProviderHub resource
@@ -1800,6 +2114,9 @@ type RecoveryResourceProperties struct {
 	// The recovery orchestration group id associated with the recovery resources.
 	RecoveryGroupID *string
 
+	// Resiliency-specific properties for the recovery resource.
+	ResiliencyResourceProperties RecoveryResourceResiliencyPropertiesClassification
+
 	// Resource protection solution settings of the protection solutions recovery orchestration resource is protected with.
 	SelectedProtectionSolutionSetting ResourceBaseProtectionSolutionSettingClassification
 
@@ -1811,6 +2128,9 @@ type RecoveryResourceProperties struct {
 
 	// READ-ONLY; Error details associated with the resource.
 	ErrorDetails *ErrorDetail
+
+	// READ-ONLY; Reasons why inclusion of the resource in a recovery plan is disabled.
+	InclusionDisabledReasons []*ResourceInclusionDisabledReason
 
 	// READ-ONLY; Indicating if resource needs user attention and action, details will be found in attentionReasons
 	NeedsAttention *bool
@@ -1844,6 +2164,18 @@ type RecoveryResourceQualification struct {
 
 	// REQUIRED; Recovery orchestration resource.
 	RecoveryResource *RecoveryResource
+}
+
+// RecoveryResourceResiliencyProperties - Resiliency-specific properties for a recovery resource.
+type RecoveryResourceResiliencyProperties struct {
+	// REQUIRED; The resiliency type represented by these properties.
+	ResiliencyType *ResiliencyType
+}
+
+// GetRecoveryResourceResiliencyProperties implements the RecoveryResourceResiliencyPropertiesClassification interface for
+// type RecoveryResourceResiliencyProperties.
+func (r *RecoveryResourceResiliencyProperties) GetRecoveryResourceResiliencyProperties() *RecoveryResourceResiliencyProperties {
+	return r
 }
 
 // RegionalDrillProperties - Definition of Regional Drill properties.
@@ -1952,8 +2284,25 @@ type RegionalDrillResourceProperties struct {
 	// READ-ONLY; Recommendation Type Id for the recommendation.
 	AdvisorRecommendationTypeID *string
 
+	// READ-ONLY; Azure resource ID of the matching regional Advisor recommendation instance.
+	// The recommendation type is identified separately by advisorRecommendationTypeId.
+	// Omitted when no matching recommendation exists.
+	AdvisorRegionalRecommendationID *string
+
 	// READ-ONLY; Attention reason if the Status is 'NeedsAttention'.
 	AttentionReason *DrillResourceAttentionReason
+
+	// READ-ONLY; Normal fault eligibility for a drill resource. Currently populated for regional resources only.
+	// Omitted until evaluated. Eligibility does not indicate inclusion or readiness,
+	// and force inclusion does not change this value.
+	FaultEligibility *FaultEligibility
+
+	// READ-ONLY; Reason the resource is ineligible under normal fault inclusion policy. Currently populated for regional resources
+	// only.
+	// Contains the single applicable recovery-plan reason when Ineligible.
+	// Omitted when Eligible, Unknown, or not yet evaluated. Failed or incomplete recovery-plan reads do not establish non-inclusion.
+	// Binding and permission errors are reported separately in attentionReason and error fields.
+	FaultIneligibleReason *FaultIneligibleReason
 
 	// READ-ONLY; Fault Properties
 	FaultProperties *FaultProperties
@@ -1985,6 +2334,15 @@ type RegionalDrillResourceProperties struct {
 	// READ-ONLY; Inclusion State of the Drill resource in Recovery Plan
 	RecoveryPlanInclusionState *ResourceInclusionState
 
+	// READ-ONLY; Regional resiliency status reported by the selected regional protection solution.
+	// Resilient corresponds to an available true posture value; NotResilient corresponds to an available false value.
+	// Omitted when the posture is unknown or unavailable; unavailable data is not reported as NotResilient.
+	RegionalResiliencyStatus *RegionalResiliencyStatus
+
+	// READ-ONLY; Replication mode of the selected regional protection solution.
+	// Omitted when no applicable mode is available.
+	ReplicationMode *ReplicationMode
+
 	// READ-ONLY; Protection Solution Type of the Drill resource
 	ResourceProtectionSolutionType *ResourceProtectionSolutionType
 }
@@ -1996,6 +2354,8 @@ func (r *RegionalDrillResourceProperties) GetDrillResourceProperties() *DrillRes
 		AdvisorRecommendationTypeID:    r.AdvisorRecommendationTypeID,
 		AttentionReason:                r.AttentionReason,
 		DrillType:                      r.DrillType,
+		FaultEligibility:               r.FaultEligibility,
+		FaultIneligibleReason:          r.FaultIneligibleReason,
 		FaultProperties:                r.FaultProperties,
 		FaultState:                     r.FaultState,
 		ForceInclusionState:            r.ForceInclusionState,
@@ -2011,6 +2371,15 @@ func (r *RegionalDrillResourceProperties) GetDrillResourceProperties() *DrillRes
 		ResourceProtectionSolutionType: r.ResourceProtectionSolutionType,
 		ResourceType:                   r.ResourceType,
 	}
+}
+
+// RegionalObjectives - Recovery objectives targeted by a goal assignment for regional resiliency.
+type RegionalObjectives struct {
+	// REQUIRED; Target regional recovery point objective. eg, PT15M for 15 minutes.
+	TargetRecoveryPointObjective *ISODuration
+
+	// REQUIRED; Target regional recovery time objective. eg, PT1H for 1 hour.
+	TargetRecoveryTimeObjective *ISODuration
 }
 
 // ReportStageStatus - Report generation status for a single Drill Run stage.
@@ -2055,6 +2424,33 @@ type ResiliencyProperties struct {
 	ExclusionReason *ExclusionReason
 }
 
+// ResourceAzureTemplateProtectionSetting - Definition of recovery orchestration resource protection using an Azure Resource
+// Manager template.
+type ResourceAzureTemplateProtectionSetting struct {
+	// REQUIRED; The Azure Resource Manager scope at which the recovery template is deployed. Must be the
+	// subscription containing the protected resource, or a resource group within it; deployments
+	// above subscription scope are not supported.
+	DeploymentScope *string
+
+	// CONSTANT; A setting that indicates Azure Resource Manager template-based recovery.
+	// Field has constant value ResourceProtectionSolutionTypeAzureTemplate, any specified value is ignored.
+	ProtectionSolutionType *ResourceProtectionSolutionType
+
+	// REQUIRED; The Azure resource ID of the Template Spec version to deploy.
+	TemplateSpecVersionID *string
+
+	// The location used to store deployment metadata. Required when deploymentScope is a subscription.
+	DeploymentLocation *string
+}
+
+// GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
+// type ResourceAzureTemplateProtectionSetting.
+func (r *ResourceAzureTemplateProtectionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return &ResourceBaseProtectionSolutionSetting{
+		ProtectionSolutionType: r.ProtectionSolutionType,
+	}
+}
+
 // ResourceBaseProtectionSolutionSetting - Definition of recovery orchestration resource protection solution setting with
 // recovery orchestration plan.
 type ResourceBaseProtectionSolutionSetting struct {
@@ -2066,6 +2462,21 @@ type ResourceBaseProtectionSolutionSetting struct {
 // type ResourceBaseProtectionSolutionSetting.
 func (r *ResourceBaseProtectionSolutionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
 	return r
+}
+
+// ResourceCosmosDBProtectionSetting - Definition of recovery orchestration resource protection using Azure Cosmos DB.
+type ResourceCosmosDBProtectionSetting struct {
+	// CONSTANT; A setting that indicates Azure Cosmos DB protection.
+	// Field has constant value ResourceProtectionSolutionTypeAzureCosmosDB, any specified value is ignored.
+	ProtectionSolutionType *ResourceProtectionSolutionType
+}
+
+// GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
+// type ResourceCosmosDBProtectionSetting.
+func (r *ResourceCosmosDBProtectionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return &ResourceBaseProtectionSolutionSetting{
+		ProtectionSolutionType: r.ProtectionSolutionType,
+	}
 }
 
 // ResourceCrossZoneVMRecoveryProtectionSetting - Definition of recovery orchestration resource protection with cross-zone
@@ -2177,8 +2588,26 @@ func (r *ResourceNativeProtectionSolutionSetting) GetResourceBaseProtectionSolut
 	}
 }
 
+// ResourceNetAppFilesProtectionSetting - Definition of recovery orchestration resource protection using Azure NetApp Files.
+type ResourceNetAppFilesProtectionSetting struct {
+	// CONSTANT; A setting that indicates Azure NetApp Files protection.
+	// Field has constant value ResourceProtectionSolutionTypeAzureNetAppFiles, any specified value is ignored.
+	ProtectionSolutionType *ResourceProtectionSolutionType
+}
+
+// GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
+// type ResourceNetAppFilesProtectionSetting.
+func (r *ResourceNetAppFilesProtectionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return &ResourceBaseProtectionSolutionSetting{
+		ProtectionSolutionType: r.ProtectionSolutionType,
+	}
+}
+
 // ResourceProtectionSolutionSettings - Definition of recovery resource resource protection solution settings.
 type ResourceProtectionSolutionSettings struct {
+	// Replication mode configured for the protected resource.
+	ReplicationMode *ReplicationMode
+
 	// READ-ONLY; Is AutoFailover configured for the resource replication.
 	IsAutoFailover *bool
 
@@ -2223,6 +2652,21 @@ type ResourceProtectionSolutionSettings struct {
 	TestFailoverState *TestFailoverState
 }
 
+// ResourceServiceBusProtectionSetting - Definition of recovery orchestration resource protection using Azure Service Bus.
+type ResourceServiceBusProtectionSetting struct {
+	// CONSTANT; A setting that indicates Azure Service Bus protection.
+	// Field has constant value ResourceProtectionSolutionTypeAzureServiceBus, any specified value is ignored.
+	ProtectionSolutionType *ResourceProtectionSolutionType
+}
+
+// GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
+// type ResourceServiceBusProtectionSetting.
+func (r *ResourceServiceBusProtectionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return &ResourceBaseProtectionSolutionSetting{
+		ProtectionSolutionType: r.ProtectionSolutionType,
+	}
+}
+
 // ResourceSiteRecoveryProtectionSetting - Definition of recovery orchestration resource protection with azure site recovery.
 type ResourceSiteRecoveryProtectionSetting struct {
 	// CONSTANT; Field has constant value ResourceProtectionSolutionTypeAzureSiteRecovery, any specified value is ignored.
@@ -2262,6 +2706,22 @@ type ResourceSiteRecoveryTestFailoverCleanupParams struct {
 type ResourceSiteRecoveryTestFailoverParams struct {
 	// The Azure network resource is which will be used for test failover virtual machine.
 	NetworkResourceID *string
+}
+
+// ResourceStorageAccountProtectionSetting - Definition of recovery orchestration resource protection using an Azure Storage
+// account.
+type ResourceStorageAccountProtectionSetting struct {
+	// CONSTANT; A setting that indicates Azure Storage account protection.
+	// Field has constant value ResourceProtectionSolutionTypeAzureStorageAccount, any specified value is ignored.
+	ProtectionSolutionType *ResourceProtectionSolutionType
+}
+
+// GetResourceBaseProtectionSolutionSetting implements the ResourceBaseProtectionSolutionSettingClassification interface for
+// type ResourceStorageAccountProtectionSetting.
+func (r *ResourceStorageAccountProtectionSetting) GetResourceBaseProtectionSolutionSetting() *ResourceBaseProtectionSolutionSetting {
+	return &ResourceBaseProtectionSolutionSetting{
+		ProtectionSolutionType: r.ProtectionSolutionType,
+	}
 }
 
 // SKUDetails - SKU details for a resource feasibility review, used for both the current target SKU and the recommended alternate
@@ -2374,6 +2834,42 @@ type SystemMetadata struct {
 	ResourceTypeCategories []*ResourceTypeCategories
 }
 
+// TargetEnvironment - The target subscriptions and locations for cyber recovery.
+type TargetEnvironment struct {
+	// REQUIRED; The Azure locations available as recovery targets.
+	TargetLocations []*string
+
+	// REQUIRED; The subscription identifiers available as recovery targets.
+	TargetSubscriptionIDs []*string
+}
+
+// TargetResourceSpec - A target resource required by a recovery workload.
+type TargetResourceSpec struct {
+	// REQUIRED; The full Azure resource type of the target. Supported types include Microsoft.Resources/resourceGroups, Microsoft.Compute/virtualMachines,
+	// Microsoft.Network/virtualNetworks, Microsoft.Network/virtualNetworks/subnets, Microsoft.Storage/storageAccounts, Microsoft.Compute/diskEncryptionSets,
+	// Microsoft.KeyVault/vaults, and Microsoft.Network/networkSecurityGroups. The service validates supported target resource
+	// types.
+	ArmResourceType *string
+
+	// The target resources that this target depends on.
+	DependsOn []*string
+
+	// How the target resource is provisioned.
+	ProvisioningMode *TargetProvisioningMode
+
+	// The Azure resource identifier of the existing target. Required when provisioningMode is Existing.
+	ResourceID *string
+}
+
+// TargetScope - The subscription and location targeted by a recovery configuration profile.
+type TargetScope struct {
+	// REQUIRED; The target Azure location.
+	Location *string
+
+	// REQUIRED; The target Azure subscription identifier.
+	SubscriptionID *string
+}
+
 // TestFailoverCleanupRequest - TestFailoverCleanup post action request.
 type TestFailoverCleanupRequest struct {
 	// Comments for test failover cleanup.
@@ -2450,10 +2946,35 @@ type UnifiedResilienceItemProperties struct {
 	ProvisioningState *ProvisioningState
 }
 
+// UnifiedResilienceItemRegionalResiliencyPosture - Definition of the regional resiliency posture computed for the unified
+// resilience item.
+type UnifiedResilienceItemRegionalResiliencyPosture struct {
+	// Count of resources that have regional resiliency enabled.
+	EnabledResourceCount *int64
+
+	// The estimated recovery point objective computed for the service group, expressed as an ISO 8601 duration.
+	EstimatedRecoveryPointObjective *ISODuration
+
+	// The date and time when the regional resiliency posture was last evaluated.
+	EvaluationDateTime *time.Time
+
+	// Count of resources that do not have regional resiliency enabled.
+	NotEnabledResourceCount *int64
+
+	// Count of resources that have not been evaluated for regional resiliency.
+	NotEvaluatedResourceCount *int64
+
+	// Count of resources that require user confirmation for regional resiliency.
+	UserConfirmationNeededCount *int64
+}
+
 // UnifiedResilienceItemResiliencyPosture - Definition of the resiliency posture computed for the unified resilience item.
 type UnifiedResilienceItemResiliencyPosture struct {
 	// REQUIRED; The zonal resiliency section of the resiliency posture.
 	ZonalResiliency *UnifiedResilienceItemZonalResiliencyPosture
+
+	// The regional resiliency section of the resiliency posture.
+	RegionalResiliency *UnifiedResilienceItemRegionalResiliencyPosture
 }
 
 // UnifiedResilienceItemZonalResiliencyPosture - Definition of the zonal resiliency posture computed for the unified resilience
@@ -2568,6 +3089,47 @@ type UserConfirmationItem struct {
 	ReasonForRequestingConfirmation *ReasonForRequestingConfirmation
 }
 
+// VMRecoveryConfig - Recovery configuration for an Azure virtual machine.
+type VMRecoveryConfig struct {
+	// REQUIRED; The target resource group.
+	ResourceGroup *TargetResourceSpec
+
+	// REQUIRED; The target storage account.
+	StorageAccount *TargetResourceSpec
+
+	// REQUIRED; The target subnet.
+	Subnet *TargetResourceSpec
+
+	// REQUIRED; The target virtual network.
+	VirtualNetwork *TargetResourceSpec
+
+	// CONSTANT; The workload type represented by this configuration.
+	// Field has constant value WorkloadTypeAzureVM, any specified value is ignored.
+	WorkloadType *WorkloadType
+
+	// The target disk encryption set.
+	DiskEncryptionSet *TargetResourceSpec
+
+	// The system-assigned and/or user-assigned managed identities used for restore.
+	Identity *ManagedServiceIdentity
+
+	// The virtual machine recovery behavior. Defaults to creating a new virtual machine.
+	RecoveryType *RecoveryType
+
+	// The prefix used when naming recovered virtual machines.
+	TargetNamePrefix *string
+
+	// The target availability zones.
+	Zones []*string
+}
+
+// GetWorkloadConfig implements the WorkloadConfigClassification interface for type VMRecoveryConfig.
+func (v *VMRecoveryConfig) GetWorkloadConfig() *WorkloadConfig {
+	return &WorkloadConfig{
+		WorkloadType: v.WorkloadType,
+	}
+}
+
 // ValidateForExecutionProperties - Additional properties for Failover.
 type ValidateForExecutionProperties struct {
 	// Operation name for which the validation is being done. This is needed to determine the set of validations to be done for
@@ -2595,6 +3157,15 @@ type ValidateForRecoveryOperationBaseResponse struct {
 	// REQUIRED; Qualification details of resources for the operation.
 	RecoveryResourceQualifications []*RecoveryResourceQualification
 }
+
+// WorkloadConfig - Workload-specific recovery configuration.
+type WorkloadConfig struct {
+	// REQUIRED; The workload type represented by this configuration.
+	WorkloadType *WorkloadType
+}
+
+// GetWorkloadConfig implements the WorkloadConfigClassification interface for type WorkloadConfig.
+func (w *WorkloadConfig) GetWorkloadConfig() *WorkloadConfig { return w }
 
 // ZonalDrillProperties - Definition of Zonal Drill properties.
 type ZonalDrillProperties struct {
@@ -2714,6 +3285,18 @@ type ZonalDrillResourceProperties struct {
 	// READ-ONLY; Attention reason if the Status is 'NeedsAttention'.
 	AttentionReason *DrillResourceAttentionReason
 
+	// READ-ONLY; Normal fault eligibility for a drill resource. Currently populated for regional resources only.
+	// Omitted until evaluated. Eligibility does not indicate inclusion or readiness,
+	// and force inclusion does not change this value.
+	FaultEligibility *FaultEligibility
+
+	// READ-ONLY; Reason the resource is ineligible under normal fault inclusion policy. Currently populated for regional resources
+	// only.
+	// Contains the single applicable recovery-plan reason when Ineligible.
+	// Omitted when Eligible, Unknown, or not yet evaluated. Failed or incomplete recovery-plan reads do not establish non-inclusion.
+	// Binding and permission errors are reported separately in attentionReason and error fields.
+	FaultIneligibleReason *FaultIneligibleReason
+
 	// READ-ONLY; Fault Properties
 	FaultProperties *FaultProperties
 
@@ -2761,6 +3344,8 @@ func (z *ZonalDrillResourceProperties) GetDrillResourceProperties() *DrillResour
 		AdvisorRecommendationTypeID:    z.AdvisorRecommendationTypeID,
 		AttentionReason:                z.AttentionReason,
 		DrillType:                      z.DrillType,
+		FaultEligibility:               z.FaultEligibility,
+		FaultIneligibleReason:          z.FaultIneligibleReason,
 		FaultProperties:                z.FaultProperties,
 		FaultState:                     z.FaultState,
 		ForceInclusionState:            z.ForceInclusionState,

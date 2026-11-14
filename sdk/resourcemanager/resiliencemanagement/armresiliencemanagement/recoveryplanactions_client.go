@@ -19,7 +19,7 @@ import (
 // RecoveryPlanActionsClient - Actions for managing Recovery Orchestration Plans.
 // Don't use this type directly, use NewRecoveryPlanActionsClient() instead.
 //
-// Generated from API version 2026-10-01
+// Generated from API version 2026-11-30-preview
 type RecoveryPlanActionsClient struct {
 	internal *arm.Client
 }
@@ -103,7 +103,7 @@ func (client *RecoveryPlanActionsClient) checkReadinessCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -174,7 +174,7 @@ func (client *RecoveryPlanActionsClient) failoverCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -250,7 +250,7 @@ func (client *RecoveryPlanActionsClient) failoverCommitCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -320,7 +320,7 @@ func (client *RecoveryPlanActionsClient) finalizeCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["operation-id"] = []string{operationID}
 	return req, nil
@@ -389,7 +389,7 @@ func (client *RecoveryPlanActionsClient) reprotectCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -468,7 +468,7 @@ func (client *RecoveryPlanActionsClient) testFailoverCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -545,7 +545,7 @@ func (client *RecoveryPlanActionsClient) testFailoverCleanupCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -620,7 +620,7 @@ func (client *RecoveryPlanActionsClient) updateResourcesCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -697,7 +697,7 @@ func (client *RecoveryPlanActionsClient) validateForFailoverCreateRequest(ctx co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -773,7 +773,7 @@ func (client *RecoveryPlanActionsClient) validateForFailoverCommitCreateRequest(
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -846,7 +846,7 @@ func (client *RecoveryPlanActionsClient) validateForOperationCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["operation-id"] = []string{operationID}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -921,7 +921,7 @@ func (client *RecoveryPlanActionsClient) validateForReprotectCreateRequest(ctx c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -1001,7 +1001,7 @@ func (client *RecoveryPlanActionsClient) validateForTestFailoverCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}
@@ -1077,7 +1077,7 @@ func (client *RecoveryPlanActionsClient) validateForTestFailoverCleanupCreateReq
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20261001)
+	reqQP.Set("api-version", version20261130Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["operation-id"] = []string{operationID}

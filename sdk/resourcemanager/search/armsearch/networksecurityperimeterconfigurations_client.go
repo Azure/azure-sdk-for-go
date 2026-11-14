@@ -19,7 +19,7 @@ import (
 // NetworkSecurityPerimeterConfigurationsClient contains the methods for the NetworkSecurityPerimeterConfigurations group.
 // Don't use this type directly, use NewNetworkSecurityPerimeterConfigurationsClient() instead.
 //
-// Generated from API version 2026-09-01-preview
+// Generated from API version 2026-11-01
 type NetworkSecurityPerimeterConfigurationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -117,7 +117,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) reconcileCreateReque
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -171,7 +171,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) getCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -247,7 +247,7 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) listByServiceCreateR
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260901Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

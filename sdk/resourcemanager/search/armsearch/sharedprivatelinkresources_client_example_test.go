@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/CreateOrUpdateSharedPrivateLinkResource.json
+// Generated from example definition: 2026-11-01/CreateOrUpdateSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,9 +25,9 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	}
 	poller, err := clientFactory.NewSharedPrivateLinkResourcesClient().BeginCreateOrUpdate(ctx, "rg1", "mysearchservice", "testResource", armsearch.SharedPrivateLinkResource{
 		Properties: &armsearch.SharedPrivateLinkResourceProperties{
-			RequestMessage:        to.Ptr("please approve"),
 			GroupID:               to.Ptr("blob"),
-			PrivateLinkResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storageAccountName"),
+			PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storageAccountName"),
+			RequestMessage:        to.Ptr("please approve"),
 		},
 	}, nil)
 	if err != nil {
@@ -44,18 +44,18 @@ func ExampleSharedPrivateLinkResourcesClient_BeginCreateOrUpdate() {
 	// 	SharedPrivateLinkResource: armsearch.SharedPrivateLinkResource{
 	// 		Name: to.Ptr("testResource"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/sharedPrivateLinkResources"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/sharedPrivateLinkResources/testResource"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/sharedPrivateLinkResources/testResource"),
 	// 		Properties: &armsearch.SharedPrivateLinkResourceProperties{
-	// 			RequestMessage: to.Ptr("please approve"),
 	// 			GroupID: to.Ptr("blob"),
-	// 			PrivateLinkResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storageAccountName"),
+	// 			PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storageAccountName"),
+	// 			RequestMessage: to.Ptr("please approve"),
 	// 			Status: to.Ptr(armsearch.SharedPrivateLinkResourceStatusPending),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/DeleteSharedPrivateLinkResource.json
+// Generated from example definition: 2026-11-01/DeleteSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,7 +76,7 @@ func ExampleSharedPrivateLinkResourcesClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/GetSharedPrivateLinkResource.json
+// Generated from example definition: 2026-11-01/GetSharedPrivateLinkResource.json
 func ExampleSharedPrivateLinkResourcesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -98,18 +98,18 @@ func ExampleSharedPrivateLinkResourcesClient_Get() {
 	// 	SharedPrivateLinkResource: armsearch.SharedPrivateLinkResource{
 	// 		Name: to.Ptr("testResource"),
 	// 		Type: to.Ptr("Microsoft.Search/searchServices/sharedPrivateLinkResources"),
-	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/sharedPrivateLinkResources/testResource"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/sharedPrivateLinkResources/testResource"),
 	// 		Properties: &armsearch.SharedPrivateLinkResourceProperties{
-	// 			RequestMessage: to.Ptr("please approve"),
 	// 			GroupID: to.Ptr("blob"),
-	// 			PrivateLinkResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storageAccountName"),
+	// 			PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storageAccountName"),
+	// 			RequestMessage: to.Ptr("please approve"),
 	// 			Status: to.Ptr(armsearch.SharedPrivateLinkResourceStatusPending),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ListSharedPrivateLinkResourcesByService.json
+// Generated from example definition: 2026-11-01/ListSharedPrivateLinkResourcesByService.json
 func ExampleSharedPrivateLinkResourcesClient_NewListByServicePager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,11 +137,11 @@ func ExampleSharedPrivateLinkResourcesClient_NewListByServicePager() {
 		// 			{
 		// 				Name: to.Ptr("testResource"),
 		// 				Type: to.Ptr("Microsoft.Search/searchServices/sharedPrivateLinkResources"),
-		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/sharedPrivateLinkResources/testResource"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Search/searchServices/mysearchservice/sharedPrivateLinkResources/testResource"),
 		// 				Properties: &armsearch.SharedPrivateLinkResourceProperties{
-		// 					RequestMessage: to.Ptr("please approve"),
 		// 					GroupID: to.Ptr("blob"),
-		// 					PrivateLinkResourceID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storageAccountName"),
+		// 					PrivateLinkResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Storage/storageAccounts/storageAccountName"),
+		// 					RequestMessage: to.Ptr("please approve"),
 		// 					Status: to.Ptr(armsearch.SharedPrivateLinkResourceStatusPending),
 		// 				},
 		// 			},

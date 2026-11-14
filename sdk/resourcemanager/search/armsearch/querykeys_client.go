@@ -19,7 +19,7 @@ import (
 // QueryKeysClient contains the methods for the QueryKeys group.
 // Don't use this type directly, use NewQueryKeysClient() instead.
 //
-// Generated from API version 2026-09-01-preview
+// Generated from API version 2026-11-01
 type QueryKeysClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -92,7 +92,7 @@ func (client *QueryKeysClient) createCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.ClientRequestID != nil {
@@ -169,7 +169,7 @@ func (client *QueryKeysClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260901Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	if options != nil && options.ClientRequestID != nil {
 		req.Raw().Header["x-ms-client-request-id"] = []string{*options.ClientRequestID}
@@ -235,7 +235,7 @@ func (client *QueryKeysClient) listBySearchServiceCreateRequest(ctx context.Cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260901Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 		if options != nil && options.ClientRequestID != nil {

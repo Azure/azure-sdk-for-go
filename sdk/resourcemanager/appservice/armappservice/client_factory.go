@@ -32,6 +32,14 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAIGatewaysClient creates a new instance of AIGatewaysClient.
+func (c *ClientFactory) NewAIGatewaysClient() *AIGatewaysClient {
+	return &AIGatewaysClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewCertificatesClient creates a new instance of CertificatesClient.
 func (c *ClientFactory) NewCertificatesClient() *CertificatesClient {
 	return &CertificatesClient{
@@ -88,6 +96,22 @@ func (c *ClientFactory) NewKubeEnvironmentsClient() *KubeEnvironmentsClient {
 	}
 }
 
+// NewLastKnownGoodResourcesClient creates a new instance of LastKnownGoodResourcesClient.
+func (c *ClientFactory) NewLastKnownGoodResourcesClient() *LastKnownGoodResourcesClient {
+	return &LastKnownGoodResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewManagedTrafficConfigResourcesClient creates a new instance of ManagedTrafficConfigResourcesClient.
+func (c *ClientFactory) NewManagedTrafficConfigResourcesClient() *ManagedTrafficConfigResourcesClient {
+	return &ManagedTrafficConfigResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewPlansClient creates a new instance of PlansClient.
 func (c *ClientFactory) NewPlansClient() *PlansClient {
 	return &PlansClient{
@@ -120,9 +144,49 @@ func (c *ClientFactory) NewResourceHealthMetadataClient() *ResourceHealthMetadat
 	}
 }
 
+// NewServerFarmSiloResourcesClient creates a new instance of ServerFarmSiloResourcesClient.
+func (c *ClientFactory) NewServerFarmSiloResourcesClient() *ServerFarmSiloResourcesClient {
+	return &ServerFarmSiloResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSiteCertificatesClient creates a new instance of SiteCertificatesClient.
 func (c *ClientFactory) NewSiteCertificatesClient() *SiteCertificatesClient {
 	return &SiteCertificatesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSiteSiloResourcesClient creates a new instance of SiteSiloResourcesClient.
+func (c *ClientFactory) NewSiteSiloResourcesClient() *SiteSiloResourcesClient {
+	return &SiteSiloResourcesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSiteSiloVirtualNetworkConnectionsClient creates a new instance of SiteSiloVirtualNetworkConnectionsClient.
+func (c *ClientFactory) NewSiteSiloVirtualNetworkConnectionsClient() *SiteSiloVirtualNetworkConnectionsClient {
+	return &SiteSiloVirtualNetworkConnectionsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewSitesClient creates a new instance of SitesClient.
+func (c *ClientFactory) NewSitesClient() *SitesClient {
+	return &SitesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewStaticSitesAsyncOperationsClient creates a new instance of StaticSitesAsyncOperationsClient.
+func (c *ClientFactory) NewStaticSitesAsyncOperationsClient() *StaticSitesAsyncOperationsClient {
+	return &StaticSitesAsyncOperationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

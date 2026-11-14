@@ -19,7 +19,7 @@ import (
 // GetUsagesInLocationClient contains the methods for the GetUsagesInLocation group.
 // Don't use this type directly, use NewGetUsagesInLocationClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-08-01
 type GetUsagesInLocationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -47,7 +47,7 @@ func NewGetUsagesInLocationClient(subscriptionID string, credential azcore.Token
 // NewListPager - Lists subscription core usages for all skus used in a location, for a given type of quota.
 //
 // List usages in cores for all skus used by a subscription in a given location, for a specific quota type.
-//   - location - The location name.
+//   - location - The name of the Azure region.
 //   - options - GetUsagesInLocationClientListOptions contains the optional parameters for the GetUsagesInLocationClient.NewListPager
 //     method.
 func (client *GetUsagesInLocationClient) NewListPager(location string, options *GetUsagesInLocationClientListOptions) *runtime.Pager[GetUsagesInLocationClientListResponse] {
@@ -99,7 +99,7 @@ func (client *GetUsagesInLocationClient) listCreateRequest(ctx context.Context, 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

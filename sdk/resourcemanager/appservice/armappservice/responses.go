@@ -6,6 +6,41 @@ package armappservice
 
 import "io"
 
+// AIGatewaysClientCreateOrUpdateResponse contains the response from method AIGatewaysClient.CreateOrUpdate.
+type AIGatewaysClientCreateOrUpdateResponse struct {
+	// An AI gateway resource.
+	AIGateway
+}
+
+// AIGatewaysClientDeleteResponse contains the response from method AIGatewaysClient.Delete.
+type AIGatewaysClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// AIGatewaysClientGetResponse contains the response from method AIGatewaysClient.Get.
+type AIGatewaysClientGetResponse struct {
+	// An AI gateway resource.
+	AIGateway
+}
+
+// AIGatewaysClientListByResourceGroupResponse contains the response from method AIGatewaysClient.NewListByResourceGroupPager.
+type AIGatewaysClientListByResourceGroupResponse struct {
+	// The response of a AiGateway list operation.
+	AiGatewayListResult
+}
+
+// AIGatewaysClientListBySubscriptionResponse contains the response from method AIGatewaysClient.NewListBySubscriptionPager.
+type AIGatewaysClientListBySubscriptionResponse struct {
+	// The response of a AiGateway list operation.
+	AiGatewayListResult
+}
+
+// AIGatewaysClientPatchResponse contains the response from method AIGatewaysClient.Patch.
+type AIGatewaysClientPatchResponse struct {
+	// An AI gateway resource.
+	AIGateway
+}
+
 // CertificatesClientCreateOrUpdateResponse contains the response from method CertificatesClient.CreateOrUpdate.
 type CertificatesClientCreateOrUpdateResponse struct {
 	// SSL certificate for an app.
@@ -528,6 +563,42 @@ type KubeEnvironmentsClientUpdateResponse struct {
 	KubeEnvironment
 }
 
+// LastKnownGoodResourcesClientGetLastKnownGoodResponse contains the response from method LastKnownGoodResourcesClient.GetLastKnownGood.
+type LastKnownGoodResourcesClientGetLastKnownGoodResponse struct {
+	// Last known good singleton resource.
+	LastKnownGoodResource
+}
+
+// LastKnownGoodResourcesClientListLastKnownGoodsResponse contains the response from method LastKnownGoodResourcesClient.NewListLastKnownGoodsPager.
+type LastKnownGoodResourcesClientListLastKnownGoodsResponse struct {
+	// Collection of last known good resources.
+	LastKnownGoodCollection
+}
+
+// LastKnownGoodResourcesClientMarkLastKnownGoodResponse contains the response from method LastKnownGoodResourcesClient.MarkLastKnownGood.
+type LastKnownGoodResourcesClientMarkLastKnownGoodResponse struct {
+	// Last known good singleton resource.
+	LastKnownGoodResource
+}
+
+// ManagedTrafficConfigResourcesClientGetManagedTrafficConfigResponse contains the response from method ManagedTrafficConfigResourcesClient.GetManagedTrafficConfig.
+type ManagedTrafficConfigResourcesClientGetManagedTrafficConfigResponse struct {
+	// Managed traffic configuration singleton resource.
+	ManagedTrafficConfigResource
+}
+
+// ManagedTrafficConfigResourcesClientListManagedTrafficConfigsResponse contains the response from method ManagedTrafficConfigResourcesClient.NewListManagedTrafficConfigsPager.
+type ManagedTrafficConfigResourcesClientListManagedTrafficConfigsResponse struct {
+	// Collection of managed traffic configurations.
+	ManagedTrafficConfigCollection
+}
+
+// ManagedTrafficConfigResourcesClientUpdateManagedTrafficConfigResponse contains the response from method ManagedTrafficConfigResourcesClient.UpdateManagedTrafficConfig.
+type ManagedTrafficConfigResourcesClientUpdateManagedTrafficConfigResponse struct {
+	// Managed traffic configuration singleton resource.
+	ManagedTrafficConfigResource
+}
+
 // PlansClientCreateOrUpdateResponse contains the response from method PlansClient.BeginCreateOrUpdate.
 type PlansClientCreateOrUpdateResponse struct {
 	// App Service plan.
@@ -677,6 +748,16 @@ type PlansClientRecycleManagedInstanceWorkerResponse struct {
 
 // PlansClientRestartWebAppsResponse contains the response from method PlansClient.RestartWebApps.
 type PlansClientRestartWebAppsResponse struct {
+	// placeholder for future response values
+}
+
+// PlansClientStartWebAppsResponse contains the response from method PlansClient.StartWebApps.
+type PlansClientStartWebAppsResponse struct {
+	// placeholder for future response values
+}
+
+// PlansClientStopWebAppsResponse contains the response from method PlansClient.StopWebApps.
+type PlansClientStopWebAppsResponse struct {
 	// placeholder for future response values
 }
 
@@ -858,6 +939,41 @@ type ResourceHealthMetadataClientListResponse struct {
 	ResourceHealthMetadataCollection
 }
 
+// ServerFarmSiloResourcesClientCreateOrUpdateServerFarmSiloResponse contains the response from method ServerFarmSiloResourcesClient.BeginCreateOrUpdateServerFarmSilo.
+type ServerFarmSiloResourcesClientCreateOrUpdateServerFarmSiloResponse struct {
+	// A silo of an App Service plan resource.
+	ServerFarmSilo
+}
+
+// ServerFarmSiloResourcesClientDeleteServerFarmSiloResponse contains the response from method ServerFarmSiloResourcesClient.BeginDeleteServerFarmSilo.
+type ServerFarmSiloResourcesClientDeleteServerFarmSiloResponse struct {
+	// placeholder for future response values
+}
+
+// ServerFarmSiloResourcesClientGetServerFarmSiloResponse contains the response from method ServerFarmSiloResourcesClient.GetServerFarmSilo.
+type ServerFarmSiloResourcesClientGetServerFarmSiloResponse struct {
+	// A silo of an App Service plan resource.
+	ServerFarmSilo
+}
+
+// ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse contains the response from method ServerFarmSiloResourcesClient.GetServerFarmSiloVNETIntegrations.
+type ServerFarmSiloResourcesClientGetServerFarmSiloVNETIntegrationsResponse struct {
+	// Nonpaged virtual network inspection response for an App Service plan silo.
+	ServerFarmSiloVNETIntegrationsResult
+}
+
+// ServerFarmSiloResourcesClientListServerFarmSilosResponse contains the response from method ServerFarmSiloResourcesClient.NewListServerFarmSilosPager.
+type ServerFarmSiloResourcesClientListServerFarmSilosResponse struct {
+	// Collection of App Service plan silos.
+	ServerFarmSiloCollection
+}
+
+// ServerFarmSiloResourcesClientUpdateServerFarmSiloResponse contains the response from method ServerFarmSiloResourcesClient.UpdateServerFarmSilo.
+type ServerFarmSiloResourcesClientUpdateServerFarmSiloResponse struct {
+	// A silo of an App Service plan resource.
+	ServerFarmSilo
+}
+
 // SiteCertificatesClientCreateOrUpdateResponse contains the response from method SiteCertificatesClient.CreateOrUpdate.
 type SiteCertificatesClientCreateOrUpdateResponse struct {
 	// SSL certificate for an app.
@@ -914,6 +1030,92 @@ type SiteCertificatesClientUpdateResponse struct {
 type SiteCertificatesClientUpdateSlotResponse struct {
 	// SSL certificate for an app.
 	AppCertificate
+}
+
+// SiteSiloResourcesClientCreateOrUpdateSiteSiloResponse contains the response from method SiteSiloResourcesClient.BeginCreateOrUpdateSiteSilo.
+type SiteSiloResourcesClientCreateOrUpdateSiteSiloResponse struct {
+	// A silo of a Web App resource.
+	SiteSilo
+}
+
+// SiteSiloResourcesClientDeleteSiteSiloResponse contains the response from method SiteSiloResourcesClient.BeginDeleteSiteSilo.
+type SiteSiloResourcesClientDeleteSiteSiloResponse struct {
+	// placeholder for future response values
+}
+
+// SiteSiloResourcesClientGetSiteSiloResponse contains the response from method SiteSiloResourcesClient.GetSiteSilo.
+type SiteSiloResourcesClientGetSiteSiloResponse struct {
+	// A silo of a Web App resource.
+	SiteSilo
+}
+
+// SiteSiloResourcesClientListSiteSilosResponse contains the response from method SiteSiloResourcesClient.NewListSiteSilosPager.
+type SiteSiloResourcesClientListSiteSilosResponse struct {
+	// Collection of site silos.
+	SiteSiloCollection
+}
+
+// SiteSiloResourcesClientRefreshSiteSilosResponse contains the response from method SiteSiloResourcesClient.RefreshSiteSilos.
+type SiteSiloResourcesClientRefreshSiteSilosResponse struct {
+	// placeholder for future response values
+}
+
+// SiteSiloResourcesClientUpdateSiteSiloResponse contains the response from method SiteSiloResourcesClient.UpdateSiteSilo.
+type SiteSiloResourcesClientUpdateSiteSiloResponse struct {
+	// A silo of a Web App resource.
+	SiteSilo
+}
+
+// SiteSiloVirtualNetworkConnectionsClientCreateOrUpdateSiteSiloVnetConnectionResponse contains the response from method SiteSiloVirtualNetworkConnectionsClient.CreateOrUpdateSiteSiloVnetConnection.
+type SiteSiloVirtualNetworkConnectionsClientCreateOrUpdateSiteSiloVnetConnectionResponse struct {
+	// Swift Virtual Network Contract. This is used to enable the new Swift way of doing virtual network integration.
+	SwiftVirtualNetwork
+}
+
+// SiteSiloVirtualNetworkConnectionsClientDeleteSiteSiloVnetConnectionResponse contains the response from method SiteSiloVirtualNetworkConnectionsClient.DeleteSiteSiloVnetConnection.
+type SiteSiloVirtualNetworkConnectionsClientDeleteSiteSiloVnetConnectionResponse struct {
+	// placeholder for future response values
+}
+
+// SiteSiloVirtualNetworkConnectionsClientGetSiteSiloVnetConnectionResponse contains the response from method SiteSiloVirtualNetworkConnectionsClient.GetSiteSiloVnetConnection.
+type SiteSiloVirtualNetworkConnectionsClientGetSiteSiloVnetConnectionResponse struct {
+	// Swift Virtual Network Contract. This is used to enable the new Swift way of doing virtual network integration.
+	SwiftVirtualNetwork
+}
+
+// SiteSiloVirtualNetworkConnectionsClientListSiteSiloVnetConnectionsResponse contains the response from method SiteSiloVirtualNetworkConnectionsClient.NewListSiteSiloVnetConnectionsPager.
+type SiteSiloVirtualNetworkConnectionsClientListSiteSiloVnetConnectionsResponse struct {
+	// Collection of virtual network connections for a Web App silo.
+	SiteSiloVirtualNetworkConnectionCollection
+}
+
+// SiteSiloVirtualNetworkConnectionsClientUpdateSiteSiloVnetConnectionResponse contains the response from method SiteSiloVirtualNetworkConnectionsClient.UpdateSiteSiloVnetConnection.
+type SiteSiloVirtualNetworkConnectionsClientUpdateSiteSiloVnetConnectionResponse struct {
+	// Swift Virtual Network Contract. This is used to enable the new Swift way of doing virtual network integration.
+	SwiftVirtualNetwork
+}
+
+// SitesClientGetNetworkSecurityPerimeterConfigurationResponse contains the response from method SitesClient.GetNetworkSecurityPerimeterConfiguration.
+type SitesClientGetNetworkSecurityPerimeterConfigurationResponse struct {
+	// Detailed view of a Network Security Perimeter Configured for the site.
+	NetworkSecurityPerimeterConfiguration
+}
+
+// SitesClientListNetworkSecurityPerimeterConfigurationsResponse contains the response from method SitesClient.NewListNetworkSecurityPerimeterConfigurationsPager.
+type SitesClientListNetworkSecurityPerimeterConfigurationsResponse struct {
+	// Collection of Network Security Perimeter Configurations
+	NetworkSecurityPerimeterConfigurationCollection
+}
+
+// StaticSitesAsyncOperationsClientGetOperationResultResponse contains the response from method StaticSitesAsyncOperationsClient.BeginGetOperationResult.
+type StaticSitesAsyncOperationsClientGetOperationResultResponse struct {
+	// placeholder for future response values
+}
+
+// StaticSitesAsyncOperationsClientGetOperationStatusResponse contains the response from method StaticSitesAsyncOperationsClient.GetOperationStatus.
+type StaticSitesAsyncOperationsClientGetOperationStatusResponse struct {
+	// Status object for a static sites asynchronous operation.
+	StaticSitesOperationStatus
 }
 
 // StaticSitesClientApproveOrRejectPrivateEndpointConnectionResponse contains the response from method StaticSitesClient.BeginApproveOrRejectPrivateEndpointConnection.

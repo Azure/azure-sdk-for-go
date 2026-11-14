@@ -19,7 +19,7 @@ import (
 // ProviderClient contains the methods for the Provider group.
 // Don't use this type directly, use NewProviderClient() instead.
 //
-// Generated from API version 2025-05-01
+// Generated from API version 2026-08-01
 type ProviderClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -94,7 +94,7 @@ func (client *ProviderClient) getAvailableStacksOnPremCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.OSTypeSelected != nil {
 			reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
 		}
@@ -162,7 +162,7 @@ func (client *ProviderClient) getAvailableStacksCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.OSTypeSelected != nil {
 			reqQP.Set("osTypeSelected", string(*options.OSTypeSelected))
 		}
@@ -187,7 +187,7 @@ func (client *ProviderClient) getAvailableStacksHandleResponse(resp *http.Respon
 // NewGetFunctionAppStacksForLocationPager - Get available Function app frameworks and their versions for location
 //
 // Description for Get available Function app frameworks and their versions for location
-//   - location - The location name.
+//   - location - The name of the Azure region.
 //   - options - ProviderClientGetFunctionAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetFunctionAppStacksForLocationPager
 //     method.
 func (client *ProviderClient) NewGetFunctionAppStacksForLocationPager(location string, options *ProviderClientGetFunctionAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetFunctionAppStacksForLocationResponse] {
@@ -235,7 +235,7 @@ func (client *ProviderClient) getFunctionAppStacksForLocationCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.StackOsType != nil {
 			reqQP.Set("stackOsType", string(*options.StackOsType))
 		}
@@ -303,7 +303,7 @@ func (client *ProviderClient) getFunctionAppStacksCreateRequest(ctx context.Cont
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.StackOsType != nil {
 			reqQP.Set("stackOsType", string(*options.StackOsType))
 		}
@@ -328,7 +328,7 @@ func (client *ProviderClient) getFunctionAppStacksHandleResponse(resp *http.Resp
 // NewGetWebAppStacksForLocationPager - Get available Web app frameworks and their versions for location
 //
 // Description for Get available Web app frameworks and their versions for location
-//   - location - The location name.
+//   - location - The name of the Azure region.
 //   - options - ProviderClientGetWebAppStacksForLocationOptions contains the optional parameters for the ProviderClient.NewGetWebAppStacksForLocationPager
 //     method.
 func (client *ProviderClient) NewGetWebAppStacksForLocationPager(location string, options *ProviderClientGetWebAppStacksForLocationOptions) *runtime.Pager[ProviderClientGetWebAppStacksForLocationResponse] {
@@ -376,7 +376,7 @@ func (client *ProviderClient) getWebAppStacksForLocationCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.StackOsType != nil {
 			reqQP.Set("stackOsType", string(*options.StackOsType))
 		}
@@ -444,7 +444,7 @@ func (client *ProviderClient) getWebAppStacksCreateRequest(ctx context.Context, 
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		if options != nil && options.StackOsType != nil {
 			reqQP.Set("stackOsType", string(*options.StackOsType))
 		}
@@ -513,7 +513,7 @@ func (client *ProviderClient) listOperationsCreateRequest(ctx context.Context, n
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
+		reqQP.Set("api-version", version20260801)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

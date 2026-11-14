@@ -130,6 +130,14 @@ type PlansServer struct {
 	// HTTP status codes to indicate success: http.StatusNoContent
 	RestartWebApps func(ctx context.Context, resourceGroupName string, name string, options *armappservice.PlansClientRestartWebAppsOptions) (resp azfake.Responder[armappservice.PlansClientRestartWebAppsResponse], errResp azfake.ErrorResponder)
 
+	// StartWebApps is the fake for method PlansClient.StartWebApps
+	// HTTP status codes to indicate success: http.StatusNoContent
+	StartWebApps func(ctx context.Context, resourceGroupName string, name string, options *armappservice.PlansClientStartWebAppsOptions) (resp azfake.Responder[armappservice.PlansClientStartWebAppsResponse], errResp azfake.ErrorResponder)
+
+	// StopWebApps is the fake for method PlansClient.StopWebApps
+	// HTTP status codes to indicate success: http.StatusNoContent
+	StopWebApps func(ctx context.Context, resourceGroupName string, name string, options *armappservice.PlansClientStopWebAppsOptions) (resp azfake.Responder[armappservice.PlansClientStopWebAppsResponse], errResp azfake.ErrorResponder)
+
 	// Update is the fake for method PlansClient.Update
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	Update func(ctx context.Context, resourceGroupName string, name string, appServicePlan armappservice.PlanPatchResource, options *armappservice.PlansClientUpdateOptions) (resp azfake.Responder[armappservice.PlansClientUpdateResponse], errResp azfake.ErrorResponder)
@@ -247,6 +255,10 @@ func (p *PlansServerTransport) dispatchToMethodFake(req *http.Request, method st
 				res.resp, res.err = p.dispatchRecycleManagedInstanceWorker(req)
 			case "PlansClient.RestartWebApps":
 				res.resp, res.err = p.dispatchRestartWebApps(req)
+			case "PlansClient.StartWebApps":
+				res.resp, res.err = p.dispatchStartWebApps(req)
+			case "PlansClient.StopWebApps":
+				res.resp, res.err = p.dispatchStopWebApps(req)
 			case "PlansClient.Update":
 				res.resp, res.err = p.dispatchUpdate(req)
 			case "PlansClient.UpdateVnetGateway":
@@ -1323,6 +1335,72 @@ func (p *PlansServerTransport) dispatchRestartWebApps(req *http.Request) (*http.
 		}
 	}
 	respr, errRespr := p.srv.RestartWebApps(req.Context(), resourceGroupNameParam, nameParam, options)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PlansServerTransport) dispatchStartWebApps(req *http.Request) (*http.Response, error) {
+	if p.srv.StartWebApps == nil {
+		return nil, &nonRetriableError{errors.New("fake for method StartWebApps not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startSites`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.StartWebApps(req.Context(), resourceGroupNameParam, nameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (p *PlansServerTransport) dispatchStopWebApps(req *http.Request) (*http.Response, error) {
+	if p.srv.StopWebApps == nil {
+		return nil, &nonRetriableError{errors.New("fake for method StopWebApps not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/serverfarms/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/stopSites`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := p.srv.StopWebApps(req.Context(), resourceGroupNameParam, nameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

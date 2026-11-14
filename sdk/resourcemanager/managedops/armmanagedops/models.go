@@ -19,6 +19,9 @@ type AzureMonitorInformation struct {
 
 	// REQUIRED; Indicates whether the service is enabled.
 	EnablementStatus *EnablementState
+
+	// Optional error message if the service is in Failed state.
+	ErrorDetails *ErrorDetails
 }
 
 // ChangeTrackingConfiguration - Configuration for the Change Tracking and Inventory service.
@@ -34,18 +37,27 @@ type ChangeTrackingInformation struct {
 
 	// REQUIRED; Indicates whether the service is enabled.
 	EnablementStatus *EnablementState
+
+	// Optional error message if the service is in Failed state.
+	ErrorDetails *ErrorDetails
 }
 
 // DefenderCspmInformation - Defender Cloud Security Posture Management (CSPM) service information.
 type DefenderCspmInformation struct {
 	// REQUIRED; Indicates whether the service is enabled.
 	EnablementStatus *EnablementState
+
+	// Optional error message if the service is in Failed state.
+	ErrorDetails *ErrorDetails
 }
 
 // DefenderForServersInformation - Defender for Servers service information.
 type DefenderForServersInformation struct {
 	// REQUIRED; Indicates whether the service is enabled.
 	EnablementStatus *EnablementState
+
+	// Optional error message if the service is in Failed state.
+	ErrorDetails *ErrorDetails
 }
 
 // DesiredConfiguration - Desired configuration input by the user.
@@ -75,10 +87,22 @@ type DesiredConfigurationUpdate struct {
 	DefenderForServers *DesiredEnablementState
 }
 
+// ErrorDetails - Details of an error encountered during enabling a service.
+type ErrorDetails struct {
+	// REQUIRED; Error code.
+	Code *string
+
+	// REQUIRED; Detailed error message.
+	Message *string
+}
+
 // GuestConfigurationInformation - Azure Policy and Machine Configuration service information.
 type GuestConfigurationInformation struct {
 	// REQUIRED; Indicates whether the service is enabled.
 	EnablementStatus *EnablementState
+
+	// Optional error message if the service is in Failed state.
+	ErrorDetails *ErrorDetails
 }
 
 // ManagedOp - The Managed Operations resource.
@@ -182,14 +206,14 @@ type Properties struct {
 	// REQUIRED; Desired configuration input by the user.
 	DesiredConfiguration *DesiredConfiguration
 
+	// Product plan details of this resource.
+	SKU *SKU
+
 	// READ-ONLY; Policy assignments created for managing services.
 	PolicyAssignmentProperties *PolicyAssignmentProperties
 
 	// READ-ONLY; Provisioning state of the resource.
 	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; Product plan details of this resource.
-	SKU *SKU
 
 	// READ-ONLY; Services provisioned by this resource.
 	Services *ServiceInformation
@@ -198,10 +222,10 @@ type Properties struct {
 // SKU - Specifies the service plan for this resource.
 type SKU struct {
 	// REQUIRED; Name of the SKU.
-	Name *string
+	Name *SKUName
 
 	// REQUIRED; Pricing tier of the SKU.
-	Tier *string
+	Tier *SKUTier
 }
 
 // ServiceInformation - Services provisioned by this resource.
@@ -250,4 +274,7 @@ type SystemData struct {
 type UpdateManagerInformation struct {
 	// REQUIRED; Indicates whether the service is enabled.
 	EnablementStatus *EnablementState
+
+	// Optional error message if the service is in Failed state.
+	ErrorDetails *ErrorDetails
 }

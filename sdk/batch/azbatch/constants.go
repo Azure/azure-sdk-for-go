@@ -4,18 +4,25 @@
 
 package azbatch
 
-// AccessScope - AccessScope enums
-type AccessScope string
-
 const (
-	// AccessScopeJob - Grants access to perform all operations on the Job containing the Task.
-	AccessScopeJob AccessScope = "job"
+	version20261001 string = "2026-10-01"
 )
 
-// PossibleAccessScopeValues returns the possible values for the AccessScope const type.
-func PossibleAccessScopeValues() []AccessScope {
-	return []AccessScope{
-		AccessScopeJob,
+// AllTasksCompleteMode - The action the Batch service should take when all Tasks in the Job are in the completed state.
+type AllTasksCompleteMode string
+
+const (
+	// AllTasksCompleteModeNoAction - Do nothing. The Job remains active unless terminated or disabled by some other means.
+	AllTasksCompleteModeNoAction AllTasksCompleteMode = "noaction"
+	// AllTasksCompleteModeTerminateJob - Terminate the Job. The Job's terminationReason is set to 'AllTasksComplete'.
+	AllTasksCompleteModeTerminateJob AllTasksCompleteMode = "terminatejob"
+)
+
+// PossibleAllTasksCompleteModeValues returns the possible values for the AllTasksCompleteMode const type.
+func PossibleAllTasksCompleteModeValues() []AllTasksCompleteMode {
+	return []AllTasksCompleteMode{
+		AllTasksCompleteModeNoAction,
+		AllTasksCompleteModeTerminateJob,
 	}
 }
 
@@ -80,92 +87,6 @@ func PossibleCachingTypeValues() []CachingType {
 		CachingTypeNone,
 		CachingTypeReadOnly,
 		CachingTypeReadWrite,
-	}
-}
-
-// CertificateFormat - BatchCertificateFormat enums
-type CertificateFormat string
-
-const (
-	// CertificateFormatCER - The Certificate is a base64-encoded X.509 Certificate.
-	CertificateFormatCER CertificateFormat = "cer"
-	// CertificateFormatPFX - The Certificate is a PFX (PKCS#12) formatted Certificate or Certificate chain.
-	CertificateFormatPFX CertificateFormat = "pfx"
-)
-
-// PossibleCertificateFormatValues returns the possible values for the CertificateFormat const type.
-func PossibleCertificateFormatValues() []CertificateFormat {
-	return []CertificateFormat{
-		CertificateFormatCER,
-		CertificateFormatPFX,
-	}
-}
-
-// CertificateState - BatchCertificateState enums
-type CertificateState string
-
-const (
-	// CertificateStateActive - The Certificate is available for use in Pools.
-	CertificateStateActive CertificateState = "active"
-	// CertificateStateDeleteFailed - The user requested that the Certificate be deleted, but there are Pools that still have
-	// references to the Certificate, or it is still installed on one or more Nodes. (The latter can occur if the Certificate
-	// has been removed from the Pool, but the Compute Node has not yet restarted. Compute Nodes refresh their Certificates only
-	// when they restart.) You may use the cancel Certificate delete operation to cancel the delete, or the delete Certificate
-	// operation to retry the delete.
-	CertificateStateDeleteFailed CertificateState = "deletefailed"
-	// CertificateStateDeleting - The user has requested that the Certificate be deleted, but the delete operation has not yet
-	// completed. You may not reference the Certificate when creating or updating Pools.
-	CertificateStateDeleting CertificateState = "deleting"
-)
-
-// PossibleCertificateStateValues returns the possible values for the CertificateState const type.
-func PossibleCertificateStateValues() []CertificateState {
-	return []CertificateState{
-		CertificateStateActive,
-		CertificateStateDeleteFailed,
-		CertificateStateDeleting,
-	}
-}
-
-// CertificateStoreLocation - BatchCertificateStoreLocation enums
-type CertificateStoreLocation string
-
-const (
-	// CertificateStoreLocationCurrentUser - Certificates should be installed to the CurrentUser Certificate store.
-	CertificateStoreLocationCurrentUser CertificateStoreLocation = "currentuser"
-	// CertificateStoreLocationLocalMachine - Certificates should be installed to the LocalMachine Certificate store.
-	CertificateStoreLocationLocalMachine CertificateStoreLocation = "localmachine"
-)
-
-// PossibleCertificateStoreLocationValues returns the possible values for the CertificateStoreLocation const type.
-func PossibleCertificateStoreLocationValues() []CertificateStoreLocation {
-	return []CertificateStoreLocation{
-		CertificateStoreLocationCurrentUser,
-		CertificateStoreLocationLocalMachine,
-	}
-}
-
-// CertificateVisibility - BatchCertificateVisibility enums
-type CertificateVisibility string
-
-const (
-	// CertificateVisibilityRemoteUser - The Certificate should be visible to the user accounts under which users remotely access
-	// the Compute Node.
-	CertificateVisibilityRemoteUser CertificateVisibility = "remoteuser"
-	// CertificateVisibilityStartTask - The Certificate should be visible to the user account under which the StartTask is run.
-	// Note that if AutoUser Scope is Pool for both the StartTask and a Task, this certificate will be visible to the Task as
-	// well.
-	CertificateVisibilityStartTask CertificateVisibility = "starttask"
-	// CertificateVisibilityTask - The Certificate should be visible to the user accounts under which Job Tasks are run.
-	CertificateVisibilityTask CertificateVisibility = "task"
-)
-
-// PossibleCertificateVisibilityValues returns the possible values for the CertificateVisibility const type.
-func PossibleCertificateVisibilityValues() []CertificateVisibility {
-	return []CertificateVisibility{
-		CertificateVisibilityRemoteUser,
-		CertificateVisibilityStartTask,
-		CertificateVisibilityTask,
 	}
 }
 
@@ -352,21 +273,41 @@ func PossibleElevationLevelValues() []ElevationLevel {
 	}
 }
 
-// ErrorCategory - ErrorCategory enums
-type ErrorCategory string
+// ErrorSourceCategory - BatchErrorSourceCategory enums
+type ErrorSourceCategory string
 
 const (
-	// ErrorCategoryServerError - The error is due to an internal server issue.
-	ErrorCategoryServerError ErrorCategory = "servererror"
-	// ErrorCategoryUserError - The error is due to a user issue, such as misconfiguration.
-	ErrorCategoryUserError ErrorCategory = "usererror"
+	// ErrorSourceCategoryServerError - The error is due to an internal server issue.
+	ErrorSourceCategoryServerError ErrorSourceCategory = "servererror"
+	// ErrorSourceCategoryUserError - The error is due to a user issue, such as misconfiguration.
+	ErrorSourceCategoryUserError ErrorSourceCategory = "usererror"
 )
 
-// PossibleErrorCategoryValues returns the possible values for the ErrorCategory const type.
-func PossibleErrorCategoryValues() []ErrorCategory {
-	return []ErrorCategory{
-		ErrorCategoryServerError,
-		ErrorCategoryUserError,
+// PossibleErrorSourceCategoryValues returns the possible values for the ErrorSourceCategory const type.
+func PossibleErrorSourceCategoryValues() []ErrorSourceCategory {
+	return []ErrorSourceCategory{
+		ErrorSourceCategoryServerError,
+		ErrorSourceCategoryUserError,
+	}
+}
+
+// HostEndpointSettingsModeTypes - HostEndpointSettingsModeTypes enums
+type HostEndpointSettingsModeTypes string
+
+const (
+	// HostEndpointSettingsModeTypesAudit - In Audit mode, the system acts as if it is enforcing the access control policy, including
+	// emitting access denial entries in the logs but it does not actually deny any requests to host endpoints.
+	HostEndpointSettingsModeTypesAudit HostEndpointSettingsModeTypes = "Audit"
+	// HostEndpointSettingsModeTypesEnforce - Enforce mode is the recommended mode of operation and system will enforce the access
+	// control policy. This property cannot be used together with 'inVMAccessControlProfileReferenceId'.
+	HostEndpointSettingsModeTypesEnforce HostEndpointSettingsModeTypes = "Enforce"
+)
+
+// PossibleHostEndpointSettingsModeTypesValues returns the possible values for the HostEndpointSettingsModeTypes const type.
+func PossibleHostEndpointSettingsModeTypesValues() []HostEndpointSettingsModeTypes {
+	return []HostEndpointSettingsModeTypes{
+		HostEndpointSettingsModeTypesAudit,
+		HostEndpointSettingsModeTypesEnforce,
 	}
 }
 
@@ -389,6 +330,24 @@ func PossibleIPAddressProvisioningTypeValues() []IPAddressProvisioningType {
 		IPAddressProvisioningTypeBatchManaged,
 		IPAddressProvisioningTypeNoPublicIPAddresses,
 		IPAddressProvisioningTypeUserManaged,
+	}
+}
+
+// IPFamily - The IP families used to specify IP versions available to the pool.
+type IPFamily string
+
+const (
+	// IPFamilyIPv4 - IPv4 is available to the pool.
+	IPFamilyIPv4 IPFamily = "IPv4"
+	// IPFamilyIPv6 - IPv6 is available to the pool.
+	IPFamilyIPv6 IPFamily = "IPv6"
+)
+
+// PossibleIPFamilyValues returns the possible values for the IPFamily const type.
+func PossibleIPFamilyValues() []IPFamily {
+	return []IPFamily{
+		IPFamilyIPv4,
+		IPFamilyIPv6,
 	}
 }
 
@@ -430,24 +389,44 @@ func PossibleInboundEndpointProtocolValues() []InboundEndpointProtocol {
 	}
 }
 
-// JobAction - BatchJobAction enums
-type JobAction string
+// JobActionKind - BatchJobAction enums
+type JobActionKind string
 
 const (
-	// JobActionDisable - Disable the Job. This is equivalent to calling the disable Job API, with a disableTasks value of requeue.
-	JobActionDisable JobAction = "disable"
-	// JobActionNone - Take no action.
-	JobActionNone JobAction = "none"
-	// JobActionTerminate - Terminate the Job. The terminationReason in the Job's executionInfo is set to "TaskFailed".
-	JobActionTerminate JobAction = "terminate"
+	// JobActionKindDisable - Disable the Job. This is equivalent to calling the disable Job API, with a disableTasks value of
+	// requeue.
+	JobActionKindDisable JobActionKind = "disable"
+	// JobActionKindNone - Take no action.
+	JobActionKindNone JobActionKind = "none"
+	// JobActionKindTerminate - Terminate the Job. The terminationReason in the Job's executionInfo is set to "TaskFailed".
+	JobActionKindTerminate JobActionKind = "terminate"
 )
 
-// PossibleJobActionValues returns the possible values for the JobAction const type.
-func PossibleJobActionValues() []JobAction {
-	return []JobAction{
-		JobActionDisable,
-		JobActionNone,
-		JobActionTerminate,
+// PossibleJobActionKindValues returns the possible values for the JobActionKind const type.
+func PossibleJobActionKindValues() []JobActionKind {
+	return []JobActionKind{
+		JobActionKindDisable,
+		JobActionKindNone,
+		JobActionKindTerminate,
+	}
+}
+
+// JobDefaultOrder - BatchJobDefaultOrder enums
+type JobDefaultOrder string
+
+const (
+	// JobDefaultOrderCreationTime - If jobs have equal priority, tasks from jobs that were created earlier should be scheduled
+	// first.
+	JobDefaultOrderCreationTime JobDefaultOrder = "creationtime"
+	// JobDefaultOrderNone - Tasks should be scheduled uniformly from all equal-priority jobs for the pool.
+	JobDefaultOrderNone JobDefaultOrder = "none"
+)
+
+// PossibleJobDefaultOrderValues returns the possible values for the JobDefaultOrder const type.
+func PossibleJobDefaultOrderValues() []JobDefaultOrder {
+	return []JobDefaultOrder{
+		JobDefaultOrderCreationTime,
+		JobDefaultOrderNone,
 	}
 }
 
@@ -600,30 +579,6 @@ func PossibleNetworkSecurityGroupRuleAccessValues() []NetworkSecurityGroupRuleAc
 	}
 }
 
-// NodeCommunicationMode - BatchNodeCommunicationMode enums
-type NodeCommunicationMode string
-
-const (
-	// NodeCommunicationModeClassic - Nodes using the classic communication mode require inbound TCP communication on ports 29876
-	// and 29877 from the "BatchNodeManagement.{region}" service tag and outbound TCP communication on port 443 to the "Storage.region"
-	// and "BatchNodeManagement.{region}" service tags.
-	NodeCommunicationModeClassic NodeCommunicationMode = "classic"
-	// NodeCommunicationModeDefault - The node communication mode is automatically set by the Batch service.
-	NodeCommunicationModeDefault NodeCommunicationMode = "default"
-	// NodeCommunicationModeSimplified - Nodes using the simplified communication mode require outbound TCP communication on port
-	// 443 to the "BatchNodeManagement.{region}" service tag. No open inbound ports are required.
-	NodeCommunicationModeSimplified NodeCommunicationMode = "simplified"
-)
-
-// PossibleNodeCommunicationModeValues returns the possible values for the NodeCommunicationMode const type.
-func PossibleNodeCommunicationModeValues() []NodeCommunicationMode {
-	return []NodeCommunicationMode{
-		NodeCommunicationModeClassic,
-		NodeCommunicationModeDefault,
-		NodeCommunicationModeSimplified,
-	}
-}
-
 // NodeDeallocateOption - BatchNodeDeallocateOption enums
 type NodeDeallocateOption string
 
@@ -631,9 +586,6 @@ const (
 	// NodeDeallocateOptionRequeue - Terminate running Task processes and requeue the Tasks. The Tasks will run again when a Compute
 	// Node is available. Deallocate the Compute Node as soon as Tasks have been terminated.
 	NodeDeallocateOptionRequeue NodeDeallocateOption = "requeue"
-	// NodeDeallocateOptionRetainedData - Allow currently running Tasks to complete, then wait for all Task data retention periods
-	// to expire. Schedule no new Tasks while waiting. Deallocate the Compute Node when all Task retention periods have expired.
-	NodeDeallocateOptionRetainedData NodeDeallocateOption = "retaineddata"
 	// NodeDeallocateOptionTaskCompletion - Allow currently running Tasks to complete. Schedule no new Tasks while waiting. Deallocate
 	// the Compute Node when all Tasks have completed.
 	NodeDeallocateOptionTaskCompletion NodeDeallocateOption = "taskcompletion"
@@ -646,7 +598,6 @@ const (
 func PossibleNodeDeallocateOptionValues() []NodeDeallocateOption {
 	return []NodeDeallocateOption{
 		NodeDeallocateOptionRequeue,
-		NodeDeallocateOptionRetainedData,
 		NodeDeallocateOptionTaskCompletion,
 		NodeDeallocateOptionTerminate,
 	}
@@ -659,9 +610,6 @@ const (
 	// NodeDeallocationOptionRequeue - Terminate running Task processes and requeue the Tasks. The Tasks will run again when a
 	// Compute Node is available. Remove Compute Nodes as soon as Tasks have been terminated.
 	NodeDeallocationOptionRequeue NodeDeallocationOption = "requeue"
-	// NodeDeallocationOptionRetainedData - Allow currently running Tasks to complete, then wait for all Task data retention periods
-	// to expire. Schedule no new Tasks while waiting. Remove Compute Nodes when all Task retention periods have expired.
-	NodeDeallocationOptionRetainedData NodeDeallocationOption = "retaineddata"
 	// NodeDeallocationOptionTaskCompletion - Allow currently running Tasks to complete. Schedule no new Tasks while waiting.
 	// Remove Compute Nodes when all Tasks have completed.
 	NodeDeallocationOptionTaskCompletion NodeDeallocationOption = "taskcompletion"
@@ -674,7 +622,6 @@ const (
 func PossibleNodeDeallocationOptionValues() []NodeDeallocationOption {
 	return []NodeDeallocationOption{
 		NodeDeallocationOptionRequeue,
-		NodeDeallocationOptionRetainedData,
 		NodeDeallocationOptionTaskCompletion,
 		NodeDeallocationOptionTerminate,
 	}
@@ -742,31 +689,27 @@ func PossibleNodePlacementPolicyTypeValues() []NodePlacementPolicyType {
 	}
 }
 
-// NodeRebootOption - BatchNodeRebootOption enums
-type NodeRebootOption string
+// NodeRebootKind - BatchNodeRebootKind enums
+type NodeRebootKind string
 
 const (
-	// NodeRebootOptionRequeue - Terminate running Task processes and requeue the Tasks. The Tasks will run again when a Compute
+	// NodeRebootKindRequeue - Terminate running Task processes and requeue the Tasks. The Tasks will run again when a Compute
 	// Node is available. Restart the Compute Node as soon as Tasks have been terminated.
-	NodeRebootOptionRequeue NodeRebootOption = "requeue"
-	// NodeRebootOptionRetainedData - Allow currently running Tasks to complete, then wait for all Task data retention periods
-	// to expire. Schedule no new Tasks while waiting. Restart the Compute Node when all Task retention periods have expired.
-	NodeRebootOptionRetainedData NodeRebootOption = "retaineddata"
-	// NodeRebootOptionTaskCompletion - Allow currently running Tasks to complete. Schedule no new Tasks while waiting. Restart
+	NodeRebootKindRequeue NodeRebootKind = "requeue"
+	// NodeRebootKindTaskCompletion - Allow currently running Tasks to complete. Schedule no new Tasks while waiting. Restart
 	// the Compute Node when all Tasks have completed.
-	NodeRebootOptionTaskCompletion NodeRebootOption = "taskcompletion"
-	// NodeRebootOptionTerminate - Terminate running Tasks. The Tasks will be completed with failureInfo indicating that they
-	// were terminated, and will not run again. Restart the Compute Node as soon as Tasks have been terminated.
-	NodeRebootOptionTerminate NodeRebootOption = "terminate"
+	NodeRebootKindTaskCompletion NodeRebootKind = "taskcompletion"
+	// NodeRebootKindTerminate - Terminate running Tasks. The Tasks will be completed with failureInfo indicating that they were
+	// terminated, and will not run again. Restart the Compute Node as soon as Tasks have been terminated.
+	NodeRebootKindTerminate NodeRebootKind = "terminate"
 )
 
-// PossibleNodeRebootOptionValues returns the possible values for the NodeRebootOption const type.
-func PossibleNodeRebootOptionValues() []NodeRebootOption {
-	return []NodeRebootOption{
-		NodeRebootOptionRequeue,
-		NodeRebootOptionRetainedData,
-		NodeRebootOptionTaskCompletion,
-		NodeRebootOptionTerminate,
+// PossibleNodeRebootKindValues returns the possible values for the NodeRebootKind const type.
+func PossibleNodeRebootKindValues() []NodeRebootKind {
+	return []NodeRebootKind{
+		NodeRebootKindRequeue,
+		NodeRebootKindTaskCompletion,
+		NodeRebootKindTerminate,
 	}
 }
 
@@ -777,9 +720,6 @@ const (
 	// NodeReimageOptionRequeue - Terminate running Task processes and requeue the Tasks. The Tasks will run again when a Compute
 	// Node is available. Reimage the Compute Node as soon as Tasks have been terminated.
 	NodeReimageOptionRequeue NodeReimageOption = "requeue"
-	// NodeReimageOptionRetainedData - Allow currently running Tasks to complete, then wait for all Task data retention periods
-	// to expire. Schedule no new Tasks while waiting. Reimage the Compute Node when all Task retention periods have expired.
-	NodeReimageOptionRetainedData NodeReimageOption = "retaineddata"
 	// NodeReimageOptionTaskCompletion - Allow currently running Tasks to complete. Schedule no new Tasks while waiting. Reimage
 	// the Compute Node when all Tasks have completed.
 	NodeReimageOptionTaskCompletion NodeReimageOption = "taskcompletion"
@@ -792,7 +732,6 @@ const (
 func PossibleNodeReimageOptionValues() []NodeReimageOption {
 	return []NodeReimageOption{
 		NodeReimageOptionRequeue,
-		NodeReimageOptionRetainedData,
 		NodeReimageOptionTaskCompletion,
 		NodeReimageOptionTerminate,
 	}
@@ -879,42 +818,6 @@ func PossibleOSTypeValues() []OSType {
 	return []OSType{
 		OSTypeLinux,
 		OSTypeWindows,
-	}
-}
-
-// OnAllTasksComplete - The action the Batch service should take when all Tasks in the Job are in the completed state.
-type OnAllTasksComplete string
-
-const (
-	// OnAllTasksCompleteNoAction - Do nothing. The Job remains active unless terminated or disabled by some other means.
-	OnAllTasksCompleteNoAction OnAllTasksComplete = "noaction"
-	// OnAllTasksCompleteTerminateJob - Terminate the Job. The Job's terminationReason is set to 'AllTasksComplete'.
-	OnAllTasksCompleteTerminateJob OnAllTasksComplete = "terminatejob"
-)
-
-// PossibleOnAllTasksCompleteValues returns the possible values for the OnAllTasksComplete const type.
-func PossibleOnAllTasksCompleteValues() []OnAllTasksComplete {
-	return []OnAllTasksComplete{
-		OnAllTasksCompleteNoAction,
-		OnAllTasksCompleteTerminateJob,
-	}
-}
-
-// OnTaskFailure - OnTaskFailure enums
-type OnTaskFailure string
-
-const (
-	// OnTaskFailureNoAction - Do nothing. The Job remains active unless terminated or disabled by some other means.
-	OnTaskFailureNoAction OnTaskFailure = "noaction"
-	// OnTaskFailurePerformExitOptionsJobAction - Terminate the Job. The Job's terminationReason is set to 'AllTasksComplete'.
-	OnTaskFailurePerformExitOptionsJobAction OnTaskFailure = "performexitoptionsjobaction"
-)
-
-// PossibleOnTaskFailureValues returns the possible values for the OnTaskFailure const type.
-func PossibleOnTaskFailureValues() []OnTaskFailure {
-	return []OnTaskFailure{
-		OnTaskFailureNoAction,
-		OnTaskFailurePerformExitOptionsJobAction,
 	}
 }
 
@@ -1021,15 +924,21 @@ func PossibleSchedulingStateValues() []SchedulingState {
 type SecurityEncryptionTypes string
 
 const (
-	// SecurityEncryptionTypesNonPersistedTPM - NonPersistedTPM
+	// SecurityEncryptionTypesDiskWithVMGuestState - EncryptionType of the managed disk is set to DiskWithVMGuestState for encryption
+	// of the managed disk along with VMGuestState blob. It is not supported in data disks.
+	SecurityEncryptionTypesDiskWithVMGuestState SecurityEncryptionTypes = "DiskWithVMGuestState"
+	// SecurityEncryptionTypesNonPersistedTPM - EncryptionType of the managed disk is set to NonPersistedTPM for not persisting
+	// firmware state in the VMGuestState blob.
 	SecurityEncryptionTypesNonPersistedTPM SecurityEncryptionTypes = "NonPersistedTPM"
-	// SecurityEncryptionTypesVMGuestStateOnly - VMGuestStateOnly
+	// SecurityEncryptionTypesVMGuestStateOnly - EncryptionType of the managed disk is set to VMGuestStateOnly for encryption
+	// of just the VMGuestState blob.
 	SecurityEncryptionTypesVMGuestStateOnly SecurityEncryptionTypes = "VMGuestStateOnly"
 )
 
 // PossibleSecurityEncryptionTypesValues returns the possible values for the SecurityEncryptionTypes const type.
 func PossibleSecurityEncryptionTypesValues() []SecurityEncryptionTypes {
 	return []SecurityEncryptionTypes{
+		SecurityEncryptionTypesDiskWithVMGuestState,
 		SecurityEncryptionTypesNonPersistedTPM,
 		SecurityEncryptionTypesVMGuestStateOnly,
 	}
@@ -1043,7 +952,7 @@ const (
 	// confidentiality requirements. These VMs provide a strong, hardware-enforced boundary to help meet your security needs.
 	// You can use confidential VMs for migrations without making changes to your code, with the platform protecting your VM's
 	// state from being read or modified.
-	SecurityTypesConfidentialVM SecurityTypes = "confidentialVM"
+	SecurityTypesConfidentialVM SecurityTypes = "confidentialvm"
 	// SecurityTypesTrustedLaunch - Trusted launch protects against advanced and persistent attack techniques.
 	SecurityTypesTrustedLaunch SecurityTypes = "trustedLaunch"
 )
@@ -1185,6 +1094,24 @@ func PossibleTaskExecutionResultValues() []TaskExecutionResult {
 	}
 }
 
+// TaskFailureMode - TaskFailure enums
+type TaskFailureMode string
+
+const (
+	// TaskFailureModeNoAction - Do nothing. The Job remains active unless terminated or disabled by some other means.
+	TaskFailureModeNoAction TaskFailureMode = "noaction"
+	// TaskFailureModePerformExitOptionsJobAction - Terminate the Job. The Job's terminationReason is set to 'AllTasksComplete'.
+	TaskFailureModePerformExitOptionsJobAction TaskFailureMode = "performexitoptionsjobaction"
+)
+
+// PossibleTaskFailureModeValues returns the possible values for the TaskFailureMode const type.
+func PossibleTaskFailureModeValues() []TaskFailureMode {
+	return []TaskFailureMode{
+		TaskFailureModeNoAction,
+		TaskFailureModePerformExitOptionsJobAction,
+	}
+}
+
 // TaskState - BatchTaskState enums
 type TaskState string
 
@@ -1220,7 +1147,7 @@ func PossibleTaskStateValues() []TaskState {
 type UpgradeMode string
 
 const (
-	// UpgradeModeAutomatic - TAll virtual machines in the scale set are automatically updated at the same time.
+	// UpgradeModeAutomatic - All virtual machines in the scale set are automatically updated at the same time.
 	UpgradeModeAutomatic UpgradeMode = "automatic"
 	// UpgradeModeManual - You control the application of updates to virtual machines in the scale set. You do this by using the
 	// manualUpgrade action.
@@ -1237,5 +1164,44 @@ func PossibleUpgradeModeValues() []UpgradeMode {
 		UpgradeModeAutomatic,
 		UpgradeModeManual,
 		UpgradeModeRolling,
+	}
+}
+
+// VirtualMachineSKUAllocationStrategy - Specifies the allocation strategy that the Fungible Compute Platform uses to select
+// VM sizes from the vmSkuProfile when allocating Compute Nodes for an Instance Mix Pool.
+type VirtualMachineSKUAllocationStrategy string
+
+const (
+	// VirtualMachineSKUAllocationStrategyCapacityOptimized - Select the SKU with the most regional physical capacity.
+	VirtualMachineSKUAllocationStrategyCapacityOptimized VirtualMachineSKUAllocationStrategy = "capacityOptimized"
+	// VirtualMachineSKUAllocationStrategyLowestPrice - Select the cheapest available SKU in the region. This is the default strategy.
+	VirtualMachineSKUAllocationStrategyLowestPrice VirtualMachineSKUAllocationStrategy = "lowestPrice"
+	// VirtualMachineSKUAllocationStrategyPrioritized - Follow the customer-defined ranking via the 0-based rank, falling back
+	// to the next rank when a preferred SKU is unavailable.
+	VirtualMachineSKUAllocationStrategyPrioritized VirtualMachineSKUAllocationStrategy = "prioritized"
+)
+
+// PossibleVirtualMachineSKUAllocationStrategyValues returns the possible values for the VirtualMachineSKUAllocationStrategy const type.
+func PossibleVirtualMachineSKUAllocationStrategyValues() []VirtualMachineSKUAllocationStrategy {
+	return []VirtualMachineSKUAllocationStrategy{
+		VirtualMachineSKUAllocationStrategyCapacityOptimized,
+		VirtualMachineSKUAllocationStrategyLowestPrice,
+		VirtualMachineSKUAllocationStrategyPrioritized,
+	}
+}
+
+// ZonePlacementPolicyType - The zone placement policy for Compute Nodes in a Pool.
+type ZonePlacementPolicyType string
+
+const (
+	// ZonePlacementPolicyTypeAuto - The Virtual Machine Scale Set automatically selects availability zones and balances instances
+	// across them.
+	ZonePlacementPolicyTypeAuto ZonePlacementPolicyType = "Auto"
+)
+
+// PossibleZonePlacementPolicyTypeValues returns the possible values for the ZonePlacementPolicyType const type.
+func PossibleZonePlacementPolicyTypeValues() []ZonePlacementPolicyType {
+	return []ZonePlacementPolicyType{
+		ZonePlacementPolicyTypeAuto,
 	}
 }

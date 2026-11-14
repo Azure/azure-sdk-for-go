@@ -12,23 +12,21 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-06-01/Schemas_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Schemas_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleSchemasClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	poller, err := clientFactory.NewSchemasClient().BeginCreateOrUpdate(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.Schema{
 		Properties: &armworkloadorchestration.SchemaProperties{},
-		Tags: map[string]*string{
-			"key7017": to.Ptr("rdynaxxagwjzubehiz"),
-		},
-		Location: to.Ptr("alvi"),
+		Tags:       map[string]*string{},
+		Location:   to.Ptr("shekiqtymhvonnlimmgsamnkcwjp"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -43,37 +41,36 @@ func ExampleSchemasClient_BeginCreateOrUpdate() {
 	// res = armworkloadorchestration.SchemasClientCreateOrUpdateResponse{
 	// 	Schema: armworkloadorchestration.Schema{
 	// 		Properties: &armworkloadorchestration.SchemaProperties{
-	// 			CurrentVersion: to.Ptr("u"),
+	// 			CurrentVersion: to.Ptr("cmycvpripoffeimmjjpvwk"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ETag: to.Ptr("wimgijos"),
 	// 		Tags: map[string]*string{
-	// 			"key7017": to.Ptr("rdynaxxagwjzubehiz"),
 	// 		},
-	// 		Location: to.Ptr("alvi"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("mazwkeendvzbtbfkffuj"),
-	// 		Type: to.Ptr("uupldp"),
+	// 		Location: to.Ptr("shekiqtymhvonnlimmgsamnkcwjp"),
+	// 		ETag: to.Ptr("lxqym"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/schemas"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Schemas_CreateVersion_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Schemas_CreateVersion_MaximumSet_Gen.json
 func ExampleSchemasClient_BeginCreateVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -81,9 +78,7 @@ func ExampleSchemasClient_BeginCreateVersion() {
 		UpdateType: to.Ptr(armworkloadorchestration.UpdateTypeMajor),
 		Version:    to.Ptr("1.0.0"),
 		SchemaVersion: &armworkloadorchestration.SchemaVersion{
-			Properties: &armworkloadorchestration.SchemaVersionProperties{
-				Value: to.Ptr("uiaqdwsi"),
-			},
+			Properties: &armworkloadorchestration.SchemaVersionProperties{},
 		},
 	}, nil)
 	if err != nil {
@@ -99,33 +94,32 @@ func ExampleSchemasClient_BeginCreateVersion() {
 	// res = armworkloadorchestration.SchemasClientCreateVersionResponse{
 	// 	SchemaVersion: armworkloadorchestration.SchemaVersion{
 	// 		Properties: &armworkloadorchestration.SchemaVersionProperties{
-	// 			Value: to.Ptr("uiaqdwsi"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ETag: to.Ptr("oenhsnuovivoekswlmjfgilwm"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("elshkjfnkjyyrexkhe"),
-	// 		Type: to.Ptr("lqqtkbsryevmwkcrg"),
+	// 		ETag: to.Ptr("jibjdzhpumzoailbkq"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/schemas"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Schemas_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Schemas_Delete_MaximumSet_Gen.json
 func ExampleSchemasClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -139,14 +133,14 @@ func ExampleSchemasClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Schemas_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Schemas_Get_MaximumSet_Gen.json
 func ExampleSchemasClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -160,37 +154,36 @@ func ExampleSchemasClient_Get() {
 	// res = armworkloadorchestration.SchemasClientGetResponse{
 	// 	Schema: armworkloadorchestration.Schema{
 	// 		Properties: &armworkloadorchestration.SchemaProperties{
-	// 			CurrentVersion: to.Ptr("u"),
+	// 			CurrentVersion: to.Ptr("cmycvpripoffeimmjjpvwk"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ETag: to.Ptr("wimgijos"),
 	// 		Tags: map[string]*string{
-	// 			"key7017": to.Ptr("rdynaxxagwjzubehiz"),
 	// 		},
-	// 		Location: to.Ptr("alvi"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("mazwkeendvzbtbfkffuj"),
-	// 		Type: to.Ptr("uupldp"),
+	// 		Location: to.Ptr("shekiqtymhvonnlimmgsamnkcwjp"),
+	// 		ETag: to.Ptr("lxqym"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/schemas"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Schemas_ListByResourceGroup_MaximumSet_Gen.json
-func ExampleSchemasClient_NewListByResourceGroupPager() {
+// Generated from example definition: 2026-05-01-preview/Schemas_ListByResourceGroup_MaximumSet_Gen.json
+func ExampleSchemasClient_NewListByResourceGroupPager_schemasListByResourceGroupMaximumSetGeneratedByMaximumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -210,24 +203,23 @@ func ExampleSchemasClient_NewListByResourceGroupPager() {
 		// 		Value: []*armworkloadorchestration.Schema{
 		// 			{
 		// 				Properties: &armworkloadorchestration.SchemaProperties{
-		// 					CurrentVersion: to.Ptr("u"),
+		// 					CurrentVersion: to.Ptr("cmycvpripoffeimmjjpvwk"),
 		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 		// 				},
-		// 				ETag: to.Ptr("wimgijos"),
+		// 				ETag: to.Ptr("lxqym"),
 		// 				Tags: map[string]*string{
-		// 					"key7017": to.Ptr("rdynaxxagwjzubehiz"),
 		// 				},
-		// 				Location: to.Ptr("alvi"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("mazwkeendvzbtbfkffuj"),
-		// 				Type: to.Ptr("uupldp"),
+		// 				Location: to.Ptr("shekiqtymhvonnlimmgsamnkcwjp"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testSchema"),
+		// 				Name: to.Ptr("testSchema"),
+		// 				Type: to.Ptr("Microsoft.Edge/schemas"),
 		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("nvjczgdguyvllp"),
+		// 					CreatedBy: to.Ptr("qbgzyk"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -237,14 +229,51 @@ func ExampleSchemasClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Schemas_ListBySubscription_MaximumSet_Gen.json
-func ExampleSchemasClient_NewListBySubscriptionPager() {
+// Generated from example definition: 2026-05-01-preview/Schemas_ListByResourceGroup_MinimumSet_Gen.json
+func ExampleSchemasClient_NewListByResourceGroupPager_schemasListByResourceGroupMaximumSetGeneratedByMinimumSetRule() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewSchemasClient().NewListByResourceGroupPager("rgconfigurationmanager", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armworkloadorchestration.SchemasClientListByResourceGroupResponse{
+		// 	SchemaListResult: armworkloadorchestration.SchemaListResult{
+		// 		Value: []*armworkloadorchestration.Schema{
+		// 			{
+		// 				Location: to.Ptr("shekiqtymhvonnlimmgsamnkcwjp"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testSchema"),
+		// 				Name: to.Ptr("testSchema"),
+		// 				Type: to.Ptr("Microsoft.Edge/schemas"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Schemas_ListBySubscription_MaximumSet_Gen.json
+func ExampleSchemasClient_NewListBySubscriptionPager_schemasListBySubscriptionMaximumSetGeneratedByMaximumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -264,24 +293,23 @@ func ExampleSchemasClient_NewListBySubscriptionPager() {
 		// 		Value: []*armworkloadorchestration.Schema{
 		// 			{
 		// 				Properties: &armworkloadorchestration.SchemaProperties{
-		// 					CurrentVersion: to.Ptr("u"),
+		// 					CurrentVersion: to.Ptr("cmycvpripoffeimmjjpvwk"),
 		// 					ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 		// 				},
-		// 				ETag: to.Ptr("wimgijos"),
+		// 				ETag: to.Ptr("lxqym"),
 		// 				Tags: map[string]*string{
-		// 					"key7017": to.Ptr("rdynaxxagwjzubehiz"),
 		// 				},
-		// 				Location: to.Ptr("alvi"),
-		// 				ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-		// 				Name: to.Ptr("mazwkeendvzbtbfkffuj"),
-		// 				Type: to.Ptr("uupldp"),
+		// 				Location: to.Ptr("shekiqtymhvonnlimmgsamnkcwjp"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testSchema"),
+		// 				Name: to.Ptr("testSchema"),
+		// 				Type: to.Ptr("Microsoft.Edge/schemas"),
 		// 				SystemData: &armworkloadorchestration.SystemData{
-		// 					CreatedBy: to.Ptr("nvjczgdguyvllp"),
+		// 					CreatedBy: to.Ptr("qbgzyk"),
 		// 					CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 		// 					LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 		// 				},
 		// 			},
 		// 		},
@@ -291,19 +319,56 @@ func ExampleSchemasClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2025-06-01/Schemas_RemoveVersion_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Schemas_ListBySubscription_MinimumSet_Gen.json
+func ExampleSchemasClient_NewListBySubscriptionPager_schemasListBySubscriptionMaximumSetGeneratedByMinimumSetRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewSchemasClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armworkloadorchestration.SchemasClientListBySubscriptionResponse{
+		// 	SchemaListResult: armworkloadorchestration.SchemaListResult{
+		// 		Value: []*armworkloadorchestration.Schema{
+		// 			{
+		// 				Location: to.Ptr("shekiqtymhvonnlimmgsamnkcwjp"),
+		// 				ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testSchema"),
+		// 				Name: to.Ptr("testSchema"),
+		// 				Type: to.Ptr("Microsoft.Edge/schemas"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-05-01-preview/Schemas_RemoveVersion_MaximumSet_Gen.json
 func ExampleSchemasClient_RemoveVersion() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewSchemasClient().RemoveVersion(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.VersionParameter{
-		Version: to.Ptr("ghtvdzgmzncaifrnuumg"),
+		Version: to.Ptr("nipqereqmxeiv"),
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -313,27 +378,25 @@ func ExampleSchemasClient_RemoveVersion() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armworkloadorchestration.SchemasClientRemoveVersionResponse{
 	// 	RemoveVersionResponse: armworkloadorchestration.RemoveVersionResponse{
-	// 		Status: to.Ptr("fymylelaohqtwdoqw"),
+	// 		Status: to.Ptr("qflqzblghfetitwbgmua"),
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-06-01/Schemas_Update_MaximumSet_Gen.json
+// Generated from example definition: 2026-05-01-preview/Schemas_Update_MaximumSet_Gen.json
 func ExampleSchemasClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armworkloadorchestration.NewClientFactory("9D54FE4C-00AF-4836-8F48-B6A9C4E47192", cred, nil)
+	clientFactory, err := armworkloadorchestration.NewClientFactory("612CB927-8AC8-42DD-B74E-C676C3960BA5", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewSchemasClient().Update(ctx, "rgconfigurationmanager", "testname", armworkloadorchestration.SchemaUpdate{
+		Tags:       map[string]*string{},
 		Properties: &armworkloadorchestration.SchemaUpdateProperties{},
-		Tags: map[string]*string{
-			"key6760": to.Ptr("lknwkzihsmzbzkezkartwgsv"),
-		},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -344,24 +407,23 @@ func ExampleSchemasClient_Update() {
 	// res = armworkloadorchestration.SchemasClientUpdateResponse{
 	// 	Schema: armworkloadorchestration.Schema{
 	// 		Properties: &armworkloadorchestration.SchemaProperties{
-	// 			CurrentVersion: to.Ptr("u"),
+	// 			CurrentVersion: to.Ptr("cmycvpripoffeimmjjpvwk"),
 	// 			ProvisioningState: to.Ptr(armworkloadorchestration.ProvisioningStateSucceeded),
 	// 		},
-	// 		ETag: to.Ptr("wimgijos"),
 	// 		Tags: map[string]*string{
-	// 			"key7017": to.Ptr("rdynaxxagwjzubehiz"),
 	// 		},
-	// 		Location: to.Ptr("alvi"),
-	// 		ID: to.Ptr("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"),
-	// 		Name: to.Ptr("mazwkeendvzbtbfkffuj"),
-	// 		Type: to.Ptr("uupldp"),
+	// 		Location: to.Ptr("shekiqtymhvonnlimmgsamnkcwjp"),
+	// 		ETag: to.Ptr("lxqym"),
+	// 		ID: to.Ptr("/subscriptions/612CB927-8AC8-42DD-B74E-C676C3960BA5/resourceGroups/rgconfigurationmanager/providers/Microsoft.Edge/schemas/testname"),
+	// 		Name: to.Ptr("testname"),
+	// 		Type: to.Ptr("Microsoft.Edge/schemas"),
 	// 		SystemData: &armworkloadorchestration.SystemData{
-	// 			CreatedBy: to.Ptr("nvjczgdguyvllp"),
+	// 			CreatedBy: to.Ptr("qbgzyk"),
 	// 			CreatedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("uzbznzjgvaspvtqhyg"),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 630000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("hmamoiwonploytccyutjjpyukmsty"),
 	// 			LastModifiedByType: to.Ptr(armworkloadorchestration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 9, 10, 11, 50, 747000000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.April, 3, 6, 50, 27, 631000000, time.UTC)),
 	// 		},
 	// 	},
 	// }

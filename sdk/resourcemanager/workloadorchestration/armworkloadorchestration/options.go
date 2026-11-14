@@ -4,6 +4,63 @@
 
 package armworkloadorchestration
 
+// ConfigTemplateMetadatasClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigTemplateMetadatasClient.BeginCreateOrUpdate
+// method.
+type ConfigTemplateMetadatasClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ConfigTemplateMetadatasClientBeginDeleteOptions contains the optional parameters for the ConfigTemplateMetadatasClient.BeginDelete
+// method.
+type ConfigTemplateMetadatasClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ConfigTemplateMetadatasClientBeginUpdateOptions contains the optional parameters for the ConfigTemplateMetadatasClient.BeginUpdate
+// method.
+type ConfigTemplateMetadatasClientBeginUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ConfigTemplateMetadatasClientGetOptions contains the optional parameters for the ConfigTemplateMetadatasClient.Get method.
+type ConfigTemplateMetadatasClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigTemplateMetadatasClientListByConfigTemplateOptions contains the optional parameters for the ConfigTemplateMetadatasClient.NewListByConfigTemplatePager
+// method.
+type ConfigTemplateMetadatasClientListByConfigTemplateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigTemplateSchemasClientGetOptions contains the optional parameters for the ConfigTemplateSchemasClient.Get method.
+type ConfigTemplateSchemasClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigTemplateSchemasClientListByConfigTemplateVersionOptions contains the optional parameters for the ConfigTemplateSchemasClient.NewListByConfigTemplateVersionPager
+// method.
+type ConfigTemplateSchemasClientListByConfigTemplateVersionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigTemplateVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the ConfigTemplateVersionsClient.BeginCreateOrUpdate
+// method.
+type ConfigTemplateVersionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ConfigTemplateVersionsClientBeginDeleteOptions contains the optional parameters for the ConfigTemplateVersionsClient.BeginDelete
+// method.
+type ConfigTemplateVersionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // ConfigTemplateVersionsClientGetOptions contains the optional parameters for the ConfigTemplateVersionsClient.Get method.
 type ConfigTemplateVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -12,6 +69,12 @@ type ConfigTemplateVersionsClientGetOptions struct {
 // ConfigTemplateVersionsClientListByConfigTemplateOptions contains the optional parameters for the ConfigTemplateVersionsClient.NewListByConfigTemplatePager
 // method.
 type ConfigTemplateVersionsClientListByConfigTemplateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ConfigTemplateVersionsClientUpdateOptions contains the optional parameters for the ConfigTemplateVersionsClient.Update
+// method.
+type ConfigTemplateVersionsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -31,6 +94,20 @@ type ConfigTemplatesClientBeginCreateVersionOptions struct {
 
 // ConfigTemplatesClientBeginDeleteOptions contains the optional parameters for the ConfigTemplatesClient.BeginDelete method.
 type ConfigTemplatesClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ConfigTemplatesClientBeginLinkToHierarchiesOptions contains the optional parameters for the ConfigTemplatesClient.BeginLinkToHierarchies
+// method.
+type ConfigTemplatesClientBeginLinkToHierarchiesOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// ConfigTemplatesClientBeginUnLinkFromHierarchiesOptions contains the optional parameters for the ConfigTemplatesClient.BeginUnLinkFromHierarchies
+// method.
+type ConfigTemplatesClientBeginUnLinkFromHierarchiesOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -223,6 +300,30 @@ type ExecutionsClientListByWorkflowVersionOptions struct {
 	// placeholder for future optional parameters
 }
 
+// HierarchyConfigurationMetadataVersionsClientGetOptions contains the optional parameters for the HierarchyConfigurationMetadataVersionsClient.Get
+// method.
+type HierarchyConfigurationMetadataVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HierarchyConfigurationMetadataVersionsClientListByParentOptions contains the optional parameters for the HierarchyConfigurationMetadataVersionsClient.NewListByParentPager
+// method.
+type HierarchyConfigurationMetadataVersionsClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HierarchyConfigurationMetadatasClientGetOptions contains the optional parameters for the HierarchyConfigurationMetadatasClient.Get
+// method.
+type HierarchyConfigurationMetadatasClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// HierarchyConfigurationMetadatasClientListByParentOptions contains the optional parameters for the HierarchyConfigurationMetadatasClient.NewListByParentPager
+// method.
+type HierarchyConfigurationMetadatasClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
 // InstanceHistoriesClientGetOptions contains the optional parameters for the InstanceHistoriesClient.Get method.
 type InstanceHistoriesClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -406,6 +507,75 @@ type SiteReferencesClientListByContextOptions struct {
 	// placeholder for future optional parameters
 }
 
+// SolutionDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the SolutionDeploymentsClient.BeginCreateOrUpdate
+// method.
+type SolutionDeploymentsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SolutionDeploymentsClientBeginDeleteOptions contains the optional parameters for the SolutionDeploymentsClient.BeginDelete
+// method.
+type SolutionDeploymentsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SolutionDeploymentsClientGetOptions contains the optional parameters for the SolutionDeploymentsClient.Get method.
+type SolutionDeploymentsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionDeploymentsClientListByResourceGroupOptions contains the optional parameters for the SolutionDeploymentsClient.NewListByResourceGroupPager
+// method.
+type SolutionDeploymentsClientListByResourceGroupOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionDeploymentsClientListBySubscriptionOptions contains the optional parameters for the SolutionDeploymentsClient.NewListBySubscriptionPager
+// method.
+type SolutionDeploymentsClientListBySubscriptionOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionDeploymentsClientUpdateOptions contains the optional parameters for the SolutionDeploymentsClient.Update method.
+type SolutionDeploymentsClientUpdateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionMetadataVersionsClientGetOptions contains the optional parameters for the SolutionMetadataVersionsClient.Get method.
+type SolutionMetadataVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionMetadataVersionsClientListByParentOptions contains the optional parameters for the SolutionMetadataVersionsClient.NewListByParentPager
+// method.
+type SolutionMetadataVersionsClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionMetadatasClientGetOptions contains the optional parameters for the SolutionMetadatasClient.Get method.
+type SolutionMetadatasClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionMetadatasClientListByParentOptions contains the optional parameters for the SolutionMetadatasClient.NewListByParentPager
+// method.
+type SolutionMetadatasClientListByParentOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionSchemasClientGetOptions contains the optional parameters for the SolutionSchemasClient.Get method.
+type SolutionSchemasClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionSchemasClientListBySolutionTemplateVersionOptions contains the optional parameters for the SolutionSchemasClient.NewListBySolutionTemplateVersionPager
+// method.
+type SolutionSchemasClientListBySolutionTemplateVersionOptions struct {
+	// placeholder for future optional parameters
+}
+
 // SolutionTemplateVersionsClientBeginBulkDeploySolutionOptions contains the optional parameters for the SolutionTemplateVersionsClient.BeginBulkDeploySolution
 // method.
 type SolutionTemplateVersionsClientBeginBulkDeploySolutionOptions struct {
@@ -420,6 +590,27 @@ type SolutionTemplateVersionsClientBeginBulkPublishSolutionOptions struct {
 	ResumeToken string
 }
 
+// SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions contains the optional parameters for the SolutionTemplateVersionsClient.BeginBulkReviewSolution
+// method.
+type SolutionTemplateVersionsClientBeginBulkReviewSolutionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SolutionTemplateVersionsClientBeginCreateOrUpdateOptions contains the optional parameters for the SolutionTemplateVersionsClient.BeginCreateOrUpdate
+// method.
+type SolutionTemplateVersionsClientBeginCreateOrUpdateOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// SolutionTemplateVersionsClientBeginDeleteOptions contains the optional parameters for the SolutionTemplateVersionsClient.BeginDelete
+// method.
+type SolutionTemplateVersionsClientBeginDeleteOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
 // SolutionTemplateVersionsClientGetOptions contains the optional parameters for the SolutionTemplateVersionsClient.Get method.
 type SolutionTemplateVersionsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -428,6 +619,12 @@ type SolutionTemplateVersionsClientGetOptions struct {
 // SolutionTemplateVersionsClientListBySolutionTemplateOptions contains the optional parameters for the SolutionTemplateVersionsClient.NewListBySolutionTemplatePager
 // method.
 type SolutionTemplateVersionsClientListBySolutionTemplateOptions struct {
+	// placeholder for future optional parameters
+}
+
+// SolutionTemplateVersionsClientUpdateOptions contains the optional parameters for the SolutionTemplateVersionsClient.Update
+// method.
+type SolutionTemplateVersionsClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -591,6 +788,13 @@ type TargetsClientBeginReviewSolutionVersionOptions struct {
 // TargetsClientBeginUninstallSolutionOptions contains the optional parameters for the TargetsClient.BeginUninstallSolution
 // method.
 type TargetsClientBeginUninstallSolutionOptions struct {
+	// Resumes the long-running operation from the provided token.
+	ResumeToken string
+}
+
+// TargetsClientBeginUnstageSolutionVersionOptions contains the optional parameters for the TargetsClient.BeginUnstageSolutionVersion
+// method.
+type TargetsClientBeginUnstageSolutionVersionOptions struct {
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

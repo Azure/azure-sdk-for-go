@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15/ManagedHsm_CreateOrUpdate.json
+// Generated from example definition: 2026-10-01-preview/ManagedHsm_CreateOrUpdate.json
 func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleManagedHsmsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/ManagedHsm_Delete.json
+// Generated from example definition: 2026-10-01-preview/ManagedHsm_Delete.json
 func ExampleManagedHsmsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleManagedHsmsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/DeletedManagedHsm_Purge.json
+// Generated from example definition: 2026-10-01-preview/DeletedManagedHsm_Purge.json
 func ExampleManagedHsmsClient_BeginPurgeDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -130,7 +130,7 @@ func ExampleManagedHsmsClient_BeginPurgeDeleted() {
 	}
 }
 
-// Generated from example definition: 2026-05-15/ManagedHsm_Update.json
+// Generated from example definition: 2026-10-01-preview/ManagedHsm_Update.json
 func ExampleManagedHsmsClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -189,7 +189,7 @@ func ExampleManagedHsmsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/ManagedHsm_checkMhsmNameAvailability.json
+// Generated from example definition: 2026-10-01-preview/ManagedHsm_checkMhsmNameAvailability.json
 func ExampleManagedHsmsClient_CheckMhsmNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,7 @@ func ExampleManagedHsmsClient_CheckMhsmNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/ManagedHsm_Get.json
+// Generated from example definition: 2026-10-01-preview/ManagedHsm_Get.json
 func ExampleManagedHsmsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -264,7 +264,7 @@ func ExampleManagedHsmsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/DeletedManagedHsm_Get.json
+// Generated from example definition: 2026-10-01-preview/DeletedManagedHsm_Get.json
 func ExampleManagedHsmsClient_GetDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -302,7 +302,7 @@ func ExampleManagedHsmsClient_GetDeleted() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/ManagedHsm_ListByResourceGroup.json
+// Generated from example definition: 2026-10-01-preview/ManagedHsm_ListByResourceGroup.json
 func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -386,7 +386,7 @@ func ExampleManagedHsmsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15/ManagedHsm_ListBySubscription.json
+// Generated from example definition: 2026-10-01-preview/ManagedHsm_ListBySubscription.json
 func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,7 +470,7 @@ func ExampleManagedHsmsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15/DeletedManagedHsm_List.json
+// Generated from example definition: 2026-10-01-preview/DeletedManagedHsm_List.json
 func ExampleManagedHsmsClient_NewListDeletedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

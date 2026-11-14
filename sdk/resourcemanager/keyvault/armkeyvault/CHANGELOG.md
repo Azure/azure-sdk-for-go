@@ -1,5 +1,42 @@
 # Release History
 
+## 2.2.0-beta.1 (2026-11-11)
+### Features Added
+
+- New enum type `AccessRuleDirection` with values `AccessRuleDirectionInbound`, `AccessRuleDirectionOutbound`
+- New enum type `IssueType` with values `IssueTypeConfigurationPropagationFailure`, `IssueTypeMissingIdentityConfiguration`, `IssueTypeMissingPerimeterConfiguration`, `IssueTypeUnknown`
+- New enum type `NetworkSecurityPerimeterConfigurationProvisioningState` with values `NetworkSecurityPerimeterConfigurationProvisioningStateAccepted`, `NetworkSecurityPerimeterConfigurationProvisioningStateCanceled`, `NetworkSecurityPerimeterConfigurationProvisioningStateCreating`, `NetworkSecurityPerimeterConfigurationProvisioningStateDeleting`, `NetworkSecurityPerimeterConfigurationProvisioningStateFailed`, `NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded`, `NetworkSecurityPerimeterConfigurationProvisioningStateUpdating`
+- New enum type `ResourceAssociationAccessMode` with values `ResourceAssociationAccessModeAudit`, `ResourceAssociationAccessModeEnforced`, `ResourceAssociationAccessModeLearning`
+- New enum type `Severity` with values `SeverityError`, `SeverityWarning`
+- New enum type `TokenBindingMode` with values `TokenBindingModeEnforced`, `TokenBindingModeNotEnforced`
+- New enum type `TokenBindingStrength` with values `TokenBindingStrengthAttestedConfidential`, `TokenBindingStrengthAttestedTrustedLaunch`, `TokenBindingStrengthNoValidation`, `TokenBindingStrengthUnattested`
+- New function `*ClientFactory.NewNetworkSecurityPerimeterConfigurationsClient() *NetworkSecurityPerimeterConfigurationsClient`
+- New function `NewNetworkSecurityPerimeterConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*NetworkSecurityPerimeterConfigurationsClient, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.GetConfiguration(ctx context.Context, resourceGroupName string, vaultName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterConfigurationsClientGetConfigurationOptions) (NetworkSecurityPerimeterConfigurationsClientGetConfigurationResponse, error)`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.NewListConfigurationsPager(resourceGroupName string, vaultName string, options *NetworkSecurityPerimeterConfigurationsClientListConfigurationsOptions) *runtime.Pager[NetworkSecurityPerimeterConfigurationsClientListConfigurationsResponse]`
+- New function `*NetworkSecurityPerimeterConfigurationsClient.ReconcileConfiguration(ctx context.Context, resourceGroupName string, vaultName string, networkSecurityPerimeterConfigurationName string, options *NetworkSecurityPerimeterConfigurationsClientReconcileConfigurationOptions) (NetworkSecurityPerimeterConfigurationsClientReconcileConfigurationResponse, error)`
+- New struct `AccessRule`
+- New struct `AccessRuleProperties`
+- New struct `AccessRulePropertiesSubscription`
+- New struct `NetworkSecurityPerimeter`
+- New struct `NetworkSecurityPerimeterConfiguration`
+- New struct `NetworkSecurityPerimeterConfigurationListResult`
+- New struct `NetworkSecurityPerimeterConfigurationProperties`
+- New struct `NetworkSecurityProfile`
+- New struct `ProvisioningIssue`
+- New struct `ProvisioningIssueProperties`
+- New struct `ResourceAssociation`
+- New struct `TokenBindingParameters`
+- New struct `WrappingKeyAuthenticationData`
+- New struct `WrappingKeyConfiguration`
+- New struct `WrappingKeyValue`
+- New field `Identity` in struct `Vault`
+- New field `Identity` in struct `VaultCreateOrUpdateParameters`
+- New field `Identity` in struct `VaultPatchParameters`
+- New field `EnableCrossTenantAccessProtection`, `ProtectionKeysWrappingKey`, `TokenBindingParameters` in struct `VaultPatchProperties`
+- New field `EnableCrossTenantAccessProtection`, `ProtectionKeysWrappingKey`, `TokenBindingParameters` in struct `VaultProperties`
+
+
 ## 2.1.0 (2026-10-06)
 ### Features Added
 

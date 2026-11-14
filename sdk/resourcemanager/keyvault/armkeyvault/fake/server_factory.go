@@ -33,6 +33,9 @@ type ServerFactory struct {
 	// ManagedHsmsServer contains the fakes for client ManagedHsmsClient
 	ManagedHsmsServer ManagedHsmsServer
 
+	// NetworkSecurityPerimeterConfigurationsServer contains the fakes for client NetworkSecurityPerimeterConfigurationsClient
+	NetworkSecurityPerimeterConfigurationsServer NetworkSecurityPerimeterConfigurationsServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
@@ -61,19 +64,20 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armkeyvault.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                                    *ServerFactory
-	trMu                                   sync.Mutex
-	trKeysServer                           *KeysServerTransport
-	trMHSMPrivateEndpointConnectionsServer *MHSMPrivateEndpointConnectionsServerTransport
-	trMHSMPrivateLinkResourcesServer       *MHSMPrivateLinkResourcesServerTransport
-	trMHSMRegionsServer                    *MHSMRegionsServerTransport
-	trManagedHsmKeysServer                 *ManagedHsmKeysServerTransport
-	trManagedHsmsServer                    *ManagedHsmsServerTransport
-	trOperationsServer                     *OperationsServerTransport
-	trPrivateEndpointConnectionsServer     *PrivateEndpointConnectionsServerTransport
-	trPrivateLinkResourcesServer           *PrivateLinkResourcesServerTransport
-	trSecretsServer                        *SecretsServerTransport
-	trVaultsServer                         *VaultsServerTransport
+	srv                                            *ServerFactory
+	trMu                                           sync.Mutex
+	trKeysServer                                   *KeysServerTransport
+	trMHSMPrivateEndpointConnectionsServer         *MHSMPrivateEndpointConnectionsServerTransport
+	trMHSMPrivateLinkResourcesServer               *MHSMPrivateLinkResourcesServerTransport
+	trMHSMRegionsServer                            *MHSMRegionsServerTransport
+	trManagedHsmKeysServer                         *ManagedHsmKeysServerTransport
+	trManagedHsmsServer                            *ManagedHsmsServerTransport
+	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
+	trOperationsServer                             *OperationsServerTransport
+	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
+	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
+	trSecretsServer                                *SecretsServerTransport
+	trVaultsServer                                 *VaultsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -113,6 +117,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ManagedHsmsClient":
 		initServer(&s.trMu, &s.trManagedHsmsServer, func() *ManagedHsmsServerTransport { return NewManagedHsmsServerTransport(&s.srv.ManagedHsmsServer) })
 		resp, err = s.trManagedHsmsServer.Do(req)
+	case "NetworkSecurityPerimeterConfigurationsClient":
+		initServer(&s.trMu, &s.trNetworkSecurityPerimeterConfigurationsServer, func() *NetworkSecurityPerimeterConfigurationsServerTransport {
+			return NewNetworkSecurityPerimeterConfigurationsServerTransport(&s.srv.NetworkSecurityPerimeterConfigurationsServer)
+		})
+		resp, err = s.trNetworkSecurityPerimeterConfigurationsServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-05-15/createVault.json
+// Generated from example definition: 2026-10-01-preview/createVault.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createANewVaultOrUpdateAnExistingVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -216,7 +216,133 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createANewVaultOrUpdateAnExistingVa
 	// }
 }
 
-// Generated from example definition: 2026-05-15/createVaultWithNetworkAcls.json
+// Generated from example definition: 2026-10-01-preview/createVaultWithCrossTenantAccessProtection.json
+func ExampleVaultsClient_BeginCreateOrUpdate_createAVaultWithCrossTenantAccessProtectionEnabled() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginCreateOrUpdate(ctx, "sample-resource-group", "sample-vault", armkeyvault.VaultCreateOrUpdateParameters{
+		Location: to.Ptr("westus"),
+		Properties: &armkeyvault.VaultProperties{
+			EnableCrossTenantAccessProtection: to.Ptr(true),
+			EnableRbacAuthorization:           to.Ptr(true),
+			SKU: &armkeyvault.SKU{
+				Name:   to.Ptr(armkeyvault.SKUNameStandard),
+				Family: to.Ptr(armkeyvault.SKUFamilyA),
+			},
+			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkeyvault.VaultsClientCreateOrUpdateResponse{
+	// 	Vault: armkeyvault.Vault{
+	// 		Name: to.Ptr("sample-vault"),
+	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armkeyvault.VaultProperties{
+	// 			EnableCrossTenantAccessProtection: to.Ptr(true),
+	// 			EnableRbacAuthorization: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
+	// 			SKU: &armkeyvault.SKU{
+	// 				Name: to.Ptr(armkeyvault.SKUNameStandard),
+	// 				Family: to.Ptr(armkeyvault.SKUFamilyA),
+	// 			},
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/createVaultWithIdentity.json
+func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateAVaultByFullyReplacingTheUserAssignedIdentitySet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginCreateOrUpdate(ctx, "sample-resource-group", "sample-vault", armkeyvault.VaultCreateOrUpdateParameters{
+		Location: to.Ptr("westus"),
+		Identity: &armkeyvault.ManagedServiceIdentity{
+			Type: to.Ptr(armkeyvault.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armkeyvault.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sample-identity": {},
+			},
+		},
+		Properties: &armkeyvault.VaultProperties{
+			AccessPolicies:          []*armkeyvault.AccessPolicyEntry{},
+			EnableRbacAuthorization: to.Ptr(true),
+			SKU: &armkeyvault.SKU{
+				Name:   to.Ptr(armkeyvault.SKUNameStandard),
+				Family: to.Ptr(armkeyvault.SKUFamilyA),
+			},
+			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkeyvault.VaultsClientCreateOrUpdateResponse{
+	// 	Vault: armkeyvault.Vault{
+	// 		Name: to.Ptr("sample-vault"),
+	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 		Location: to.Ptr("westus"),
+	// 		Identity: &armkeyvault.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armkeyvault.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armkeyvault.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sample-identity": &armkeyvault.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armkeyvault.VaultProperties{
+	// 			AccessPolicies: []*armkeyvault.AccessPolicyEntry{
+	// 			},
+	// 			EnableRbacAuthorization: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
+	// 			SKU: &armkeyvault.SKU{
+	// 				Name: to.Ptr(armkeyvault.SKUNameStandard),
+	// 				Family: to.Ptr(armkeyvault.SKUFamilyA),
+	// 			},
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/createVaultWithNetworkAcls.json
 func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateAVaultWithNetworkAcls() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +442,138 @@ func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateAVaultWithNetworkAcls
 	// }
 }
 
-// Generated from example definition: 2026-05-15/purgeDeletedVault.json
+// Generated from example definition: 2026-10-01-preview/createVaultWithProtectionKeyWrapping.json
+func ExampleVaultsClient_BeginCreateOrUpdate_createOrUpdateAVaultWithProtectionKeyWrapping() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginCreateOrUpdate(ctx, "sample-resource-group", "sample-vault", armkeyvault.VaultCreateOrUpdateParameters{
+		Location: to.Ptr("westus"),
+		Properties: &armkeyvault.VaultProperties{
+			AccessPolicies: []*armkeyvault.AccessPolicyEntry{},
+			ProtectionKeysWrappingKey: &armkeyvault.WrappingKeyConfiguration{
+				KeyValue: &armkeyvault.WrappingKeyValue{
+					URL: to.Ptr("https://sample-hsm.managedhsm.azure.net/keys/wrapping-key"),
+					Kty: to.Ptr("oct"),
+				},
+				KeyAuthenticationData: &armkeyvault.WrappingKeyAuthenticationData{
+					AuthType: to.Ptr("ServiceIdentity"),
+				},
+			},
+			SKU: &armkeyvault.SKU{
+				Name:   to.Ptr(armkeyvault.SKUNameStandard),
+				Family: to.Ptr(armkeyvault.SKUFamilyA),
+			},
+			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkeyvault.VaultsClientCreateOrUpdateResponse{
+	// 	Vault: armkeyvault.Vault{
+	// 		Name: to.Ptr("sample-vault"),
+	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armkeyvault.VaultProperties{
+	// 			AccessPolicies: []*armkeyvault.AccessPolicyEntry{
+	// 			},
+	// 			ProtectionKeysWrappingKey: &armkeyvault.WrappingKeyConfiguration{
+	// 				KeyValue: &armkeyvault.WrappingKeyValue{
+	// 					URL: to.Ptr("https://sample-hsm.managedhsm.azure.net/keys/wrapping-key/0123456789abcdef0123456789abcdef"),
+	// 					Kty: to.Ptr("oct"),
+	// 				},
+	// 				KeyAuthenticationData: &armkeyvault.WrappingKeyAuthenticationData{
+	// 					AuthType: to.Ptr("ServiceIdentity"),
+	// 				},
+	// 			},
+	// 			SKU: &armkeyvault.SKU{
+	// 				Name: to.Ptr(armkeyvault.SKUNameStandard),
+	// 				Family: to.Ptr(armkeyvault.SKUFamilyA),
+	// 			},
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/createVaultWithoutIdentity.json
+func ExampleVaultsClient_BeginCreateOrUpdate_removeAllUserAssignedIdentitiesAndTheirCertificatesFromAVaultUsingPut() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewVaultsClient().BeginCreateOrUpdate(ctx, "sample-resource-group", "sample-vault", armkeyvault.VaultCreateOrUpdateParameters{
+		Location: to.Ptr("westus"),
+		Identity: &armkeyvault.ManagedServiceIdentity{
+			Type: to.Ptr(armkeyvault.ManagedServiceIdentityTypeNone),
+		},
+		Properties: &armkeyvault.VaultProperties{
+			AccessPolicies:          []*armkeyvault.AccessPolicyEntry{},
+			EnableRbacAuthorization: to.Ptr(true),
+			SKU: &armkeyvault.SKU{
+				Name:   to.Ptr(armkeyvault.SKUNameStandard),
+				Family: to.Ptr(armkeyvault.SKUFamilyA),
+			},
+			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkeyvault.VaultsClientCreateOrUpdateResponse{
+	// 	Vault: armkeyvault.Vault{
+	// 		Name: to.Ptr("sample-vault"),
+	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 		Location: to.Ptr("westus"),
+	// 		Identity: &armkeyvault.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armkeyvault.ManagedServiceIdentityTypeNone),
+	// 		},
+	// 		Properties: &armkeyvault.VaultProperties{
+	// 			AccessPolicies: []*armkeyvault.AccessPolicyEntry{
+	// 			},
+	// 			EnableRbacAuthorization: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
+	// 			SKU: &armkeyvault.SKU{
+	// 				Name: to.Ptr(armkeyvault.SKUNameStandard),
+	// 				Family: to.Ptr(armkeyvault.SKUFamilyA),
+	// 			},
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/purgeDeletedVault.json
 func ExampleVaultsClient_BeginPurgeDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -342,7 +599,7 @@ func ExampleVaultsClient_BeginPurgeDeleted() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/checkVaultNameAvailability.json
+// Generated from example definition: 2026-10-01-preview/checkVaultNameAvailability.json
 func ExampleVaultsClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +627,7 @@ func ExampleVaultsClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/deleteVault.json
+// Generated from example definition: 2026-10-01-preview/deleteVault.json
 func ExampleVaultsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -392,7 +649,7 @@ func ExampleVaultsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/getVault.json
+// Generated from example definition: 2026-10-01-preview/getVault.json
 func ExampleVaultsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -496,7 +753,7 @@ func ExampleVaultsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/getDeletedVault.json
+// Generated from example definition: 2026-10-01-preview/getDeletedVault.json
 func ExampleVaultsClient_GetDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -532,7 +789,7 @@ func ExampleVaultsClient_GetDeleted() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/listVaultByResourceGroup.json
+// Generated from example definition: 2026-10-01-preview/listVaultByResourceGroup.json
 func ExampleVaultsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -647,7 +904,7 @@ func ExampleVaultsClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15/listVaultBySubscription.json
+// Generated from example definition: 2026-10-01-preview/listVaultBySubscription.json
 func ExampleVaultsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -762,7 +1019,7 @@ func ExampleVaultsClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15/listDeletedVaults.json
+// Generated from example definition: 2026-10-01-preview/listDeletedVaults.json
 func ExampleVaultsClient_NewListDeletedPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -808,7 +1065,7 @@ func ExampleVaultsClient_NewListDeletedPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15/listVault.json
+// Generated from example definition: 2026-10-01-preview/listVault.json
 func ExampleVaultsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -849,8 +1106,55 @@ func ExampleVaultsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-05-15/updateVault.json
-func ExampleVaultsClient_Update() {
+// Generated from example definition: 2026-10-01-preview/removeVaultWithIdentity.json
+func ExampleVaultsClient_Update_removeAllUserAssignedIdentitiesAndTheirCertificatesFromAVaultUsingPatch() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVaultsClient().Update(ctx, "sample-resource-group", "sample-vault", armkeyvault.VaultPatchParameters{
+		Identity: &armkeyvault.ManagedServiceIdentity{
+			Type: to.Ptr(armkeyvault.ManagedServiceIdentityTypeNone),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkeyvault.VaultsClientUpdateResponse{
+	// 	Vault: armkeyvault.Vault{
+	// 		Name: to.Ptr("sample-vault"),
+	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 		Location: to.Ptr("westus"),
+	// 		Identity: &armkeyvault.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armkeyvault.ManagedServiceIdentityTypeNone),
+	// 		},
+	// 		Properties: &armkeyvault.VaultProperties{
+	// 			AccessPolicies: []*armkeyvault.AccessPolicyEntry{
+	// 			},
+	// 			EnableRbacAuthorization: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
+	// 			SKU: &armkeyvault.SKU{
+	// 				Name: to.Ptr(armkeyvault.SKUNameStandard),
+	// 				Family: to.Ptr(armkeyvault.SKUFamilyA),
+	// 			},
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/updateVault.json
+func ExampleVaultsClient_Update_updateAnExistingVault() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1047,7 +1351,281 @@ func ExampleVaultsClient_Update() {
 	// }
 }
 
-// Generated from example definition: 2026-05-15/updateAccessPoliciesAdd.json
+// Generated from example definition: 2026-10-01-preview/updateVaultPreservingIdentity.json
+func ExampleVaultsClient_Update_preserveExistingUserAssignedIdentitiesByOmittingIdentityFromPatch() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVaultsClient().Update(ctx, "sample-resource-group", "sample-vault", armkeyvault.VaultPatchParameters{
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkeyvault.VaultsClientUpdateResponse{
+	// 	Vault: armkeyvault.Vault{
+	// 		Name: to.Ptr("sample-vault"),
+	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 		Location: to.Ptr("westus"),
+	// 		Identity: &armkeyvault.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armkeyvault.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armkeyvault.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sample-identity": &armkeyvault.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armkeyvault.VaultProperties{
+	// 			AccessPolicies: []*armkeyvault.AccessPolicyEntry{
+	// 			},
+	// 			EnableRbacAuthorization: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
+	// 			SKU: &armkeyvault.SKU{
+	// 				Name: to.Ptr(armkeyvault.SKUNameStandard),
+	// 				Family: to.Ptr(armkeyvault.SKUFamilyA),
+	// 			},
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/updateVaultRemoveIdentity.json
+func ExampleVaultsClient_Update_removeOnlyTheSpecifiedUserAssignedIdentityUsingANullPatchEntry() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVaultsClient().Update(ctx, "sample-resource-group", "sample-vault", armkeyvault.VaultPatchParameters{
+		Identity: &armkeyvault.ManagedServiceIdentity{
+			Type: to.Ptr(armkeyvault.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armkeyvault.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/identity-to-remove": nil,
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkeyvault.VaultsClientUpdateResponse{
+	// 	Vault: armkeyvault.Vault{
+	// 		Name: to.Ptr("sample-vault"),
+	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 		Location: to.Ptr("westus"),
+	// 		Identity: &armkeyvault.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armkeyvault.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armkeyvault.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sample-identity": &armkeyvault.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armkeyvault.VaultProperties{
+	// 			AccessPolicies: []*armkeyvault.AccessPolicyEntry{
+	// 			},
+	// 			EnableRbacAuthorization: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
+	// 			SKU: &armkeyvault.SKU{
+	// 				Name: to.Ptr(armkeyvault.SKUNameStandard),
+	// 				Family: to.Ptr(armkeyvault.SKUFamilyA),
+	// 			},
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/updateVaultWithCrossTenantAccessProtection.json
+func ExampleVaultsClient_Update_enableCrossTenantAccessProtectionOnAnExistingVault() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVaultsClient().Update(ctx, "sample-resource-group", "sample-vault", armkeyvault.VaultPatchParameters{
+		Properties: &armkeyvault.VaultPatchProperties{
+			EnableCrossTenantAccessProtection: to.Ptr(true),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkeyvault.VaultsClientUpdateResponse{
+	// 	Vault: armkeyvault.Vault{
+	// 		Name: to.Ptr("sample-vault"),
+	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armkeyvault.VaultProperties{
+	// 			EnableCrossTenantAccessProtection: to.Ptr(true),
+	// 			EnableRbacAuthorization: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
+	// 			SKU: &armkeyvault.SKU{
+	// 				Name: to.Ptr(armkeyvault.SKUNameStandard),
+	// 				Family: to.Ptr(armkeyvault.SKUFamilyA),
+	// 			},
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/updateVaultWithIdentity.json
+func ExampleVaultsClient_Update_addOrRetainAUserAssignedIdentityOnAVault() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVaultsClient().Update(ctx, "sample-resource-group", "sample-vault", armkeyvault.VaultPatchParameters{
+		Identity: &armkeyvault.ManagedServiceIdentity{
+			Type: to.Ptr(armkeyvault.ManagedServiceIdentityTypeUserAssigned),
+			UserAssignedIdentities: map[string]*armkeyvault.UserAssignedIdentity{
+				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sample-identity": {},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkeyvault.VaultsClientUpdateResponse{
+	// 	Vault: armkeyvault.Vault{
+	// 		Name: to.Ptr("sample-vault"),
+	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 		Location: to.Ptr("westus"),
+	// 		Identity: &armkeyvault.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armkeyvault.ManagedServiceIdentityTypeUserAssigned),
+	// 			UserAssignedIdentities: map[string]*armkeyvault.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sample-identity": &armkeyvault.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 					ClientID: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 				},
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/retained-identity": &armkeyvault.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("33333333-3333-3333-3333-333333333333"),
+	// 					ClientID: to.Ptr("44444444-4444-4444-4444-444444444444"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Properties: &armkeyvault.VaultProperties{
+	// 			AccessPolicies: []*armkeyvault.AccessPolicyEntry{
+	// 			},
+	// 			EnableRbacAuthorization: to.Ptr(true),
+	// 			ProvisioningState: to.Ptr(armkeyvault.VaultProvisioningStateSucceeded),
+	// 			SKU: &armkeyvault.SKU{
+	// 				Name: to.Ptr(armkeyvault.SKUNameStandard),
+	// 				Family: to.Ptr(armkeyvault.SKUFamilyA),
+	// 			},
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/updateVaultWithProtectionKeyWrapping.json
+func ExampleVaultsClient_Update_configureProtectionKeyWrappingOnAnExistingVault() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkeyvault.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVaultsClient().Update(ctx, "sample-resource-group", "sample-vault", armkeyvault.VaultPatchParameters{
+		Properties: &armkeyvault.VaultPatchProperties{
+			ProtectionKeysWrappingKey: &armkeyvault.WrappingKeyConfiguration{
+				KeyValue: &armkeyvault.WrappingKeyValue{
+					URL: to.Ptr("https://sample-hsm.managedhsm.azure.net/keys/wrapping-key"),
+					Kty: to.Ptr("oct"),
+				},
+				KeyAuthenticationData: &armkeyvault.WrappingKeyAuthenticationData{
+					AuthType: to.Ptr("ServiceIdentity"),
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkeyvault.VaultsClientUpdateResponse{
+	// 	Vault: armkeyvault.Vault{
+	// 		Name: to.Ptr("sample-vault"),
+	// 		Type: to.Ptr("Microsoft.KeyVault/vaults"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/sample-resource-group/providers/Microsoft.KeyVault/vaults/sample-vault"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armkeyvault.VaultProperties{
+	// 			ProtectionKeysWrappingKey: &armkeyvault.WrappingKeyConfiguration{
+	// 				KeyValue: &armkeyvault.WrappingKeyValue{
+	// 					URL: to.Ptr("https://sample-hsm.managedhsm.azure.net/keys/wrapping-key/0123456789abcdef0123456789abcdef"),
+	// 					Kty: to.Ptr("oct"),
+	// 				},
+	// 				KeyAuthenticationData: &armkeyvault.WrappingKeyAuthenticationData{
+	// 					AuthType: to.Ptr("ServiceIdentity"),
+	// 				},
+	// 			},
+	// 			SKU: &armkeyvault.SKU{
+	// 				Name: to.Ptr(armkeyvault.SKUNameStandard),
+	// 				Family: to.Ptr(armkeyvault.SKUFamilyA),
+	// 			},
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			VaultURI: to.Ptr("https://sample-vault.vault.azure.net"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-10-01-preview/updateAccessPoliciesAdd.json
 func ExampleVaultsClient_UpdateAccessPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

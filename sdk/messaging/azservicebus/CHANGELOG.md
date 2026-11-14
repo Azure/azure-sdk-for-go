@@ -8,6 +8,8 @@
 
 ### Bugs Fixed
 
+- Rule creation and updates now use `$Default` in the request URL when the rule name is empty. Creating a rule with an omitted name previously failed with HTTP 400. ([#27945](https://github.com/Azure/azure-sdk-for-go/issues/27945))
+
 ### Other Changes
 
 ## 1.11.0 (2026-10-06)

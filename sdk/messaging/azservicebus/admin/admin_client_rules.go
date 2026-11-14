@@ -335,7 +335,7 @@ func (ac *Client) createOrUpdateRule(ctx context.Context, topicName string, subs
 
 	var respEnv *atom.RuleEnvelope
 
-	httpResp, err := ac.em.Put(ctx, fmt.Sprintf("/%s/Subscriptions/%s/Rules/%s", topicName, subscriptionName, putProps.Name), putEnv, &respEnv, nil)
+	httpResp, err := ac.em.Put(ctx, fmt.Sprintf("/%s/Subscriptions/%s/Rules/%s", topicName, subscriptionName, ruleDesc.Name), putEnv, &respEnv, nil)
 
 	if err != nil {
 		return nil, nil, err

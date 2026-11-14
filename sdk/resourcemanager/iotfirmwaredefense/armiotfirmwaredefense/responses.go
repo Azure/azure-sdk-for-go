@@ -87,6 +87,12 @@ type SummariesClientListByFirmwareResponse struct {
 	SummaryResourceListResult
 }
 
+// UnsafeFunctionCallsClientListByFirmwareResponse contains the response from method UnsafeFunctionCallsClient.NewListByFirmwarePager.
+type UnsafeFunctionCallsClientListByFirmwareResponse struct {
+	// The response of a UnsafeFunctionCallsResource list operation.
+	UnsafeFunctionCallsResourceListResult
+}
+
 // UsageMetricsClientGetResponse contains the response from method UsageMetricsClient.Get.
 type UsageMetricsClientGetResponse struct {
 	// The object representing how many firmwares the user has uploaded to the workspace.

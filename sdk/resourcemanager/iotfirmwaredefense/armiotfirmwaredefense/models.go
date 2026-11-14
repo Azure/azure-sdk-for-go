@@ -420,20 +420,23 @@ type CveResult struct {
 	// Name of the CVE.
 	CveName *string
 
-	// Legacy property for the effective CVE score.
+	// Legacy property for the effective CVE score (deprecated).
 	CvssScore *string
 
 	// All known CVSS scores for the CVE.
 	CvssScores []*CvssScore
 
-	// Legacy property for the CVE CVSS version 2 score, if one existed.
+	// Legacy property for the CVE CVSS version 2 score, if one existed. (deprecated)
 	CvssV2Score *string
 
-	// Legacy property for the CVE CVSS version 3 score, if one existed.
+	// Legacy property for the CVE CVSS version 3 score, if one existed. (deprecated)
 	CvssV3Score *string
 
-	// Legacy property for the what CVSS version score was stored in the cvssScore property
+	// Legacy property for the what CVSS version score was stored in the cvssScore property (deprecated).
 	CvssVersion *string
+
+	// CWE (Common Weakness Enumeration) information related to this CVE.
+	Cwes []*CweProperties
 
 	// The CVE description.
 	Description *string
@@ -443,6 +446,21 @@ type CveResult struct {
 
 	// The version of the effectiveCvssScore property.
 	EffectiveCvssVersion *int32
+
+	// The CVSS exploit maturity value for the effectiveCvssVersion.
+	EffectiveExploitMaturity *ExploitMaturityLevel
+
+	// The CVSS vector string for the effectiveCvssVersion.
+	EffectiveVectorString *string
+
+	// EPSS (Exploit Prediction Scoring System) information related to this CVE.
+	Epss *EpssProperties
+
+	// The component versions in which this weakness was fixed, if any.
+	FixedInVersions []*string
+
+	// KEV (Known Exploited Vulnerabilities) information related to this CVE.
+	Kev *KevProperties
 
 	// Severity of the CVE.
 	Severity *string
@@ -454,7 +472,7 @@ type CveResult struct {
 	ProvisioningState *ProvisioningState
 }
 
-// CveSummary - Properties for a CVE analysis summary.
+// CveSummary - Properties for a CVE (Common Vulnerabilities and Exposures) analysis summary (deprecated).
 type CveSummary struct {
 	// REQUIRED; Describes the type of summary object.
 	SummaryType *SummaryType
@@ -486,12 +504,78 @@ func (c *CveSummary) GetSummaryResourceProperties() *SummaryResourceProperties {
 	}
 }
 
+// CveSummaryResource - Properties for a CVE analysis summary.
+type CveSummaryResource struct {
+	// REQUIRED; Describes the type of summary object.
+	SummaryType *SummaryType
+
+	// The total number of critical severity CVEs detected
+	CriticalCveCount *int64
+
+	// The total number of high severity CVEs detected
+	HighCveCount *int64
+
+	// The total number of low severity CVEs detected
+	LowCveCount *int64
+
+	// The total number of medium severity CVEs detected
+	MediumCveCount *int64
+
+	// Schema version of the CVE data for this firmware.
+	SchemaVersion *string
+
+	// Total number of CVEs found.
+	TotalCveCount *int64
+
+	// The total number of unknown severity CVEs detected
+	UnknownCveCount *int64
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *ProvisioningState
+}
+
+// GetSummaryResourceProperties implements the SummaryResourcePropertiesClassification interface for type CveSummaryResource.
+func (c *CveSummaryResource) GetSummaryResourceProperties() *SummaryResourceProperties {
+	return &SummaryResourceProperties{
+		ProvisioningState: c.ProvisioningState,
+		SummaryType:       c.SummaryType,
+	}
+}
+
 // CvssScore - Common Vulnerability Scoring System values.
 type CvssScore struct {
 	// REQUIRED; The version of the Common Vulnerability Scoring System (CVSS).
 	Version *int32
 
+	// The likelihood of the vulnerability being attacked based on information regarding the availability of exploitation code/processes
+	// and the state of exploitation techniques.
+	ExploitMaturity *ExploitMaturityLevel
+
 	// The score of the CVE according to the CVSS specified.
+	Score *float32
+
+	// The CVSS vector for the specified score
+	VectorString *string
+}
+
+// CweProperties - CWE (Common Weakness Enumeration) data related to a CVE.
+type CweProperties struct {
+	// The id of the CWE.
+	CweID *string
+
+	// The name of the CWE.
+	CweName *string
+
+	// The description of the CWE.
+	Description *string
+}
+
+// EpssProperties - EPSS (Exploit Prediction Scoring System) data related to a CVE.
+type EpssProperties struct {
+	// The rank ordering of probabilities from high to low.
+	Percentile *float32
+
+	// The probability of observing exploitation activity in the next 30 days.
 	Score *float32
 }
 
@@ -596,10 +680,34 @@ type FirmwareUpdateDefinition struct {
 	Properties *FirmwareProperties
 }
 
+// FunctionCall - Function call count for a specific function.
+type FunctionCall struct {
+	// REQUIRED; The number of calls to this function within a single binary.
+	Count *int64
+
+	// REQUIRED; The name of the function.
+	FunctionName *string
+}
+
 // GenerateUploadURLRequest - Properties for generating an upload URL
 type GenerateUploadURLRequest struct {
 	// A unique ID for the firmware to be uploaded.
 	FirmwareID *string
+}
+
+// KevProperties - KEV (Known Exploited Vulnerabilities) data related to a CVE, published by CISA.
+type KevProperties struct {
+	// The date the vulnerability was added to the KEV catalog.
+	DateAdded *time.Time
+
+	// Indication if the vulnerability is known to have been leveraged as part of a ransomware campaign.
+	KnownRansomwareCampaignUse *RansomwareCampaignUse
+
+	// The date the required action is due.
+	RemediationDueDate *time.Time
+
+	// The required action to address the vulnerability.
+	RequiredAction *string
 }
 
 // Operation - REST API Operation
@@ -716,6 +824,26 @@ type PasswordHashResourceListResult struct {
 	NextLink *string
 }
 
+// PasswordHashSummaryResource - Properties for Password hash analysis summary.
+type PasswordHashSummaryResource struct {
+	// REQUIRED; Describes the type of summary object.
+	SummaryType *SummaryType
+
+	// Total number of password hashes found.
+	TotalPasswordHashCount *int64
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *ProvisioningState
+}
+
+// GetSummaryResourceProperties implements the SummaryResourcePropertiesClassification interface for type PasswordHashSummaryResource.
+func (p *PasswordHashSummaryResource) GetSummaryResourceProperties() *SummaryResourceProperties {
+	return &SummaryResourceProperties{
+		ProvisioningState: p.ProvisioningState,
+		SummaryType:       p.SummaryType,
+	}
+}
+
 // SKU - The resource model definition representing SKU
 type SKU struct {
 	// REQUIRED; The name of the SKU. Ex - P3. It is typically a letter+number code
@@ -782,6 +910,26 @@ type SbomComponentResourceListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// SbomSummaryResource - Properties for SBOM analysis summary.
+type SbomSummaryResource struct {
+	// REQUIRED; Describes the type of summary object.
+	SummaryType *SummaryType
+
+	// Total number of SBOM components found.
+	TotalComponentCount *int64
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *ProvisioningState
+}
+
+// GetSummaryResourceProperties implements the SummaryResourcePropertiesClassification interface for type SbomSummaryResource.
+func (s *SbomSummaryResource) GetSummaryResourceProperties() *SummaryResourceProperties {
+	return &SummaryResourceProperties{
+		ProvisioningState: s.ProvisioningState,
+		SummaryType:       s.SummaryType,
+	}
 }
 
 // StatusMessage - Error and status message
@@ -859,6 +1007,83 @@ type SystemData struct {
 type URLToken struct {
 	// READ-ONLY; SAS URL for creating or accessing a blob file.
 	URL *string
+}
+
+// UnsafeFunctionCallsResource - The object representing a firmware analysis unsafe function calls result resource.
+type UnsafeFunctionCallsResource struct {
+	// The resource-specific properties for this resource.
+	Properties *UnsafeFunctionCallsResult
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// UnsafeFunctionCallsResourceListResult - The response of a UnsafeFunctionCallsResource list operation.
+type UnsafeFunctionCallsResourceListResult struct {
+	// REQUIRED; The UnsafeFunctionCallsResource items on this page
+	Value []*UnsafeFunctionCallsResource
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// UnsafeFunctionCallsResult - Unsafe function call analysis results for a binary.
+type UnsafeFunctionCallsResult struct {
+	// The name of the binary in the firmware.
+	FileName *string
+
+	// The full path to the binary in the firmware.
+	FilePath *string
+
+	// Total number of network-related function calls in the binary.
+	TotalNetworkCallCount *int64
+
+	// Total unsafe function call count in the binary.
+	TotalUnsafeCallCount *int64
+
+	// List of unsafe function calls and their counts in the binary.
+	UnsafeFunctionCalls []*FunctionCall
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *ProvisioningState
+}
+
+// UnsafeFunctionCallsSummaryResource - Properties for unsafe function calls analysis summary.
+type UnsafeFunctionCallsSummaryResource struct {
+	// REQUIRED; Describes the type of summary object.
+	SummaryType *SummaryType
+
+	// Total number of files analyzed for unsafe function calls.
+	TotalFileCount *int64
+
+	// Total number of network calls found.
+	TotalNetworkCallCount *int64
+
+	// Total number of unsafe function calls found.
+	TotalUnsafeCallCount *int64
+
+	// Total unsafe function call counts per function across all binaries.
+	UnsafeCallTotals []*FunctionCall
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *ProvisioningState
+}
+
+// GetSummaryResourceProperties implements the SummaryResourcePropertiesClassification interface for type UnsafeFunctionCallsSummaryResource.
+func (u *UnsafeFunctionCallsSummaryResource) GetSummaryResourceProperties() *SummaryResourceProperties {
+	return &SummaryResourceProperties{
+		ProvisioningState: u.ProvisioningState,
+		SummaryType:       u.SummaryType,
+	}
 }
 
 // UsageMetric - The object representing how many firmwares the user has uploaded to the workspace.

@@ -56,7 +56,7 @@ func NewVerifierWorkspacesClient(subscriptionID string, credential azcore.TokenC
 //     method.
 func (client *VerifierWorkspacesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientBeginDeleteOptions) (*runtime.Poller[VerifierWorkspacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, workspaceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, workspaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -71,11 +71,11 @@ func (client *VerifierWorkspacesClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Deletes Verifier Workspace.
+// deleteOperation - Deletes Verifier Workspace.
 //
 // Deletes Verifier Workspace.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VerifierWorkspacesClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VerifierWorkspacesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, workspaceName string, options *VerifierWorkspacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VerifierWorkspacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -90,7 +90,8 @@ func (client *VerifierWorkspacesClient) delete(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -151,7 +152,8 @@ func (client *VerifierWorkspacesClient) Create(ctx context.Context, resourceGrou
 	if err != nil {
 		return VerifierWorkspacesClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -225,7 +227,8 @@ func (client *VerifierWorkspacesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return VerifierWorkspacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -388,7 +391,8 @@ func (client *VerifierWorkspacesClient) Update(ctx context.Context, resourceGrou
 	if err != nil {
 		return VerifierWorkspacesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

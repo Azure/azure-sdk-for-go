@@ -92,6 +92,62 @@ func ExampleSchemaRegistriesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-03-01-preview/Update_SchemaRegistry.json
+func ExampleSchemaRegistriesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSchemaRegistriesClient().BeginUpdate(ctx, "myResourceGroup", "my-schema-registry", armdeviceregistry.SchemaRegistryUpdate{
+		Properties: &armdeviceregistry.SchemaRegistryUpdateProperties{
+			DisplayName: to.Ptr("Schema Registry namespace 001"),
+			Description: to.Ptr("This is a sample Schema Registry"),
+		},
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdeviceregistry.SchemaRegistriesClientUpdateResponse{
+	// 	SchemaRegistry: armdeviceregistry.SchemaRegistry{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry"),
+	// 		Name: to.Ptr("my-schema-registry"),
+	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries"),
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("West Europe"),
+	// 		SystemData: &armdeviceregistry.SystemData{
+	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
+	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
+	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
+	// 		},
+	// 		Properties: &armdeviceregistry.SchemaRegistryProperties{
+	// 			UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
+	// 			Namespace: to.Ptr("sr-namespace-001"),
+	// 			DisplayName: to.Ptr("Schema Registry namespace 001"),
+	// 			Description: to.Ptr("This is a sample Schema Registry"),
+	// 			StorageAccountContainerURL: to.Ptr("my-blob-storage.blob.core.windows.net/my-container"),
+	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-01-preview/Get_SchemaRegistry.json
 func ExampleSchemaRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -270,60 +326,4 @@ func ExampleSchemaRegistriesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-01-preview/Update_SchemaRegistry.json
-func ExampleSchemaRegistriesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdeviceregistry.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSchemaRegistriesClient().BeginUpdate(ctx, "myResourceGroup", "my-schema-registry", armdeviceregistry.SchemaRegistryUpdate{
-		Properties: &armdeviceregistry.SchemaRegistryUpdateProperties{
-			DisplayName: to.Ptr("Schema Registry namespace 001"),
-			Description: to.Ptr("This is a sample Schema Registry"),
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdeviceregistry.SchemaRegistriesClientUpdateResponse{
-	// 	SchemaRegistry: armdeviceregistry.SchemaRegistry{
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/schemaRegistries/my-schema-registry"),
-	// 		Name: to.Ptr("my-schema-registry"),
-	// 		Type: to.Ptr("Microsoft.DeviceRegistry/schemaRegistries"),
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Location: to.Ptr("West Europe"),
-	// 		SystemData: &armdeviceregistry.SystemData{
-	// 			CreatedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
-	// 			CreatedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			CreatedAt: to.Ptr(time.Date(2022, time.November, 16, 0, 36, 43, 251689900, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("2ta23112-4596-44ff-b773-19405922bfc1"),
-	// 			LastModifiedByType: to.Ptr(armdeviceregistry.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.November, 16, 1, 37, 16, 92279300, time.UTC)),
-	// 		},
-	// 		Properties: &armdeviceregistry.SchemaRegistryProperties{
-	// 			UUID: to.Ptr("0796f7c1-f2c8-44d7-9f5b-9a6f9522a85d"),
-	// 			Namespace: to.Ptr("sr-namespace-001"),
-	// 			DisplayName: to.Ptr("Schema Registry namespace 001"),
-	// 			Description: to.Ptr("This is a sample Schema Registry"),
-	// 			StorageAccountContainerURL: to.Ptr("my-blob-storage.blob.core.windows.net/my-container"),
-	// 			ProvisioningState: to.Ptr(armdeviceregistry.ProvisioningStateSucceeded),
-	// 		},
-	// 	},
-	// }
 }

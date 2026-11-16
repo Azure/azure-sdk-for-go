@@ -65,7 +65,8 @@ func (client *GetClient) SingleRecommendation(ctx context.Context, resourceGroup
 	if err != nil {
 		return GetClientSingleRecommendationResponse{}, err
 	}
-	return client.singleRecommendationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.singleRecommendationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // singleRecommendationCreateRequest creates the SingleRecommendation request.

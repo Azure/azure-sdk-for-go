@@ -69,7 +69,7 @@ func (client *NamespaceAssetsClient) BeginCreateOrReplace(ctx context.Context, r
 	}
 }
 
-// CreateOrReplace - Create a NamespaceAsset
+// createOrReplace - Create a NamespaceAsset
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NamespaceAssetsClient) createOrReplace(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, resource NamespaceAsset, options *NamespaceAssetsClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *NamespaceAssetsClient) createOrReplace(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrReplaceCreateRequest creates the CreateOrReplace request.
+// createOrReplaceCreateRequest creates the createOrReplace request.
 func (client *NamespaceAssetsClient) createOrReplaceCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, resource NamespaceAsset, _ *NamespaceAssetsClientBeginCreateOrReplaceOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets/{assetName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *NamespaceAssetsClient) BeginDelete(ctx context.Context, resourceGr
 	}
 }
 
-// Delete - Delete a NamespaceAsset
+// deleteOperation - Delete a NamespaceAsset
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *NamespaceAssetsClient) deleteOperation(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, options *NamespaceAssetsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *NamespaceAssetsClient) deleteOperation(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *NamespaceAssetsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, _ *NamespaceAssetsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets/{assetName}"
 	if client.subscriptionID == "" {
@@ -200,6 +202,88 @@ func (client *NamespaceAssetsClient) deleteCreateRequest(ctx context.Context, re
 	return req, nil
 }
 
+// BeginUpdate - Update a NamespaceAsset
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - namespaceName - The name of the namespace.
+//   - assetName - The name of the asset.
+//   - properties - The resource properties to be updated.
+//   - options - NamespaceAssetsClientBeginUpdateOptions contains the optional parameters for the NamespaceAssetsClient.BeginUpdate
+//     method.
+func (client *NamespaceAssetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, properties NamespaceAssetUpdate, options *NamespaceAssetsClientBeginUpdateOptions) (*runtime.Poller[NamespaceAssetsClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, namespaceName, assetName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespaceAssetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespaceAssetsClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a NamespaceAsset
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *NamespaceAssetsClient) update(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, properties NamespaceAssetUpdate, options *NamespaceAssetsClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "NamespaceAssetsClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, assetName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *NamespaceAssetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, properties NamespaceAssetUpdate, _ *NamespaceAssetsClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets/{assetName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if assetName == "" {
+		return nil, errors.New("parameter assetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260301Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get a NamespaceAsset
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -220,7 +304,8 @@ func (client *NamespaceAssetsClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return NamespaceAssetsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -340,85 +425,4 @@ func (client *NamespaceAssetsClient) listByResourceGroupHandleResponse(resp *htt
 		return NamespaceAssetsClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a NamespaceAsset
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - namespaceName - The name of the namespace.
-//   - assetName - The name of the asset.
-//   - properties - The resource properties to be updated.
-//   - options - NamespaceAssetsClientBeginUpdateOptions contains the optional parameters for the NamespaceAssetsClient.BeginUpdate
-//     method.
-func (client *NamespaceAssetsClient) BeginUpdate(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, properties NamespaceAssetUpdate, options *NamespaceAssetsClientBeginUpdateOptions) (*runtime.Poller[NamespaceAssetsClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, namespaceName, assetName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[NamespaceAssetsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[NamespaceAssetsClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a NamespaceAsset
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *NamespaceAssetsClient) update(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, properties NamespaceAssetUpdate, options *NamespaceAssetsClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "NamespaceAssetsClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, namespaceName, assetName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *NamespaceAssetsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, assetName string, properties NamespaceAssetUpdate, _ *NamespaceAssetsClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceRegistry/namespaces/{namespaceName}/assets/{assetName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if assetName == "" {
-		return nil, errors.New("parameter assetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{assetName}", url.PathEscape(assetName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260301Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

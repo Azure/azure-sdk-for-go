@@ -55,7 +55,8 @@ func (client *TagsClient) Get(ctx context.Context, scope string, options *TagsCl
 	if err != nil {
 		return TagsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

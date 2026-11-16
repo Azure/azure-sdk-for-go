@@ -65,7 +65,8 @@ func (client *ScheduledQueryRulesClient) CreateOrUpdate(ctx context.Context, res
 	if err != nil {
 		return ScheduledQueryRulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *ScheduledQueryRulesClient) Delete(ctx context.Context, resourceGro
 		return ScheduledQueryRulesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ScheduledQueryRulesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ScheduledQueryRulesClientDeleteResponse{}, err
 	}
 	return ScheduledQueryRulesClientDeleteResponse{}, nil
 }
@@ -180,7 +182,8 @@ func (client *ScheduledQueryRulesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ScheduledQueryRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -381,7 +384,8 @@ func (client *ScheduledQueryRulesClient) Update(ctx context.Context, resourceGro
 	if err != nil {
 		return ScheduledQueryRulesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

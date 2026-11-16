@@ -66,7 +66,8 @@ func (client *BookmarksClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return BookmarksClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -136,7 +137,8 @@ func (client *BookmarksClient) Delete(ctx context.Context, resourceGroupName str
 		return BookmarksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return BookmarksClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BookmarksClientDeleteResponse{}, err
 	}
 	return BookmarksClientDeleteResponse{}, nil
 }
@@ -190,7 +192,8 @@ func (client *BookmarksClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return BookmarksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

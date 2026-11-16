@@ -67,7 +67,8 @@ func (client *PrivateLinkResourcesClient) GetByGroupID(ctx context.Context, reso
 	if err != nil {
 		return PrivateLinkResourcesClientGetByGroupIDResponse{}, err
 	}
-	return client.getByGroupIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByGroupIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByGroupIDCreateRequest creates the GetByGroupID request.

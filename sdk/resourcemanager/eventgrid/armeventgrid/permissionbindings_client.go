@@ -72,7 +72,7 @@ func (client *PermissionBindingsClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create or update a permission binding.
+// createOrUpdate - Create or update a permission binding.
 //
 // Create or update a permission binding with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -91,12 +91,13 @@ func (client *PermissionBindingsClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PermissionBindingsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, permissionBindingName string, permissionBindingInfo PermissionBinding, _ *PermissionBindingsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/permissionBindings/{permissionBindingName}"
 	if client.subscriptionID == "" {
@@ -156,7 +157,7 @@ func (client *PermissionBindingsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete a permission binding.
+// deleteOperation - Delete a permission binding.
 //
 // Delete an existing permission binding.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -175,12 +176,13 @@ func (client *PermissionBindingsClient) deleteOperation(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *PermissionBindingsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, namespaceName string, permissionBindingName string, _ *PermissionBindingsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/permissionBindings/{permissionBindingName}"
 	if client.subscriptionID == "" {
@@ -231,7 +233,8 @@ func (client *PermissionBindingsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return PermissionBindingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

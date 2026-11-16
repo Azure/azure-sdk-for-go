@@ -64,7 +64,8 @@ func (client *SubgroupsClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return SubgroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

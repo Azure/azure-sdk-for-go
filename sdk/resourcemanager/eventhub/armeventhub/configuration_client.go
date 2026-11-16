@@ -64,7 +64,8 @@ func (client *ConfigurationClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return ConfigurationClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -126,7 +127,8 @@ func (client *ConfigurationClient) Patch(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ConfigurationClientPatchResponse{}, err
 	}
-	return client.patchHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	resp, err := client.patchHandleResponse(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted)
+	return resp, err
 }
 
 // patchCreateRequest creates the Patch request.

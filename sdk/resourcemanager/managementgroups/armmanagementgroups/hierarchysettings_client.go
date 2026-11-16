@@ -58,7 +58,8 @@ func (client *HierarchySettingsClient) CreateOrUpdate(ctx context.Context, group
 	if err != nil {
 		return HierarchySettingsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -115,7 +116,8 @@ func (client *HierarchySettingsClient) Delete(ctx context.Context, groupID strin
 		return HierarchySettingsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return HierarchySettingsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return HierarchySettingsClientDeleteResponse{}, err
 	}
 	return HierarchySettingsClientDeleteResponse{}, nil
 }
@@ -156,7 +158,8 @@ func (client *HierarchySettingsClient) Get(ctx context.Context, groupID string, 
 	if err != nil {
 		return HierarchySettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -208,7 +211,8 @@ func (client *HierarchySettingsClient) List(ctx context.Context, groupID string,
 	if err != nil {
 		return HierarchySettingsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -261,7 +265,8 @@ func (client *HierarchySettingsClient) Update(ctx context.Context, groupID strin
 	if err != nil {
 		return HierarchySettingsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

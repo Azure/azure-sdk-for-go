@@ -67,7 +67,8 @@ func (client *SystemReadinessOperationsClient) Get(ctx context.Context, options 
 	if err != nil {
 		return SystemReadinessOperationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

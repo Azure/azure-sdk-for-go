@@ -66,7 +66,8 @@ func (client *ConnectedVMwarevSphereAssignmentsReportsClient) Get(ctx context.Co
 	if err != nil {
 		return ConnectedVMwarevSphereAssignmentsReportsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -136,7 +137,8 @@ func (client *ConnectedVMwarevSphereAssignmentsReportsClient) List(ctx context.C
 	if err != nil {
 		return ConnectedVMwarevSphereAssignmentsReportsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

@@ -63,7 +63,8 @@ func (client *DeploymentInfoClient) List(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return DeploymentInfoClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

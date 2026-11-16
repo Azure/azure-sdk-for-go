@@ -70,7 +70,7 @@ func (client *AppServiceCertificateOrdersClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Create or update a certificate purchase order.
+// createOrUpdate - Create or update a certificate purchase order.
 //
 // Description for Create or update a certificate purchase order.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -89,12 +89,13 @@ func (client *AppServiceCertificateOrdersClient) createOrUpdate(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AppServiceCertificateOrdersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, certificateDistinguishedName AppServiceCertificateOrder, _ *AppServiceCertificateOrdersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}"
 	if client.subscriptionID == "" {
@@ -151,7 +152,7 @@ func (client *AppServiceCertificateOrdersClient) BeginCreateOrUpdateCertificate(
 	}
 }
 
-// CreateOrUpdateCertificate - Creates or updates a certificate and associates with key vault secret.
+// createOrUpdateCertificate - Creates or updates a certificate and associates with key vault secret.
 //
 // Description for Creates or updates a certificate and associates with key vault secret.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -170,12 +171,13 @@ func (client *AppServiceCertificateOrdersClient) createOrUpdateCertificate(ctx c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCertificateCreateRequest creates the CreateOrUpdateCertificate request.
+// createOrUpdateCertificateCreateRequest creates the createOrUpdateCertificate request.
 func (client *AppServiceCertificateOrdersClient) createOrUpdateCertificateCreateRequest(ctx context.Context, resourceGroupName string, certificateOrderName string, name string, keyVaultCertificate AppServiceCertificateResource, _ *AppServiceCertificateOrdersClientBeginCreateOrUpdateCertificateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/certificates/{name}"
 	if client.subscriptionID == "" {
@@ -232,7 +234,8 @@ func (client *AppServiceCertificateOrdersClient) Delete(ctx context.Context, res
 		return AppServiceCertificateOrdersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AppServiceCertificateOrdersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AppServiceCertificateOrdersClientDeleteResponse{}, err
 	}
 	return AppServiceCertificateOrdersClientDeleteResponse{}, nil
 }
@@ -286,7 +289,8 @@ func (client *AppServiceCertificateOrdersClient) DeleteCertificate(ctx context.C
 		return AppServiceCertificateOrdersClientDeleteCertificateResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AppServiceCertificateOrdersClientDeleteCertificateResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AppServiceCertificateOrdersClientDeleteCertificateResponse{}, err
 	}
 	return AppServiceCertificateOrdersClientDeleteCertificateResponse{}, nil
 }
@@ -342,7 +346,8 @@ func (client *AppServiceCertificateOrdersClient) Get(ctx context.Context, resour
 	if err != nil {
 		return AppServiceCertificateOrdersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -406,7 +411,8 @@ func (client *AppServiceCertificateOrdersClient) GetCertificate(ctx context.Cont
 	if err != nil {
 		return AppServiceCertificateOrdersClientGetCertificateResponse{}, err
 	}
-	return client.getCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCertificateCreateRequest creates the GetCertificate request.
@@ -447,75 +453,6 @@ func (client *AppServiceCertificateOrdersClient) getCertificateHandleResponse(re
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceCertificateResource); err != nil {
 		return AppServiceCertificateOrdersClientGetCertificateResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - List all certificate orders in a subscription.
-//
-// Description for List all certificate orders in a subscription.
-//   - options - AppServiceCertificateOrdersClientListOptions contains the optional parameters for the AppServiceCertificateOrdersClient.NewListPager
-//     method.
-func (client *AppServiceCertificateOrdersClient) NewListPager(options *AppServiceCertificateOrdersClientListOptions) *runtime.Pager[AppServiceCertificateOrdersClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AppServiceCertificateOrdersClientListResponse]{
-		More: func(page AppServiceCertificateOrdersClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AppServiceCertificateOrdersClientListResponse) (AppServiceCertificateOrdersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AppServiceCertificateOrdersClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return AppServiceCertificateOrdersClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return AppServiceCertificateOrdersClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AppServiceCertificateOrdersClient) listCreateRequest(ctx context.Context, nextLink string, _ *AppServiceCertificateOrdersClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20241101)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AppServiceCertificateOrdersClient) listHandleResponse(resp *http.Response, successCodes ...int) (AppServiceCertificateOrdersClientListResponse, error) {
-	result := AppServiceCertificateOrdersClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceCertificateOrderCollection); err != nil {
-		return AppServiceCertificateOrdersClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -673,6 +610,75 @@ func (client *AppServiceCertificateOrdersClient) listCertificatesHandleResponse(
 	return result, nil
 }
 
+// NewListPager - List all certificate orders in a subscription.
+//
+// Description for List all certificate orders in a subscription.
+//   - options - AppServiceCertificateOrdersClientListOptions contains the optional parameters for the AppServiceCertificateOrdersClient.NewListPager
+//     method.
+func (client *AppServiceCertificateOrdersClient) NewListPager(options *AppServiceCertificateOrdersClientListOptions) *runtime.Pager[AppServiceCertificateOrdersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AppServiceCertificateOrdersClientListResponse]{
+		More: func(page AppServiceCertificateOrdersClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AppServiceCertificateOrdersClientListResponse) (AppServiceCertificateOrdersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AppServiceCertificateOrdersClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return AppServiceCertificateOrdersClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AppServiceCertificateOrdersClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *AppServiceCertificateOrdersClient) listCreateRequest(ctx context.Context, nextLink string, _ *AppServiceCertificateOrdersClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.CertificateRegistration/certificateOrders"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20241101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *AppServiceCertificateOrdersClient) listHandleResponse(resp *http.Response, successCodes ...int) (AppServiceCertificateOrdersClientListResponse, error) {
+	result := AppServiceCertificateOrdersClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AppServiceCertificateOrderCollection); err != nil {
+		return AppServiceCertificateOrdersClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // Reissue - Reissue an existing certificate order.
 //
 // Description for Reissue an existing certificate order.
@@ -697,7 +703,8 @@ func (client *AppServiceCertificateOrdersClient) Reissue(ctx context.Context, re
 		return AppServiceCertificateOrdersClientReissueResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AppServiceCertificateOrdersClientReissueResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AppServiceCertificateOrdersClientReissueResponse{}, err
 	}
 	return AppServiceCertificateOrdersClientReissueResponse{}, nil
 }
@@ -755,7 +762,8 @@ func (client *AppServiceCertificateOrdersClient) Renew(ctx context.Context, reso
 		return AppServiceCertificateOrdersClientRenewResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AppServiceCertificateOrdersClientRenewResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AppServiceCertificateOrdersClientRenewResponse{}, err
 	}
 	return AppServiceCertificateOrdersClientRenewResponse{}, nil
 }
@@ -812,7 +820,8 @@ func (client *AppServiceCertificateOrdersClient) ResendEmail(ctx context.Context
 		return AppServiceCertificateOrdersClientResendEmailResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AppServiceCertificateOrdersClientResendEmailResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AppServiceCertificateOrdersClientResendEmailResponse{}, err
 	}
 	return AppServiceCertificateOrdersClientResendEmailResponse{}, nil
 }
@@ -866,7 +875,8 @@ func (client *AppServiceCertificateOrdersClient) ResendRequestEmails(ctx context
 		return AppServiceCertificateOrdersClientResendRequestEmailsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AppServiceCertificateOrdersClientResendRequestEmailsResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AppServiceCertificateOrdersClientResendRequestEmailsResponse{}, err
 	}
 	return AppServiceCertificateOrdersClientResendRequestEmailsResponse{}, nil
 }
@@ -922,7 +932,8 @@ func (client *AppServiceCertificateOrdersClient) RetrieveCertificateActions(ctx 
 	if err != nil {
 		return AppServiceCertificateOrdersClientRetrieveCertificateActionsResponse{}, err
 	}
-	return client.retrieveCertificateActionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.retrieveCertificateActionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // retrieveCertificateActionsCreateRequest creates the RetrieveCertificateActions request.
@@ -985,7 +996,8 @@ func (client *AppServiceCertificateOrdersClient) RetrieveCertificateEmailHistory
 	if err != nil {
 		return AppServiceCertificateOrdersClientRetrieveCertificateEmailHistoryResponse{}, err
 	}
-	return client.retrieveCertificateEmailHistoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.retrieveCertificateEmailHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // retrieveCertificateEmailHistoryCreateRequest creates the RetrieveCertificateEmailHistory request.
@@ -1054,7 +1066,8 @@ func (client *AppServiceCertificateOrdersClient) RetrieveSiteSeal(ctx context.Co
 	if err != nil {
 		return AppServiceCertificateOrdersClientRetrieveSiteSealResponse{}, err
 	}
-	return client.retrieveSiteSealHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.retrieveSiteSealHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // retrieveSiteSealCreateRequest creates the RetrieveSiteSeal request.
@@ -1122,7 +1135,8 @@ func (client *AppServiceCertificateOrdersClient) Update(ctx context.Context, res
 	if err != nil {
 		return AppServiceCertificateOrdersClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -1191,7 +1205,8 @@ func (client *AppServiceCertificateOrdersClient) UpdateCertificate(ctx context.C
 	if err != nil {
 		return AppServiceCertificateOrdersClientUpdateCertificateResponse{}, err
 	}
-	return client.updateCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCertificateCreateRequest creates the UpdateCertificate request.
@@ -1262,7 +1277,8 @@ func (client *AppServiceCertificateOrdersClient) ValidatePurchaseInformation(ctx
 		return AppServiceCertificateOrdersClientValidatePurchaseInformationResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AppServiceCertificateOrdersClientValidatePurchaseInformationResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AppServiceCertificateOrdersClientValidatePurchaseInformationResponse{}, err
 	}
 	return AppServiceCertificateOrdersClientValidatePurchaseInformationResponse{}, nil
 }
@@ -1311,7 +1327,8 @@ func (client *AppServiceCertificateOrdersClient) VerifyDomainOwnership(ctx conte
 		return AppServiceCertificateOrdersClientVerifyDomainOwnershipResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return AppServiceCertificateOrdersClientVerifyDomainOwnershipResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AppServiceCertificateOrdersClientVerifyDomainOwnershipResponse{}, err
 	}
 	return AppServiceCertificateOrdersClientVerifyDomainOwnershipResponse{}, nil
 }

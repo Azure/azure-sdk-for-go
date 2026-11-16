@@ -70,7 +70,7 @@ func (client *FetchTieringCostClient) BeginPost(ctx context.Context, resourceGro
 	}
 }
 
-// Post - Provides the details of the tiering related sizes and cost.
+// post - Provides the details of the tiering related sizes and cost.
 // Status of the operation can be fetched using GetTieringCostOperationStatus API and result using GetTieringCostOperationResult
 // API.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -89,12 +89,13 @@ func (client *FetchTieringCostClient) post(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// postCreateRequest creates the Post request.
+// postCreateRequest creates the post request.
 func (client *FetchTieringCostClient) postCreateRequest(ctx context.Context, resourceGroupName string, vaultName string, parameters FetchTieringCostInfoRequestClassification, _ *FetchTieringCostClientBeginPostOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupTieringCost/default/fetchTieringCost"
 	if client.subscriptionID == "" {

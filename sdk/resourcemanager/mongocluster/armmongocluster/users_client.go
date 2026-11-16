@@ -70,7 +70,7 @@ func (client *UsersClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 	}
 }
 
-// CreateOrUpdate - Creates a new user or updates an existing user on a mongo cluster.
+// createOrUpdate - Creates a new user or updates an existing user on a mongo cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UsersClient) createOrUpdate(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, resource User, options *UsersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *UsersClient) createOrUpdate(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *UsersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, resource User, _ *UsersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users/{userName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *UsersClient) BeginDelete(ctx context.Context, resourceGroupName st
 	}
 }
 
-// Delete - Deletes a mongo cluster user.
+// deleteOperation - Deletes a mongo cluster user.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *UsersClient) deleteOperation(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, options *UsersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *UsersClient) deleteOperation(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *UsersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, mongoClusterName string, userName string, _ *UsersClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/mongoClusters/{mongoClusterName}/users/{userName}"
 	if client.subscriptionID == "" {
@@ -220,7 +222,8 @@ func (client *UsersClient) Get(ctx context.Context, resourceGroupName string, mo
 	if err != nil {
 		return UsersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

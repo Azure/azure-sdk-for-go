@@ -62,7 +62,8 @@ func (client *ContainerAppsAPIClient) GetCustomDomainVerificationID(ctx context.
 	if err != nil {
 		return ContainerAppsAPIClientGetCustomDomainVerificationIDResponse{}, err
 	}
-	return client.getCustomDomainVerificationIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCustomDomainVerificationIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCustomDomainVerificationIDCreateRequest creates the GetCustomDomainVerificationID request.
@@ -118,7 +119,8 @@ func (client *ContainerAppsAPIClient) JobExecution(ctx context.Context, resource
 	if err != nil {
 		return ContainerAppsAPIClientJobExecutionResponse{}, err
 	}
-	return client.jobExecutionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.jobExecutionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // jobExecutionCreateRequest creates the JobExecution request.

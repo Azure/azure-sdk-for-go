@@ -64,7 +64,8 @@ func (client *MigrationsClient) Cancel(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return MigrationsClientCancelResponse{}, err
 	}
-	return client.cancelHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.cancelHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -132,7 +133,8 @@ func (client *MigrationsClient) CheckNameAvailability(ctx context.Context, resou
 	if err != nil {
 		return MigrationsClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -198,7 +200,8 @@ func (client *MigrationsClient) Create(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return MigrationsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -267,7 +270,8 @@ func (client *MigrationsClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return MigrationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -414,7 +418,8 @@ func (client *MigrationsClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return MigrationsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

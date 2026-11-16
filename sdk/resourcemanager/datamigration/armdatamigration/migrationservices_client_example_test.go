@@ -113,6 +113,47 @@ func ExampleMigrationServicesClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2025-09-01-preview/UpdateMigrationService.json
+func ExampleMigrationServicesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatamigration.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMigrationServicesClient().BeginUpdate(ctx, "testrg", "testagent", armdatamigration.MigrationServiceUpdate{
+		Tags: map[string]*string{
+			"mytag": to.Ptr("myval"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatamigration.MigrationServicesClientUpdateResponse{
+	// 	MigrationService: armdatamigration.MigrationService{
+	// 		Name: to.Ptr("testagent"),
+	// 		Type: to.Ptr("Microsoft.DataMigration/migrationServices"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.DataMigration/migrationServices/testagent"),
+	// 		Location: to.Ptr("northeurope"),
+	// 		Properties: &armdatamigration.MigrationServiceProperties{
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"mytag": to.Ptr("myval"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-09-01-preview/GetMigrationService.json
 func ExampleMigrationServicesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -345,45 +386,4 @@ func ExampleMigrationServicesClient_NewListMigrationsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-09-01-preview/UpdateMigrationService.json
-func ExampleMigrationServicesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatamigration.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewMigrationServicesClient().BeginUpdate(ctx, "testrg", "testagent", armdatamigration.MigrationServiceUpdate{
-		Tags: map[string]*string{
-			"mytag": to.Ptr("myval"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatamigration.MigrationServicesClientUpdateResponse{
-	// 	MigrationService: armdatamigration.MigrationService{
-	// 		Name: to.Ptr("testagent"),
-	// 		Type: to.Ptr("Microsoft.DataMigration/migrationServices"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/testrg/providers/Microsoft.DataMigration/migrationServices/testagent"),
-	// 		Location: to.Ptr("northeurope"),
-	// 		Properties: &armdatamigration.MigrationServiceProperties{
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"mytag": to.Ptr("myval"),
-	// 		},
-	// 	},
-	// }
 }

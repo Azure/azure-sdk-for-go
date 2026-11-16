@@ -58,7 +58,8 @@ func (client *ServicesClient) CreateOrUpdate(ctx context.Context, resourceURI st
 	if err != nil {
 		return ServicesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +120,8 @@ func (client *ServicesClient) Delete(ctx context.Context, resourceURI string, se
 		return ServicesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ServicesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ServicesClientDeleteResponse{}, err
 	}
 	return ServicesClientDeleteResponse{}, nil
 }
@@ -164,7 +166,8 @@ func (client *ServicesClient) Get(ctx context.Context, resourceURI string, servi
 	if err != nil {
 		return ServicesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

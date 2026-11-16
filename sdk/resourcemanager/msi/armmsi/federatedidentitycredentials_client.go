@@ -67,7 +67,8 @@ func (client *FederatedIdentityCredentialsClient) CreateOrUpdate(ctx context.Con
 	if err != nil {
 		return FederatedIdentityCredentialsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -138,7 +139,8 @@ func (client *FederatedIdentityCredentialsClient) Delete(ctx context.Context, re
 		return FederatedIdentityCredentialsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return FederatedIdentityCredentialsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FederatedIdentityCredentialsClientDeleteResponse{}, err
 	}
 	return FederatedIdentityCredentialsClientDeleteResponse{}, nil
 }
@@ -193,7 +195,8 @@ func (client *FederatedIdentityCredentialsClient) Get(ctx context.Context, resou
 	if err != nil {
 		return FederatedIdentityCredentialsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

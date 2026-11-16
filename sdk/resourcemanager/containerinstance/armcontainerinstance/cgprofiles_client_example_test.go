@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfilesListByResourceGroup.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfilesListByResourceGroup.json
 func ExampleCGProfilesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -112,7 +112,7 @@ func ExampleCGProfilesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01/ContainerGroupProfilesList.json
+// Generated from example definition: 2026-07-01/ContainerGroupProfilesList.json
 func ExampleCGProfilesClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

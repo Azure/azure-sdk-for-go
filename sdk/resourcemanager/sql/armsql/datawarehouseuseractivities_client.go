@@ -66,7 +66,8 @@ func (client *DataWarehouseUserActivitiesClient) Get(ctx context.Context, resour
 	if err != nil {
 		return DataWarehouseUserActivitiesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

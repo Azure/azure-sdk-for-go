@@ -65,7 +65,8 @@ func (client *SourceControlsClient) Create(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return SourceControlsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -135,7 +136,8 @@ func (client *SourceControlsClient) Delete(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return SourceControlsClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -204,7 +206,8 @@ func (client *SourceControlsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return SourceControlsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

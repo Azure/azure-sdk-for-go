@@ -61,7 +61,7 @@ func (client *GlobalRulestackClient) BeginCommit(ctx context.Context, globalRule
 	}
 }
 
-// Commit - Commit rulestack configuration
+// commit - Commit rulestack configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GlobalRulestackClient) commit(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientBeginCommitOptions) (*http.Response, error) {
 	var err error
@@ -78,12 +78,13 @@ func (client *GlobalRulestackClient) commit(ctx context.Context, globalRulestack
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// commitCreateRequest creates the Commit request.
+// commitCreateRequest creates the commit request.
 func (client *GlobalRulestackClient) commitCreateRequest(ctx context.Context, globalRulestackName string, _ *GlobalRulestackClientBeginCommitOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/commit"
 	if globalRulestackName == "" {
@@ -123,7 +124,7 @@ func (client *GlobalRulestackClient) BeginCreateOrUpdate(ctx context.Context, gl
 	}
 }
 
-// CreateOrUpdate - Create a GlobalRulestackResource
+// createOrUpdate - Create a GlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GlobalRulestackClient) createOrUpdate(ctx context.Context, globalRulestackName string, resource GlobalRulestackResource, options *GlobalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -140,12 +141,13 @@ func (client *GlobalRulestackClient) createOrUpdate(ctx context.Context, globalR
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *GlobalRulestackClient) createOrUpdateCreateRequest(ctx context.Context, globalRulestackName string, resource GlobalRulestackResource, _ *GlobalRulestackClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}"
 	if globalRulestackName == "" {
@@ -189,7 +191,7 @@ func (client *GlobalRulestackClient) BeginDelete(ctx context.Context, globalRule
 	}
 }
 
-// Delete - Delete a GlobalRulestackResource
+// deleteOperation - Delete a GlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GlobalRulestackClient) deleteOperation(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -206,12 +208,13 @@ func (client *GlobalRulestackClient) deleteOperation(ctx context.Context, global
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GlobalRulestackClient) deleteCreateRequest(ctx context.Context, globalRulestackName string, _ *GlobalRulestackClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}"
 	if globalRulestackName == "" {
@@ -246,7 +249,8 @@ func (client *GlobalRulestackClient) Get(ctx context.Context, globalRulestackNam
 	if err != nil {
 		return GlobalRulestackClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -298,7 +302,8 @@ func (client *GlobalRulestackClient) GetChangeLog(ctx context.Context, globalRul
 	if err != nil {
 		return GlobalRulestackClientGetChangeLogResponse{}, err
 	}
-	return client.getChangeLogHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getChangeLogHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getChangeLogCreateRequest creates the GetChangeLog request.
@@ -327,6 +332,362 @@ func (client *GlobalRulestackClient) getChangeLogHandleResponse(resp *http.Respo
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Changelog); err != nil {
 		return GlobalRulestackClientGetChangeLogResponse{}, err
+	}
+	return result, nil
+}
+
+// ListAdvancedSecurityObjects - Get the list of advanced security objects
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - globalRulestackName - GlobalRulestack resource name
+//   - options - GlobalRulestackClientListAdvancedSecurityObjectsOptions contains the optional parameters for the GlobalRulestackClient.ListAdvancedSecurityObjects
+//     method.
+func (client *GlobalRulestackClient) ListAdvancedSecurityObjects(ctx context.Context, globalRulestackName string, typeParam AdvSecurityObjectTypeEnum, options *GlobalRulestackClientListAdvancedSecurityObjectsOptions) (GlobalRulestackClientListAdvancedSecurityObjectsResponse, error) {
+	var err error
+	const operationName = "GlobalRulestackClient.ListAdvancedSecurityObjects"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listAdvancedSecurityObjectsCreateRequest(ctx, globalRulestackName, typeParam, options)
+	if err != nil {
+		return GlobalRulestackClientListAdvancedSecurityObjectsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GlobalRulestackClientListAdvancedSecurityObjectsResponse{}, err
+	}
+	resp, err := client.listAdvancedSecurityObjectsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listAdvancedSecurityObjectsCreateRequest creates the ListAdvancedSecurityObjects request.
+func (client *GlobalRulestackClient) listAdvancedSecurityObjectsCreateRequest(ctx context.Context, globalRulestackName string, typeParam AdvSecurityObjectTypeEnum, options *GlobalRulestackClientListAdvancedSecurityObjectsOptions) (*policy.Request, error) {
+	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listAdvancedSecurityObjects"
+	if globalRulestackName == "" {
+		return nil, errors.New("parameter globalRulestackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251008)
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", *options.Skip)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("type", string(typeParam))
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listAdvancedSecurityObjectsHandleResponse handles the ListAdvancedSecurityObjects response.
+func (client *GlobalRulestackClient) listAdvancedSecurityObjectsHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListAdvancedSecurityObjectsResponse, error) {
+	result := GlobalRulestackClientListAdvancedSecurityObjectsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AdvSecurityObjectListResponse); err != nil {
+		return GlobalRulestackClientListAdvancedSecurityObjectsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListAppIDs - List of AppIds for GlobalRulestack ApiVersion
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - globalRulestackName - GlobalRulestack resource name
+//   - options - GlobalRulestackClientListAppIDsOptions contains the optional parameters for the GlobalRulestackClient.ListAppIDs
+//     method.
+func (client *GlobalRulestackClient) ListAppIDs(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListAppIDsOptions) (GlobalRulestackClientListAppIDsResponse, error) {
+	var err error
+	const operationName = "GlobalRulestackClient.ListAppIDs"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listAppIDsCreateRequest(ctx, globalRulestackName, options)
+	if err != nil {
+		return GlobalRulestackClientListAppIDsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GlobalRulestackClientListAppIDsResponse{}, err
+	}
+	resp, err := client.listAppIDsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listAppIDsCreateRequest creates the ListAppIDs request.
+func (client *GlobalRulestackClient) listAppIDsCreateRequest(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListAppIDsOptions) (*policy.Request, error) {
+	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listAppIds"
+	if globalRulestackName == "" {
+		return nil, errors.New("parameter globalRulestackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251008)
+	if options != nil && options.AppIDVersion != nil {
+		reqQP.Set("appIdVersion", *options.AppIDVersion)
+	}
+	if options != nil && options.AppPrefix != nil {
+		reqQP.Set("appPrefix", *options.AppPrefix)
+	}
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", *options.Skip)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listAppIDsHandleResponse handles the ListAppIDs response.
+func (client *GlobalRulestackClient) listAppIDsHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListAppIDsResponse, error) {
+	result := GlobalRulestackClientListAppIDsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListAppIDResponse); err != nil {
+		return GlobalRulestackClientListAppIDsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListCountries - List of countries for Rulestack
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - globalRulestackName - GlobalRulestack resource name
+//   - options - GlobalRulestackClientListCountriesOptions contains the optional parameters for the GlobalRulestackClient.ListCountries
+//     method.
+func (client *GlobalRulestackClient) ListCountries(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListCountriesOptions) (GlobalRulestackClientListCountriesResponse, error) {
+	var err error
+	const operationName = "GlobalRulestackClient.ListCountries"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCountriesCreateRequest(ctx, globalRulestackName, options)
+	if err != nil {
+		return GlobalRulestackClientListCountriesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GlobalRulestackClientListCountriesResponse{}, err
+	}
+	resp, err := client.listCountriesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listCountriesCreateRequest creates the ListCountries request.
+func (client *GlobalRulestackClient) listCountriesCreateRequest(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListCountriesOptions) (*policy.Request, error) {
+	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listCountries"
+	if globalRulestackName == "" {
+		return nil, errors.New("parameter globalRulestackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251008)
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", *options.Skip)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listCountriesHandleResponse handles the ListCountries response.
+func (client *GlobalRulestackClient) listCountriesHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListCountriesResponse, error) {
+	result := GlobalRulestackClientListCountriesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CountriesResponse); err != nil {
+		return GlobalRulestackClientListCountriesResponse{}, err
+	}
+	return result, nil
+}
+
+// ListFirewalls - List of Firewalls associated with Rulestack
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - globalRulestackName - GlobalRulestack resource name
+//   - options - GlobalRulestackClientListFirewallsOptions contains the optional parameters for the GlobalRulestackClient.ListFirewalls
+//     method.
+func (client *GlobalRulestackClient) ListFirewalls(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListFirewallsOptions) (GlobalRulestackClientListFirewallsResponse, error) {
+	var err error
+	const operationName = "GlobalRulestackClient.ListFirewalls"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listFirewallsCreateRequest(ctx, globalRulestackName, options)
+	if err != nil {
+		return GlobalRulestackClientListFirewallsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GlobalRulestackClientListFirewallsResponse{}, err
+	}
+	resp, err := client.listFirewallsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listFirewallsCreateRequest creates the ListFirewalls request.
+func (client *GlobalRulestackClient) listFirewallsCreateRequest(ctx context.Context, globalRulestackName string, _ *GlobalRulestackClientListFirewallsOptions) (*policy.Request, error) {
+	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listFirewalls"
+	if globalRulestackName == "" {
+		return nil, errors.New("parameter globalRulestackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251008)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listFirewallsHandleResponse handles the ListFirewalls response.
+func (client *GlobalRulestackClient) listFirewallsHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListFirewallsResponse, error) {
+	result := GlobalRulestackClientListFirewallsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ListFirewallsResponse); err != nil {
+		return GlobalRulestackClientListFirewallsResponse{}, err
+	}
+	return result, nil
+}
+
+// ListPredefinedURLCategories - List predefined URL categories for rulestack
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - globalRulestackName - GlobalRulestack resource name
+//   - options - GlobalRulestackClientListPredefinedURLCategoriesOptions contains the optional parameters for the GlobalRulestackClient.ListPredefinedURLCategories
+//     method.
+func (client *GlobalRulestackClient) ListPredefinedURLCategories(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListPredefinedURLCategoriesOptions) (GlobalRulestackClientListPredefinedURLCategoriesResponse, error) {
+	var err error
+	const operationName = "GlobalRulestackClient.ListPredefinedURLCategories"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listPredefinedURLCategoriesCreateRequest(ctx, globalRulestackName, options)
+	if err != nil {
+		return GlobalRulestackClientListPredefinedURLCategoriesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GlobalRulestackClientListPredefinedURLCategoriesResponse{}, err
+	}
+	resp, err := client.listPredefinedURLCategoriesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listPredefinedURLCategoriesCreateRequest creates the ListPredefinedURLCategories request.
+func (client *GlobalRulestackClient) listPredefinedURLCategoriesCreateRequest(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListPredefinedURLCategoriesOptions) (*policy.Request, error) {
+	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listPredefinedUrlCategories"
+	if globalRulestackName == "" {
+		return nil, errors.New("parameter globalRulestackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251008)
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", *options.Skip)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listPredefinedURLCategoriesHandleResponse handles the ListPredefinedURLCategories response.
+func (client *GlobalRulestackClient) listPredefinedURLCategoriesHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListPredefinedURLCategoriesResponse, error) {
+	result := GlobalRulestackClientListPredefinedURLCategoriesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.PredefinedURLCategoriesResponse); err != nil {
+		return GlobalRulestackClientListPredefinedURLCategoriesResponse{}, err
+	}
+	return result, nil
+}
+
+// ListSecurityServices - List the security services for rulestack
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - globalRulestackName - GlobalRulestack resource name
+//   - options - GlobalRulestackClientListSecurityServicesOptions contains the optional parameters for the GlobalRulestackClient.ListSecurityServices
+//     method.
+func (client *GlobalRulestackClient) ListSecurityServices(ctx context.Context, globalRulestackName string, typeParam SecurityServicesTypeEnum, options *GlobalRulestackClientListSecurityServicesOptions) (GlobalRulestackClientListSecurityServicesResponse, error) {
+	var err error
+	const operationName = "GlobalRulestackClient.ListSecurityServices"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSecurityServicesCreateRequest(ctx, globalRulestackName, typeParam, options)
+	if err != nil {
+		return GlobalRulestackClientListSecurityServicesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return GlobalRulestackClientListSecurityServicesResponse{}, err
+	}
+	resp, err := client.listSecurityServicesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listSecurityServicesCreateRequest creates the ListSecurityServices request.
+func (client *GlobalRulestackClient) listSecurityServicesCreateRequest(ctx context.Context, globalRulestackName string, typeParam SecurityServicesTypeEnum, options *GlobalRulestackClientListSecurityServicesOptions) (*policy.Request, error) {
+	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listSecurityServices"
+	if globalRulestackName == "" {
+		return nil, errors.New("parameter globalRulestackName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251008)
+	if options != nil && options.Skip != nil {
+		reqQP.Set("skip", *options.Skip)
+	}
+	if options != nil && options.Top != nil {
+		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
+	}
+	reqQP.Set("type", string(typeParam))
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSecurityServicesHandleResponse handles the ListSecurityServices response.
+func (client *GlobalRulestackClient) listSecurityServicesHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListSecurityServicesResponse, error) {
+	result := GlobalRulestackClientListSecurityServicesResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityServicesResponse); err != nil {
+		return GlobalRulestackClientListSecurityServicesResponse{}, err
 	}
 	return result, nil
 }
@@ -394,356 +755,6 @@ func (client *GlobalRulestackClient) listHandleResponse(resp *http.Response, suc
 	return result, nil
 }
 
-// ListAdvancedSecurityObjects - Get the list of advanced security objects
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - globalRulestackName - GlobalRulestack resource name
-//   - options - GlobalRulestackClientListAdvancedSecurityObjectsOptions contains the optional parameters for the GlobalRulestackClient.ListAdvancedSecurityObjects
-//     method.
-func (client *GlobalRulestackClient) ListAdvancedSecurityObjects(ctx context.Context, globalRulestackName string, typeParam AdvSecurityObjectTypeEnum, options *GlobalRulestackClientListAdvancedSecurityObjectsOptions) (GlobalRulestackClientListAdvancedSecurityObjectsResponse, error) {
-	var err error
-	const operationName = "GlobalRulestackClient.ListAdvancedSecurityObjects"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listAdvancedSecurityObjectsCreateRequest(ctx, globalRulestackName, typeParam, options)
-	if err != nil {
-		return GlobalRulestackClientListAdvancedSecurityObjectsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GlobalRulestackClientListAdvancedSecurityObjectsResponse{}, err
-	}
-	return client.listAdvancedSecurityObjectsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listAdvancedSecurityObjectsCreateRequest creates the ListAdvancedSecurityObjects request.
-func (client *GlobalRulestackClient) listAdvancedSecurityObjectsCreateRequest(ctx context.Context, globalRulestackName string, typeParam AdvSecurityObjectTypeEnum, options *GlobalRulestackClientListAdvancedSecurityObjectsOptions) (*policy.Request, error) {
-	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listAdvancedSecurityObjects"
-	if globalRulestackName == "" {
-		return nil, errors.New("parameter globalRulestackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", *options.Skip)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("type", string(typeParam))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listAdvancedSecurityObjectsHandleResponse handles the ListAdvancedSecurityObjects response.
-func (client *GlobalRulestackClient) listAdvancedSecurityObjectsHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListAdvancedSecurityObjectsResponse, error) {
-	result := GlobalRulestackClientListAdvancedSecurityObjectsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AdvSecurityObjectListResponse); err != nil {
-		return GlobalRulestackClientListAdvancedSecurityObjectsResponse{}, err
-	}
-	return result, nil
-}
-
-// ListAppIDs - List of AppIds for GlobalRulestack ApiVersion
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - globalRulestackName - GlobalRulestack resource name
-//   - options - GlobalRulestackClientListAppIDsOptions contains the optional parameters for the GlobalRulestackClient.ListAppIDs
-//     method.
-func (client *GlobalRulestackClient) ListAppIDs(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListAppIDsOptions) (GlobalRulestackClientListAppIDsResponse, error) {
-	var err error
-	const operationName = "GlobalRulestackClient.ListAppIDs"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listAppIDsCreateRequest(ctx, globalRulestackName, options)
-	if err != nil {
-		return GlobalRulestackClientListAppIDsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GlobalRulestackClientListAppIDsResponse{}, err
-	}
-	return client.listAppIDsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listAppIDsCreateRequest creates the ListAppIDs request.
-func (client *GlobalRulestackClient) listAppIDsCreateRequest(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListAppIDsOptions) (*policy.Request, error) {
-	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listAppIds"
-	if globalRulestackName == "" {
-		return nil, errors.New("parameter globalRulestackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
-	if options != nil && options.AppIDVersion != nil {
-		reqQP.Set("appIdVersion", *options.AppIDVersion)
-	}
-	if options != nil && options.AppPrefix != nil {
-		reqQP.Set("appPrefix", *options.AppPrefix)
-	}
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", *options.Skip)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listAppIDsHandleResponse handles the ListAppIDs response.
-func (client *GlobalRulestackClient) listAppIDsHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListAppIDsResponse, error) {
-	result := GlobalRulestackClientListAppIDsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListAppIDResponse); err != nil {
-		return GlobalRulestackClientListAppIDsResponse{}, err
-	}
-	return result, nil
-}
-
-// ListCountries - List of countries for Rulestack
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - globalRulestackName - GlobalRulestack resource name
-//   - options - GlobalRulestackClientListCountriesOptions contains the optional parameters for the GlobalRulestackClient.ListCountries
-//     method.
-func (client *GlobalRulestackClient) ListCountries(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListCountriesOptions) (GlobalRulestackClientListCountriesResponse, error) {
-	var err error
-	const operationName = "GlobalRulestackClient.ListCountries"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCountriesCreateRequest(ctx, globalRulestackName, options)
-	if err != nil {
-		return GlobalRulestackClientListCountriesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GlobalRulestackClientListCountriesResponse{}, err
-	}
-	return client.listCountriesHandleResponse(httpResp, http.StatusOK)
-}
-
-// listCountriesCreateRequest creates the ListCountries request.
-func (client *GlobalRulestackClient) listCountriesCreateRequest(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListCountriesOptions) (*policy.Request, error) {
-	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listCountries"
-	if globalRulestackName == "" {
-		return nil, errors.New("parameter globalRulestackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", *options.Skip)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listCountriesHandleResponse handles the ListCountries response.
-func (client *GlobalRulestackClient) listCountriesHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListCountriesResponse, error) {
-	result := GlobalRulestackClientListCountriesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CountriesResponse); err != nil {
-		return GlobalRulestackClientListCountriesResponse{}, err
-	}
-	return result, nil
-}
-
-// ListFirewalls - List of Firewalls associated with Rulestack
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - globalRulestackName - GlobalRulestack resource name
-//   - options - GlobalRulestackClientListFirewallsOptions contains the optional parameters for the GlobalRulestackClient.ListFirewalls
-//     method.
-func (client *GlobalRulestackClient) ListFirewalls(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListFirewallsOptions) (GlobalRulestackClientListFirewallsResponse, error) {
-	var err error
-	const operationName = "GlobalRulestackClient.ListFirewalls"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listFirewallsCreateRequest(ctx, globalRulestackName, options)
-	if err != nil {
-		return GlobalRulestackClientListFirewallsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GlobalRulestackClientListFirewallsResponse{}, err
-	}
-	return client.listFirewallsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listFirewallsCreateRequest creates the ListFirewalls request.
-func (client *GlobalRulestackClient) listFirewallsCreateRequest(ctx context.Context, globalRulestackName string, _ *GlobalRulestackClientListFirewallsOptions) (*policy.Request, error) {
-	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listFirewalls"
-	if globalRulestackName == "" {
-		return nil, errors.New("parameter globalRulestackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listFirewallsHandleResponse handles the ListFirewalls response.
-func (client *GlobalRulestackClient) listFirewallsHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListFirewallsResponse, error) {
-	result := GlobalRulestackClientListFirewallsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ListFirewallsResponse); err != nil {
-		return GlobalRulestackClientListFirewallsResponse{}, err
-	}
-	return result, nil
-}
-
-// ListPredefinedURLCategories - List predefined URL categories for rulestack
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - globalRulestackName - GlobalRulestack resource name
-//   - options - GlobalRulestackClientListPredefinedURLCategoriesOptions contains the optional parameters for the GlobalRulestackClient.ListPredefinedURLCategories
-//     method.
-func (client *GlobalRulestackClient) ListPredefinedURLCategories(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListPredefinedURLCategoriesOptions) (GlobalRulestackClientListPredefinedURLCategoriesResponse, error) {
-	var err error
-	const operationName = "GlobalRulestackClient.ListPredefinedURLCategories"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listPredefinedURLCategoriesCreateRequest(ctx, globalRulestackName, options)
-	if err != nil {
-		return GlobalRulestackClientListPredefinedURLCategoriesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GlobalRulestackClientListPredefinedURLCategoriesResponse{}, err
-	}
-	return client.listPredefinedURLCategoriesHandleResponse(httpResp, http.StatusOK)
-}
-
-// listPredefinedURLCategoriesCreateRequest creates the ListPredefinedURLCategories request.
-func (client *GlobalRulestackClient) listPredefinedURLCategoriesCreateRequest(ctx context.Context, globalRulestackName string, options *GlobalRulestackClientListPredefinedURLCategoriesOptions) (*policy.Request, error) {
-	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listPredefinedUrlCategories"
-	if globalRulestackName == "" {
-		return nil, errors.New("parameter globalRulestackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", *options.Skip)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listPredefinedURLCategoriesHandleResponse handles the ListPredefinedURLCategories response.
-func (client *GlobalRulestackClient) listPredefinedURLCategoriesHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListPredefinedURLCategoriesResponse, error) {
-	result := GlobalRulestackClientListPredefinedURLCategoriesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PredefinedURLCategoriesResponse); err != nil {
-		return GlobalRulestackClientListPredefinedURLCategoriesResponse{}, err
-	}
-	return result, nil
-}
-
-// ListSecurityServices - List the security services for rulestack
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - globalRulestackName - GlobalRulestack resource name
-//   - options - GlobalRulestackClientListSecurityServicesOptions contains the optional parameters for the GlobalRulestackClient.ListSecurityServices
-//     method.
-func (client *GlobalRulestackClient) ListSecurityServices(ctx context.Context, globalRulestackName string, typeParam SecurityServicesTypeEnum, options *GlobalRulestackClientListSecurityServicesOptions) (GlobalRulestackClientListSecurityServicesResponse, error) {
-	var err error
-	const operationName = "GlobalRulestackClient.ListSecurityServices"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listSecurityServicesCreateRequest(ctx, globalRulestackName, typeParam, options)
-	if err != nil {
-		return GlobalRulestackClientListSecurityServicesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return GlobalRulestackClientListSecurityServicesResponse{}, err
-	}
-	return client.listSecurityServicesHandleResponse(httpResp, http.StatusOK)
-}
-
-// listSecurityServicesCreateRequest creates the ListSecurityServices request.
-func (client *GlobalRulestackClient) listSecurityServicesCreateRequest(ctx context.Context, globalRulestackName string, typeParam SecurityServicesTypeEnum, options *GlobalRulestackClientListSecurityServicesOptions) (*policy.Request, error) {
-	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/listSecurityServices"
-	if globalRulestackName == "" {
-		return nil, errors.New("parameter globalRulestackName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{globalRulestackName}", url.PathEscape(globalRulestackName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251008)
-	if options != nil && options.Skip != nil {
-		reqQP.Set("skip", *options.Skip)
-	}
-	if options != nil && options.Top != nil {
-		reqQP.Set("top", strconv.FormatInt(int64(*options.Top), 10))
-	}
-	reqQP.Set("type", string(typeParam))
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listSecurityServicesHandleResponse handles the ListSecurityServices response.
-func (client *GlobalRulestackClient) listSecurityServicesHandleResponse(resp *http.Response, successCodes ...int) (GlobalRulestackClientListSecurityServicesResponse, error) {
-	result := GlobalRulestackClientListSecurityServicesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SecurityServicesResponse); err != nil {
-		return GlobalRulestackClientListSecurityServicesResponse{}, err
-	}
-	return result, nil
-}
-
 // Revert - Revert rulestack configuration
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - globalRulestackName - GlobalRulestack resource name
@@ -763,7 +774,8 @@ func (client *GlobalRulestackClient) Revert(ctx context.Context, globalRulestack
 		return GlobalRulestackClientRevertResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return GlobalRulestackClientRevertResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return GlobalRulestackClientRevertResponse{}, err
 	}
 	return GlobalRulestackClientRevertResponse{}, nil
 }
@@ -804,7 +816,8 @@ func (client *GlobalRulestackClient) Update(ctx context.Context, globalRulestack
 	if err != nil {
 		return GlobalRulestackClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

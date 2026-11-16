@@ -64,7 +64,8 @@ func (client *MHSMPrivateLinkResourcesClient) ListByMHSMResource(ctx context.Con
 	if err != nil {
 		return MHSMPrivateLinkResourcesClientListByMHSMResourceResponse{}, err
 	}
-	return client.listByMHSMResourceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByMHSMResourceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByMHSMResourceCreateRequest creates the ListByMHSMResource request.

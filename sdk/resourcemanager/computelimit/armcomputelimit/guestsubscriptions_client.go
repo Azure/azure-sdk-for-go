@@ -65,7 +65,8 @@ func (client *GuestSubscriptionsClient) Create(ctx context.Context, location str
 	if err != nil {
 		return GuestSubscriptionsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -131,7 +132,8 @@ func (client *GuestSubscriptionsClient) Delete(ctx context.Context, location str
 		return GuestSubscriptionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return GuestSubscriptionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return GuestSubscriptionsClientDeleteResponse{}, err
 	}
 	return GuestSubscriptionsClientDeleteResponse{}, nil
 }
@@ -180,7 +182,8 @@ func (client *GuestSubscriptionsClient) Get(ctx context.Context, location string
 	if err != nil {
 		return GuestSubscriptionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

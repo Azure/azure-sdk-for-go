@@ -86,7 +86,8 @@ func (client *EdgeActionVersionsClient) create(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -134,7 +135,7 @@ func (client *EdgeActionVersionsClient) createCreateRequest(ctx context.Context,
 //     method.
 func (client *EdgeActionVersionsClient) BeginDelete(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginDeleteOptions) (*runtime.Poller[EdgeActionVersionsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, edgeActionName, version, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, edgeActionName, version, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +150,9 @@ func (client *EdgeActionVersionsClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// delete - Delete a EdgeActionVersion
+// deleteOperation - Delete a EdgeActionVersion
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *EdgeActionVersionsClient) delete(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *EdgeActionVersionsClient) deleteOperation(ctx context.Context, resourceGroupName string, edgeActionName string, version string, options *EdgeActionVersionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EdgeActionVersionsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -166,7 +167,8 @@ func (client *EdgeActionVersionsClient) delete(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -242,7 +244,8 @@ func (client *EdgeActionVersionsClient) deployVersionCode(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -322,7 +325,8 @@ func (client *EdgeActionVersionsClient) getVersionCode(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -398,7 +402,8 @@ func (client *EdgeActionVersionsClient) swapDefault(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -478,7 +483,8 @@ func (client *EdgeActionVersionsClient) update(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -537,7 +543,8 @@ func (client *EdgeActionVersionsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return EdgeActionVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

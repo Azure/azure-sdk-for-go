@@ -19,7 +19,7 @@ import (
 // AccountCapabilityHostsClient contains the methods for the AccountCapabilityHosts group.
 // Don't use this type directly, use NewAccountCapabilityHostsClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-01
 type AccountCapabilityHostsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -91,7 +91,8 @@ func (client *AccountCapabilityHostsClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -120,7 +121,7 @@ func (client *AccountCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -141,7 +142,7 @@ func (client *AccountCapabilityHostsClient) createOrUpdateCreateRequest(ctx cont
 //     method.
 func (client *AccountCapabilityHostsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, capabilityHostName string, options *AccountCapabilityHostsClientBeginDeleteOptions) (*runtime.Poller[AccountCapabilityHostsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, capabilityHostName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, capabilityHostName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -156,11 +157,11 @@ func (client *AccountCapabilityHostsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// delete - Delete account capabilityHost.
+// deleteOperation - Delete account capabilityHost.
 //
 // Delete account capabilityHost.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AccountCapabilityHostsClient) delete(ctx context.Context, resourceGroupName string, accountName string, capabilityHostName string, options *AccountCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AccountCapabilityHostsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, capabilityHostName string, options *AccountCapabilityHostsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AccountCapabilityHostsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -175,7 +176,8 @@ func (client *AccountCapabilityHostsClient) delete(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -204,7 +206,7 @@ func (client *AccountCapabilityHostsClient) deleteCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -232,7 +234,8 @@ func (client *AccountCapabilityHostsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return AccountCapabilityHostsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -259,7 +262,7 @@ func (client *AccountCapabilityHostsClient) getCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -337,7 +340,7 @@ func (client *AccountCapabilityHostsClient) listCreateRequest(ctx context.Contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260915Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

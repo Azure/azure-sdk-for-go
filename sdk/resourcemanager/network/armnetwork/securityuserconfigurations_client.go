@@ -54,7 +54,7 @@ func NewSecurityUserConfigurationsClient(subscriptionID string, credential azcor
 //     method.
 func (client *SecurityUserConfigurationsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *SecurityUserConfigurationsClientBeginDeleteOptions) (*runtime.Poller[SecurityUserConfigurationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, configurationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, configurationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -69,9 +69,9 @@ func (client *SecurityUserConfigurationsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// delete - Deletes a network manager security user configuration.
+// deleteOperation - Deletes a network manager security user configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityUserConfigurationsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *SecurityUserConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityUserConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, options *SecurityUserConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityUserConfigurationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -86,7 +86,8 @@ func (client *SecurityUserConfigurationsClient) delete(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -145,7 +146,8 @@ func (client *SecurityUserConfigurationsClient) CreateOrUpdate(ctx context.Conte
 	if err != nil {
 		return SecurityUserConfigurationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -215,7 +217,8 @@ func (client *SecurityUserConfigurationsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return SecurityUserConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

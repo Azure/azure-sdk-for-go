@@ -68,7 +68,7 @@ func (client *FabricAgentClient) BeginCreate(ctx context.Context, resourceGroupN
 	}
 }
 
-// Create - Creates the fabric agent.
+// create - Creates the fabric agent.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FabricAgentClient) create(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, resource FabricAgentModel, options *FabricAgentClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *FabricAgentClient) create(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *FabricAgentClient) createCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, resource FabricAgentModel, _ *FabricAgentClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}"
 	if client.subscriptionID == "" {
@@ -147,7 +148,7 @@ func (client *FabricAgentClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes fabric agent.
+// deleteOperation - Deletes fabric agent.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FabricAgentClient) deleteOperation(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, options *FabricAgentClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,12 +165,13 @@ func (client *FabricAgentClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FabricAgentClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, fabricName string, fabricAgentName string, _ *FabricAgentClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataReplication/replicationFabrics/{fabricName}/fabricAgents/{fabricAgentName}"
 	if client.subscriptionID == "" {
@@ -218,7 +220,8 @@ func (client *FabricAgentClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return FabricAgentClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -63,7 +63,8 @@ func (client *ImpactedResourcesClient) Get(ctx context.Context, eventTrackingID 
 	if err != nil {
 		return ImpactedResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -124,7 +125,8 @@ func (client *ImpactedResourcesClient) GetByTenantID(ctx context.Context, eventT
 	if err != nil {
 		return ImpactedResourcesClientGetByTenantIDResponse{}, err
 	}
-	return client.getByTenantIDHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByTenantIDHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByTenantIDCreateRequest creates the GetByTenantID request.

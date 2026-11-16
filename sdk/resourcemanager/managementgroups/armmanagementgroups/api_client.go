@@ -55,7 +55,8 @@ func (client *APIClient) CheckNameAvailability(ctx context.Context, checkNameAva
 	if err != nil {
 		return APIClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -105,7 +106,8 @@ func (client *APIClient) StartTenantBackfill(ctx context.Context, options *APICl
 	if err != nil {
 		return APIClientStartTenantBackfillResponse{}, err
 	}
-	return client.startTenantBackfillHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.startTenantBackfillHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // startTenantBackfillCreateRequest creates the StartTenantBackfill request.
@@ -152,7 +154,8 @@ func (client *APIClient) TenantBackfillStatus(ctx context.Context, options *APIC
 	if err != nil {
 		return APIClientTenantBackfillStatusResponse{}, err
 	}
-	return client.tenantBackfillStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.tenantBackfillStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // tenantBackfillStatusCreateRequest creates the TenantBackfillStatus request.

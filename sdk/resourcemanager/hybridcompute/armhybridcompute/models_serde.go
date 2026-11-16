@@ -3151,6 +3151,7 @@ func (m *MachineUpdate) UnmarshalJSON(data []byte) error {
 func (m MachineUpdateProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "agentUpgrade", m.AgentUpgrade)
+	populate(objectMap, "clientPublicKey", m.ClientPublicKey)
 	populate(objectMap, "cloudMetadata", m.CloudMetadata)
 	populate(objectMap, "identityKeyStore", m.IdentityKeyStore)
 	populate(objectMap, "locationData", m.LocationData)
@@ -3172,6 +3173,9 @@ func (m *MachineUpdateProperties) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "agentUpgrade":
 			err = unpopulate(val, "AgentUpgrade", &m.AgentUpgrade)
+			delete(rawMsg, key)
+		case "clientPublicKey":
+			err = unpopulate(val, "ClientPublicKey", &m.ClientPublicKey)
 			delete(rawMsg, key)
 		case "cloudMetadata":
 			err = unpopulate(val, "CloudMetadata", &m.CloudMetadata)
@@ -4970,6 +4974,291 @@ func (u *UserAssignedIdentity) UnmarshalJSON(data []byte) error {
 		}
 		if err != nil {
 			return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMApplication.
+func (v VMApplication) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "id", v.ID)
+	populate(objectMap, "location", v.Location)
+	populate(objectMap, "name", v.Name)
+	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "systemData", v.SystemData)
+	populate(objectMap, "tags", v.Tags)
+	populate(objectMap, "type", v.Type)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMApplication.
+func (v *VMApplication) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "id":
+			err = unpopulate(val, "ID", &v.ID)
+			delete(rawMsg, key)
+		case "location":
+			err = unpopulate(val, "Location", &v.Location)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &v.Name)
+			delete(rawMsg, key)
+		case "properties":
+			err = unpopulate(val, "Properties", &v.Properties)
+			delete(rawMsg, key)
+		case "systemData":
+			err = unpopulate(val, "SystemData", &v.SystemData)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &v.Tags)
+			delete(rawMsg, key)
+		case "type":
+			err = unpopulate(val, "Type", &v.Type)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMApplicationInstanceView.
+func (v VMApplicationInstanceView) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "actionsPerformed", v.ActionsPerformed)
+	populate(objectMap, "name", v.Name)
+	populate(objectMap, "result", v.Result)
+	populate(objectMap, "version", v.Version)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMApplicationInstanceView.
+func (v *VMApplicationInstanceView) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "actionsPerformed":
+			err = unpopulate(val, "ActionsPerformed", &v.ActionsPerformed)
+			delete(rawMsg, key)
+		case "name":
+			err = unpopulate(val, "Name", &v.Name)
+			delete(rawMsg, key)
+		case "result":
+			err = unpopulate(val, "Result", &v.Result)
+			delete(rawMsg, key)
+		case "version":
+			err = unpopulate(val, "Version", &v.Version)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMApplicationInstanceViewAction.
+func (v VMApplicationInstanceViewAction) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "operation", v.Operation)
+	populate(objectMap, "result", v.Result)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMApplicationInstanceViewAction.
+func (v *VMApplicationInstanceViewAction) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "operation":
+			err = unpopulate(val, "Operation", &v.Operation)
+			delete(rawMsg, key)
+		case "result":
+			err = unpopulate(val, "Result", &v.Result)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMApplicationProperties.
+func (v VMApplicationProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "communityGalleryApplicationId", v.CommunityGalleryApplicationID)
+	populate(objectMap, "configurationReference", v.ConfigurationReference)
+	populate(objectMap, "instanceView", v.InstanceView)
+	populate(objectMap, "order", v.Order)
+	populate(objectMap, "packageReferenceId", v.PackageReferenceID)
+	populate(objectMap, "provisioningState", v.ProvisioningState)
+	populate(objectMap, "sharedGalleryApplicationId", v.SharedGalleryApplicationID)
+	populate(objectMap, "treatFailureAsDeploymentFailure", v.TreatFailureAsDeploymentFailure)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMApplicationProperties.
+func (v *VMApplicationProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "communityGalleryApplicationId":
+			err = unpopulate(val, "CommunityGalleryApplicationID", &v.CommunityGalleryApplicationID)
+			delete(rawMsg, key)
+		case "configurationReference":
+			err = unpopulate(val, "ConfigurationReference", &v.ConfigurationReference)
+			delete(rawMsg, key)
+		case "instanceView":
+			err = unpopulate(val, "InstanceView", &v.InstanceView)
+			delete(rawMsg, key)
+		case "order":
+			err = unpopulate(val, "Order", &v.Order)
+			delete(rawMsg, key)
+		case "packageReferenceId":
+			err = unpopulate(val, "PackageReferenceID", &v.PackageReferenceID)
+			delete(rawMsg, key)
+		case "provisioningState":
+			err = unpopulate(val, "ProvisioningState", &v.ProvisioningState)
+			delete(rawMsg, key)
+		case "sharedGalleryApplicationId":
+			err = unpopulate(val, "SharedGalleryApplicationID", &v.SharedGalleryApplicationID)
+			delete(rawMsg, key)
+		case "treatFailureAsDeploymentFailure":
+			err = unpopulate(val, "TreatFailureAsDeploymentFailure", &v.TreatFailureAsDeploymentFailure)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMApplicationUpdate.
+func (v VMApplicationUpdate) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "properties", v.Properties)
+	populate(objectMap, "tags", v.Tags)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMApplicationUpdate.
+func (v *VMApplicationUpdate) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "properties":
+			err = unpopulate(val, "Properties", &v.Properties)
+			delete(rawMsg, key)
+		case "tags":
+			err = unpopulate(val, "Tags", &v.Tags)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMApplicationUpdateProperties.
+func (v VMApplicationUpdateProperties) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "communityGalleryApplicationId", v.CommunityGalleryApplicationID)
+	populate(objectMap, "configurationReference", v.ConfigurationReference)
+	populate(objectMap, "order", v.Order)
+	populate(objectMap, "packageReferenceId", v.PackageReferenceID)
+	populate(objectMap, "sharedGalleryApplicationId", v.SharedGalleryApplicationID)
+	populate(objectMap, "treatFailureAsDeploymentFailure", v.TreatFailureAsDeploymentFailure)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMApplicationUpdateProperties.
+func (v *VMApplicationUpdateProperties) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "communityGalleryApplicationId":
+			err = unpopulate(val, "CommunityGalleryApplicationID", &v.CommunityGalleryApplicationID)
+			delete(rawMsg, key)
+		case "configurationReference":
+			err = unpopulate(val, "ConfigurationReference", &v.ConfigurationReference)
+			delete(rawMsg, key)
+		case "order":
+			err = unpopulate(val, "Order", &v.Order)
+			delete(rawMsg, key)
+		case "packageReferenceId":
+			err = unpopulate(val, "PackageReferenceID", &v.PackageReferenceID)
+			delete(rawMsg, key)
+		case "sharedGalleryApplicationId":
+			err = unpopulate(val, "SharedGalleryApplicationID", &v.SharedGalleryApplicationID)
+			delete(rawMsg, key)
+		case "treatFailureAsDeploymentFailure":
+			err = unpopulate(val, "TreatFailureAsDeploymentFailure", &v.TreatFailureAsDeploymentFailure)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+		}
+	}
+	return nil
+}
+
+// MarshalJSON implements the json.Marshaller interface for type VMApplicationsListResult.
+func (v VMApplicationsListResult) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populate(objectMap, "nextLink", v.NextLink)
+	populate(objectMap, "value", v.Value)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type VMApplicationsListResult.
+func (v *VMApplicationsListResult) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "nextLink":
+			err = unpopulate(val, "NextLink", &v.NextLink)
+			delete(rawMsg, key)
+		case "value":
+			err = unpopulate(val, "Value", &v.Value)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", v, err.Error())
 		}
 	}
 	return nil

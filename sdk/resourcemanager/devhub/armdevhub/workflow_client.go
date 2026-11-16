@@ -65,7 +65,8 @@ func (client *WorkflowClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return WorkflowClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *WorkflowClient) Delete(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return WorkflowClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -193,7 +195,8 @@ func (client *WorkflowClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return WorkflowClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -230,74 +233,6 @@ func (client *WorkflowClient) getHandleResponse(resp *http.Response, successCode
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Workflow); err != nil {
 		return WorkflowClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets a list of workflows associated with the specified subscription.
-//
-// Gets a list of workflows associated with the specified subscription.
-//   - options - WorkflowClientListOptions contains the optional parameters for the WorkflowClient.NewListPager method.
-func (client *WorkflowClient) NewListPager(options *WorkflowClientListOptions) *runtime.Pager[WorkflowClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[WorkflowClientListResponse]{
-		More: func(page WorkflowClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *WorkflowClientListResponse) (WorkflowClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkflowClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return WorkflowClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return WorkflowClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *WorkflowClient) listCreateRequest(ctx context.Context, nextLink string, _ *WorkflowClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250301Preview)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *WorkflowClient) listHandleResponse(resp *http.Response, successCodes ...int) (WorkflowClientListResponse, error) {
-	result := WorkflowClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowListResult); err != nil {
-		return WorkflowClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -379,6 +314,74 @@ func (client *WorkflowClient) listByResourceGroupHandleResponse(resp *http.Respo
 	return result, nil
 }
 
+// NewListPager - Gets a list of workflows associated with the specified subscription.
+//
+// Gets a list of workflows associated with the specified subscription.
+//   - options - WorkflowClientListOptions contains the optional parameters for the WorkflowClient.NewListPager method.
+func (client *WorkflowClient) NewListPager(options *WorkflowClientListOptions) *runtime.Pager[WorkflowClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[WorkflowClientListResponse]{
+		More: func(page WorkflowClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *WorkflowClientListResponse) (WorkflowClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "WorkflowClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return WorkflowClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return WorkflowClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *WorkflowClient) listCreateRequest(ctx context.Context, nextLink string, _ *WorkflowClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.DevHub/workflows"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250301Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *WorkflowClient) listHandleResponse(resp *http.Response, successCodes ...int) (WorkflowClientListResponse, error) {
+	result := WorkflowClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WorkflowListResult); err != nil {
+		return WorkflowClientListResponse{}, err
+	}
+	return result, nil
+}
+
 // UpdateTags - Updates tags on a workflow.
 //
 // Updates tags on a workflow.
@@ -401,7 +404,8 @@ func (client *WorkflowClient) UpdateTags(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return WorkflowClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

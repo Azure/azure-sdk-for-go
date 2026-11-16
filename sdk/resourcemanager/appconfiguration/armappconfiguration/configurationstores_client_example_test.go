@@ -509,445 +509,6 @@ func ExampleConfigurationStoresClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01-preview/ConfigurationStoresGet.json
-func ExampleConfigurationStoresClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewConfigurationStoresClient().Get(ctx, "myResourceGroup", "contoso", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappconfiguration.ConfigurationStoresClientGetResponse{
-	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
-	// 		Name: to.Ptr("contoso"),
-	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
-	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
-	// 		Identity: &armappconfiguration.ResourceIdentity{
-	// 			Type: to.Ptr(armappconfiguration.IdentityTypeSystemAssigned),
-	// 			PrincipalID: to.Ptr("AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"),
-	// 			TenantID: to.Ptr("BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB"),
-	// 		},
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
-	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-	// 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
-	// 				AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
-	// 				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
-	// 			},
-	// 			DefaultKeyValueRevisionRetentionPeriodInSeconds: to.Ptr[int64](2592000),
-	// 			DisableLocalAuth: to.Ptr(false),
-	// 			EnablePurgeProtection: to.Ptr(false),
-	// 			Encryption: &armappconfiguration.EncryptionProperties{
-	// 				KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
-	// 				},
-	// 			},
-	// 			Endpoint: to.Ptr("https://contoso.azconfig.io"),
-	// 			PrivateEndpointConnections: []*armappconfiguration.PrivateEndpointConnectionReference{
-	// 			},
-	// 			ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armappconfiguration.PublicNetworkAccessDisabled),
-	// 			SoftDeleteRetentionInDays: to.Ptr[int32](30),
-	// 		},
-	// 		SKU: &armappconfiguration.SKU{
-	// 			Name: to.Ptr("Standard"),
-	// 		},
-	// 		SystemData: &armappconfiguration.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-	// 			CreatedBy: to.Ptr("foo@contoso.com"),
-	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01-preview/DeletedConfigurationStoresGet.json
-func ExampleConfigurationStoresClient_GetDeleted() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewConfigurationStoresClient().GetDeleted(ctx, "westus", "contoso", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappconfiguration.ConfigurationStoresClientGetDeletedResponse{
-	// 	DeletedConfigurationStore: armappconfiguration.DeletedConfigurationStore{
-	// 		Name: to.Ptr("contoso"),
-	// 		Type: to.Ptr("Microsoft.AppConfiguration/deletedConfigurationStores"),
-	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/providers/Microsoft.AppConfiguration/locations/westus/deletedConfigurationStores/contoso"),
-	// 		Properties: &armappconfiguration.DeletedConfigurationStoreProperties{
-	// 			ConfigurationStoreID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
-	// 			DeletionDate: to.Ptr(time.Date(2017, time.January, 1, 0, 0, 59, 0, time.UTC)),
-	// 			Location: to.Ptr("westus"),
-	// 			PurgeProtectionEnabled: to.Ptr(true),
-	// 			ScheduledPurgeDate: to.Ptr(time.Date(2017, time.April, 1, 0, 0, 59, 0, time.UTC)),
-	// 			Tags: map[string]*string{
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01-preview/ConfigurationStoresList.json
-func ExampleConfigurationStoresClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewConfigurationStoresClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappconfiguration.ConfigurationStoresClientListResponse{
-		// 	ConfigurationStoreListResult: armappconfiguration.ConfigurationStoreListResult{
-		// 		Value: []*armappconfiguration.ConfigurationStore{
-		// 			{
-		// 				Name: to.Ptr("contoso"),
-		// 				Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
-		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
-		// 				Identity: &armappconfiguration.ResourceIdentity{
-		// 					Type: to.Ptr(armappconfiguration.IdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"),
-		// 					TenantID: to.Ptr("BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB"),
-		// 				},
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
-		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
-		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
-		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
-		// 					},
-		// 					DefaultKeyValueRevisionRetentionPeriodInSeconds: to.Ptr[int64](2592000),
-		// 					DisableLocalAuth: to.Ptr(false),
-		// 					EnablePurgeProtection: to.Ptr(false),
-		// 					Encryption: &armappconfiguration.EncryptionProperties{
-		// 						KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
-		// 						},
-		// 					},
-		// 					Endpoint: to.Ptr("https://contoso.azconfig.io"),
-		// 					PrivateEndpointConnections: []*armappconfiguration.PrivateEndpointConnectionReference{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armappconfiguration.PublicNetworkAccessDisabled),
-		// 					SoftDeleteRetentionInDays: to.Ptr[int32](30),
-		// 				},
-		// 				SKU: &armappconfiguration.SKU{
-		// 					Name: to.Ptr("Standard"),
-		// 				},
-		// 				SystemData: &armappconfiguration.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("foo@contoso.com"),
-		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("contoso2"),
-		// 				Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
-		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso2"),
-		// 				Identity: &armappconfiguration.ResourceIdentity{
-		// 					Type: to.Ptr(armappconfiguration.IdentityTypeSystemAssigned),
-		// 					PrincipalID: to.Ptr("CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC"),
-		// 					TenantID: to.Ptr("BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB"),
-		// 				},
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
-		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 23, 6, 59, 0, time.UTC)),
-		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
-		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
-		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
-		// 					},
-		// 					DefaultKeyValueRevisionRetentionPeriodInSeconds: to.Ptr[int64](2592000),
-		// 					DisableLocalAuth: to.Ptr(false),
-		// 					EnablePurgeProtection: to.Ptr(false),
-		// 					Encryption: &armappconfiguration.EncryptionProperties{
-		// 						KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
-		// 						},
-		// 					},
-		// 					Endpoint: to.Ptr("https://contoso2.azconfig.io"),
-		// 					PrivateEndpointConnections: []*armappconfiguration.PrivateEndpointConnectionReference{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armappconfiguration.PublicNetworkAccessDisabled),
-		// 					SoftDeleteRetentionInDays: to.Ptr[int32](30),
-		// 				},
-		// 				SKU: &armappconfiguration.SKU{
-		// 					Name: to.Ptr("Standard"),
-		// 				},
-		// 				SystemData: &armappconfiguration.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("foo@contoso.com"),
-		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-08-01-preview/ConfigurationStoresListByResourceGroup.json
-func ExampleConfigurationStoresClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewConfigurationStoresClient().NewListByResourceGroupPager("myResourceGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappconfiguration.ConfigurationStoresClientListByResourceGroupResponse{
-		// 	ConfigurationStoreListResult: armappconfiguration.ConfigurationStoreListResult{
-		// 		Value: []*armappconfiguration.ConfigurationStore{
-		// 			{
-		// 				Name: to.Ptr("contoso"),
-		// 				Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
-		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
-		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
-		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
-		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
-		// 					},
-		// 					DefaultKeyValueRevisionRetentionPeriodInSeconds: to.Ptr[int64](2592000),
-		// 					DisableLocalAuth: to.Ptr(false),
-		// 					EnablePurgeProtection: to.Ptr(false),
-		// 					Encryption: &armappconfiguration.EncryptionProperties{
-		// 						KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
-		// 						},
-		// 					},
-		// 					Endpoint: to.Ptr("https://contoso.azconfig.io"),
-		// 					PrivateEndpointConnections: []*armappconfiguration.PrivateEndpointConnectionReference{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armappconfiguration.PublicNetworkAccessDisabled),
-		// 					SoftDeleteRetentionInDays: to.Ptr[int32](30),
-		// 				},
-		// 				SKU: &armappconfiguration.SKU{
-		// 					Name: to.Ptr("Standard"),
-		// 				},
-		// 				SystemData: &armappconfiguration.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("foo@contoso.com"),
-		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("contoso2"),
-		// 				Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
-		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso2"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
-		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 23, 6, 59, 0, time.UTC)),
-		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
-		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
-		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
-		// 					},
-		// 					DefaultKeyValueRevisionRetentionPeriodInSeconds: to.Ptr[int64](2592000),
-		// 					DisableLocalAuth: to.Ptr(false),
-		// 					EnablePurgeProtection: to.Ptr(false),
-		// 					Encryption: &armappconfiguration.EncryptionProperties{
-		// 						KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
-		// 						},
-		// 					},
-		// 					Endpoint: to.Ptr("https://contoso2.azconfig.io"),
-		// 					PrivateEndpointConnections: []*armappconfiguration.PrivateEndpointConnectionReference{
-		// 					},
-		// 					ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armappconfiguration.PublicNetworkAccessDisabled),
-		// 					SoftDeleteRetentionInDays: to.Ptr[int32](30),
-		// 				},
-		// 				SKU: &armappconfiguration.SKU{
-		// 					Name: to.Ptr("Standard"),
-		// 				},
-		// 				SystemData: &armappconfiguration.SystemData{
-		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-		// 					CreatedBy: to.Ptr("foo@contoso.com"),
-		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-08-01-preview/DeletedConfigurationStoresList.json
-func ExampleConfigurationStoresClient_NewListDeletedPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewConfigurationStoresClient().NewListDeletedPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappconfiguration.ConfigurationStoresClientListDeletedResponse{
-		// 	DeletedConfigurationStoreListResult: armappconfiguration.DeletedConfigurationStoreListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/providers/Microsoft.AppConfiguration/deletedConfigurationStores?api-version=2021-10-01-preview&%24skiptoken=HY3RaoMwAEX%2fRcbeYhJrnRXKYNWOuqpME0sfNcYui0Yxade19N8ne7hcDlzOvVuKX81eKKmt4G4dooLQwgqsL2NGHUDYV6o68Z4rY1e388RtNvRQn2vNJjEaMSgNvcbneMUcsKg8BFwft8DndQ0w9hu2QOiFLRs4TsNFNHzSMBFsGvTQGvuD%2f5bVuTOw4R03vPkH%2fVqNAlzm5SxfOwh7ACOA8POTlvPjILlaU1ke8jImOc23JCppQVfZnna0DXc4ISc3vSVuRo5zJE6%2bj25C3vwk2v2kEV2mMn7PyOc1DbtNGkonnzuLym1G400uI5QRZj0efw%3d%3d"),
-		// 		Value: []*armappconfiguration.DeletedConfigurationStore{
-		// 			{
-		// 				Name: to.Ptr("contoso"),
-		// 				Type: to.Ptr("Microsoft.AppConfiguration/deletedConfigurationStores"),
-		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/providers/Microsoft.AppConfiguration/locations/westus/deletedConfigurationStores/contoso"),
-		// 				Properties: &armappconfiguration.DeletedConfigurationStoreProperties{
-		// 					ConfigurationStoreID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
-		// 					DeletionDate: to.Ptr(time.Date(2017, time.January, 1, 0, 0, 59, 0, time.UTC)),
-		// 					Location: to.Ptr("westus"),
-		// 					PurgeProtectionEnabled: to.Ptr(true),
-		// 					ScheduledPurgeDate: to.Ptr(time.Date(2017, time.April, 1, 0, 0, 59, 0, time.UTC)),
-		// 					Tags: map[string]*string{
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-08-01-preview/ConfigurationStoresListKeys.json
-func ExampleConfigurationStoresClient_NewListKeysPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewConfigurationStoresClient().NewListKeysPager("myResourceGroup", "contoso", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armappconfiguration.ConfigurationStoresClientListKeysResponse{
-		// 	APIKeyListResult: armappconfiguration.APIKeyListResult{
-		// 		Value: []*armappconfiguration.APIKey{
-		// 			{
-		// 				Name: to.Ptr("Primary"),
-		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
-		// 				ID: to.Ptr("439AD01B4BE67DB1"),
-		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
-		// 				ReadOnly: to.Ptr(false),
-		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("Secondary"),
-		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
-		// 				ID: to.Ptr("CB45E100456857B9"),
-		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
-		// 				ReadOnly: to.Ptr(false),
-		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("Primary Read Only"),
-		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
-		// 				ID: to.Ptr("B3AC55B7E71431A9"),
-		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
-		// 				ReadOnly: to.Ptr(true),
-		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("Secondary Read Only"),
-		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
-		// 				ID: to.Ptr("E2AF6A9A89DCC177"),
-		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
-		// 				ReadOnly: to.Ptr(true),
-		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-08-01-preview/DeletedConfigurationStoresPurge.json
 func ExampleConfigurationStoresClient_BeginPurgeDeleted() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -971,38 +532,6 @@ func ExampleConfigurationStoresClient_BeginPurgeDeleted() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armappconfiguration.ConfigurationStoresClientPurgeDeletedResponse{
-	// }
-}
-
-// Generated from example definition: 2025-08-01-preview/ConfigurationStoresRegenerateKey.json
-func ExampleConfigurationStoresClient_RegenerateKey() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewConfigurationStoresClient().RegenerateKey(ctx, "myResourceGroup", "contoso", armappconfiguration.RegenerateKeyParameters{
-		ID: to.Ptr("439AD01B4BE67DB1"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armappconfiguration.ConfigurationStoresClientRegenerateKeyResponse{
-	// 	APIKey: armappconfiguration.APIKey{
-	// 		Name: to.Ptr("Primary"),
-	// 		ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
-	// 		ID: to.Ptr("439AD01B4BE67DB1"),
-	// 		LastModified: to.Ptr(time.Date(2018, time.April, 26, 22, 59, 24, 237090600, time.UTC)),
-	// 		ReadOnly: to.Ptr(false),
-	// 		Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
-	// 	},
 	// }
 }
 
@@ -1237,6 +766,477 @@ func ExampleConfigurationStoresClient_BeginUpdate_configurationStoresUpdateWithI
 	// 		Tags: map[string]*string{
 	// 			"Category": to.Ptr("Marketing"),
 	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresGet.json
+func ExampleConfigurationStoresClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewConfigurationStoresClient().Get(ctx, "myResourceGroup", "contoso", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappconfiguration.ConfigurationStoresClientGetResponse{
+	// 	ConfigurationStore: armappconfiguration.ConfigurationStore{
+	// 		Name: to.Ptr("contoso"),
+	// 		Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
+	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
+	// 		Identity: &armappconfiguration.ResourceIdentity{
+	// 			Type: to.Ptr(armappconfiguration.IdentityTypeSystemAssigned),
+	// 			PrincipalID: to.Ptr("AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"),
+	// 			TenantID: to.Ptr("BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB"),
+	// 		},
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armappconfiguration.ConfigurationStoreProperties{
+	// 			CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+	// 			DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
+	// 				AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
+	// 				PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
+	// 			},
+	// 			DefaultKeyValueRevisionRetentionPeriodInSeconds: to.Ptr[int64](2592000),
+	// 			DisableLocalAuth: to.Ptr(false),
+	// 			EnablePurgeProtection: to.Ptr(false),
+	// 			Encryption: &armappconfiguration.EncryptionProperties{
+	// 				KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
+	// 				},
+	// 			},
+	// 			Endpoint: to.Ptr("https://contoso.azconfig.io"),
+	// 			PrivateEndpointConnections: []*armappconfiguration.PrivateEndpointConnectionReference{
+	// 			},
+	// 			ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armappconfiguration.PublicNetworkAccessDisabled),
+	// 			SoftDeleteRetentionInDays: to.Ptr[int32](30),
+	// 		},
+	// 		SKU: &armappconfiguration.SKU{
+	// 			Name: to.Ptr("Standard"),
+	// 		},
+	// 		SystemData: &armappconfiguration.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+	// 			CreatedBy: to.Ptr("foo@contoso.com"),
+	// 			CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("foo@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/DeletedConfigurationStoresGet.json
+func ExampleConfigurationStoresClient_GetDeleted() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewConfigurationStoresClient().GetDeleted(ctx, "westus", "contoso", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappconfiguration.ConfigurationStoresClientGetDeletedResponse{
+	// 	DeletedConfigurationStore: armappconfiguration.DeletedConfigurationStore{
+	// 		Name: to.Ptr("contoso"),
+	// 		Type: to.Ptr("Microsoft.AppConfiguration/deletedConfigurationStores"),
+	// 		ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/providers/Microsoft.AppConfiguration/locations/westus/deletedConfigurationStores/contoso"),
+	// 		Properties: &armappconfiguration.DeletedConfigurationStoreProperties{
+	// 			ConfigurationStoreID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
+	// 			DeletionDate: to.Ptr(time.Date(2017, time.January, 1, 0, 0, 59, 0, time.UTC)),
+	// 			Location: to.Ptr("westus"),
+	// 			PurgeProtectionEnabled: to.Ptr(true),
+	// 			ScheduledPurgeDate: to.Ptr(time.Date(2017, time.April, 1, 0, 0, 59, 0, time.UTC)),
+	// 			Tags: map[string]*string{
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresListByResourceGroup.json
+func ExampleConfigurationStoresClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewConfigurationStoresClient().NewListByResourceGroupPager("myResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappconfiguration.ConfigurationStoresClientListByResourceGroupResponse{
+		// 	ConfigurationStoreListResult: armappconfiguration.ConfigurationStoreListResult{
+		// 		Value: []*armappconfiguration.ConfigurationStore{
+		// 			{
+		// 				Name: to.Ptr("contoso"),
+		// 				Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
+		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
+		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
+		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
+		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
+		// 					},
+		// 					DefaultKeyValueRevisionRetentionPeriodInSeconds: to.Ptr[int64](2592000),
+		// 					DisableLocalAuth: to.Ptr(false),
+		// 					EnablePurgeProtection: to.Ptr(false),
+		// 					Encryption: &armappconfiguration.EncryptionProperties{
+		// 						KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
+		// 						},
+		// 					},
+		// 					Endpoint: to.Ptr("https://contoso.azconfig.io"),
+		// 					PrivateEndpointConnections: []*armappconfiguration.PrivateEndpointConnectionReference{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armappconfiguration.PublicNetworkAccessDisabled),
+		// 					SoftDeleteRetentionInDays: to.Ptr[int32](30),
+		// 				},
+		// 				SKU: &armappconfiguration.SKU{
+		// 					Name: to.Ptr("Standard"),
+		// 				},
+		// 				SystemData: &armappconfiguration.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("foo@contoso.com"),
+		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("contoso2"),
+		// 				Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
+		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso2"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
+		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 23, 6, 59, 0, time.UTC)),
+		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
+		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
+		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
+		// 					},
+		// 					DefaultKeyValueRevisionRetentionPeriodInSeconds: to.Ptr[int64](2592000),
+		// 					DisableLocalAuth: to.Ptr(false),
+		// 					EnablePurgeProtection: to.Ptr(false),
+		// 					Encryption: &armappconfiguration.EncryptionProperties{
+		// 						KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
+		// 						},
+		// 					},
+		// 					Endpoint: to.Ptr("https://contoso2.azconfig.io"),
+		// 					PrivateEndpointConnections: []*armappconfiguration.PrivateEndpointConnectionReference{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armappconfiguration.PublicNetworkAccessDisabled),
+		// 					SoftDeleteRetentionInDays: to.Ptr[int32](30),
+		// 				},
+		// 				SKU: &armappconfiguration.SKU{
+		// 					Name: to.Ptr("Standard"),
+		// 				},
+		// 				SystemData: &armappconfiguration.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("foo@contoso.com"),
+		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/DeletedConfigurationStoresList.json
+func ExampleConfigurationStoresClient_NewListDeletedPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewConfigurationStoresClient().NewListDeletedPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappconfiguration.ConfigurationStoresClientListDeletedResponse{
+		// 	DeletedConfigurationStoreListResult: armappconfiguration.DeletedConfigurationStoreListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/providers/Microsoft.AppConfiguration/deletedConfigurationStores?api-version=2021-10-01-preview&%24skiptoken=HY3RaoMwAEX%2fRcbeYhJrnRXKYNWOuqpME0sfNcYui0Yxade19N8ne7hcDlzOvVuKX81eKKmt4G4dooLQwgqsL2NGHUDYV6o68Z4rY1e388RtNvRQn2vNJjEaMSgNvcbneMUcsKg8BFwft8DndQ0w9hu2QOiFLRs4TsNFNHzSMBFsGvTQGvuD%2f5bVuTOw4R03vPkH%2fVqNAlzm5SxfOwh7ACOA8POTlvPjILlaU1ke8jImOc23JCppQVfZnna0DXc4ISc3vSVuRo5zJE6%2bj25C3vwk2v2kEV2mMn7PyOc1DbtNGkonnzuLym1G400uI5QRZj0efw%3d%3d"),
+		// 		Value: []*armappconfiguration.DeletedConfigurationStore{
+		// 			{
+		// 				Name: to.Ptr("contoso"),
+		// 				Type: to.Ptr("Microsoft.AppConfiguration/deletedConfigurationStores"),
+		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/providers/Microsoft.AppConfiguration/locations/westus/deletedConfigurationStores/contoso"),
+		// 				Properties: &armappconfiguration.DeletedConfigurationStoreProperties{
+		// 					ConfigurationStoreID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
+		// 					DeletionDate: to.Ptr(time.Date(2017, time.January, 1, 0, 0, 59, 0, time.UTC)),
+		// 					Location: to.Ptr("westus"),
+		// 					PurgeProtectionEnabled: to.Ptr(true),
+		// 					ScheduledPurgeDate: to.Ptr(time.Date(2017, time.April, 1, 0, 0, 59, 0, time.UTC)),
+		// 					Tags: map[string]*string{
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresListKeys.json
+func ExampleConfigurationStoresClient_NewListKeysPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewConfigurationStoresClient().NewListKeysPager("myResourceGroup", "contoso", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappconfiguration.ConfigurationStoresClientListKeysResponse{
+		// 	APIKeyListResult: armappconfiguration.APIKeyListResult{
+		// 		Value: []*armappconfiguration.APIKey{
+		// 			{
+		// 				Name: to.Ptr("Primary"),
+		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
+		// 				ID: to.Ptr("439AD01B4BE67DB1"),
+		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
+		// 				ReadOnly: to.Ptr(false),
+		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Secondary"),
+		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
+		// 				ID: to.Ptr("CB45E100456857B9"),
+		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
+		// 				ReadOnly: to.Ptr(false),
+		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Primary Read Only"),
+		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
+		// 				ID: to.Ptr("B3AC55B7E71431A9"),
+		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
+		// 				ReadOnly: to.Ptr(true),
+		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("Secondary Read Only"),
+		// 				ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
+		// 				ID: to.Ptr("E2AF6A9A89DCC177"),
+		// 				LastModified: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 54, 0, time.UTC)),
+		// 				ReadOnly: to.Ptr(true),
+		// 				Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresList.json
+func ExampleConfigurationStoresClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewConfigurationStoresClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armappconfiguration.ConfigurationStoresClientListResponse{
+		// 	ConfigurationStoreListResult: armappconfiguration.ConfigurationStoreListResult{
+		// 		Value: []*armappconfiguration.ConfigurationStore{
+		// 			{
+		// 				Name: to.Ptr("contoso"),
+		// 				Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
+		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso"),
+		// 				Identity: &armappconfiguration.ResourceIdentity{
+		// 					Type: to.Ptr(armappconfiguration.IdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"),
+		// 					TenantID: to.Ptr("BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB"),
+		// 				},
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
+		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
+		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
+		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
+		// 					},
+		// 					DefaultKeyValueRevisionRetentionPeriodInSeconds: to.Ptr[int64](2592000),
+		// 					DisableLocalAuth: to.Ptr(false),
+		// 					EnablePurgeProtection: to.Ptr(false),
+		// 					Encryption: &armappconfiguration.EncryptionProperties{
+		// 						KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
+		// 						},
+		// 					},
+		// 					Endpoint: to.Ptr("https://contoso.azconfig.io"),
+		// 					PrivateEndpointConnections: []*armappconfiguration.PrivateEndpointConnectionReference{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armappconfiguration.PublicNetworkAccessDisabled),
+		// 					SoftDeleteRetentionInDays: to.Ptr[int32](30),
+		// 				},
+		// 				SKU: &armappconfiguration.SKU{
+		// 					Name: to.Ptr("Standard"),
+		// 				},
+		// 				SystemData: &armappconfiguration.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("foo@contoso.com"),
+		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("contoso2"),
+		// 				Type: to.Ptr("Microsoft.AppConfiguration/configurationStores"),
+		// 				ID: to.Ptr("/subscriptions/c80fb759-c965-4c6a-9110-9b2b2d038882/resourceGroups/myResourceGroup/providers/Microsoft.AppConfiguration/configurationStores/contoso2"),
+		// 				Identity: &armappconfiguration.ResourceIdentity{
+		// 					Type: to.Ptr(armappconfiguration.IdentityTypeSystemAssigned),
+		// 					PrincipalID: to.Ptr("CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC"),
+		// 					TenantID: to.Ptr("BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB"),
+		// 				},
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armappconfiguration.ConfigurationStoreProperties{
+		// 					CreationDate: to.Ptr(time.Date(2018, time.April, 24, 23, 6, 59, 0, time.UTC)),
+		// 					DataPlaneProxy: &armappconfiguration.DataPlaneProxyProperties{
+		// 						AuthenticationMode: to.Ptr(armappconfiguration.AuthenticationModePassThrough),
+		// 						PrivateLinkDelegation: to.Ptr(armappconfiguration.PrivateLinkDelegationDisabled),
+		// 					},
+		// 					DefaultKeyValueRevisionRetentionPeriodInSeconds: to.Ptr[int64](2592000),
+		// 					DisableLocalAuth: to.Ptr(false),
+		// 					EnablePurgeProtection: to.Ptr(false),
+		// 					Encryption: &armappconfiguration.EncryptionProperties{
+		// 						KeyVaultProperties: &armappconfiguration.KeyVaultProperties{
+		// 						},
+		// 					},
+		// 					Endpoint: to.Ptr("https://contoso2.azconfig.io"),
+		// 					PrivateEndpointConnections: []*armappconfiguration.PrivateEndpointConnectionReference{
+		// 					},
+		// 					ProvisioningState: to.Ptr(armappconfiguration.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armappconfiguration.PublicNetworkAccessDisabled),
+		// 					SoftDeleteRetentionInDays: to.Ptr[int32](30),
+		// 				},
+		// 				SKU: &armappconfiguration.SKU{
+		// 					Name: to.Ptr("Standard"),
+		// 				},
+		// 				SystemData: &armappconfiguration.SystemData{
+		// 					CreatedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+		// 					CreatedBy: to.Ptr("foo@contoso.com"),
+		// 					CreatedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2018, time.April, 24, 16, 30, 55, 0, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("foo@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armappconfiguration.CreatedByTypeUser),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01-preview/ConfigurationStoresRegenerateKey.json
+func ExampleConfigurationStoresClient_RegenerateKey() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armappconfiguration.NewClientFactory("c80fb759-c965-4c6a-9110-9b2b2d038882", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewConfigurationStoresClient().RegenerateKey(ctx, "myResourceGroup", "contoso", armappconfiguration.RegenerateKeyParameters{
+		ID: to.Ptr("439AD01B4BE67DB1"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armappconfiguration.ConfigurationStoresClientRegenerateKeyResponse{
+	// 	APIKey: armappconfiguration.APIKey{
+	// 		Name: to.Ptr("Primary"),
+	// 		ConnectionString: to.Ptr("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"),
+	// 		ID: to.Ptr("439AD01B4BE67DB1"),
+	// 		LastModified: to.Ptr(time.Date(2018, time.April, 26, 22, 59, 24, 237090600, time.UTC)),
+	// 		ReadOnly: to.Ptr(false),
+	// 		Value: to.Ptr("000000000000000000000000000000000000000000000000000000"),
 	// 	},
 	// }
 }

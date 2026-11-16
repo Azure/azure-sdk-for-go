@@ -120,6 +120,223 @@ func ExampleAccountClient_Get() {
 	// }
 }
 
+// Generated from example definition: 2024-10-23/listAutomationAccountsByResourceGroup.json
+func ExampleAccountClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armautomation.NewClientFactory("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAccountClient().NewListByResourceGroupPager("rg", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armautomation.AccountClientListByResourceGroupResponse{
+		// 	AccountListResult: armautomation.AccountListResult{
+		// 		Value: []*armautomation.Account{
+		// 			{
+		// 				Name: to.Ptr("myaccount"),
+		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myaccount"),
+		// 				Location: to.Ptr("eastus2"),
+		// 				Properties: &armautomation.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2016, time.September, 24, 0, 47, 4, 227000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.February, 9, 21, 35, 16, 400000000, time.UTC)),
+		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myAccount123"),
+		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAccount123"),
+		// 				Location: to.Ptr("eastus2"),
+		// 				Properties: &armautomation.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2016, time.September, 29, 0, 32, 32, 520000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.February, 9, 21, 35, 16, 400000000, time.UTC)),
+		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myAccountasfads"),
+		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAccountasfads"),
+		// 				Location: to.Ptr("East US 2"),
+		// 				Properties: &armautomation.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 24, 23, 21, 3, 270000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 24, 23, 21, 3, 270000000, time.UTC)),
+		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myAutomationAccount1"),
+		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount1"),
+		// 				Location: to.Ptr("East US 2"),
+		// 				Properties: &armautomation.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 24, 23, 22, 33, 260000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 24, 23, 22, 33, 260000000, time.UTC)),
+		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myAutomationAccount11"),
+		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11"),
+		// 				Location: to.Ptr("East US 2"),
+		// 				Properties: &armautomation.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 26, 2, 10, 24, 523000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 26, 2, 11, 12, 27000000, time.UTC)),
+		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myAutomationAccount2"),
+		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount2"),
+		// 				Location: to.Ptr("East US 2"),
+		// 				Properties: &armautomation.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 24, 23, 24, 20, 310000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 24, 23, 24, 20, 310000000, time.UTC)),
+		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myAutomationAccount3"),
+		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount3"),
+		// 				Location: to.Ptr("East US 2"),
+		// 				Properties: &armautomation.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 24, 23, 24, 43, 967000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 24, 23, 24, 43, 967000000, time.UTC)),
+		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myAutomationAccount4"),
+		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount4"),
+		// 				Location: to.Ptr("East US 2"),
+		// 				Properties: &armautomation.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 25, 2, 4, 56, 900000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 25, 2, 4, 56, 900000000, time.UTC)),
+		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myAutomationAccount6"),
+		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount6"),
+		// 				Location: to.Ptr("East US 2"),
+		// 				Properties: &armautomation.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 25, 2, 10, 44, 567000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 25, 2, 10, 44, 567000000, time.UTC)),
+		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myAutomationAccount7"),
+		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount7"),
+		// 				Location: to.Ptr("East US 2"),
+		// 				Properties: &armautomation.AccountProperties{
+		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 25, 2, 19, 17, 943000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
+		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 25, 2, 19, 17, 943000000, time.UTC)),
+		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2024-10-23/listAutomationAccountDeletedRunbooks.json
+func ExampleAccountClient_NewListDeletedRunbooksPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armautomation.NewClientFactory("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAccountClient().NewListDeletedRunbooksPager("rg", "MyAutomationAccount", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armautomation.AccountClientListDeletedRunbooksResponse{
+		// 	DeletedRunbookListResult: armautomation.DeletedRunbookListResult{
+		// 		Value: []*armautomation.DeletedRunbook{
+		// 			{
+		// 				Name: to.Ptr("myrunbook1"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyAutomationAccount/runbooks/myrunbook1"),
+		// 				Location: to.Ptr("East US 2"),
+		// 				Properties: &armautomation.DeletedRunbookProperties{
+		// 					CreationTime: to.Ptr(time.Date(2023, time.March, 28, 21, 32, 25, 780000000, time.UTC)),
+		// 					DeletionTime: to.Ptr(time.Date(2023, time.March, 30, 21, 32, 25, 810000000, time.UTC)),
+		// 					RunbookID: to.Ptr("cb855f13-0223-4fe4-8260-9e6583dfef24"),
+		// 					RunbookType: to.Ptr("PowerShell"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myrunbook2"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyAutomationAccount/runbooks/myrunbook2"),
+		// 				Location: to.Ptr("East US 2"),
+		// 				Properties: &armautomation.DeletedRunbookProperties{
+		// 					CreationTime: to.Ptr(time.Date(2023, time.March, 28, 21, 32, 25, 780000000, time.UTC)),
+		// 					DeletionTime: to.Ptr(time.Date(2023, time.March, 30, 21, 32, 25, 810000000, time.UTC)),
+		// 					RunbookID: to.Ptr("cb855f13-0223-4fe4-8260-9e6583dfef24"),
+		// 					RunbookType: to.Ptr("PowerShell"),
+		// 					Runtime: to.Ptr("PowerShell-7.2"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("myrunbook3"),
+		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyAutomationAccount/runbooks/myrunbook3"),
+		// 				Location: to.Ptr("East US 2"),
+		// 				Properties: &armautomation.DeletedRunbookProperties{
+		// 					CreationTime: to.Ptr(time.Date(2023, time.March, 28, 21, 32, 25, 780000000, time.UTC)),
+		// 					DeletionTime: to.Ptr(time.Date(2023, time.March, 30, 21, 32, 25, 810000000, time.UTC)),
+		// 					RunbookID: to.Ptr("cb855f13-0223-4fe4-8260-9e6583dfef24"),
+		// 					RunbookType: to.Ptr("PowerShell"),
+		// 					RuntimeEnvironment: to.Ptr("environmentName"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2024-10-23/listAutomationAccountsBySubscription.json
 func ExampleAccountClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -813,223 +1030,6 @@ func ExampleAccountClient_NewListPager() {
 		// 				Properties: &armautomation.AccountProperties{
 		// 					CreationTime: to.Ptr(time.Date(2016, time.November, 1, 18, 50, 6, 63000000, time.UTC)),
 		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 11, 1, 33, 13, 113000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-10-23/listAutomationAccountsByResourceGroup.json
-func ExampleAccountClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armautomation.NewClientFactory("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAccountClient().NewListByResourceGroupPager("rg", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armautomation.AccountClientListByResourceGroupResponse{
-		// 	AccountListResult: armautomation.AccountListResult{
-		// 		Value: []*armautomation.Account{
-		// 			{
-		// 				Name: to.Ptr("myaccount"),
-		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myaccount"),
-		// 				Location: to.Ptr("eastus2"),
-		// 				Properties: &armautomation.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2016, time.September, 24, 0, 47, 4, 227000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.February, 9, 21, 35, 16, 400000000, time.UTC)),
-		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myAccount123"),
-		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAccount123"),
-		// 				Location: to.Ptr("eastus2"),
-		// 				Properties: &armautomation.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2016, time.September, 29, 0, 32, 32, 520000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.February, 9, 21, 35, 16, 400000000, time.UTC)),
-		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myAccountasfads"),
-		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAccountasfads"),
-		// 				Location: to.Ptr("East US 2"),
-		// 				Properties: &armautomation.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 24, 23, 21, 3, 270000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 24, 23, 21, 3, 270000000, time.UTC)),
-		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myAutomationAccount1"),
-		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount1"),
-		// 				Location: to.Ptr("East US 2"),
-		// 				Properties: &armautomation.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 24, 23, 22, 33, 260000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 24, 23, 22, 33, 260000000, time.UTC)),
-		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myAutomationAccount11"),
-		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount11"),
-		// 				Location: to.Ptr("East US 2"),
-		// 				Properties: &armautomation.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 26, 2, 10, 24, 523000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 26, 2, 11, 12, 27000000, time.UTC)),
-		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myAutomationAccount2"),
-		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount2"),
-		// 				Location: to.Ptr("East US 2"),
-		// 				Properties: &armautomation.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 24, 23, 24, 20, 310000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 24, 23, 24, 20, 310000000, time.UTC)),
-		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myAutomationAccount3"),
-		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount3"),
-		// 				Location: to.Ptr("East US 2"),
-		// 				Properties: &armautomation.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 24, 23, 24, 43, 967000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 24, 23, 24, 43, 967000000, time.UTC)),
-		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myAutomationAccount4"),
-		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount4"),
-		// 				Location: to.Ptr("East US 2"),
-		// 				Properties: &armautomation.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 25, 2, 4, 56, 900000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 25, 2, 4, 56, 900000000, time.UTC)),
-		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myAutomationAccount6"),
-		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount6"),
-		// 				Location: to.Ptr("East US 2"),
-		// 				Properties: &armautomation.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 25, 2, 10, 44, 567000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 25, 2, 10, 44, 567000000, time.UTC)),
-		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myAutomationAccount7"),
-		// 				Type: to.Ptr("Microsoft.Automation/AutomationAccounts"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/myAutomationAccount7"),
-		// 				Location: to.Ptr("East US 2"),
-		// 				Properties: &armautomation.AccountProperties{
-		// 					CreationTime: to.Ptr(time.Date(2017, time.March, 25, 2, 19, 17, 943000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("myEmailId@microsoft.com"),
-		// 					LastModifiedTime: to.Ptr(time.Date(2017, time.March, 25, 2, 19, 17, 943000000, time.UTC)),
-		// 					State: to.Ptr(armautomation.AutomationAccountStateOk),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-10-23/listAutomationAccountDeletedRunbooks.json
-func ExampleAccountClient_NewListDeletedRunbooksPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armautomation.NewClientFactory("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAccountClient().NewListDeletedRunbooksPager("rg", "MyAutomationAccount", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armautomation.AccountClientListDeletedRunbooksResponse{
-		// 	DeletedRunbookListResult: armautomation.DeletedRunbookListResult{
-		// 		Value: []*armautomation.DeletedRunbook{
-		// 			{
-		// 				Name: to.Ptr("myrunbook1"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyAutomationAccount/runbooks/myrunbook1"),
-		// 				Location: to.Ptr("East US 2"),
-		// 				Properties: &armautomation.DeletedRunbookProperties{
-		// 					CreationTime: to.Ptr(time.Date(2023, time.March, 28, 21, 32, 25, 780000000, time.UTC)),
-		// 					DeletionTime: to.Ptr(time.Date(2023, time.March, 30, 21, 32, 25, 810000000, time.UTC)),
-		// 					RunbookID: to.Ptr("cb855f13-0223-4fe4-8260-9e6583dfef24"),
-		// 					RunbookType: to.Ptr("PowerShell"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myrunbook2"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyAutomationAccount/runbooks/myrunbook2"),
-		// 				Location: to.Ptr("East US 2"),
-		// 				Properties: &armautomation.DeletedRunbookProperties{
-		// 					CreationTime: to.Ptr(time.Date(2023, time.March, 28, 21, 32, 25, 780000000, time.UTC)),
-		// 					DeletionTime: to.Ptr(time.Date(2023, time.March, 30, 21, 32, 25, 810000000, time.UTC)),
-		// 					RunbookID: to.Ptr("cb855f13-0223-4fe4-8260-9e6583dfef24"),
-		// 					RunbookType: to.Ptr("PowerShell"),
-		// 					Runtime: to.Ptr("PowerShell-7.2"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("myrunbook3"),
-		// 				ID: to.Ptr("/subscriptions/aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee/resourceGroups/rg/providers/Microsoft.Automation/automationAccounts/MyAutomationAccount/runbooks/myrunbook3"),
-		// 				Location: to.Ptr("East US 2"),
-		// 				Properties: &armautomation.DeletedRunbookProperties{
-		// 					CreationTime: to.Ptr(time.Date(2023, time.March, 28, 21, 32, 25, 780000000, time.UTC)),
-		// 					DeletionTime: to.Ptr(time.Date(2023, time.March, 30, 21, 32, 25, 810000000, time.UTC)),
-		// 					RunbookID: to.Ptr("cb855f13-0223-4fe4-8260-9e6583dfef24"),
-		// 					RunbookType: to.Ptr("PowerShell"),
-		// 					RuntimeEnvironment: to.Ptr("environmentName"),
 		// 				},
 		// 			},
 		// 		},

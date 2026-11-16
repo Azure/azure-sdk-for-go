@@ -67,7 +67,8 @@ func (client *ManagedEnvironmentDiagnosticsClient) GetDetector(ctx context.Conte
 	if err != nil {
 		return ManagedEnvironmentDiagnosticsClientGetDetectorResponse{}, err
 	}
-	return client.getDetectorHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDetectorHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDetectorCreateRequest creates the GetDetector request.
@@ -134,7 +135,8 @@ func (client *ManagedEnvironmentDiagnosticsClient) ListDetectors(ctx context.Con
 	if err != nil {
 		return ManagedEnvironmentDiagnosticsClientListDetectorsResponse{}, err
 	}
-	return client.listDetectorsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listDetectorsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listDetectorsCreateRequest creates the ListDetectors request.

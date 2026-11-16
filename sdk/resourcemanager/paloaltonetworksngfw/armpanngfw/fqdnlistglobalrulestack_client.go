@@ -62,7 +62,7 @@ func (client *FqdnListGlobalRulestackClient) BeginCreateOrUpdate(ctx context.Con
 	}
 }
 
-// CreateOrUpdate - Create a FqdnListGlobalRulestackResource
+// createOrUpdate - Create a FqdnListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FqdnListGlobalRulestackClient) createOrUpdate(ctx context.Context, globalRulestackName string, name string, resource FqdnListGlobalRulestackResource, options *FqdnListGlobalRulestackClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -79,12 +79,13 @@ func (client *FqdnListGlobalRulestackClient) createOrUpdate(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *FqdnListGlobalRulestackClient) createOrUpdateCreateRequest(ctx context.Context, globalRulestackName string, name string, resource FqdnListGlobalRulestackResource, _ *FqdnListGlobalRulestackClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/fqdnlists/{name}"
 	if globalRulestackName == "" {
@@ -133,7 +134,7 @@ func (client *FqdnListGlobalRulestackClient) BeginDelete(ctx context.Context, gl
 	}
 }
 
-// Delete - Delete a FqdnListGlobalRulestackResource
+// deleteOperation - Delete a FqdnListGlobalRulestackResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *FqdnListGlobalRulestackClient) deleteOperation(ctx context.Context, globalRulestackName string, name string, options *FqdnListGlobalRulestackClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -150,12 +151,13 @@ func (client *FqdnListGlobalRulestackClient) deleteOperation(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *FqdnListGlobalRulestackClient) deleteCreateRequest(ctx context.Context, globalRulestackName string, name string, _ *FqdnListGlobalRulestackClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/fqdnlists/{name}"
 	if globalRulestackName == "" {
@@ -196,7 +198,8 @@ func (client *FqdnListGlobalRulestackClient) Get(ctx context.Context, globalRule
 	if err != nil {
 		return FqdnListGlobalRulestackClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

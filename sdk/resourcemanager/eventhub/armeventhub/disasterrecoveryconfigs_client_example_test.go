@@ -209,8 +209,8 @@ func ExampleDisasterRecoveryConfigsClient_GetAuthorizationRule() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasList.json
-func ExampleDisasterRecoveryConfigsClient_NewListPager() {
+// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasAuthorizationRuleListKey.json
+func ExampleDisasterRecoveryConfigsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -220,34 +220,22 @@ func ExampleDisasterRecoveryConfigsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewDisasterRecoveryConfigsClient().NewListPager("exampleResourceGroup", "sdk-Namespace-8859", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeventhub.DisasterRecoveryConfigsClientListResponse{
-		// 	ArmDisasterRecoveryListResult: armeventhub.ArmDisasterRecoveryListResult{
-		// 		Value: []*armeventhub.ArmDisasterRecovery{
-		// 			{
-		// 				Name: to.Ptr("sdk-DisasterRecovery-3814"),
-		// 				Type: to.Ptr("Microsoft.EventHub/Namespaces/DisasterRecoveryConfig"),
-		// 				ID: to.Ptr("/subscriptions/exampleSubscriptionId/resourceGroups/exampleResourceGroup/providers/Microsoft.EventHub/namespaces/sdk-Namespace-8859/disasterRecoveryConfig/sdk-DisasterRecovery-3814"),
-		// 				Properties: &armeventhub.ArmDisasterRecoveryProperties{
-		// 					PartnerNamespace: to.Ptr("sdk-Namespace-37"),
-		// 					ProvisioningState: to.Ptr(armeventhub.ProvisioningStateDRAccepted),
-		// 					Role: to.Ptr(armeventhub.RoleDisasterRecoveryPrimary),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewDisasterRecoveryConfigsClient().ListKeys(ctx, "exampleResourceGroup", "sdk-Namespace-2702", "sdk-DisasterRecovery-4047", "sdk-Authrules-1746", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armeventhub.DisasterRecoveryConfigsClientListKeysResponse{
+	// 	AccessKeys: armeventhub.AccessKeys{
+	// 		AliasPrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-disasterrecovery-4047.servicebus.windows-int.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=############################################"),
+	// 		AliasSecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-disasterrecovery-4047.servicebus.windows-int.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=############################################"),
+	// 		KeyName: to.Ptr("sdk-Authrules-1746"),
+	// 		PrimaryKey: to.Ptr("############################################"),
+	// 		SecondaryKey: to.Ptr("############################################"),
+	// 	},
+	// }
 }
 
 // Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasAuthorizationRuleListAll.json
@@ -326,8 +314,8 @@ func ExampleDisasterRecoveryConfigsClient_NewListAuthorizationRulesPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasAuthorizationRuleListKey.json
-func ExampleDisasterRecoveryConfigsClient_ListKeys() {
+// Generated from example definition: 2025-05-01-preview/disasterRecoveryConfigs/EHAliasList.json
+func ExampleDisasterRecoveryConfigsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -337,20 +325,32 @@ func ExampleDisasterRecoveryConfigsClient_ListKeys() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDisasterRecoveryConfigsClient().ListKeys(ctx, "exampleResourceGroup", "sdk-Namespace-2702", "sdk-DisasterRecovery-4047", "sdk-Authrules-1746", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
+	pager := clientFactory.NewDisasterRecoveryConfigsClient().NewListPager("exampleResourceGroup", "sdk-Namespace-8859", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeventhub.DisasterRecoveryConfigsClientListResponse{
+		// 	ArmDisasterRecoveryListResult: armeventhub.ArmDisasterRecoveryListResult{
+		// 		Value: []*armeventhub.ArmDisasterRecovery{
+		// 			{
+		// 				Name: to.Ptr("sdk-DisasterRecovery-3814"),
+		// 				Type: to.Ptr("Microsoft.EventHub/Namespaces/DisasterRecoveryConfig"),
+		// 				ID: to.Ptr("/subscriptions/exampleSubscriptionId/resourceGroups/exampleResourceGroup/providers/Microsoft.EventHub/namespaces/sdk-Namespace-8859/disasterRecoveryConfig/sdk-DisasterRecovery-3814"),
+		// 				Properties: &armeventhub.ArmDisasterRecoveryProperties{
+		// 					PartnerNamespace: to.Ptr("sdk-Namespace-37"),
+		// 					ProvisioningState: to.Ptr(armeventhub.ProvisioningStateDRAccepted),
+		// 					Role: to.Ptr(armeventhub.RoleDisasterRecoveryPrimary),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
 	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armeventhub.DisasterRecoveryConfigsClientListKeysResponse{
-	// 	AccessKeys: armeventhub.AccessKeys{
-	// 		AliasPrimaryConnectionString: to.Ptr("Endpoint=sb://sdk-disasterrecovery-4047.servicebus.windows-int.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=############################################"),
-	// 		AliasSecondaryConnectionString: to.Ptr("Endpoint=sb://sdk-disasterrecovery-4047.servicebus.windows-int.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=############################################"),
-	// 		KeyName: to.Ptr("sdk-Authrules-1746"),
-	// 		PrimaryKey: to.Ptr("############################################"),
-	// 		SecondaryKey: to.Ptr("############################################"),
-	// 	},
-	// }
 }

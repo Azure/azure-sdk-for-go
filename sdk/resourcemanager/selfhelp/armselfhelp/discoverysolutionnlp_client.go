@@ -57,7 +57,8 @@ func (client *DiscoverySolutionNLPClient) DiscoverSolutions(ctx context.Context,
 	if err != nil {
 		return DiscoverySolutionNLPClientDiscoverSolutionsResponse{}, err
 	}
-	return client.discoverSolutionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.discoverSolutionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // discoverSolutionsCreateRequest creates the DiscoverSolutions request.
@@ -113,7 +114,8 @@ func (client *DiscoverySolutionNLPClient) DiscoverSolutionsBySubscription(ctx co
 	if err != nil {
 		return DiscoverySolutionNLPClientDiscoverSolutionsBySubscriptionResponse{}, err
 	}
-	return client.discoverSolutionsBySubscriptionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.discoverSolutionsBySubscriptionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // discoverSolutionsBySubscriptionCreateRequest creates the DiscoverSolutionsBySubscription request.

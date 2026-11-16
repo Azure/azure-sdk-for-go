@@ -65,7 +65,8 @@ func (client *DatasetsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DatasetsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -138,7 +139,8 @@ func (client *DatasetsClient) Delete(ctx context.Context, resourceGroupName stri
 		return DatasetsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DatasetsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DatasetsClientDeleteResponse{}, err
 	}
 	return DatasetsClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *DatasetsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return DatasetsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusNotModified)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

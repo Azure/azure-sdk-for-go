@@ -12,46 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-08-01/EnterpriseDetails_Post.json
-func ExampleGrafanaClient_CheckEnterpriseDetails() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdashboard.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGrafanaClient().CheckEnterpriseDetails(ctx, "myResourceGroup", "myWorkspace", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdashboard.GrafanaClientCheckEnterpriseDetailsResponse{
-	// 	EnterpriseDetails: armdashboard.EnterpriseDetails{
-	// 		MarketplaceTrialQuota: &armdashboard.MarketplaceTrialQuota{
-	// 			AvailablePromotion: to.Ptr(armdashboard.AvailablePromotionNone),
-	// 			GrafanaResourceID: to.Ptr("/subscriptions/e1e3b30d-e7ec-4e25-8587-db037bcb9a4d/resourcegroups/amg-local-script-test-rg/providers/microsoft.dashboard/grafana/eus2-enterprise-1001-07"),
-	// 			TrialEndAt: to.Ptr(time.Date(2022, time.November, 3, 1, 6, 0, 447000000, time.UTC)),
-	// 			TrialStartAt: to.Ptr(time.Date(2022, time.October, 4, 1, 6, 0, 447000000, time.UTC)),
-	// 		},
-	// 		SaasSubscriptionDetails: &armdashboard.SaasSubscriptionDetails{
-	// 			OfferID: to.Ptr("amg_test"),
-	// 			PlanID: to.Ptr("amg_globalplan"),
-	// 			PublisherID: to.Ptr("isvtestuklegacy"),
-	// 			Term: &armdashboard.SubscriptionTerm{
-	// 				EndDate: to.Ptr(time.Date(2022, time.November, 3, 0, 0, 0, 0, time.UTC)),
-	// 				StartDate: to.Ptr(time.Date(2022, time.October, 4, 0, 0, 0, 0, time.UTC)),
-	// 				TermUnit: to.Ptr("P1M"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-08-01/Grafana_Create.json
 func ExampleGrafanaClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -239,333 +199,6 @@ func ExampleGrafanaClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2025-08-01/Grafana_FetchAvailablePlugins.json
-func ExampleGrafanaClient_FetchAvailablePlugins() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdashboard.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGrafanaClient().FetchAvailablePlugins(ctx, "myResourceGroup", "myWorkspace", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdashboard.GrafanaClientFetchAvailablePluginsResponse{
-	// 	GrafanaAvailablePluginListResponse: armdashboard.GrafanaAvailablePluginListResponse{
-	// 		Value: []*armdashboard.GrafanaAvailablePlugin{
-	// 			{
-	// 				Name: to.Ptr("Plugin A"),
-	// 				PluginID: to.Ptr("plugin-a"),
-	// 			},
-	// 			{
-	// 				Name: to.Ptr("Plugin B"),
-	// 				PluginID: to.Ptr("plugin-b"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01/Grafana_Get.json
-func ExampleGrafanaClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdashboard.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGrafanaClient().Get(ctx, "myResourceGroup", "myWorkspace", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdashboard.GrafanaClientGetResponse{
-	// 	ManagedGrafana: armdashboard.ManagedGrafana{
-	// 		Name: to.Ptr("myWorkspace"),
-	// 		Type: to.Ptr("Microsoft.Dashboard/grafana"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/grafana/myWorkspace"),
-	// 		Location: to.Ptr("West US"),
-	// 		Properties: &armdashboard.ManagedGrafanaProperties{
-	// 			APIKey: to.Ptr(armdashboard.APIKeyEnabled),
-	// 			AutoGeneratedDomainNameLabelScope: to.Ptr(armdashboard.AutoGeneratedDomainNameLabelScopeTenantReuse),
-	// 			DeterministicOutboundIP: to.Ptr(armdashboard.DeterministicOutboundIPEnabled),
-	// 			Endpoint: to.Ptr("https://myworkspace-abcdefghijklmnop.wus.grafana.azure.com"),
-	// 			EnterpriseConfigurations: &armdashboard.EnterpriseConfigurations{
-	// 				MarketplaceAutoRenew: to.Ptr(armdashboard.MarketplaceAutoRenewEnabled),
-	// 				MarketplacePlanID: to.Ptr("myPlanId"),
-	// 			},
-	// 			GrafanaConfigurations: &armdashboard.GrafanaConfigurations{
-	// 				Security: &armdashboard.Security{
-	// 					CsrfAlwaysCheck: to.Ptr(false),
-	// 				},
-	// 				SMTP: &armdashboard.SMTP{
-	// 					Enabled: to.Ptr(true),
-	// 					FromAddress: to.Ptr("test@sendemail.com"),
-	// 					FromName: to.Ptr("emailsender"),
-	// 					Host: to.Ptr("smtp.sendemail.com:587"),
-	// 					SkipVerify: to.Ptr(true),
-	// 					StartTLSPolicy: to.Ptr(armdashboard.StartTLSPolicyOpportunisticStartTLS),
-	// 					User: to.Ptr("username"),
-	// 				},
-	// 				Snapshots: &armdashboard.Snapshots{
-	// 					ExternalEnabled: to.Ptr(true),
-	// 				},
-	// 				UnifiedAlertingScreenshots: &armdashboard.UnifiedAlertingScreenshots{
-	// 					CaptureEnabled: to.Ptr(false),
-	// 				},
-	// 				Users: &armdashboard.Users{
-	// 					EditorsCanAdmin: to.Ptr(true),
-	// 					ViewersCanEdit: to.Ptr(true),
-	// 				},
-	// 			},
-	// 			GrafanaIntegrations: &armdashboard.GrafanaIntegrations{
-	// 				AzureMonitorWorkspaceIntegrations: []*armdashboard.AzureMonitorWorkspaceIntegration{
-	// 					{
-	// 						AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.monitor/accounts/myAzureMonitorWorkspace"),
-	// 					},
-	// 				},
-	// 			},
-	// 			GrafanaMajorVersion: to.Ptr("9"),
-	// 			GrafanaPlugins: map[string]*armdashboard.GrafanaPlugin{
-	// 				"sample-plugin-id": &armdashboard.GrafanaPlugin{
-	// 					PluginID: to.Ptr("sample-plugin-id"),
-	// 				},
-	// 			},
-	// 			GrafanaVersion: to.Ptr("9.4.5"),
-	// 			OutboundIPs: []*string{
-	// 				to.Ptr("192.168.0.1"),
-	// 				to.Ptr("192.168.0.2"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armdashboard.ProvisioningStateSucceeded),
-	// 			PublicNetworkAccess: to.Ptr(armdashboard.PublicNetworkAccessEnabled),
-	// 			ZoneRedundancy: to.Ptr(armdashboard.ZoneRedundancyEnabled),
-	// 		},
-	// 		SKU: &armdashboard.ResourceSKU{
-	// 			Name: to.Ptr("Standard"),
-	// 		},
-	// 		SystemData: &armdashboard.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 3, 1, 1, 1, 107505600, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armdashboard.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 4, 2, 3, 1, 197434600, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armdashboard.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"Environment": to.Ptr("Dev"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-08-01/Grafana_List.json
-func ExampleGrafanaClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdashboard.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewGrafanaClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdashboard.GrafanaClientListResponse{
-		// 	ManagedGrafanaListResponse: armdashboard.ManagedGrafanaListResponse{
-		// 		Value: []*armdashboard.ManagedGrafana{
-		// 			{
-		// 				Name: to.Ptr("myWorkspace"),
-		// 				Type: to.Ptr("Microsoft.Dashboard/grafana"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/grafana/myWorkspace"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armdashboard.ManagedGrafanaProperties{
-		// 					APIKey: to.Ptr(armdashboard.APIKeyEnabled),
-		// 					AutoGeneratedDomainNameLabelScope: to.Ptr(armdashboard.AutoGeneratedDomainNameLabelScopeTenantReuse),
-		// 					DeterministicOutboundIP: to.Ptr(armdashboard.DeterministicOutboundIPEnabled),
-		// 					Endpoint: to.Ptr("https://myworkspace-abcdefghijklmnop.wus.grafana.azure.com"),
-		// 					EnterpriseConfigurations: &armdashboard.EnterpriseConfigurations{
-		// 						MarketplaceAutoRenew: to.Ptr(armdashboard.MarketplaceAutoRenewEnabled),
-		// 						MarketplacePlanID: to.Ptr("myPlanId"),
-		// 					},
-		// 					GrafanaConfigurations: &armdashboard.GrafanaConfigurations{
-		// 						Security: &armdashboard.Security{
-		// 							CsrfAlwaysCheck: to.Ptr(false),
-		// 						},
-		// 						SMTP: &armdashboard.SMTP{
-		// 							Enabled: to.Ptr(true),
-		// 							FromAddress: to.Ptr("test@sendemail.com"),
-		// 							FromName: to.Ptr("emailsender"),
-		// 							Host: to.Ptr("smtp.sendemail.com:587"),
-		// 							SkipVerify: to.Ptr(true),
-		// 							StartTLSPolicy: to.Ptr(armdashboard.StartTLSPolicyOpportunisticStartTLS),
-		// 							User: to.Ptr("username"),
-		// 						},
-		// 						Snapshots: &armdashboard.Snapshots{
-		// 							ExternalEnabled: to.Ptr(true),
-		// 						},
-		// 						UnifiedAlertingScreenshots: &armdashboard.UnifiedAlertingScreenshots{
-		// 							CaptureEnabled: to.Ptr(false),
-		// 						},
-		// 						Users: &armdashboard.Users{
-		// 							EditorsCanAdmin: to.Ptr(true),
-		// 							ViewersCanEdit: to.Ptr(true),
-		// 						},
-		// 					},
-		// 					GrafanaIntegrations: &armdashboard.GrafanaIntegrations{
-		// 						AzureMonitorWorkspaceIntegrations: []*armdashboard.AzureMonitorWorkspaceIntegration{
-		// 							{
-		// 								AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.monitor/accounts/myAzureMonitorWorkspace"),
-		// 							},
-		// 						},
-		// 					},
-		// 					GrafanaMajorVersion: to.Ptr("9"),
-		// 					GrafanaPlugins: map[string]*armdashboard.GrafanaPlugin{
-		// 						"sample-plugin-id": &armdashboard.GrafanaPlugin{
-		// 							PluginID: to.Ptr("sample-plugin-id"),
-		// 						},
-		// 					},
-		// 					GrafanaVersion: to.Ptr("9.4.5"),
-		// 					OutboundIPs: []*string{
-		// 						to.Ptr("192.168.0.1"),
-		// 						to.Ptr("192.168.0.2"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armdashboard.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armdashboard.PublicNetworkAccessEnabled),
-		// 					ZoneRedundancy: to.Ptr(armdashboard.ZoneRedundancyEnabled),
-		// 				},
-		// 				SKU: &armdashboard.ResourceSKU{
-		// 					Name: to.Ptr("Standard"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"Environment": to.Ptr("Dev"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-08-01/Grafana_ListByResourceGroup.json
-func ExampleGrafanaClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdashboard.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewGrafanaClient().NewListByResourceGroupPager("myResourceGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armdashboard.GrafanaClientListByResourceGroupResponse{
-		// 	ManagedGrafanaListResponse: armdashboard.ManagedGrafanaListResponse{
-		// 		Value: []*armdashboard.ManagedGrafana{
-		// 			{
-		// 				Name: to.Ptr("myWorkspace"),
-		// 				Type: to.Ptr("Microsoft.Dashboard/grafana"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/grafana/myWorkspace"),
-		// 				Location: to.Ptr("West US"),
-		// 				Properties: &armdashboard.ManagedGrafanaProperties{
-		// 					APIKey: to.Ptr(armdashboard.APIKeyEnabled),
-		// 					AutoGeneratedDomainNameLabelScope: to.Ptr(armdashboard.AutoGeneratedDomainNameLabelScopeTenantReuse),
-		// 					DeterministicOutboundIP: to.Ptr(armdashboard.DeterministicOutboundIPEnabled),
-		// 					Endpoint: to.Ptr("https://myworkspace-abcdefghijklmnop.wus.grafana.azure.com"),
-		// 					EnterpriseConfigurations: &armdashboard.EnterpriseConfigurations{
-		// 						MarketplaceAutoRenew: to.Ptr(armdashboard.MarketplaceAutoRenewEnabled),
-		// 						MarketplacePlanID: to.Ptr("myPlanId"),
-		// 					},
-		// 					GrafanaConfigurations: &armdashboard.GrafanaConfigurations{
-		// 						Security: &armdashboard.Security{
-		// 							CsrfAlwaysCheck: to.Ptr(false),
-		// 						},
-		// 						SMTP: &armdashboard.SMTP{
-		// 							Enabled: to.Ptr(true),
-		// 							FromAddress: to.Ptr("test@sendemail.com"),
-		// 							FromName: to.Ptr("emailsender"),
-		// 							Host: to.Ptr("smtp.sendemail.com:587"),
-		// 							SkipVerify: to.Ptr(true),
-		// 							StartTLSPolicy: to.Ptr(armdashboard.StartTLSPolicyOpportunisticStartTLS),
-		// 							User: to.Ptr("username"),
-		// 						},
-		// 						Snapshots: &armdashboard.Snapshots{
-		// 							ExternalEnabled: to.Ptr(true),
-		// 						},
-		// 						UnifiedAlertingScreenshots: &armdashboard.UnifiedAlertingScreenshots{
-		// 							CaptureEnabled: to.Ptr(false),
-		// 						},
-		// 						Users: &armdashboard.Users{
-		// 							EditorsCanAdmin: to.Ptr(true),
-		// 							ViewersCanEdit: to.Ptr(true),
-		// 						},
-		// 					},
-		// 					GrafanaIntegrations: &armdashboard.GrafanaIntegrations{
-		// 						AzureMonitorWorkspaceIntegrations: []*armdashboard.AzureMonitorWorkspaceIntegration{
-		// 							{
-		// 								AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.monitor/accounts/myAzureMonitorWorkspace"),
-		// 							},
-		// 						},
-		// 					},
-		// 					GrafanaMajorVersion: to.Ptr("9"),
-		// 					GrafanaPlugins: map[string]*armdashboard.GrafanaPlugin{
-		// 						"sample-plugin-id": &armdashboard.GrafanaPlugin{
-		// 							PluginID: to.Ptr("sample-plugin-id"),
-		// 						},
-		// 					},
-		// 					GrafanaVersion: to.Ptr("9.4.5"),
-		// 					OutboundIPs: []*string{
-		// 						to.Ptr("192.168.0.1"),
-		// 						to.Ptr("192.168.0.2"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armdashboard.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armdashboard.PublicNetworkAccessEnabled),
-		// 					ZoneRedundancy: to.Ptr(armdashboard.ZoneRedundancyEnabled),
-		// 				},
-		// 				SKU: &armdashboard.ResourceSKU{
-		// 					Name: to.Ptr("Standard"),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"Environment": to.Ptr("Dev"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-08-01/Grafana_Update.json
 func ExampleGrafanaClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -705,4 +338,371 @@ func ExampleGrafanaClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-08-01/EnterpriseDetails_Post.json
+func ExampleGrafanaClient_CheckEnterpriseDetails() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdashboard.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGrafanaClient().CheckEnterpriseDetails(ctx, "myResourceGroup", "myWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdashboard.GrafanaClientCheckEnterpriseDetailsResponse{
+	// 	EnterpriseDetails: armdashboard.EnterpriseDetails{
+	// 		MarketplaceTrialQuota: &armdashboard.MarketplaceTrialQuota{
+	// 			AvailablePromotion: to.Ptr(armdashboard.AvailablePromotionNone),
+	// 			GrafanaResourceID: to.Ptr("/subscriptions/e1e3b30d-e7ec-4e25-8587-db037bcb9a4d/resourcegroups/amg-local-script-test-rg/providers/microsoft.dashboard/grafana/eus2-enterprise-1001-07"),
+	// 			TrialEndAt: to.Ptr(time.Date(2022, time.November, 3, 1, 6, 0, 447000000, time.UTC)),
+	// 			TrialStartAt: to.Ptr(time.Date(2022, time.October, 4, 1, 6, 0, 447000000, time.UTC)),
+	// 		},
+	// 		SaasSubscriptionDetails: &armdashboard.SaasSubscriptionDetails{
+	// 			OfferID: to.Ptr("amg_test"),
+	// 			PlanID: to.Ptr("amg_globalplan"),
+	// 			PublisherID: to.Ptr("isvtestuklegacy"),
+	// 			Term: &armdashboard.SubscriptionTerm{
+	// 				EndDate: to.Ptr(time.Date(2022, time.November, 3, 0, 0, 0, 0, time.UTC)),
+	// 				StartDate: to.Ptr(time.Date(2022, time.October, 4, 0, 0, 0, 0, time.UTC)),
+	// 				TermUnit: to.Ptr("P1M"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01/Grafana_FetchAvailablePlugins.json
+func ExampleGrafanaClient_FetchAvailablePlugins() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdashboard.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGrafanaClient().FetchAvailablePlugins(ctx, "myResourceGroup", "myWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdashboard.GrafanaClientFetchAvailablePluginsResponse{
+	// 	GrafanaAvailablePluginListResponse: armdashboard.GrafanaAvailablePluginListResponse{
+	// 		Value: []*armdashboard.GrafanaAvailablePlugin{
+	// 			{
+	// 				Name: to.Ptr("Plugin A"),
+	// 				PluginID: to.Ptr("plugin-a"),
+	// 			},
+	// 			{
+	// 				Name: to.Ptr("Plugin B"),
+	// 				PluginID: to.Ptr("plugin-b"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01/Grafana_Get.json
+func ExampleGrafanaClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdashboard.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGrafanaClient().Get(ctx, "myResourceGroup", "myWorkspace", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdashboard.GrafanaClientGetResponse{
+	// 	ManagedGrafana: armdashboard.ManagedGrafana{
+	// 		Name: to.Ptr("myWorkspace"),
+	// 		Type: to.Ptr("Microsoft.Dashboard/grafana"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/grafana/myWorkspace"),
+	// 		Location: to.Ptr("West US"),
+	// 		Properties: &armdashboard.ManagedGrafanaProperties{
+	// 			APIKey: to.Ptr(armdashboard.APIKeyEnabled),
+	// 			AutoGeneratedDomainNameLabelScope: to.Ptr(armdashboard.AutoGeneratedDomainNameLabelScopeTenantReuse),
+	// 			DeterministicOutboundIP: to.Ptr(armdashboard.DeterministicOutboundIPEnabled),
+	// 			Endpoint: to.Ptr("https://myworkspace-abcdefghijklmnop.wus.grafana.azure.com"),
+	// 			EnterpriseConfigurations: &armdashboard.EnterpriseConfigurations{
+	// 				MarketplaceAutoRenew: to.Ptr(armdashboard.MarketplaceAutoRenewEnabled),
+	// 				MarketplacePlanID: to.Ptr("myPlanId"),
+	// 			},
+	// 			GrafanaConfigurations: &armdashboard.GrafanaConfigurations{
+	// 				Security: &armdashboard.Security{
+	// 					CsrfAlwaysCheck: to.Ptr(false),
+	// 				},
+	// 				SMTP: &armdashboard.SMTP{
+	// 					Enabled: to.Ptr(true),
+	// 					FromAddress: to.Ptr("test@sendemail.com"),
+	// 					FromName: to.Ptr("emailsender"),
+	// 					Host: to.Ptr("smtp.sendemail.com:587"),
+	// 					SkipVerify: to.Ptr(true),
+	// 					StartTLSPolicy: to.Ptr(armdashboard.StartTLSPolicyOpportunisticStartTLS),
+	// 					User: to.Ptr("username"),
+	// 				},
+	// 				Snapshots: &armdashboard.Snapshots{
+	// 					ExternalEnabled: to.Ptr(true),
+	// 				},
+	// 				UnifiedAlertingScreenshots: &armdashboard.UnifiedAlertingScreenshots{
+	// 					CaptureEnabled: to.Ptr(false),
+	// 				},
+	// 				Users: &armdashboard.Users{
+	// 					EditorsCanAdmin: to.Ptr(true),
+	// 					ViewersCanEdit: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			GrafanaIntegrations: &armdashboard.GrafanaIntegrations{
+	// 				AzureMonitorWorkspaceIntegrations: []*armdashboard.AzureMonitorWorkspaceIntegration{
+	// 					{
+	// 						AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.monitor/accounts/myAzureMonitorWorkspace"),
+	// 					},
+	// 				},
+	// 			},
+	// 			GrafanaMajorVersion: to.Ptr("9"),
+	// 			GrafanaPlugins: map[string]*armdashboard.GrafanaPlugin{
+	// 				"sample-plugin-id": &armdashboard.GrafanaPlugin{
+	// 					PluginID: to.Ptr("sample-plugin-id"),
+	// 				},
+	// 			},
+	// 			GrafanaVersion: to.Ptr("9.4.5"),
+	// 			OutboundIPs: []*string{
+	// 				to.Ptr("192.168.0.1"),
+	// 				to.Ptr("192.168.0.2"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armdashboard.ProvisioningStateSucceeded),
+	// 			PublicNetworkAccess: to.Ptr(armdashboard.PublicNetworkAccessEnabled),
+	// 			ZoneRedundancy: to.Ptr(armdashboard.ZoneRedundancyEnabled),
+	// 		},
+	// 		SKU: &armdashboard.ResourceSKU{
+	// 			Name: to.Ptr("Standard"),
+	// 		},
+	// 		SystemData: &armdashboard.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.February, 3, 1, 1, 1, 107505600, time.UTC)),
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armdashboard.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.February, 4, 2, 3, 1, 197434600, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armdashboard.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Environment": to.Ptr("Dev"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-08-01/Grafana_ListByResourceGroup.json
+func ExampleGrafanaClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdashboard.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewGrafanaClient().NewListByResourceGroupPager("myResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdashboard.GrafanaClientListByResourceGroupResponse{
+		// 	ManagedGrafanaListResponse: armdashboard.ManagedGrafanaListResponse{
+		// 		Value: []*armdashboard.ManagedGrafana{
+		// 			{
+		// 				Name: to.Ptr("myWorkspace"),
+		// 				Type: to.Ptr("Microsoft.Dashboard/grafana"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/grafana/myWorkspace"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armdashboard.ManagedGrafanaProperties{
+		// 					APIKey: to.Ptr(armdashboard.APIKeyEnabled),
+		// 					AutoGeneratedDomainNameLabelScope: to.Ptr(armdashboard.AutoGeneratedDomainNameLabelScopeTenantReuse),
+		// 					DeterministicOutboundIP: to.Ptr(armdashboard.DeterministicOutboundIPEnabled),
+		// 					Endpoint: to.Ptr("https://myworkspace-abcdefghijklmnop.wus.grafana.azure.com"),
+		// 					EnterpriseConfigurations: &armdashboard.EnterpriseConfigurations{
+		// 						MarketplaceAutoRenew: to.Ptr(armdashboard.MarketplaceAutoRenewEnabled),
+		// 						MarketplacePlanID: to.Ptr("myPlanId"),
+		// 					},
+		// 					GrafanaConfigurations: &armdashboard.GrafanaConfigurations{
+		// 						Security: &armdashboard.Security{
+		// 							CsrfAlwaysCheck: to.Ptr(false),
+		// 						},
+		// 						SMTP: &armdashboard.SMTP{
+		// 							Enabled: to.Ptr(true),
+		// 							FromAddress: to.Ptr("test@sendemail.com"),
+		// 							FromName: to.Ptr("emailsender"),
+		// 							Host: to.Ptr("smtp.sendemail.com:587"),
+		// 							SkipVerify: to.Ptr(true),
+		// 							StartTLSPolicy: to.Ptr(armdashboard.StartTLSPolicyOpportunisticStartTLS),
+		// 							User: to.Ptr("username"),
+		// 						},
+		// 						Snapshots: &armdashboard.Snapshots{
+		// 							ExternalEnabled: to.Ptr(true),
+		// 						},
+		// 						UnifiedAlertingScreenshots: &armdashboard.UnifiedAlertingScreenshots{
+		// 							CaptureEnabled: to.Ptr(false),
+		// 						},
+		// 						Users: &armdashboard.Users{
+		// 							EditorsCanAdmin: to.Ptr(true),
+		// 							ViewersCanEdit: to.Ptr(true),
+		// 						},
+		// 					},
+		// 					GrafanaIntegrations: &armdashboard.GrafanaIntegrations{
+		// 						AzureMonitorWorkspaceIntegrations: []*armdashboard.AzureMonitorWorkspaceIntegration{
+		// 							{
+		// 								AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.monitor/accounts/myAzureMonitorWorkspace"),
+		// 							},
+		// 						},
+		// 					},
+		// 					GrafanaMajorVersion: to.Ptr("9"),
+		// 					GrafanaPlugins: map[string]*armdashboard.GrafanaPlugin{
+		// 						"sample-plugin-id": &armdashboard.GrafanaPlugin{
+		// 							PluginID: to.Ptr("sample-plugin-id"),
+		// 						},
+		// 					},
+		// 					GrafanaVersion: to.Ptr("9.4.5"),
+		// 					OutboundIPs: []*string{
+		// 						to.Ptr("192.168.0.1"),
+		// 						to.Ptr("192.168.0.2"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armdashboard.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armdashboard.PublicNetworkAccessEnabled),
+		// 					ZoneRedundancy: to.Ptr(armdashboard.ZoneRedundancyEnabled),
+		// 				},
+		// 				SKU: &armdashboard.ResourceSKU{
+		// 					Name: to.Ptr("Standard"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"Environment": to.Ptr("Dev"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-08-01/Grafana_List.json
+func ExampleGrafanaClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdashboard.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewGrafanaClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armdashboard.GrafanaClientListResponse{
+		// 	ManagedGrafanaListResponse: armdashboard.ManagedGrafanaListResponse{
+		// 		Value: []*armdashboard.ManagedGrafana{
+		// 			{
+		// 				Name: to.Ptr("myWorkspace"),
+		// 				Type: to.Ptr("Microsoft.Dashboard/grafana"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/grafana/myWorkspace"),
+		// 				Location: to.Ptr("West US"),
+		// 				Properties: &armdashboard.ManagedGrafanaProperties{
+		// 					APIKey: to.Ptr(armdashboard.APIKeyEnabled),
+		// 					AutoGeneratedDomainNameLabelScope: to.Ptr(armdashboard.AutoGeneratedDomainNameLabelScopeTenantReuse),
+		// 					DeterministicOutboundIP: to.Ptr(armdashboard.DeterministicOutboundIPEnabled),
+		// 					Endpoint: to.Ptr("https://myworkspace-abcdefghijklmnop.wus.grafana.azure.com"),
+		// 					EnterpriseConfigurations: &armdashboard.EnterpriseConfigurations{
+		// 						MarketplaceAutoRenew: to.Ptr(armdashboard.MarketplaceAutoRenewEnabled),
+		// 						MarketplacePlanID: to.Ptr("myPlanId"),
+		// 					},
+		// 					GrafanaConfigurations: &armdashboard.GrafanaConfigurations{
+		// 						Security: &armdashboard.Security{
+		// 							CsrfAlwaysCheck: to.Ptr(false),
+		// 						},
+		// 						SMTP: &armdashboard.SMTP{
+		// 							Enabled: to.Ptr(true),
+		// 							FromAddress: to.Ptr("test@sendemail.com"),
+		// 							FromName: to.Ptr("emailsender"),
+		// 							Host: to.Ptr("smtp.sendemail.com:587"),
+		// 							SkipVerify: to.Ptr(true),
+		// 							StartTLSPolicy: to.Ptr(armdashboard.StartTLSPolicyOpportunisticStartTLS),
+		// 							User: to.Ptr("username"),
+		// 						},
+		// 						Snapshots: &armdashboard.Snapshots{
+		// 							ExternalEnabled: to.Ptr(true),
+		// 						},
+		// 						UnifiedAlertingScreenshots: &armdashboard.UnifiedAlertingScreenshots{
+		// 							CaptureEnabled: to.Ptr(false),
+		// 						},
+		// 						Users: &armdashboard.Users{
+		// 							EditorsCanAdmin: to.Ptr(true),
+		// 							ViewersCanEdit: to.Ptr(true),
+		// 						},
+		// 					},
+		// 					GrafanaIntegrations: &armdashboard.GrafanaIntegrations{
+		// 						AzureMonitorWorkspaceIntegrations: []*armdashboard.AzureMonitorWorkspaceIntegration{
+		// 							{
+		// 								AzureMonitorWorkspaceResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/myResourceGroup/providers/microsoft.monitor/accounts/myAzureMonitorWorkspace"),
+		// 							},
+		// 						},
+		// 					},
+		// 					GrafanaMajorVersion: to.Ptr("9"),
+		// 					GrafanaPlugins: map[string]*armdashboard.GrafanaPlugin{
+		// 						"sample-plugin-id": &armdashboard.GrafanaPlugin{
+		// 							PluginID: to.Ptr("sample-plugin-id"),
+		// 						},
+		// 					},
+		// 					GrafanaVersion: to.Ptr("9.4.5"),
+		// 					OutboundIPs: []*string{
+		// 						to.Ptr("192.168.0.1"),
+		// 						to.Ptr("192.168.0.2"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armdashboard.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armdashboard.PublicNetworkAccessEnabled),
+		// 					ZoneRedundancy: to.Ptr(armdashboard.ZoneRedundancyEnabled),
+		// 				},
+		// 				SKU: &armdashboard.ResourceSKU{
+		// 					Name: to.Ptr("Standard"),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"Environment": to.Ptr("Dev"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

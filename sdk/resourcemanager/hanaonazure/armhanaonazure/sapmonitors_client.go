@@ -69,7 +69,7 @@ func (client *SapMonitorsClient) BeginCreate(ctx context.Context, resourceGroupN
 	}
 }
 
-// Create - Creates a SAP monitor.
+// create - Creates a SAP monitor.
 //
 // The product Microsoft.Workloads/sapMonitors (AMS Classic) is officially retired as of May 31, 2023.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -88,12 +88,13 @@ func (client *SapMonitorsClient) create(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *SapMonitorsClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, sapMonitorParameter SapMonitor, _ *SapMonitorsClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}"
 	if client.subscriptionID == "" {
@@ -147,7 +148,7 @@ func (client *SapMonitorsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes a SAP monitor.
+// deleteOperation - Deletes a SAP monitor.
 //
 // The product Microsoft.Workloads/sapMonitors (AMS Classic) is officially retired as of May 31, 2023.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -166,12 +167,13 @@ func (client *SapMonitorsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SapMonitorsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapMonitorName string, _ *SapMonitorsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HanaOnAzure/sapMonitors/{sapMonitorName}"
 	if client.subscriptionID == "" {
@@ -217,7 +219,8 @@ func (client *SapMonitorsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return SapMonitorsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -348,7 +351,8 @@ func (client *SapMonitorsClient) Update(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return SapMonitorsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

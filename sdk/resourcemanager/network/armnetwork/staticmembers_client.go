@@ -68,7 +68,8 @@ func (client *StaticMembersClient) CreateOrUpdate(ctx context.Context, resourceG
 	if err != nil {
 		return StaticMembersClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -143,7 +144,8 @@ func (client *StaticMembersClient) Delete(ctx context.Context, resourceGroupName
 		return StaticMembersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return StaticMembersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return StaticMembersClientDeleteResponse{}, err
 	}
 	return StaticMembersClientDeleteResponse{}, nil
 }
@@ -202,7 +204,8 @@ func (client *StaticMembersClient) Get(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return StaticMembersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

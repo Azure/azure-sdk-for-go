@@ -63,7 +63,8 @@ func (client *SKUMixPlacementScoresClient) Get(ctx context.Context, location str
 	if err != nil {
 		return SKUMixPlacementScoresClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -120,7 +121,8 @@ func (client *SKUMixPlacementScoresClient) Post(ctx context.Context, location st
 	if err != nil {
 		return SKUMixPlacementScoresClientPostResponse{}, err
 	}
-	return client.postHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.postHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // postCreateRequest creates the Post request.

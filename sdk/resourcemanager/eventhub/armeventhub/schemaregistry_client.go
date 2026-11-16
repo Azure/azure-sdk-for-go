@@ -67,7 +67,8 @@ func (client *SchemaRegistryClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return SchemaRegistryClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *SchemaRegistryClient) Delete(ctx context.Context, resourceGroupNam
 		return SchemaRegistryClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SchemaRegistryClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SchemaRegistryClientDeleteResponse{}, err
 	}
 	return SchemaRegistryClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *SchemaRegistryClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return SchemaRegistryClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

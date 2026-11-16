@@ -69,7 +69,7 @@ func (client *L3NetworksClient) BeginCreateOrUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateOrUpdate - Create a new layer 3 (L3) network or update the properties of the existing network.
+// createOrUpdate - Create a new layer 3 (L3) network or update the properties of the existing network.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *L3NetworksClient) createOrUpdate(ctx context.Context, resourceGroupName string, l3NetworkName string, l3NetworkParameters L3Network, options *L3NetworksClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *L3NetworksClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *L3NetworksClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, l3NetworkName string, l3NetworkParameters L3Network, options *L3NetworksClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *L3NetworksClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// Delete - Delete the provided layer 3 (L3) network.
+// deleteOperation - Delete the provided layer 3 (L3) network.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *L3NetworksClient) deleteOperation(ctx context.Context, resourceGroupName string, l3NetworkName string, options *L3NetworksClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *L3NetworksClient) deleteOperation(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *L3NetworksClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, l3NetworkName string, options *L3NetworksClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetworkCloud/l3Networks/{l3NetworkName}"
 	if client.subscriptionID == "" {
@@ -221,7 +223,8 @@ func (client *L3NetworksClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return L3NetworksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -433,7 +436,8 @@ func (client *L3NetworksClient) Update(ctx context.Context, resourceGroupName st
 	if err != nil {
 		return L3NetworksClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

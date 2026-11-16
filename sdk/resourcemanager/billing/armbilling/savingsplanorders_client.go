@@ -59,7 +59,8 @@ func (client *SavingsPlanOrdersClient) GetByBillingAccount(ctx context.Context, 
 	if err != nil {
 		return SavingsPlanOrdersClientGetByBillingAccountResponse{}, err
 	}
-	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.

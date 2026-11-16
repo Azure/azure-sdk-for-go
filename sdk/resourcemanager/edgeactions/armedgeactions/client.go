@@ -84,7 +84,8 @@ func (client *Client) create(ctx context.Context, resourceGroupName string, edge
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -126,7 +127,7 @@ func (client *Client) createCreateRequest(ctx context.Context, resourceGroupName
 //   - options - ClientBeginDeleteOptions contains the optional parameters for the Client.BeginDelete method.
 func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string, edgeActionName string, options *ClientBeginDeleteOptions) (*runtime.Poller[ClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, edgeActionName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, edgeActionName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -141,9 +142,9 @@ func (client *Client) BeginDelete(ctx context.Context, resourceGroupName string,
 	}
 }
 
-// delete - Delete a EdgeAction
+// deleteOperation - Delete a EdgeAction
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *Client) delete(ctx context.Context, resourceGroupName string, edgeActionName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
+func (client *Client) deleteOperation(ctx context.Context, resourceGroupName string, edgeActionName string, options *ClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "Client.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -158,7 +159,8 @@ func (client *Client) delete(ctx context.Context, resourceGroupName string, edge
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -232,7 +234,8 @@ func (client *Client) update(ctx context.Context, resourceGroupName string, edge
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -286,7 +289,8 @@ func (client *Client) Get(ctx context.Context, resourceGroupName string, edgeAct
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

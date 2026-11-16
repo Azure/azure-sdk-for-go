@@ -63,7 +63,8 @@ func (client *SharedGalleriesClient) Get(ctx context.Context, location string, g
 	if err != nil {
 		return SharedGalleriesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

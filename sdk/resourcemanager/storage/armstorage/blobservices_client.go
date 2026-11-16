@@ -66,7 +66,8 @@ func (client *BlobServicesClient) GetServiceProperties(ctx context.Context, reso
 	if err != nil {
 		return BlobServicesClientGetServicePropertiesResponse{}, err
 	}
-	return client.getServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getServicePropertiesCreateRequest creates the GetServiceProperties request.
@@ -208,7 +209,8 @@ func (client *BlobServicesClient) SetServiceProperties(ctx context.Context, reso
 	if err != nil {
 		return BlobServicesClientSetServicePropertiesResponse{}, err
 	}
-	return client.setServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.setServicePropertiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // setServicePropertiesCreateRequest creates the SetServiceProperties request.

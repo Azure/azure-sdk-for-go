@@ -65,7 +65,8 @@ func (client *IntegrationRuntimeNodesClient) Delete(ctx context.Context, resourc
 		return IntegrationRuntimeNodesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return IntegrationRuntimeNodesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return IntegrationRuntimeNodesClientDeleteResponse{}, err
 	}
 	return IntegrationRuntimeNodesClientDeleteResponse{}, nil
 }
@@ -123,7 +124,8 @@ func (client *IntegrationRuntimeNodesClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return IntegrationRuntimeNodesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -192,7 +194,8 @@ func (client *IntegrationRuntimeNodesClient) GetIPAddress(ctx context.Context, r
 	if err != nil {
 		return IntegrationRuntimeNodesClientGetIPAddressResponse{}, err
 	}
-	return client.getIPAddressHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getIPAddressHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getIPAddressCreateRequest creates the GetIPAddress request.
@@ -262,7 +265,8 @@ func (client *IntegrationRuntimeNodesClient) Update(ctx context.Context, resourc
 	if err != nil {
 		return IntegrationRuntimeNodesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

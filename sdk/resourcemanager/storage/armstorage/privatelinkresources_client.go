@@ -65,7 +65,8 @@ func (client *PrivateLinkResourcesClient) ListByStorageAccount(ctx context.Conte
 	if err != nil {
 		return PrivateLinkResourcesClientListByStorageAccountResponse{}, err
 	}
-	return client.listByStorageAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByStorageAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByStorageAccountCreateRequest creates the ListByStorageAccount request.

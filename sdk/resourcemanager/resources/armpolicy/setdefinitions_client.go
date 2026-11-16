@@ -65,7 +65,8 @@ func (client *SetDefinitionsClient) CreateOrUpdate(ctx context.Context, policySe
 	if err != nil {
 		return SetDefinitionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -128,7 +129,8 @@ func (client *SetDefinitionsClient) CreateOrUpdateAtManagementGroup(ctx context.
 	if err != nil {
 		return SetDefinitionsClientCreateOrUpdateAtManagementGroupResponse{}, err
 	}
-	return client.createOrUpdateAtManagementGroupHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateAtManagementGroupHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateAtManagementGroupCreateRequest creates the CreateOrUpdateAtManagementGroup request.
@@ -188,7 +190,8 @@ func (client *SetDefinitionsClient) Delete(ctx context.Context, policySetDefinit
 		return SetDefinitionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SetDefinitionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SetDefinitionsClientDeleteResponse{}, err
 	}
 	return SetDefinitionsClientDeleteResponse{}, nil
 }
@@ -236,7 +239,8 @@ func (client *SetDefinitionsClient) DeleteAtManagementGroup(ctx context.Context,
 		return SetDefinitionsClientDeleteAtManagementGroupResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SetDefinitionsClientDeleteAtManagementGroupResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SetDefinitionsClientDeleteAtManagementGroupResponse{}, err
 	}
 	return SetDefinitionsClientDeleteAtManagementGroupResponse{}, nil
 }
@@ -280,7 +284,8 @@ func (client *SetDefinitionsClient) Get(ctx context.Context, policySetDefinition
 	if err != nil {
 		return SetDefinitionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -341,7 +346,8 @@ func (client *SetDefinitionsClient) GetAtManagementGroup(ctx context.Context, ma
 	if err != nil {
 		return SetDefinitionsClientGetAtManagementGroupResponse{}, err
 	}
-	return client.getAtManagementGroupHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAtManagementGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAtManagementGroupCreateRequest creates the GetAtManagementGroup request.
@@ -400,7 +406,8 @@ func (client *SetDefinitionsClient) GetBuiltIn(ctx context.Context, policySetDef
 	if err != nil {
 		return SetDefinitionsClientGetBuiltInResponse{}, err
 	}
-	return client.getBuiltInHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBuiltInHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBuiltInCreateRequest creates the GetBuiltIn request.
@@ -432,88 +439,6 @@ func (client *SetDefinitionsClient) getBuiltInHandleResponse(resp *http.Response
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SetDefinition); err != nil {
 		return SetDefinitionsClientGetBuiltInResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - This operation retrieves a list of all the policy set definitions in a given subscription that match the
-// optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq '{value}”.
-// If $filter is not provided, the unfiltered list includes all policy set definitions associated with the subscription, including
-// those that apply directly or from management groups that contain the given subscription. If $filter=atExactScope() is provided,
-// the returned list only includes all policy set definitions that at the given subscription. If $filter='policyType -eq {value}'
-// is provided, the returned list only includes all policy set definitions whose type match the {value}. Possible policyType
-// values are NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
-// all policy set definitions whose category match the {value}.
-//   - options - SetDefinitionsClientListOptions contains the optional parameters for the SetDefinitionsClient.NewListPager method.
-func (client *SetDefinitionsClient) NewListPager(options *SetDefinitionsClientListOptions) *runtime.Pager[SetDefinitionsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[SetDefinitionsClientListResponse]{
-		More: func(page SetDefinitionsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *SetDefinitionsClientListResponse) (SetDefinitionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SetDefinitionsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return SetDefinitionsClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return SetDefinitionsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *SetDefinitionsClient) listCreateRequest(ctx context.Context, nextLink string, options *SetDefinitionsClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Expand != nil {
-			reqQP.Set("$expand", *options.Expand)
-		}
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		if options != nil && options.Top != nil {
-			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
-		}
-		reqQP.Set("api-version", version20260601)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *SetDefinitionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SetDefinitionsClientListResponse, error) {
-	result := SetDefinitionsClientListResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.SetDefinitionListResult); err != nil {
-		return SetDefinitionsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -672,6 +597,88 @@ func (client *SetDefinitionsClient) listByManagementGroupHandleResponse(resp *ht
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.SetDefinitionListResult); err != nil {
 		return SetDefinitionsClientListByManagementGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - This operation retrieves a list of all the policy set definitions in a given subscription that match the
+// optional given $filter. Valid values for $filter are: 'atExactScope()', 'policyType -eq {value}' or 'category eq '{value}”.
+// If $filter is not provided, the unfiltered list includes all policy set definitions associated with the subscription, including
+// those that apply directly or from management groups that contain the given subscription. If $filter=atExactScope() is provided,
+// the returned list only includes all policy set definitions that at the given subscription. If $filter='policyType -eq {value}'
+// is provided, the returned list only includes all policy set definitions whose type match the {value}. Possible policyType
+// values are NotSpecified, BuiltIn and Custom. If $filter='category -eq {value}' is provided, the returned list only includes
+// all policy set definitions whose category match the {value}.
+//   - options - SetDefinitionsClientListOptions contains the optional parameters for the SetDefinitionsClient.NewListPager method.
+func (client *SetDefinitionsClient) NewListPager(options *SetDefinitionsClientListOptions) *runtime.Pager[SetDefinitionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[SetDefinitionsClientListResponse]{
+		More: func(page SetDefinitionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *SetDefinitionsClientListResponse) (SetDefinitionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "SetDefinitionsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return SetDefinitionsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return SetDefinitionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *SetDefinitionsClient) listCreateRequest(ctx context.Context, nextLink string, options *SetDefinitionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policySetDefinitions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Expand != nil {
+			reqQP.Set("$expand", *options.Expand)
+		}
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260601)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *SetDefinitionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (SetDefinitionsClientListResponse, error) {
+	result := SetDefinitionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.SetDefinitionListResult); err != nil {
+		return SetDefinitionsClientListResponse{}, err
 	}
 	return result, nil
 }

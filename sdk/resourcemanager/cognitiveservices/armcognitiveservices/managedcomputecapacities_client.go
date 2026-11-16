@@ -19,7 +19,7 @@ import (
 // ManagedComputeCapacitiesClient contains the methods for the ManagedComputeCapacities group.
 // Don't use this type directly, use NewManagedComputeCapacitiesClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-01
 type ManagedComputeCapacitiesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -97,9 +97,12 @@ func (client *ManagedComputeCapacitiesClient) listCreateRequest(ctx context.Cont
 		if options != nil && options.AcceleratorType != nil {
 			reqQP.Set("acceleratorType", *options.AcceleratorType)
 		}
-		reqQP.Set("api-version", version20260915Preview)
+		reqQP.Set("api-version", version20261101)
 		if options != nil && options.DeploymentID != nil {
 			reqQP.Set("deploymentId", *options.DeploymentID)
+		}
+		if options != nil && options.Location != nil {
+			reqQP.Set("location", *options.Location)
 		}
 		reqQP.Set("offer", offer)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")

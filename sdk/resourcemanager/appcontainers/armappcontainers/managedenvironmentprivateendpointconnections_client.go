@@ -72,7 +72,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) BeginCreateOrU
 	}
 }
 
-// CreateOrUpdate - Update the state of a private endpoint connection for a given managed environment.
+// createOrUpdate - Update the state of a private endpoint connection for a given managed environment.
 //
 // Update the state of a private endpoint connection for a given managed environment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -91,12 +91,13 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) createOrUpdate
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, privateEndpointConnectionName string, privateEndpointConnectionEnvelope PrivateEndpointConnection, _ *ManagedEnvironmentPrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -156,7 +157,7 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) BeginDelete(ct
 	}
 }
 
-// Delete - Delete a private endpoint connection for a given managed environment.
+// deleteOperation - Delete a private endpoint connection for a given managed environment.
 //
 // Delete a private endpoint connection for a given managed environment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -175,12 +176,13 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) deleteOperatio
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, privateEndpointConnectionName string, _ *ManagedEnvironmentPrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -232,7 +234,8 @@ func (client *ManagedEnvironmentPrivateEndpointConnectionsClient) Get(ctx contex
 	if err != nil {
 		return ManagedEnvironmentPrivateEndpointConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

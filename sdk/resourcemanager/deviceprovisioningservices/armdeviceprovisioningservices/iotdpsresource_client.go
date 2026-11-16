@@ -89,7 +89,8 @@ func (client *IotDpsResourceClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -168,7 +169,8 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnection(ctx 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -214,7 +216,7 @@ func (client *IotDpsResourceClient) createOrUpdatePrivateEndpointConnectionCreat
 //     method.
 func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*runtime.Poller[IotDpsResourceClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, provisioningServiceName, resourceGroupName, options)
+		resp, err := client.deleteOperation(ctx, provisioningServiceName, resourceGroupName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -229,9 +231,9 @@ func (client *IotDpsResourceClient) BeginDelete(ctx context.Context, provisionin
 	}
 }
 
-// delete - Deletes the Provisioning Service.
+// deleteOperation - Deletes the Provisioning Service.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *IotDpsResourceClient) delete(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*http.Response, error) {
+func (client *IotDpsResourceClient) deleteOperation(ctx context.Context, provisioningServiceName string, resourceGroupName string, options *IotDpsResourceClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IotDpsResourceClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -246,7 +248,8 @@ func (client *IotDpsResourceClient) delete(ctx context.Context, provisioningServ
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent, http.StatusNotFound) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -317,7 +320,8 @@ func (client *IotDpsResourceClient) deletePrivateEndpointConnection(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -393,7 +397,8 @@ func (client *IotDpsResourceClient) update(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -450,7 +455,8 @@ func (client *IotDpsResourceClient) CheckProvisioningServiceNameAvailability(ctx
 	if err != nil {
 		return IotDpsResourceClientCheckProvisioningServiceNameAvailabilityResponse{}, err
 	}
-	return client.checkProvisioningServiceNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkProvisioningServiceNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkProvisioningServiceNameAvailabilityCreateRequest creates the CheckProvisioningServiceNameAvailability request.
@@ -505,7 +511,8 @@ func (client *IotDpsResourceClient) Get(ctx context.Context, provisioningService
 	if err != nil {
 		return IotDpsResourceClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -566,7 +573,8 @@ func (client *IotDpsResourceClient) GetOperationResult(ctx context.Context, oper
 	if err != nil {
 		return IotDpsResourceClientGetOperationResultResponse{}, err
 	}
-	return client.getOperationResultHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getOperationResultHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getOperationResultCreateRequest creates the GetOperationResult request.
@@ -633,7 +641,8 @@ func (client *IotDpsResourceClient) GetPrivateEndpointConnection(ctx context.Con
 	if err != nil {
 		return IotDpsResourceClientGetPrivateEndpointConnectionResponse{}, err
 	}
-	return client.getPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateEndpointConnectionCreateRequest creates the GetPrivateEndpointConnection request.
@@ -699,7 +708,8 @@ func (client *IotDpsResourceClient) GetPrivateLinkResources(ctx context.Context,
 	if err != nil {
 		return IotDpsResourceClientGetPrivateLinkResourcesResponse{}, err
 	}
-	return client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.
@@ -763,7 +773,8 @@ func (client *IotDpsResourceClient) ListKeysForKeyName(ctx context.Context, prov
 	if err != nil {
 		return IotDpsResourceClientListKeysForKeyNameResponse{}, err
 	}
-	return client.listKeysForKeyNameHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysForKeyNameHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysForKeyNameCreateRequest creates the ListKeysForKeyName request.
@@ -828,7 +839,8 @@ func (client *IotDpsResourceClient) ListPrivateEndpointConnections(ctx context.C
 	if err != nil {
 		return IotDpsResourceClientListPrivateEndpointConnectionsResponse{}, err
 	}
-	return client.listPrivateEndpointConnectionsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listPrivateEndpointConnectionsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listPrivateEndpointConnectionsCreateRequest creates the ListPrivateEndpointConnections request.
@@ -889,7 +901,8 @@ func (client *IotDpsResourceClient) ListPrivateLinkResources(ctx context.Context
 	if err != nil {
 		return IotDpsResourceClientListPrivateLinkResourcesResponse{}, err
 	}
-	return client.listPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listPrivateLinkResourcesCreateRequest creates the ListPrivateLinkResources request.

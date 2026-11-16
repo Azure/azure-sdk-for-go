@@ -72,7 +72,7 @@ func (client *EndpointDeploymentClient) BeginCreateOrUpdate(ctx context.Context,
 	}
 }
 
-// CreateOrUpdate - Create or update endpoint deployment resource with the specified parameters
+// createOrUpdate - Create or update endpoint deployment resource with the specified parameters
 //
 // Create or update endpoint deployment resource with the specified parameters
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -91,12 +91,13 @@ func (client *EndpointDeploymentClient) createOrUpdate(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *EndpointDeploymentClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, body EndpointDeploymentResourcePropertiesBasicResource, _ *EndpointDeploymentClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/endpoints/{endpointName}/deployments/{deploymentName}"
 	if client.subscriptionID == "" {
@@ -161,7 +162,7 @@ func (client *EndpointDeploymentClient) BeginDelete(ctx context.Context, resourc
 	}
 }
 
-// Delete - Delete endpoint deployment resource by name
+// deleteOperation - Delete endpoint deployment resource by name
 //
 // Delete endpoint deployment resource by name
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -180,12 +181,13 @@ func (client *EndpointDeploymentClient) deleteOperation(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *EndpointDeploymentClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, endpointName string, deploymentName string, options *EndpointDeploymentClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{workspaceName}/endpoints/{endpointName}/deployments/{deploymentName}"
 	if client.subscriptionID == "" {
@@ -244,7 +246,8 @@ func (client *EndpointDeploymentClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return EndpointDeploymentClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

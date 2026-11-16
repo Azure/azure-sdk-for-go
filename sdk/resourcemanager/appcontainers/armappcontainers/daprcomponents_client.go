@@ -68,7 +68,8 @@ func (client *DaprComponentsClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return DaprComponentsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -140,7 +141,8 @@ func (client *DaprComponentsClient) Delete(ctx context.Context, resourceGroupNam
 		return DaprComponentsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DaprComponentsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DaprComponentsClientDeleteResponse{}, err
 	}
 	return DaprComponentsClientDeleteResponse{}, nil
 }
@@ -196,7 +198,8 @@ func (client *DaprComponentsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return DaprComponentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -237,6 +240,75 @@ func (client *DaprComponentsClient) getHandleResponse(resp *http.Response, succe
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprComponent); err != nil {
 		return DaprComponentsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListSecrets - List secrets for a dapr component
+//
+// List secrets for a dapr component
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - environmentName - Name of the Managed Environment.
+//   - componentName - Name of the Dapr Component.
+//   - options - DaprComponentsClientListSecretsOptions contains the optional parameters for the DaprComponentsClient.ListSecrets
+//     method.
+func (client *DaprComponentsClient) ListSecrets(ctx context.Context, resourceGroupName string, environmentName string, componentName string, options *DaprComponentsClientListSecretsOptions) (DaprComponentsClientListSecretsResponse, error) {
+	var err error
+	const operationName = "DaprComponentsClient.ListSecrets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, environmentName, componentName, options)
+	if err != nil {
+		return DaprComponentsClientListSecretsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DaprComponentsClientListSecretsResponse{}, err
+	}
+	resp, err := client.listSecretsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listSecretsCreateRequest creates the ListSecrets request.
+func (client *DaprComponentsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, componentName string, _ *DaprComponentsClientListSecretsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/listSecrets"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if environmentName == "" {
+		return nil, errors.New("parameter environmentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
+	if componentName == "" {
+		return nil, errors.New("parameter componentName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{componentName}", url.PathEscape(componentName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260701)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listSecretsHandleResponse handles the ListSecrets response.
+func (client *DaprComponentsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (DaprComponentsClientListSecretsResponse, error) {
+	result := DaprComponentsClientListSecretsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DaprSecretsCollection); err != nil {
+		return DaprComponentsClientListSecretsResponse{}, err
 	}
 	return result, nil
 }
@@ -315,74 +387,6 @@ func (client *DaprComponentsClient) listHandleResponse(resp *http.Response, succ
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DaprComponentsCollection); err != nil {
 		return DaprComponentsClientListResponse{}, err
-	}
-	return result, nil
-}
-
-// ListSecrets - List secrets for a dapr component
-//
-// List secrets for a dapr component
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - environmentName - Name of the Managed Environment.
-//   - componentName - Name of the Dapr Component.
-//   - options - DaprComponentsClientListSecretsOptions contains the optional parameters for the DaprComponentsClient.ListSecrets
-//     method.
-func (client *DaprComponentsClient) ListSecrets(ctx context.Context, resourceGroupName string, environmentName string, componentName string, options *DaprComponentsClientListSecretsOptions) (DaprComponentsClientListSecretsResponse, error) {
-	var err error
-	const operationName = "DaprComponentsClient.ListSecrets"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listSecretsCreateRequest(ctx, resourceGroupName, environmentName, componentName, options)
-	if err != nil {
-		return DaprComponentsClientListSecretsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return DaprComponentsClientListSecretsResponse{}, err
-	}
-	return client.listSecretsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listSecretsCreateRequest creates the ListSecrets request.
-func (client *DaprComponentsClient) listSecretsCreateRequest(ctx context.Context, resourceGroupName string, environmentName string, componentName string, _ *DaprComponentsClientListSecretsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/managedEnvironments/{environmentName}/daprComponents/{componentName}/listSecrets"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if environmentName == "" {
-		return nil, errors.New("parameter environmentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{environmentName}", url.PathEscape(environmentName))
-	if componentName == "" {
-		return nil, errors.New("parameter componentName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{componentName}", url.PathEscape(componentName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listSecretsHandleResponse handles the ListSecrets response.
-func (client *DaprComponentsClient) listSecretsHandleResponse(resp *http.Response, successCodes ...int) (DaprComponentsClientListSecretsResponse, error) {
-	result := DaprComponentsClientListSecretsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DaprSecretsCollection); err != nil {
-		return DaprComponentsClientListSecretsResponse{}, err
 	}
 	return result, nil
 }

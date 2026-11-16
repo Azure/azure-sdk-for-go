@@ -69,7 +69,7 @@ func (client *StandbyContainerGroupPoolsClient) BeginCreateOrUpdate(ctx context.
 	}
 }
 
-// CreateOrUpdate - Create a StandbyContainerGroupPoolResource
+// createOrUpdate - Create a StandbyContainerGroupPoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StandbyContainerGroupPoolsClient) createOrUpdate(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, resource StandbyContainerGroupPoolResource, options *StandbyContainerGroupPoolsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *StandbyContainerGroupPoolsClient) createOrUpdate(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *StandbyContainerGroupPoolsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, resource StandbyContainerGroupPoolResource, _ *StandbyContainerGroupPoolsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *StandbyContainerGroupPoolsClient) BeginDelete(ctx context.Context,
 	}
 }
 
-// Delete - Delete a StandbyContainerGroupPoolResource
+// deleteOperation - Delete a StandbyContainerGroupPoolResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *StandbyContainerGroupPoolsClient) deleteOperation(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, options *StandbyContainerGroupPoolsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *StandbyContainerGroupPoolsClient) deleteOperation(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *StandbyContainerGroupPoolsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, standbyContainerGroupPoolName string, _ *StandbyContainerGroupPoolsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.StandbyPool/standbyContainerGroupPools/{standbyContainerGroupPoolName}"
 	if client.subscriptionID == "" {
@@ -211,7 +213,8 @@ func (client *StandbyContainerGroupPoolsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return StandbyContainerGroupPoolsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -412,7 +415,8 @@ func (client *StandbyContainerGroupPoolsClient) Update(ctx context.Context, reso
 	if err != nil {
 		return StandbyContainerGroupPoolsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

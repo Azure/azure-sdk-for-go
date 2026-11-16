@@ -64,7 +64,8 @@ func (client *SharedLimitsClient) Create(ctx context.Context, location string, n
 	if err != nil {
 		return SharedLimitsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -129,7 +130,8 @@ func (client *SharedLimitsClient) Delete(ctx context.Context, location string, n
 		return SharedLimitsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SharedLimitsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SharedLimitsClientDeleteResponse{}, err
 	}
 	return SharedLimitsClientDeleteResponse{}, nil
 }
@@ -178,7 +180,8 @@ func (client *SharedLimitsClient) Get(ctx context.Context, location string, name
 	if err != nil {
 		return SharedLimitsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -63,7 +63,8 @@ func (client *ProviderResourceTypesClient) List(ctx context.Context, resourcePro
 	if err != nil {
 		return ProviderResourceTypesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

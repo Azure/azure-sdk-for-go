@@ -64,7 +64,8 @@ func (client *LogFilesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return LogFilesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -131,7 +132,8 @@ func (client *LogFilesClient) ListDownloadUrls(ctx context.Context, resourceGrou
 	if err != nil {
 		return LogFilesClientListDownloadUrlsResponse{}, err
 	}
-	return client.listDownloadUrlsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listDownloadUrlsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listDownloadUrlsCreateRequest creates the ListDownloadUrls request.

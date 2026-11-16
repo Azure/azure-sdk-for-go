@@ -57,7 +57,8 @@ func (client *BillingAccountClient) GetPolicy(ctx context.Context, billingAccoun
 	if err != nil {
 		return BillingAccountClientGetPolicyResponse{}, err
 	}
-	return client.getPolicyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPolicyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPolicyCreateRequest creates the GetPolicy request.

@@ -69,7 +69,8 @@ func (client *ApplyUpdatesClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return ApplyUpdatesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -150,7 +151,8 @@ func (client *ApplyUpdatesClient) CreateOrUpdateOrCancel(ctx context.Context, re
 	if err != nil {
 		return ApplyUpdatesClientCreateOrUpdateOrCancelResponse{}, err
 	}
-	return client.createOrUpdateOrCancelHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateOrCancelHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateOrCancelCreateRequest creates the CreateOrUpdateOrCancel request.
@@ -233,7 +235,8 @@ func (client *ApplyUpdatesClient) CreateOrUpdateParent(ctx context.Context, reso
 	if err != nil {
 		return ApplyUpdatesClientCreateOrUpdateParentResponse{}, err
 	}
-	return client.createOrUpdateParentHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateParentHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateParentCreateRequest creates the CreateOrUpdateParent request.
@@ -320,7 +323,8 @@ func (client *ApplyUpdatesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ApplyUpdatesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -397,7 +401,8 @@ func (client *ApplyUpdatesClient) GetParent(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ApplyUpdatesClientGetParentResponse{}, err
 	}
-	return client.getParentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getParentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getParentCreateRequest creates the GetParent request.

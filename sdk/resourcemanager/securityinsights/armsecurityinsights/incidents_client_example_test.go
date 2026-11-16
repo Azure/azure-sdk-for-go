@@ -199,91 +199,6 @@ func ExampleIncidentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-10-01-preview/incidents/Incidents_List.json
-func ExampleIncidentsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurityinsights.NewClientFactory("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewIncidentsClient().NewListPager("myRg", "myWorkspace", &armsecurityinsights.IncidentsClientListOptions{
-		Orderby: to.Ptr("properties/createdTimeUtc desc"),
-		Top:     to.Ptr[int32](1)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsecurityinsights.IncidentsClientListResponse{
-		// 	IncidentList: armsecurityinsights.IncidentList{
-		// 		Value: []*armsecurityinsights.Incident{
-		// 			{
-		// 				Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
-		// 				Type: to.Ptr("Microsoft.SecurityInsights/incidents"),
-		// 				Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
-		// 				ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
-		// 				Properties: &armsecurityinsights.IncidentProperties{
-		// 					Description: to.Ptr("This is a demo incident"),
-		// 					AdditionalData: &armsecurityinsights.IncidentAdditionalData{
-		// 						AlertProductNames: []*string{
-		// 						},
-		// 						AlertsCount: to.Ptr[int32](0),
-		// 						BookmarksCount: to.Ptr[int32](0),
-		// 						CommentsCount: to.Ptr[int32](3),
-		// 						ProviderIncidentURL: to.Ptr("https://security.microsoft.com/incidents/3177?tid=5b5a146c-eba8-46af-96f8-e31b50d15a3f"),
-		// 						Tactics: []*armsecurityinsights.AttackTactic{
-		// 							to.Ptr(armsecurityinsights.AttackTacticInitialAccess),
-		// 							to.Ptr(armsecurityinsights.AttackTacticPersistence),
-		// 						},
-		// 						Techniques: []*string{
-		// 							to.Ptr("T1091"),
-		// 							to.Ptr("T1133"),
-		// 							to.Ptr("T1053"),
-		// 						},
-		// 					},
-		// 					Classification: to.Ptr(armsecurityinsights.IncidentClassificationFalsePositive),
-		// 					ClassificationComment: to.Ptr("Not a malicious activity"),
-		// 					ClassificationReason: to.Ptr(armsecurityinsights.IncidentClassificationReasonInaccurateData),
-		// 					CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
-		// 					FirstActivityTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 0, 30, 0, time.UTC)),
-		// 					IncidentNumber: to.Ptr[int32](3177),
-		// 					IncidentURL: to.Ptr("https://portal.azure.com/#asset/Microsoft_Azure_Security_Insights/Incident/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
-		// 					Labels: []*armsecurityinsights.IncidentLabel{
-		// 					},
-		// 					LastActivityTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 5, 30, 0, time.UTC)),
-		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
-		// 					Owner: &armsecurityinsights.IncidentOwnerInfo{
-		// 						AssignedTo: to.Ptr("john doe"),
-		// 						Email: to.Ptr("john.doe@contoso.com"),
-		// 						ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
-		// 						OwnerType: to.Ptr(armsecurityinsights.OwnerTypeUser),
-		// 						UserPrincipalName: to.Ptr("john@contoso.com"),
-		// 					},
-		// 					ProviderIncidentID: to.Ptr("3177"),
-		// 					ProviderName: to.Ptr("Azure Sentinel"),
-		// 					RelatedAnalyticRuleIDs: []*string{
-		// 						to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/fab3d2d4-747f-46a7-8ef0-9c0be8112bf7"),
-		// 					},
-		// 					Severity: to.Ptr(armsecurityinsights.IncidentSeverityHigh),
-		// 					Status: to.Ptr(armsecurityinsights.IncidentStatusClosed),
-		// 					Title: to.Ptr("My incident"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-10-01-preview/incidents/IncidentAlerts/Incidents_ListAlerts.json
 func ExampleIncidentsClient_ListAlerts() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -442,6 +357,91 @@ func ExampleIncidentsClient_ListEntities() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-10-01-preview/incidents/Incidents_List.json
+func ExampleIncidentsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurityinsights.NewClientFactory("d0cfe6b2-9ac0-4464-9919-dccaee2e48c0", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewIncidentsClient().NewListPager("myRg", "myWorkspace", &armsecurityinsights.IncidentsClientListOptions{
+		Orderby: to.Ptr("properties/createdTimeUtc desc"),
+		Top:     to.Ptr[int32](1)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsecurityinsights.IncidentsClientListResponse{
+		// 	IncidentList: armsecurityinsights.IncidentList{
+		// 		Value: []*armsecurityinsights.Incident{
+		// 			{
+		// 				Name: to.Ptr("73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+		// 				Type: to.Ptr("Microsoft.SecurityInsights/incidents"),
+		// 				Etag: to.Ptr("\"0300bf09-0000-0000-0000-5c37296e0000\""),
+		// 				ID: to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+		// 				Properties: &armsecurityinsights.IncidentProperties{
+		// 					Description: to.Ptr("This is a demo incident"),
+		// 					AdditionalData: &armsecurityinsights.IncidentAdditionalData{
+		// 						AlertProductNames: []*string{
+		// 						},
+		// 						AlertsCount: to.Ptr[int32](0),
+		// 						BookmarksCount: to.Ptr[int32](0),
+		// 						CommentsCount: to.Ptr[int32](3),
+		// 						ProviderIncidentURL: to.Ptr("https://security.microsoft.com/incidents/3177?tid=5b5a146c-eba8-46af-96f8-e31b50d15a3f"),
+		// 						Tactics: []*armsecurityinsights.AttackTactic{
+		// 							to.Ptr(armsecurityinsights.AttackTacticInitialAccess),
+		// 							to.Ptr(armsecurityinsights.AttackTacticPersistence),
+		// 						},
+		// 						Techniques: []*string{
+		// 							to.Ptr("T1091"),
+		// 							to.Ptr("T1133"),
+		// 							to.Ptr("T1053"),
+		// 						},
+		// 					},
+		// 					Classification: to.Ptr(armsecurityinsights.IncidentClassificationFalsePositive),
+		// 					ClassificationComment: to.Ptr("Not a malicious activity"),
+		// 					ClassificationReason: to.Ptr(armsecurityinsights.IncidentClassificationReasonInaccurateData),
+		// 					CreatedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
+		// 					FirstActivityTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 0, 30, 0, time.UTC)),
+		// 					IncidentNumber: to.Ptr[int32](3177),
+		// 					IncidentURL: to.Ptr("https://portal.azure.com/#asset/Microsoft_Azure_Security_Insights/Incident/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/incidents/73e01a99-5cd7-4139-a149-9f2736ff2ab5"),
+		// 					Labels: []*armsecurityinsights.IncidentLabel{
+		// 					},
+		// 					LastActivityTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 5, 30, 0, time.UTC)),
+		// 					LastModifiedTimeUTC: to.Ptr(time.Date(2019, time.January, 1, 13, 15, 30, 0, time.UTC)),
+		// 					Owner: &armsecurityinsights.IncidentOwnerInfo{
+		// 						AssignedTo: to.Ptr("john doe"),
+		// 						Email: to.Ptr("john.doe@contoso.com"),
+		// 						ObjectID: to.Ptr("2046feea-040d-4a46-9e2b-91c2941bfa70"),
+		// 						OwnerType: to.Ptr(armsecurityinsights.OwnerTypeUser),
+		// 						UserPrincipalName: to.Ptr("john@contoso.com"),
+		// 					},
+		// 					ProviderIncidentID: to.Ptr("3177"),
+		// 					ProviderName: to.Ptr("Azure Sentinel"),
+		// 					RelatedAnalyticRuleIDs: []*string{
+		// 						to.Ptr("/subscriptions/d0cfe6b2-9ac0-4464-9919-dccaee2e48c0/resourceGroups/myRg/providers/Microsoft.OperationalIinsights/workspaces/myWorkspace/providers/Microsoft.SecurityInsights/alertRules/fab3d2d4-747f-46a7-8ef0-9c0be8112bf7"),
+		// 					},
+		// 					Severity: to.Ptr(armsecurityinsights.IncidentSeverityHigh),
+		// 					Status: to.Ptr(armsecurityinsights.IncidentStatusClosed),
+		// 					Title: to.Ptr("My incident"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }
 
 // Generated from example definition: 2025-10-01-preview/manualTrigger/Incidents_RunPlaybook.json

@@ -57,7 +57,8 @@ func (client *SavingsPlanOrderClient) Elevate(ctx context.Context, savingsPlanOr
 	if err != nil {
 		return SavingsPlanOrderClientElevateResponse{}, err
 	}
-	return client.elevateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.elevateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // elevateCreateRequest creates the Elevate request.
@@ -108,7 +109,8 @@ func (client *SavingsPlanOrderClient) Get(ctx context.Context, savingsPlanOrderI
 	if err != nil {
 		return SavingsPlanOrderClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

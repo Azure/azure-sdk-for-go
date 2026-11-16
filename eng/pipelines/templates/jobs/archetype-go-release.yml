@@ -62,6 +62,14 @@ stages:
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
       - template: /eng/pipelines/templates/variables/image.yml
+      # Post-merge CI (IndividualCI) is an auto-release, so the AutoReleasePrepare stage exists. Pass its SDK PR on
+      # so completion updates the release plan linked to it. Manual releases have no SDK PR.
+      - ${{ if and(eq(variables['Build.Reason'], 'IndividualCI'), eq(variables['Build.SourceBranch'], 'refs/heads/main')) }}:
+        - name: AutoReleaseSdkPullRequestUrl
+          value: $[ stageDependencies.AutoReleasePrepare.ResolveAutoReleasePackages.outputs['resolve.AutoReleaseSdkPullRequestUrl'] ]
+      - ${{ else }}:
+        - name: AutoReleaseSdkPullRequestUrl
+          value: ''
     displayName: 'Release: ${{ parameters.ServiceDirectory }}'
     # On post-merge main CI, also require the auto-release label + changed-package signal from
     # AutoReleasePrepare. Manual/scheduled runs release on the changelog/tag gate alone.
@@ -186,6 +194,16 @@ stages:
               workingDirectory: $(Pipeline.Workspace)
             displayName: Create API review for Go
             condition: and(succeeded(), ne(variables['Skip.CreateApiReview'], 'true'))
+          # Log whether this is an auto-release or a manual release, and the auto-release SDK PR.
+          - pwsh: |
+              $type = if ($env:BUILD_REASON -eq 'IndividualCI') { 'auto-release' } else { 'manual release' }
+              $pr = if ($env:AUTO_RELEASE_SDK_PR) { $env:AUTO_RELEASE_SDK_PR } else { 'none' }
+              Write-Host "Release type: $type"
+              Write-Host "Auto-release SDK PR: $pr"
+            displayName: Show release type and auto-release SDK PR
+            env:
+              BUILD_REASON: $(Build.Reason)
+              AUTO_RELEASE_SDK_PR: $(AutoReleaseSdkPullRequestUrl)
           - template: /eng/common/pipelines/templates/steps/mark-release-completion.yml
             parameters:
               ConfigFileDir: $(Pipeline.Workspace)/PackageInfo

@@ -64,7 +64,8 @@ func (client *DbServersClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return DbServersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

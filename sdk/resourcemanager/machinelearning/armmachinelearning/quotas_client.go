@@ -134,7 +134,8 @@ func (client *QuotasClient) Update(ctx context.Context, location string, paramet
 	if err != nil {
 		return QuotasClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

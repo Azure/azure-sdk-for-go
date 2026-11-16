@@ -69,7 +69,8 @@ func (client *DpsCertificateClient) CreateOrUpdate(ctx context.Context, resource
 	if err != nil {
 		return DpsCertificateClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -140,7 +141,8 @@ func (client *DpsCertificateClient) Delete(ctx context.Context, resourceGroupNam
 		return DpsCertificateClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DpsCertificateClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DpsCertificateClientDeleteResponse{}, err
 	}
 	return DpsCertificateClientDeleteResponse{}, nil
 }
@@ -218,7 +220,8 @@ func (client *DpsCertificateClient) GenerateVerificationCode(ctx context.Context
 	if err != nil {
 		return DpsCertificateClientGenerateVerificationCodeResponse{}, err
 	}
-	return client.generateVerificationCodeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateVerificationCodeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateVerificationCodeCreateRequest creates the GenerateVerificationCode request.
@@ -306,7 +309,8 @@ func (client *DpsCertificateClient) Get(ctx context.Context, certificateName str
 	if err != nil {
 		return DpsCertificateClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -373,7 +377,8 @@ func (client *DpsCertificateClient) List(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return DpsCertificateClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.
@@ -434,7 +439,8 @@ func (client *DpsCertificateClient) VerifyCertificate(ctx context.Context, certi
 	if err != nil {
 		return DpsCertificateClientVerifyCertificateResponse{}, err
 	}
-	return client.verifyCertificateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.verifyCertificateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // verifyCertificateCreateRequest creates the VerifyCertificate request.

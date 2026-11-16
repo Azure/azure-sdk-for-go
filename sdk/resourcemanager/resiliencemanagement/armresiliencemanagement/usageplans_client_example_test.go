@@ -88,6 +88,59 @@ func ExampleUsagePlansClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-10-01/UsagePlans_Update_MaximumSet_Gen.json
+func ExampleUsagePlansClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewUsagePlansClient().BeginUpdate(ctx, "MyResourceGroup", "myUsagePlan", armresiliencemanagement.UsagePlanTagsUpdate{
+		Tags: map[string]*string{
+			"environment": to.Ptr("staging"),
+			"costCenter":  to.Ptr("12345"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armresiliencemanagement.UsagePlansClientUpdateResponse{
+	// 	UsagePlan: armresiliencemanagement.UsagePlan{
+	// 		Properties: &armresiliencemanagement.UsagePlanProperties{
+	// 			PlanType: to.Ptr(armresiliencemanagement.UsagePlanTypeStandard),
+	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
+	// 		},
+	// 		Location: to.Ptr("global"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("staging"),
+	// 			"costCenter": to.Ptr("12345"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans/myUsagePlan"),
+	// 		Name: to.Ptr("myUsagePlan"),
+	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/usagePlans"),
+	// 		SystemData: &armresiliencemanagement.SystemData{
+	// 			CreatedBy: to.Ptr("admin@contoso.com"),
+	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 1, 12, 0, 0, 0, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-10-01/UsagePlans_Get_MaximumSet_Gen.json
 func ExampleUsagePlansClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -235,57 +288,4 @@ func ExampleUsagePlansClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-10-01/UsagePlans_Update_MaximumSet_Gen.json
-func ExampleUsagePlansClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armresiliencemanagement.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewUsagePlansClient().BeginUpdate(ctx, "MyResourceGroup", "myUsagePlan", armresiliencemanagement.UsagePlanTagsUpdate{
-		Tags: map[string]*string{
-			"environment": to.Ptr("staging"),
-			"costCenter":  to.Ptr("12345"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armresiliencemanagement.UsagePlansClientUpdateResponse{
-	// 	UsagePlan: armresiliencemanagement.UsagePlan{
-	// 		Properties: &armresiliencemanagement.UsagePlanProperties{
-	// 			PlanType: to.Ptr(armresiliencemanagement.UsagePlanTypeStandard),
-	// 			ProvisioningState: to.Ptr(armresiliencemanagement.ProvisioningStateSucceeded),
-	// 		},
-	// 		Location: to.Ptr("global"),
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("staging"),
-	// 			"costCenter": to.Ptr("12345"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/MyResourceGroup/providers/Microsoft.AzureResilienceManagement/usagePlans/myUsagePlan"),
-	// 		Name: to.Ptr("myUsagePlan"),
-	// 		Type: to.Ptr("Microsoft.AzureResilienceManagement/usagePlans"),
-	// 		SystemData: &armresiliencemanagement.SystemData{
-	// 			CreatedBy: to.Ptr("admin@contoso.com"),
-	// 			CreatedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2025, time.June, 1, 10, 0, 0, 0, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("admin@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armresiliencemanagement.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2025, time.June, 1, 12, 0, 0, 0, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }

@@ -63,7 +63,8 @@ func (client *ResourceQuotaLimitsClient) Get(ctx context.Context, location strin
 	if err != nil {
 		return ResourceQuotaLimitsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

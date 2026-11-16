@@ -89,36 +89,6 @@ func ExampleDatabasesClient_AddPrincipals() {
 	// }
 }
 
-// Generated from example definition: 2025-02-14/KustoDatabasesCheckNameAvailability.json
-func ExampleDatabasesClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDatabasesClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", armkusto.CheckNameRequest{
-		Name: to.Ptr("database1"),
-		Type: to.Ptr(armkusto.TypeMicrosoftKustoClustersDatabases),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.DatabasesClientCheckNameAvailabilityResponse{
-	// 	CheckNameResult: armkusto.CheckNameResult{
-	// 		Name: to.Ptr("database1"),
-	// 		Message: to.Ptr("Name 'database1' is already taken. Please specify a different name"),
-	// 		NameAvailable: to.Ptr(false),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-02-14/KustoDatabaseReadonlyUpdate.json
 func ExampleDatabasesClient_BeginCreateOrUpdate_kustoReadOnlyDatabaseUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -221,6 +191,78 @@ func ExampleDatabasesClient_BeginDelete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armkusto.DatabasesClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoDatabasesUpdate.json
+func ExampleDatabasesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewDatabasesClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", &armkusto.ReadWriteDatabase{
+		Kind: to.Ptr(armkusto.KindReadWrite),
+		Properties: &armkusto.ReadWriteDatabaseProperties{
+			HotCachePeriod: to.Ptr("P1D"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.DatabasesClientUpdateResponse{
+	// 	DatabaseClassification: &armkusto.ReadWriteDatabase{
+	// 		Name: to.Ptr("kustoCluster/KustoDatabase8"),
+	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases"),
+	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8"),
+	// 		Kind: to.Ptr(armkusto.KindReadWrite),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armkusto.ReadWriteDatabaseProperties{
+	// 			HotCachePeriod: to.Ptr("P1D"),
+	// 			ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-02-14/KustoDatabasesCheckNameAvailability.json
+func ExampleDatabasesClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDatabasesClient().CheckNameAvailability(ctx, "kustorptest", "kustoCluster", armkusto.CheckNameRequest{
+		Name: to.Ptr("database1"),
+		Type: to.Ptr(armkusto.TypeMicrosoftKustoClustersDatabases),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armkusto.DatabasesClientCheckNameAvailabilityResponse{
+	// 	CheckNameResult: armkusto.CheckNameResult{
+	// 		Name: to.Ptr("database1"),
+	// 		Message: to.Ptr("Name 'database1' is already taken. Please specify a different name"),
+	// 		NameAvailable: to.Ptr(false),
+	// 	},
 	// }
 }
 
@@ -518,48 +560,6 @@ func ExampleDatabasesClient_RemovePrincipals() {
 	// 				Fqn: to.Ptr("aadapp=some_guid_app_id"),
 	// 				Role: to.Ptr(armkusto.DatabasePrincipalRoleAdmin),
 	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-02-14/KustoDatabasesUpdate.json
-func ExampleDatabasesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armkusto.NewClientFactory("12345678-1234-1234-1234-123456789098", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewDatabasesClient().BeginUpdate(ctx, "kustorptest", "kustoCluster", "KustoDatabase8", &armkusto.ReadWriteDatabase{
-		Kind: to.Ptr(armkusto.KindReadWrite),
-		Properties: &armkusto.ReadWriteDatabaseProperties{
-			HotCachePeriod: to.Ptr("P1D"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armkusto.DatabasesClientUpdateResponse{
-	// 	DatabaseClassification: &armkusto.ReadWriteDatabase{
-	// 		Name: to.Ptr("kustoCluster/KustoDatabase8"),
-	// 		Type: to.Ptr("Microsoft.Kusto/Clusters/Databases"),
-	// 		ID: to.Ptr("/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.Kusto/Clusters/kustoCluster/Databases/KustoDatabase8"),
-	// 		Kind: to.Ptr(armkusto.KindReadWrite),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armkusto.ReadWriteDatabaseProperties{
-	// 			HotCachePeriod: to.Ptr("P1D"),
-	// 			ProvisioningState: to.Ptr(armkusto.ProvisioningStateSucceeded),
 	// 		},
 	// 	},
 	// }

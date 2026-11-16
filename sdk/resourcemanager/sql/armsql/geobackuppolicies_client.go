@@ -67,7 +67,8 @@ func (client *GeoBackupPoliciesClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return GeoBackupPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -141,7 +142,8 @@ func (client *GeoBackupPoliciesClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return GeoBackupPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

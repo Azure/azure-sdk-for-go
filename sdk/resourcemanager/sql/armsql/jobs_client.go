@@ -66,7 +66,8 @@ func (client *JobsClient) CreateOrUpdate(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return JobsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -141,7 +142,8 @@ func (client *JobsClient) Delete(ctx context.Context, resourceGroupName string, 
 		return JobsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return JobsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JobsClientDeleteResponse{}, err
 	}
 	return JobsClientDeleteResponse{}, nil
 }
@@ -200,7 +202,8 @@ func (client *JobsClient) Get(ctx context.Context, resourceGroupName string, ser
 	if err != nil {
 		return JobsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

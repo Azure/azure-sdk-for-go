@@ -171,70 +171,23 @@ type OperationsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// PrivateAccessesClientBeginCreateOrUpdateOptions contains the optional parameters for the PrivateAccessesClient.BeginCreateOrUpdate
-// method.
-type PrivateAccessesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PrivateAccessesClientBeginDeleteAPrivateEndpointConnectionOptions contains the optional parameters for the PrivateAccessesClient.BeginDeleteAPrivateEndpointConnection
-// method.
-type PrivateAccessesClientBeginDeleteAPrivateEndpointConnectionOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PrivateAccessesClientBeginDeleteOptions contains the optional parameters for the PrivateAccessesClient.BeginDelete method.
-type PrivateAccessesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PrivateAccessesClientBeginUpdateOptions contains the optional parameters for the PrivateAccessesClient.BeginUpdate method.
-type PrivateAccessesClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// PrivateAccessesClientGetAPrivateEndpointConnectionOptions contains the optional parameters for the PrivateAccessesClient.GetAPrivateEndpointConnection
-// method.
-type PrivateAccessesClientGetAPrivateEndpointConnectionOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateAccessesClientGetOptions contains the optional parameters for the PrivateAccessesClient.Get method.
-type PrivateAccessesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateAccessesClientGetPrivateLinkResourcesOptions contains the optional parameters for the PrivateAccessesClient.GetPrivateLinkResources
-// method.
-type PrivateAccessesClientGetPrivateLinkResourcesOptions struct {
-	// placeholder for future optional parameters
-}
-
-// PrivateAccessesClientListAllOptions contains the optional parameters for the PrivateAccessesClient.NewListAllPager method.
-type PrivateAccessesClientListAllOptions struct {
-	// String that sets the continuation token.
-	ContinuationToken *string
-}
-
-// PrivateAccessesClientListOptions contains the optional parameters for the PrivateAccessesClient.NewListPager method.
-type PrivateAccessesClientListOptions struct {
-	// String that sets the continuation token.
-	ContinuationToken *string
-}
-
-// PrivateAccessesClientListPrivateEndpointConnectionsOptions contains the optional parameters for the PrivateAccessesClient.NewListPrivateEndpointConnectionsPager
-// method.
-type PrivateAccessesClientListPrivateEndpointConnectionsOptions struct {
-	// placeholder for future optional parameters
-}
-
 // ScenarioConfigurationsClientBeginCreateOrUpdateOptions contains the optional parameters for the ScenarioConfigurationsClient.BeginCreateOrUpdate
 // method.
 type ScenarioConfigurationsClientBeginCreateOrUpdateOptions struct {
+	// Use '*' to update the resource only if it exists. If the resource does not exist, the request fails with HTTP 412 and error
+	// code PreconditionFailed in the standard Azure error body. A failed condition starts no resource change or asynchronous
+	// operation. Omit both condition headers for an unconditional create or update. Other effective conditions must be honored
+	// if supported or rejected with 412 if they cannot be verified; they must not be silently ignored. This contract does not
+	// introduce entity-tag matching.
+	IfMatch *string
+
+	// Use '*' to create the resource only if it does not exist. If the resource exists, the request fails with HTTP 412 and error
+	// code PreconditionFailed in the standard Azure error body. A failed condition starts no resource change or asynchronous
+	// operation. Omit both condition headers for an unconditional create or update. Other effective conditions must be honored
+	// if supported or rejected with 412 if they cannot be verified; they must not be silently ignored. This contract does not
+	// introduce entity-tag matching.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
@@ -296,9 +249,42 @@ type ScenarioRunsClientListAllOptions struct {
 	// placeholder for future optional parameters
 }
 
+// ScenarioTemplateVersionsClientGetOptions contains the optional parameters for the ScenarioTemplateVersionsClient.Get method.
+type ScenarioTemplateVersionsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScenarioTemplateVersionsClientListOptions contains the optional parameters for the ScenarioTemplateVersionsClient.NewListPager
+// method.
+type ScenarioTemplateVersionsClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScenarioTemplatesClientGetOptions contains the optional parameters for the ScenarioTemplatesClient.Get method.
+type ScenarioTemplatesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// ScenarioTemplatesClientListOptions contains the optional parameters for the ScenarioTemplatesClient.NewListPager method.
+type ScenarioTemplatesClientListOptions struct {
+	// placeholder for future optional parameters
+}
+
 // ScenariosClientCreateOrUpdateOptions contains the optional parameters for the ScenariosClient.CreateOrUpdate method.
 type ScenariosClientCreateOrUpdateOptions struct {
-	// placeholder for future optional parameters
+	// Use '*' to update the resource only if it exists. If the resource does not exist, the request fails with HTTP 412 and error
+	// code PreconditionFailed in the standard Azure error body. A failed condition starts no resource change or asynchronous
+	// operation. Omit both condition headers for an unconditional create or update. Other effective conditions must be honored
+	// if supported or rejected with 412 if they cannot be verified; they must not be silently ignored. This contract does not
+	// introduce entity-tag matching.
+	IfMatch *string
+
+	// Use '*' to create the resource only if it does not exist. If the resource exists, the request fails with HTTP 412 and error
+	// code PreconditionFailed in the standard Azure error body. A failed condition starts no resource change or asynchronous
+	// operation. Omit both condition headers for an unconditional create or update. Other effective conditions must be honored
+	// if supported or rejected with 412 if they cannot be verified; they must not be silently ignored. This contract does not
+	// introduce entity-tag matching.
+	IfNoneMatch *string
 }
 
 // ScenariosClientDeleteOptions contains the optional parameters for the ScenariosClient.Delete method.
@@ -348,9 +334,47 @@ type TargetsClientListOptions struct {
 	ContinuationToken *string
 }
 
+// WorkspaceDiscoveriesClientGetOptions contains the optional parameters for the WorkspaceDiscoveriesClient.Get method.
+type WorkspaceDiscoveriesClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspaceDiscoveriesClientListOptions contains the optional parameters for the WorkspaceDiscoveriesClient.NewListPager
+// method.
+type WorkspaceDiscoveriesClientListOptions struct {
+	// Opaque continuation token supplied by the returned nextLink.
+	ContinuationToken *string
+}
+
+// WorkspaceEvaluationsClientGetOptions contains the optional parameters for the WorkspaceEvaluationsClient.Get method.
+type WorkspaceEvaluationsClientGetOptions struct {
+	// placeholder for future optional parameters
+}
+
+// WorkspaceEvaluationsClientListOptions contains the optional parameters for the WorkspaceEvaluationsClient.NewListPager
+// method.
+type WorkspaceEvaluationsClientListOptions struct {
+	// Opaque continuation token supplied by the returned nextLink.
+	ContinuationToken *string
+}
+
 // WorkspacesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkspacesClient.BeginCreateOrUpdate
 // method.
 type WorkspacesClientBeginCreateOrUpdateOptions struct {
+	// Use '*' to update the resource only if it exists. If the resource does not exist, the request fails with HTTP 412 and error
+	// code PreconditionFailed in the standard Azure error body. A failed condition starts no resource change or asynchronous
+	// operation. Omit both condition headers for an unconditional create or update. Other effective conditions must be honored
+	// if supported or rejected with 412 if they cannot be verified; they must not be silently ignored. This contract does not
+	// introduce entity-tag matching.
+	IfMatch *string
+
+	// Use '*' to create the resource only if it does not exist. If the resource exists, the request fails with HTTP 412 and error
+	// code PreconditionFailed in the standard Azure error body. A failed condition starts no resource change or asynchronous
+	// operation. Omit both condition headers for an unconditional create or update. Other effective conditions must be honored
+	// if supported or rejected with 412 if they cannot be verified; they must not be silently ignored. This contract does not
+	// introduce entity-tag matching.
+	IfNoneMatch *string
+
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }

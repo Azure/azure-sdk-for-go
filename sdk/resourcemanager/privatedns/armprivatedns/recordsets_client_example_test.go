@@ -12,7 +12,57 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-06-01/RecordSetAAAAPut.json
+// Generated from example definition: 2026-06-01-preview/PTMLinkRecordSetAPut.json
+func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZonePtmLinkARecordSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().CreateOrUpdate(ctx, "resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeA, "ptmlinkrecord", armprivatedns.RecordSet{
+		Properties: &armprivatedns.RecordSetProperties{
+			Metadata: map[string]*string{
+				"key1": to.Ptr("value1"),
+			},
+			TTL: to.Ptr[int64](3600),
+			TrafficManagementProfile: &armprivatedns.SubResource{
+				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateTrafficManagerProfiles/ptm-profile1"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armprivatedns.RecordSetsClientCreateOrUpdateResponse{
+	// 	RecordSet: armprivatedns.RecordSet{
+	// 		Name: to.Ptr("ptmlinkrecord"),
+	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/A"),
+	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/A/ptmlinkrecord"),
+	// 		Properties: &armprivatedns.RecordSetProperties{
+	// 			Fqdn: to.Ptr("ptmlinkrecord.privatezone1.com."),
+	// 			IsAutoRegistered: to.Ptr(false),
+	// 			Metadata: map[string]*string{
+	// 				"key1": to.Ptr("value1"),
+	// 			},
+	// 			TTL: to.Ptr[int64](3600),
+	// 			TrafficManagementProfile: &armprivatedns.SubResource{
+	// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateTrafficManagerProfiles/ptm-profile1"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01-preview/RecordSetAAAAPut.json
 func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneAaaaRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -65,7 +115,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneAaaaRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetAPut.json
+// Generated from example definition: 2026-06-01-preview/RecordSetAPut.json
 func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneARecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -118,7 +168,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneARecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetCNAMEPut.json
+// Generated from example definition: 2026-06-01-preview/RecordSetCNAMEPut.json
 func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneCnameRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -167,7 +217,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneCnameRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetMXPut.json
+// Generated from example definition: 2026-06-01-preview/RecordSetMXPut.json
 func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneMxRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,7 +272,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneMxRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetPTRPut.json
+// Generated from example definition: 2026-06-01-preview/RecordSetPTRPut.json
 func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZonePtrRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -275,7 +325,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZonePtrRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetSOAPut.json
+// Generated from example definition: 2026-06-01-preview/RecordSetSOAPut.json
 func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneSoaRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -336,7 +386,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneSoaRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetSRVPut.json
+// Generated from example definition: 2026-06-01-preview/RecordSetSRVPut.json
 func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneSrvRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -395,7 +445,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneSrvRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetTXTPut.json
+// Generated from example definition: 2026-06-01-preview/RecordSetTXTPut.json
 func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneTxtRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -454,7 +504,7 @@ func ExampleRecordSetsClient_CreateOrUpdate_putPrivateDnsZoneTxtRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetAAAADelete.json
+// Generated from example definition: 2026-06-01-preview/RecordSetAAAADelete.json
 func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneAaaaRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -476,7 +526,7 @@ func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneAaaaRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetADelete.json
+// Generated from example definition: 2026-06-01-preview/RecordSetADelete.json
 func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneARecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -498,7 +548,7 @@ func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneARecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetCNAMEDelete.json
+// Generated from example definition: 2026-06-01-preview/RecordSetCNAMEDelete.json
 func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneCnameRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -520,7 +570,7 @@ func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneCnameRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetMXDelete.json
+// Generated from example definition: 2026-06-01-preview/RecordSetMXDelete.json
 func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneMxRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -542,7 +592,7 @@ func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneMxRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetPTRDelete.json
+// Generated from example definition: 2026-06-01-preview/RecordSetPTRDelete.json
 func ExampleRecordSetsClient_Delete_deletePrivateDnsZonePtrRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -564,7 +614,7 @@ func ExampleRecordSetsClient_Delete_deletePrivateDnsZonePtrRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetSRVDelete.json
+// Generated from example definition: 2026-06-01-preview/RecordSetSRVDelete.json
 func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneSrvRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -586,7 +636,7 @@ func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneSrvRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetTXTDelete.json
+// Generated from example definition: 2026-06-01-preview/RecordSetTXTDelete.json
 func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneTxtRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -608,7 +658,47 @@ func ExampleRecordSetsClient_Delete_deletePrivateDnsZoneTxtRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetAAAAGet.json
+// Generated from example definition: 2026-06-01-preview/PTMLinkRecordSetAGet.json
+func ExampleRecordSetsClient_Get_getPrivateDnsZonePtmLinkARecordSet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRecordSetsClient().Get(ctx, "resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeA, "ptmlinkrecord", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armprivatedns.RecordSetsClientGetResponse{
+	// 	RecordSet: armprivatedns.RecordSet{
+	// 		Name: to.Ptr("ptmlinkrecord"),
+	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/A"),
+	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/A/ptmlinkrecord"),
+	// 		Properties: &armprivatedns.RecordSetProperties{
+	// 			Fqdn: to.Ptr("ptmlinkrecord.privatezone1.com."),
+	// 			IsAutoRegistered: to.Ptr(false),
+	// 			Metadata: map[string]*string{
+	// 				"key1": to.Ptr("value1"),
+	// 			},
+	// 			TTL: to.Ptr[int64](3600),
+	// 			TrafficManagementProfile: &armprivatedns.SubResource{
+	// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateTrafficManagerProfiles/ptm-profile1"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-06-01-preview/RecordSetAAAAGet.json
 func ExampleRecordSetsClient_Get_getPrivateDnsZoneAaaaRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -649,7 +739,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneAaaaRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetAGet.json
+// Generated from example definition: 2026-06-01-preview/RecordSetAGet.json
 func ExampleRecordSetsClient_Get_getPrivateDnsZoneARecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -690,7 +780,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneARecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetCNAMEGet.json
+// Generated from example definition: 2026-06-01-preview/RecordSetCNAMEGet.json
 func ExampleRecordSetsClient_Get_getPrivateDnsZoneCnameRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -729,7 +819,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneCnameRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetMXGet.json
+// Generated from example definition: 2026-06-01-preview/RecordSetMXGet.json
 func ExampleRecordSetsClient_Get_getPrivateDnsZoneMxRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -771,7 +861,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneMxRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetPTRGet.json
+// Generated from example definition: 2026-06-01-preview/RecordSetPTRGet.json
 func ExampleRecordSetsClient_Get_getPrivateDnsZonePtrRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -812,7 +902,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZonePtrRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetSOAGet.json
+// Generated from example definition: 2026-06-01-preview/RecordSetSOAGet.json
 func ExampleRecordSetsClient_Get_getPrivateDnsZoneSoaRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -857,7 +947,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneSoaRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetSRVGet.json
+// Generated from example definition: 2026-06-01-preview/RecordSetSRVGet.json
 func ExampleRecordSetsClient_Get_getPrivateDnsZoneSrvRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -901,7 +991,7 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneSrvRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetTXTGet.json
+// Generated from example definition: 2026-06-01-preview/RecordSetTXTGet.json
 func ExampleRecordSetsClient_Get_getPrivateDnsZoneTxtRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -945,7 +1035,471 @@ func ExampleRecordSetsClient_Get_getPrivateDnsZoneTxtRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetALLList.json
+// Generated from example definition: 2026-06-01-preview/RecordSetAAAAList.json
+func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneAaaaRecordSets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeAAAA, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armprivatedns.RecordSetsClientListByTypeResponse{
+		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/AAAA?api-version=2026-06-01-preview&$skipToken=skipToken"),
+		// 		Value: []*armprivatedns.RecordSet{
+		// 			{
+		// 				Name: to.Ptr("recordaaaa1"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/AAAA"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/AAAA/recordaaaa1"),
+		// 				Properties: &armprivatedns.RecordSetProperties{
+		// 					AaaaRecords: []*armprivatedns.AaaaRecord{
+		// 						{
+		// 							IPv6Address: to.Ptr("::1"),
+		// 						},
+		// 					},
+		// 					Fqdn: to.Ptr("recordaaaa1.privatezone1.com."),
+		// 					IsAutoRegistered: to.Ptr(false),
+		// 					Metadata: map[string]*string{
+		// 						"key1": to.Ptr("value1"),
+		// 					},
+		// 					TTL: to.Ptr[int64](3600),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("recordaaaa2"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/AAAA"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/AAAA/recordaaaa2"),
+		// 				Properties: &armprivatedns.RecordSetProperties{
+		// 					AaaaRecords: []*armprivatedns.AaaaRecord{
+		// 						{
+		// 							IPv6Address: to.Ptr("::1"),
+		// 						},
+		// 					},
+		// 					Fqdn: to.Ptr("recordaaaa2.privatezone1.com."),
+		// 					IsAutoRegistered: to.Ptr(false),
+		// 					TTL: to.Ptr[int64](3600),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01-preview/RecordSetAList.json
+func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneARecordSets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeA, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armprivatedns.RecordSetsClientListByTypeResponse{
+		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/A?api-version=2026-06-01-preview&$skipToken=skipToken"),
+		// 		Value: []*armprivatedns.RecordSet{
+		// 			{
+		// 				Name: to.Ptr("recorda1"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/A"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/A/recorda1"),
+		// 				Properties: &armprivatedns.RecordSetProperties{
+		// 					ARecords: []*armprivatedns.ARecord{
+		// 						{
+		// 							IPv4Address: to.Ptr("1.2.3.4"),
+		// 						},
+		// 					},
+		// 					Fqdn: to.Ptr("recorda1.privatezone1.com."),
+		// 					IsAutoRegistered: to.Ptr(false),
+		// 					Metadata: map[string]*string{
+		// 						"key1": to.Ptr("value1"),
+		// 					},
+		// 					TTL: to.Ptr[int64](3600),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("recorda2"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/A"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/A/recorda2"),
+		// 				Properties: &armprivatedns.RecordSetProperties{
+		// 					ARecords: []*armprivatedns.ARecord{
+		// 						{
+		// 							IPv4Address: to.Ptr("5.6.7.8"),
+		// 						},
+		// 					},
+		// 					Fqdn: to.Ptr("recorda2.privatezone1.com."),
+		// 					IsAutoRegistered: to.Ptr(false),
+		// 					TTL: to.Ptr[int64](3600),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01-preview/RecordSetCNAMEList.json
+func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneCnameRecordSets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeCNAME, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armprivatedns.RecordSetsClientListByTypeResponse{
+		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
+		// 		Value: []*armprivatedns.RecordSet{
+		// 			{
+		// 				Name: to.Ptr("recordcname"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/CNAME"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/CNAME/recordcname"),
+		// 				Properties: &armprivatedns.RecordSetProperties{
+		// 					CnameRecord: &armprivatedns.CnameRecord{
+		// 						Cname: to.Ptr("contoso.com"),
+		// 					},
+		// 					Fqdn: to.Ptr("recordcname.privatezone1.com."),
+		// 					IsAutoRegistered: to.Ptr(false),
+		// 					Metadata: map[string]*string{
+		// 						"key1": to.Ptr("value1"),
+		// 					},
+		// 					TTL: to.Ptr[int64](3600),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01-preview/RecordSetMXList.json
+func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneMxRecordSets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeMX, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armprivatedns.RecordSetsClientListByTypeResponse{
+		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/MX?api-version=2026-06-01-preview&$skipToken=skipToken"),
+		// 		Value: []*armprivatedns.RecordSet{
+		// 			{
+		// 				Name: to.Ptr("recordmx1"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/MX"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/MX/recordmx1"),
+		// 				Properties: &armprivatedns.RecordSetProperties{
+		// 					Fqdn: to.Ptr("recordmx1.privatezone1.com."),
+		// 					IsAutoRegistered: to.Ptr(false),
+		// 					Metadata: map[string]*string{
+		// 						"key1": to.Ptr("value1"),
+		// 					},
+		// 					MxRecords: []*armprivatedns.MxRecord{
+		// 						{
+		// 							Exchange: to.Ptr("mail.contoso1.com"),
+		// 							Preference: to.Ptr[int32](0),
+		// 						},
+		// 					},
+		// 					TTL: to.Ptr[int64](3600),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("recordmx2"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/MX"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/MX/recordmx2"),
+		// 				Properties: &armprivatedns.RecordSetProperties{
+		// 					Fqdn: to.Ptr("recordmx2.privatezone1.com."),
+		// 					IsAutoRegistered: to.Ptr(false),
+		// 					MxRecords: []*armprivatedns.MxRecord{
+		// 						{
+		// 							Exchange: to.Ptr("mail.contoso2.com"),
+		// 							Preference: to.Ptr[int32](0),
+		// 						},
+		// 					},
+		// 					TTL: to.Ptr[int64](3600),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01-preview/RecordSetPTRList.json
+func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZonePtrRecordSets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "0.0.127.in-addr.arpa", armprivatedns.RecordTypePTR, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armprivatedns.RecordSetsClientListByTypeResponse{
+		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/PTR?api-version=2026-06-01-preview&$skipToken=skipToken"),
+		// 		Value: []*armprivatedns.RecordSet{
+		// 			{
+		// 				Name: to.Ptr("1"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/PTR"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/0.0.127.in-addr.arpa/PTR/1"),
+		// 				Properties: &armprivatedns.RecordSetProperties{
+		// 					Fqdn: to.Ptr("1.0.0.127.in-addr.arpa."),
+		// 					IsAutoRegistered: to.Ptr(false),
+		// 					Metadata: map[string]*string{
+		// 						"key1": to.Ptr("value1"),
+		// 					},
+		// 					PtrRecords: []*armprivatedns.PtrRecord{
+		// 						{
+		// 							Ptrdname: to.Ptr("localhost"),
+		// 						},
+		// 					},
+		// 					TTL: to.Ptr[int64](3600),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01-preview/RecordSetSOAList.json
+func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneSoaRecordSets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeSOA, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armprivatedns.RecordSetsClientListByTypeResponse{
+		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
+		// 		Value: []*armprivatedns.RecordSet{
+		// 			{
+		// 				Name: to.Ptr("@"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/SOA"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/SOA/@"),
+		// 				Properties: &armprivatedns.RecordSetProperties{
+		// 					Fqdn: to.Ptr("privatezone1.com."),
+		// 					IsAutoRegistered: to.Ptr(false),
+		// 					Metadata: map[string]*string{
+		// 						"key1": to.Ptr("value1"),
+		// 					},
+		// 					SoaRecord: &armprivatedns.SoaRecord{
+		// 						Email: to.Ptr("azureprivatedns-hostmaster.microsoft.com"),
+		// 						ExpireTime: to.Ptr[int64](2419200),
+		// 						Host: to.Ptr("azureprivatedns.net"),
+		// 						MinimumTTL: to.Ptr[int64](300),
+		// 						RefreshTime: to.Ptr[int64](3600),
+		// 						RetryTime: to.Ptr[int64](300),
+		// 						SerialNumber: to.Ptr[int64](1),
+		// 					},
+		// 					TTL: to.Ptr[int64](3600),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01-preview/RecordSetSRVList.json
+func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneSrvRecordSets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeSRV, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armprivatedns.RecordSetsClientListByTypeResponse{
+		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/SRV?api-version=2026-06-01-preview&$skipToken=skipToken"),
+		// 		Value: []*armprivatedns.RecordSet{
+		// 			{
+		// 				Name: to.Ptr("recordsrv"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/SRV"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/SRV/recordsrv"),
+		// 				Properties: &armprivatedns.RecordSetProperties{
+		// 					Fqdn: to.Ptr("recordsrv.privatezone1.com."),
+		// 					IsAutoRegistered: to.Ptr(false),
+		// 					Metadata: map[string]*string{
+		// 						"key1": to.Ptr("value1"),
+		// 					},
+		// 					SrvRecords: []*armprivatedns.SrvRecord{
+		// 						{
+		// 							Port: to.Ptr[int32](80),
+		// 							Priority: to.Ptr[int32](0),
+		// 							Target: to.Ptr("contoso.com"),
+		// 							Weight: to.Ptr[int32](10),
+		// 						},
+		// 					},
+		// 					TTL: to.Ptr[int64](3600),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01-preview/RecordSetTXTList.json
+func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneTxtRecordSets() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeTXT, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armprivatedns.RecordSetsClientListByTypeResponse{
+		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/TXT?api-version=2026-06-01-preview&$skipToken=skipToken"),
+		// 		Value: []*armprivatedns.RecordSet{
+		// 			{
+		// 				Name: to.Ptr("recordtxt"),
+		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/TXT"),
+		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/TXT/recordtxt"),
+		// 				Properties: &armprivatedns.RecordSetProperties{
+		// 					Fqdn: to.Ptr("recordtxt.privatezone1.com."),
+		// 					IsAutoRegistered: to.Ptr(false),
+		// 					Metadata: map[string]*string{
+		// 						"key1": to.Ptr("value1"),
+		// 					},
+		// 					TTL: to.Ptr[int64](3600),
+		// 					TxtRecords: []*armprivatedns.TxtRecord{
+		// 						{
+		// 							Value: []*string{
+		// 								to.Ptr("string1"),
+		// 								to.Ptr("string2"),
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-06-01-preview/RecordSetALLList.json
 func ExampleRecordSetsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -969,7 +1523,7 @@ func ExampleRecordSetsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armprivatedns.RecordSetsClientListResponse{
 		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/ALL?api-version=2024-06-01&$skipToken=skipToken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/ALL?api-version=2026-06-01-preview&$skipToken=skipToken"),
 		// 		Value: []*armprivatedns.RecordSet{
 		// 			{
 		// 				Name: to.Ptr("recorda"),
@@ -1033,8 +1587,8 @@ func ExampleRecordSetsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2024-06-01/RecordSetAAAAList.json
-func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneAaaaRecordSets() {
+// Generated from example definition: 2026-06-01-preview/PTMLinkRecordSetAPatch.json
+func ExampleRecordSetsClient_Update_patchPrivateDnsZonePtmLinkARecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1044,460 +1598,42 @@ func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneAaaaRecordSets(
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeAAAA, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armprivatedns.RecordSetsClientListByTypeResponse{
-		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/AAAA?api-version=2024-06-01&$skipToken=skipToken"),
-		// 		Value: []*armprivatedns.RecordSet{
-		// 			{
-		// 				Name: to.Ptr("recordaaaa1"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/AAAA"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/AAAA/recordaaaa1"),
-		// 				Properties: &armprivatedns.RecordSetProperties{
-		// 					AaaaRecords: []*armprivatedns.AaaaRecord{
-		// 						{
-		// 							IPv6Address: to.Ptr("::1"),
-		// 						},
-		// 					},
-		// 					Fqdn: to.Ptr("recordaaaa1.privatezone1.com."),
-		// 					IsAutoRegistered: to.Ptr(false),
-		// 					Metadata: map[string]*string{
-		// 						"key1": to.Ptr("value1"),
-		// 					},
-		// 					TTL: to.Ptr[int64](3600),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("recordaaaa2"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/AAAA"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/AAAA/recordaaaa2"),
-		// 				Properties: &armprivatedns.RecordSetProperties{
-		// 					AaaaRecords: []*armprivatedns.AaaaRecord{
-		// 						{
-		// 							IPv6Address: to.Ptr("::1"),
-		// 						},
-		// 					},
-		// 					Fqdn: to.Ptr("recordaaaa2.privatezone1.com."),
-		// 					IsAutoRegistered: to.Ptr(false),
-		// 					TTL: to.Ptr[int64](3600),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
+	res, err := clientFactory.NewRecordSetsClient().Update(ctx, "resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeA, "ptmlinkrecord", armprivatedns.RecordSet{
+		Properties: &armprivatedns.RecordSetProperties{
+			Metadata: map[string]*string{
+				"key2": to.Ptr("value2"),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
 	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armprivatedns.RecordSetsClientUpdateResponse{
+	// 	RecordSet: armprivatedns.RecordSet{
+	// 		Name: to.Ptr("ptmlinkrecord"),
+	// 		Type: to.Ptr("Microsoft.Network/privateDnsZones/A"),
+	// 		Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 		ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/A/ptmlinkrecord"),
+	// 		Properties: &armprivatedns.RecordSetProperties{
+	// 			Fqdn: to.Ptr("ptmlinkrecord.privatezone1.com."),
+	// 			IsAutoRegistered: to.Ptr(false),
+	// 			Metadata: map[string]*string{
+	// 				"key2": to.Ptr("value2"),
+	// 			},
+	// 			TTL: to.Ptr[int64](3600),
+	// 			TrafficManagementProfile: &armprivatedns.SubResource{
+	// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateTrafficManagerProfiles/ptm-profile1"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armprivatedns.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetAList.json
-func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneARecordSets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeA, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armprivatedns.RecordSetsClientListByTypeResponse{
-		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/A?api-version=2024-06-01&$skipToken=skipToken"),
-		// 		Value: []*armprivatedns.RecordSet{
-		// 			{
-		// 				Name: to.Ptr("recorda1"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/A"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/A/recorda1"),
-		// 				Properties: &armprivatedns.RecordSetProperties{
-		// 					ARecords: []*armprivatedns.ARecord{
-		// 						{
-		// 							IPv4Address: to.Ptr("1.2.3.4"),
-		// 						},
-		// 					},
-		// 					Fqdn: to.Ptr("recorda1.privatezone1.com."),
-		// 					IsAutoRegistered: to.Ptr(false),
-		// 					Metadata: map[string]*string{
-		// 						"key1": to.Ptr("value1"),
-		// 					},
-		// 					TTL: to.Ptr[int64](3600),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("recorda2"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/A"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/A/recorda2"),
-		// 				Properties: &armprivatedns.RecordSetProperties{
-		// 					ARecords: []*armprivatedns.ARecord{
-		// 						{
-		// 							IPv4Address: to.Ptr("5.6.7.8"),
-		// 						},
-		// 					},
-		// 					Fqdn: to.Ptr("recorda2.privatezone1.com."),
-		// 					IsAutoRegistered: to.Ptr(false),
-		// 					TTL: to.Ptr[int64](3600),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-06-01/RecordSetCNAMEList.json
-func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneCnameRecordSets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeCNAME, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armprivatedns.RecordSetsClientListByTypeResponse{
-		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
-		// 		Value: []*armprivatedns.RecordSet{
-		// 			{
-		// 				Name: to.Ptr("recordcname"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/CNAME"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/CNAME/recordcname"),
-		// 				Properties: &armprivatedns.RecordSetProperties{
-		// 					CnameRecord: &armprivatedns.CnameRecord{
-		// 						Cname: to.Ptr("contoso.com"),
-		// 					},
-		// 					Fqdn: to.Ptr("recordcname.privatezone1.com."),
-		// 					IsAutoRegistered: to.Ptr(false),
-		// 					Metadata: map[string]*string{
-		// 						"key1": to.Ptr("value1"),
-		// 					},
-		// 					TTL: to.Ptr[int64](3600),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-06-01/RecordSetMXList.json
-func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneMxRecordSets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeMX, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armprivatedns.RecordSetsClientListByTypeResponse{
-		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/MX?api-version=2024-06-01&$skipToken=skipToken"),
-		// 		Value: []*armprivatedns.RecordSet{
-		// 			{
-		// 				Name: to.Ptr("recordmx1"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/MX"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/MX/recordmx1"),
-		// 				Properties: &armprivatedns.RecordSetProperties{
-		// 					Fqdn: to.Ptr("recordmx1.privatezone1.com."),
-		// 					IsAutoRegistered: to.Ptr(false),
-		// 					Metadata: map[string]*string{
-		// 						"key1": to.Ptr("value1"),
-		// 					},
-		// 					MxRecords: []*armprivatedns.MxRecord{
-		// 						{
-		// 							Exchange: to.Ptr("mail.contoso1.com"),
-		// 							Preference: to.Ptr[int32](0),
-		// 						},
-		// 					},
-		// 					TTL: to.Ptr[int64](3600),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("recordmx2"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/MX"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/MX/recordmx2"),
-		// 				Properties: &armprivatedns.RecordSetProperties{
-		// 					Fqdn: to.Ptr("recordmx2.privatezone1.com."),
-		// 					IsAutoRegistered: to.Ptr(false),
-		// 					MxRecords: []*armprivatedns.MxRecord{
-		// 						{
-		// 							Exchange: to.Ptr("mail.contoso2.com"),
-		// 							Preference: to.Ptr[int32](0),
-		// 						},
-		// 					},
-		// 					TTL: to.Ptr[int64](3600),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-06-01/RecordSetPTRList.json
-func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZonePtrRecordSets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "0.0.127.in-addr.arpa", armprivatedns.RecordTypePTR, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armprivatedns.RecordSetsClientListByTypeResponse{
-		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/PTR?api-version=2024-06-01&$skipToken=skipToken"),
-		// 		Value: []*armprivatedns.RecordSet{
-		// 			{
-		// 				Name: to.Ptr("1"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/PTR"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/0.0.127.in-addr.arpa/PTR/1"),
-		// 				Properties: &armprivatedns.RecordSetProperties{
-		// 					Fqdn: to.Ptr("1.0.0.127.in-addr.arpa."),
-		// 					IsAutoRegistered: to.Ptr(false),
-		// 					Metadata: map[string]*string{
-		// 						"key1": to.Ptr("value1"),
-		// 					},
-		// 					PtrRecords: []*armprivatedns.PtrRecord{
-		// 						{
-		// 							Ptrdname: to.Ptr("localhost"),
-		// 						},
-		// 					},
-		// 					TTL: to.Ptr[int64](3600),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-06-01/RecordSetSOAList.json
-func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneSoaRecordSets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeSOA, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armprivatedns.RecordSetsClientListByTypeResponse{
-		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
-		// 		Value: []*armprivatedns.RecordSet{
-		// 			{
-		// 				Name: to.Ptr("@"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/SOA"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/SOA/@"),
-		// 				Properties: &armprivatedns.RecordSetProperties{
-		// 					Fqdn: to.Ptr("privatezone1.com."),
-		// 					IsAutoRegistered: to.Ptr(false),
-		// 					Metadata: map[string]*string{
-		// 						"key1": to.Ptr("value1"),
-		// 					},
-		// 					SoaRecord: &armprivatedns.SoaRecord{
-		// 						Email: to.Ptr("azureprivatedns-hostmaster.microsoft.com"),
-		// 						ExpireTime: to.Ptr[int64](2419200),
-		// 						Host: to.Ptr("azureprivatedns.net"),
-		// 						MinimumTTL: to.Ptr[int64](300),
-		// 						RefreshTime: to.Ptr[int64](3600),
-		// 						RetryTime: to.Ptr[int64](300),
-		// 						SerialNumber: to.Ptr[int64](1),
-		// 					},
-		// 					TTL: to.Ptr[int64](3600),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-06-01/RecordSetSRVList.json
-func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneSrvRecordSets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeSRV, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armprivatedns.RecordSetsClientListByTypeResponse{
-		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/SRV?api-version=2024-06-01&$skipToken=skipToken"),
-		// 		Value: []*armprivatedns.RecordSet{
-		// 			{
-		// 				Name: to.Ptr("recordsrv"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/SRV"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/SRV/recordsrv"),
-		// 				Properties: &armprivatedns.RecordSetProperties{
-		// 					Fqdn: to.Ptr("recordsrv.privatezone1.com."),
-		// 					IsAutoRegistered: to.Ptr(false),
-		// 					Metadata: map[string]*string{
-		// 						"key1": to.Ptr("value1"),
-		// 					},
-		// 					SrvRecords: []*armprivatedns.SrvRecord{
-		// 						{
-		// 							Port: to.Ptr[int32](80),
-		// 							Priority: to.Ptr[int32](0),
-		// 							Target: to.Ptr("contoso.com"),
-		// 							Weight: to.Ptr[int32](10),
-		// 						},
-		// 					},
-		// 					TTL: to.Ptr[int64](3600),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-06-01/RecordSetTXTList.json
-func ExampleRecordSetsClient_NewListByTypePager_getPrivateDnsZoneTxtRecordSets() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armprivatedns.NewClientFactory("subscriptionId", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewRecordSetsClient().NewListByTypePager("resourceGroup1", "privatezone1.com", armprivatedns.RecordTypeTXT, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armprivatedns.RecordSetsClientListByTypeResponse{
-		// 	RecordSetListResult: armprivatedns.RecordSetListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/TXT?api-version=2024-06-01&$skipToken=skipToken"),
-		// 		Value: []*armprivatedns.RecordSet{
-		// 			{
-		// 				Name: to.Ptr("recordtxt"),
-		// 				Type: to.Ptr("Microsoft.Network/privateDnsZones/TXT"),
-		// 				Etag: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 				ID: to.Ptr("/subscriptions/subscriptionId/resourceGroups/resourceGroup1/providers/Microsoft.Network/privateDnsZones/privatezone1.com/TXT/recordtxt"),
-		// 				Properties: &armprivatedns.RecordSetProperties{
-		// 					Fqdn: to.Ptr("recordtxt.privatezone1.com."),
-		// 					IsAutoRegistered: to.Ptr(false),
-		// 					Metadata: map[string]*string{
-		// 						"key1": to.Ptr("value1"),
-		// 					},
-		// 					TTL: to.Ptr[int64](3600),
-		// 					TxtRecords: []*armprivatedns.TxtRecord{
-		// 						{
-		// 							Value: []*string{
-		// 								to.Ptr("string1"),
-		// 								to.Ptr("string2"),
-		// 							},
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2024-06-01/RecordSetAAAAPatch.json
+// Generated from example definition: 2026-06-01-preview/RecordSetAAAAPatch.json
 func ExampleRecordSetsClient_Update_patchPrivateDnsZoneAaaaRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1544,7 +1680,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneAaaaRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetAPatch.json
+// Generated from example definition: 2026-06-01-preview/RecordSetAPatch.json
 func ExampleRecordSetsClient_Update_patchPrivateDnsZoneARecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1591,7 +1727,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneARecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetCNAMEPatch.json
+// Generated from example definition: 2026-06-01-preview/RecordSetCNAMEPatch.json
 func ExampleRecordSetsClient_Update_patchPrivateDnsZoneCnameRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1636,7 +1772,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneCnameRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetMXPatch.json
+// Generated from example definition: 2026-06-01-preview/RecordSetMXPatch.json
 func ExampleRecordSetsClient_Update_patchPrivateDnsZoneMxRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1684,7 +1820,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneMxRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetPTRPatch.json
+// Generated from example definition: 2026-06-01-preview/RecordSetPTRPatch.json
 func ExampleRecordSetsClient_Update_patchPrivateDnsZonePtrRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1731,7 +1867,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZonePtrRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetSOAPatch.json
+// Generated from example definition: 2026-06-01-preview/RecordSetSOAPatch.json
 func ExampleRecordSetsClient_Update_patchPrivateDnsZoneSoaRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1782,7 +1918,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneSoaRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetSRVPatch.json
+// Generated from example definition: 2026-06-01-preview/RecordSetSRVPatch.json
 func ExampleRecordSetsClient_Update_patchPrivateDnsZoneSrvRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1832,7 +1968,7 @@ func ExampleRecordSetsClient_Update_patchPrivateDnsZoneSrvRecordSet() {
 	// }
 }
 
-// Generated from example definition: 2024-06-01/RecordSetTXTPatch.json
+// Generated from example definition: 2026-06-01-preview/RecordSetTXTPatch.json
 func ExampleRecordSetsClient_Update_patchPrivateDnsZoneTxtRecordSet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -69,7 +69,8 @@ func (client *RegistryDataReferencesClient) GetBlobReferenceSAS(ctx context.Cont
 	if err != nil {
 		return RegistryDataReferencesClientGetBlobReferenceSASResponse{}, err
 	}
-	return client.getBlobReferenceSASHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBlobReferenceSASHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBlobReferenceSASCreateRequest creates the GetBlobReferenceSAS request.

@@ -85,7 +85,8 @@ func (client *InterfacesClient) createOrUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -127,7 +128,7 @@ func (client *InterfacesClient) createOrUpdateCreateRequest(ctx context.Context,
 //   - options - InterfacesClientBeginDeleteOptions contains the optional parameters for the InterfacesClient.BeginDelete method.
 func (client *InterfacesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginDeleteOptions) (*runtime.Poller[InterfacesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkInterfaceName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkInterfaceName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -142,9 +143,9 @@ func (client *InterfacesClient) BeginDelete(ctx context.Context, resourceGroupNa
 	}
 }
 
-// delete - Deletes the specified network interface.
+// deleteOperation - Deletes the specified network interface.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *InterfacesClient) delete(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *InterfacesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkInterfaceName string, options *InterfacesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "InterfacesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -159,7 +160,8 @@ func (client *InterfacesClient) delete(ctx context.Context, resourceGroupName st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -229,7 +231,8 @@ func (client *InterfacesClient) getEffectiveRouteTable(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -300,7 +303,8 @@ func (client *InterfacesClient) listEffectiveNetworkSecurityGroups(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -350,7 +354,8 @@ func (client *InterfacesClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return InterfacesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -416,7 +421,8 @@ func (client *InterfacesClient) GetCloudServiceNetworkInterface(ctx context.Cont
 	if err != nil {
 		return InterfacesClientGetCloudServiceNetworkInterfaceResponse{}, err
 	}
-	return client.getCloudServiceNetworkInterfaceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getCloudServiceNetworkInterfaceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCloudServiceNetworkInterfaceCreateRequest creates the GetCloudServiceNetworkInterface request.
@@ -488,7 +494,8 @@ func (client *InterfacesClient) GetVirtualMachineScaleSetIPConfiguration(ctx con
 	if err != nil {
 		return InterfacesClientGetVirtualMachineScaleSetIPConfigurationResponse{}, err
 	}
-	return client.getVirtualMachineScaleSetIPConfigurationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVirtualMachineScaleSetIPConfigurationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVirtualMachineScaleSetIPConfigurationCreateRequest creates the GetVirtualMachineScaleSetIPConfiguration request.
@@ -563,7 +570,8 @@ func (client *InterfacesClient) GetVirtualMachineScaleSetNetworkInterface(ctx co
 	if err != nil {
 		return InterfacesClientGetVirtualMachineScaleSetNetworkInterfaceResponse{}, err
 	}
-	return client.getVirtualMachineScaleSetNetworkInterfaceHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVirtualMachineScaleSetNetworkInterfaceHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVirtualMachineScaleSetNetworkInterfaceCreateRequest creates the GetVirtualMachineScaleSetNetworkInterface request.
@@ -1178,7 +1186,8 @@ func (client *InterfacesClient) UpdateTags(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return InterfacesClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

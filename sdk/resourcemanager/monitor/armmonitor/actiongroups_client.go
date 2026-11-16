@@ -85,7 +85,8 @@ func (client *ActionGroupsClient) createNotificationsAtActionGroupResourceLevel(
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -161,7 +162,8 @@ func (client *ActionGroupsClient) reconcileNSP(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -216,7 +218,8 @@ func (client *ActionGroupsClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return ActionGroupsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -281,7 +284,8 @@ func (client *ActionGroupsClient) Delete(ctx context.Context, resourceGroupName 
 		return ActionGroupsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ActionGroupsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ActionGroupsClientDeleteResponse{}, err
 	}
 	return ActionGroupsClientDeleteResponse{}, nil
 }
@@ -334,7 +338,8 @@ func (client *ActionGroupsClient) EnableReceiver(ctx context.Context, resourceGr
 		return ActionGroupsClientEnableReceiverResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ActionGroupsClientEnableReceiverResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ActionGroupsClientEnableReceiverResponse{}, err
 	}
 	return ActionGroupsClientEnableReceiverResponse{}, nil
 }
@@ -387,7 +392,8 @@ func (client *ActionGroupsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return ActionGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -448,7 +454,8 @@ func (client *ActionGroupsClient) GetNSP(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ActionGroupsClientGetNSPResponse{}, err
 	}
-	return client.getNSPHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getNSPHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getNSPCreateRequest creates the GetNSP request.
@@ -514,7 +521,8 @@ func (client *ActionGroupsClient) GetTestNotificationsAtActionGroupResourceLevel
 	if err != nil {
 		return ActionGroupsClientGetTestNotificationsAtActionGroupResourceLevelResponse{}, err
 	}
-	return client.getTestNotificationsAtActionGroupResourceLevelHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTestNotificationsAtActionGroupResourceLevelHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTestNotificationsAtActionGroupResourceLevelCreateRequest creates the GetTestNotificationsAtActionGroupResourceLevel request.
@@ -795,7 +803,8 @@ func (client *ActionGroupsClient) Update(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return ActionGroupsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

@@ -69,7 +69,8 @@ func (client *BackupOperationResultsClient) Get(ctx context.Context, vaultName s
 		return BackupOperationResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return BackupOperationResultsClientGetResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BackupOperationResultsClientGetResponse{}, err
 	}
 	return BackupOperationResultsClientGetResponse{}, nil
 }

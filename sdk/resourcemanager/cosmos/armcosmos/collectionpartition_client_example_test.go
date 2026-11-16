@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBCollectionPartitionGetMetrics.json
+// Generated from example definition: 2026-07-15/CosmosDBCollectionPartitionGetMetrics.json
 func ExampleCollectionPartitionClient_NewListMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,42 +38,42 @@ func ExampleCollectionPartitionClient_NewListMetricsPager() {
 		// 	PartitionMetricListResult: armcosmos.PartitionMetricListResult{
 		// 		Value: []*armcosmos.PartitionMetric{
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Max RUs Per Second"),
-		// 					Value: to.Ptr("Max RUs Per Second"),
-		// 				},
+		// 				TimeGrain: to.Ptr("PT1M"),
+		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
 		// 				EndTime: to.Ptr(time.Date(2017, time.November, 20, 23, 58, 55, 278000000, time.UTC)),
-		// 				MetricValues: []*armcosmos.MetricValue{
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
-		// 					},
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 54, 55, 278000000, time.UTC)),
-		// 					},
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 55, 55, 278000000, time.UTC)),
-		// 					},
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 56, 55, 278000000, time.UTC)),
-		// 					},
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 57, 55, 278000000, time.UTC)),
-		// 					},
-		// 					{
-		// 						Maximum: to.Ptr[float64](5),
-		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 58, 55, 278000000, time.UTC)),
-		// 					},
-		// 				},
+		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
 		// 				PartitionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				PartitionKeyRangeID: to.Ptr("0"),
-		// 				StartTime: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
-		// 				TimeGrain: to.Ptr("PT1M"),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeCount),
+		// 				MetricValues: []*armcosmos.MetricValue{
+		// 					{
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 53, 55, 278000000, time.UTC)),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 					{
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 54, 55, 278000000, time.UTC)),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 					{
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 55, 55, 278000000, time.UTC)),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 					{
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 56, 55, 278000000, time.UTC)),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 					{
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 57, 55, 278000000, time.UTC)),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 					{
+		// 						Timestamp: to.Ptr(time.Date(2017, time.November, 19, 23, 58, 55, 278000000, time.UTC)),
+		// 						Maximum: to.Ptr[float64](5),
+		// 					},
+		// 				},
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Max RUs Per Second"),
+		// 					LocalizedValue: to.Ptr("Max RUs Per Second"),
+		// 				},
 		// 			},
 		// 		},
 		// 	},
@@ -81,7 +81,7 @@ func ExampleCollectionPartitionClient_NewListMetricsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBCollectionPartitionGetUsages.json
+// Generated from example definition: 2026-07-15/CosmosDBCollectionPartitionGetUsages.json
 func ExampleCollectionPartitionClient_NewListUsagesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,16 +108,16 @@ func ExampleCollectionPartitionClient_NewListUsagesPager() {
 		// 	PartitionUsagesResult: armcosmos.PartitionUsagesResult{
 		// 		Value: []*armcosmos.PartitionUsage{
 		// 			{
-		// 				Name: &armcosmos.MetricName{
-		// 					LocalizedValue: to.Ptr("Storage"),
-		// 					Value: to.Ptr("Storage"),
-		// 				},
-		// 				CurrentValue: to.Ptr[int64](0),
+		// 				Unit: to.Ptr(armcosmos.UnitTypeBytes),
+		// 				QuotaPeriod: to.Ptr("P1D"),
 		// 				Limit: to.Ptr[int64](10737418240),
+		// 				CurrentValue: to.Ptr[int64](0),
 		// 				PartitionID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 				PartitionKeyRangeID: to.Ptr("0"),
-		// 				QuotaPeriod: to.Ptr("P1D"),
-		// 				Unit: to.Ptr(armcosmos.UnitTypeBytes),
+		// 				Name: &armcosmos.MetricName{
+		// 					Value: to.Ptr("Storage"),
+		// 					LocalizedValue: to.Ptr("Storage"),
+		// 				},
 		// 			},
 		// 		},
 		// 	},

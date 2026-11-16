@@ -56,7 +56,8 @@ func (client *SystemAssignedIdentitiesClient) GetByScope(ctx context.Context, sc
 	if err != nil {
 		return SystemAssignedIdentitiesClientGetByScopeResponse{}, err
 	}
-	return client.getByScopeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByScopeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByScopeCreateRequest creates the GetByScope request.

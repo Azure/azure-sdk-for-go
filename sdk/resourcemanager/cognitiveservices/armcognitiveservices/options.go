@@ -79,12 +79,6 @@ type AccountsClientBeginUpdateOptions struct {
 	ResumeToken string
 }
 
-// AccountsClientEvaluateDeploymentPoliciesOptions contains the optional parameters for the AccountsClient.EvaluateDeploymentPolicies
-// method.
-type AccountsClientEvaluateDeploymentPoliciesOptions struct {
-	// placeholder for future optional parameters
-}
-
 // AccountsClientGetOptions contains the optional parameters for the AccountsClient.Get method.
 type AccountsClientGetOptions struct {
 	// placeholder for future optional parameters
@@ -125,39 +119,6 @@ type AccountsClientListUsagesOptions struct {
 
 // AccountsClientRegenerateKeyOptions contains the optional parameters for the AccountsClient.RegenerateKey method.
 type AccountsClientRegenerateKeyOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AdapterDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the AdapterDeploymentsClient.BeginCreateOrUpdate
-// method.
-type AdapterDeploymentsClientBeginCreateOrUpdateOptions struct {
-	// Proceed only when the current adapter deployment ETag matches this value.
-	IfMatch *string
-
-	// Proceed only when no current adapter deployment ETag matches this value.
-	IfNoneMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// AdapterDeploymentsClientBeginDeleteOptions contains the optional parameters for the AdapterDeploymentsClient.BeginDelete
-// method.
-type AdapterDeploymentsClientBeginDeleteOptions struct {
-	// Proceed only when the current adapter deployment ETag matches this value.
-	IfMatch *string
-
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// AdapterDeploymentsClientGetOptions contains the optional parameters for the AdapterDeploymentsClient.Get method.
-type AdapterDeploymentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// AdapterDeploymentsClientListOptions contains the optional parameters for the AdapterDeploymentsClient.NewListPager method.
-type AdapterDeploymentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
@@ -265,35 +226,6 @@ type AgentDeploymentsClientStopOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ArcDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ArcDeploymentsClient.BeginCreateOrUpdate
-// method.
-type ArcDeploymentsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ArcDeploymentsClientBeginDeleteOptions contains the optional parameters for the ArcDeploymentsClient.BeginDelete method.
-type ArcDeploymentsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ArcDeploymentsClientBeginUpdateOptions contains the optional parameters for the ArcDeploymentsClient.BeginUpdate method.
-type ArcDeploymentsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ArcDeploymentsClientGetOptions contains the optional parameters for the ArcDeploymentsClient.Get method.
-type ArcDeploymentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ArcDeploymentsClientListOptions contains the optional parameters for the ArcDeploymentsClient.NewListPager method.
-type ArcDeploymentsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
 // CommitmentPlansClientBeginCreateOrUpdateAssociationOptions contains the optional parameters for the CommitmentPlansClient.BeginCreateOrUpdateAssociation
 // method.
 type CommitmentPlansClientBeginCreateOrUpdateAssociationOptions struct {
@@ -383,82 +315,6 @@ type CommitmentPlansClientListPlansBySubscriptionOptions struct {
 // CommitmentTiersClientListOptions contains the optional parameters for the CommitmentTiersClient.NewListPager method.
 type CommitmentTiersClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// ComputeOperationsClientGetOptions contains the optional parameters for the ComputeOperationsClient.Get method.
-type ComputeOperationsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComputesClientBeginCreateOrUpdateOptions contains the optional parameters for the ComputesClient.BeginCreateOrUpdate method.
-type ComputesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ComputesClientBeginDeleteOptions contains the optional parameters for the ComputesClient.BeginDelete method.
-type ComputesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ComputesClientBeginRestartOptions contains the optional parameters for the ComputesClient.BeginRestart method.
-type ComputesClientBeginRestartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ComputesClientBeginStartOptions contains the optional parameters for the ComputesClient.BeginStart method.
-type ComputesClientBeginStartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ComputesClientBeginStopOptions contains the optional parameters for the ComputesClient.BeginStop method.
-type ComputesClientBeginStopOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ComputesClientGetOptions contains the optional parameters for the ComputesClient.Get method.
-type ComputesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ComputesClientListOptions contains the optional parameters for the ComputesClient.NewListPager method.
-type ComputesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CostControlsClientCreateOrUpdateOptions contains the optional parameters for the CostControlsClient.CreateOrUpdate method.
-type CostControlsClientCreateOrUpdateOptions struct {
-	// Proceeds only when the current entity tag matches this value.
-	IfMatch *string
-
-	// Proceeds only when the current entity tag does not match this value.
-	IfNoneMatch *string
-}
-
-// CostControlsClientDeleteOptions contains the optional parameters for the CostControlsClient.Delete method.
-type CostControlsClientDeleteOptions struct {
-	// Proceeds only when the current entity tag matches this value.
-	IfMatch *string
-}
-
-// CostControlsClientGetOptions contains the optional parameters for the CostControlsClient.Get method.
-type CostControlsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CostControlsClientListOptions contains the optional parameters for the CostControlsClient.NewListPager method.
-type CostControlsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// CostControlsClientUpdateOptions contains the optional parameters for the CostControlsClient.Update method.
-type CostControlsClientUpdateOptions struct {
-	// Proceeds only when the current entity tag matches this value.
-	IfMatch *string
 }
 
 // DefenderForAISettingsClientCreateOrUpdateOptions contains the optional parameters for the DefenderForAISettingsClient.CreateOrUpdate
@@ -580,45 +436,15 @@ type ManagedComputeCapacitiesClientListOptions struct {
 	// Optional deployment resource ID. When provided, returns capacity for the specific region
 	// where the deployment is hosted rather than the best available region.
 	DeploymentID *string
-}
 
-// ManagedComputeDeploymentsClientBeginCreateOrUpdateOptions contains the optional parameters for the ManagedComputeDeploymentsClient.BeginCreateOrUpdate
-// method.
-type ManagedComputeDeploymentsClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ManagedComputeDeploymentsClientBeginDeleteOptions contains the optional parameters for the ManagedComputeDeploymentsClient.BeginDelete
-// method.
-type ManagedComputeDeploymentsClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ManagedComputeDeploymentsClientBeginUpdateOptions contains the optional parameters for the ManagedComputeDeploymentsClient.BeginUpdate
-// method.
-type ManagedComputeDeploymentsClientBeginUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// ManagedComputeDeploymentsClientGetOptions contains the optional parameters for the ManagedComputeDeploymentsClient.Get
-// method.
-type ManagedComputeDeploymentsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedComputeDeploymentsClientListOptions contains the optional parameters for the ManagedComputeDeploymentsClient.NewListPager
-// method.
-type ManagedComputeDeploymentsClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// ManagedComputeUsagesOperationGroupClientListOptions contains the optional parameters for the ManagedComputeUsagesOperationGroupClient.NewListPager
-// method.
-type ManagedComputeUsagesOperationGroupClientListOptions struct {
-	// placeholder for future optional parameters
+	// Optional Azure location used to select a DataZone scope. Without a deployment ID,
+	// omitted or blank location returns Global and both US and EU DataZone capacities.
+	// A supported location returns Global and the matching DataZone capacities; an
+	// unsupported location returns Global capacity only. With a deployment ID, a
+	// nonblank location must match the parent account location, ignoring case and
+	// surrounding whitespace, or the request returns HTTP 400. Capacity is still
+	// returned for the deployment's backend region.
+	Location *string
 }
 
 // ManagedNetworkProvisionsClientBeginProvisionManagedNetworkOptions contains the optional parameters for the ManagedNetworkProvisionsClient.BeginProvisionManagedNetwork
@@ -881,32 +707,6 @@ type QuotaTiersClientUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// RaiBindingsClientCreateOrUpdateOptions contains the optional parameters for the RaiBindingsClient.CreateOrUpdate method.
-type RaiBindingsClientCreateOrUpdateOptions struct {
-	// Proceed only when the current resource ETag matches this value.
-	IfMatch *string
-
-	// Proceed only when no current resource ETag matches this value.
-	IfNoneMatch *string
-}
-
-// RaiBindingsClientDeleteOptions contains the optional parameters for the RaiBindingsClient.Delete method.
-type RaiBindingsClientDeleteOptions struct {
-	// Proceed only when the current resource ETag matches this value.
-	IfMatch *string
-}
-
-// RaiBindingsClientGetOptions contains the optional parameters for the RaiBindingsClient.Get method.
-type RaiBindingsClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RaiBindingsClientListOptions contains the optional parameters for the RaiBindingsClient.NewListPager method.
-type RaiBindingsClientListOptions struct {
-	// The maximum number of RAI bindings to return. Defaults to 50.
-	Top *int32
-}
-
 // RaiBlocklistItemsClientBatchAddOptions contains the optional parameters for the RaiBlocklistItemsClient.BatchAdd method.
 type RaiBlocklistItemsClientBatchAddOptions struct {
 	// placeholder for future optional parameters
@@ -999,20 +799,13 @@ type RaiExternalSafetyProvidersClientListOptions struct {
 
 // RaiPoliciesClientBeginDeleteOptions contains the optional parameters for the RaiPoliciesClient.BeginDelete method.
 type RaiPoliciesClientBeginDeleteOptions struct {
-	// Proceed only when the current resource ETag matches this value.
-	IfMatch *string
-
 	// Resumes the long-running operation from the provided token.
 	ResumeToken string
 }
 
 // RaiPoliciesClientCreateOrUpdateOptions contains the optional parameters for the RaiPoliciesClient.CreateOrUpdate method.
 type RaiPoliciesClientCreateOrUpdateOptions struct {
-	// Proceed only when the current resource ETag matches this value.
-	IfMatch *string
-
-	// Proceed only when no current resource ETag matches this value.
-	IfNoneMatch *string
+	// placeholder for future optional parameters
 }
 
 // RaiPoliciesClientGetOptions contains the optional parameters for the RaiPoliciesClient.Get method.
@@ -1023,32 +816,6 @@ type RaiPoliciesClientGetOptions struct {
 // RaiPoliciesClientListOptions contains the optional parameters for the RaiPoliciesClient.NewListPager method.
 type RaiPoliciesClientListOptions struct {
 	// placeholder for future optional parameters
-}
-
-// RaiRegosClientCreateOrUpdateOptions contains the optional parameters for the RaiRegosClient.CreateOrUpdate method.
-type RaiRegosClientCreateOrUpdateOptions struct {
-	// Proceed only when the current resource ETag matches this value.
-	IfMatch *string
-
-	// Proceed only when no current resource ETag matches this value.
-	IfNoneMatch *string
-}
-
-// RaiRegosClientDeleteOptions contains the optional parameters for the RaiRegosClient.Delete method.
-type RaiRegosClientDeleteOptions struct {
-	// Proceed only when the current resource ETag matches this value.
-	IfMatch *string
-}
-
-// RaiRegosClientGetOptions contains the optional parameters for the RaiRegosClient.Get method.
-type RaiRegosClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// RaiRegosClientListOptions contains the optional parameters for the RaiRegosClient.NewListPager method.
-type RaiRegosClientListOptions struct {
-	// The maximum number of reusable Rego artifacts to return. Defaults to 10.
-	Top *int32
 }
 
 // RaiToolLabelsClientBeginDeleteOptions contains the optional parameters for the RaiToolLabelsClient.BeginDelete method.
@@ -1127,50 +894,4 @@ type UsagesClientListOptions struct {
 	// An OData filter expression that describes a subset of usages to return. The supported parameter is name.value (name of
 	// the metric, can have an or of multiple names).
 	Filter *string
-}
-
-// WorkbenchesClientBeginCreateOrUpdateOptions contains the optional parameters for the WorkbenchesClient.BeginCreateOrUpdate
-// method.
-type WorkbenchesClientBeginCreateOrUpdateOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// WorkbenchesClientBeginDeleteOptions contains the optional parameters for the WorkbenchesClient.BeginDelete method.
-type WorkbenchesClientBeginDeleteOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// WorkbenchesClientBeginRestartOptions contains the optional parameters for the WorkbenchesClient.BeginRestart method.
-type WorkbenchesClientBeginRestartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// WorkbenchesClientBeginStartOptions contains the optional parameters for the WorkbenchesClient.BeginStart method.
-type WorkbenchesClientBeginStartOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// WorkbenchesClientBeginStopOptions contains the optional parameters for the WorkbenchesClient.BeginStop method.
-type WorkbenchesClientBeginStopOptions struct {
-	// Resumes the long-running operation from the provided token.
-	ResumeToken string
-}
-
-// WorkbenchesClientGetOptions contains the optional parameters for the WorkbenchesClient.Get method.
-type WorkbenchesClientGetOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkbenchesClientListOptions contains the optional parameters for the WorkbenchesClient.NewListPager method.
-type WorkbenchesClientListOptions struct {
-	// placeholder for future optional parameters
-}
-
-// WorkbenchesClientUpdateOptions contains the optional parameters for the WorkbenchesClient.Update method.
-type WorkbenchesClientUpdateOptions struct {
-	// placeholder for future optional parameters
 }

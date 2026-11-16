@@ -68,7 +68,7 @@ func (client *DefaultRolloutsClient) BeginCreateOrUpdate(ctx context.Context, pr
 	}
 }
 
-// CreateOrUpdate - Creates or updates the rollout details.
+// createOrUpdate - Creates or updates the rollout details.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, options *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *DefaultRolloutsClient) createOrUpdate(ctx context.Context, provide
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DefaultRolloutsClient) createOrUpdateCreateRequest(ctx context.Context, providerNamespace string, rolloutName string, properties DefaultRollout, _ *DefaultRolloutsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.ProviderHub/providerRegistrations/{providerNamespace}/defaultRollouts/{rolloutName}"
 	if client.subscriptionID == "" {
@@ -140,7 +141,8 @@ func (client *DefaultRolloutsClient) Delete(ctx context.Context, providerNamespa
 		return DefaultRolloutsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DefaultRolloutsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DefaultRolloutsClientDeleteResponse{}, err
 	}
 	return DefaultRolloutsClientDeleteResponse{}, nil
 }
@@ -189,7 +191,8 @@ func (client *DefaultRolloutsClient) Get(ctx context.Context, providerNamespace 
 	if err != nil {
 		return DefaultRolloutsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -322,7 +325,8 @@ func (client *DefaultRolloutsClient) Stop(ctx context.Context, providerNamespace
 		return DefaultRolloutsClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return DefaultRolloutsClientStopResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DefaultRolloutsClientStopResponse{}, err
 	}
 	return DefaultRolloutsClientStopResponse{}, nil
 }

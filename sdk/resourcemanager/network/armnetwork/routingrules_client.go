@@ -56,7 +56,7 @@ func NewRoutingRulesClient(subscriptionID string, credential azcore.TokenCredent
 //     method.
 func (client *RoutingRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, options *RoutingRulesClientBeginDeleteOptions) (*runtime.Poller[RoutingRulesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, ruleName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, configurationName, ruleCollectionName, ruleName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -71,9 +71,9 @@ func (client *RoutingRulesClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// delete - Deletes a routing rule.
+// deleteOperation - Deletes a routing rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *RoutingRulesClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, options *RoutingRulesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *RoutingRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, configurationName string, ruleCollectionName string, ruleName string, options *RoutingRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "RoutingRulesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -88,7 +88,8 @@ func (client *RoutingRulesClient) delete(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -157,7 +158,8 @@ func (client *RoutingRulesClient) CreateOrUpdate(ctx context.Context, resourceGr
 	if err != nil {
 		return RoutingRulesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -236,7 +238,8 @@ func (client *RoutingRulesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return RoutingRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

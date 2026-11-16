@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-02-preview/Fleets_CreateOrUpdate.json
+// Generated from example definition: 2026-11-01/Fleets_CreateOrUpdate.json
 func ExampleFleetsClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -109,7 +109,7 @@ func ExampleFleetsClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Fleets_Delete.json
+// Generated from example definition: 2026-11-01/Fleets_Delete.json
 func ExampleFleetsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,261 +135,7 @@ func ExampleFleetsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Fleets_Get.json
-func ExampleFleetsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewFleetsClient().Get(ctx, "rgfleets", "fleet1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.FleetsClientGetResponse{
-	// 	Fleet: armcontainerservicefleet.Fleet{
-	// 		Tags: map[string]*string{
-	// 		},
-	// 		Location: to.Ptr("East US"),
-	// 		Properties: &armcontainerservicefleet.FleetProperties{
-	// 			HubProfile: &armcontainerservicefleet.FleetHubProfile{
-	// 				DNSPrefix: to.Ptr("dnsprefix1"),
-	// 				AgentProfile: &armcontainerservicefleet.AgentProfile{
-	// 					VMSize: to.Ptr("Standard_DS1"),
-	// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
-	// 				},
-	// 				APIServerAccessProfile: &armcontainerservicefleet.APIServerAccessProfile{
-	// 					EnablePrivateCluster: to.Ptr(true),
-	// 					EnableVnetIntegration: to.Ptr(true),
-	// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
-	// 				},
-	// 				Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
-	// 				KubernetesVersion: to.Ptr("1.22.4"),
-	// 				PortalFqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
-	// 		},
-	// 		ETag: to.Ptr("23ujdflewrj3="),
-	// 		Identity: &armcontainerservicefleet.ManagedServiceIdentity{
-	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			Type: to.Ptr(armcontainerservicefleet.ManagedServiceIdentityTypeNone),
-	// 			UserAssignedIdentities: map[string]*armcontainerservicefleet.UserAssignedIdentity{
-	// 				"key126": &armcontainerservicefleet.UserAssignedIdentity{
-	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 					ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 				},
-	// 			},
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet1"),
-	// 		Name: to.Ptr("fleet-1"),
-	// 		Type: to.Ptr("Microsoft.ContainerService/fleets"),
-	// 		SystemData: &armcontainerservicefleet.SystemData{
-	// 			CreatedBy: to.Ptr("someUser"),
-	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("someOtherUser"),
-	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-02-preview/Fleets_ListByResourceGroup.json
-func ExampleFleetsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewFleetsClient().NewListByResourceGroupPager("rgfleets", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservicefleet.FleetsClientListByResourceGroupResponse{
-		// 	FleetListResult: armcontainerservicefleet.FleetListResult{
-		// 		Value: []*armcontainerservicefleet.Fleet{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet1"),
-		// 				Name: to.Ptr("fleet-1"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/fleets"),
-		// 				SystemData: &armcontainerservicefleet.SystemData{
-		// 					CreatedBy: to.Ptr("someUser"),
-		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("someOtherUser"),
-		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Location: to.Ptr("East US"),
-		// 				ETag: to.Ptr("23ujdflewrj3="),
-		// 				Properties: &armcontainerservicefleet.FleetProperties{
-		// 					HubProfile: &armcontainerservicefleet.FleetHubProfile{
-		// 						DNSPrefix: to.Ptr("dnsprefix1"),
-		// 						Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
-		// 						PortalFqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
-		// 						KubernetesVersion: to.Ptr("1.22.4"),
-		// 						AgentProfile: &armcontainerservicefleet.AgentProfile{
-		// 							VMSize: to.Ptr("Standard_DS1"),
-		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
-		// 						},
-		// 						APIServerAccessProfile: &armcontainerservicefleet.APIServerAccessProfile{
-		// 							EnablePrivateCluster: to.Ptr(true),
-		// 							EnableVnetIntegration: to.Ptr(true),
-		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
-		// 				},
-		// 				Identity: &armcontainerservicefleet.ManagedServiceIdentity{
-		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					Type: to.Ptr(armcontainerservicefleet.ManagedServiceIdentityTypeNone),
-		// 					UserAssignedIdentities: map[string]*armcontainerservicefleet.UserAssignedIdentity{
-		// 						"key126": &armcontainerservicefleet.UserAssignedIdentity{
-		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/adyccxeh"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-02-preview/Fleets_ListBySub.json
-func ExampleFleetsClient_NewListBySubscriptionPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewFleetsClient().NewListBySubscriptionPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcontainerservicefleet.FleetsClientListBySubscriptionResponse{
-		// 	FleetListResult: armcontainerservicefleet.FleetListResult{
-		// 		Value: []*armcontainerservicefleet.Fleet{
-		// 			{
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet1"),
-		// 				Name: to.Ptr("fleet-1"),
-		// 				Type: to.Ptr("Microsoft.ContainerService/fleets"),
-		// 				SystemData: &armcontainerservicefleet.SystemData{
-		// 					CreatedBy: to.Ptr("someUser"),
-		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("someOtherUser"),
-		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 				Location: to.Ptr("East US"),
-		// 				ETag: to.Ptr("23ujdflewrj3="),
-		// 				Properties: &armcontainerservicefleet.FleetProperties{
-		// 					HubProfile: &armcontainerservicefleet.FleetHubProfile{
-		// 						DNSPrefix: to.Ptr("dnsprefix1"),
-		// 						Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
-		// 						PortalFqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
-		// 						KubernetesVersion: to.Ptr("1.22.4"),
-		// 						AgentProfile: &armcontainerservicefleet.AgentProfile{
-		// 							VMSize: to.Ptr("Standard_DS1"),
-		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
-		// 						},
-		// 						APIServerAccessProfile: &armcontainerservicefleet.APIServerAccessProfile{
-		// 							EnablePrivateCluster: to.Ptr(true),
-		// 							EnableVnetIntegration: to.Ptr(true),
-		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
-		// 				},
-		// 				Identity: &armcontainerservicefleet.ManagedServiceIdentity{
-		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 					Type: to.Ptr(armcontainerservicefleet.ManagedServiceIdentityTypeNone),
-		// 					UserAssignedIdentities: map[string]*armcontainerservicefleet.UserAssignedIdentity{
-		// 						"key126": &armcontainerservicefleet.UserAssignedIdentity{
-		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 		NextLink: to.Ptr("https://microsoft.com/adyccxeh"),
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-06-02-preview/Fleets_ListCredentialsResult.json
-func ExampleFleetsClient_ListCredentials() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewFleetsClient().ListCredentials(ctx, "rg1", "fleet", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcontainerservicefleet.FleetsClientListCredentialsResponse{
-	// 	FleetCredentialResults: armcontainerservicefleet.FleetCredentialResults{
-	// 		Kubeconfigs: []*armcontainerservicefleet.FleetCredentialResult{
-	// 			{
-	// 				Name: to.Ptr("credentialName1"),
-	// 				Value: []byte("Y3JlZGVudGlhbFZhbHVlMQ=="),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-06-02-preview/Fleets_PatchTags.json
+// Generated from example definition: 2026-11-01/Fleets_PatchTags.json
 func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -459,7 +205,7 @@ func ExampleFleetsClient_BeginUpdateAsync_patchTagsOfAFleetDuringUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-06-02-preview/Fleets_Update.json
+// Generated from example definition: 2026-11-01/Fleets_Update.json
 func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -538,4 +284,258 @@ func ExampleFleetsClient_BeginUpdateAsync_updateAFleet() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-11-01/Fleets_Get.json
+func ExampleFleetsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFleetsClient().Get(ctx, "rgfleets", "fleet1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.FleetsClientGetResponse{
+	// 	Fleet: armcontainerservicefleet.Fleet{
+	// 		Tags: map[string]*string{
+	// 		},
+	// 		Location: to.Ptr("East US"),
+	// 		Properties: &armcontainerservicefleet.FleetProperties{
+	// 			HubProfile: &armcontainerservicefleet.FleetHubProfile{
+	// 				DNSPrefix: to.Ptr("dnsprefix1"),
+	// 				AgentProfile: &armcontainerservicefleet.AgentProfile{
+	// 					VMSize: to.Ptr("Standard_DS1"),
+	// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
+	// 				},
+	// 				APIServerAccessProfile: &armcontainerservicefleet.APIServerAccessProfile{
+	// 					EnablePrivateCluster: to.Ptr(true),
+	// 					EnableVnetIntegration: to.Ptr(true),
+	// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
+	// 				},
+	// 				Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+	// 				KubernetesVersion: to.Ptr("1.22.4"),
+	// 				PortalFqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
+	// 		},
+	// 		ETag: to.Ptr("23ujdflewrj3="),
+	// 		Identity: &armcontainerservicefleet.ManagedServiceIdentity{
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			Type: to.Ptr(armcontainerservicefleet.ManagedServiceIdentityTypeNone),
+	// 			UserAssignedIdentities: map[string]*armcontainerservicefleet.UserAssignedIdentity{
+	// 				"key126": &armcontainerservicefleet.UserAssignedIdentity{
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				},
+	// 			},
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet1"),
+	// 		Name: to.Ptr("fleet-1"),
+	// 		Type: to.Ptr("Microsoft.ContainerService/fleets"),
+	// 		SystemData: &armcontainerservicefleet.SystemData{
+	// 			CreatedBy: to.Ptr("someUser"),
+	// 			CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("someOtherUser"),
+	// 			LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Fleets_ListCredentialsResult.json
+func ExampleFleetsClient_ListCredentials() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewFleetsClient().ListCredentials(ctx, "rg1", "fleet", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcontainerservicefleet.FleetsClientListCredentialsResponse{
+	// 	FleetCredentialResults: armcontainerservicefleet.FleetCredentialResults{
+	// 		Kubeconfigs: []*armcontainerservicefleet.FleetCredentialResult{
+	// 			{
+	// 				Name: to.Ptr("credentialName1"),
+	// 				Value: []byte("Y3JlZGVudGlhbFZhbHVlMQ=="),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-01/Fleets_ListByResourceGroup.json
+func ExampleFleetsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewFleetsClient().NewListByResourceGroupPager("rgfleets", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservicefleet.FleetsClientListByResourceGroupResponse{
+		// 	FleetListResult: armcontainerservicefleet.FleetListResult{
+		// 		Value: []*armcontainerservicefleet.Fleet{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid1/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet1"),
+		// 				Name: to.Ptr("fleet-1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/fleets"),
+		// 				SystemData: &armcontainerservicefleet.SystemData{
+		// 					CreatedBy: to.Ptr("someUser"),
+		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("someOtherUser"),
+		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Location: to.Ptr("East US"),
+		// 				ETag: to.Ptr("23ujdflewrj3="),
+		// 				Properties: &armcontainerservicefleet.FleetProperties{
+		// 					HubProfile: &armcontainerservicefleet.FleetHubProfile{
+		// 						DNSPrefix: to.Ptr("dnsprefix1"),
+		// 						Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+		// 						PortalFqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+		// 						KubernetesVersion: to.Ptr("1.22.4"),
+		// 						AgentProfile: &armcontainerservicefleet.AgentProfile{
+		// 							VMSize: to.Ptr("Standard_DS1"),
+		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
+		// 						},
+		// 						APIServerAccessProfile: &armcontainerservicefleet.APIServerAccessProfile{
+		// 							EnablePrivateCluster: to.Ptr(true),
+		// 							EnableVnetIntegration: to.Ptr(true),
+		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
+		// 				},
+		// 				Identity: &armcontainerservicefleet.ManagedServiceIdentity{
+		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					Type: to.Ptr(armcontainerservicefleet.ManagedServiceIdentityTypeNone),
+		// 					UserAssignedIdentities: map[string]*armcontainerservicefleet.UserAssignedIdentity{
+		// 						"key126": &armcontainerservicefleet.UserAssignedIdentity{
+		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/adyccxeh"),
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-11-01/Fleets_ListBySub.json
+func ExampleFleetsClient_NewListBySubscriptionPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcontainerservicefleet.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewFleetsClient().NewListBySubscriptionPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcontainerservicefleet.FleetsClientListBySubscriptionResponse{
+		// 	FleetListResult: armcontainerservicefleet.FleetListResult{
+		// 		Value: []*armcontainerservicefleet.Fleet{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/fleets/fleet1"),
+		// 				Name: to.Ptr("fleet-1"),
+		// 				Type: to.Ptr("Microsoft.ContainerService/fleets"),
+		// 				SystemData: &armcontainerservicefleet.SystemData{
+		// 					CreatedBy: to.Ptr("someUser"),
+		// 					CreatedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("someOtherUser"),
+		// 					LastModifiedByType: to.Ptr(armcontainerservicefleet.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2022, time.March, 23, 5, 40, 40, 657000000, time.UTC)),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 				Location: to.Ptr("East US"),
+		// 				ETag: to.Ptr("23ujdflewrj3="),
+		// 				Properties: &armcontainerservicefleet.FleetProperties{
+		// 					HubProfile: &armcontainerservicefleet.FleetHubProfile{
+		// 						DNSPrefix: to.Ptr("dnsprefix1"),
+		// 						Fqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+		// 						PortalFqdn: to.Ptr("dnsprefix1-abcd1234.flt.eastus.azmk8s.io"),
+		// 						KubernetesVersion: to.Ptr("1.22.4"),
+		// 						AgentProfile: &armcontainerservicefleet.AgentProfile{
+		// 							VMSize: to.Ptr("Standard_DS1"),
+		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
+		// 						},
+		// 						APIServerAccessProfile: &armcontainerservicefleet.APIServerAccessProfile{
+		// 							EnablePrivateCluster: to.Ptr(true),
+		// 							EnableVnetIntegration: to.Ptr(true),
+		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgfleets/providers/Microsoft.Network/virtualNetwork/myvnet/subnets/mysubnet1"),
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armcontainerservicefleet.FleetProvisioningStateSucceeded),
+		// 				},
+		// 				Identity: &armcontainerservicefleet.ManagedServiceIdentity{
+		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					Type: to.Ptr(armcontainerservicefleet.ManagedServiceIdentityTypeNone),
+		// 					UserAssignedIdentities: map[string]*armcontainerservicefleet.UserAssignedIdentity{
+		// 						"key126": &armcontainerservicefleet.UserAssignedIdentity{
+		// 							PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 							ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 		NextLink: to.Ptr("https://microsoft.com/adyccxeh"),
+		// 	},
+		// }
+	}
 }

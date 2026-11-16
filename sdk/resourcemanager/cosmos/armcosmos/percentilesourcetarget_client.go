@@ -19,7 +19,7 @@ import (
 // PercentileSourceTargetClient contains the methods for the PercentileSourceTarget group.
 // Don't use this type directly, use NewPercentileSourceTargetClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-07-15
 type PercentileSourceTargetClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -117,7 +117,7 @@ func (client *PercentileSourceTargetClient) listMetricsCreateRequest(ctx context
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
 		reqQP.Set("$filter", filter)
-		reqQP.Set("api-version", version20260401Preview)
+		reqQP.Set("api-version", version20260715)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

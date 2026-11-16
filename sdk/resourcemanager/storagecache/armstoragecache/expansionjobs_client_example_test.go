@@ -87,6 +87,57 @@ func ExampleExpansionJobsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-08-01/expansionJobs_Update.json
+func ExampleExpansionJobsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewExpansionJobsClient().BeginUpdate(ctx, "scgroup", "fs1", "expansionjob1", armstoragecache.ExpansionJobUpdate{
+		Tags: map[string]*string{
+			"Dept": to.Ptr("ContosoFinance"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstoragecache.ExpansionJobsClientUpdateResponse{
+	// 	ExpansionJob: armstoragecache.ExpansionJob{
+	// 		Name: to.Ptr("expansionjob1"),
+	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/expansionJob"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/expansionJobs/expansionjob1"),
+	// 		Location: to.Ptr("eastus"),
+	// 		Properties: &armstoragecache.ExpansionJobProperties{
+	// 			NewStorageCapacityTiB: to.Ptr[float32](16),
+	// 			ProvisioningState: to.Ptr(armstoragecache.ExpansionJobPropertiesProvisioningStateSucceeded),
+	// 			RunRebalanceJob: to.Ptr(true),
+	// 			Status: &armstoragecache.ExpansionJobPropertiesStatus{
+	// 				CompletionTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 19, 15, 43, 511000000, time.UTC)),
+	// 				PercentComplete: to.Ptr[float32](100),
+	// 				StartTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
+	// 				State: to.Ptr(armstoragecache.ExpansionJobStatusTypeCompleted),
+	// 				StatusMessage: to.Ptr("Expansion completed successfully"),
+	// 			},
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Dept": to.Ptr("ContosoFinance"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-08-01/expansionJobs_Get.json
 func ExampleExpansionJobsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -224,55 +275,4 @@ func ExampleExpansionJobsClient_NewListByAmlFilesystemPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-08-01/expansionJobs_Update.json
-func ExampleExpansionJobsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstoragecache.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewExpansionJobsClient().BeginUpdate(ctx, "scgroup", "fs1", "expansionjob1", armstoragecache.ExpansionJobUpdate{
-		Tags: map[string]*string{
-			"Dept": to.Ptr("ContosoFinance"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstoragecache.ExpansionJobsClientUpdateResponse{
-	// 	ExpansionJob: armstoragecache.ExpansionJob{
-	// 		Name: to.Ptr("expansionjob1"),
-	// 		Type: to.Ptr("Microsoft.StorageCache/amlFilesystem/expansionJob"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.StorageCache/amlfilesystems/fs1/expansionJobs/expansionjob1"),
-	// 		Location: to.Ptr("eastus"),
-	// 		Properties: &armstoragecache.ExpansionJobProperties{
-	// 			NewStorageCapacityTiB: to.Ptr[float32](16),
-	// 			ProvisioningState: to.Ptr(armstoragecache.ExpansionJobPropertiesProvisioningStateSucceeded),
-	// 			RunRebalanceJob: to.Ptr(true),
-	// 			Status: &armstoragecache.ExpansionJobPropertiesStatus{
-	// 				CompletionTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 19, 15, 43, 511000000, time.UTC)),
-	// 				PercentComplete: to.Ptr[float32](100),
-	// 				StartTimeUTC: to.Ptr(time.Date(2024, time.March, 21, 17, 25, 43, 511000000, time.UTC)),
-	// 				State: to.Ptr(armstoragecache.ExpansionJobStatusTypeCompleted),
-	// 				StatusMessage: to.Ptr("Expansion completed successfully"),
-	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"Dept": to.Ptr("ContosoFinance"),
-	// 		},
-	// 	},
-	// }
 }

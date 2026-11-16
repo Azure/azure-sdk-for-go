@@ -121,342 +121,6 @@ func ExampleDeploymentsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2025-11-01/Deployments_Get.json
-func ExampleDeploymentsClient_Get_deploymentsGet() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnginx.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDeploymentsClient().Get(ctx, "myResourceGroup", "myDeployment", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnginx.DeploymentsClientGetResponse{
-	// 	Deployment: armnginx.Deployment{
-	// 		Name: to.Ptr("myDeployment"),
-	// 		Type: to.Ptr("nginx.nginxplus/deployments"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armnginx.DeploymentProperties{
-	// 			AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
-	// 				UpgradeChannel: to.Ptr("stable"),
-	// 			},
-	// 			DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
-	// 			NetworkProfile: &armnginx.NetworkProfile{
-	// 				FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
-	// 					PrivateIPAddresses: []*armnginx.PrivateIPAddress{
-	// 						{
-	// 							PrivateIPAddress: to.Ptr("1.1.1.1"),
-	// 							PrivateIPAllocationMethod: to.Ptr(armnginx.NginxPrivateIPAllocationMethodStatic),
-	// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
-	// 						},
-	// 					},
-	// 					PublicIPAddresses: []*armnginx.PublicIPAddress{
-	// 						{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress"),
-	// 						},
-	// 					},
-	// 				},
-	// 				NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
-	// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
-	// 				},
-	// 			},
-	// 			NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
-	// 				WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
-	// 					ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
-	// 				},
-	// 				WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
-	// 					AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
-	// 						RevisionDatetime: to.Ptr(time.Date(2024, time.February, 21, 15, 50, 53, 0, time.UTC)),
-	// 						Version: to.Ptr("2024.02.21"),
-	// 					},
-	// 					BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
-	// 						RevisionDatetime: to.Ptr(time.Date(2024, time.February, 22, 15, 50, 53, 0, time.UTC)),
-	// 						Version: to.Ptr("2024.02.22"),
-	// 					},
-	// 					ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
-	// 						WafEngineVersion: to.Ptr("10.624.0"),
-	// 						WafNginxVersion: to.Ptr("4.815.0"),
-	// 					},
-	// 					ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
-	// 						RevisionDatetime: to.Ptr(time.Date(2024, time.February, 23, 15, 50, 53, 0, time.UTC)),
-	// 						Version: to.Ptr("2024.02.23"),
-	// 					},
-	// 				},
-	// 			},
-	// 			NginxVersion: to.Ptr("nginx-1.19.6"),
-	// 			ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
-	// 			ScalingProperties: &armnginx.DeploymentScalingProperties{
-	// 				Capacity: to.Ptr[int32](10),
-	// 			},
-	// 			UserProfile: &armnginx.DeploymentUserProfile{
-	// 				PreferredEmail: to.Ptr("example@example.email"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01/Deployments_Get_AutoScale.json
-func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnginx.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDeploymentsClient().Get(ctx, "myResourceGroup", "myDeployment", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnginx.DeploymentsClientGetResponse{
-	// 	Deployment: armnginx.Deployment{
-	// 		Name: to.Ptr("myDeployment"),
-	// 		Type: to.Ptr("nginx.nginxplus/deployments"),
-	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
-	// 		Location: to.Ptr("westus"),
-	// 		Properties: &armnginx.DeploymentProperties{
-	// 			AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
-	// 				UpgradeChannel: to.Ptr("stable"),
-	// 			},
-	// 			NetworkProfile: &armnginx.NetworkProfile{
-	// 				FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
-	// 					PrivateIPAddresses: []*armnginx.PrivateIPAddress{
-	// 						{
-	// 							PrivateIPAddress: to.Ptr("1.1.1.1"),
-	// 							PrivateIPAllocationMethod: to.Ptr(armnginx.NginxPrivateIPAllocationMethodStatic),
-	// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
-	// 						},
-	// 					},
-	// 					PublicIPAddresses: []*armnginx.PublicIPAddress{
-	// 						{
-	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress"),
-	// 						},
-	// 					},
-	// 				},
-	// 				NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
-	// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
-	// 				},
-	// 			},
-	// 			NginxVersion: to.Ptr("nginx-1.19.6"),
-	// 			ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
-	// 			ScalingProperties: &armnginx.DeploymentScalingProperties{
-	// 				AutoScaleSettings: &armnginx.DeploymentScalingPropertiesAutoScaleSettings{
-	// 					Profiles: []*armnginx.ScaleProfile{
-	// 						{
-	// 							Name: to.Ptr("ExampleProfile"),
-	// 							Capacity: &armnginx.ScaleProfileCapacity{
-	// 								Max: to.Ptr[int32](50),
-	// 								Min: to.Ptr[int32](10),
-	// 							},
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			UserProfile: &armnginx.DeploymentUserProfile{
-	// 				PreferredEmail: to.Ptr("example@example.email"),
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-11-01/Deployments_List.json
-func ExampleDeploymentsClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnginx.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDeploymentsClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnginx.DeploymentsClientListResponse{
-		// 	DeploymentListResponse: armnginx.DeploymentListResponse{
-		// 		Value: []*armnginx.Deployment{
-		// 			{
-		// 				Name: to.Ptr("myDeployment"),
-		// 				Type: to.Ptr("nginx.nginxplus/deployments"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnginx.DeploymentProperties{
-		// 					AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
-		// 						UpgradeChannel: to.Ptr("stable"),
-		// 					},
-		// 					DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
-		// 					IPAddress: to.Ptr("1.1.1.1"),
-		// 					NetworkProfile: &armnginx.NetworkProfile{
-		// 						FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
-		// 							PrivateIPAddresses: []*armnginx.PrivateIPAddress{
-		// 								{
-		// 									PrivateIPAddress: to.Ptr("1.1.1.1"),
-		// 									PrivateIPAllocationMethod: to.Ptr(armnginx.NginxPrivateIPAllocationMethodStatic),
-		// 									SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
-		// 								},
-		// 							},
-		// 							PublicIPAddresses: []*armnginx.PublicIPAddress{
-		// 								{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress"),
-		// 								},
-		// 							},
-		// 						},
-		// 						NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
-		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
-		// 						},
-		// 					},
-		// 					NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
-		// 						WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
-		// 							ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
-		// 						},
-		// 						WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
-		// 							AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
-		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 21, 15, 50, 53, 0, time.UTC)),
-		// 								Version: to.Ptr("2024.02.21"),
-		// 							},
-		// 							BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
-		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 22, 15, 50, 53, 0, time.UTC)),
-		// 								Version: to.Ptr("2024.02.22"),
-		// 							},
-		// 							ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
-		// 								WafEngineVersion: to.Ptr("10.624.0"),
-		// 								WafNginxVersion: to.Ptr("4.815.0"),
-		// 							},
-		// 							ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
-		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 23, 15, 50, 53, 0, time.UTC)),
-		// 								Version: to.Ptr("2024.02.23"),
-		// 							},
-		// 						},
-		// 					},
-		// 					NginxVersion: to.Ptr("nginx-1.19.6"),
-		// 					ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
-		// 					ScalingProperties: &armnginx.DeploymentScalingProperties{
-		// 						Capacity: to.Ptr[int32](10),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2025-11-01/Deployments_ListByResourceGroup.json
-func ExampleDeploymentsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnginx.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewDeploymentsClient().NewListByResourceGroupPager("myResourceGroup", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armnginx.DeploymentsClientListByResourceGroupResponse{
-		// 	DeploymentListResponse: armnginx.DeploymentListResponse{
-		// 		Value: []*armnginx.Deployment{
-		// 			{
-		// 				Name: to.Ptr("myDeployment"),
-		// 				Type: to.Ptr("nginx.nginxplus/deployments"),
-		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
-		// 				Location: to.Ptr("westus"),
-		// 				Properties: &armnginx.DeploymentProperties{
-		// 					AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
-		// 						UpgradeChannel: to.Ptr("stable"),
-		// 					},
-		// 					DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
-		// 					IPAddress: to.Ptr("1.1.1.1"),
-		// 					NetworkProfile: &armnginx.NetworkProfile{
-		// 						FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
-		// 							PrivateIPAddresses: []*armnginx.PrivateIPAddress{
-		// 								{
-		// 									PrivateIPAddress: to.Ptr("1.1.1.1"),
-		// 									PrivateIPAllocationMethod: to.Ptr(armnginx.NginxPrivateIPAllocationMethodStatic),
-		// 									SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
-		// 								},
-		// 							},
-		// 							PublicIPAddresses: []*armnginx.PublicIPAddress{
-		// 								{
-		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress"),
-		// 								},
-		// 							},
-		// 						},
-		// 						NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
-		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
-		// 						},
-		// 					},
-		// 					NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
-		// 						WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
-		// 							ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
-		// 						},
-		// 						WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
-		// 							AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
-		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 21, 15, 50, 53, 0, time.UTC)),
-		// 								Version: to.Ptr("2024.02.21"),
-		// 							},
-		// 							BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
-		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 22, 15, 50, 53, 0, time.UTC)),
-		// 								Version: to.Ptr("2024.02.22"),
-		// 							},
-		// 							ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
-		// 								WafEngineVersion: to.Ptr("10.624.0"),
-		// 								WafNginxVersion: to.Ptr("4.815.0"),
-		// 							},
-		// 							ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
-		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 23, 15, 50, 53, 0, time.UTC)),
-		// 								Version: to.Ptr("2024.02.23"),
-		// 							},
-		// 						},
-		// 					},
-		// 					NginxVersion: to.Ptr("nginx-1.19.6"),
-		// 					ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
-		// 					ScalingProperties: &armnginx.DeploymentScalingProperties{
-		// 						Capacity: to.Ptr[int32](10),
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-11-01/Deployments_Update.json
 func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -634,4 +298,340 @@ func ExampleDeploymentsClient_BeginUpdate_deploymentsUpdateSubnet() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2025-11-01/Deployments_Get.json
+func ExampleDeploymentsClient_Get_deploymentsGet() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnginx.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDeploymentsClient().Get(ctx, "myResourceGroup", "myDeployment", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnginx.DeploymentsClientGetResponse{
+	// 	Deployment: armnginx.Deployment{
+	// 		Name: to.Ptr("myDeployment"),
+	// 		Type: to.Ptr("nginx.nginxplus/deployments"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armnginx.DeploymentProperties{
+	// 			AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+	// 				UpgradeChannel: to.Ptr("stable"),
+	// 			},
+	// 			DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
+	// 			NetworkProfile: &armnginx.NetworkProfile{
+	// 				FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
+	// 					PrivateIPAddresses: []*armnginx.PrivateIPAddress{
+	// 						{
+	// 							PrivateIPAddress: to.Ptr("1.1.1.1"),
+	// 							PrivateIPAllocationMethod: to.Ptr(armnginx.NginxPrivateIPAllocationMethodStatic),
+	// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+	// 						},
+	// 					},
+	// 					PublicIPAddresses: []*armnginx.PublicIPAddress{
+	// 						{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress"),
+	// 						},
+	// 					},
+	// 				},
+	// 				NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
+	// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+	// 				},
+	// 			},
+	// 			NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
+	// 				WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
+	// 					ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
+	// 				},
+	// 				WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
+	// 					AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+	// 						RevisionDatetime: to.Ptr(time.Date(2024, time.February, 21, 15, 50, 53, 0, time.UTC)),
+	// 						Version: to.Ptr("2024.02.21"),
+	// 					},
+	// 					BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+	// 						RevisionDatetime: to.Ptr(time.Date(2024, time.February, 22, 15, 50, 53, 0, time.UTC)),
+	// 						Version: to.Ptr("2024.02.22"),
+	// 					},
+	// 					ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
+	// 						WafEngineVersion: to.Ptr("10.624.0"),
+	// 						WafNginxVersion: to.Ptr("4.815.0"),
+	// 					},
+	// 					ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
+	// 						RevisionDatetime: to.Ptr(time.Date(2024, time.February, 23, 15, 50, 53, 0, time.UTC)),
+	// 						Version: to.Ptr("2024.02.23"),
+	// 					},
+	// 				},
+	// 			},
+	// 			NginxVersion: to.Ptr("nginx-1.19.6"),
+	// 			ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+	// 			ScalingProperties: &armnginx.DeploymentScalingProperties{
+	// 				Capacity: to.Ptr[int32](10),
+	// 			},
+	// 			UserProfile: &armnginx.DeploymentUserProfile{
+	// 				PreferredEmail: to.Ptr("example@example.email"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-11-01/Deployments_Get_AutoScale.json
+func ExampleDeploymentsClient_Get_deploymentsGetAutoScale() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnginx.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDeploymentsClient().Get(ctx, "myResourceGroup", "myDeployment", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnginx.DeploymentsClientGetResponse{
+	// 	Deployment: armnginx.Deployment{
+	// 		Name: to.Ptr("myDeployment"),
+	// 		Type: to.Ptr("nginx.nginxplus/deployments"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armnginx.DeploymentProperties{
+	// 			AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+	// 				UpgradeChannel: to.Ptr("stable"),
+	// 			},
+	// 			NetworkProfile: &armnginx.NetworkProfile{
+	// 				FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
+	// 					PrivateIPAddresses: []*armnginx.PrivateIPAddress{
+	// 						{
+	// 							PrivateIPAddress: to.Ptr("1.1.1.1"),
+	// 							PrivateIPAllocationMethod: to.Ptr(armnginx.NginxPrivateIPAllocationMethodStatic),
+	// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+	// 						},
+	// 					},
+	// 					PublicIPAddresses: []*armnginx.PublicIPAddress{
+	// 						{
+	// 							ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress"),
+	// 						},
+	// 					},
+	// 				},
+	// 				NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
+	// 					SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+	// 				},
+	// 			},
+	// 			NginxVersion: to.Ptr("nginx-1.19.6"),
+	// 			ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+	// 			ScalingProperties: &armnginx.DeploymentScalingProperties{
+	// 				AutoScaleSettings: &armnginx.DeploymentScalingPropertiesAutoScaleSettings{
+	// 					Profiles: []*armnginx.ScaleProfile{
+	// 						{
+	// 							Name: to.Ptr("ExampleProfile"),
+	// 							Capacity: &armnginx.ScaleProfileCapacity{
+	// 								Max: to.Ptr[int32](50),
+	// 								Min: to.Ptr[int32](10),
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			UserProfile: &armnginx.DeploymentUserProfile{
+	// 				PreferredEmail: to.Ptr("example@example.email"),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-11-01/Deployments_ListByResourceGroup.json
+func ExampleDeploymentsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnginx.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDeploymentsClient().NewListByResourceGroupPager("myResourceGroup", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnginx.DeploymentsClientListByResourceGroupResponse{
+		// 	DeploymentListResponse: armnginx.DeploymentListResponse{
+		// 		Value: []*armnginx.Deployment{
+		// 			{
+		// 				Name: to.Ptr("myDeployment"),
+		// 				Type: to.Ptr("nginx.nginxplus/deployments"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnginx.DeploymentProperties{
+		// 					AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+		// 						UpgradeChannel: to.Ptr("stable"),
+		// 					},
+		// 					DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
+		// 					IPAddress: to.Ptr("1.1.1.1"),
+		// 					NetworkProfile: &armnginx.NetworkProfile{
+		// 						FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
+		// 							PrivateIPAddresses: []*armnginx.PrivateIPAddress{
+		// 								{
+		// 									PrivateIPAddress: to.Ptr("1.1.1.1"),
+		// 									PrivateIPAllocationMethod: to.Ptr(armnginx.NginxPrivateIPAllocationMethodStatic),
+		// 									SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+		// 								},
+		// 							},
+		// 							PublicIPAddresses: []*armnginx.PublicIPAddress{
+		// 								{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress"),
+		// 								},
+		// 							},
+		// 						},
+		// 						NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
+		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+		// 						},
+		// 					},
+		// 					NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
+		// 						WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
+		// 							ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
+		// 						},
+		// 						WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
+		// 							AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 21, 15, 50, 53, 0, time.UTC)),
+		// 								Version: to.Ptr("2024.02.21"),
+		// 							},
+		// 							BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 22, 15, 50, 53, 0, time.UTC)),
+		// 								Version: to.Ptr("2024.02.22"),
+		// 							},
+		// 							ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
+		// 								WafEngineVersion: to.Ptr("10.624.0"),
+		// 								WafNginxVersion: to.Ptr("4.815.0"),
+		// 							},
+		// 							ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
+		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 23, 15, 50, 53, 0, time.UTC)),
+		// 								Version: to.Ptr("2024.02.23"),
+		// 							},
+		// 						},
+		// 					},
+		// 					NginxVersion: to.Ptr("nginx-1.19.6"),
+		// 					ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+		// 					ScalingProperties: &armnginx.DeploymentScalingProperties{
+		// 						Capacity: to.Ptr[int32](10),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-11-01/Deployments_List.json
+func ExampleDeploymentsClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnginx.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewDeploymentsClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armnginx.DeploymentsClientListResponse{
+		// 	DeploymentListResponse: armnginx.DeploymentListResponse{
+		// 		Value: []*armnginx.Deployment{
+		// 			{
+		// 				Name: to.Ptr("myDeployment"),
+		// 				Type: to.Ptr("nginx.nginxplus/deployments"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Nginx.NginxPlus/nginxDeployments/myDeployment"),
+		// 				Location: to.Ptr("westus"),
+		// 				Properties: &armnginx.DeploymentProperties{
+		// 					AutoUpgradeProfile: &armnginx.AutoUpgradeProfile{
+		// 						UpgradeChannel: to.Ptr("stable"),
+		// 					},
+		// 					DataplaneAPIEndpoint: to.Ptr("mynginx-75b3bf22a555.eastus2.nginxaas.net"),
+		// 					IPAddress: to.Ptr("1.1.1.1"),
+		// 					NetworkProfile: &armnginx.NetworkProfile{
+		// 						FrontEndIPConfiguration: &armnginx.FrontendIPConfiguration{
+		// 							PrivateIPAddresses: []*armnginx.PrivateIPAddress{
+		// 								{
+		// 									PrivateIPAddress: to.Ptr("1.1.1.1"),
+		// 									PrivateIPAllocationMethod: to.Ptr(armnginx.NginxPrivateIPAllocationMethodStatic),
+		// 									SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+		// 								},
+		// 							},
+		// 							PublicIPAddresses: []*armnginx.PublicIPAddress{
+		// 								{
+		// 									ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/publicIPAddresses/myPublicIPAddress"),
+		// 								},
+		// 							},
+		// 						},
+		// 						NetworkInterfaceConfiguration: &armnginx.NetworkInterfaceConfiguration{
+		// 							SubnetID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myResourceGroup/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet"),
+		// 						},
+		// 					},
+		// 					NginxAppProtect: &armnginx.DeploymentPropertiesNginxAppProtect{
+		// 						WebApplicationFirewallSettings: &armnginx.WebApplicationFirewallSettings{
+		// 							ActivationState: to.Ptr(armnginx.ActivationStateEnabled),
+		// 						},
+		// 						WebApplicationFirewallStatus: &armnginx.WebApplicationFirewallStatus{
+		// 							AttackSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 21, 15, 50, 53, 0, time.UTC)),
+		// 								Version: to.Ptr("2024.02.21"),
+		// 							},
+		// 							BotSignaturesPackage: &armnginx.WebApplicationFirewallPackage{
+		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 22, 15, 50, 53, 0, time.UTC)),
+		// 								Version: to.Ptr("2024.02.22"),
+		// 							},
+		// 							ComponentVersions: &armnginx.WebApplicationFirewallComponentVersions{
+		// 								WafEngineVersion: to.Ptr("10.624.0"),
+		// 								WafNginxVersion: to.Ptr("4.815.0"),
+		// 							},
+		// 							ThreatCampaignsPackage: &armnginx.WebApplicationFirewallPackage{
+		// 								RevisionDatetime: to.Ptr(time.Date(2024, time.February, 23, 15, 50, 53, 0, time.UTC)),
+		// 								Version: to.Ptr("2024.02.23"),
+		// 							},
+		// 						},
+		// 					},
+		// 					NginxVersion: to.Ptr("nginx-1.19.6"),
+		// 					ProvisioningState: to.Ptr(armnginx.ProvisioningStateSucceeded),
+		// 					ScalingProperties: &armnginx.DeploymentScalingProperties{
+		// 						Capacity: to.Ptr[int32](10),
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

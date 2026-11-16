@@ -64,7 +64,8 @@ func (client *ConfigurationsClient) Analysis(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ConfigurationsClientAnalysisResponse{}, err
 	}
-	return client.analysisHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.analysisHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // analysisCreateRequest creates the Analysis request.
@@ -141,7 +142,7 @@ func (client *ConfigurationsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create or update the NGINX configuration for given NGINX deployment
+// createOrUpdate - Create or update the NGINX configuration for given NGINX deployment
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConfigurationsClient) createOrUpdate(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, body ConfigurationRequest, options *ConfigurationsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -158,12 +159,13 @@ func (client *ConfigurationsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, body ConfigurationRequest, _ *ConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations/{configurationName}"
 	if client.subscriptionID == "" {
@@ -221,7 +223,7 @@ func (client *ConfigurationsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Reset the NGINX configuration of given NGINX deployment to default
+// deleteOperation - Reset the NGINX configuration of given NGINX deployment to default
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ConfigurationsClient) deleteOperation(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, options *ConfigurationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -238,12 +240,13 @@ func (client *ConfigurationsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, deploymentName string, configurationName string, _ *ConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Nginx.NginxPlus/nginxDeployments/{deploymentName}/configurations/{configurationName}"
 	if client.subscriptionID == "" {
@@ -292,7 +295,8 @@ func (client *ConfigurationsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return ConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

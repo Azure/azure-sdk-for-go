@@ -19,7 +19,7 @@ import (
 // CGProfileClient contains the methods for the CGProfile group.
 // Don't use this type directly, use NewCGProfileClient() instead.
 //
-// Generated from API version 2025-09-01
+// Generated from API version 2026-07-01
 type CGProfileClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -67,7 +67,8 @@ func (client *CGProfileClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return CGProfileClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -90,7 +91,7 @@ func (client *CGProfileClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -137,7 +138,8 @@ func (client *CGProfileClient) Delete(ctx context.Context, resourceGroupName str
 		return CGProfileClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return CGProfileClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return CGProfileClientDeleteResponse{}, err
 	}
 	return CGProfileClientDeleteResponse{}, nil
 }
@@ -162,7 +164,7 @@ func (client *CGProfileClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -188,7 +190,8 @@ func (client *CGProfileClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return CGProfileClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -211,7 +214,7 @@ func (client *CGProfileClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -254,7 +257,8 @@ func (client *CGProfileClient) GetByRevisionNumber(ctx context.Context, resource
 	if err != nil {
 		return CGProfileClientGetByRevisionNumberResponse{}, err
 	}
-	return client.getByRevisionNumberHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByRevisionNumberHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByRevisionNumberCreateRequest creates the GetByRevisionNumber request.
@@ -281,7 +285,7 @@ func (client *CGProfileClient) getByRevisionNumberCreateRequest(ctx context.Cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -362,7 +366,7 @@ func (client *CGProfileClient) listAllRevisionsCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250901)
+		reqQP.Set("api-version", version20260701)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -403,7 +407,8 @@ func (client *CGProfileClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return CGProfileClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -426,7 +431,7 @@ func (client *CGProfileClient) updateCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250901)
+	reqQP.Set("api-version", version20260701)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

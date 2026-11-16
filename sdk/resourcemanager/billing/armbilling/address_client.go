@@ -54,7 +54,8 @@ func (client *AddressClient) Validate(ctx context.Context, parameters AddressDet
 	if err != nil {
 		return AddressClientValidateResponse{}, err
 	}
-	return client.validateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCreateRequest creates the Validate request.

@@ -6,5 +6,5 @@ package armhorizondb
 
 const (
 	moduleName    = "github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/horizondb/armhorizondb"
-	moduleVersion = "v0.3.0"
+	moduleVersion = "v0.4.0"
 )

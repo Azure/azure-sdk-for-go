@@ -65,7 +65,8 @@ func (client *ManagementClient) CheckEndpointNameAvailability(ctx context.Contex
 	if err != nil {
 		return ManagementClientCheckEndpointNameAvailabilityResponse{}, err
 	}
-	return client.checkEndpointNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkEndpointNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkEndpointNameAvailabilityCreateRequest creates the CheckEndpointNameAvailability request.
@@ -126,7 +127,8 @@ func (client *ManagementClient) CheckNameAvailability(ctx context.Context, check
 	if err != nil {
 		return ManagementClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.
@@ -179,7 +181,8 @@ func (client *ManagementClient) CheckNameAvailabilityWithSubscription(ctx contex
 	if err != nil {
 		return ManagementClientCheckNameAvailabilityWithSubscriptionResponse{}, err
 	}
-	return client.checkNameAvailabilityWithSubscriptionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityWithSubscriptionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityWithSubscriptionCreateRequest creates the CheckNameAvailabilityWithSubscription request.
@@ -237,7 +240,8 @@ func (client *ManagementClient) ValidateProbe(ctx context.Context, validateProbe
 	if err != nil {
 		return ManagementClientValidateProbeResponse{}, err
 	}
-	return client.validateProbeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateProbeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateProbeCreateRequest creates the ValidateProbe request.

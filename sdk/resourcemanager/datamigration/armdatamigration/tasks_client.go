@@ -69,7 +69,8 @@ func (client *TasksClient) Cancel(ctx context.Context, groupName string, service
 	if err != nil {
 		return TasksClientCancelResponse{}, err
 	}
-	return client.cancelHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.cancelHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // cancelCreateRequest creates the Cancel request.
@@ -143,7 +144,8 @@ func (client *TasksClient) Command(ctx context.Context, groupName string, servic
 	if err != nil {
 		return TasksClientCommandResponse{}, err
 	}
-	return client.commandHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.commandHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // commandCreateRequest creates the Command request.
@@ -222,7 +224,8 @@ func (client *TasksClient) CreateOrUpdate(ctx context.Context, groupName string,
 	if err != nil {
 		return TasksClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -300,7 +303,8 @@ func (client *TasksClient) Delete(ctx context.Context, groupName string, service
 		return TasksClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return TasksClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TasksClientDeleteResponse{}, err
 	}
 	return TasksClientDeleteResponse{}, nil
 }
@@ -365,7 +369,8 @@ func (client *TasksClient) Get(ctx context.Context, groupName string, serviceNam
 	if err != nil {
 		return TasksClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -530,7 +535,8 @@ func (client *TasksClient) Update(ctx context.Context, groupName string, service
 	if err != nil {
 		return TasksClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

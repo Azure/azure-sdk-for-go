@@ -64,7 +64,8 @@ func (client *HcpOpenShiftVersionsClient) Get(ctx context.Context, location stri
 	if err != nil {
 		return HcpOpenShiftVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

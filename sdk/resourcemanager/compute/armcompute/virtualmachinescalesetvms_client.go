@@ -86,7 +86,8 @@ func (client *VirtualMachineScaleSetVMsClient) approveRollingUpgrade(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -162,7 +163,8 @@ func (client *VirtualMachineScaleSetVMsClient) attachDetachDataDisks(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -244,7 +246,8 @@ func (client *VirtualMachineScaleSetVMsClient) deallocate(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -319,7 +322,8 @@ func (client *VirtualMachineScaleSetVMsClient) deleteOperation(ctx context.Conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -397,7 +401,8 @@ func (client *VirtualMachineScaleSetVMsClient) performMaintenance(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -474,7 +479,8 @@ func (client *VirtualMachineScaleSetVMsClient) powerOff(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -554,7 +560,8 @@ func (client *VirtualMachineScaleSetVMsClient) redeploy(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -629,7 +636,8 @@ func (client *VirtualMachineScaleSetVMsClient) reimage(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -713,7 +721,8 @@ func (client *VirtualMachineScaleSetVMsClient) reimageAll(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -788,7 +797,8 @@ func (client *VirtualMachineScaleSetVMsClient) restart(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -864,7 +874,8 @@ func (client *VirtualMachineScaleSetVMsClient) runCommand(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -944,7 +955,8 @@ func (client *VirtualMachineScaleSetVMsClient) start(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1020,7 +1032,8 @@ func (client *VirtualMachineScaleSetVMsClient) update(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -1086,7 +1099,8 @@ func (client *VirtualMachineScaleSetVMsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return VirtualMachineScaleSetVMsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -1155,7 +1169,8 @@ func (client *VirtualMachineScaleSetVMsClient) GetInstanceView(ctx context.Conte
 	if err != nil {
 		return VirtualMachineScaleSetVMsClientGetInstanceViewResponse{}, err
 	}
-	return client.getInstanceViewHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getInstanceViewHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getInstanceViewCreateRequest creates the GetInstanceView request.
@@ -1308,7 +1323,8 @@ func (client *VirtualMachineScaleSetVMsClient) RetrieveBootDiagnosticsData(ctx c
 	if err != nil {
 		return VirtualMachineScaleSetVMsClientRetrieveBootDiagnosticsDataResponse{}, err
 	}
-	return client.retrieveBootDiagnosticsDataHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.retrieveBootDiagnosticsDataHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // retrieveBootDiagnosticsDataCreateRequest creates the RetrieveBootDiagnosticsData request.
@@ -1378,7 +1394,8 @@ func (client *VirtualMachineScaleSetVMsClient) SimulateEviction(ctx context.Cont
 		return VirtualMachineScaleSetVMsClientSimulateEvictionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return VirtualMachineScaleSetVMsClientSimulateEvictionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return VirtualMachineScaleSetVMsClientSimulateEvictionResponse{}, err
 	}
 	return VirtualMachineScaleSetVMsClientSimulateEvictionResponse{}, nil
 }

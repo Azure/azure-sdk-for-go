@@ -198,6 +198,35 @@ func ExampleHybridConnectionsClient_GetAuthorizationRule() {
 	// }
 }
 
+// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListKey.json
+func ExampleHybridConnectionsClient_ListKeys() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armrelay.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewHybridConnectionsClient().ListKeys(ctx, "resourcegroup", "example-RelayNamespace-01", "example-Relay-Hybrid-01", "example-RelayAuthRules-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armrelay.HybridConnectionsClientListKeysResponse{
+	// 	AccessKeys: armrelay.AccessKeys{
+	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
+	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
+	// 		PrimaryKey: to.Ptr("############################################"),
+	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
+	// 		SecondaryKey: to.Ptr("############################################"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListAll.json
 func ExampleHybridConnectionsClient_NewListAuthorizationRulesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -281,35 +310,6 @@ func ExampleHybridConnectionsClient_NewListByNamespacePager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleListKey.json
-func ExampleHybridConnectionsClient_ListKeys() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armrelay.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewHybridConnectionsClient().ListKeys(ctx, "resourcegroup", "example-RelayNamespace-01", "example-Relay-Hybrid-01", "example-RelayAuthRules-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armrelay.HybridConnectionsClientListKeysResponse{
-	// 	AccessKeys: armrelay.AccessKeys{
-	// 		KeyName: to.Ptr("example-RelayAuthRules-01"),
-	// 		PrimaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
-	// 		PrimaryKey: to.Ptr("############################################"),
-	// 		SecondaryConnectionString: to.Ptr("Endpoint=sb://example-Relaynamespace-01.servicebus.windows.net/;SharedAccessKeyName=example-RelayAuthRules-01;SharedAccessKey=############################################"),
-	// 		SecondaryKey: to.Ptr("############################################"),
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2026-01-01/HybridConnection/RelayHybridConnectionAuthorizationRuleRegenerateKey.json

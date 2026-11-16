@@ -425,11 +425,11 @@ type RecommendVMSKUSubscriptionOptions struct {
 // RecommendVMSKUTokenBudget - The per-request token budget used to size the inference key-value cache.
 type RecommendVMSKUTokenBudget struct {
 	// The maximum number of generated output tokens per inference request. Must be supplied together with `promptTokens`, and
-	// the two must total from 1 through 131072.
+	// the two must total from 1 through 2147483647 without exceeding the model's maximum context length.
 	MaxOutputTokens *int32
 
 	// The number of prompt, or input, tokens per inference request. Must be supplied together with `maxOutputTokens`, and the
-	// two must total from 1 through 131072.
+	// two must total from 1 through 2147483647 without exceeding the model's maximum context length.
 	PromptTokens *int32
 }
 

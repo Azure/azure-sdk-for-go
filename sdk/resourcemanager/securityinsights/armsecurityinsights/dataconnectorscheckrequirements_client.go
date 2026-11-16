@@ -65,7 +65,8 @@ func (client *DataConnectorsCheckRequirementsClient) Post(ctx context.Context, r
 	if err != nil {
 		return DataConnectorsCheckRequirementsClientPostResponse{}, err
 	}
-	return client.postHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.postHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // postCreateRequest creates the Post request.

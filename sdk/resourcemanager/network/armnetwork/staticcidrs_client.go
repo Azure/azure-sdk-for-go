@@ -56,7 +56,7 @@ func NewStaticCidrsClient(subscriptionID string, credential azcore.TokenCredenti
 //   - options - StaticCidrsClientBeginDeleteOptions contains the optional parameters for the StaticCidrsClient.BeginDelete method.
 func (client *StaticCidrsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*runtime.Poller[StaticCidrsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkManagerName, poolName, staticCidrName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkManagerName, poolName, staticCidrName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -71,11 +71,11 @@ func (client *StaticCidrsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// delete - Delete the Static CIDR resource.
+// deleteOperation - Delete the Static CIDR resource.
 //
 // Delete the Static CIDR resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *StaticCidrsClient) delete(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *StaticCidrsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkManagerName string, poolName string, staticCidrName string, options *StaticCidrsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "StaticCidrsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -90,7 +90,8 @@ func (client *StaticCidrsClient) delete(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -151,7 +152,8 @@ func (client *StaticCidrsClient) Create(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return StaticCidrsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -227,7 +229,8 @@ func (client *StaticCidrsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return StaticCidrsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

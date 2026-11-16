@@ -65,7 +65,8 @@ func (client *PeeringsClient) CreateOrUpdate(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PeeringsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -130,7 +131,8 @@ func (client *PeeringsClient) Delete(ctx context.Context, resourceGroupName stri
 		return PeeringsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PeeringsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PeeringsClientDeleteResponse{}, err
 	}
 	return PeeringsClientDeleteResponse{}, nil
 }
@@ -179,7 +181,8 @@ func (client *PeeringsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return PeeringsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -379,7 +382,8 @@ func (client *PeeringsClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return PeeringsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

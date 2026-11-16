@@ -66,7 +66,8 @@ func (client *HCRPAssignmentReportsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return HCRPAssignmentReportsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -136,7 +137,8 @@ func (client *HCRPAssignmentReportsClient) List(ctx context.Context, resourceGro
 	if err != nil {
 		return HCRPAssignmentReportsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

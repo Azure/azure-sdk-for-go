@@ -66,7 +66,8 @@ func (client *ExportJobsOperationResultClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ExportJobsOperationResultClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

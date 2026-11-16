@@ -64,7 +64,8 @@ func (client *AlertRuleIncidentsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AlertRuleIncidentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

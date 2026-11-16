@@ -86,7 +86,8 @@ func (client *ElasticCapacityPoolsClient) changeZone(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -169,7 +170,8 @@ func (client *ElasticCapacityPoolsClient) createOrUpdate(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -249,7 +251,8 @@ func (client *ElasticCapacityPoolsClient) deleteOperation(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -325,7 +328,8 @@ func (client *ElasticCapacityPoolsClient) update(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -386,7 +390,8 @@ func (client *ElasticCapacityPoolsClient) CheckVolumeFilePathAvailability(ctx co
 	if err != nil {
 		return ElasticCapacityPoolsClientCheckVolumeFilePathAvailabilityResponse{}, err
 	}
-	return client.checkVolumeFilePathAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkVolumeFilePathAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkVolumeFilePathAvailabilityCreateRequest creates the CheckVolumeFilePathAvailability request.
@@ -456,7 +461,8 @@ func (client *ElasticCapacityPoolsClient) Get(ctx context.Context, resourceGroup
 	if err != nil {
 		return ElasticCapacityPoolsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

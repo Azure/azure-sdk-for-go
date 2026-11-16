@@ -65,7 +65,8 @@ func (client *LookingGlassClient) Invoke(ctx context.Context, command LookingGla
 	if err != nil {
 		return LookingGlassClientInvokeResponse{}, err
 	}
-	return client.invokeHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.invokeHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // invokeCreateRequest creates the Invoke request.

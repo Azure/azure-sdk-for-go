@@ -71,7 +71,7 @@ func (client *DomainTopicsClient) BeginCreateOrUpdate(ctx context.Context, resou
 	}
 }
 
-// CreateOrUpdate - Create or update a domain topic.
+// createOrUpdate - Create or update a domain topic.
 //
 // Asynchronously creates or updates a new domain topic with the specified parameters.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -90,12 +90,13 @@ func (client *DomainTopicsClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DomainTopicsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domainTopicName string, _ *DomainTopicsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{domainTopicName}"
 	if client.subscriptionID == "" {
@@ -151,7 +152,7 @@ func (client *DomainTopicsClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Delete a domain topic.
+// deleteOperation - Delete a domain topic.
 //
 // Delete existing domain topic.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -170,12 +171,13 @@ func (client *DomainTopicsClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DomainTopicsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, domainName string, domainTopicName string, _ *DomainTopicsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{domainTopicName}"
 	if client.subscriptionID == "" {
@@ -226,7 +228,8 @@ func (client *DomainTopicsClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return DomainTopicsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -88,7 +88,8 @@ func (client *TraceContainersClient) createOrUpdate(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -143,7 +144,8 @@ func (client *TraceContainersClient) Delete(ctx context.Context, resourceGroupNa
 		return TraceContainersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return TraceContainersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TraceContainersClientDeleteResponse{}, err
 	}
 	return TraceContainersClientDeleteResponse{}, nil
 }
@@ -192,7 +194,8 @@ func (client *TraceContainersClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return TraceContainersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

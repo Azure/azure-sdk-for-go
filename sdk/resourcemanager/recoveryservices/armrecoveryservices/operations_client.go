@@ -65,7 +65,8 @@ func (client *OperationsClient) GetOperationResult(ctx context.Context, resource
 	if err != nil {
 		return OperationsClientGetOperationResultResponse{}, err
 	}
-	return client.getOperationResultHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.getOperationResultHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // getOperationResultCreateRequest creates the GetOperationResult request.
@@ -192,7 +193,8 @@ func (client *OperationsClient) OperationStatusGet(ctx context.Context, resource
 	if err != nil {
 		return OperationsClientOperationStatusGetResponse{}, err
 	}
-	return client.operationStatusGetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.operationStatusGetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // operationStatusGetCreateRequest creates the OperationStatusGet request.

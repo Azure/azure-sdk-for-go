@@ -65,7 +65,8 @@ func (client *SubscriptionNetworkManagerConnectionsClient) CreateOrUpdate(ctx co
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -126,7 +127,8 @@ func (client *SubscriptionNetworkManagerConnectionsClient) Delete(ctx context.Co
 		return SubscriptionNetworkManagerConnectionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SubscriptionNetworkManagerConnectionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SubscriptionNetworkManagerConnectionsClientDeleteResponse{}, err
 	}
 	return SubscriptionNetworkManagerConnectionsClientDeleteResponse{}, nil
 }
@@ -171,7 +173,8 @@ func (client *SubscriptionNetworkManagerConnectionsClient) Get(ctx context.Conte
 	if err != nil {
 		return SubscriptionNetworkManagerConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

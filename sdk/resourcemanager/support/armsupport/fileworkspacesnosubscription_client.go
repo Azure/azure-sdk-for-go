@@ -57,7 +57,8 @@ func (client *FileWorkspacesNoSubscriptionClient) Create(ctx context.Context, fi
 	if err != nil {
 		return FileWorkspacesNoSubscriptionClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -109,7 +110,8 @@ func (client *FileWorkspacesNoSubscriptionClient) Get(ctx context.Context, fileW
 	if err != nil {
 		return FileWorkspacesNoSubscriptionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

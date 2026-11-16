@@ -64,7 +64,8 @@ func (client *NetworkSecurityPerimeterConfigurationClient) List(ctx context.Cont
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

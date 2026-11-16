@@ -85,7 +85,8 @@ func (client *SnapshotPoliciesClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -161,7 +162,8 @@ func (client *SnapshotPoliciesClient) update(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -221,7 +223,8 @@ func (client *SnapshotPoliciesClient) Create(ctx context.Context, resourceGroupN
 	if err != nil {
 		return SnapshotPoliciesClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -290,7 +293,8 @@ func (client *SnapshotPoliciesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return SnapshotPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -356,7 +360,8 @@ func (client *SnapshotPoliciesClient) ListVolumes(ctx context.Context, resourceG
 	if err != nil {
 		return SnapshotPoliciesClientListVolumesResponse{}, err
 	}
-	return client.listVolumesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listVolumesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listVolumesCreateRequest creates the ListVolumes request.

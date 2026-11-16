@@ -87,7 +87,8 @@ func (client *SecurityPerimeterAssociationsClient) createOrUpdate(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -135,7 +136,7 @@ func (client *SecurityPerimeterAssociationsClient) createOrUpdateCreateRequest(c
 //     method.
 func (client *SecurityPerimeterAssociationsClient) BeginDelete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, options *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*runtime.Poller[SecurityPerimeterAssociationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, networkSecurityPerimeterName, associationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, networkSecurityPerimeterName, associationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -150,9 +151,9 @@ func (client *SecurityPerimeterAssociationsClient) BeginDelete(ctx context.Conte
 	}
 }
 
-// delete - Deletes an NSP association resource.
+// deleteOperation - Deletes an NSP association resource.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *SecurityPerimeterAssociationsClient) delete(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, options *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *SecurityPerimeterAssociationsClient) deleteOperation(ctx context.Context, resourceGroupName string, networkSecurityPerimeterName string, associationName string, options *SecurityPerimeterAssociationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "SecurityPerimeterAssociationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -167,7 +168,8 @@ func (client *SecurityPerimeterAssociationsClient) delete(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -222,7 +224,8 @@ func (client *SecurityPerimeterAssociationsClient) Get(ctx context.Context, reso
 	if err != nil {
 		return SecurityPerimeterAssociationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -372,7 +375,8 @@ func (client *SecurityPerimeterAssociationsClient) Reconcile(ctx context.Context
 	if err != nil {
 		return SecurityPerimeterAssociationsClientReconcileResponse{}, err
 	}
-	return client.reconcileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.reconcileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // reconcileCreateRequest creates the Reconcile request.

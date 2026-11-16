@@ -64,7 +64,8 @@ func (client *QueryKeysClient) Create(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return QueryKeysClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -138,7 +139,8 @@ func (client *QueryKeysClient) Delete(ctx context.Context, resourceGroupName str
 		return QueryKeysClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent, http.StatusNotFound) {
-		return QueryKeysClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return QueryKeysClientDeleteResponse{}, err
 	}
 	return QueryKeysClientDeleteResponse{}, nil
 }

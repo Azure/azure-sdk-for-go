@@ -58,7 +58,8 @@ func (client *SubscriptionsClient) AcceptTargetDirectory(ctx context.Context, su
 		return SubscriptionsClientAcceptTargetDirectoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return SubscriptionsClientAcceptTargetDirectoryResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SubscriptionsClientAcceptTargetDirectoryResponse{}, err
 	}
 	return SubscriptionsClientAcceptTargetDirectoryResponse{}, nil
 }
@@ -100,7 +101,8 @@ func (client *SubscriptionsClient) DeleteTargetDirectory(ctx context.Context, su
 		return SubscriptionsClientDeleteTargetDirectoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return SubscriptionsClientDeleteTargetDirectoryResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SubscriptionsClientDeleteTargetDirectoryResponse{}, err
 	}
 	return SubscriptionsClientDeleteTargetDirectoryResponse{}, nil
 }
@@ -141,7 +143,8 @@ func (client *SubscriptionsClient) GetTargetDirectory(ctx context.Context, subsc
 	if err != nil {
 		return SubscriptionsClientGetTargetDirectoryResponse{}, err
 	}
-	return client.getTargetDirectoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getTargetDirectoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getTargetDirectoryCreateRequest creates the GetTargetDirectory request.
@@ -262,7 +265,8 @@ func (client *SubscriptionsClient) PutTargetDirectory(ctx context.Context, subsc
 	if err != nil {
 		return SubscriptionsClientPutTargetDirectoryResponse{}, err
 	}
-	return client.putTargetDirectoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.putTargetDirectoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // putTargetDirectoryCreateRequest creates the PutTargetDirectory request.
@@ -318,7 +322,8 @@ func (client *SubscriptionsClient) TargetDirectoryStatus(ctx context.Context, su
 	if err != nil {
 		return SubscriptionsClientTargetDirectoryStatusResponse{}, err
 	}
-	return client.targetDirectoryStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.targetDirectoryStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // targetDirectoryStatusCreateRequest creates the TargetDirectoryStatus request.

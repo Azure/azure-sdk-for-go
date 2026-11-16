@@ -86,7 +86,8 @@ func (client *BackupsClient) create(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -170,7 +171,8 @@ func (client *BackupsClient) deleteOperation(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -250,7 +252,8 @@ func (client *BackupsClient) update(ctx context.Context, resourceGroupName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -314,7 +317,8 @@ func (client *BackupsClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return BackupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -384,7 +388,8 @@ func (client *BackupsClient) GetLatestStatus(ctx context.Context, resourceGroupN
 	if err != nil {
 		return BackupsClientGetLatestStatusResponse{}, err
 	}
-	return client.getLatestStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLatestStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLatestStatusCreateRequest creates the GetLatestStatus request.
@@ -455,7 +460,8 @@ func (client *BackupsClient) GetVolumeLatestRestoreStatus(ctx context.Context, r
 	if err != nil {
 		return BackupsClientGetVolumeLatestRestoreStatusResponse{}, err
 	}
-	return client.getVolumeLatestRestoreStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVolumeLatestRestoreStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVolumeLatestRestoreStatusCreateRequest creates the GetVolumeLatestRestoreStatus request.

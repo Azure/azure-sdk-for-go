@@ -294,6 +294,10 @@ func (d *DatastoresServerTransport) dispatchNewListPager(req *http.Request) (*ht
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
 		qp := req.URL.Query()
+		rawQP, err := parseRawURIQuery(req.URL.RawQuery)
+		if err != nil {
+			return nil, err
+		}
 		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 		if err != nil {
 			return nil, err
@@ -304,11 +308,8 @@ func (d *DatastoresServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		}
 		skipParam := getOptional(qp.Get("$skip"))
 		countParam, err := parseOptional(qp.Get("count"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -317,7 +318,14 @@ func (d *DatastoresServerTransport) dispatchNewListPager(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		namesParam := splitHelper(qp.Get("names"), ",")
+		var namesParam []string
+		if rawQP.Has("names") {
+			parsed, parseErr := parseURIQueryArray(rawQP.Get("names"), func(v string) (string, error) { return v, nil })
+			if parseErr != nil {
+				return nil, parseErr
+			}
+			namesParam = parsed
+		}
 		searchTextParam := getOptional(qp.Get("searchText"))
 		orderByParam := getOptional(qp.Get("orderBy"))
 		orderByAscParam, err := parseOptional(qp.Get("orderByAsc"), strconv.ParseBool)
@@ -325,7 +333,7 @@ func (d *DatastoresServerTransport) dispatchNewListPager(req *http.Request) (*ht
 			return nil, err
 		}
 		var options *armmachinelearning.DatastoresClientListOptions
-		if skipParam != nil || countParam != nil || isDefaultParam != nil || len(namesParam) > 0 || searchTextParam != nil || orderByParam != nil || orderByAscParam != nil {
+		if skipParam != nil || countParam != nil || isDefaultParam != nil || namesParam != nil || searchTextParam != nil || orderByParam != nil || orderByAscParam != nil {
 			options = &armmachinelearning.DatastoresClientListOptions{
 				Skip:       skipParam,
 				Count:      countParam,

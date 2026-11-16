@@ -162,11 +162,8 @@ func (r *ReservationTransactionsServerTransport) dispatchNewListPager(req *http.
 			return nil, err
 		}
 		previewMarkupPercentageParam, err := parseOptional(qp.Get("previewMarkupPercentage"), func(v string) (float64, error) {
-			p, parseErr := strconv.ParseFloat(v, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseFloat(v, 64)
+			return float64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

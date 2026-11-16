@@ -451,11 +451,8 @@ func (a *AlertsServerTransport) dispatchNewGetAllPager(req *http.Request) (*http
 			return nil, err
 		}
 		pageCountParam, err := parseOptional(qp.Get("pageCount"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -533,11 +530,8 @@ func (a *AlertsServerTransport) dispatchNewGetAllTenantPager(req *http.Request) 
 			return nil, err
 		}
 		pageCountParam, err := parseOptional(qp.Get("pageCount"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

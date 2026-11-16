@@ -404,11 +404,8 @@ func (o *OnlineDeploymentsServerTransport) dispatchNewListPager(req *http.Reques
 		}
 		orderByParam := getOptional(qp.Get("$orderBy"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -473,11 +470,8 @@ func (o *OnlineDeploymentsServerTransport) dispatchNewListSKUsPager(req *http.Re
 			return nil, err
 		}
 		countParam, err := parseOptional(qp.Get("count"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

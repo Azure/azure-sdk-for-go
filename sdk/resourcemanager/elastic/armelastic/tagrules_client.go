@@ -125,6 +125,8 @@ func (client *TagRulesClient) deleteCreateRequest(ctx context.Context, resourceG
 // observability based on resource tags.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - ruleSetName - Tag Rule Set resource name
 //   - body - request body of MonitoringTagRules
 //   - options - TagRulesClientCreateOrUpdateOptions contains the optional parameters for the TagRulesClient.CreateOrUpdate method.
 func (client *TagRulesClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, ruleSetName string, body MonitoringTagRules, options *TagRulesClientCreateOrUpdateOptions) (TagRulesClientCreateOrUpdateResponse, error) {

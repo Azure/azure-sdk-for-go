@@ -47,6 +47,8 @@ func NewMonitoredSubscriptionsClient(subscriptionID string, credential azcore.To
 // BeginCreateorUpdate - Add subscriptions to be monitored by the Elastic monitor resource, enabling observability and monitoring.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - configurationName - The configuration name. Only 'default' value is supported.
 //   - options - MonitoredSubscriptionsClientBeginCreateorUpdateOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginCreateorUpdate
 //     method.
 func (client *MonitoredSubscriptionsClient) BeginCreateorUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginCreateorUpdateOptions) (*runtime.Poller[MonitoredSubscriptionsClientCreateorUpdateResponse], error) {
@@ -205,6 +207,8 @@ func (client *MonitoredSubscriptionsClient) deleteCreateRequest(ctx context.Cont
 // performance.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - configurationName - The configuration name. Only 'default' value is supported.
 //   - options - MonitoredSubscriptionsClientBeginUpdateOptions contains the optional parameters for the MonitoredSubscriptionsClient.BeginUpdate
 //     method.
 func (client *MonitoredSubscriptionsClient) BeginUpdate(ctx context.Context, resourceGroupName string, monitorName string, configurationName string, body MonitoredSubscriptionProperties, options *MonitoredSubscriptionsClientBeginUpdateOptions) (*runtime.Poller[MonitoredSubscriptionsClientUpdateResponse], error) {

@@ -48,6 +48,8 @@ func NewOpenAIClient(subscriptionID string, credential azcore.TokenCredential, o
 // observability and monitoring.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - monitorName - Monitor resource name
+//   - integrationName - OpenAI Integration name
 //   - options - OpenAIClientCreateOrUpdateOptions contains the optional parameters for the OpenAIClient.CreateOrUpdate method.
 func (client *OpenAIClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, monitorName string, integrationName string, body OpenAIIntegrationRPModel, options *OpenAIClientCreateOrUpdateOptions) (OpenAIClientCreateOrUpdateResponse, error) {
 	var err error

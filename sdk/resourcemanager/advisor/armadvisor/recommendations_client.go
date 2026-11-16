@@ -20,7 +20,7 @@ import (
 // RecommendationsClient contains the methods for the Recommendations group.
 // Don't use this type directly, use NewRecommendationsClient() instead.
 //
-// Generated from API version 2025-05-01-preview
+// Generated from API version 2026-08-01-preview
 type RecommendationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -83,7 +83,7 @@ func (client *RecommendationsClient) generateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -147,7 +147,7 @@ func (client *RecommendationsClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -161,6 +161,64 @@ func (client *RecommendationsClient) getHandleResponse(resp *http.Response, succ
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBase); err != nil {
 		return RecommendationsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// GetByServiceGroup - Obtains details of a recommendation for a service group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - recommendationID - The recommendation ID.
+//   - options - RecommendationsClientGetByServiceGroupOptions contains the optional parameters for the RecommendationsClient.GetByServiceGroup
+//     method.
+func (client *RecommendationsClient) GetByServiceGroup(ctx context.Context, serviceGroupName string, recommendationID string, options *RecommendationsClientGetByServiceGroupOptions) (RecommendationsClientGetByServiceGroupResponse, error) {
+	var err error
+	const operationName = "RecommendationsClient.GetByServiceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getByServiceGroupCreateRequest(ctx, serviceGroupName, recommendationID, options)
+	if err != nil {
+		return RecommendationsClientGetByServiceGroupResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RecommendationsClientGetByServiceGroupResponse{}, err
+	}
+	resp, err := client.getByServiceGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getByServiceGroupCreateRequest creates the GetByServiceGroup request.
+func (client *RecommendationsClient) getByServiceGroupCreateRequest(ctx context.Context, serviceGroupName string, recommendationID string, _ *RecommendationsClientGetByServiceGroupOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.Advisor/recommendations/{recommendationId}"
+	if serviceGroupName == "" {
+		return nil, errors.New("parameter serviceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+	if recommendationID == "" {
+		return nil, errors.New("parameter recommendationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recommendationId}", url.PathEscape(recommendationID))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getByServiceGroupHandleResponse handles the GetByServiceGroup response.
+func (client *RecommendationsClient) getByServiceGroupHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientGetByServiceGroupResponse, error) {
+	result := RecommendationsClientGetByServiceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBase); err != nil {
+		return RecommendationsClientGetByServiceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -208,7 +266,7 @@ func (client *RecommendationsClient) getGenerateStatusCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -226,6 +284,86 @@ func (client *RecommendationsClient) getGenerateStatusHandleResponse(resp *http.
 			return RecommendationsClientGetGenerateStatusResponse{}, err
 		}
 		result.RetryAfter = &retryAfter
+	}
+	return result, nil
+}
+
+// NewListByServiceGroupPager - Obtains recommendations for a service group.
+//   - serviceGroupName - The name of the service group.
+//   - options - RecommendationsClientListByServiceGroupOptions contains the optional parameters for the RecommendationsClient.NewListByServiceGroupPager
+//     method.
+func (client *RecommendationsClient) NewListByServiceGroupPager(serviceGroupName string, options *RecommendationsClientListByServiceGroupOptions) *runtime.Pager[RecommendationsClientListByServiceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[RecommendationsClientListByServiceGroupResponse]{
+		More: func(page RecommendationsClientListByServiceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *RecommendationsClientListByServiceGroupResponse) (RecommendationsClientListByServiceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "RecommendationsClient.NewListByServiceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByServiceGroupCreateRequest(ctx, serviceGroupName, nextLink, options)
+			if err != nil {
+				return RecommendationsClientListByServiceGroupResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RecommendationsClientListByServiceGroupResponse{}, err
+			}
+			return client.listByServiceGroupHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByServiceGroupCreateRequest creates the ListByServiceGroup request.
+func (client *RecommendationsClient) listByServiceGroupCreateRequest(ctx context.Context, serviceGroupName string, nextLink string, options *RecommendationsClientListByServiceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.Advisor/recommendations"
+		if serviceGroupName == "" {
+			return nil, errors.New("parameter serviceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
+		}
+		reqQP.Set("api-version", version20260801Preview)
+		if options != nil && options.Mode != nil {
+			reqQP.Set("mode", string(*options.Mode))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByServiceGroupHandleResponse handles the ListByServiceGroup response.
+func (client *RecommendationsClient) listByServiceGroupHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientListByServiceGroupResponse, error) {
+	result := RecommendationsClientListByServiceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBaseListResult); err != nil {
+		return RecommendationsClientListByServiceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -289,7 +427,7 @@ func (client *RecommendationsClient) listByTenantCreateRequest(ctx context.Conte
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260801Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -308,8 +446,7 @@ func (client *RecommendationsClient) listByTenantHandleResponse(resp *http.Respo
 	return result, nil
 }
 
-// NewListPager - Obtains cached recommendations for a subscription. The recommendations are generated or computed by invoking
-// generateRecommendations.
+// NewListPager - Obtains recommendations for a subscription.
 //   - options - RecommendationsClientListOptions contains the optional parameters for the RecommendationsClient.NewListPager
 //     method.
 func (client *RecommendationsClient) NewListPager(options *RecommendationsClientListOptions) *runtime.Pager[RecommendationsClientListResponse] {
@@ -366,7 +503,10 @@ func (client *RecommendationsClient) listCreateRequest(ctx context.Context, next
 		if options != nil && options.Top != nil {
 			reqQP.Set("$top", strconv.FormatInt(int64(*options.Top), 10))
 		}
-		reqQP.Set("api-version", version20250501Preview)
+		reqQP.Set("api-version", version20260801Preview)
+		if options != nil && options.Mode != nil {
+			reqQP.Set("mode", string(*options.Mode))
+		}
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -385,37 +525,36 @@ func (client *RecommendationsClient) listHandleResponse(resp *http.Response, suc
 	return result, nil
 }
 
-// Patch - Update the tracked properties of a Recommendation.
+// Update - Update the state of a Recommendation
 // If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceURI - The fully qualified Azure Resource manager identifier of the resource.
 //   - recommendationID - The recommendation ID.
-//   - trackedProperties - The properties to update on the recommendation.
-//   - options - RecommendationsClientPatchOptions contains the optional parameters for the RecommendationsClient.Patch method.
-func (client *RecommendationsClient) Patch(ctx context.Context, resourceURI string, recommendationID string, trackedProperties TrackedRecommendationPropertiesPayload, options *RecommendationsClientPatchOptions) (RecommendationsClientPatchResponse, error) {
+//   - properties - The resource properties to be updated.
+//   - options - RecommendationsClientUpdateOptions contains the optional parameters for the RecommendationsClient.Update method.
+func (client *RecommendationsClient) Update(ctx context.Context, recommendationID string, properties RecommendationPatchPayload, options *RecommendationsClientUpdateOptions) (RecommendationsClientUpdateResponse, error) {
 	var err error
-	const operationName = "RecommendationsClient.Patch"
+	const operationName = "RecommendationsClient.Update"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.patchCreateRequest(ctx, resourceURI, recommendationID, trackedProperties, options)
+	req, err := client.updateCreateRequest(ctx, recommendationID, properties, options)
 	if err != nil {
-		return RecommendationsClientPatchResponse{}, err
+		return RecommendationsClientUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return RecommendationsClientPatchResponse{}, err
+		return RecommendationsClientUpdateResponse{}, err
 	}
-	resp, err := client.patchHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
-// patchCreateRequest creates the Patch request.
-func (client *RecommendationsClient) patchCreateRequest(ctx context.Context, resourceURI string, recommendationID string, trackedProperties TrackedRecommendationPropertiesPayload, _ *RecommendationsClientPatchOptions) (*policy.Request, error) {
-	urlPath := "/{resourceUri}/providers/Microsoft.Advisor/recommendations/{recommendationId}"
-	if resourceURI == "" {
-		return nil, errors.New("parameter resourceURI cannot be empty")
+// updateCreateRequest creates the Update request.
+func (client *RecommendationsClient) updateCreateRequest(ctx context.Context, recommendationID string, properties RecommendationPatchPayload, _ *RecommendationsClientUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Advisor/recommendations/{recommendationId}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceUri}", resourceURI)
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if recommendationID == "" {
 		return nil, errors.New("parameter recommendationID cannot be empty")
 	}
@@ -425,24 +564,87 @@ func (client *RecommendationsClient) patchCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501Preview)
+	reqQP.Set("api-version", version20260801Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, trackedProperties); err != nil {
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
 		return nil, err
 	}
 	return req, nil
 }
 
-// patchHandleResponse handles the Patch response.
-func (client *RecommendationsClient) patchHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientPatchResponse, error) {
-	result := RecommendationsClientPatchResponse{}
+// updateHandleResponse handles the Update response.
+func (client *RecommendationsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientUpdateResponse, error) {
+	result := RecommendationsClientUpdateResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBase); err != nil {
-		return RecommendationsClientPatchResponse{}, err
+		return RecommendationsClientUpdateResponse{}, err
+	}
+	return result, nil
+}
+
+// UpdateByServiceGroup - Updates the state of a recommendation for a service group.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - serviceGroupName - The name of the service group.
+//   - recommendationID - The recommendation ID.
+//   - properties - The resource properties to be updated.
+//   - options - RecommendationsClientUpdateByServiceGroupOptions contains the optional parameters for the RecommendationsClient.UpdateByServiceGroup
+//     method.
+func (client *RecommendationsClient) UpdateByServiceGroup(ctx context.Context, serviceGroupName string, recommendationID string, properties RecommendationPatchPayload, options *RecommendationsClientUpdateByServiceGroupOptions) (RecommendationsClientUpdateByServiceGroupResponse, error) {
+	var err error
+	const operationName = "RecommendationsClient.UpdateByServiceGroup"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateByServiceGroupCreateRequest(ctx, serviceGroupName, recommendationID, properties, options)
+	if err != nil {
+		return RecommendationsClientUpdateByServiceGroupResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return RecommendationsClientUpdateByServiceGroupResponse{}, err
+	}
+	resp, err := client.updateByServiceGroupHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// updateByServiceGroupCreateRequest creates the UpdateByServiceGroup request.
+func (client *RecommendationsClient) updateByServiceGroupCreateRequest(ctx context.Context, serviceGroupName string, recommendationID string, properties RecommendationPatchPayload, _ *RecommendationsClientUpdateByServiceGroupOptions) (*policy.Request, error) {
+	urlPath := "/providers/Microsoft.Management/serviceGroups/{serviceGroupName}/providers/Microsoft.Advisor/recommendations/{recommendationId}"
+	if serviceGroupName == "" {
+		return nil, errors.New("parameter serviceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceGroupName}", url.PathEscape(serviceGroupName))
+	if recommendationID == "" {
+		return nil, errors.New("parameter recommendationID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{recommendationId}", url.PathEscape(recommendationID))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260801Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
+// updateByServiceGroupHandleResponse handles the UpdateByServiceGroup response.
+func (client *RecommendationsClient) updateByServiceGroupHandleResponse(resp *http.Response, successCodes ...int) (RecommendationsClientUpdateByServiceGroupResponse, error) {
+	result := RecommendationsClientUpdateByServiceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ResourceRecommendationBase); err != nil {
+		return RecommendationsClientUpdateByServiceGroupResponse{}, err
 	}
 	return result, nil
 }

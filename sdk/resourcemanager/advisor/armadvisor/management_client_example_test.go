@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Predict.json
+// Generated from example definition: 2026-08-01-preview/Predict.json
 func ExampleManagementClient_Predict() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

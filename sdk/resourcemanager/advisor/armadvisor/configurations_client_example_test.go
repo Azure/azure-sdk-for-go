@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/CreateConfiguration.json
+// Generated from example definition: 2026-08-01-preview/CreateConfiguration.json
 func ExampleConfigurationsClient_CreateInResourceGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleConfigurationsClient_CreateInResourceGroup() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/CreateConfiguration_CreateInSubscription.json
+// Generated from example definition: 2026-08-01-preview/CreateConfiguration_CreateInSubscription.json
 func ExampleConfigurationsClient_CreateInSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -152,7 +152,7 @@ func ExampleConfigurationsClient_CreateInSubscription() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ListConfigurations.json
+// Generated from example definition: 2026-08-01-preview/ListConfigurations.json
 func ExampleConfigurationsClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -204,13 +204,13 @@ func ExampleConfigurationsClient_NewListByResourceGroupPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/resourceGroup/providers/Microsoft.Advisor/configurations?api-version=2025-05-01-preview&$skipToken=abc123"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/resourceGroup/providers/Microsoft.Advisor/configurations?api-version=2026-02-01&$skipToken=abc123"),
 		// 	},
 		// }
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/ListConfigurations_ListBySubscription.json
+// Generated from example definition: 2026-08-01-preview/ListConfigurations_ListBySubscription.json
 func ExampleConfigurationsClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -262,7 +262,7 @@ func ExampleConfigurationsClient_NewListBySubscriptionPager() {
 		// 				},
 		// 			},
 		// 		},
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.Advisor/configurations?api-version=2025-05-01-preview&$skipToken=abc123"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/12345678-1234-1234-1234-123456789012/providers/Microsoft.Advisor/configurations?api-version=2026-02-01&$skipToken=abc123"),
 		// 	},
 		// }
 	}

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/GetRecommendationMetadataEntity.json
+// Generated from example definition: 2026-08-01-preview/GetRecommendationMetadataEntity.json
 func ExampleRecommendationMetadataClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,7 +58,7 @@ func ExampleRecommendationMetadataClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ListRecommendationMetadata.json
+// Generated from example definition: 2026-08-01-preview/ListRecommendationMetadata.json
 func ExampleRecommendationMetadataClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -82,7 +82,7 @@ func ExampleRecommendationMetadataClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armadvisor.RecommendationMetadataClientListResponse{
 		// 	MetadataEntityListResult: armadvisor.MetadataEntityListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Advisor/metadata?api-version=2025-05-01-preview&$skipToken=abc123"),
+		// 		NextLink: to.Ptr("https://management.azure.com/providers/Microsoft.Advisor/metadata?api-version=2026-08-01-preview&$skipToken=abc123"),
 		// 		Value: []*armadvisor.MetadataEntity{
 		// 			{
 		// 				ID: to.Ptr("/providers/Microsoft.Advisor/metadata/recommendationType"),

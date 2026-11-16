@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/CreateSuppression.json
+// Generated from example definition: 2026-08-01-preview/CreateSuppression.json
 func ExampleSuppressionsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,7 +23,7 @@ func ExampleSuppressionsClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSuppressionsClient().Create(ctx, "resourceUri", "recommendationId", "suppressionName1", armadvisor.SuppressionContract{
+	res, err := clientFactory.NewSuppressionsClient().Create(ctx, "resourceUri", "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b36", "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45", armadvisor.SuppressionContract{
 		Properties: &armadvisor.SuppressionProperties{
 			TTL: to.Ptr("07:00:00:00"),
 		},
@@ -36,18 +36,18 @@ func ExampleSuppressionsClient_Create() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armadvisor.SuppressionsClientCreateResponse{
 	// 	SuppressionContract: armadvisor.SuppressionContract{
-	// 		ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Advisor/recommendations/bd27ddc6-1312-4067-b4af-cbb45e32cfd7/suppressions/HardcodedSuppressionName"),
-	// 		Name: to.Ptr("suppressionName1"),
+	// 		ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b36/suppressions/HardcodedSuppressionName"),
+	// 		Name: to.Ptr("HardcodedSuppressionName"),
 	// 		Type: to.Ptr("Microsoft.Advisor/suppressions"),
 	// 		Properties: &armadvisor.SuppressionProperties{
-	// 			SuppressionID: to.Ptr("suppressionId"),
+	// 			SuppressionID: to.Ptr("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45"),
 	// 			TTL: to.Ptr("07:00:00:00"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/DeleteSuppression.json
+// Generated from example definition: 2026-08-01-preview/DeleteSuppression.json
 func ExampleSuppressionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -58,13 +58,13 @@ func ExampleSuppressionsClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewSuppressionsClient().Delete(ctx, "resourceUri", "recommendationId", "suppressionName1", nil)
+	_, err = clientFactory.NewSuppressionsClient().Delete(ctx, "resourceUri", "recommendationId", "HardcodedSuppressionName", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/GetSuppressionDetail.json
+// Generated from example definition: 2026-08-01-preview/GetSuppressionDetail.json
 func ExampleSuppressionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleSuppressionsClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewSuppressionsClient().Get(ctx, "resourceUri", "recommendationId", "suppressionName1", nil)
+	res, err := clientFactory.NewSuppressionsClient().Get(ctx, "resourceUri", "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45", "2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b87", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -84,11 +84,11 @@ func ExampleSuppressionsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armadvisor.SuppressionsClientGetResponse{
 	// 	SuppressionContract: armadvisor.SuppressionContract{
-	// 		ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Advisor/recommendations/recommendationId/suppressions/suppressionName1"),
-	// 		Name: to.Ptr("suppressionName1"),
+	// 		ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45/suppressions/HardcodedSuppressionName"),
+	// 		Name: to.Ptr("HardcodedSuppressionName"),
 	// 		Type: to.Ptr("Microsoft.Advisor/suppressions"),
 	// 		Properties: &armadvisor.SuppressionProperties{
-	// 			SuppressionID: to.Ptr("suppressionId1"),
+	// 			SuppressionID: to.Ptr("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b87"),
 	// 			TTL: to.Ptr("7.00:00:00"),
 	// 			ExpirationTimeStamp: to.Ptr(time.Date(2020, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
 	// 		},
@@ -96,7 +96,7 @@ func ExampleSuppressionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ListSuppressions.json
+// Generated from example definition: 2026-08-01-preview/ListSuppressions.json
 func ExampleSuppressionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -120,24 +120,24 @@ func ExampleSuppressionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armadvisor.SuppressionsClientListResponse{
 		// 	SuppressionContractListResult: armadvisor.SuppressionContractListResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/providers/microsoft.Advisor/suppressions?api-version=2025-05-01-preview&$top=3&$skiptoken=skiptoken"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/providers/microsoft.Advisor/suppressions?api-version=2026-08-01-preview&$top=3&$skiptoken=skiptoken"),
 		// 		Value: []*armadvisor.SuppressionContract{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Advisor/recommendations/1b266c91-3a92-4423-8aa2-ee13a6d90f47/suppressions/HardcodedSuppressionName"),
+		// 				ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/availabilitysets/armavset/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b45/suppressions/HardcodedSuppressionName"),
 		// 				Name: to.Ptr("HardcodedSuppressionName"),
 		// 				Type: to.Ptr("Microsoft.Advisor/suppressions"),
 		// 				Properties: &armadvisor.SuppressionProperties{
-		// 					SuppressionID: to.Ptr("58403b0e-113b-e428-d6f7-2a524380b955"),
+		// 					SuppressionID: to.Ptr("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b87"),
 		// 					TTL: to.Ptr("7.00:00:00"),
 		// 					ExpirationTimeStamp: to.Ptr(time.Date(2022, time.October, 24, 22, 24, 43, 321640800, time.UTC)),
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/virtualMachines/xyz/providers/Microsoft.Advisor/recommendations/3385b5d0-b8cc-bdcf-0e0d-b5a3d1e9b93b/suppressions/HardcodedSuppressionName"),
+		// 				ID: to.Ptr("/subscriptions/a5481ee1-95df-47d0-85d4-dd3f0dfa19bc/resourceGroups/resourceGroup/providers/Microsoft.Compute/virtualMachines/xyz/providers/Microsoft.Advisor/recommendations/2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b36/suppressions/HardcodedSuppressionName"),
 		// 				Name: to.Ptr("HardcodedSuppressionName"),
 		// 				Type: to.Ptr("Microsoft.Advisor/suppressions"),
 		// 				Properties: &armadvisor.SuppressionProperties{
-		// 					SuppressionID: to.Ptr("72a23574-d49a-84d0-0a7d-fb3fe6cba16b"),
+		// 					SuppressionID: to.Ptr("2e7c72b2d7987ec224a1ebae03398b0fbdaa9a5a6a762e6fcf1c806599744b87"),
 		// 					TTL: to.Ptr("7.00:00:00"),
 		// 					ExpirationTimeStamp: to.Ptr(time.Date(2022, time.October, 25, 22, 24, 43, 321640800, time.UTC)),
 		// 				},

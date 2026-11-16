@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/DeleteAssessment.json
+// Generated from example definition: 2026-08-01-preview/DeleteAssessment.json
 func ExampleAssessmentsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExampleAssessmentsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/GetAssessment.json
+// Generated from example definition: 2026-08-01-preview/GetAssessment.json
 func ExampleAssessmentsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -81,7 +81,7 @@ func ExampleAssessmentsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/ListAssessments.json
+// Generated from example definition: 2026-08-01-preview/ListAssessments.json
 func ExampleAssessmentsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -138,7 +138,7 @@ func ExampleAssessmentsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-05-01-preview/PutAssessment.json
+// Generated from example definition: 2026-08-01-preview/PutAssessment.json
 func ExampleAssessmentsClient_Put() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.Maintenance": "2025-10-01-preview"
   },
-  "emitterVersion": "0.18.0"
+  "emitterVersion": "0.19.0"
 }

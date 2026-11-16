@@ -5,7 +5,7 @@
 package armprivatedns
 
 const (
-	version20240601 string = "2024-06-01"
+	version20260601Preview string = "2026-06-01-preview"
 )
 
 // CreatedByType - The kind of entity that created the resource.

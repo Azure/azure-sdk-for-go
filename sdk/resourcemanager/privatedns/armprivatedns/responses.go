@@ -74,6 +74,12 @@ type RecordSetsClientUpdateResponse struct {
 	RecordSet
 }
 
+// ResourceReferenceClientGetByTargetResourcesResponse contains the response from method ResourceReferenceClient.GetByTargetResources.
+type ResourceReferenceClientGetByTargetResourcesResponse struct {
+	// Represents the properties of the private DNS Resource Reference Result.
+	ResourceReferenceResult
+}
+
 // VirtualNetworkLinksClientCreateOrUpdateResponse contains the response from method VirtualNetworkLinksClient.BeginCreateOrUpdate.
 type VirtualNetworkLinksClientCreateOrUpdateResponse struct {
 	// Describes a link to virtual network for a Private DNS zone.

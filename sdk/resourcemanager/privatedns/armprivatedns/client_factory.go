@@ -48,6 +48,14 @@ func (c *ClientFactory) NewRecordSetsClient() *RecordSetsClient {
 	}
 }
 
+// NewResourceReferenceClient creates a new instance of ResourceReferenceClient.
+func (c *ClientFactory) NewResourceReferenceClient() *ResourceReferenceClient {
+	return &ResourceReferenceClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewVirtualNetworkLinksClient creates a new instance of VirtualNetworkLinksClient.
 func (c *ClientFactory) NewVirtualNetworkLinksClient() *VirtualNetworkLinksClient {
 	return &VirtualNetworkLinksClient{

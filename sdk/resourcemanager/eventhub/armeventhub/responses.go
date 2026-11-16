@@ -224,6 +224,41 @@ type EventHubsClientRegenerateKeysResponse struct {
 	AccessKeys
 }
 
+// FabricShortcutsClientApproveResponse contains the response from method FabricShortcutsClient.Approve.
+type FabricShortcutsClientApproveResponse struct {
+	// A Microsoft Fabric shortcut attached to an Event Hub.
+	FabricShortcut
+}
+
+// FabricShortcutsClientCreateOrUpdateResponse contains the response from method FabricShortcutsClient.CreateOrUpdate.
+type FabricShortcutsClientCreateOrUpdateResponse struct {
+	// A Microsoft Fabric shortcut attached to an Event Hub.
+	FabricShortcut
+}
+
+// FabricShortcutsClientDeleteResponse contains the response from method FabricShortcutsClient.Delete.
+type FabricShortcutsClientDeleteResponse struct {
+	// placeholder for future response values
+}
+
+// FabricShortcutsClientGetResponse contains the response from method FabricShortcutsClient.Get.
+type FabricShortcutsClientGetResponse struct {
+	// A Microsoft Fabric shortcut attached to an Event Hub.
+	FabricShortcut
+}
+
+// FabricShortcutsClientListByEventHubResponse contains the response from method FabricShortcutsClient.NewListByEventHubPager.
+type FabricShortcutsClientListByEventHubResponse struct {
+	// The response of a FabricShortcut list operation.
+	FabricShortcutListResult
+}
+
+// FabricShortcutsClientRejectResponse contains the response from method FabricShortcutsClient.Reject.
+type FabricShortcutsClientRejectResponse struct {
+	// A Microsoft Fabric shortcut attached to an Event Hub.
+	FabricShortcut
+}
+
 // NamespacesClientCheckNameAvailabilityResponse contains the response from method NamespacesClient.CheckNameAvailability.
 type NamespacesClientCheckNameAvailabilityResponse struct {
 	// The Result of the CheckNameAvailability operation
@@ -397,4 +432,22 @@ type SchemaRegistryClientGetResponse struct {
 type SchemaRegistryClientListByNamespaceResponse struct {
 	// The response of a SchemaGroup list operation.
 	SchemaGroupListResult
+}
+
+// UpgradePreferencesOperationsClientCreateOrUpdateResponse contains the response from method UpgradePreferencesOperationsClient.CreateOrUpdate.
+type UpgradePreferencesOperationsClientCreateOrUpdateResponse struct {
+	// Upgrade preferences for an Event Hubs Dedicated cluster.
+	UpgradePreferences
+}
+
+// UpgradePreferencesOperationsClientGetResponse contains the response from method UpgradePreferencesOperationsClient.Get.
+type UpgradePreferencesOperationsClientGetResponse struct {
+	// Upgrade preferences for an Event Hubs Dedicated cluster.
+	UpgradePreferences
+}
+
+// UpgradePreferencesOperationsClientUpgradeNowResponse contains the response from method UpgradePreferencesOperationsClient.UpgradeNow.
+type UpgradePreferencesOperationsClientUpgradeNowResponse struct {
+	// Upgrade preferences for an Event Hubs Dedicated cluster.
+	UpgradePreferences
 }

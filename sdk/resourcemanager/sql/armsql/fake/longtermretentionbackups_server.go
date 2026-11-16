@@ -1319,11 +1319,8 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByLocationPager
 		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
 		skiptokenParam := getOptional(qp.Get("$skiptoken"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -1448,11 +1445,8 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroup
 		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
 		skiptokenParam := getOptional(qp.Get("$skiptoken"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -1519,11 +1513,8 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByResourceGroup
 		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
 		skiptokenParam := getOptional(qp.Get("$skiptoken"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -1586,11 +1577,8 @@ func (l *LongTermRetentionBackupsServerTransport) dispatchNewListByServerPager(r
 		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
 		skiptokenParam := getOptional(qp.Get("$skiptoken"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

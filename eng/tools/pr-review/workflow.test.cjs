@@ -387,6 +387,24 @@ test("compiled reviewer retains validated targets in both agent and publisher co
   assert.ok(safeOutputs.indexOf("Reject stale review outputs") < safeOutputs.indexOf("Process Safe Outputs"));
 });
 
+test("reviewer scopes unendorsed PR content reads and write sinks to the current repository", () => {
+  const source = text("mgmt-review.md");
+  const github = source.match(/^tools:\n  github:\n((?:    [^\n]*\n)+)/m)?.[1];
+  assert.ok(github, "source configures GitHub tools");
+  assert.match(github, /^    allowed-repos: "\$\{\{ github\.repository \}\}"$/m);
+  assert.match(github, /^    min-integrity: none$/m);
+  const compiled = text("mgmt-review.lock.yml");
+  const allowOnlyMatch = compiled.match(/"guard-policies": \{\s*"allow-only": (\{[\s\S]*?\n\s+\})/);
+  assert.ok(allowOnlyMatch, "compiled reviewer configures a GitHub allow-only guard policy");
+  const allowOnly = JSON.parse(allowOnlyMatch[1].replace(/\$\{GH_AW_GUARD_[A-Z_]+\}/g, "[]"));
+  assert.equal(allowOnly["min-integrity"], "none");
+  assert.deepEqual(allowOnly.repos, ["${{ github.repository }}"]);
+  const writeSinkMatch = compiled.match(/"guard-policies": \{\s*"write-sink": (\{[\s\S]*?\n\s+\})/);
+  assert.ok(writeSinkMatch, "compiled reviewer configures a safe-outputs write-sink guard policy");
+  const writeSink = JSON.parse(writeSinkMatch[1]);
+  assert.deepEqual(writeSink.accept, ["private:${{ github.repository }}"]);
+});
+
 test("collector credentials stay outside the agent and detection environments", () => {
   const source = text("mgmt-review.md");
   const compiled = text("mgmt-review.lock.yml");

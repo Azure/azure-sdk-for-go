@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/publish.json
+// Generated from example definition: 2026-07-01/Workspace/CodeVersion/publish.json
 func ExampleCodeVersionsClient_BeginPublish() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -42,7 +42,7 @@ func ExampleCodeVersionsClient_BeginPublish() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/createOrGetStartPendingUpload.json
+// Generated from example definition: 2026-07-01/Workspace/CodeVersion/createOrGetStartPendingUpload.json
 func ExampleCodeVersionsClient_CreateOrGetStartPendingUpload() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -79,7 +79,7 @@ func ExampleCodeVersionsClient_CreateOrGetStartPendingUpload() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/createOrUpdate.json
+// Generated from example definition: 2026-07-01/Workspace/CodeVersion/createOrUpdate.json
 func ExampleCodeVersionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -137,7 +137,7 @@ func ExampleCodeVersionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/delete.json
+// Generated from example definition: 2026-07-01/Workspace/CodeVersion/delete.json
 func ExampleCodeVersionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -159,7 +159,7 @@ func ExampleCodeVersionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/get.json
+// Generated from example definition: 2026-07-01/Workspace/CodeVersion/get.json
 func ExampleCodeVersionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -205,7 +205,7 @@ func ExampleCodeVersionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-15-preview/Workspace/CodeVersion/list.json
+// Generated from example definition: 2026-07-01/Workspace/CodeVersion/list.json
 func ExampleCodeVersionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -231,7 +231,7 @@ func ExampleCodeVersionsClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armmachinelearning.CodeVersionsClientListResponse{
 		// 	CodeVersionResourceArmPaginatedResult: armmachinelearning.CodeVersionResourceArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/codes/string/versions?api-version=2025-07-01-preview&$skip=2"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/codes/string/versions?api-version=2026-07-01&$skip=2"),
 		// 		Value: []*armmachinelearning.CodeVersion{
 		// 			{
 		// 				Name: to.Ptr("string"),

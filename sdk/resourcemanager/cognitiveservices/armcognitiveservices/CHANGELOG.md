@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0-beta.1 (2026-11-13)
+## 4.1.0-beta.1 (2026-11-16)
 ### Features Added
 
 - New value `ConnectionCategoryOpenAPI` added to enum type `ConnectionCategory`
@@ -100,7 +100,6 @@
 - New function `*ManagedComputeDeploymentsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties PatchResourceSKU, options *ManagedComputeDeploymentsClientBeginUpdateOptions) (*runtime.Poller[ManagedComputeDeploymentsClientUpdateResponse], error)`
 - New function `NewManagedComputeUsagesOperationGroupClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ManagedComputeUsagesOperationGroupClient, error)`
 - New function `*ManagedComputeUsagesOperationGroupClient.NewListPager(location string, options *ManagedComputeUsagesOperationGroupClientListOptions) *runtime.Pager[ManagedComputeUsagesOperationGroupClientListResponse]`
-- New function `PossibleRaiAcsPolicyTargetValues() []RaiAcsPolicyTarget`
 - New function `NewProjectCostControlsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ProjectCostControlsClient, error)`
 - New function `*ProjectCostControlsClient.CheckExistence(ctx context.Context, resourceGroupName string, accountName string, projectName string, costControlName string, options *ProjectCostControlsClientCheckExistenceOptions) (ProjectCostControlsClientCheckExistenceResponse, error)`
 - New function `*ProjectCostControlsClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, projectName string, costControlName string, resource ProjectCostControl, options *ProjectCostControlsClientCreateOrUpdateOptions) (ProjectCostControlsClientCreateOrUpdateResponse, error)`

@@ -4,6 +4,16 @@
 
 package armcarbonoptimization
 
+// BillingAccountQueryFilterClassification provides polymorphic access to related types.
+// Call the interface's GetBillingAccountQueryFilter() method to access the common type.
+// Use a type switch to determine the concrete type.  The possible types are:
+// - *BillingAccountItemDetailsReportQueryFilter, *BillingAccountMonthlySummaryReportQueryFilter, *BillingAccountOverallSummaryReportQueryFilter,
+// - *BillingAccountQueryFilter, *BillingAccountTopItemsMonthlySummaryReportQueryFilter, *BillingAccountTopItemsSummaryReportQueryFilter
+type BillingAccountQueryFilterClassification interface {
+	// GetBillingAccountQueryFilter returns the BillingAccountQueryFilter content of the underlying type.
+	GetBillingAccountQueryFilter() *BillingAccountQueryFilter
+}
+
 // CarbonEmissionDataClassification provides polymorphic access to related types.
 // Call the interface's GetCarbonEmissionData() method to access the common type.
 // Use a type switch to determine the concrete type.  The possible types are:

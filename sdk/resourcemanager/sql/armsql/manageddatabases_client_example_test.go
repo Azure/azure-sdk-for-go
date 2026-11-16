@@ -493,13 +493,11 @@ func ExampleManagedDatabasesClient_BeginCreateOrUpdate_createsANewManagedDatabas
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewManagedDatabasesClient().BeginCreateOrUpdate(ctx, "Default-SQL-SouthEastAsia", "managedInstance", "managedDatabase", armsql.ManagedDatabase{
-		Location: to.Ptr("southeastasia"),
+	poller, err := clientFactory.NewManagedDatabasesClient().BeginCreateOrUpdate(ctx, "Default-SQL-EastAsia", "managedInstance", "managedDatabase", armsql.ManagedDatabase{
+		Location: to.Ptr("EastAsia"),
 		Properties: &armsql.ManagedDatabaseProperties{
-			Collation:                to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-			CreateMode:               to.Ptr(armsql.ManagedDatabaseCreateModeRestoreExternalBackup),
-			StorageContainerSasToken: to.Ptr("sv=2015-12-11&sr=c&sp=rl&sig=1234"),
-			StorageContainerURI:      to.Ptr("https://myaccountname.blob.core.windows.net/backups"),
+			CreateMode:                        to.Ptr(armsql.ManagedDatabaseCreateModeRestoreLongTermRetentionBackup),
+			LongTermRetentionBackupResourceID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-EastAsia/providers/Microsoft.Sql/locations/EastAsia/longTermRetentionManagedInstances/managedInstance/longTermRetentionDatabases/managedDatabase/longTermRetentionManagedInstanceBackups/66349b17-1afa-47af-af39-82d2118bbab8;134269634640000000;Hot"),
 		},
 	}, nil)
 	if err != nil {
@@ -516,12 +514,12 @@ func ExampleManagedDatabasesClient_BeginCreateOrUpdate_createsANewManagedDatabas
 	// 	ManagedDatabase: armsql.ManagedDatabase{
 	// 		Name: to.Ptr("testdb1"),
 	// 		Type: to.Ptr("Microsoft.Sql/managedInstances/databases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-SouthEastAsia/providers/Microsoft.Sql/managedInstances/testsvr/databases/testdb1"),
-	// 		Location: to.Ptr("southeastasia"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/Default-SQL-EastAsia/providers/Microsoft.Sql/managedInstances/testsvr/databases/testdb1"),
+	// 		Location: to.Ptr("EastAsia"),
 	// 		Properties: &armsql.ManagedDatabaseProperties{
 	// 			Collation: to.Ptr("SQL_Latin1_General_CP1_CI_AS"),
-	// 			CreationDate: to.Ptr(time.Date(2017, time.June, 7, 4, 41, 33, 937000000, time.UTC)),
-	// 			DefaultSecondaryLocation: to.Ptr("North Europe"),
+	// 			CreationDate: to.Ptr(time.Date(2026, time.August, 1, 12, 27, 58, 790000000, time.UTC)),
+	// 			DefaultSecondaryLocation: to.Ptr("Southeast Asia"),
 	// 			IsLedgerOn: to.Ptr(false),
 	// 			Status: to.Ptr(armsql.ManagedDatabaseStatusOnline),
 	// 		},

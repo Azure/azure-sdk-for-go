@@ -153,6 +153,12 @@ func (c *Client) DownloadFile(ctx context.Context, containerName string, blobNam
 	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadFile(ctx, file, o)
 }
 
+// DownloadWriterAt downloads an Azure blob to an io.WriterAt with parallel.
+// Blocks are written concurrently and in any order, so writer must allow concurrent WriteAt calls.
+func (c *Client) DownloadWriterAt(ctx context.Context, containerName string, blobName string, writer io.WriterAt, o *DownloadWriterAtOptions) (int64, error) {
+	return c.svc.NewContainerClient(containerName).NewBlobClient(blobName).DownloadWriterAt(ctx, writer, o)
+}
+
 // DownloadStream reads a range of bytes from a blob. The response also includes the blob's properties and metadata.
 // For more information, see https://docs.microsoft.com/rest/api/storageservices/get-blob.
 func (c *Client) DownloadStream(ctx context.Context, containerName string, blobName string, o *DownloadStreamOptions) (DownloadStreamResponse, error) {

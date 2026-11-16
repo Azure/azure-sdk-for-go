@@ -614,6 +614,17 @@ func (b *Client) DownloadFile(ctx context.Context, file *os.File, o *DownloadFil
 	return downloaded, nil
 }
 
+// DownloadWriterAt downloads an Azure blob to an io.WriterAt with parallel.
+// Blocks are written concurrently and in any order, so writer must allow concurrent WriteAt
+// calls. Use it for a destination that is neither a []byte nor an *os.File, such as a
+// type that wraps a file. Unlike DownloadFile, it does not truncate the destination.
+func (b *Client) DownloadWriterAt(ctx context.Context, writer io.WriterAt, o *DownloadWriterAtOptions) (int64, error) {
+	if o == nil {
+		o = &DownloadWriterAtOptions{}
+	}
+	return b.downloadBuffer(ctx, writer, (downloadOptions)(*o))
+}
+
 // resolveLayout returns the cache of the layout covering the part of the blob that still has to
 // be downloaded, fetching it once now so that a failure to fetch it fails the download before any
 // chunk is read. Every chunk then reads the cached layout, which is refreshed in the background

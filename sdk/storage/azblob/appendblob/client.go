@@ -328,3 +328,9 @@ func (ab *Client) DownloadBuffer(ctx context.Context, buffer []byte, o *blob.Dow
 func (ab *Client) DownloadFile(ctx context.Context, file *os.File, o *blob.DownloadFileOptions) (int64, error) {
 	return ab.BlobClient().DownloadFile(ctx, file, o)
 }
+
+// DownloadWriterAt downloads an Azure blob to an io.WriterAt with parallel.
+// Blocks are written concurrently and in any order, so writer must allow concurrent WriteAt calls.
+func (ab *Client) DownloadWriterAt(ctx context.Context, writer io.WriterAt, o *blob.DownloadWriterAtOptions) (int64, error) {
+	return ab.BlobClient().DownloadWriterAt(ctx, writer, o)
+}

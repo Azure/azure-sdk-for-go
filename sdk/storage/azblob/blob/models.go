@@ -294,6 +294,44 @@ type DownloadFileOptions struct {
 	TransactionalValidation TransferValidationType
 }
 
+// DownloadWriterAtOptions contains the optional parameters for the DownloadWriterAt method.
+type DownloadWriterAtOptions struct {
+	// LayoutAwareRouting indicates whether downloads should attempt to be routed to the ideal endpoint
+	// for each block, based on the blob's layout. It is a performance optimization only: the data
+	// downloaded is the same either way. When true and the initial read carries the layout download
+	// hint, the layout of the remaining range is fetched and cached (with automatic background
+	// refresh), and each remaining range is read from the endpoint that serves it. When false, every
+	// read goes to the client's configured endpoint. The default, nil, leaves the decision to the
+	// client library, which may change it in a future release; currently it resolves to disabled.
+	LayoutAwareRouting *bool
+
+	// Range specifies a range of bytes.  The default value is all bytes.
+	Range HTTPRange
+
+	// BlockSize specifies the block size to use for each parallel download; the default size is DefaultDownloadBlockSize.
+	BlockSize int64
+
+	// Progress is a function that is invoked periodically as bytes are received.
+	Progress func(bytesTransferred int64)
+
+	// BlobAccessConditions indicates the access conditions used when making HTTP GET requests against the blob.
+	AccessConditions *AccessConditions
+
+	// ClientProvidedKeyOptions indicates the client provided key by name and/or by value to encrypt/decrypt data.
+	CPKInfo      *CPKInfo
+	CPKScopeInfo *CPKScopeInfo
+
+	// Concurrency indicates the maximum number of blocks to download in parallel.
+	// The default is based on CPU core count (min 8, max 96). Set AZURE_STORAGE_USE_LEGACY_DEFAULT_CONCURRENCY=true to revert to the previous default.
+	Concurrency uint16
+
+	// RetryReaderOptionsPerBlock is used when downloading each block.
+	RetryReaderOptionsPerBlock RetryReaderOptions
+
+	// TransactionalValidation specifies the transfer validation type to use on download.
+	TransactionalValidation TransferValidationType
+}
+
 // ---------------------------------------------------------------------------------------------------------------------
 
 // AccessTierConditions specifies conditions based on when the blob's access tier was last changed.

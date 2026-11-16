@@ -105,33 +105,25 @@ async function releasePipeline(path, repo, adoRead) {
 async function checkOnboarding(api, modules, body, readText, adoRead) {
   const newModules = modules.filter((module) => module.first_onboard);
   if (!newModules.length) return [];
-  let namespace;
-  try {
-    namespace = await namespaceEvidence(api, body, adoRead);
-  } catch (error) {
-    const message = error?.message || String(error);
-    api.core.error(`Namespace approval could not be verified: ${message}`);
-    namespace = { status: "unverifiable", errors: [message] };
+  async function verify(name, action) {
+    try {
+      return await action();
+    } catch (error) {
+      const message = error?.message || String(error);
+      api.core.error(`${name} could not be verified: ${message}`);
+      return { status: "unverifiable", errors: [message] };
+    }
   }
+  const namespace = await verify("Namespace approval", () => namespaceEvidence(api, body, adoRead));
   const results = [];
   for (const { path } of newModules) {
-    const item = { path, service_token: serviceToken(path), namespace, pipeline: null, readme: null };
-    try {
-      item.pipeline = await releasePipeline(path, api.context.repo, adoRead);
-    } catch (error) {
-      const message = error?.message || String(error);
-      api.core.error(`Release pipelines for ${path} could not be verified: ${message}`);
-      item.pipeline = { status: "unverifiable", errors: [message] };
-    }
-    try {
-      const text = await readText(`${path}/README.md`);
-      item.readme = { status: "semantic-review-required", text: text.split(/^##\s/m)[0] };
-    } catch (error) {
-      const message = error?.message || String(error);
-      api.core.error(`README for ${path} could not be verified: ${message}`);
-      item.readme = { status: "unverifiable", errors: [message] };
-    }
-    results.push(item);
+    results.push({
+      path, service_token: serviceToken(path), namespace,
+      pipeline: await verify(`Release pipelines for ${path}`, () => releasePipeline(path, api.context.repo, adoRead)),
+      readme: await verify(`README for ${path}`, async () => ({
+        status: "semantic-review-required", text: (await readText(`${path}/README.md`)).split(/^##\s/m)[0],
+      })),
+    });
   }
   return results;
 }

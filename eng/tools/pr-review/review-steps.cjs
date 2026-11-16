@@ -19,12 +19,10 @@ async function runReviewSteps(api, { prNumber, headSHA, provenance, azureDevOpsP
     squash_merge_allowed: null, mergeability_errors: [], errors: [],
   };
   try {
-    await assertReviewCurrent(api, provenance, prNumber, headSHA);
+    const pr = await assertReviewCurrent(api, provenance, prNumber, headSHA);
     if (provenance.status !== "pass") throw new Error("Other review steps require passing provenance.");
-    const gathered = await gatherModules(api, prNumber, headSHA);
-    const { pr } = gathered;
-    if (pr.base.sha !== result.base_sha || pr.base.ref !== result.base_ref) throw new Error("The PR base changed.");
-    result.modules = gathered.modules;
+    if (pr.number !== prNumber) throw new Error("The PR identity changed.");
+    result.modules = await gatherModules(api, pr);
     result.changed_file_count = pr.changed_files;
     result.mergeable = pr.mergeable;
     result.mergeable_state = pr.mergeable_state;

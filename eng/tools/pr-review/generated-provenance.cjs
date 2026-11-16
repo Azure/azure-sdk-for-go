@@ -163,6 +163,7 @@ async function assertReviewCurrent(api, result, prNumber, headSHA) {
     await removeInProgress(api, prNumber);
     throw new Error("The PR head or base changed or the PR closed during review. No review outputs were published; request a new review.");
   }
+  return pr;
 }
 
 async function publishProvenance(api, { result, prNumber, headSHA }) {

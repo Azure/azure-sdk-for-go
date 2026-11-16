@@ -7,6 +7,11 @@ function validErrors(errors) {
   return Array.isArray(errors) && errors.every((error) => typeof error === "string" && error.length > 0);
 }
 
+function validVerification(check, statuses) {
+  return statuses.includes(check?.status) &&
+    (check.status !== "unverifiable" || (validErrors(check.errors) && check.errors.length > 0));
+}
+
 function ciFailuresBlock(review) {
   return review.pipeline.failures.length > 0 && !(review.mergeable === true && review.squash_merge_allowed === true &&
     ["clean", "unstable"].includes(review.mergeable_state));
@@ -25,51 +30,48 @@ function assertReviewResults(review, provenance) {
       (review.status === "completed" && review.pipeline?.status !== "completed")) {
     throw new Error("Missing, inconsistent, or stale deterministic review results; no outputs may be published.");
   }
-  if (review.status === "completed") {
-    const paths = review.modules.map((module) => module.path);
-    if (new Set(paths).size !== paths.length ||
-        review.modules.some((module) => !/^sdk\/resourcemanager\/[^/]+\/arm[^/]+$/.test(module.path) ||
-          typeof module.first_onboard !== "boolean")) {
-      throw new Error("The deterministic affected-module list is invalid.");
-    }
-    const newPaths = review.modules.filter((module) => module.first_onboard).map((module) => module.path);
-    const samePaths = (items, expected) => items.length === expected.length &&
-      new Set(items.map((item) => item.path)).size === items.length &&
-      items.every((item) => expected.includes(item.path));
-    const unavailable = (item) => item.status === "unverifiable" &&
-      (!validErrors(item.errors) || item.errors.length === 0);
-    if (!Array.isArray(review.pipeline.failures) ||
-        review.pipeline.classification_required !== ciFailuresBlock(review) ||
-        review.pipeline.failures.some((check) => typeof check.name !== "string" || !check.name ||
-          !["failure", "cancelled", "timed_out", "action_required", "stale"].includes(check.conclusion) ||
-          !["build-test", "analyze", "matrix", "other"].includes(check.category) ||
-          typeof check.title !== "string" || typeof check.summary !== "string" ||
-          (check.target_url !== null && typeof check.target_url !== "string")) ||
-        ((typeof review.mergeable !== "boolean" || typeof review.mergeable_state !== "string" ||
-          review.mergeable_state === "unknown") && review.mergeability_errors.length === 0) ||
-        !samePaths(review.breaking_changes, paths) || !samePaths(review.onboarding, newPaths) ||
-        review.breaking_changes.some((item) => !["skipped", "approved", "unapproved", "unverifiable"].includes(item.status) ||
-          !Array.isArray(item.items) || !validErrors(item.errors) ||
-          item.items.some((change) => typeof change.text !== "string" || !change.text ||
-            typeof change.reason !== "string" || !["Approved", "Unapproved", "Unverifiable"].includes(change.status) ||
-            (change.status !== "Approved" && !change.reason)) ||
-          (item.status === "skipped" && (item.items.length > 0 || item.errors.length > 0)) ||
-          (item.status === "approved" && (item.items.length === 0 || item.errors.length > 0 ||
-            item.items.some((change) => change.status !== "Approved"))) ||
-          (item.status === "unapproved" && (item.errors.length > 0 ||
-            !item.items.some((change) => change.status === "Unapproved"))) ||
-          (item.status === "unverifiable" && item.errors.length === 0)) ||
-        review.onboarding.some((item) => !["satisfied", "missing", "unverifiable"].includes(item.pipeline?.status) ||
-          !["satisfied", "missing", "unverifiable"].includes(item.namespace?.status) ||
-          !["semantic-review-required", "unverifiable"].includes(item.readme?.status) ||
-          unavailable(item.pipeline) || unavailable(item.namespace) || unavailable(item.readme) ||
-          (item.pipeline.status !== "unverifiable" && (!Array.isArray(item.pipeline.definition_ids) ||
-            item.pipeline.definition_ids.some((id) => !Number.isSafeInteger(id) || id <= 0) ||
-            (item.pipeline.status === "satisfied") !== (item.pipeline.definition_ids.length > 0))) ||
-          (item.namespace.status === "satisfied" && (typeof item.namespace.issue !== "string" || !item.namespace.issue.trim())) ||
-          (item.readme.status === "semantic-review-required" && typeof item.readme.text !== "string"))) {
-      throw new Error("The deterministic per-module review results are incomplete or invalid.");
-    }
+  if (review.status !== "completed") return;
+  const paths = review.modules.map((module) => module.path);
+  if (new Set(paths).size !== paths.length ||
+      review.modules.some((module) => !/^sdk\/resourcemanager\/[^/]+\/arm[^/]+$/.test(module.path) ||
+        typeof module.first_onboard !== "boolean")) {
+    throw new Error("The deterministic affected-module list is invalid.");
+  }
+  const newPaths = review.modules.filter((module) => module.first_onboard).map((module) => module.path);
+  const samePaths = (items, expected) => items.length === expected.length &&
+    new Set(items.map((item) => item.path)).size === items.length &&
+    items.every((item) => expected.includes(item.path));
+  const approvalStatuses = ["satisfied", "missing", "unverifiable"];
+  if (!Array.isArray(review.pipeline.failures) ||
+      review.pipeline.classification_required !== ciFailuresBlock(review) ||
+      review.pipeline.failures.some((check) => typeof check.name !== "string" || !check.name ||
+        !["failure", "cancelled", "timed_out", "action_required", "stale"].includes(check.conclusion) ||
+        !["build-test", "analyze", "matrix", "other"].includes(check.category) ||
+        typeof check.title !== "string" || typeof check.summary !== "string" ||
+        (check.target_url !== null && typeof check.target_url !== "string")) ||
+      ((typeof review.mergeable !== "boolean" || typeof review.mergeable_state !== "string" ||
+        review.mergeable_state === "unknown") && review.mergeability_errors.length === 0) ||
+      !samePaths(review.breaking_changes, paths) || !samePaths(review.onboarding, newPaths) ||
+      review.breaking_changes.some((item) => !["skipped", "approved", "unapproved", "unverifiable"].includes(item.status) ||
+        !Array.isArray(item.items) || !validErrors(item.errors) ||
+        item.items.some((change) => typeof change.text !== "string" || !change.text ||
+          typeof change.reason !== "string" || !["Approved", "Unapproved", "Unverifiable"].includes(change.status) ||
+          (change.status !== "Approved" && !change.reason)) ||
+        (item.status === "skipped" && (item.items.length > 0 || item.errors.length > 0)) ||
+        (item.status === "approved" && (item.items.length === 0 || item.errors.length > 0 ||
+          item.items.some((change) => change.status !== "Approved"))) ||
+        (item.status === "unapproved" && (item.errors.length > 0 ||
+          !item.items.some((change) => change.status === "Unapproved"))) ||
+        (item.status === "unverifiable" && item.errors.length === 0)) ||
+      review.onboarding.some(({ pipeline, namespace, readme }) => !validVerification(pipeline, approvalStatuses) ||
+        !validVerification(namespace, approvalStatuses) ||
+        !validVerification(readme, ["semantic-review-required", "unverifiable"]) ||
+        (pipeline.status !== "unverifiable" && (!Array.isArray(pipeline.definition_ids) ||
+          pipeline.definition_ids.some((id) => !Number.isSafeInteger(id) || id <= 0) ||
+          (pipeline.status === "satisfied") !== (pipeline.definition_ids.length > 0))) ||
+        (namespace.status === "satisfied" && (typeof namespace.issue !== "string" || !namespace.issue.trim())) ||
+        (readme.status === "semantic-review-required" && typeof readme.text !== "string"))) {
+    throw new Error("The deterministic per-module review results are incomplete or invalid.");
   }
 }
 

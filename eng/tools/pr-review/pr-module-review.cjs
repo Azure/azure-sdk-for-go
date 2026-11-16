@@ -1,17 +1,11 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-const { requireSHA, requireCount } = require("./github-data.cjs");
+const { requireCount } = require("./github-data.cjs");
 
-async function gatherModules({ github, context }, prNumber, headSHA) {
-  requireSHA(headSHA);
-  if (!Number.isSafeInteger(prNumber) || prNumber <= 0) throw new Error("Invalid PR number.");
-  const { data: pr } = await github.rest.pulls.get({ ...context.repo, pull_number: prNumber });
-  if (pr.number !== prNumber || pr.state !== "open" || pr.head?.sha !== headSHA) {
-    throw new Error("The PR identity or head changed, or the PR closed.");
-  }
+async function gatherModules({ github, context }, pr) {
   const files = await github.paginate(github.rest.pulls.listFiles, {
-    ...context.repo, pull_number: prNumber, per_page: 100,
+    ...context.repo, pull_number: pr.number, per_page: 100,
   });
   if (!Array.isArray(files) || files.length !== requireCount(pr.changed_files, "PR changed-file count") ||
       new Set(files.map((file) => file.filename)).size !== files.length) {
@@ -32,13 +26,7 @@ async function gatherModules({ github, context }, prNumber, headSHA) {
       modules.set(path, module);
     }
   }
-  return {
-    pr,
-    modules: [...modules.values()].sort((a, b) => a.path.localeCompare(b.path)),
-    files: files.map(({ filename, status, previous_filename }) => ({
-      filename, status, ...(previous_filename ? { previous_filename } : {}),
-    })),
-  };
+  return [...modules.values()].sort((a, b) => a.path.localeCompare(b.path));
 }
 
 module.exports = { gatherModules };

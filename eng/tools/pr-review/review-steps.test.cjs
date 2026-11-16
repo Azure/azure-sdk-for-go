@@ -125,20 +125,20 @@ test("module gathering detects added ci.yml and both sides of cross-module renam
   state.files.push({ filename: "sdk/resourcemanager/network/armnetwork/file.go", status: "renamed",
     previous_filename: `${path}/file.go` });
   state.pr.changed_files++;
-  const result = await gatherModules(state.api, 42, headSHA);
-  assert.deepEqual(result.modules, [
+  const result = await gatherModules(state.api, state.pr);
+  assert.deepEqual(result, [
     { path, first_onboard: true }, { path: "sdk/resourcemanager/network/armnetwork", first_onboard: false },
   ]);
   state.files[0].status = "modified";
-  assert.equal((await gatherModules(state.api, 42, headSHA)).modules[0].first_onboard, false);
+  assert.equal((await gatherModules(state.api, state.pr))[0].first_onboard, false);
 });
 
 test("incomplete or duplicate changed-file lists do not imply no new modules", async () => {
   const state = fixture();
   state.pr.changed_files++;
-  await assert.rejects(gatherModules(state.api, 42, headSHA), /incomplete/);
+  await assert.rejects(gatherModules(state.api, state.pr), /incomplete/);
   state.files.push(state.files[0]);
-  await assert.rejects(gatherModules(state.api, 42, headSHA), /inconsistent/);
+  await assert.rejects(gatherModules(state.api, state.pr), /inconsistent/);
 });
 
 test("draft conversion uses the trusted mutation once and checks its returned snapshot", async () => {
@@ -560,4 +560,27 @@ test("CI classification follows the existing squash-merge eligibility exception"
   const blocked = await state.run();
   assert.equal(blocked.pipeline.classification_required, true);
   assertReviewResults(blocked, state.provenance);
+});
+
+test("module discovery reuses the guarded PR snapshot without another PR request", async () => {
+  const state = fixture();
+  const get = state.api.github.rest.pulls.get;
+  let requests = 0;
+  state.api.github.rest.pulls.get = async () => {
+    requests++;
+    return get();
+  };
+  const result = await state.run();
+  assert.equal(result.status, "completed");
+  assert.equal(requests, 2);
+  assert.deepEqual(result.modules, [{ path, first_onboard: false }]);
+});
+
+test("a mismatched PR identity is rejected before module data is read", async () => {
+  const state = fixture();
+  state.pr.number = 43;
+  const result = await state.run();
+  assert.equal(result.status, "unverifiable");
+  assert.match(result.errors[0], /identity changed/);
+  assert.deepEqual(state.reads, []);
 });

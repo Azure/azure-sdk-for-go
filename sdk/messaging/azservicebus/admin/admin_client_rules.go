@@ -762,7 +762,7 @@ func unmarshalUnknownRuleXML(rawXML []byte) (string, []xml.Attr, []byte, error) 
 		return "", nil, nil, err
 	}
 
-	// Decoded namespace URI "i" is indistinguishable from an undeclared i prefix.
+	// Preserve lexical names: decoded URIs can collide with "i" or "xmlns".
 	decoder := xml.NewDecoder(bytes.NewReader(rawXML))
 	var start xml.StartElement
 	for {
@@ -791,6 +791,10 @@ func unmarshalUnknownRuleXML(rawXML []byte) (string, []xml.Attr, []byte, error) 
 			// The SDK's existing round-trip XML uses an undeclared i prefix.
 			ruleType = attr.Value
 			continue
+		}
+		attr.Name = start.Attr[index].Name
+		if attr.Name.Space != "" {
+			attr.Name = xml.Name{Local: attr.Name.Space + ":" + attr.Name.Local}
 		}
 		attrs = append(attrs, attr)
 	}

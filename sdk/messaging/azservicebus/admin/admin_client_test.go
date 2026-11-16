@@ -2009,6 +2009,12 @@ func TestAdminClient_unknownRuleNamespaces(t *testing.T) {
 					childNS:    "i",
 				},
 				{
+					name:       "custom namespace matches declaration marker",
+					attributes: `xmlns:c="xmlns" xmlns:xsi="` + instanceNS + `" c:type="metadata" c:metadata="value" xsi:type="FutureType" custom="value"`,
+					innerXML:   `<c:Thing c:value="1">Value</c:Thing>`,
+					childNS:    "xmlns",
+				},
+				{
 					name:       "legacy undeclared prefix",
 					attributes: `i:type="FutureType" custom="value"`,
 					innerXML:   `<Thing>1</Thing>`,
@@ -2041,6 +2047,27 @@ func TestAdminClient_unknownRuleNamespaces(t *testing.T) {
 					output, err := xml.Marshal(description)
 					require.NoError(t, err)
 					t.Logf("XML: %s", output)
+					if tc.childNS == "xmlns" {
+						rawDecoder := xml.NewDecoder(bytes.NewReader(output))
+						metadataFound := false
+						for {
+							token, err := rawDecoder.RawToken()
+							if err == io.EOF {
+								break
+							}
+							require.NoError(t, err)
+							start, ok := token.(xml.StartElement)
+							if !ok || start.Name.Local != element {
+								continue
+							}
+							for _, attr := range start.Attr {
+								if attr.Name == (xml.Name{Space: "c", Local: "metadata"}) && attr.Value == "value" {
+									metadataFound = true
+								}
+							}
+						}
+						require.True(t, metadataFound, "custom attribute must remain an attribute, not a namespace declaration")
+					}
 					decoder := xml.NewDecoder(bytes.NewReader(output))
 					typeCount := 0
 					childCount := 0
@@ -2065,6 +2092,9 @@ func TestAdminClient_unknownRuleNamespaces(t *testing.T) {
 							typeCount++
 							if tc.childNS != "" {
 								require.Equal(t, "metadata", attrs[xml.Name{Space: tc.childNS, Local: "type"}])
+							}
+							if tc.childNS == "xmlns" {
+								require.Equal(t, "value", attrs[xml.Name{Space: tc.childNS, Local: "metadata"}])
 							}
 						}
 						if start.Name.Local == "Thing" {

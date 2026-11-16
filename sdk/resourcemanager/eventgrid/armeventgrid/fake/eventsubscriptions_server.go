@@ -463,11 +463,8 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListByDomainTopicPager(re
 		}
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -531,11 +528,8 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListByResourcePager(req *
 		}
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -591,11 +585,8 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalByResourceGroup
 		}
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -647,11 +638,8 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalByResourceGroup
 		}
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -703,11 +691,8 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalBySubscriptionF
 		}
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -755,11 +740,8 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListGlobalBySubscriptionP
 		qp := req.URL.Query()
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -819,11 +801,8 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalByResourceGro
 		}
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -879,11 +858,8 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalByResourceGro
 		}
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -939,11 +915,8 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalBySubscriptio
 		}
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -995,11 +968,8 @@ func (e *EventSubscriptionsServerTransport) dispatchNewListRegionalBySubscriptio
 		}
 		filterParam := getOptional(qp.Get("$filter"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

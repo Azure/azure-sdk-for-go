@@ -2,5 +2,5 @@
   "apiVersions": {
     "LambdaTest.HyperExecute": "2024-02-01"
   },
-  "emitterVersion": "0.18.0"
+  "emitterVersion": "0.19.0"
 }

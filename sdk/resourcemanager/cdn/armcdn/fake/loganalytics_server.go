@@ -161,9 +161,9 @@ func (l *LogAnalyticsServerTransport) dispatchGetLogAnalyticsMetrics(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	metricsParam := make([]armcdn.LogMetric, len(qp["metrics"]))
-	for i := 0; i < len(qp["metrics"]); i++ {
-		metricsParam[i] = armcdn.LogMetric(qp["metrics"][i])
+	metricsParam, err := parseURIArray(qp["metrics"], false, func(v string) (armcdn.LogMetric, error) { return armcdn.LogMetric(v), nil })
+	if err != nil {
+		return nil, err
 	}
 	dateTimeBeginParam, err := time.Parse(time.RFC3339Nano, qp.Get("dateTimeBegin"))
 	if err != nil {
@@ -173,9 +173,13 @@ func (l *LogAnalyticsServerTransport) dispatchGetLogAnalyticsMetrics(req *http.R
 	if err != nil {
 		return nil, err
 	}
-	groupByParam := make([]armcdn.LogMetricsGroupBy, len(qp["groupBy"]))
-	for i := 0; i < len(qp["groupBy"]); i++ {
-		groupByParam[i] = armcdn.LogMetricsGroupBy(qp["groupBy"][i])
+	var groupByParam []armcdn.LogMetricsGroupBy
+	if qp.Has("groupBy") {
+		parsed, parseErr := parseURIArray(qp["groupBy"], false, func(v string) (armcdn.LogMetricsGroupBy, error) { return armcdn.LogMetricsGroupBy(v), nil })
+		if parseErr != nil {
+			return nil, parseErr
+		}
+		groupByParam = parsed
 	}
 	var options *armcdn.LogAnalyticsClientGetLogAnalyticsMetricsOptions
 	if len(groupByParam) > 0 || len(qp["continents"]) > 0 || len(qp["countryOrRegions"]) > 0 {
@@ -219,21 +223,18 @@ func (l *LogAnalyticsServerTransport) dispatchGetLogAnalyticsRankings(req *http.
 	if err != nil {
 		return nil, err
 	}
-	rankingsParam := make([]armcdn.LogRanking, len(qp["rankings"]))
-	for i := 0; i < len(qp["rankings"]); i++ {
-		rankingsParam[i] = armcdn.LogRanking(qp["rankings"][i])
+	rankingsParam, err := parseURIArray(qp["rankings"], false, func(v string) (armcdn.LogRanking, error) { return armcdn.LogRanking(v), nil })
+	if err != nil {
+		return nil, err
 	}
-	metricsParam := make([]armcdn.LogRankingMetric, len(qp["metrics"]))
-	for i := 0; i < len(qp["metrics"]); i++ {
-		metricsParam[i] = armcdn.LogRankingMetric(qp["metrics"][i])
+	metricsParam, err := parseURIArray(qp["metrics"], false, func(v string) (armcdn.LogRankingMetric, error) { return armcdn.LogRankingMetric(v), nil })
+	if err != nil {
+		return nil, err
 	}
-	maxRankingParam, err := parseWithCast(qp.Get("maxRanking"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
-	})
+	maxRankingParam, err := (func(v string) (int32, error) {
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
+	})(qp.Get("maxRanking"))
 	if err != nil {
 		return nil, err
 	}
@@ -318,9 +319,9 @@ func (l *LogAnalyticsServerTransport) dispatchGetWafLogAnalyticsMetrics(req *htt
 	if err != nil {
 		return nil, err
 	}
-	metricsParam := make([]armcdn.WafMetric, len(qp["metrics"]))
-	for i := 0; i < len(qp["metrics"]); i++ {
-		metricsParam[i] = armcdn.WafMetric(qp["metrics"][i])
+	metricsParam, err := parseURIArray(qp["metrics"], false, func(v string) (armcdn.WafMetric, error) { return armcdn.WafMetric(v), nil })
+	if err != nil {
+		return nil, err
 	}
 	dateTimeBeginParam, err := time.Parse(time.RFC3339Nano, qp.Get("dateTimeBegin"))
 	if err != nil {
@@ -330,17 +331,29 @@ func (l *LogAnalyticsServerTransport) dispatchGetWafLogAnalyticsMetrics(req *htt
 	if err != nil {
 		return nil, err
 	}
-	actionsParam := make([]armcdn.WafAction, len(qp["actions"]))
-	for i := 0; i < len(qp["actions"]); i++ {
-		actionsParam[i] = armcdn.WafAction(qp["actions"][i])
+	var actionsParam []armcdn.WafAction
+	if qp.Has("actions") {
+		parsed, parseErr := parseURIArray(qp["actions"], false, func(v string) (armcdn.WafAction, error) { return armcdn.WafAction(v), nil })
+		if parseErr != nil {
+			return nil, parseErr
+		}
+		actionsParam = parsed
 	}
-	groupByParam := make([]armcdn.WafRankingGroupBy, len(qp["groupBy"]))
-	for i := 0; i < len(qp["groupBy"]); i++ {
-		groupByParam[i] = armcdn.WafRankingGroupBy(qp["groupBy"][i])
+	var groupByParam []armcdn.WafRankingGroupBy
+	if qp.Has("groupBy") {
+		parsed, parseErr := parseURIArray(qp["groupBy"], false, func(v string) (armcdn.WafRankingGroupBy, error) { return armcdn.WafRankingGroupBy(v), nil })
+		if parseErr != nil {
+			return nil, parseErr
+		}
+		groupByParam = parsed
 	}
-	ruleTypesParam := make([]armcdn.WafRuleType, len(qp["ruleTypes"]))
-	for i := 0; i < len(qp["ruleTypes"]); i++ {
-		ruleTypesParam[i] = armcdn.WafRuleType(qp["ruleTypes"][i])
+	var ruleTypesParam []armcdn.WafRuleType
+	if qp.Has("ruleTypes") {
+		parsed, parseErr := parseURIArray(qp["ruleTypes"], false, func(v string) (armcdn.WafRuleType, error) { return armcdn.WafRuleType(v), nil })
+		if parseErr != nil {
+			return nil, parseErr
+		}
+		ruleTypesParam = parsed
 	}
 	var options *armcdn.LogAnalyticsClientGetWafLogAnalyticsMetricsOptions
 	if len(actionsParam) > 0 || len(groupByParam) > 0 || len(ruleTypesParam) > 0 {
@@ -384,9 +397,9 @@ func (l *LogAnalyticsServerTransport) dispatchGetWafLogAnalyticsRankings(req *ht
 	if err != nil {
 		return nil, err
 	}
-	metricsParam := make([]armcdn.WafMetric, len(qp["metrics"]))
-	for i := 0; i < len(qp["metrics"]); i++ {
-		metricsParam[i] = armcdn.WafMetric(qp["metrics"][i])
+	metricsParam, err := parseURIArray(qp["metrics"], false, func(v string) (armcdn.WafMetric, error) { return armcdn.WafMetric(v), nil })
+	if err != nil {
+		return nil, err
 	}
 	dateTimeBeginParam, err := time.Parse(time.RFC3339Nano, qp.Get("dateTimeBegin"))
 	if err != nil {
@@ -396,27 +409,32 @@ func (l *LogAnalyticsServerTransport) dispatchGetWafLogAnalyticsRankings(req *ht
 	if err != nil {
 		return nil, err
 	}
-	maxRankingParam, err := parseWithCast(qp.Get("maxRanking"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
-	})
+	maxRankingParam, err := (func(v string) (int32, error) {
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
+	})(qp.Get("maxRanking"))
 	if err != nil {
 		return nil, err
 	}
-	rankingsParam := make([]armcdn.WafRankingType, len(qp["rankings"]))
-	for i := 0; i < len(qp["rankings"]); i++ {
-		rankingsParam[i] = armcdn.WafRankingType(qp["rankings"][i])
+	rankingsParam, err := parseURIArray(qp["rankings"], false, func(v string) (armcdn.WafRankingType, error) { return armcdn.WafRankingType(v), nil })
+	if err != nil {
+		return nil, err
 	}
-	actionsParam := make([]armcdn.WafAction, len(qp["actions"]))
-	for i := 0; i < len(qp["actions"]); i++ {
-		actionsParam[i] = armcdn.WafAction(qp["actions"][i])
+	var actionsParam []armcdn.WafAction
+	if qp.Has("actions") {
+		parsed, parseErr := parseURIArray(qp["actions"], false, func(v string) (armcdn.WafAction, error) { return armcdn.WafAction(v), nil })
+		if parseErr != nil {
+			return nil, parseErr
+		}
+		actionsParam = parsed
 	}
-	ruleTypesParam := make([]armcdn.WafRuleType, len(qp["ruleTypes"]))
-	for i := 0; i < len(qp["ruleTypes"]); i++ {
-		ruleTypesParam[i] = armcdn.WafRuleType(qp["ruleTypes"][i])
+	var ruleTypesParam []armcdn.WafRuleType
+	if qp.Has("ruleTypes") {
+		parsed, parseErr := parseURIArray(qp["ruleTypes"], false, func(v string) (armcdn.WafRuleType, error) { return armcdn.WafRuleType(v), nil })
+		if parseErr != nil {
+			return nil, parseErr
+		}
+		ruleTypesParam = parsed
 	}
 	var options *armcdn.LogAnalyticsClientGetWafLogAnalyticsRankingsOptions
 	if len(actionsParam) > 0 || len(ruleTypesParam) > 0 {

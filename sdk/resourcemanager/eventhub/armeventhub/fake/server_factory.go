@@ -33,6 +33,9 @@ type ServerFactory struct {
 	// EventHubsServer contains the fakes for client EventHubsClient
 	EventHubsServer EventHubsServer
 
+	// FabricShortcutsServer contains the fakes for client FabricShortcutsClient
+	FabricShortcutsServer FabricShortcutsServer
+
 	// NamespacesServer contains the fakes for client NamespacesClient
 	NamespacesServer NamespacesServer
 
@@ -53,6 +56,9 @@ type ServerFactory struct {
 
 	// SchemaRegistryServer contains the fakes for client SchemaRegistryClient
 	SchemaRegistryServer SchemaRegistryServer
+
+	// UpgradePreferencesOperationsServer contains the fakes for client UpgradePreferencesOperationsClient
+	UpgradePreferencesOperationsServer UpgradePreferencesOperationsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -75,6 +81,7 @@ type ServerFactoryTransport struct {
 	trConsumerGroupsServer                         *ConsumerGroupsServerTransport
 	trDisasterRecoveryConfigsServer                *DisasterRecoveryConfigsServerTransport
 	trEventHubsServer                              *EventHubsServerTransport
+	trFabricShortcutsServer                        *FabricShortcutsServerTransport
 	trNamespacesServer                             *NamespacesServerTransport
 	trNetworkSecurityPerimeterConfigurationServer  *NetworkSecurityPerimeterConfigurationServerTransport
 	trNetworkSecurityPerimeterConfigurationsServer *NetworkSecurityPerimeterConfigurationsServerTransport
@@ -82,6 +89,7 @@ type ServerFactoryTransport struct {
 	trPrivateEndpointConnectionsServer             *PrivateEndpointConnectionsServerTransport
 	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
 	trSchemaRegistryServer                         *SchemaRegistryServerTransport
+	trUpgradePreferencesOperationsServer           *UpgradePreferencesOperationsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -123,6 +131,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "EventHubsClient":
 		initServer(&s.trMu, &s.trEventHubsServer, func() *EventHubsServerTransport { return NewEventHubsServerTransport(&s.srv.EventHubsServer) })
 		resp, err = s.trEventHubsServer.Do(req)
+	case "FabricShortcutsClient":
+		initServer(&s.trMu, &s.trFabricShortcutsServer, func() *FabricShortcutsServerTransport {
+			return NewFabricShortcutsServerTransport(&s.srv.FabricShortcutsServer)
+		})
+		resp, err = s.trFabricShortcutsServer.Do(req)
 	case "NamespacesClient":
 		initServer(&s.trMu, &s.trNamespacesServer, func() *NamespacesServerTransport { return NewNamespacesServerTransport(&s.srv.NamespacesServer) })
 		resp, err = s.trNamespacesServer.Do(req)
@@ -154,6 +167,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewSchemaRegistryServerTransport(&s.srv.SchemaRegistryServer)
 		})
 		resp, err = s.trSchemaRegistryServer.Do(req)
+	case "UpgradePreferencesOperationsClient":
+		initServer(&s.trMu, &s.trUpgradePreferencesOperationsServer, func() *UpgradePreferencesOperationsServerTransport {
+			return NewUpgradePreferencesOperationsServerTransport(&s.srv.UpgradePreferencesOperationsServer)
+		})
+		resp, err = s.trUpgradePreferencesOperationsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

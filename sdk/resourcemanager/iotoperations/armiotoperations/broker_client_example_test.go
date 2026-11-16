@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-07-01/Broker_CreateOrUpdate_Complex.json
+// Generated from example definition: 2026-10-01/Broker_CreateOrUpdate_Complex.json
 func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateComplex() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -101,7 +101,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateComplex() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Broker_CreateOrUpdate_MaximumSet_Gen.json
 func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,7 +444,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Broker_CreateOrUpdate_Minimal.json
+// Generated from example definition: 2026-10-01/Broker_CreateOrUpdate_Minimal.json
 func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateMinimal() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -642,7 +642,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateMinimal() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Broker_CreateOrUpdate_Simple.json
+// Generated from example definition: 2026-10-01/Broker_CreateOrUpdate_Simple.json
 func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateSimple() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -854,7 +854,7 @@ func ExampleBrokerClient_BeginCreateOrUpdate_brokerCreateOrUpdateSimple() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Broker_Delete_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Broker_Delete_MaximumSet_Gen.json
 func ExampleBrokerClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -875,7 +875,7 @@ func ExampleBrokerClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-07-01/Broker_Get_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Broker_Get_MaximumSet_Gen.json
 func ExampleBrokerClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1062,7 +1062,7 @@ func ExampleBrokerClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-07-01/Broker_ListByResourceGroup_MaximumSet_Gen.json
+// Generated from example definition: 2026-10-01/Broker_ListByResourceGroup_MaximumSet_Gen.json
 func ExampleBrokerClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

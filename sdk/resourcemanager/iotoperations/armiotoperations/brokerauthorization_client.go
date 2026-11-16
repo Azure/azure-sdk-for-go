@@ -19,7 +19,7 @@ import (
 // BrokerAuthorizationClient contains the methods for the BrokerAuthorization group.
 // Don't use this type directly, use NewBrokerAuthorizationClient() instead.
 //
-// Generated from API version 2026-07-01
+// Generated from API version 2026-10-01
 type BrokerAuthorizationClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -121,7 +121,7 @@ func (client *BrokerAuthorizationClient) createOrUpdateCreateRequest(ctx context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -207,7 +207,7 @@ func (client *BrokerAuthorizationClient) deleteCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -265,7 +265,7 @@ func (client *BrokerAuthorizationClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260701)
+	reqQP.Set("api-version", version20261001)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -346,7 +346,7 @@ func (client *BrokerAuthorizationClient) listByResourceGroupCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260701)
+		reqQP.Set("api-version", version20261001)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

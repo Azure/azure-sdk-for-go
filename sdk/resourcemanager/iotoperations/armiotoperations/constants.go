@@ -5,7 +5,7 @@
 package armiotoperations
 
 const (
-	version20260701 string = "2026-07-01"
+	version20261001 string = "2026-10-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -586,6 +586,24 @@ func PossibleDataflowGraphDestinationHeaderActionTypeValues() []DataflowGraphDes
 	}
 }
 
+// DataflowGraphDestinationSchemaSerializationFormat - Serialization format for dataflow graph.
+type DataflowGraphDestinationSchemaSerializationFormat string
+
+const (
+	// DataflowGraphDestinationSchemaSerializationFormatDelta - Delta serialization format.
+	DataflowGraphDestinationSchemaSerializationFormatDelta DataflowGraphDestinationSchemaSerializationFormat = "Delta"
+	// DataflowGraphDestinationSchemaSerializationFormatParquet - Parquet serialization format.
+	DataflowGraphDestinationSchemaSerializationFormatParquet DataflowGraphDestinationSchemaSerializationFormat = "Parquet"
+)
+
+// PossibleDataflowGraphDestinationSchemaSerializationFormatValues returns the possible values for the DataflowGraphDestinationSchemaSerializationFormat const type.
+func PossibleDataflowGraphDestinationSchemaSerializationFormatValues() []DataflowGraphDestinationSchemaSerializationFormat {
+	return []DataflowGraphDestinationSchemaSerializationFormat{
+		DataflowGraphDestinationSchemaSerializationFormatDelta,
+		DataflowGraphDestinationSchemaSerializationFormatParquet,
+	}
+}
+
 // DataflowGraphNodeType - DataflowGraph node types.
 type DataflowGraphNodeType string
 
@@ -795,6 +813,24 @@ func PossibleInstanceFeatureModeValues() []InstanceFeatureMode {
 		InstanceFeatureModeDisabled,
 		InstanceFeatureModePreview,
 		InstanceFeatureModeStable,
+	}
+}
+
+// InstanceSKUName - The set of supported SKU names for an AIO Instance.
+type InstanceSKUName string
+
+const (
+	// InstanceSKUNameEssentials - Essentials SKU. Reduced feature set targeted at constrained edge and entry-level workloads.
+	InstanceSKUNameEssentials InstanceSKUName = "Essentials"
+	// InstanceSKUNameStandard - Standard SKU. Full feature set. Default when sku is not specified.
+	InstanceSKUNameStandard InstanceSKUName = "Standard"
+)
+
+// PossibleInstanceSKUNameValues returns the possible values for the InstanceSKUName const type.
+func PossibleInstanceSKUNameValues() []InstanceSKUName {
+	return []InstanceSKUName{
+		InstanceSKUNameEssentials,
+		InstanceSKUNameStandard,
 	}
 }
 

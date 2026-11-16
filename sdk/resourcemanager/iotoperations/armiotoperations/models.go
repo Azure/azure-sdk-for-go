@@ -1216,14 +1216,14 @@ type CertManagerCertificateSpec struct {
 
 // CertManagerIssuerRef - Cert-Manager issuerRef properties
 type CertManagerIssuerRef struct {
-	// REQUIRED; group of issuer.
-	Group *string
-
 	// REQUIRED; kind of issuer (Issuer or ClusterIssuer).
 	Kind *CertManagerIssuerKind
 
 	// REQUIRED; name of issuer.
 	Name *string
+
+	// group of issuer.
+	Group *string
 }
 
 // CertManagerPrivateKey - Cert Manager private key properties
@@ -1466,7 +1466,8 @@ type DataflowEndpointDataExplorer struct {
 	// REQUIRED; Database name.
 	Database *string
 
-	// REQUIRED; Host of the Azure Data Explorer in the form of <cluster>.<region>.kusto.windows.net .
+	// REQUIRED; Host of the Azure Data Explorer in the form of <cluster>.<region>.kusto.windows.net (Azure Public) or <cluster>.<region>.kusto.usgovcloudapi.net
+	// (Azure US Government). This will be validated by the regex `.*\.*\.kusto\.(windows\.net|usgovcloudapi\.net)`.
 	Host *string
 
 	// Azure Data Explorer endpoint batching configuration.
@@ -1491,7 +1492,8 @@ type DataflowEndpointDataLakeStorage struct {
 	// REQUIRED; Authentication configuration. NOTE - only authentication property is allowed per entry.
 	Authentication *DataflowEndpointDataLakeStorageAuthentication
 
-	// REQUIRED; Host of the Azure Data Lake in the form of <account>.blob.core.windows.net .
+	// REQUIRED; Host of the Azure Data Lake in the form of <account>.blob.core.windows.net (Azure Public) or <account>.blob.core.usgovcloudapi.net
+	// (Azure US Government). This will be validated by the regex `.*\.blob\.core\.(windows\.net|usgovcloudapi\.net)`.
 	Host *string
 
 	// Azure Data Lake endpoint batching configuration.
@@ -1519,7 +1521,8 @@ type DataflowEndpointFabricOneLake struct {
 	// REQUIRED; Authentication configuration. NOTE - only one authentication property is allowed per entry.
 	Authentication *DataflowEndpointFabricOneLakeAuthentication
 
-	// REQUIRED; Host of the Microsoft Fabric in the form of https://<host>.fabric.microsoft.com.
+	// REQUIRED; Host of the Microsoft Fabric in the form of https://<host>.fabric.microsoft.com (Azure Public) or https://<host>.fabric.microsoft.us
+	// (Azure US Government). This will be validated by the regex `.*\.fabric\.microsoft\.(com|us)`.
 	Host *string
 
 	// REQUIRED; Names of the workspace and lakehouse.
@@ -1872,6 +1875,9 @@ type DataflowGraphDestinationNodeSettings struct {
 
 	// Headers for the output data.
 	Headers []DataflowGraphDestinationHeaderActionClassification
+
+	// Output schema settings.
+	OutputSchemaSettings *DataflowGraphDestinationSchemaSettings
 }
 
 // DataflowGraphDestinationRemoveHeaderAction - DataflowGraph Destination Remove HeaderAction properties.
@@ -1889,6 +1895,15 @@ func (d *DataflowGraphDestinationRemoveHeaderAction) GetDataflowGraphDestination
 	return &DataflowGraphDestinationHeaderAction{
 		ActionType: d.ActionType,
 	}
+}
+
+// DataflowGraphDestinationSchemaSettings - DataflowGraph destination node output schema settings.
+type DataflowGraphDestinationSchemaSettings struct {
+	// REQUIRED; The format of the output data.
+	SerializationFormat *DataflowGraphDestinationSchemaSerializationFormat
+
+	// Reference to the schema that describes the output of the transformation.
+	SchemaRef *string
 }
 
 // DataflowGraphGraphNode - DataflowGraph graph node properties.
@@ -2366,6 +2381,9 @@ type InstanceResource struct {
 	// The resource-specific properties for this resource.
 	Properties *InstanceProperties
 
+	// The billing SKU for the AIO Instance. Defaults to Standard.
+	SKU *InstanceSKU
+
 	// Resource tags.
 	Tags map[string]*string
 
@@ -2389,6 +2407,12 @@ type InstanceResourceListResult struct {
 
 	// The link to the next page of items
 	NextLink *string
+}
+
+// InstanceSKU - The billing SKU for an AIO Instance.
+type InstanceSKU struct {
+	// REQUIRED; The name of the SKU. Determines the billing meter applied to this instance.
+	Name *InstanceSKUName
 }
 
 // KubernetesReference - Kubernetes reference

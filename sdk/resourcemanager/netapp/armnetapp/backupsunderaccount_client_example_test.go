@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v11"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/netapp/armnetapp/v12"
 	"log"
 )
 
-// Generated from example definition: 2026-08-15-preview/BackupsUnderAccount_Migrate.json
+// Generated from example definition: 2026-09-01/BackupsUnderAccount_Migrate.json
 func ExampleBackupsUnderAccountClient_BeginMigrateBackups() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

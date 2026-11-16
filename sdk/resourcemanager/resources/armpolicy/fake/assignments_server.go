@@ -359,11 +359,8 @@ func (a *AssignmentsServerTransport) dispatchNewListForManagementGroupPager(req 
 		filterParam := getOptional(qp.Get("$filter"))
 		expandParam := getOptional(qp.Get("$expand"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -417,11 +414,8 @@ func (a *AssignmentsServerTransport) dispatchNewListForResourceGroupPager(req *h
 		filterParam := getOptional(qp.Get("$filter"))
 		expandParam := getOptional(qp.Get("$expand"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -485,11 +479,8 @@ func (a *AssignmentsServerTransport) dispatchNewListForResourcePager(req *http.R
 		filterParam := getOptional(qp.Get("$filter"))
 		expandParam := getOptional(qp.Get("$expand"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -539,11 +530,8 @@ func (a *AssignmentsServerTransport) dispatchNewListPager(req *http.Request) (*h
 		filterParam := getOptional(qp.Get("$filter"))
 		expandParam := getOptional(qp.Get("$expand"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

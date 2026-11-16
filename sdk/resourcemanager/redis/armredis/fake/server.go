@@ -680,7 +680,10 @@ func (s *ServerTransport) dispatchNewListUpgradeNotificationsPager(req *http.Req
 		if err != nil {
 			return nil, err
 		}
-		historyParam, err := strconv.ParseFloat(qp.Get("history"), 64)
+		historyParam, err := (func(v string) (float64, error) {
+			parsed, parseErr := strconv.ParseFloat(v, 64)
+			return float64(parsed), parseErr
+		})(qp.Get("history"))
 		if err != nil {
 			return nil, err
 		}

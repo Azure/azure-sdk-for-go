@@ -192,11 +192,8 @@ func (c *ContainersServerTransport) dispatchListLogs(req *http.Request) (*http.R
 		return nil, err
 	}
 	tailParam, err := parseOptional(qp.Get("tail"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err

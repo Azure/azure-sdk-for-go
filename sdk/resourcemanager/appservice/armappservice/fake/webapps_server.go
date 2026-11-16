@@ -4653,21 +4653,15 @@ func (w *WebAppsServerTransport) dispatchBeginStartNetworkTrace(req *http.Reques
 			return nil, err
 		}
 		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
 		}
 		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -4731,21 +4725,15 @@ func (w *WebAppsServerTransport) dispatchBeginStartNetworkTraceSlot(req *http.Re
 			return nil, err
 		}
 		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
 		}
 		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -4805,21 +4793,15 @@ func (w *WebAppsServerTransport) dispatchBeginStartWebSiteNetworkTraceOperation(
 			return nil, err
 		}
 		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
 		}
 		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -4883,21 +4865,15 @@ func (w *WebAppsServerTransport) dispatchBeginStartWebSiteNetworkTraceOperationS
 			return nil, err
 		}
 		durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
 		}
 		maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -17618,21 +17594,15 @@ func (w *WebAppsServerTransport) dispatchStartWebSiteNetworkTrace(req *http.Requ
 		return nil, err
 	}
 	durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err
 	}
 	maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err
@@ -17685,21 +17655,15 @@ func (w *WebAppsServerTransport) dispatchStartWebSiteNetworkTraceSlot(req *http.
 		return nil, err
 	}
 	durationInSecondsParam, err := parseOptional(qp.Get("durationInSeconds"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err
 	}
 	maxFrameLengthParam, err := parseOptional(qp.Get("maxFrameLength"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err

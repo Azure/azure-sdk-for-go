@@ -146,11 +146,8 @@ func (e *EventServerTransport) dispatchNewListPager(req *http.Request) (*http.Re
 		oDataOptionsParam := getOptional(qp.Get("odataOptions"))
 		continuationTokenParam := getOptional(qp.Get("continuationToken"))
 		pageSizeParam, err := parseOptional(qp.Get("pageSize"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

@@ -159,11 +159,8 @@ func (r *RestorableDroppedDatabasesServerTransport) dispatchNewListByServerPager
 		}
 		skiptokenParam := getOptional(qp.Get("$skiptoken"))
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

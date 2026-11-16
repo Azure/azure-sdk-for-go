@@ -308,11 +308,8 @@ func (a *AgentDeploymentsServerTransport) dispatchNewListPager(req *http.Request
 			return nil, err
 		}
 		countParam, err := parseOptional(qp.Get("count"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

@@ -88,7 +88,10 @@ func (h *HeatMapServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	qp := req.URL.Query()
+	rawQP, err := parseRawURIQuery(req.URL.RawQuery)
+	if err != nil {
+		return nil, err
+	}
 	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
 	if err != nil {
 		return nil, err
@@ -97,26 +100,30 @@ func (h *HeatMapServerTransport) dispatchGet(req *http.Request) (*http.Response,
 	if err != nil {
 		return nil, err
 	}
-	topLeftElements := splitHelper(qp.Get("topLeft"), ",")
-	topLeftParam := make([]float64, len(topLeftElements))
-	for i := 0; i < len(topLeftElements); i++ {
-		parsedFloat64, parseErr := strconv.ParseFloat(topLeftElements[i], 64)
+	var topLeftParam []float64
+	if rawQP.Has("topLeft") {
+		parsed, parseErr := parseURIQueryArray(rawQP.Get("topLeft"), func(v string) (float64, error) {
+			parsed, parseErr := strconv.ParseFloat(v, 64)
+			return float64(parsed), parseErr
+		})
 		if parseErr != nil {
 			return nil, parseErr
 		}
-		topLeftParam[i] = float64(parsedFloat64)
+		topLeftParam = parsed
 	}
-	botRightElements := splitHelper(qp.Get("botRight"), ",")
-	botRightParam := make([]float64, len(botRightElements))
-	for i := 0; i < len(botRightElements); i++ {
-		parsedFloat64, parseErr := strconv.ParseFloat(botRightElements[i], 64)
+	var botRightParam []float64
+	if rawQP.Has("botRight") {
+		parsed, parseErr := parseURIQueryArray(rawQP.Get("botRight"), func(v string) (float64, error) {
+			parsed, parseErr := strconv.ParseFloat(v, 64)
+			return float64(parsed), parseErr
+		})
 		if parseErr != nil {
 			return nil, parseErr
 		}
-		botRightParam[i] = float64(parsedFloat64)
+		botRightParam = parsed
 	}
 	var options *armtrafficmanager.HeatMapClientGetOptions
-	if len(topLeftParam) > 0 || len(botRightParam) > 0 {
+	if topLeftParam != nil || botRightParam != nil {
 		options = &armtrafficmanager.HeatMapClientGetOptions{
 			TopLeft:  topLeftParam,
 			BotRight: botRightParam,

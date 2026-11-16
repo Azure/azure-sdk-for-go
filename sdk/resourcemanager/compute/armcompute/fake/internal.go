@@ -58,14 +58,6 @@ func parseOptional[T any](v string, parse func(v string) (T, error)) (*T, error)
 	return &t, nil
 }
 
-func parseWithCast[T any](v string, parse func(v string) (T, error)) (T, error) {
-	t, err := parse(v)
-	if err != nil {
-		return *new(T), err
-	}
-	return t, err
-}
-
 func newTracker[T any]() *tracker[T] {
 	return &tracker[T]{
 		items: map[string]*T{},

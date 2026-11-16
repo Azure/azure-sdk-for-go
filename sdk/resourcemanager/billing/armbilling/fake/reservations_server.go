@@ -230,11 +230,8 @@ func (r *ReservationsServerTransport) dispatchNewListByBillingAccountPager(req *
 		filterParam := getOptional(qp.Get("filter"))
 		orderByParam := getOptional(qp.Get("orderBy"))
 		skiptokenParam, err := parseOptional(qp.Get("skiptoken"), func(v string) (float32, error) {
-			p, parseErr := strconv.ParseFloat(v, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return float32(p), nil
+			parsed, parseErr := strconv.ParseFloat(v, 32)
+			return float32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -242,11 +239,8 @@ func (r *ReservationsServerTransport) dispatchNewListByBillingAccountPager(req *
 		refreshSummaryParam := getOptional(qp.Get("refreshSummary"))
 		selectedStateParam := getOptional(qp.Get("selectedState"))
 		takeParam, err := parseOptional(qp.Get("take"), func(v string) (float32, error) {
-			p, parseErr := strconv.ParseFloat(v, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return float32(p), nil
+			parsed, parseErr := strconv.ParseFloat(v, 32)
+			return float32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -307,11 +301,8 @@ func (r *ReservationsServerTransport) dispatchNewListByBillingProfilePager(req *
 		filterParam := getOptional(qp.Get("filter"))
 		orderByParam := getOptional(qp.Get("orderBy"))
 		skiptokenParam, err := parseOptional(qp.Get("skiptoken"), func(v string) (float32, error) {
-			p, parseErr := strconv.ParseFloat(v, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return float32(p), nil
+			parsed, parseErr := strconv.ParseFloat(v, 32)
+			return float32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -319,11 +310,8 @@ func (r *ReservationsServerTransport) dispatchNewListByBillingProfilePager(req *
 		refreshSummaryParam := getOptional(qp.Get("refreshSummary"))
 		selectedStateParam := getOptional(qp.Get("selectedState"))
 		takeParam, err := parseOptional(qp.Get("take"), func(v string) (float32, error) {
-			p, parseErr := strconv.ParseFloat(v, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return float32(p), nil
+			parsed, parseErr := strconv.ParseFloat(v, 32)
+			return float32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

@@ -26,6 +26,44 @@ type AccessPolicyEntry struct {
 	ApplicationID *string
 }
 
+// AccessRule - Access rule in a network security perimeter configuration profile
+type AccessRule struct {
+	// Name of the access rule
+	Name *string
+
+	// Properties of the access rule
+	Properties *AccessRuleProperties
+}
+
+// AccessRuleProperties - Properties of Access Rule
+type AccessRuleProperties struct {
+	// Address prefixes in the CIDR format for inbound rules
+	AddressPrefixes []*string
+
+	// Direction of the access rule
+	Direction *AccessRuleDirection
+
+	// Email addresses for outbound rules
+	EmailAddresses []*string
+
+	// Fully qualified domain names (FQDN) for outbound rules
+	FullyQualifiedDomainNames []*string
+
+	// Network security perimeters for inbound rules
+	NetworkSecurityPerimeters []*NetworkSecurityPerimeter
+
+	// Phone numbers for outbound rules
+	PhoneNumbers []*string
+
+	// Subscriptions for inbound rules
+	Subscriptions []*AccessRulePropertiesSubscription
+}
+
+type AccessRulePropertiesSubscription struct {
+	// The fully qualified Azure resource ID of the subscription e.g. ('/subscriptions/00000000-0000-0000-0000-000000000000')
+	ID *string
+}
+
 type Action struct {
 	// The type of action.
 	Type *KeyRotationPolicyActionType
@@ -826,6 +864,81 @@ type NetworkRuleSet struct {
 	VirtualNetworkRules []*VirtualNetworkRule
 }
 
+// NetworkSecurityPerimeter - Information about a network security perimeter (NSP)
+type NetworkSecurityPerimeter struct {
+	// Fully qualified Azure resource ID of the NSP resource
+	ID *string
+
+	// Location of the network security perimeter
+	Location *string
+
+	// Universal unique ID (UUID) of the network security perimeter
+	PerimeterGUID *string
+}
+
+// NetworkSecurityPerimeterConfiguration - Network security perimeter (NSP) configuration resource
+type NetworkSecurityPerimeterConfiguration struct {
+	// Network security configuration properties.
+	Properties *NetworkSecurityPerimeterConfigurationProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// NetworkSecurityPerimeterConfigurationListResult - Result of a list NSP (network security perimeter) configurations request.
+type NetworkSecurityPerimeterConfigurationListResult struct {
+	// The link used to get the next page of results.
+	NextLink *string
+
+	// Array of network security perimeter results.
+	Value []*NetworkSecurityPerimeterConfiguration
+}
+
+// NetworkSecurityPerimeterConfigurationProperties - Network security configuration properties.
+type NetworkSecurityPerimeterConfigurationProperties struct {
+	// Information about the network security perimeter (NSP)
+	NetworkSecurityPerimeter *NetworkSecurityPerimeter
+
+	// Network security perimeter configuration profile
+	Profile *NetworkSecurityProfile
+
+	// Information about the resource association
+	ResourceAssociation *ResourceAssociation
+
+	// READ-ONLY; List of provisioning issues, if any
+	ProvisioningIssues []*ProvisioningIssue
+
+	// READ-ONLY; Provisioning state of the network security perimeter configuration
+	ProvisioningState *NetworkSecurityPerimeterConfigurationProvisioningState
+}
+
+// NetworkSecurityProfile - Network security perimeter configuration profile
+type NetworkSecurityProfile struct {
+	// List of Access Rules
+	AccessRules []*AccessRule
+
+	// Current access rules version
+	AccessRulesVersion *int32
+
+	// Current diagnostic settings version
+	DiagnosticSettingsVersion *int32
+
+	// List of log categories that are enabled
+	EnabledLogCategories []*string
+
+	// Name of the profile
+	Name *string
+}
+
 // Operation - Key Vault REST API operation definition.
 type Operation struct {
 	// Display metadata associated with the operation.
@@ -1010,6 +1123,45 @@ type PrivateLinkServiceConnectionState struct {
 	Status *PrivateEndpointServiceConnectionStatus
 }
 
+// ProvisioningIssue - Describes a provisioning issue for a network security perimeter configuration
+type ProvisioningIssue struct {
+	// READ-ONLY; Name of the issue
+	Name *string
+
+	// READ-ONLY; Details of the provisioning issue
+	Properties *ProvisioningIssueProperties
+}
+
+// ProvisioningIssueProperties - Details of a provisioning issue for a network security perimeter (NSP) configuration. Resource
+// providers should generate separate provisioning issue elements for each separate issue detected, and include a meaningful
+// and distinctive description, as well as any appropriate suggestedResourceIds and suggestedAccessRules
+type ProvisioningIssueProperties struct {
+	// READ-ONLY; Description of the issue
+	Description *string
+
+	// READ-ONLY; Type of issue
+	IssueType *IssueType
+
+	// READ-ONLY; Severity of the issue.
+	Severity *Severity
+
+	// READ-ONLY; Access rules that can be added to the network security profile (NSP) to remediate the issue.
+	SuggestedAccessRules []*AccessRule
+
+	// READ-ONLY; Fully qualified resource IDs of suggested resources that can be associated to the network security perimeter
+	// (NSP) to remediate the issue.
+	SuggestedResourceIDs []*string
+}
+
+// ResourceAssociation - Information about resource association
+type ResourceAssociation struct {
+	// Access mode of the resource association
+	AccessMode *ResourceAssociationAccessMode
+
+	// Name of the resource association
+	Name *string
+}
+
 // ResourceListResult - The list of vault resources.
 type ResourceListResult struct {
 	// REQUIRED; The list of vault resources.
@@ -1166,6 +1318,16 @@ type SystemData struct {
 	LastModifiedByType *CreatedByType
 }
 
+// TokenBindingParameters - Configuration for Token Binding for Entra tokens
+type TokenBindingParameters struct {
+	// Must be one of the following values "NoValidation", "Unattested", "AttestedTrustedLaunch", "AttestedConfidential". Strength
+	// of the token binding increases with each value in that order.
+	MinimumTokenBindingStrength *TokenBindingStrength
+
+	// This specifies whether token binding is disabled, enabled or enforced.
+	Mode *TokenBindingMode
+}
+
 // TrackedResource - Tracked Resource
 //
 // The resource model definition for an Azure Resource Manager tracked top level resource which has 'tags' and a 'location'
@@ -1211,6 +1373,9 @@ type UserAssignedIdentity struct {
 type Vault struct {
 	// REQUIRED; Properties of the vault
 	Properties *VaultProperties
+
+	// The managed service identities assigned to this resource.
+	Identity *ManagedServiceIdentity
 
 	// Azure location of the key vault resource.
 	Location *string
@@ -1274,6 +1439,9 @@ type VaultCreateOrUpdateParameters struct {
 	// REQUIRED; Properties of the vault
 	Properties *VaultProperties
 
+	// Managed service identity assigned to the vault.
+	Identity *ManagedServiceIdentity
+
 	// The tags that will be assigned to the key vault.
 	Tags map[string]*string
 }
@@ -1289,6 +1457,9 @@ type VaultListResult struct {
 
 // VaultPatchParameters - Parameters for creating or updating a vault
 type VaultPatchParameters struct {
+	// Managed service identity assigned to the vault.
+	Identity *ManagedServiceIdentity
+
 	// Properties of the vault
 	Properties *VaultPatchProperties
 
@@ -1304,6 +1475,11 @@ type VaultPatchProperties struct {
 
 	// The vault's create mode to indicate whether the vault need to be recovered or not.
 	CreateMode *CreateMode
+
+	// Whether cross-tenant access protection is enabled for this vault. When enabled, changes to the vault tenant ID must use
+	// the subscription's home tenant ID. Once enabled, this protection cannot be disabled. If omitted, the existing value is
+	// preserved.
+	EnableCrossTenantAccessProtection *bool
 
 	// Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates
 	// protection against purge for this vault and its content - only the Key Vault service may initiate a hard, irrecoverable
@@ -1334,6 +1510,20 @@ type VaultPatchProperties struct {
 	// A collection of rules governing the accessibility of the vault from specific network locations.
 	NetworkACLs *NetworkRuleSet
 
+	// Configures an external Managed HSM key used to wrap the vault's protection keys.
+	// When configured, this property is returned in create, update, get, and list responses.
+	// Responses contain the persisted key reference and authentication mechanism, not key material or credentials.
+	// It can be supplied when enabling wrapping on an existing vault.
+	// This property is available starting with API version 2026-10-01-preview, when the protection-key wrapping capability is
+	// available for the target vault.
+	// Reapplying an equivalent configuration is supported; replacing or removing it is not.
+	// A versionless reference can match the persisted versioned reference; resubmitting it does not rotate the key.
+	// After configuration, vault availability depends on the persisted Managed HSM key version remaining usable and accessible
+	// to the service.
+	// Disabling or deleting that key version, or revoking the service's access, can make the vault unavailable.
+	// Omitting this property preserves the existing configuration.
+	ProtectionKeysWrappingKey *WrappingKeyConfiguration
+
 	// Property to specify whether the vault will accept traffic from public internet. If set to 'disabled' all traffic except
 	// private endpoint traffic and that that originates from trusted services will be blocked. This will override the set firewall
 	// rules, meaning that even if the firewall rules are present we will not honor the rules.
@@ -1347,6 +1537,9 @@ type VaultPatchProperties struct {
 
 	// The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
 	TenantID *string
+
+	// Configuration for Token Binding for Entra tokens
+	TokenBindingParameters *TokenBindingParameters
 }
 
 // VaultProperties - Properties of the vault
@@ -1364,6 +1557,11 @@ type VaultProperties struct {
 
 	// The vault's create mode to indicate whether the vault need to be recovered or not.
 	CreateMode *CreateMode
+
+	// Whether cross-tenant access protection is enabled for this vault. When enabled, the vault tenant ID can only be set or
+	// changed to the subscription's home tenant ID. Once enabled, this protection cannot be disabled. If omitted when creating
+	// a vault, protection is disabled. If omitted when updating a vault, the existing value is preserved.
+	EnableCrossTenantAccessProtection *bool
 
 	// Property specifying whether protection against purge is enabled for this vault. Setting this property to true activates
 	// protection against purge for this vault and its content - only the Key Vault service may initiate a hard, irrecoverable
@@ -1395,6 +1593,20 @@ type VaultProperties struct {
 	// Rules governing the accessibility of the key vault from specific network locations.
 	NetworkACLs *NetworkRuleSet
 
+	// Configures an external Managed HSM key used to wrap the vault's protection keys.
+	// When configured, this property is returned in create, update, get, and list responses.
+	// Responses contain the persisted key reference and authentication mechanism, not key material or credentials.
+	// It can be supplied when creating a vault or enabling wrapping on an existing vault.
+	// This property is available starting with API version 2026-10-01-preview, when the protection-key wrapping capability is
+	// available for the target vault.
+	// Reapplying an equivalent configuration is supported; replacing or removing it is not.
+	// A versionless reference can match the persisted versioned reference; resubmitting it does not rotate the key.
+	// After configuration, vault availability depends on the persisted Managed HSM key version remaining usable and accessible
+	// to the service.
+	// Disabling or deleting that key version, or revoking the service's access, can make the vault unavailable.
+	// Omitting this property preserves the existing configuration.
+	ProtectionKeysWrappingKey *WrappingKeyConfiguration
+
 	// Provisioning state of the vault.
 	ProvisioningState *VaultProvisioningState
 
@@ -1405,6 +1617,9 @@ type VaultProperties struct {
 
 	// softDelete data retention days. It accepts >=7 and <=90.
 	SoftDeleteRetentionInDays *int32
+
+	// Configuration for Token Binding for Entra tokens
+	TokenBindingParameters *TokenBindingParameters
 
 	// The URI of the vault for performing operations on keys and secrets.
 	VaultURI *string
@@ -1423,4 +1638,39 @@ type VirtualNetworkRule struct {
 
 	// Property to specify whether NRP will ignore the check if parent subnet has serviceEndpoints configured.
 	IgnoreMissingVnetServiceEndpoint *bool
+}
+
+// WrappingKeyAuthenticationData - Authentication mechanism for accessing the external wrapping key.
+type WrappingKeyAuthenticationData struct {
+	// CONSTANT; Authentication mechanism. Only ServiceIdentity is supported.
+	// A caller-supplied vault managed identity is not required.
+	// Field has constant value "ServiceIdentity", any specified value is ignored.
+	AuthType *string
+}
+
+// WrappingKeyConfiguration - Configuration of the external key used to wrap a vault's protection keys.
+// Unsupported properties in this configuration and its nested objects are rejected.
+// Unsupported API versions or a feature that is not enabled result in HTTP 400 with NotSupported.
+// Invalid configurations or attempted replacement result in HTTP 400 with BadRequest or InvalidParameter.
+// Protection key wrapping throttling results in HTTP 429 with InternalError.
+// Other protection key wrapping failures result in HTTP 503 with InternalError.
+// Errors use the existing CloudError response.
+type WrappingKeyConfiguration struct {
+	// REQUIRED; Specifies how the service authenticates to the external wrapping key.
+	KeyAuthenticationData *WrappingKeyAuthenticationData
+
+	// REQUIRED; Identifies the external wrapping key.
+	KeyValue *WrappingKeyValue
+}
+
+// WrappingKeyValue - Reference to an external Managed HSM wrapping key.
+type WrappingKeyValue struct {
+	// CONSTANT; Wrapping key type. Only oct is supported.
+	// Field has constant value "oct", any specified value is ignored.
+	Kty *string
+
+	// REQUIRED; Absolute HTTPS URL of a key on a supported Managed HSM endpoint.
+	// The path must be /keys/{key-name} or /keys/{key-name}/{key-version}.
+	// User information, query strings, fragments, and non-default ports are not supported.
+	URL *string
 }

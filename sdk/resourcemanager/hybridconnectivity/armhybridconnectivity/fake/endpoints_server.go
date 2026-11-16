@@ -228,11 +228,8 @@ func (e *EndpointsServerTransport) dispatchListCredentials(req *http.Request) (*
 	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	endpointNameParam := matches[regex.SubexpIndex("endpointName")]
 	expiresinParam, err := parseOptional(qp.Get("expiresin"), func(v string) (int64, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 64)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return p, nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 64)
+		return int64(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err
@@ -277,11 +274,8 @@ func (e *EndpointsServerTransport) dispatchListIngressGatewayCredentials(req *ht
 	resourceURIParam := matches[regex.SubexpIndex("resourceUri")]
 	endpointNameParam := matches[regex.SubexpIndex("endpointName")]
 	expiresinParam, err := parseOptional(qp.Get("expiresin"), func(v string) (int64, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 64)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return p, nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 64)
+		return int64(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err

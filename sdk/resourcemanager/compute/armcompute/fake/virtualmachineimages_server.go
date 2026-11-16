@@ -188,11 +188,8 @@ func (v *VirtualMachineImagesServerTransport) dispatchList(req *http.Request) (*
 	}
 	expandParam := getOptional(qp.Get("$expand"))
 	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err
@@ -357,7 +354,7 @@ func (v *VirtualMachineImagesServerTransport) dispatchListWithProperties(req *ht
 	if v.srv.ListWithProperties == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListWithProperties not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publishers/(?P<publisherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/artifacttypes/vmimage/offers/(?P<offer>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<skus>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions?\$expand=Properties`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Compute/locations/(?P<location>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/publishers/(?P<publisherName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/artifacttypes/vmimage/offers/(?P<offer>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/skus/(?P<skus>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/versions`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 6 {
@@ -381,11 +378,8 @@ func (v *VirtualMachineImagesServerTransport) dispatchListWithProperties(req *ht
 		return nil, err
 	}
 	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err

@@ -8,6 +8,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"io"
 	"net/http"
+	"net/url"
 	"sync"
 )
 
@@ -30,14 +31,6 @@ func initServer[T any](mu *sync.Mutex, dst **T, src func() *T) {
 		*dst = src()
 	}
 	mu.Unlock()
-}
-
-func parseWithCast[T any](v string, parse func(v string) (T, error)) (T, error) {
-	t, err := parse(v)
-	if err != nil {
-		return *new(T), err
-	}
-	return t, err
 }
 
 func readRequestBody(req *http.Request) ([]byte, error) {
@@ -82,4 +75,26 @@ func (p *tracker[T]) remove(req *http.Request) {
 	p.mu.Lock()
 	defer p.mu.Unlock()
 	delete(p.items, server.SanitizePagerPollerPath(req.URL.Path))
+}
+
+func parseURIArray[T any](values []string, unescape bool, parse func(string) (T, error)) ([]T, error) {
+	if values == nil {
+		return nil, nil
+	}
+	result := make([]T, len(values))
+	for i, value := range values {
+		if unescape {
+			var err error
+			value, err = url.PathUnescape(value)
+			if err != nil {
+				return nil, err
+			}
+		}
+		parsed, err := parse(value)
+		if err != nil {
+			return nil, err
+		}
+		result[i] = parsed
+	}
+	return result, nil
 }

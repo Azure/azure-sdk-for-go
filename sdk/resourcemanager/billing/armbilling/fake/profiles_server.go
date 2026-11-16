@@ -260,21 +260,15 @@ func (p *ProfilesServerTransport) dispatchNewListByBillingAccountPager(req *http
 		filterParam := getOptional(qp.Get("filter"))
 		orderByParam := getOptional(qp.Get("orderBy"))
 		topParam, err := parseOptional(qp.Get("top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
 		}
 		skipParam, err := parseOptional(qp.Get("skip"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

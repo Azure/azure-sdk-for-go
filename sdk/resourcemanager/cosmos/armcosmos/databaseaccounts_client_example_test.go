@@ -813,7 +813,6 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 			DiagnosticLogSettings: &armcosmos.DiagnosticLogSettings{
 				EnableFullTextQuery: to.Ptr(armcosmos.EnableFullTextQueryTrue),
 			},
-			EnableEmbeddingGenerator:                   to.Ptr(true),
 			EnablePartitionMerge:                       to.Ptr(true),
 			EnableBurstCapacity:                        to.Ptr(true),
 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
@@ -967,7 +966,7 @@ func ExampleDatabaseAccountsClient_BeginUpdate() {
 	// 				PreviousCapacityMode: to.Ptr(armcosmos.CapacityModeServerless),
 	// 			},
 	// 			EnableMaterializedViews: to.Ptr(false),
-	// 			EnableEmbeddingGenerator: to.Ptr(true),
+	// 			EnableEmbeddingGenerator: to.Ptr(false),
 	// 			EnableBurstCapacity: to.Ptr(true),
 	// 			EnforceHierarchicalPartitionKeyIDLastLevel: to.Ptr(false),
 	// 			MinimalTLSVersion: to.Ptr(armcosmos.MinimalTLSVersionTLS),

@@ -2118,15 +2118,15 @@ func (i *IdentityBindingManagedIdentityProfile) UnmarshalJSON(data []byte) error
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type IdentityBindingOidcIssuerProfile.
-func (i IdentityBindingOidcIssuerProfile) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type IdentityBindingOIDCIssuerProfile.
+func (i IdentityBindingOIDCIssuerProfile) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "oidcIssuerUrl", i.OidcIssuerURL)
+	populate(objectMap, "oidcIssuerUrl", i.OIDCIssuerURL)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type IdentityBindingOidcIssuerProfile.
-func (i *IdentityBindingOidcIssuerProfile) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type IdentityBindingOIDCIssuerProfile.
+func (i *IdentityBindingOIDCIssuerProfile) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", i, err.Error())
@@ -2135,7 +2135,7 @@ func (i *IdentityBindingOidcIssuerProfile) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "oidcIssuerUrl":
-			err = unpopulate(val, "OidcIssuerURL", &i.OidcIssuerURL)
+			err = unpopulate(val, "OIDCIssuerURL", &i.OIDCIssuerURL)
 			delete(rawMsg, key)
 		}
 		if err != nil {
@@ -2298,7 +2298,7 @@ func (i IdentityBindingProperties) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "allowedSubjects", i.AllowedSubjects)
 	populate(objectMap, "managedIdentity", i.ManagedIdentity)
-	populate(objectMap, "oidcIssuer", i.OidcIssuer)
+	populate(objectMap, "oidcIssuer", i.OIDCIssuer)
 	return json.Marshal(objectMap)
 }
 
@@ -2318,7 +2318,7 @@ func (i *IdentityBindingProperties) UnmarshalJSON(data []byte) error {
 			err = unpopulate(val, "ManagedIdentity", &i.ManagedIdentity)
 			delete(rawMsg, key)
 		case "oidcIssuer":
-			err = unpopulate(val, "OidcIssuer", &i.OidcIssuer)
+			err = unpopulate(val, "OIDCIssuer", &i.OIDCIssuer)
 			delete(rawMsg, key)
 		}
 		if err != nil {

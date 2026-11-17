@@ -1,6 +1,6 @@
 # Release History
 
-## 3.2.0-beta.1 (2026-11-16)
+## 3.2.0-beta.1 (2026-11-17)
 ### Features Added
 
 - New enum type `IdentityBindingLabelSelectorOperator` with values `IdentityBindingLabelSelectorOperatorDoesNotExist`, `IdentityBindingLabelSelectorOperatorExists`, `IdentityBindingLabelSelectorOperatorIn`, `IdentityBindingLabelSelectorOperatorNotIn`
@@ -16,7 +16,7 @@
 - New struct `IdentityBindingLabelSelector`
 - New struct `IdentityBindingLabelSelectorRequirement`
 - New struct `IdentityBindingManagedIdentityProfile`
-- New struct `IdentityBindingOidcIssuerProfile`
+- New struct `IdentityBindingOIDCIssuerProfile`
 - New struct `IdentityBindingProfile`
 - New struct `IdentityBindingProfileListResult`
 - New struct `IdentityBindingProfileProperties`

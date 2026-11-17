@@ -791,10 +791,10 @@ type IdentityBindingManagedIdentityProfile struct {
 	TenantID *string
 }
 
-// IdentityBindingOidcIssuerProfile - The OIDC issuer profile of the identity binding profile.
-type IdentityBindingOidcIssuerProfile struct {
+// IdentityBindingOIDCIssuerProfile - The OIDC issuer profile of the identity binding profile.
+type IdentityBindingOIDCIssuerProfile struct {
 	// READ-ONLY; The OIDC issuer URL of the identity binding profile.
-	OidcIssuerURL *string
+	OIDCIssuerURL *string
 }
 
 // IdentityBindingProfile - A fleet identity binding profile.
@@ -871,7 +871,7 @@ type IdentityBindingProperties struct {
 	AllowedSubjects []*AllowedSubject
 
 	// READ-ONLY; The OIDC issuer profile of the identity binding profile.
-	OidcIssuer *IdentityBindingOidcIssuerProfile
+	OIDCIssuer *IdentityBindingOIDCIssuerProfile
 }
 
 // LabelSelector - A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions

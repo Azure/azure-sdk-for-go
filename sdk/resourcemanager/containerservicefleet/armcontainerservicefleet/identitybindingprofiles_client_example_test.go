@@ -62,8 +62,8 @@ func ExampleIdentityBindingProfilesClient_BeginApply() {
 	// 						},
 	// 					},
 	// 				},
-	// 				OidcIssuer: &armcontainerservicefleet.IdentityBindingOidcIssuerProfile{
-	// 					OidcIssuerURL: to.Ptr("https://oidc-endpoint"),
+	// 				OIDCIssuer: &armcontainerservicefleet.IdentityBindingOIDCIssuerProfile{
+	// 					OIDCIssuerURL: to.Ptr("https://oidc-endpoint"),
 	// 				},
 	// 			},
 	// 			Status: &armcontainerservicefleet.IdentityBindingProfileStatus{
@@ -162,8 +162,8 @@ func ExampleIdentityBindingProfilesClient_BeginCreateOrUpdate() {
 	// 						},
 	// 					},
 	// 				},
-	// 				OidcIssuer: &armcontainerservicefleet.IdentityBindingOidcIssuerProfile{
-	// 					OidcIssuerURL: to.Ptr("https://oidc-endpoint"),
+	// 				OIDCIssuer: &armcontainerservicefleet.IdentityBindingOIDCIssuerProfile{
+	// 					OIDCIssuerURL: to.Ptr("https://oidc-endpoint"),
 	// 				},
 	// 			},
 	// 			Status: &armcontainerservicefleet.IdentityBindingProfileStatus{
@@ -254,8 +254,8 @@ func ExampleIdentityBindingProfilesClient_Get() {
 	// 						},
 	// 					},
 	// 				},
-	// 				OidcIssuer: &armcontainerservicefleet.IdentityBindingOidcIssuerProfile{
-	// 					OidcIssuerURL: to.Ptr("https://oidc-endpoint"),
+	// 				OIDCIssuer: &armcontainerservicefleet.IdentityBindingOIDCIssuerProfile{
+	// 					OIDCIssuerURL: to.Ptr("https://oidc-endpoint"),
 	// 				},
 	// 			},
 	// 			Status: &armcontainerservicefleet.IdentityBindingProfileStatus{
@@ -330,8 +330,8 @@ func ExampleIdentityBindingProfilesClient_NewListByFleetPager() {
 		// 								},
 		// 							},
 		// 						},
-		// 						OidcIssuer: &armcontainerservicefleet.IdentityBindingOidcIssuerProfile{
-		// 							OidcIssuerURL: to.Ptr("https://oidc-endpoint"),
+		// 						OIDCIssuer: &armcontainerservicefleet.IdentityBindingOIDCIssuerProfile{
+		// 							OIDCIssuerURL: to.Ptr("https://oidc-endpoint"),
 		// 						},
 		// 					},
 		// 					Status: &armcontainerservicefleet.IdentityBindingProfileStatus{

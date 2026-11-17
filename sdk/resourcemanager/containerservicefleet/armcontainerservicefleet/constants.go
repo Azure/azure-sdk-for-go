@@ -5,7 +5,7 @@
 package armcontainerservicefleet
 
 const (
-	version20261101 string = "2026-11-01"
+	version20261102Preview string = "2026-11-02-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -401,6 +401,55 @@ func PossibleGateTypeValues() []GateType {
 	return []GateType{
 		GateTypeApproval,
 		GateTypeScheduledStart,
+	}
+}
+
+// IdentityBindingLabelSelectorOperator - operator represents a key's relationship to a set of values. Valid operators are
+// In, NotIn, Exists and DoesNotExist.
+type IdentityBindingLabelSelectorOperator string
+
+const (
+	// IdentityBindingLabelSelectorOperatorDoesNotExist - The value of the key should not exist.
+	IdentityBindingLabelSelectorOperatorDoesNotExist IdentityBindingLabelSelectorOperator = "DoesNotExist"
+	// IdentityBindingLabelSelectorOperatorExists - The value of the key should exist.
+	IdentityBindingLabelSelectorOperatorExists IdentityBindingLabelSelectorOperator = "Exists"
+	// IdentityBindingLabelSelectorOperatorIn - The value of the key should be in the given list.
+	IdentityBindingLabelSelectorOperatorIn IdentityBindingLabelSelectorOperator = "In"
+	// IdentityBindingLabelSelectorOperatorNotIn - The value of the key should not be in the given list.
+	IdentityBindingLabelSelectorOperatorNotIn IdentityBindingLabelSelectorOperator = "NotIn"
+)
+
+// PossibleIdentityBindingLabelSelectorOperatorValues returns the possible values for the IdentityBindingLabelSelectorOperator const type.
+func PossibleIdentityBindingLabelSelectorOperatorValues() []IdentityBindingLabelSelectorOperator {
+	return []IdentityBindingLabelSelectorOperator{
+		IdentityBindingLabelSelectorOperatorDoesNotExist,
+		IdentityBindingLabelSelectorOperatorExists,
+		IdentityBindingLabelSelectorOperatorIn,
+		IdentityBindingLabelSelectorOperatorNotIn,
+	}
+}
+
+// IdentityBindingProfileProvisioningState - The provisioning state of the identity binding profile resource.
+type IdentityBindingProfileProvisioningState string
+
+const (
+	// IdentityBindingProfileProvisioningStateApplying - The identity binding profile is being applied to the selected fleet members.
+	IdentityBindingProfileProvisioningStateApplying IdentityBindingProfileProvisioningState = "Applying"
+	// IdentityBindingProfileProvisioningStateCanceled - Resource creation was canceled.
+	IdentityBindingProfileProvisioningStateCanceled IdentityBindingProfileProvisioningState = "Canceled"
+	// IdentityBindingProfileProvisioningStateFailed - Resource creation failed.
+	IdentityBindingProfileProvisioningStateFailed IdentityBindingProfileProvisioningState = "Failed"
+	// IdentityBindingProfileProvisioningStateSucceeded - Resource has been created.
+	IdentityBindingProfileProvisioningStateSucceeded IdentityBindingProfileProvisioningState = "Succeeded"
+)
+
+// PossibleIdentityBindingProfileProvisioningStateValues returns the possible values for the IdentityBindingProfileProvisioningState const type.
+func PossibleIdentityBindingProfileProvisioningStateValues() []IdentityBindingProfileProvisioningState {
+	return []IdentityBindingProfileProvisioningState{
+		IdentityBindingProfileProvisioningStateApplying,
+		IdentityBindingProfileProvisioningStateCanceled,
+		IdentityBindingProfileProvisioningStateFailed,
+		IdentityBindingProfileProvisioningStateSucceeded,
 	}
 }
 

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-11-01/UpdateStrategies_CreateOrUpdate.json
+// Generated from example definition: 2026-11-02-preview/UpdateStrategies_CreateOrUpdate.json
 func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -28,12 +28,14 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
 				Stages: []*armcontainerservicefleet.UpdateStage{
 					{
-						Name:           to.Ptr("stage1"),
-						MaxConcurrency: to.Ptr("20%"),
+						Name:               to.Ptr("stage1"),
+						MaxConcurrency:     to.Ptr("20%"),
+						MaxAllowedFailures: to.Ptr("2"),
 						Groups: []*armcontainerservicefleet.UpdateGroup{
 							{
-								Name:           to.Ptr("group-a"),
-								MaxConcurrency: to.Ptr("5"),
+								Name:               to.Ptr("group-a"),
+								MaxConcurrency:     to.Ptr("5"),
+								MaxAllowedFailures: to.Ptr("1"),
 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 									ByLabel: to.Ptr("tier=frontend"),
 								},
@@ -66,8 +68,9 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
 					},
 					{
-						Name:           to.Ptr("stage2"),
-						MaxConcurrency: to.Ptr("50%"),
+						Name:               to.Ptr("stage2"),
+						MaxConcurrency:     to.Ptr("50%"),
+						MaxAllowedFailures: to.Ptr("25%"),
 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 							ByLabel: to.Ptr("env=production"),
 						},
@@ -107,10 +110,12 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	// 					{
 	// 						Name: to.Ptr("stage1"),
 	// 						MaxConcurrency: to.Ptr("20%"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("5"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
 	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 									ByLabel: to.Ptr("tier=frontend"),
 	// 								},
@@ -145,6 +150,7 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	// 					{
 	// 						Name: to.Ptr("stage2"),
 	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
 	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 							ByLabel: to.Ptr("env=production"),
 	// 						},
@@ -158,7 +164,7 @@ func ExampleFleetUpdateStrategiesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateStrategies_Delete.json
+// Generated from example definition: 2026-11-02-preview/UpdateStrategies_Delete.json
 func ExampleFleetUpdateStrategiesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -184,7 +190,7 @@ func ExampleFleetUpdateStrategiesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateStrategies_Get.json
+// Generated from example definition: 2026-11-02-preview/UpdateStrategies_Get.json
 func ExampleFleetUpdateStrategiesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -222,10 +228,12 @@ func ExampleFleetUpdateStrategiesClient_Get() {
 	// 					{
 	// 						Name: to.Ptr("stage1"),
 	// 						MaxConcurrency: to.Ptr("20%"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("5"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
 	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 									ByLabel: to.Ptr("tier=frontend"),
 	// 								},
@@ -260,6 +268,7 @@ func ExampleFleetUpdateStrategiesClient_Get() {
 	// 					{
 	// 						Name: to.Ptr("stage2"),
 	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
 	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 							ByLabel: to.Ptr("env=production"),
 	// 						},
@@ -273,7 +282,7 @@ func ExampleFleetUpdateStrategiesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateStrategies_ListByFleet.json
+// Generated from example definition: 2026-11-02-preview/UpdateStrategies_ListByFleet.json
 func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -317,10 +326,12 @@ func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
 		// 							{
 		// 								Name: to.Ptr("stage1"),
 		// 								MaxConcurrency: to.Ptr("20%"),
+		// 								MaxAllowedFailures: to.Ptr("2"),
 		// 								Groups: []*armcontainerservicefleet.UpdateGroup{
 		// 									{
 		// 										Name: to.Ptr("group-a"),
 		// 										MaxConcurrency: to.Ptr("5"),
+		// 										MaxAllowedFailures: to.Ptr("1"),
 		// 										MemberSelector: &armcontainerservicefleet.MemberSelector{
 		// 											ByLabel: to.Ptr("tier=frontend"),
 		// 										},
@@ -355,6 +366,7 @@ func ExampleFleetUpdateStrategiesClient_NewListByFleetPager() {
 		// 							{
 		// 								Name: to.Ptr("stage2"),
 		// 								MaxConcurrency: to.Ptr("50%"),
+		// 								MaxAllowedFailures: to.Ptr("25%"),
 		// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 		// 									ByLabel: to.Ptr("env=production"),
 		// 								},

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-11-01/UpdateRuns_CreateOrUpdate.json
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_CreateOrUpdate.json
 func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -29,12 +29,14 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 			Strategy: &armcontainerservicefleet.UpdateRunStrategy{
 				Stages: []*armcontainerservicefleet.UpdateStage{
 					{
-						Name:           to.Ptr("stage1"),
-						MaxConcurrency: to.Ptr("10"),
+						Name:               to.Ptr("stage1"),
+						MaxConcurrency:     to.Ptr("10"),
+						MaxAllowedFailures: to.Ptr("2"),
 						Groups: []*armcontainerservicefleet.UpdateGroup{
 							{
-								Name:           to.Ptr("group-a"),
-								MaxConcurrency: to.Ptr("2"),
+								Name:               to.Ptr("group-a"),
+								MaxConcurrency:     to.Ptr("2"),
+								MaxAllowedFailures: to.Ptr("1"),
 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 									ByLabel: to.Ptr("tier=frontend"),
 								},
@@ -67,8 +69,9 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 						AfterStageWaitInSeconds: to.Ptr[int32](3600),
 					},
 					{
-						Name:           to.Ptr("stage2"),
-						MaxConcurrency: to.Ptr("50%"),
+						Name:               to.Ptr("stage2"),
+						MaxConcurrency:     to.Ptr("50%"),
+						MaxAllowedFailures: to.Ptr("25%"),
 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 							ByLabel: to.Ptr("env=production"),
 						},
@@ -129,10 +132,12 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 					{
 	// 						Name: to.Ptr("stage1"),
 	// 						MaxConcurrency: to.Ptr("10"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
 	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 									ByLabel: to.Ptr("tier=frontend"),
 	// 								},
@@ -167,6 +172,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 					{
 	// 						Name: to.Ptr("stage2"),
 	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
 	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 							ByLabel: to.Ptr("env=production"),
 	// 						},
@@ -204,6 +210,8 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStatePending),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](2),
 	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
@@ -211,6 +219,8 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								FailureCount: to.Ptr[int32](0),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
 	// 								MaxConcurrency: to.Ptr[int32](2),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
@@ -268,6 +278,8 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 						},
 	// 						Name: to.Ptr("stage2"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](1),
 	// 						MaxConcurrency: to.Ptr[int32](50),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 						},
@@ -287,6 +299,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// 						},
 	// 					},
 	// 				},
+	// 				FailureCount: to.Ptr[int32](0),
 	// 			},
 	// 		},
 	// 		ETag: to.Ptr("\"EtagValue\""),
@@ -294,7 +307,7 @@ func ExampleUpdateRunsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateRuns_Delete.json
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_Delete.json
 func ExampleUpdateRunsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -320,7 +333,7 @@ func ExampleUpdateRunsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateRuns_Skip.json
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_Skip.json
 func ExampleUpdateRunsClient_BeginSkip() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -373,10 +386,12 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 					{
 	// 						Name: to.Ptr("stage1"),
 	// 						MaxConcurrency: to.Ptr("10"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
 	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 									ByLabel: to.Ptr("tier=frontend"),
 	// 								},
@@ -384,6 +399,7 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 							{
 	// 								Name: to.Ptr("group-b"),
 	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
 	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 									ByLabel: to.Ptr("tier=frontend"),
 	// 								},
@@ -394,6 +410,7 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 					{
 	// 						Name: to.Ptr("stage2"),
 	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
 	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 							ByLabel: to.Ptr("env=production"),
 	// 						},
@@ -422,6 +439,8 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](2),
 	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
@@ -430,6 +449,8 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateSkipped),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								FailureCount: to.Ptr[int32](0),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
 	// 								MaxConcurrency: to.Ptr[int32](2),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
@@ -447,6 +468,8 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 								},
 	// 								Name: to.Ptr("group-b"),
+	// 								FailureCount: to.Ptr[int32](0),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
 	// 								MaxConcurrency: to.Ptr[int32](2),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
@@ -471,6 +494,8 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 						},
 	// 						Name: to.Ptr("stage2"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](1),
 	// 						MaxConcurrency: to.Ptr[int32](50),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 						},
@@ -482,6 +507,7 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// 						},
 	// 					},
 	// 				},
+	// 				FailureCount: to.Ptr[int32](0),
 	// 			},
 	// 		},
 	// 		ETag: to.Ptr("\"EtagValue\""),
@@ -489,7 +515,7 @@ func ExampleUpdateRunsClient_BeginSkip() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateRuns_Start.json
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_Start.json
 func ExampleUpdateRunsClient_BeginStart() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -531,10 +557,12 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 					{
 	// 						Name: to.Ptr("stage1"),
 	// 						MaxConcurrency: to.Ptr("10"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("5"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
 	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 									ByLabel: to.Ptr("tier=frontend"),
 	// 								},
@@ -545,6 +573,7 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 					{
 	// 						Name: to.Ptr("stage2"),
 	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
 	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 							ByLabel: to.Ptr("env=production"),
 	// 						},
@@ -573,6 +602,8 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](2),
 	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
@@ -581,6 +612,8 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateRunning),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								FailureCount: to.Ptr[int32](0),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
 	// 								MaxConcurrency: to.Ptr[int32](5),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
@@ -605,6 +638,8 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 						},
 	// 						Name: to.Ptr("stage2"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](1),
 	// 						MaxConcurrency: to.Ptr[int32](50),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 						},
@@ -616,6 +651,7 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// 						},
 	// 					},
 	// 				},
+	// 				FailureCount: to.Ptr[int32](0),
 	// 			},
 	// 		},
 	// 		ETag: to.Ptr("\"EtagValue\""),
@@ -623,7 +659,7 @@ func ExampleUpdateRunsClient_BeginStart() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateRuns_Stop.json
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_Stop.json
 func ExampleUpdateRunsClient_BeginStop() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -665,10 +701,12 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 					{
 	// 						Name: to.Ptr("stage1"),
 	// 						MaxConcurrency: to.Ptr("20%"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("5"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
 	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 									ByLabel: to.Ptr("tier=frontend"),
 	// 								},
@@ -679,6 +717,7 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 					{
 	// 						Name: to.Ptr("stage2"),
 	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
 	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 							ByLabel: to.Ptr("env=production"),
 	// 						},
@@ -707,6 +746,8 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						FailureCount: to.Ptr[int32](1),
+	// 						MaxAllowedFailures: to.Ptr[int32](2),
 	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
@@ -715,6 +756,8 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateStopping),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								FailureCount: to.Ptr[int32](1),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
 	// 								MaxConcurrency: to.Ptr[int32](5),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
@@ -739,6 +782,8 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 						},
 	// 						Name: to.Ptr("stage2"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](1),
 	// 						MaxConcurrency: to.Ptr[int32](50),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 						},
@@ -750,6 +795,7 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// 						},
 	// 					},
 	// 				},
+	// 				FailureCount: to.Ptr[int32](1),
 	// 			},
 	// 		},
 	// 		ETag: to.Ptr("\"EtagValue\""),
@@ -757,7 +803,7 @@ func ExampleUpdateRunsClient_BeginStop() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateRuns_Get.json
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_Get.json
 func ExampleUpdateRunsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -795,10 +841,12 @@ func ExampleUpdateRunsClient_Get() {
 	// 					{
 	// 						Name: to.Ptr("stage1"),
 	// 						MaxConcurrency: to.Ptr("10"),
+	// 						MaxAllowedFailures: to.Ptr("2"),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroup{
 	// 							{
 	// 								Name: to.Ptr("group-a"),
 	// 								MaxConcurrency: to.Ptr("2"),
+	// 								MaxAllowedFailures: to.Ptr("1"),
 	// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 									ByLabel: to.Ptr("tier=frontend"),
 	// 								},
@@ -833,6 +881,7 @@ func ExampleUpdateRunsClient_Get() {
 	// 					{
 	// 						Name: to.Ptr("stage2"),
 	// 						MaxConcurrency: to.Ptr("50%"),
+	// 						MaxAllowedFailures: to.Ptr("25%"),
 	// 						MemberSelector: &armcontainerservicefleet.MemberSelector{
 	// 							ByLabel: to.Ptr("env=production"),
 	// 						},
@@ -859,6 +908,8 @@ func ExampleUpdateRunsClient_Get() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStatePending),
 	// 						},
 	// 						Name: to.Ptr("stage1"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](2),
 	// 						MaxConcurrency: to.Ptr[int32](10),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 							{
@@ -866,6 +917,8 @@ func ExampleUpdateRunsClient_Get() {
 	// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 								},
 	// 								Name: to.Ptr("group-a"),
+	// 								FailureCount: to.Ptr[int32](0),
+	// 								MaxAllowedFailures: to.Ptr[int32](1),
 	// 								MaxConcurrency: to.Ptr[int32](2),
 	// 								Members: []*armcontainerservicefleet.MemberUpdateStatus{
 	// 									{
@@ -923,6 +976,8 @@ func ExampleUpdateRunsClient_Get() {
 	// 							State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 	// 						},
 	// 						Name: to.Ptr("stage2"),
+	// 						FailureCount: to.Ptr[int32](0),
+	// 						MaxAllowedFailures: to.Ptr[int32](1),
 	// 						MaxConcurrency: to.Ptr[int32](50),
 	// 						Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 	// 						},
@@ -934,6 +989,7 @@ func ExampleUpdateRunsClient_Get() {
 	// 						},
 	// 					},
 	// 				},
+	// 				FailureCount: to.Ptr[int32](0),
 	// 			},
 	// 		},
 	// 		ETag: to.Ptr("\"EtagValue\""),
@@ -941,7 +997,7 @@ func ExampleUpdateRunsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateRuns_ListByFleet.json
+// Generated from example definition: 2026-11-02-preview/UpdateRuns_ListByFleet.json
 func ExampleUpdateRunsClient_NewListByFleetPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -985,10 +1041,12 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 							{
 		// 								Name: to.Ptr("stage1"),
 		// 								MaxConcurrency: to.Ptr("10"),
+		// 								MaxAllowedFailures: to.Ptr("2"),
 		// 								Groups: []*armcontainerservicefleet.UpdateGroup{
 		// 									{
 		// 										Name: to.Ptr("group-a"),
 		// 										MaxConcurrency: to.Ptr("2"),
+		// 										MaxAllowedFailures: to.Ptr("1"),
 		// 										MemberSelector: &armcontainerservicefleet.MemberSelector{
 		// 											ByLabel: to.Ptr("tier=frontend"),
 		// 										},
@@ -1023,6 +1081,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 							{
 		// 								Name: to.Ptr("stage2"),
 		// 								MaxConcurrency: to.Ptr("50%"),
+		// 								MaxAllowedFailures: to.Ptr("25%"),
 		// 								MemberSelector: &armcontainerservicefleet.MemberSelector{
 		// 									ByLabel: to.Ptr("env=production"),
 		// 								},
@@ -1049,6 +1108,8 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 									State: to.Ptr(armcontainerservicefleet.UpdateStatePending),
 		// 								},
 		// 								Name: to.Ptr("stage1"),
+		// 								FailureCount: to.Ptr[int32](0),
+		// 								MaxAllowedFailures: to.Ptr[int32](2),
 		// 								MaxConcurrency: to.Ptr[int32](10),
 		// 								Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 		// 									{
@@ -1056,6 +1117,8 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 											State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 		// 										},
 		// 										Name: to.Ptr("group-a"),
+		// 										FailureCount: to.Ptr[int32](0),
+		// 										MaxAllowedFailures: to.Ptr[int32](1),
 		// 										MaxConcurrency: to.Ptr[int32](2),
 		// 										Members: []*armcontainerservicefleet.MemberUpdateStatus{
 		// 											{
@@ -1113,6 +1176,8 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 									State: to.Ptr(armcontainerservicefleet.UpdateStateNotStarted),
 		// 								},
 		// 								Name: to.Ptr("stage2"),
+		// 								FailureCount: to.Ptr[int32](0),
+		// 								MaxAllowedFailures: to.Ptr[int32](1),
 		// 								MaxConcurrency: to.Ptr[int32](50),
 		// 								Groups: []*armcontainerservicefleet.UpdateGroupStatus{
 		// 								},
@@ -1124,6 +1189,7 @@ func ExampleUpdateRunsClient_NewListByFleetPager() {
 		// 								},
 		// 							},
 		// 						},
+		// 						FailureCount: to.Ptr[int32](0),
 		// 					},
 		// 				},
 		// 				ETag: to.Ptr("\"EtagValue\""),

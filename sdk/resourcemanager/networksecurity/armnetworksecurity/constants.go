@@ -6,6 +6,7 @@ package armnetworksecurity
 
 const (
 	version20261001Preview string = "2026-10-01-preview"
+	version20261103Preview string = "2026-11-03-preview"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
@@ -20,6 +21,78 @@ const (
 func PossibleActionTypeValues() []ActionType {
 	return []ActionType{
 		ActionTypeInternal,
+	}
+}
+
+// ClusterAssociationIfNoneMatch - Allowed If-None-Match values for cluster association creation.
+type ClusterAssociationIfNoneMatch string
+
+const (
+	// ClusterAssociationIfNoneMatchWildcard - Match any current representation.
+	ClusterAssociationIfNoneMatchWildcard ClusterAssociationIfNoneMatch = "*"
+)
+
+// PossibleClusterAssociationIfNoneMatchValues returns the possible values for the ClusterAssociationIfNoneMatch const type.
+func PossibleClusterAssociationIfNoneMatchValues() []ClusterAssociationIfNoneMatch {
+	return []ClusterAssociationIfNoneMatch{
+		ClusterAssociationIfNoneMatchWildcard,
+	}
+}
+
+// ClusterAssociationSKUName - The name of a cluster association SKU.
+type ClusterAssociationSKUName string
+
+const (
+	// ClusterAssociationSKUNamePremium - AgentGateway and AgentFabric.
+	ClusterAssociationSKUNamePremium ClusterAssociationSKUName = "Premium"
+	// ClusterAssociationSKUNameStandard - AgentGateway only.
+	ClusterAssociationSKUNameStandard ClusterAssociationSKUName = "Standard"
+)
+
+// PossibleClusterAssociationSKUNameValues returns the possible values for the ClusterAssociationSKUName const type.
+func PossibleClusterAssociationSKUNameValues() []ClusterAssociationSKUName {
+	return []ClusterAssociationSKUName{
+		ClusterAssociationSKUNamePremium,
+		ClusterAssociationSKUNameStandard,
+	}
+}
+
+// ContentInspectionPolicySourceType - The type of source selector for a content inspection policy.
+type ContentInspectionPolicySourceType string
+
+const (
+	// ContentInspectionPolicySourceTypeAddressPrefixes - Select sources by IP address prefixes in CIDR notation.
+	ContentInspectionPolicySourceTypeAddressPrefixes ContentInspectionPolicySourceType = "AddressPrefixes"
+	// ContentInspectionPolicySourceTypeWorkloadIDPatterns - Select sources by workload ID patterns.
+	ContentInspectionPolicySourceTypeWorkloadIDPatterns ContentInspectionPolicySourceType = "WorkloadIdPatterns"
+)
+
+// PossibleContentInspectionPolicySourceTypeValues returns the possible values for the ContentInspectionPolicySourceType const type.
+func PossibleContentInspectionPolicySourceTypeValues() []ContentInspectionPolicySourceType {
+	return []ContentInspectionPolicySourceType{
+		ContentInspectionPolicySourceTypeAddressPrefixes,
+		ContentInspectionPolicySourceTypeWorkloadIDPatterns,
+	}
+}
+
+// ContentInspectionSensitivity - The sensitivity level of content inspection.
+type ContentInspectionSensitivity string
+
+const (
+	// ContentInspectionSensitivityHigh - High sensitivity.
+	ContentInspectionSensitivityHigh ContentInspectionSensitivity = "High"
+	// ContentInspectionSensitivityLow - Low sensitivity.
+	ContentInspectionSensitivityLow ContentInspectionSensitivity = "Low"
+	// ContentInspectionSensitivityMedium - Medium sensitivity.
+	ContentInspectionSensitivityMedium ContentInspectionSensitivity = "Medium"
+)
+
+// PossibleContentInspectionSensitivityValues returns the possible values for the ContentInspectionSensitivity const type.
+func PossibleContentInspectionSensitivityValues() []ContentInspectionSensitivity {
+	return []ContentInspectionSensitivity{
+		ContentInspectionSensitivityHigh,
+		ContentInspectionSensitivityLow,
+		ContentInspectionSensitivityMedium,
 	}
 }
 
@@ -47,6 +120,90 @@ func PossibleCreatedByTypeValues() []CreatedByType {
 	}
 }
 
+// FqdnFilteringDestinationType - The type of destination selector for an FQDN filtering policy.
+type FqdnFilteringDestinationType string
+
+const (
+	// FqdnFilteringDestinationTypeFqdns - Select destinations by fully qualified domain names.
+	FqdnFilteringDestinationTypeFqdns FqdnFilteringDestinationType = "Fqdns"
+)
+
+// PossibleFqdnFilteringDestinationTypeValues returns the possible values for the FqdnFilteringDestinationType const type.
+func PossibleFqdnFilteringDestinationTypeValues() []FqdnFilteringDestinationType {
+	return []FqdnFilteringDestinationType{
+		FqdnFilteringDestinationTypeFqdns,
+	}
+}
+
+// FqdnFilteringSourceType - The type of source selector for an FQDN filtering policy.
+type FqdnFilteringSourceType string
+
+const (
+	// FqdnFilteringSourceTypeAddressPrefixes - Select sources by IP address prefixes in CIDR notation.
+	FqdnFilteringSourceTypeAddressPrefixes FqdnFilteringSourceType = "AddressPrefixes"
+	// FqdnFilteringSourceTypeWorkloadIDPatterns - Select sources by workload ID patterns.
+	FqdnFilteringSourceTypeWorkloadIDPatterns FqdnFilteringSourceType = "WorkloadIdPatterns"
+)
+
+// PossibleFqdnFilteringSourceTypeValues returns the possible values for the FqdnFilteringSourceType const type.
+func PossibleFqdnFilteringSourceTypeValues() []FqdnFilteringSourceType {
+	return []FqdnFilteringSourceType{
+		FqdnFilteringSourceTypeAddressPrefixes,
+		FqdnFilteringSourceTypeWorkloadIDPatterns,
+	}
+}
+
+// HTTPMethod - The HTTP method matched by a URL filtering rule.
+type HTTPMethod string
+
+const (
+	// HTTPMethodDelete - HTTP DELETE method.
+	HTTPMethodDelete HTTPMethod = "DELETE"
+	// HTTPMethodGet - HTTP GET method.
+	HTTPMethodGet HTTPMethod = "GET"
+	// HTTPMethodHead - HTTP HEAD method.
+	HTTPMethodHead HTTPMethod = "HEAD"
+	// HTTPMethodOptions - HTTP OPTIONS method.
+	HTTPMethodOptions HTTPMethod = "OPTIONS"
+	// HTTPMethodPatch - HTTP PATCH method.
+	HTTPMethodPatch HTTPMethod = "PATCH"
+	// HTTPMethodPost - HTTP POST method.
+	HTTPMethodPost HTTPMethod = "POST"
+	// HTTPMethodPut - HTTP PUT method.
+	HTTPMethodPut HTTPMethod = "PUT"
+)
+
+// PossibleHTTPMethodValues returns the possible values for the HTTPMethod const type.
+func PossibleHTTPMethodValues() []HTTPMethod {
+	return []HTTPMethod{
+		HTTPMethodDelete,
+		HTTPMethodGet,
+		HTTPMethodHead,
+		HTTPMethodOptions,
+		HTTPMethodPatch,
+		HTTPMethodPost,
+		HTTPMethodPut,
+	}
+}
+
+// ImagePullPolicy - The image pull policy for a sandbox workload container image.
+type ImagePullPolicy string
+
+const (
+	// ImagePullPolicyAlways - Always pull the image.
+	ImagePullPolicyAlways ImagePullPolicy = "Always"
+	// ImagePullPolicyIfNotPresent - Pull the image only if it is not already present on the host.
+	ImagePullPolicyIfNotPresent ImagePullPolicy = "IfNotPresent"
+)
+
+// PossibleImagePullPolicyValues returns the possible values for the ImagePullPolicy const type.
+func PossibleImagePullPolicyValues() []ImagePullPolicy {
+	return []ImagePullPolicy{
+		ImagePullPolicyAlways,
+		ImagePullPolicyIfNotPresent,
+	}
+}
+
 // ManagedServiceIdentityType - Type of managed service identity (where both SystemAssigned and UserAssigned types are allowed).
 type ManagedServiceIdentityType string
 
@@ -68,6 +225,123 @@ func PossibleManagedServiceIdentityTypeValues() []ManagedServiceIdentityType {
 		ManagedServiceIdentityTypeSystemAssigned,
 		ManagedServiceIdentityTypeSystemAssignedUserAssigned,
 		ManagedServiceIdentityTypeUserAssigned,
+	}
+}
+
+// McpMatchCase - Whether an MCP string condition compares case-sensitively.
+type McpMatchCase string
+
+const (
+	// McpMatchCaseCaseInsensitive - Compare strings after case folding both sides: uppercase, then lowercase.
+	McpMatchCaseCaseInsensitive McpMatchCase = "CaseInsensitive"
+	// McpMatchCaseCaseSensitive - Compare strings exactly. This is the default.
+	McpMatchCaseCaseSensitive McpMatchCase = "CaseSensitive"
+)
+
+// PossibleMcpMatchCaseValues returns the possible values for the McpMatchCase const type.
+func PossibleMcpMatchCaseValues() []McpMatchCase {
+	return []McpMatchCase{
+		McpMatchCaseCaseInsensitive,
+		McpMatchCaseCaseSensitive,
+	}
+}
+
+// McpMatchType - How an MCP string condition compares a request or response string with its values.
+type McpMatchType string
+
+const (
+	// McpMatchTypeContains - The string contains one of the values.
+	McpMatchTypeContains McpMatchType = "Contains"
+	// McpMatchTypeExactMatch - The string equals one of the values.
+	McpMatchTypeExactMatch McpMatchType = "ExactMatch"
+	// McpMatchTypeNotContains - The string contains none of the values.
+	McpMatchTypeNotContains McpMatchType = "NotContains"
+	// McpMatchTypeNotExactMatch - The string equals none of the values.
+	McpMatchTypeNotExactMatch McpMatchType = "NotExactMatch"
+)
+
+// PossibleMcpMatchTypeValues returns the possible values for the McpMatchType const type.
+func PossibleMcpMatchTypeValues() []McpMatchType {
+	return []McpMatchType{
+		McpMatchTypeContains,
+		McpMatchTypeExactMatch,
+		McpMatchTypeNotContains,
+		McpMatchTypeNotExactMatch,
+	}
+}
+
+// McpPolicyDestinationType - The type of destination selector for an MCP policy.
+type McpPolicyDestinationType string
+
+const (
+	// McpPolicyDestinationTypeAddressPrefixes - Select destinations by IP address prefixes in CIDR notation.
+	McpPolicyDestinationTypeAddressPrefixes McpPolicyDestinationType = "AddressPrefixes"
+	// McpPolicyDestinationTypeFqdns - Select destinations by fully qualified domain names.
+	McpPolicyDestinationTypeFqdns McpPolicyDestinationType = "Fqdns"
+	// McpPolicyDestinationTypeWorkloadIDPatterns - Select destinations by workload ID patterns.
+	McpPolicyDestinationTypeWorkloadIDPatterns McpPolicyDestinationType = "WorkloadIdPatterns"
+)
+
+// PossibleMcpPolicyDestinationTypeValues returns the possible values for the McpPolicyDestinationType const type.
+func PossibleMcpPolicyDestinationTypeValues() []McpPolicyDestinationType {
+	return []McpPolicyDestinationType{
+		McpPolicyDestinationTypeAddressPrefixes,
+		McpPolicyDestinationTypeFqdns,
+		McpPolicyDestinationTypeWorkloadIDPatterns,
+	}
+}
+
+// McpPolicySourceType - The type of source selector for an MCP policy.
+type McpPolicySourceType string
+
+const (
+	// McpPolicySourceTypeAddressPrefixes - Select sources by IP address prefixes in CIDR notation.
+	McpPolicySourceTypeAddressPrefixes McpPolicySourceType = "AddressPrefixes"
+	// McpPolicySourceTypeWorkloadIDPatterns - Select sources by workload ID patterns.
+	McpPolicySourceTypeWorkloadIDPatterns McpPolicySourceType = "WorkloadIdPatterns"
+)
+
+// PossibleMcpPolicySourceTypeValues returns the possible values for the McpPolicySourceType const type.
+func PossibleMcpPolicySourceTypeValues() []McpPolicySourceType {
+	return []McpPolicySourceType{
+		McpPolicySourceTypeAddressPrefixes,
+		McpPolicySourceTypeWorkloadIDPatterns,
+	}
+}
+
+// McpPromptMethod - An MCP prompt request method.
+type McpPromptMethod string
+
+const (
+	// McpPromptMethodGet - The prompts/get request.
+	McpPromptMethodGet McpPromptMethod = "Get"
+	// McpPromptMethodList - The prompts/list request.
+	McpPromptMethodList McpPromptMethod = "List"
+)
+
+// PossibleMcpPromptMethodValues returns the possible values for the McpPromptMethod const type.
+func PossibleMcpPromptMethodValues() []McpPromptMethod {
+	return []McpPromptMethod{
+		McpPromptMethodGet,
+		McpPromptMethodList,
+	}
+}
+
+// McpToolMethod - An MCP tool request method.
+type McpToolMethod string
+
+const (
+	// McpToolMethodCall - The tools/call request.
+	McpToolMethodCall McpToolMethod = "Call"
+	// McpToolMethodList - The tools/list request.
+	McpToolMethodList McpToolMethod = "List"
+)
+
+// PossibleMcpToolMethodValues returns the possible values for the McpToolMethod const type.
+func PossibleMcpToolMethodValues() []McpToolMethod {
+	return []McpToolMethod{
+		McpToolMethodCall,
+		McpToolMethodList,
 	}
 }
 
@@ -207,6 +481,129 @@ func PossibleOriginValues() []Origin {
 	}
 }
 
+// PolicyAction - The action to take when a network security policy or rule matches traffic.
+type PolicyAction string
+
+const (
+	// PolicyActionAllow - Allow the matching traffic.
+	PolicyActionAllow PolicyAction = "Allow"
+	// PolicyActionDeny - Deny the matching traffic.
+	PolicyActionDeny PolicyAction = "Deny"
+)
+
+// PossiblePolicyActionValues returns the possible values for the PolicyAction const type.
+func PossiblePolicyActionValues() []PolicyAction {
+	return []PolicyAction{
+		PolicyActionAllow,
+		PolicyActionDeny,
+	}
+}
+
+// PolicyDirection - The direction of network traffic for a policy.
+type PolicyDirection string
+
+const (
+	// PolicyDirectionBoth - Both inbound and outbound traffic.
+	PolicyDirectionBoth PolicyDirection = "Both"
+	// PolicyDirectionInbound - Inbound traffic only.
+	PolicyDirectionInbound PolicyDirection = "Inbound"
+	// PolicyDirectionOutbound - Outbound traffic only.
+	PolicyDirectionOutbound PolicyDirection = "Outbound"
+)
+
+// PossiblePolicyDirectionValues returns the possible values for the PolicyDirection const type.
+func PossiblePolicyDirectionValues() []PolicyDirection {
+	return []PolicyDirection{
+		PolicyDirectionBoth,
+		PolicyDirectionInbound,
+		PolicyDirectionOutbound,
+	}
+}
+
+// PolicyType - The type of network security policy.
+type PolicyType string
+
+const (
+	// PolicyTypeContentInspection - Content inspection policy type.
+	PolicyTypeContentInspection PolicyType = "ContentInspection"
+	// PolicyTypeFqdnFiltering - FQDN filtering policy type.
+	PolicyTypeFqdnFiltering PolicyType = "FqdnFiltering"
+	// PolicyTypeMcp - MCP server policy type.
+	PolicyTypeMcp PolicyType = "Mcp"
+	// PolicyTypeTLSInspection - TLS inspection policy type.
+	PolicyTypeTLSInspection PolicyType = "TlsInspection"
+	// PolicyTypeURLFiltering - URL filtering policy type.
+	PolicyTypeURLFiltering PolicyType = "UrlFiltering"
+)
+
+// PossiblePolicyTypeValues returns the possible values for the PolicyType const type.
+func PossiblePolicyTypeValues() []PolicyType {
+	return []PolicyType{
+		PolicyTypeContentInspection,
+		PolicyTypeFqdnFiltering,
+		PolicyTypeMcp,
+		PolicyTypeTLSInspection,
+		PolicyTypeURLFiltering,
+	}
+}
+
+// PromptInjectionOnDetection - The action to take when prompt injection is detected.
+type PromptInjectionOnDetection string
+
+const (
+	// PromptInjectionOnDetectionAlert - Raise an alert but allow the request or response to proceed.
+	PromptInjectionOnDetectionAlert PromptInjectionOnDetection = "Alert"
+	// PromptInjectionOnDetectionBlockAndAlert - Block the request or response and raise an alert.
+	PromptInjectionOnDetectionBlockAndAlert PromptInjectionOnDetection = "BlockAndAlert"
+	// PromptInjectionOnDetectionSanitize - Remove the detected content and allow the request or response to proceed.
+	PromptInjectionOnDetectionSanitize PromptInjectionOnDetection = "Sanitize"
+)
+
+// PossiblePromptInjectionOnDetectionValues returns the possible values for the PromptInjectionOnDetection const type.
+func PossiblePromptInjectionOnDetectionValues() []PromptInjectionOnDetection {
+	return []PromptInjectionOnDetection{
+		PromptInjectionOnDetectionAlert,
+		PromptInjectionOnDetectionBlockAndAlert,
+		PromptInjectionOnDetectionSanitize,
+	}
+}
+
+// ProvisioningState - Provisioning state of the resource
+type ProvisioningState string
+
+const (
+	// ProvisioningStateAccepted - The long-running operation has been accepted and is not yet complete.
+	ProvisioningStateAccepted ProvisioningState = "Accepted"
+	// ProvisioningStateCanceled - Resource provisioning was canceled
+	ProvisioningStateCanceled ProvisioningState = "Canceled"
+	// ProvisioningStateCreating - The resource is being created.
+	ProvisioningStateCreating ProvisioningState = "Creating"
+	// ProvisioningStateDeleting - The resource delete request has been accepted; deletion is in progress.
+	ProvisioningStateDeleting ProvisioningState = "Deleting"
+	// ProvisioningStateFailed - Resource provisioning failed
+	ProvisioningStateFailed ProvisioningState = "Failed"
+	// ProvisioningStateProvisioning - The resource create request has been accepted; provisioning is in progress.
+	ProvisioningStateProvisioning ProvisioningState = "Provisioning"
+	// ProvisioningStateSucceeded - Resource provisioning succeeded
+	ProvisioningStateSucceeded ProvisioningState = "Succeeded"
+	// ProvisioningStateUpdating - The resource update request has been accepted; the update is in progress.
+	ProvisioningStateUpdating ProvisioningState = "Updating"
+)
+
+// PossibleProvisioningStateValues returns the possible values for the ProvisioningState const type.
+func PossibleProvisioningStateValues() []ProvisioningState {
+	return []ProvisioningState{
+		ProvisioningStateAccepted,
+		ProvisioningStateCanceled,
+		ProvisioningStateCreating,
+		ProvisioningStateDeleting,
+		ProvisioningStateFailed,
+		ProvisioningStateProvisioning,
+		ProvisioningStateSucceeded,
+		ProvisioningStateUpdating,
+	}
+}
+
 // ProvisioningStateNeuroShield - Provisioning states shared by NeuroShield resources. The non-terminal states are used by
 // asynchronous protected-resource operations; synchronous NeuroShield operations return only
 // terminal states.
@@ -257,5 +654,148 @@ func PossibleResourceProvisioningStateValues() []ResourceProvisioningState {
 		ResourceProvisioningStateCanceled,
 		ResourceProvisioningStateFailed,
 		ResourceProvisioningStateSucceeded,
+	}
+}
+
+// SystemAssignedServiceIdentityType - Type of managed service identity (either system assigned, or none).
+type SystemAssignedServiceIdentityType string
+
+const (
+	// SystemAssignedServiceIdentityTypeNone - No managed system identity.
+	SystemAssignedServiceIdentityTypeNone SystemAssignedServiceIdentityType = "None"
+	// SystemAssignedServiceIdentityTypeSystemAssigned - System assigned managed system identity.
+	SystemAssignedServiceIdentityTypeSystemAssigned SystemAssignedServiceIdentityType = "SystemAssigned"
+)
+
+// PossibleSystemAssignedServiceIdentityTypeValues returns the possible values for the SystemAssignedServiceIdentityType const type.
+func PossibleSystemAssignedServiceIdentityTypeValues() []SystemAssignedServiceIdentityType {
+	return []SystemAssignedServiceIdentityType{
+		SystemAssignedServiceIdentityTypeNone,
+		SystemAssignedServiceIdentityTypeSystemAssigned,
+	}
+}
+
+// TLSInspectionAction - The TLS inspection action.
+type TLSInspectionAction string
+
+const (
+	// TLSInspectionActionBypass - Do not intercept the TLS connection. FQDN filtering still applies, using the TLS server name
+	// (SNI).
+	TLSInspectionActionBypass TLSInspectionAction = "Bypass"
+	// TLSInspectionActionInspect - Intercept and decrypt the TLS connection, so policies that read the HTTP request apply.
+	TLSInspectionActionInspect TLSInspectionAction = "Inspect"
+)
+
+// PossibleTLSInspectionActionValues returns the possible values for the TLSInspectionAction const type.
+func PossibleTLSInspectionActionValues() []TLSInspectionAction {
+	return []TLSInspectionAction{
+		TLSInspectionActionBypass,
+		TLSInspectionActionInspect,
+	}
+}
+
+// TLSInspectionCertificateMode - The source of the certificate used for TLS inspection.
+type TLSInspectionCertificateMode string
+
+const (
+	// TLSInspectionCertificateModeAzureManagedCA - Certificate issued by an Azure-managed certificate authority.
+	TLSInspectionCertificateModeAzureManagedCA TLSInspectionCertificateMode = "AzureManagedCA"
+)
+
+// PossibleTLSInspectionCertificateModeValues returns the possible values for the TLSInspectionCertificateMode const type.
+func PossibleTLSInspectionCertificateModeValues() []TLSInspectionCertificateMode {
+	return []TLSInspectionCertificateMode{
+		TLSInspectionCertificateModeAzureManagedCA,
+	}
+}
+
+// TLSInspectionPolicySourceType - The type of source selector for a TLS inspection policy.
+type TLSInspectionPolicySourceType string
+
+const (
+	// TLSInspectionPolicySourceTypeWorkloadIDPatterns - Select sources by workload ID patterns.
+	TLSInspectionPolicySourceTypeWorkloadIDPatterns TLSInspectionPolicySourceType = "WorkloadIdPatterns"
+)
+
+// PossibleTLSInspectionPolicySourceTypeValues returns the possible values for the TLSInspectionPolicySourceType const type.
+func PossibleTLSInspectionPolicySourceTypeValues() []TLSInspectionPolicySourceType {
+	return []TLSInspectionPolicySourceType{
+		TLSInspectionPolicySourceTypeWorkloadIDPatterns,
+	}
+}
+
+// TLSInspectionRuleDestinationType - The type of destination selector for a TLS inspection rule.
+type TLSInspectionRuleDestinationType string
+
+const (
+	// TLSInspectionRuleDestinationTypeFqdns - Select destinations by fully qualified domain names.
+	TLSInspectionRuleDestinationTypeFqdns TLSInspectionRuleDestinationType = "Fqdns"
+)
+
+// PossibleTLSInspectionRuleDestinationTypeValues returns the possible values for the TLSInspectionRuleDestinationType const type.
+func PossibleTLSInspectionRuleDestinationTypeValues() []TLSInspectionRuleDestinationType {
+	return []TLSInspectionRuleDestinationType{
+		TLSInspectionRuleDestinationTypeFqdns,
+	}
+}
+
+// URLFilteringDestinationType - The type of destination selector for a URL filtering policy.
+type URLFilteringDestinationType string
+
+const (
+	// URLFilteringDestinationTypeAddressPrefixes - Select destinations by IP address prefixes in CIDR notation.
+	URLFilteringDestinationTypeAddressPrefixes URLFilteringDestinationType = "AddressPrefixes"
+	// URLFilteringDestinationTypeFqdns - Deprecated. Select destinations by fully qualified domain names; use rule hostname for
+	// new configurations.
+	URLFilteringDestinationTypeFqdns URLFilteringDestinationType = "Fqdns"
+	// URLFilteringDestinationTypeWorkloadIDPatterns - Select destinations by workload ID patterns.
+	URLFilteringDestinationTypeWorkloadIDPatterns URLFilteringDestinationType = "WorkloadIdPatterns"
+)
+
+// PossibleURLFilteringDestinationTypeValues returns the possible values for the URLFilteringDestinationType const type.
+func PossibleURLFilteringDestinationTypeValues() []URLFilteringDestinationType {
+	return []URLFilteringDestinationType{
+		URLFilteringDestinationTypeAddressPrefixes,
+		URLFilteringDestinationTypeFqdns,
+		URLFilteringDestinationTypeWorkloadIDPatterns,
+	}
+}
+
+// URLFilteringSourceType - The type of source selector for a URL filtering policy.
+type URLFilteringSourceType string
+
+const (
+	// URLFilteringSourceTypeAddressPrefixes - Select sources by IP address prefixes in CIDR notation.
+	URLFilteringSourceTypeAddressPrefixes URLFilteringSourceType = "AddressPrefixes"
+	// URLFilteringSourceTypeWorkloadIDPatterns - Select sources by workload ID patterns.
+	URLFilteringSourceTypeWorkloadIDPatterns URLFilteringSourceType = "WorkloadIdPatterns"
+)
+
+// PossibleURLFilteringSourceTypeValues returns the possible values for the URLFilteringSourceType const type.
+func PossibleURLFilteringSourceTypeValues() []URLFilteringSourceType {
+	return []URLFilteringSourceType{
+		URLFilteringSourceTypeAddressPrefixes,
+		URLFilteringSourceTypeWorkloadIDPatterns,
+	}
+}
+
+// WorkloadType - The workload type of a member.
+type WorkloadType string
+
+const (
+	// WorkloadTypeACI - ACI (Azure Container Instances) sandbox workload type
+	WorkloadTypeACI WorkloadType = "ACI"
+	// WorkloadTypeAKS - AKS workload type
+	WorkloadTypeAKS WorkloadType = "AKS"
+	// WorkloadTypeAgentFabricSandbox - Agent Fabric sandbox workload type
+	WorkloadTypeAgentFabricSandbox WorkloadType = "AgentFabricSandbox"
+)
+
+// PossibleWorkloadTypeValues returns the possible values for the WorkloadType const type.
+func PossibleWorkloadTypeValues() []WorkloadType {
+	return []WorkloadType{
+		WorkloadTypeACI,
+		WorkloadTypeAKS,
+		WorkloadTypeAgentFabricSandbox,
 	}
 }

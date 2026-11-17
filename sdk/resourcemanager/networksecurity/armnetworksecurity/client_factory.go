@@ -32,6 +32,38 @@ func NewClientFactory(subscriptionID string, credential azcore.TokenCredential, 
 	}, nil
 }
 
+// NewAgentFabricsClient creates a new instance of AgentFabricsClient.
+func (c *ClientFactory) NewAgentFabricsClient() *AgentFabricsClient {
+	return &AgentFabricsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewClusterAssociationsClient creates a new instance of ClusterAssociationsClient.
+func (c *ClientFactory) NewClusterAssociationsClient() *ClusterAssociationsClient {
+	return &ClusterAssociationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewEgressTrustBundlesClient creates a new instance of EgressTrustBundlesClient.
+func (c *ClientFactory) NewEgressTrustBundlesClient() *EgressTrustBundlesClient {
+	return &EgressTrustBundlesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewMembersClient creates a new instance of MembersClient.
+func (c *ClientFactory) NewMembersClient() *MembersClient {
+	return &MembersClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewNeuroShieldFindingsClient creates a new instance of NeuroShieldFindingsClient.
 func (c *ClientFactory) NewNeuroShieldFindingsClient() *NeuroShieldFindingsClient {
 	return &NeuroShieldFindingsClient{
@@ -80,9 +112,25 @@ func (c *ClientFactory) NewNeuroShieldsClient() *NeuroShieldsClient {
 	}
 }
 
+// NewOperationStatusClient creates a new instance of OperationStatusClient.
+func (c *ClientFactory) NewOperationStatusClient() *OperationStatusClient {
+	return &OperationStatusClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewOperationsClient creates a new instance of OperationsClient.
 func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	return &OperationsClient{
 		internal: c.internal,
+	}
+}
+
+// NewPolicyGroupsClient creates a new instance of PolicyGroupsClient.
+func (c *ClientFactory) NewPolicyGroupsClient() *PolicyGroupsClient {
+	return &PolicyGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
 	}
 }

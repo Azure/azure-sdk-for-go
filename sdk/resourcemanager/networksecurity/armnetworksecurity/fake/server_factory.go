@@ -15,6 +15,18 @@ import (
 
 // ServerFactory is a fake server for instances of the armnetworksecurity.ClientFactory type.
 type ServerFactory struct {
+	// AgentFabricsServer contains the fakes for client AgentFabricsClient
+	AgentFabricsServer AgentFabricsServer
+
+	// ClusterAssociationsServer contains the fakes for client ClusterAssociationsClient
+	ClusterAssociationsServer ClusterAssociationsServer
+
+	// EgressTrustBundlesServer contains the fakes for client EgressTrustBundlesClient
+	EgressTrustBundlesServer EgressTrustBundlesServer
+
+	// MembersServer contains the fakes for client MembersClient
+	MembersServer MembersServer
+
 	// NeuroShieldFindingsServer contains the fakes for client NeuroShieldFindingsClient
 	NeuroShieldFindingsServer NeuroShieldFindingsServer
 
@@ -33,8 +45,14 @@ type ServerFactory struct {
 	// NeuroShieldsServer contains the fakes for client NeuroShieldsClient
 	NeuroShieldsServer NeuroShieldsServer
 
+	// OperationStatusServer contains the fakes for client OperationStatusClient
+	OperationStatusServer OperationStatusServer
+
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
+
+	// PolicyGroupsServer contains the fakes for client PolicyGroupsClient
+	PolicyGroupsServer PolicyGroupsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -51,13 +69,19 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 type ServerFactoryTransport struct {
 	srv                                   *ServerFactory
 	trMu                                  sync.Mutex
+	trAgentFabricsServer                  *AgentFabricsServerTransport
+	trClusterAssociationsServer           *ClusterAssociationsServerTransport
+	trEgressTrustBundlesServer            *EgressTrustBundlesServerTransport
+	trMembersServer                       *MembersServerTransport
 	trNeuroShieldFindingsServer           *NeuroShieldFindingsServerTransport
 	trNeuroShieldMitigationsServer        *NeuroShieldMitigationsServerTransport
 	trNeuroShieldOperationStatusesServer  *NeuroShieldOperationStatusesServerTransport
 	trNeuroShieldProtectedResourcesServer *NeuroShieldProtectedResourcesServerTransport
 	trNeuroShieldSummariesServer          *NeuroShieldSummariesServerTransport
 	trNeuroShieldsServer                  *NeuroShieldsServerTransport
+	trOperationStatusServer               *OperationStatusServerTransport
 	trOperationsServer                    *OperationsServerTransport
+	trPolicyGroupsServer                  *PolicyGroupsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -73,6 +97,22 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	var err error
 
 	switch client {
+	case "AgentFabricsClient":
+		initServer(&s.trMu, &s.trAgentFabricsServer, func() *AgentFabricsServerTransport { return NewAgentFabricsServerTransport(&s.srv.AgentFabricsServer) })
+		resp, err = s.trAgentFabricsServer.Do(req)
+	case "ClusterAssociationsClient":
+		initServer(&s.trMu, &s.trClusterAssociationsServer, func() *ClusterAssociationsServerTransport {
+			return NewClusterAssociationsServerTransport(&s.srv.ClusterAssociationsServer)
+		})
+		resp, err = s.trClusterAssociationsServer.Do(req)
+	case "EgressTrustBundlesClient":
+		initServer(&s.trMu, &s.trEgressTrustBundlesServer, func() *EgressTrustBundlesServerTransport {
+			return NewEgressTrustBundlesServerTransport(&s.srv.EgressTrustBundlesServer)
+		})
+		resp, err = s.trEgressTrustBundlesServer.Do(req)
+	case "MembersClient":
+		initServer(&s.trMu, &s.trMembersServer, func() *MembersServerTransport { return NewMembersServerTransport(&s.srv.MembersServer) })
+		resp, err = s.trMembersServer.Do(req)
 	case "NeuroShieldFindingsClient":
 		initServer(&s.trMu, &s.trNeuroShieldFindingsServer, func() *NeuroShieldFindingsServerTransport {
 			return NewNeuroShieldFindingsServerTransport(&s.srv.NeuroShieldFindingsServer)
@@ -101,9 +141,17 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "NeuroShieldsClient":
 		initServer(&s.trMu, &s.trNeuroShieldsServer, func() *NeuroShieldsServerTransport { return NewNeuroShieldsServerTransport(&s.srv.NeuroShieldsServer) })
 		resp, err = s.trNeuroShieldsServer.Do(req)
+	case "OperationStatusClient":
+		initServer(&s.trMu, &s.trOperationStatusServer, func() *OperationStatusServerTransport {
+			return NewOperationStatusServerTransport(&s.srv.OperationStatusServer)
+		})
+		resp, err = s.trOperationStatusServer.Do(req)
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
+	case "PolicyGroupsClient":
+		initServer(&s.trMu, &s.trPolicyGroupsServer, func() *PolicyGroupsServerTransport { return NewPolicyGroupsServerTransport(&s.srv.PolicyGroupsServer) })
+		resp, err = s.trPolicyGroupsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

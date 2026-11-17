@@ -85,7 +85,8 @@ func (client *VPNSitesClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -127,7 +128,7 @@ func (client *VPNSitesClient) createOrUpdateCreateRequest(ctx context.Context, r
 //   - options - VPNSitesClientBeginDeleteOptions contains the optional parameters for the VPNSitesClient.BeginDelete method.
 func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VPNSitesClientBeginDeleteOptions) (*runtime.Poller[VPNSitesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, vpnSiteName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, vpnSiteName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -142,9 +143,9 @@ func (client *VPNSitesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Deletes a VpnSite.
+// deleteOperation - Deletes a VpnSite.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *VPNSitesClient) delete(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VPNSitesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *VPNSitesClient) deleteOperation(ctx context.Context, resourceGroupName string, vpnSiteName string, options *VPNSitesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "VPNSitesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -159,7 +160,8 @@ func (client *VPNSitesClient) delete(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -208,7 +210,8 @@ func (client *VPNSitesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return VPNSitesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -407,7 +410,8 @@ func (client *VPNSitesClient) UpdateTags(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return VPNSitesClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

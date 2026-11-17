@@ -19,7 +19,7 @@ import (
 // EncryptionScopesClient contains the methods for the EncryptionScopes group.
 // Don't use this type directly, use NewEncryptionScopesClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-01
 type EncryptionScopesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -53,7 +53,7 @@ func NewEncryptionScopesClient(subscriptionID string, credential azcore.TokenCre
 //     method.
 func (client *EncryptionScopesClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesClientBeginDeleteOptions) (*runtime.Poller[EncryptionScopesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, encryptionScopeName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, encryptionScopeName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -68,9 +68,9 @@ func (client *EncryptionScopesClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// delete - Deletes the specified encryptionScope associated with the Cognitive Services account.
+// deleteOperation - Deletes the specified encryptionScope associated with the Cognitive Services account.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *EncryptionScopesClient) delete(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *EncryptionScopesClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, encryptionScopeName string, options *EncryptionScopesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "EncryptionScopesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -85,7 +85,8 @@ func (client *EncryptionScopesClient) delete(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -114,7 +115,7 @@ func (client *EncryptionScopesClient) deleteCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -141,7 +142,8 @@ func (client *EncryptionScopesClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return EncryptionScopesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -168,7 +170,7 @@ func (client *EncryptionScopesClient) createOrUpdateCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -210,7 +212,8 @@ func (client *EncryptionScopesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return EncryptionScopesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -237,7 +240,7 @@ func (client *EncryptionScopesClient) getCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -313,7 +316,7 @@ func (client *EncryptionScopesClient) listCreateRequest(ctx context.Context, res
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260915Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -65,7 +65,8 @@ func (client *Client) CheckFeatureSupport(ctx context.Context, location string, 
 	if err != nil {
 		return ClientCheckFeatureSupportResponse{}, err
 	}
-	return client.checkFeatureSupportHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkFeatureSupportHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkFeatureSupportCreateRequest creates the CheckFeatureSupport request.

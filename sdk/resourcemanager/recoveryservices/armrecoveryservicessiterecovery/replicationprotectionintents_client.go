@@ -68,7 +68,8 @@ func (client *ReplicationProtectionIntentsClient) Create(ctx context.Context, re
 	if err != nil {
 		return ReplicationProtectionIntentsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -140,7 +141,8 @@ func (client *ReplicationProtectionIntentsClient) Get(ctx context.Context, resou
 	if err != nil {
 		return ReplicationProtectionIntentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

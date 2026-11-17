@@ -64,7 +64,8 @@ func (client *LogProfilesClient) CreateOrUpdate(ctx context.Context, logProfileN
 	if err != nil {
 		return LogProfilesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -124,7 +125,8 @@ func (client *LogProfilesClient) Delete(ctx context.Context, logProfileName stri
 		return LogProfilesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return LogProfilesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return LogProfilesClientDeleteResponse{}, err
 	}
 	return LogProfilesClientDeleteResponse{}, nil
 }
@@ -168,7 +170,8 @@ func (client *LogProfilesClient) Get(ctx context.Context, logProfileName string,
 	if err != nil {
 		return LogProfilesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -290,7 +293,8 @@ func (client *LogProfilesClient) Update(ctx context.Context, logProfileName stri
 	if err != nil {
 		return LogProfilesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

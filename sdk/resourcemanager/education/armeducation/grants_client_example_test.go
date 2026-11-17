@@ -92,104 +92,6 @@ func ExampleGrantsClient_Get_grantIncludeAllocatedBudget() {
 	// }
 }
 
-// Generated from example definition: 2021-12-01-preview/GrantDefaultList.json
-func ExampleGrantsClient_NewListPager_grantList() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeducation.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewGrantsClient().NewListPager("{billingAccountName}", "{billingProfileName}", &armeducation.GrantsClientListOptions{
-		IncludeAllocatedBudget: to.Ptr(false)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeducation.GrantsClientListResponse{
-		// 	GrantListResponse: armeducation.GrantListResponse{
-		// 		Value: []*armeducation.GrantDetails{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.Education/Grants"),
-		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/grants/default"),
-		// 				Properties: &armeducation.GrantDetailProperties{
-		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
-		// 					ExpirationDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
-		// 					OfferCap: &armeducation.Amount{
-		// 						Currency: to.Ptr("USD"),
-		// 						Value: to.Ptr[float32](1000),
-		// 					},
-		// 					OfferType: to.Ptr(armeducation.GrantTypeAcademic),
-		// 					Status: to.Ptr(armeducation.GrantStatusActive),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2021-12-01-preview/GrantDefaultListIncludeAllocatedBudget.json
-func ExampleGrantsClient_NewListPager_grantListIncludeAllocatedBudget() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armeducation.NewClientFactory(cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewGrantsClient().NewListPager("{billingAccountName}", "{billingProfileName}", &armeducation.GrantsClientListOptions{
-		IncludeAllocatedBudget: to.Ptr(false)})
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armeducation.GrantsClientListResponse{
-		// 	GrantListResponse: armeducation.GrantListResponse{
-		// 		Value: []*armeducation.GrantDetails{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.Education/Grants"),
-		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/grants/default"),
-		// 				Properties: &armeducation.GrantDetailProperties{
-		// 					AllocatedBudget: &armeducation.Amount{
-		// 						Currency: to.Ptr("USD"),
-		// 						Value: to.Ptr[float32](0),
-		// 					},
-		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
-		// 					ExpirationDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
-		// 					OfferCap: &armeducation.Amount{
-		// 						Currency: to.Ptr("USD"),
-		// 						Value: to.Ptr[float32](1000),
-		// 					},
-		// 					OfferType: to.Ptr(armeducation.GrantTypeAcademic),
-		// 					Status: to.Ptr(armeducation.GrantStatusActive),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2021-12-01-preview/GrantList.json
 func ExampleGrantsClient_NewListAllPager_grantList() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -280,6 +182,104 @@ func ExampleGrantsClient_NewListAllPager_grantListIncludeAllocatedBudget() {
 		// 						Currency: to.Ptr("USD"),
 		// 						Value: to.Ptr[float32](0),
 		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2021-12-01-preview/GrantDefaultList.json
+func ExampleGrantsClient_NewListPager_grantList() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeducation.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewGrantsClient().NewListPager("{billingAccountName}", "{billingProfileName}", &armeducation.GrantsClientListOptions{
+		IncludeAllocatedBudget: to.Ptr(false)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeducation.GrantsClientListResponse{
+		// 	GrantListResponse: armeducation.GrantListResponse{
+		// 		Value: []*armeducation.GrantDetails{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.Education/Grants"),
+		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/grants/default"),
+		// 				Properties: &armeducation.GrantDetailProperties{
+		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
+		// 					ExpirationDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
+		// 					OfferCap: &armeducation.Amount{
+		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float32](1000),
+		// 					},
+		// 					OfferType: to.Ptr(armeducation.GrantTypeAcademic),
+		// 					Status: to.Ptr(armeducation.GrantStatusActive),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2021-12-01-preview/GrantDefaultListIncludeAllocatedBudget.json
+func ExampleGrantsClient_NewListPager_grantListIncludeAllocatedBudget() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armeducation.NewClientFactory(cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewGrantsClient().NewListPager("{billingAccountName}", "{billingProfileName}", &armeducation.GrantsClientListOptions{
+		IncludeAllocatedBudget: to.Ptr(false)})
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armeducation.GrantsClientListResponse{
+		// 	GrantListResponse: armeducation.GrantListResponse{
+		// 		Value: []*armeducation.GrantDetails{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.Education/Grants"),
+		// 				ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.Education/grants/default"),
+		// 				Properties: &armeducation.GrantDetailProperties{
+		// 					AllocatedBudget: &armeducation.Amount{
+		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float32](0),
+		// 					},
+		// 					EffectiveDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
+		// 					ExpirationDate: to.Ptr(time.Date(2021, time.November, 9, 9, 8, 5, 505000000, time.UTC)),
+		// 					OfferCap: &armeducation.Amount{
+		// 						Currency: to.Ptr("USD"),
+		// 						Value: to.Ptr[float32](1000),
+		// 					},
+		// 					OfferType: to.Ptr(armeducation.GrantTypeAcademic),
+		// 					Status: to.Ptr(armeducation.GrantStatusActive),
 		// 				},
 		// 			},
 		// 		},

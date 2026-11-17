@@ -56,7 +56,8 @@ func (client *Client) PreviewAlertRule(ctx context.Context, resourceID string, p
 	if err != nil {
 		return ClientPreviewAlertRuleResponse{}, err
 	}
-	return client.previewAlertRuleHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.previewAlertRuleHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // previewAlertRuleCreateRequest creates the PreviewAlertRule request.

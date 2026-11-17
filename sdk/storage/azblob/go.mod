@@ -7,7 +7,7 @@ require (
 	github.com/Azure/azure-sdk-for-go/sdk/azidentity v1.15.0
 	github.com/Azure/azure-sdk-for-go/sdk/internal v1.13.0
 	github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/storage/armstorage v1.8.1
-	github.com/Azure/azure-sdk-for-go/sdk/storage/internal v0.1.1-0.20261007191234-1896250ce028
+	github.com/Azure/azure-sdk-for-go/sdk/storage/internal v0.2.0-beta.1
 	github.com/apache/arrow-go/v18 v18.8.0
 	github.com/stretchr/testify v1.12.1
 )

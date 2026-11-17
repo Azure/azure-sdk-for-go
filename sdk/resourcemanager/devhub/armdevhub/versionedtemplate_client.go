@@ -66,7 +66,8 @@ func (client *VersionedTemplateClient) Generate(ctx context.Context, templateNam
 	if err != nil {
 		return VersionedTemplateClientGenerateResponse{}, err
 	}
-	return client.generateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.generateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // generateCreateRequest creates the Generate request.
@@ -132,7 +133,8 @@ func (client *VersionedTemplateClient) Get(ctx context.Context, templateName str
 	if err != nil {
 		return VersionedTemplateClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

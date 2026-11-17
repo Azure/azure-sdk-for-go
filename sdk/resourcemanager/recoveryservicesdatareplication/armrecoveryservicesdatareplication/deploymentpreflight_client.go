@@ -66,7 +66,8 @@ func (client *DeploymentPreflightClient) Post(ctx context.Context, resourceGroup
 	if err != nil {
 		return DeploymentPreflightClientPostResponse{}, err
 	}
-	return client.postHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.postHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // postCreateRequest creates the Post request.

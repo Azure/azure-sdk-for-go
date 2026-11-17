@@ -12,6 +12,27 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2024-10-23/runbook/publishRunbook.json
+func ExampleRunbookClient_BeginPublish() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armautomation.NewClientFactory("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewRunbookClient().BeginPublish(ctx, "rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2024-10-23/runbook/createOrUpdateRunbook.json
 func ExampleRunbookClient_CreateOrUpdate_createOrUpdateRunbookAndPublishIt() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -320,27 +341,6 @@ func ExampleRunbookClient_NewListByAutomationAccountPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2024-10-23/runbook/publishRunbook.json
-func ExampleRunbookClient_BeginPublish() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armautomation.NewClientFactory("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewRunbookClient().BeginPublish(ctx, "rg", "ContoseAutomationAccount", "Get-AzureVMTutorial", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 

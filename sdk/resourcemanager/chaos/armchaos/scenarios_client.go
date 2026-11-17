@@ -19,7 +19,7 @@ import (
 // ScenariosClient contains the methods for the Scenarios group.
 // Don't use this type directly, use NewScenariosClient() instead.
 //
-// Generated from API version 2026-08-01-preview
+// Generated from API version 2026-11-01
 type ScenariosClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,11 +66,12 @@ func (client *ScenariosClient) CreateOrUpdate(ctx context.Context, resourceGroup
 	if err != nil {
 		return ScenariosClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *ScenariosClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, resource Scenario, _ *ScenariosClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *ScenariosClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, workspaceName string, scenarioName string, resource Scenario, options *ScenariosClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Chaos/workspaces/{workspaceName}/scenarios/{scenarioName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -93,9 +94,15 @@ func (client *ScenariosClient) createOrUpdateCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.IfMatch != nil {
+		req.Raw().Header["If-Match"] = []string{*options.IfMatch}
+	}
+	if options != nil && options.IfNoneMatch != nil {
+		req.Raw().Header["If-None-Match"] = []string{*options.IfNoneMatch}
+	}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, resource); err != nil {
 		return nil, err
@@ -136,7 +143,8 @@ func (client *ScenariosClient) Delete(ctx context.Context, resourceGroupName str
 		return ScenariosClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ScenariosClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ScenariosClientDeleteResponse{}, err
 	}
 	return ScenariosClientDeleteResponse{}, nil
 }
@@ -165,7 +173,7 @@ func (client *ScenariosClient) deleteCreateRequest(ctx context.Context, resource
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -190,7 +198,8 @@ func (client *ScenariosClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return ScenariosClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -217,7 +226,7 @@ func (client *ScenariosClient) getCreateRequest(ctx context.Context, resourceGro
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -292,7 +301,7 @@ func (client *ScenariosClient) listAllCreateRequest(ctx context.Context, resourc
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260801Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

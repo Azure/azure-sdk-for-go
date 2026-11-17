@@ -67,7 +67,8 @@ func (client *RegisteredPrefixesClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return RegisteredPrefixesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -139,7 +140,8 @@ func (client *RegisteredPrefixesClient) Delete(ctx context.Context, resourceGrou
 		return RegisteredPrefixesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return RegisteredPrefixesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return RegisteredPrefixesClientDeleteResponse{}, err
 	}
 	return RegisteredPrefixesClientDeleteResponse{}, nil
 }
@@ -193,7 +195,8 @@ func (client *RegisteredPrefixesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return RegisteredPrefixesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -337,7 +340,8 @@ func (client *RegisteredPrefixesClient) Validate(ctx context.Context, resourceGr
 	if err != nil {
 		return RegisteredPrefixesClientValidateResponse{}, err
 	}
-	return client.validateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCreateRequest creates the Validate request.

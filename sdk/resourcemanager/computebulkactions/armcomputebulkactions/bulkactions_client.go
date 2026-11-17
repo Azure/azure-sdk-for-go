@@ -68,7 +68,7 @@ func (client *BulkActionsClient) BeginCancel(ctx context.Context, resourceGroupN
 	}
 }
 
-// Cancel - Cancels LaunchBulkInstancesOperation instances that have not yet launched.
+// cancel - Cancels LaunchBulkInstancesOperation instances that have not yet launched.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkActionsClient) cancel(ctx context.Context, resourceGroupName string, location string, name string, options *BulkActionsClientBeginCancelOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *BulkActionsClient) cancel(ctx context.Context, resourceGroupName s
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// cancelCreateRequest creates the Cancel request.
+// cancelCreateRequest creates the cancel request.
 func (client *BulkActionsClient) cancelCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, _ *BulkActionsClientBeginCancelOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}/cancel"
 	if client.subscriptionID == "" {
@@ -144,7 +145,7 @@ func (client *BulkActionsClient) BeginCreateOrUpdate(ctx context.Context, resour
 	}
 }
 
-// CreateOrUpdate - Creates or updates LaunchBulkInstancesOperations.
+// createOrUpdate - Creates or updates LaunchBulkInstancesOperations.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkActionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedLaunchBulkInstancesOperation, options *BulkActionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -161,12 +162,13 @@ func (client *BulkActionsClient) createOrUpdate(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BulkActionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, resource LocationBasedLaunchBulkInstancesOperation, _ *BulkActionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}"
 	if client.subscriptionID == "" {
@@ -223,7 +225,7 @@ func (client *BulkActionsClient) BeginDelete(ctx context.Context, resourceGroupN
 	}
 }
 
-// Delete - Deletes LaunchBulkInstancesOperations.
+// deleteOperation - Deletes LaunchBulkInstancesOperations.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BulkActionsClient) deleteOperation(ctx context.Context, resourceGroupName string, location string, name string, options *BulkActionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -240,12 +242,13 @@ func (client *BulkActionsClient) deleteOperation(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BulkActionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, location string, name string, options *BulkActionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ComputeBulkActions/locations/{location}/launchBulkInstancesOperations/{name}"
 	if client.subscriptionID == "" {
@@ -297,7 +300,8 @@ func (client *BulkActionsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return BulkActionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -362,7 +366,8 @@ func (client *BulkActionsClient) GetOperationStatus(ctx context.Context, locatio
 	if err != nil {
 		return BulkActionsClientGetOperationStatusResponse{}, err
 	}
-	return client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getOperationStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getOperationStatusCreateRequest creates the GetOperationStatus request.
@@ -661,7 +666,8 @@ func (client *BulkActionsClient) VirtualMachinesCancelOperations(ctx context.Con
 	if err != nil {
 		return BulkActionsClientVirtualMachinesCancelOperationsResponse{}, err
 	}
-	return client.virtualMachinesCancelOperationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesCancelOperationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesCancelOperationsCreateRequest creates the VirtualMachinesCancelOperations request.
@@ -723,7 +729,8 @@ func (client *BulkActionsClient) VirtualMachinesExecuteCreate(ctx context.Contex
 	if err != nil {
 		return BulkActionsClientVirtualMachinesExecuteCreateResponse{}, err
 	}
-	return client.virtualMachinesExecuteCreateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesExecuteCreateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesExecuteCreateCreateRequest creates the VirtualMachinesExecuteCreate request.
@@ -785,7 +792,8 @@ func (client *BulkActionsClient) VirtualMachinesExecuteDeallocate(ctx context.Co
 	if err != nil {
 		return BulkActionsClientVirtualMachinesExecuteDeallocateResponse{}, err
 	}
-	return client.virtualMachinesExecuteDeallocateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesExecuteDeallocateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesExecuteDeallocateCreateRequest creates the VirtualMachinesExecuteDeallocate request.
@@ -847,7 +855,8 @@ func (client *BulkActionsClient) VirtualMachinesExecuteDelete(ctx context.Contex
 	if err != nil {
 		return BulkActionsClientVirtualMachinesExecuteDeleteResponse{}, err
 	}
-	return client.virtualMachinesExecuteDeleteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesExecuteDeleteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesExecuteDeleteCreateRequest creates the VirtualMachinesExecuteDelete request.
@@ -909,7 +918,8 @@ func (client *BulkActionsClient) VirtualMachinesExecuteHibernate(ctx context.Con
 	if err != nil {
 		return BulkActionsClientVirtualMachinesExecuteHibernateResponse{}, err
 	}
-	return client.virtualMachinesExecuteHibernateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesExecuteHibernateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesExecuteHibernateCreateRequest creates the VirtualMachinesExecuteHibernate request.
@@ -971,7 +981,8 @@ func (client *BulkActionsClient) VirtualMachinesExecuteStart(ctx context.Context
 	if err != nil {
 		return BulkActionsClientVirtualMachinesExecuteStartResponse{}, err
 	}
-	return client.virtualMachinesExecuteStartHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesExecuteStartHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesExecuteStartCreateRequest creates the VirtualMachinesExecuteStart request.
@@ -1033,7 +1044,8 @@ func (client *BulkActionsClient) VirtualMachinesGetOperationStatus(ctx context.C
 	if err != nil {
 		return BulkActionsClientVirtualMachinesGetOperationStatusResponse{}, err
 	}
-	return client.virtualMachinesGetOperationStatusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.virtualMachinesGetOperationStatusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // virtualMachinesGetOperationStatusCreateRequest creates the VirtualMachinesGetOperationStatus request.

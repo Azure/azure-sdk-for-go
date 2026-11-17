@@ -537,6 +537,128 @@ func ExampleLocalRulestacksClient_ListAdvancedSecurityObjects_localRulestacksLis
 	// }
 }
 
+// Generated from example definition: 2025-10-08/LocalRulestacks_listFirewalls_MaximumSet_Gen.json
+func ExampleLocalRulestacksClient_ListFirewalls_localRulestacksListFirewallsMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpanngfw.NewClientFactory("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewLocalRulestacksClient().ListFirewalls(ctx, "rgopenapi", "lrs1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpanngfw.LocalRulestacksClientListFirewallsResponse{
+	// 	ListFirewallsResponse: armpanngfw.ListFirewallsResponse{
+	// 		NextLink: to.Ptr("a5324fa34"),
+	// 		Value: []*string{
+	// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-10-08/LocalRulestacks_listFirewalls_MinimumSet_Gen.json
+func ExampleLocalRulestacksClient_ListFirewalls_localRulestacksListFirewallsMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpanngfw.NewClientFactory("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewLocalRulestacksClient().ListFirewalls(ctx, "rgopenapi", "lrs1", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpanngfw.LocalRulestacksClientListFirewallsResponse{
+	// 	ListFirewallsResponse: armpanngfw.ListFirewallsResponse{
+	// 		Value: []*string{
+	// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-10-08/LocalRulestacks_listSecurityServices_MaximumSet_Gen.json
+func ExampleLocalRulestacksClient_ListSecurityServices_localRulestacksListSecurityServicesMaximumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpanngfw.NewClientFactory("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewLocalRulestacksClient().ListSecurityServices(ctx, "rgopenapi", "lrs1", armpanngfw.SecurityServicesTypeEnum("localRulestacks"), &armpanngfw.LocalRulestacksClientListSecurityServicesOptions{
+		Skip: to.Ptr("a6a321"),
+		Top:  to.Ptr[int32](20)})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpanngfw.LocalRulestacksClientListSecurityServicesResponse{
+	// 	SecurityServicesResponse: armpanngfw.SecurityServicesResponse{
+	// 		NextLink: to.Ptr("a5324fa34"),
+	// 		Value: &armpanngfw.SecurityServicesTypeList{
+	// 			Type: to.Ptr("localRulestacks"),
+	// 			Entry: []*armpanngfw.NameDescriptionObject{
+	// 				{
+	// 					Name: to.Ptr("aaaaaaaaaa"),
+	// 					Description: to.Ptr("aaaaaaaaaaaa"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-10-08/LocalRulestacks_listSecurityServices_MinimumSet_Gen.json
+func ExampleLocalRulestacksClient_ListSecurityServices_localRulestacksListSecurityServicesMinimumSetGen() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpanngfw.NewClientFactory("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewLocalRulestacksClient().ListSecurityServices(ctx, "rgopenapi", "lrs1", armpanngfw.SecurityServicesTypeEnum("localRulestacks"), nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpanngfw.LocalRulestacksClientListSecurityServicesResponse{
+	// 	SecurityServicesResponse: armpanngfw.SecurityServicesResponse{
+	// 		Value: &armpanngfw.SecurityServicesTypeList{
+	// 			Entry: []*armpanngfw.NameDescriptionObject{
+	// 				{
+	// 					Name: to.Ptr("aaaaaaaaaa"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2025-10-08/LocalRulestacks_listAppIds_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListAppIDsPager_localRulestacksListAppIdsMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -916,61 +1038,6 @@ func ExampleLocalRulestacksClient_NewListCountriesPager_localRulestacksListCount
 	}
 }
 
-// Generated from example definition: 2025-10-08/LocalRulestacks_listFirewalls_MaximumSet_Gen.json
-func ExampleLocalRulestacksClient_ListFirewalls_localRulestacksListFirewallsMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpanngfw.NewClientFactory("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewLocalRulestacksClient().ListFirewalls(ctx, "rgopenapi", "lrs1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpanngfw.LocalRulestacksClientListFirewallsResponse{
-	// 	ListFirewallsResponse: armpanngfw.ListFirewallsResponse{
-	// 		NextLink: to.Ptr("a5324fa34"),
-	// 		Value: []*string{
-	// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-10-08/LocalRulestacks_listFirewalls_MinimumSet_Gen.json
-func ExampleLocalRulestacksClient_ListFirewalls_localRulestacksListFirewallsMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpanngfw.NewClientFactory("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewLocalRulestacksClient().ListFirewalls(ctx, "rgopenapi", "lrs1", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpanngfw.LocalRulestacksClientListFirewallsResponse{
-	// 	ListFirewallsResponse: armpanngfw.ListFirewallsResponse{
-	// 		Value: []*string{
-	// 			to.Ptr("aaaaaaaaaaaaaaaaaaaaaaaaa"),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-10-08/LocalRulestacks_listPredefinedUrlCategories_MaximumSet_Gen.json
 func ExampleLocalRulestacksClient_NewListPredefinedURLCategoriesPager_localRulestacksListPredefinedUrlCategoriesMaximumSetGen() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1042,73 +1109,6 @@ func ExampleLocalRulestacksClient_NewListPredefinedURLCategoriesPager_localRules
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-10-08/LocalRulestacks_listSecurityServices_MaximumSet_Gen.json
-func ExampleLocalRulestacksClient_ListSecurityServices_localRulestacksListSecurityServicesMaximumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpanngfw.NewClientFactory("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewLocalRulestacksClient().ListSecurityServices(ctx, "rgopenapi", "lrs1", armpanngfw.SecurityServicesTypeEnum("localRulestacks"), &armpanngfw.LocalRulestacksClientListSecurityServicesOptions{
-		Skip: to.Ptr("a6a321"),
-		Top:  to.Ptr[int32](20)})
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpanngfw.LocalRulestacksClientListSecurityServicesResponse{
-	// 	SecurityServicesResponse: armpanngfw.SecurityServicesResponse{
-	// 		NextLink: to.Ptr("a5324fa34"),
-	// 		Value: &armpanngfw.SecurityServicesTypeList{
-	// 			Type: to.Ptr("localRulestacks"),
-	// 			Entry: []*armpanngfw.NameDescriptionObject{
-	// 				{
-	// 					Name: to.Ptr("aaaaaaaaaa"),
-	// 					Description: to.Ptr("aaaaaaaaaaaa"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-10-08/LocalRulestacks_listSecurityServices_MinimumSet_Gen.json
-func ExampleLocalRulestacksClient_ListSecurityServices_localRulestacksListSecurityServicesMinimumSetGen() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpanngfw.NewClientFactory("2bf4a339-294d-4c25-b0b2-ef649e9f5c27", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewLocalRulestacksClient().ListSecurityServices(ctx, "rgopenapi", "lrs1", armpanngfw.SecurityServicesTypeEnum("localRulestacks"), nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpanngfw.LocalRulestacksClientListSecurityServicesResponse{
-	// 	SecurityServicesResponse: armpanngfw.SecurityServicesResponse{
-	// 		Value: &armpanngfw.SecurityServicesTypeList{
-	// 			Entry: []*armpanngfw.NameDescriptionObject{
-	// 				{
-	// 					Name: to.Ptr("aaaaaaaaaa"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2025-10-08/LocalRulestacks_revert_MaximumSet_Gen.json

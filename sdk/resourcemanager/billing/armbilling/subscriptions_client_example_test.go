@@ -57,6 +57,241 @@ func ExampleSubscriptionsClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2024-04-01/billingSubscriptionsMerge.json
+func ExampleSubscriptionsClient_BeginMerge() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSubscriptionsClient().BeginMerge(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "11111111-1111-1111-1111-111111111111", armbilling.SubscriptionMergeRequest{
+		Quantity:                      to.Ptr[int32](1),
+		TargetBillingSubscriptionName: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbilling.SubscriptionsClientMergeResponse{
+	// 	Subscription: armbilling.Subscription{
+	// 		Name: to.Ptr("22222222-2222-2222-2222-222222222222"),
+	// 		Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions"),
+	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingSubscriptions/22222222-2222-2222-2222-222222222222"),
+	// 		Properties: &armbilling.SubscriptionProperties{
+	// 			AutoRenew: to.Ptr(armbilling.AutoRenewOn),
+	// 			BillingProfileDisplayName: to.Ptr("Billing Profile Display Name"),
+	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+	// 			BillingProfileName: to.Ptr("xxxx-xxxx-xxx-xxx"),
+	// 			DisplayName: to.Ptr("Billing Subscription Display Name"),
+	// 			InvoiceSectionDisplayName: to.Ptr("Invoice Section Display Name"),
+	// 			InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/yyyy-yyyy-yyy-yyy"),
+	// 			InvoiceSectionName: to.Ptr("yyyy-yyyy-yyy-yyy"),
+	// 			ProductCategory: to.Ptr("SeatBased"),
+	// 			ProductType: to.Ptr("Seat-Based Product Type"),
+	// 			ProductTypeID: to.Ptr("XYZ56789"),
+	// 			PurchaseDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 			Quantity: to.Ptr[int64](2),
+	// 			SKUDescription: to.Ptr("SKU Description"),
+	// 			SKUID: to.Ptr("0001"),
+	// 			Status: to.Ptr(armbilling.BillingSubscriptionStatusActive),
+	// 			SystemOverrides: &armbilling.SystemOverrides{
+	// 				CancellationAllowedEndDate: to.Ptr(time.Date(2023, time.February, 1, 22, 39, 34, 260675000, time.UTC)),
+	// 			},
+	// 			TermDuration: to.Ptr("P1M"),
+	// 			TermEndDate: to.Ptr(time.Date(2023, time.February, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 			TermStartDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 		},
+	// 		SystemData: &armbilling.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 25, 22, 39, 34, 260675000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-04-01/billingSubscriptionMove.json
+func ExampleSubscriptionsClient_BeginMove() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSubscriptionsClient().BeginMove(ctx, "a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "6b96d3f2-9008-4a9d-912f-f87744185aa3", armbilling.MoveBillingSubscriptionRequest{
+		DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbilling.SubscriptionsClientMoveResponse{
+	// 	Subscription: armbilling.Subscription{
+	// 		Name: to.Ptr("6b96d3f2-9008-4a9d-912f-f87744185aa3"),
+	// 		Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions"),
+	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingSubscriptions/6b96d3f2-9008-4a9d-912f-f87744185aa3"),
+	// 		Properties: &armbilling.SubscriptionProperties{
+	// 			BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
+	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
+	// 			ConsumptionCostCenter: to.Ptr("ABC1234"),
+	// 			DisplayName: to.Ptr("My Subscription"),
+	// 			InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
+	// 			InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
+	// 			SKUDescription: to.Ptr("Microsoft Azure Plan"),
+	// 			SKUID: to.Ptr("0001"),
+	// 			Status: to.Ptr(armbilling.BillingSubscriptionStatusActive),
+	// 			SubscriptionID: to.Ptr("6b96d3f2-9008-4a9d-912f-f87744185aa3"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-04-01/billingSubscriptionsSplit.json
+func ExampleSubscriptionsClient_BeginSplit() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSubscriptionsClient().BeginSplit(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "11111111-1111-1111-1111-111111111111", armbilling.SubscriptionSplitRequest{
+		BillingFrequency:    to.Ptr("P1M"),
+		Quantity:            to.Ptr[int32](1),
+		TargetProductTypeID: to.Ptr("XYZ56789"),
+		TargetSKUID:         to.Ptr("0001"),
+		TermDuration:        to.Ptr("P1M"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbilling.SubscriptionsClientSplitResponse{
+	// 	Subscription: armbilling.Subscription{
+	// 		Name: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 		Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions"),
+	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingSubscriptions/11111111-1111-1111-1111-111111111111"),
+	// 		Properties: &armbilling.SubscriptionProperties{
+	// 			AutoRenew: to.Ptr(armbilling.AutoRenewOn),
+	// 			BillingProfileDisplayName: to.Ptr("Billing Profile Display Name"),
+	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+	// 			BillingProfileName: to.Ptr("xxxx-xxxx-xxx-xxx"),
+	// 			DisplayName: to.Ptr("Billing Subscription Display Name"),
+	// 			InvoiceSectionDisplayName: to.Ptr("Invoice Section Display Name"),
+	// 			InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/yyyy-yyyy-yyy-yyy"),
+	// 			InvoiceSectionName: to.Ptr("yyyy-yyyy-yyy-yyy"),
+	// 			ProductCategory: to.Ptr("SeatBased"),
+	// 			ProductType: to.Ptr("Seat-Based Product Type"),
+	// 			ProductTypeID: to.Ptr("XYZ56789"),
+	// 			PurchaseDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 			Quantity: to.Ptr[int64](1),
+	// 			SKUDescription: to.Ptr("SKU Description"),
+	// 			SKUID: to.Ptr("0001"),
+	// 			Status: to.Ptr(armbilling.BillingSubscriptionStatusActive),
+	// 			SystemOverrides: &armbilling.SystemOverrides{
+	// 				CancellationAllowedEndDate: to.Ptr(time.Date(2023, time.February, 1, 22, 39, 34, 260675000, time.UTC)),
+	// 			},
+	// 			TermDuration: to.Ptr("P1M"),
+	// 			TermEndDate: to.Ptr(time.Date(2023, time.February, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 			TermStartDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 		},
+	// 		SystemData: &armbilling.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 25, 22, 39, 34, 260675000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-04-01/billingSubscriptionsUpdate.json
+func ExampleSubscriptionsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armbilling.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewSubscriptionsClient().BeginUpdate(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "11111111-1111-1111-1111-111111111111", armbilling.SubscriptionPatch{
+		Properties: &armbilling.SubscriptionProperties{
+			ConsumptionCostCenter: to.Ptr("ABC1234"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armbilling.SubscriptionsClientUpdateResponse{
+	// 	Subscription: armbilling.Subscription{
+	// 		Name: to.Ptr("11111111-1111-1111-1111-111111111111"),
+	// 		Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions"),
+	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingSubscriptions/11111111-1111-1111-1111-111111111111"),
+	// 		Properties: &armbilling.SubscriptionProperties{
+	// 			AutoRenew: to.Ptr(armbilling.AutoRenewOn),
+	// 			BillingProfileDisplayName: to.Ptr("Billing Profile Display Name"),
+	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
+	// 			BillingProfileName: to.Ptr("xxxx-xxxx-xxx-xxx"),
+	// 			DisplayName: to.Ptr("Billing Subscription Display Name"),
+	// 			InvoiceSectionDisplayName: to.Ptr("Invoice Section Display Name"),
+	// 			InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/yyyy-yyyy-yyy-yyy"),
+	// 			InvoiceSectionName: to.Ptr("yyyy-yyyy-yyy-yyy"),
+	// 			ProductCategory: to.Ptr("SeatBased"),
+	// 			ProductType: to.Ptr("Seat-Based Product Type"),
+	// 			ProductTypeID: to.Ptr("XYZ56789"),
+	// 			PurchaseDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 			Quantity: to.Ptr[int64](1),
+	// 			SKUDescription: to.Ptr("SKU Description"),
+	// 			SKUID: to.Ptr("0001"),
+	// 			Status: to.Ptr(armbilling.BillingSubscriptionStatusActive),
+	// 			SystemOverrides: &armbilling.SystemOverrides{
+	// 				CancellationAllowedEndDate: to.Ptr(time.Date(2023, time.February, 1, 22, 39, 34, 260675000, time.UTC)),
+	// 			},
+	// 			TermDuration: to.Ptr("P1M"),
+	// 			TermEndDate: to.Ptr(time.Date(2023, time.February, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 			TermStartDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 		},
+	// 		SystemData: &armbilling.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
+	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 25, 22, 39, 34, 260675000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2024-04-01/billingSubscriptionsGet.json
 func ExampleSubscriptionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -446,8 +681,8 @@ func ExampleSubscriptionsClient_NewListByBillingProfilePager_billingSubscription
 	}
 }
 
-// Generated from example definition: 2024-04-01/billingSubscriptionsListByCustomer.json
-func ExampleSubscriptionsClient_NewListByCustomerPager() {
+// Generated from example definition: 2024-04-01/billingSubscriptionsListByCustomerAtBillingAccount.json
+func ExampleSubscriptionsClient_NewListByCustomerAtBillingAccountPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -457,7 +692,7 @@ func ExampleSubscriptionsClient_NewListByCustomerPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSubscriptionsClient().NewListByCustomerPager("a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "ea36e548-1505-41db-bebc-46fff3d37998", "Q7GV-UUVA-PJA-TGB", nil)
+	pager := clientFactory.NewSubscriptionsClient().NewListByCustomerAtBillingAccountPager("a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "Q7GV-UUVA-PJA-TGB", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -468,7 +703,7 @@ func ExampleSubscriptionsClient_NewListByCustomerPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbilling.SubscriptionsClientListByCustomerResponse{
+		// page = armbilling.SubscriptionsClientListByCustomerAtBillingAccountResponse{
 		// 	SubscriptionListResult: armbilling.SubscriptionListResult{
 		// 		Value: []*armbilling.Subscription{
 		// 			{
@@ -539,8 +774,8 @@ func ExampleSubscriptionsClient_NewListByCustomerPager() {
 	}
 }
 
-// Generated from example definition: 2024-04-01/billingSubscriptionsListByCustomerAtBillingAccount.json
-func ExampleSubscriptionsClient_NewListByCustomerAtBillingAccountPager() {
+// Generated from example definition: 2024-04-01/billingSubscriptionsListByCustomer.json
+func ExampleSubscriptionsClient_NewListByCustomerPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -550,7 +785,7 @@ func ExampleSubscriptionsClient_NewListByCustomerAtBillingAccountPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewSubscriptionsClient().NewListByCustomerAtBillingAccountPager("a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "Q7GV-UUVA-PJA-TGB", nil)
+	pager := clientFactory.NewSubscriptionsClient().NewListByCustomerPager("a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "ea36e548-1505-41db-bebc-46fff3d37998", "Q7GV-UUVA-PJA-TGB", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -561,7 +796,7 @@ func ExampleSubscriptionsClient_NewListByCustomerAtBillingAccountPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armbilling.SubscriptionsClientListByCustomerAtBillingAccountResponse{
+		// page = armbilling.SubscriptionsClientListByCustomerResponse{
 		// 	SubscriptionListResult: armbilling.SubscriptionListResult{
 		// 		Value: []*armbilling.Subscription{
 		// 			{
@@ -793,241 +1028,6 @@ func ExampleSubscriptionsClient_NewListByInvoiceSectionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2024-04-01/billingSubscriptionsMerge.json
-func ExampleSubscriptionsClient_BeginMerge() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSubscriptionsClient().BeginMerge(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "11111111-1111-1111-1111-111111111111", armbilling.SubscriptionMergeRequest{
-		Quantity:                      to.Ptr[int32](1),
-		TargetBillingSubscriptionName: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbilling.SubscriptionsClientMergeResponse{
-	// 	Subscription: armbilling.Subscription{
-	// 		Name: to.Ptr("22222222-2222-2222-2222-222222222222"),
-	// 		Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingSubscriptions/22222222-2222-2222-2222-222222222222"),
-	// 		Properties: &armbilling.SubscriptionProperties{
-	// 			AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-	// 			BillingProfileDisplayName: to.Ptr("Billing Profile Display Name"),
-	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
-	// 			BillingProfileName: to.Ptr("xxxx-xxxx-xxx-xxx"),
-	// 			DisplayName: to.Ptr("Billing Subscription Display Name"),
-	// 			InvoiceSectionDisplayName: to.Ptr("Invoice Section Display Name"),
-	// 			InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/yyyy-yyyy-yyy-yyy"),
-	// 			InvoiceSectionName: to.Ptr("yyyy-yyyy-yyy-yyy"),
-	// 			ProductCategory: to.Ptr("SeatBased"),
-	// 			ProductType: to.Ptr("Seat-Based Product Type"),
-	// 			ProductTypeID: to.Ptr("XYZ56789"),
-	// 			PurchaseDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 			Quantity: to.Ptr[int64](2),
-	// 			SKUDescription: to.Ptr("SKU Description"),
-	// 			SKUID: to.Ptr("0001"),
-	// 			Status: to.Ptr(armbilling.BillingSubscriptionStatusActive),
-	// 			SystemOverrides: &armbilling.SystemOverrides{
-	// 				CancellationAllowedEndDate: to.Ptr(time.Date(2023, time.February, 1, 22, 39, 34, 260675000, time.UTC)),
-	// 			},
-	// 			TermDuration: to.Ptr("P1M"),
-	// 			TermEndDate: to.Ptr(time.Date(2023, time.February, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 			TermStartDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 		},
-	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 25, 22, 39, 34, 260675000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-04-01/billingSubscriptionMove.json
-func ExampleSubscriptionsClient_BeginMove() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSubscriptionsClient().BeginMove(ctx, "a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31", "6b96d3f2-9008-4a9d-912f-f87744185aa3", armbilling.MoveBillingSubscriptionRequest{
-		DestinationInvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbilling.SubscriptionsClientMoveResponse{
-	// 	Subscription: armbilling.Subscription{
-	// 		Name: to.Ptr("6b96d3f2-9008-4a9d-912f-f87744185aa3"),
-	// 		Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingSubscriptions/6b96d3f2-9008-4a9d-912f-f87744185aa3"),
-	// 		Properties: &armbilling.SubscriptionProperties{
-	// 			BillingProfileDisplayName: to.Ptr("Contoso operations billing"),
-	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998"),
-	// 			ConsumptionCostCenter: to.Ptr("ABC1234"),
-	// 			DisplayName: to.Ptr("My Subscription"),
-	// 			InvoiceSectionDisplayName: to.Ptr("Contoso operations invoiceSection"),
-	// 			InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/a1a9c77e-4cec-4a6c-a089-867d973a6074:a80d3b1f-c626-4e5e-82ed-1173bd91c838_2019-05-31/billingProfiles/ea36e548-1505-41db-bebc-46fff3d37998/invoiceSections/Q7GV-UUVA-PJA-TGB"),
-	// 			SKUDescription: to.Ptr("Microsoft Azure Plan"),
-	// 			SKUID: to.Ptr("0001"),
-	// 			Status: to.Ptr(armbilling.BillingSubscriptionStatusActive),
-	// 			SubscriptionID: to.Ptr("6b96d3f2-9008-4a9d-912f-f87744185aa3"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-04-01/billingSubscriptionsSplit.json
-func ExampleSubscriptionsClient_BeginSplit() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSubscriptionsClient().BeginSplit(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "11111111-1111-1111-1111-111111111111", armbilling.SubscriptionSplitRequest{
-		BillingFrequency:    to.Ptr("P1M"),
-		Quantity:            to.Ptr[int32](1),
-		TargetProductTypeID: to.Ptr("XYZ56789"),
-		TargetSKUID:         to.Ptr("0001"),
-		TermDuration:        to.Ptr("P1M"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbilling.SubscriptionsClientSplitResponse{
-	// 	Subscription: armbilling.Subscription{
-	// 		Name: to.Ptr("11111111-1111-1111-1111-111111111111"),
-	// 		Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingSubscriptions/11111111-1111-1111-1111-111111111111"),
-	// 		Properties: &armbilling.SubscriptionProperties{
-	// 			AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-	// 			BillingProfileDisplayName: to.Ptr("Billing Profile Display Name"),
-	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
-	// 			BillingProfileName: to.Ptr("xxxx-xxxx-xxx-xxx"),
-	// 			DisplayName: to.Ptr("Billing Subscription Display Name"),
-	// 			InvoiceSectionDisplayName: to.Ptr("Invoice Section Display Name"),
-	// 			InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/yyyy-yyyy-yyy-yyy"),
-	// 			InvoiceSectionName: to.Ptr("yyyy-yyyy-yyy-yyy"),
-	// 			ProductCategory: to.Ptr("SeatBased"),
-	// 			ProductType: to.Ptr("Seat-Based Product Type"),
-	// 			ProductTypeID: to.Ptr("XYZ56789"),
-	// 			PurchaseDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 			Quantity: to.Ptr[int64](1),
-	// 			SKUDescription: to.Ptr("SKU Description"),
-	// 			SKUID: to.Ptr("0001"),
-	// 			Status: to.Ptr(armbilling.BillingSubscriptionStatusActive),
-	// 			SystemOverrides: &armbilling.SystemOverrides{
-	// 				CancellationAllowedEndDate: to.Ptr(time.Date(2023, time.February, 1, 22, 39, 34, 260675000, time.UTC)),
-	// 			},
-	// 			TermDuration: to.Ptr("P1M"),
-	// 			TermEndDate: to.Ptr(time.Date(2023, time.February, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 			TermStartDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 		},
-	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 25, 22, 39, 34, 260675000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-04-01/billingSubscriptionsUpdate.json
-func ExampleSubscriptionsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armbilling.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewSubscriptionsClient().BeginUpdate(ctx, "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31", "11111111-1111-1111-1111-111111111111", armbilling.SubscriptionPatch{
-		Properties: &armbilling.SubscriptionProperties{
-			ConsumptionCostCenter: to.Ptr("ABC1234"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armbilling.SubscriptionsClientUpdateResponse{
-	// 	Subscription: armbilling.Subscription{
-	// 		Name: to.Ptr("11111111-1111-1111-1111-111111111111"),
-	// 		Type: to.Ptr("Microsoft.Billing/billingAccounts/billingSubscriptions"),
-	// 		ID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingSubscriptions/11111111-1111-1111-1111-111111111111"),
-	// 		Properties: &armbilling.SubscriptionProperties{
-	// 			AutoRenew: to.Ptr(armbilling.AutoRenewOn),
-	// 			BillingProfileDisplayName: to.Ptr("Billing Profile Display Name"),
-	// 			BillingProfileID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx"),
-	// 			BillingProfileName: to.Ptr("xxxx-xxxx-xxx-xxx"),
-	// 			DisplayName: to.Ptr("Billing Subscription Display Name"),
-	// 			InvoiceSectionDisplayName: to.Ptr("Invoice Section Display Name"),
-	// 			InvoiceSectionID: to.Ptr("/providers/Microsoft.Billing/billingAccounts/00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31/billingProfiles/xxxx-xxxx-xxx-xxx/invoiceSections/yyyy-yyyy-yyy-yyy"),
-	// 			InvoiceSectionName: to.Ptr("yyyy-yyyy-yyy-yyy"),
-	// 			ProductCategory: to.Ptr("SeatBased"),
-	// 			ProductType: to.Ptr("Seat-Based Product Type"),
-	// 			ProductTypeID: to.Ptr("XYZ56789"),
-	// 			PurchaseDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 			Quantity: to.Ptr[int64](1),
-	// 			SKUDescription: to.Ptr("SKU Description"),
-	// 			SKUID: to.Ptr("0001"),
-	// 			Status: to.Ptr(armbilling.BillingSubscriptionStatusActive),
-	// 			SystemOverrides: &armbilling.SystemOverrides{
-	// 				CancellationAllowedEndDate: to.Ptr(time.Date(2023, time.February, 1, 22, 39, 34, 260675000, time.UTC)),
-	// 			},
-	// 			TermDuration: to.Ptr("P1M"),
-	// 			TermEndDate: to.Ptr(time.Date(2023, time.February, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 			TermStartDate: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 		},
-	// 		SystemData: &armbilling.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2023, time.January, 5, 22, 39, 34, 260675000, time.UTC)),
-	// 			LastModifiedAt: to.Ptr(time.Date(2023, time.January, 25, 22, 39, 34, 260675000, time.UTC)),
-	// 		},
-	// 	},
-	// }
 }
 
 // Generated from example definition: 2024-04-01/billingSubscriptionValidateMoveFailure.json

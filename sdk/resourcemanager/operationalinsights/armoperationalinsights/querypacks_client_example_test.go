@@ -195,65 +195,6 @@ func ExampleQueryPacksClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-07-01/QueryPacksList.json
-func ExampleQueryPacksClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armoperationalinsights.NewClientFactory("86dc51d3-92ed-4d7e-947a-775ea79b4919", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewQueryPacksClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armoperationalinsights.QueryPacksClientListResponse{
-		// 	LogAnalyticsQueryPackListResult: armoperationalinsights.LogAnalyticsQueryPackListResult{
-		// 		Value: []*armoperationalinsights.LogAnalyticsQueryPack{
-		// 			{
-		// 				Name: to.Ptr("my-querypack"),
-		// 				Type: to.Ptr("microsoft.operationalinsights/querypacks"),
-		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/microsoft.operationalinsights/queryPacks/my-querypack"),
-		// 				Location: to.Ptr("South Central US"),
-		// 				Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					QueryPackID: to.Ptr("d1c8fc00-2b68-441e-8f9b-ded8748dc6aa"),
-		// 					TimeCreated: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
-		// 					TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("my-other-querypack"),
-		// 				Type: to.Ptr("microsoft.operationalinsights/querypacks"),
-		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-other-resource-group/providers/microsoft.operationalinsights/queryPacks/my-other-querypack"),
-		// 				Location: to.Ptr("South Central US"),
-		// 				Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					QueryPackID: to.Ptr("aac8fc00-2b68-441e-8f9b-ded8748dc635"),
-		// 					TimeCreated: to.Ptr(time.Date(2019, time.June, 4, 12, 37, 56, 854365200, time.UTC)),
-		// 					TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2025-07-01/QueryPacksListByResourceGroup.json
 func ExampleQueryPacksClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -297,6 +238,65 @@ func ExampleQueryPacksClient_NewListByResourceGroupPager() {
 		// 				Name: to.Ptr("my-other-querypack"),
 		// 				Type: to.Ptr("microsoft.operationalinsights/querypacks"),
 		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/microsoft.operationalinsights/queryPacks/my-other-querypack"),
+		// 				Location: to.Ptr("South Central US"),
+		// 				Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					QueryPackID: to.Ptr("aac8fc00-2b68-441e-8f9b-ded8748dc635"),
+		// 					TimeCreated: to.Ptr(time.Date(2019, time.June, 4, 12, 37, 56, 854365200, time.UTC)),
+		// 					TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2025-07-01/QueryPacksList.json
+func ExampleQueryPacksClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armoperationalinsights.NewClientFactory("86dc51d3-92ed-4d7e-947a-775ea79b4919", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewQueryPacksClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armoperationalinsights.QueryPacksClientListResponse{
+		// 	LogAnalyticsQueryPackListResult: armoperationalinsights.LogAnalyticsQueryPackListResult{
+		// 		Value: []*armoperationalinsights.LogAnalyticsQueryPack{
+		// 			{
+		// 				Name: to.Ptr("my-querypack"),
+		// 				Type: to.Ptr("microsoft.operationalinsights/querypacks"),
+		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-resource-group/providers/microsoft.operationalinsights/queryPacks/my-querypack"),
+		// 				Location: to.Ptr("South Central US"),
+		// 				Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					QueryPackID: to.Ptr("d1c8fc00-2b68-441e-8f9b-ded8748dc6aa"),
+		// 					TimeCreated: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
+		// 					TimeModified: to.Ptr(time.Date(2019, time.August, 4, 12, 37, 56, 854365200, time.UTC)),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("my-other-querypack"),
+		// 				Type: to.Ptr("microsoft.operationalinsights/querypacks"),
+		// 				ID: to.Ptr("/subscriptions/86dc51d3-92ed-4d7e-947a-775ea79b4919/resourceGroups/my-other-resource-group/providers/microsoft.operationalinsights/queryPacks/my-other-querypack"),
 		// 				Location: to.Ptr("South Central US"),
 		// 				Properties: &armoperationalinsights.LogAnalyticsQueryPackProperties{
 		// 					ProvisioningState: to.Ptr("Succeeded"),

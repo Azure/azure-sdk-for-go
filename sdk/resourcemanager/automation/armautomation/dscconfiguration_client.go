@@ -67,7 +67,8 @@ func (client *DscConfigurationClient) CreateOrUpdate(ctx context.Context, resour
 	if err != nil {
 		return DscConfigurationClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -137,7 +138,8 @@ func (client *DscConfigurationClient) Delete(ctx context.Context, resourceGroupN
 		return DscConfigurationClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return DscConfigurationClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return DscConfigurationClientDeleteResponse{}, err
 	}
 	return DscConfigurationClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *DscConfigurationClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return DscConfigurationClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -257,7 +260,8 @@ func (client *DscConfigurationClient) GetContent(ctx context.Context, resourceGr
 	if err != nil {
 		return DscConfigurationClientGetContentResponse{}, err
 	}
-	return client.getContentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getContentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getContentCreateRequest creates the GetContent request.
@@ -415,7 +419,8 @@ func (client *DscConfigurationClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DscConfigurationClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

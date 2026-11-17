@@ -30,12 +30,13 @@ const (
 
 // Client is used to interact with the Azure Cosmos DB database service.
 type Client struct {
-	endpoint    string
-	internal    *azcore.Client
-	gem         *globalEndpointManager
-	endpointUrl *url.URL
-	caches      *sharedCacheSet
-	closeOnce   sync.Once
+	endpoint                     string
+	internal                     *azcore.Client
+	gem                          *globalEndpointManager
+	endpointUrl                  *url.URL
+	caches                       *sharedCacheSet
+	closeOnce                    sync.Once
+	enableResourceNameValidation bool
 }
 
 // getContainerCache returns the container properties cache for this client.
@@ -96,7 +97,7 @@ func NewClientWithKey(endpoint string, cred KeyCredential, o *ClientOptions) (*C
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint)}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint), enableResourceNameValidation: o.EnableResourceNameValidation}, nil
 }
 
 // NewClient creates a new instance of Cosmos client with Azure AD access token authentication. It uses the default pipeline configuration.
@@ -143,7 +144,7 @@ func NewClient(endpoint string, cred azcore.TokenCredential, o *ClientOptions) (
 	if err != nil {
 		return nil, err
 	}
-	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint)}, nil
+	return &Client{endpoint: endpoint, endpointUrl: endpointUrl, internal: internalClient, gem: gem, caches: acquireCaches(endpoint), enableResourceNameValidation: o.EnableResourceNameValidation}, nil
 }
 
 // NewClientFromConnectionString creates a new instance of Cosmos client from connection string. It uses the default pipeline configuration.
@@ -300,6 +301,9 @@ func (c *Client) CreateDatabase(
 	ctx context.Context,
 	databaseProperties DatabaseProperties,
 	o *CreateDatabaseOptions) (DatabaseResponse, error) {
+	if err := c.validateResourceName("database", databaseProperties.ID); err != nil {
+		return DatabaseResponse{}, err
+	}
 	var err error
 	spanName, err := getSpanNameForDatabases(c.accountEndpointUrl(), operationTypeCreate, resourceTypeDatabase, databaseProperties.ID)
 	if err != nil {

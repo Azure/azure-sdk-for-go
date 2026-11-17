@@ -1188,18 +1188,6 @@ type UpdateGroup struct {
 	// A list of Gates that will be created before this Group is executed.
 	BeforeGates []*GateConfiguration
 
-	// Limits the number of member (cluster) upgrade failures tolerated within this group.
-	// Failures are evaluated over members within this group only.
-	// Accepts either:
-	// • A fixed count n, where n >= 0
-	// • A percentage p%, where 0 <= p <= 100
-	// Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
-	// where p is the percentage as a decimal and N is the number of members in this group at scope start.
-	// Examples:
-	// • "3" --> up to 3 member upgrade failures are tolerated within this group. The 4th failure causes the group to fail.
-	// • "25%" --> up to 25% of the members in this group can fail their upgrade before the group is considered failed.
-	MaxAllowedFailures *string
-
 	// The max number of upgrades that can run concurrently in this specific group.
 	// Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the group you want to tolerate at a time.
 	// Actual concurrency may be lower depending on stage-level concurrency limits or individual member conditions.
@@ -1234,13 +1222,6 @@ type UpdateGroupStatus struct {
 
 	// READ-ONLY; The list of Gates that will run before this UpdateGroup.
 	BeforeGates []*UpdateRunGateStatus
-
-	// READ-ONLY; The total member upgrade failures within the group.
-	FailureCount *int32
-
-	// READ-ONLY; The max number of member upgrade failures allowed within this group, resolved from the UpdateStrategy.UpdateGroup.maxAllowedFailures
-	// value.
-	MaxAllowedFailures *int32
 
 	// READ-ONLY; The max number of upgrades that can run concurrently in this group, resolved from the UpdateStrategy.UpdateGroup.maxConcurrency
 	// value. If no value was provided, this value defaults to "1".
@@ -1355,9 +1336,6 @@ type UpdateRunProperties struct {
 
 // UpdateRunStatus - The status of a UpdateRun.
 type UpdateRunStatus struct {
-	// READ-ONLY; Total member upgrade failures across the entire UpdateRun.
-	FailureCount *int32
-
 	// READ-ONLY; The node image upgrade specs for the update run. It is only set in update run when `NodeImageSelection.type`
 	// is `Consistent`.
 	NodeImageSelection *NodeImageSelectionStatus
@@ -1397,19 +1375,6 @@ type UpdateStage struct {
 	// Defines the groups to be executed in parallel in this stage. Duplicate groups are not allowed. Min size: 1.
 	Groups []*UpdateGroup
 
-	// Limits the number of member (cluster) upgrade failures tolerated within this stage.
-	// Failures are evaluated over all members within all groups within this stage.
-	// Accepts either:
-	// • A fixed count n, where n >= 0
-	// • A percentage p%, where 0 <= p <= 100
-	// Percentage resolves at stage start using: resolvedThreshold = ceil(p * N),
-	// where p is the percentage as a decimal and N is the number of members in this stage at scope start.
-	// Examples:
-	// • "3" --> up to 3 member upgrade failures are tolerated within this stage. The 4th failure would cause the entire stage
-	// to fail.
-	// • "25%" --> up to 25% of the members in this stage can fail their upgrade before the stage is considered failed.
-	MaxAllowedFailures *string
-
 	// The max number of upgrades that can run concurrently across all groups in this stage.
 	// Acts as a ceiling (and not a quota) for the number of concurrent upgrades within the stage you want to tolerate at a time.
 	// Actual concurrency may be lower depending on group-level concurrency limits or individual member conditions.
@@ -1443,15 +1408,8 @@ type UpdateStageStatus struct {
 	// READ-ONLY; The list of Gates that will run before this UpdateStage.
 	BeforeGates []*UpdateRunGateStatus
 
-	// READ-ONLY; The total member upgrade failures within the stage.
-	FailureCount *int32
-
 	// READ-ONLY; The list of groups to be updated as part of this UpdateStage.
 	Groups []*UpdateGroupStatus
-
-	// READ-ONLY; The max number of member upgrade failures allowed within this stage, resolved from the UpdateStrategy.UpdateStage.maxAllowedFailures
-	// value.
-	MaxAllowedFailures *int32
 
 	// READ-ONLY; The max number of upgrades that can run concurrently across all groups in this stage, resolved from the UpdateStrategy.UpdateStage.maxConcurrency
 	// value.

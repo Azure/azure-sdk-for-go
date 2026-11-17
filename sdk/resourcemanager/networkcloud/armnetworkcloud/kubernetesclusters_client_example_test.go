@@ -987,6 +987,380 @@ func ExampleKubernetesClustersClient_BeginDelete() {
 	}
 }
 
+// Generated from example definition: 2026-07-01/KubernetesClusters_RestartNode.json
+func ExampleKubernetesClustersClient_BeginRestartNode() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewKubernetesClustersClient().BeginRestartNode(ctx, "resourceGroupName", "kubernetesClusterName", armnetworkcloud.KubernetesClusterRestartNodeParameters{
+		NodeName: to.Ptr("nodeName"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01/KubernetesClusters_Patch.json
+func ExampleKubernetesClustersClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewKubernetesClustersClient().BeginUpdate(ctx, "resourceGroupName", "kubernetesClusterName", armnetworkcloud.KubernetesClusterPatchParameters{
+		Properties: &armnetworkcloud.KubernetesClusterPatchProperties{
+			AdministratorConfiguration: &armnetworkcloud.AdministratorConfigurationPatch{
+				SSHPublicKeys: []*armnetworkcloud.SSHPublicKey{
+					{
+						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
+					},
+				},
+			},
+			ControlPlaneNodeConfiguration: &armnetworkcloud.ControlPlaneNodePatchConfiguration{
+				AdministratorConfiguration: &armnetworkcloud.AdministratorConfigurationPatch{
+					SSHPublicKeys: []*armnetworkcloud.SSHPublicKey{
+						{
+							KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
+						},
+					},
+				},
+				Count: to.Ptr[int64](3),
+			},
+			KubernetesVersion: to.Ptr("1.XX.Y"),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("myvalue1"),
+			"key2": to.Ptr("myvalue2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetworkcloud.KubernetesClustersClientUpdateResponse{
+	// 	KubernetesCluster: armnetworkcloud.KubernetesCluster{
+	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 			Type: to.Ptr("CustomLocation"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesClusters/kubernetesClusterName"),
+	// 		Location: to.Ptr("location"),
+	// 		Name: to.Ptr("KubernetesClusterName"),
+	// 		Properties: &armnetworkcloud.KubernetesClusterProperties{
+	// 			AADConfiguration: &armnetworkcloud.AADConfiguration{
+	// 				AdminGroupObjectIDs: []*string{
+	// 					to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
+	// 				},
+	// 			},
+	// 			AdministratorConfiguration: &armnetworkcloud.AdministratorConfiguration{
+	// 				AdminUsername: to.Ptr("azure"),
+	// 				SSHPublicKeys: []*armnetworkcloud.SSHPublicKey{
+	// 					{
+	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
+	// 					},
+	// 				},
+	// 			},
+	// 			AttachedNetworkIDs: []*string{
+	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
+	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
+	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
+	// 			},
+	// 			AvailableUpgrades: []*armnetworkcloud.AvailableUpgrade{
+	// 				{
+	// 					AvailabilityLifecycle: to.Ptr(armnetworkcloud.AvailabilityLifecycleGenerallyAvailable),
+	// 					Version: to.Ptr("1.XX.Y"),
+	// 				},
+	// 			},
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			ConnectedClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/connectedClusterName"),
+	// 			ControlPlaneKubernetesVersion: to.Ptr("1.XX.Y"),
+	// 			ControlPlaneNodeConfiguration: &armnetworkcloud.ControlPlaneNodeConfiguration{
+	// 				AdministratorConfiguration: &armnetworkcloud.AdministratorConfiguration{
+	// 					AdminUsername: to.Ptr("azure"),
+	// 					SSHPublicKeys: []*armnetworkcloud.SSHPublicKey{
+	// 						{
+	// 							KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
+	// 						},
+	// 					},
+	// 				},
+	// 				AvailabilityZones: []*string{
+	// 					to.Ptr("1"),
+	// 					to.Ptr("2"),
+	// 					to.Ptr("3"),
+	// 				},
+	// 				Count: to.Ptr[int64](3),
+	// 				VMSKUName: to.Ptr("NC_G6_28_v1"),
+	// 			},
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.KubernetesClusterDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("Kubernetes cluster is operational"),
+	// 			FeatureStatuses: []*armnetworkcloud.FeatureStatus{
+	// 				{
+	// 					DetailedStatus: to.Ptr(armnetworkcloud.FeatureDetailedStatusRunning),
+	// 					DetailedStatusMessage: to.Ptr("No issues detected"),
+	// 					Name: to.Ptr("Feature1"),
+	// 					Version: to.Ptr("1"),
+	// 				},
+	// 			},
+	// 			InitialAgentPoolConfigurations: []*armnetworkcloud.InitialAgentPoolConfiguration{
+	// 				{
+	// 					AdministratorConfiguration: &armnetworkcloud.AdministratorConfiguration{
+	// 						AdminUsername: to.Ptr("azure"),
+	// 						SSHPublicKeys: []*armnetworkcloud.SSHPublicKey{
+	// 							{
+	// 								KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
+	// 							},
+	// 						},
+	// 					},
+	// 					AgentOptions: &armnetworkcloud.AgentOptions{
+	// 						HugepagesCount: to.Ptr[int64](96),
+	// 						HugepagesSize: to.Ptr(armnetworkcloud.HugepagesSizeOneG),
+	// 					},
+	// 					AttachedNetworkConfiguration: &armnetworkcloud.AttachedNetworkConfiguration{
+	// 						L2Networks: []*armnetworkcloud.L2NetworkAttachmentConfiguration{
+	// 							{
+	// 								NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
+	// 								PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeDPDK),
+	// 							},
+	// 						},
+	// 						L3Networks: []*armnetworkcloud.L3NetworkAttachmentConfiguration{
+	// 							{
+	// 								IpamEnabled: to.Ptr(armnetworkcloud.L3NetworkConfigurationIpamEnabledFalse),
+	// 								NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
+	// 								PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeSRIOV),
+	// 							},
+	// 						},
+	// 						TrunkedNetworks: []*armnetworkcloud.TrunkedNetworkAttachmentConfiguration{
+	// 							{
+	// 								NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
+	// 								PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeMACVLAN),
+	// 							},
+	// 						},
+	// 					},
+	// 					AvailabilityZones: []*string{
+	// 						to.Ptr("1"),
+	// 						to.Ptr("2"),
+	// 						to.Ptr("3"),
+	// 					},
+	// 					Count: to.Ptr[int64](3),
+	// 					Labels: []*armnetworkcloud.KubernetesLabel{
+	// 						{
+	// 							Key: to.Ptr("kubernetes.label"),
+	// 							Value: to.Ptr("true"),
+	// 						},
+	// 					},
+	// 					Mode: to.Ptr(armnetworkcloud.AgentPoolModeSystem),
+	// 					Name: to.Ptr("SystemPool-1"),
+	// 					Taints: []*armnetworkcloud.KubernetesLabel{
+	// 						{
+	// 							Key: to.Ptr("kubernetes.taint"),
+	// 							Value: to.Ptr("true:NoSchedule"),
+	// 						},
+	// 					},
+	// 					UpgradeSettings: &armnetworkcloud.AgentPoolUpgradeSettings{
+	// 						MaxSurge: to.Ptr("1"),
+	// 					},
+	// 					VMSKUName: to.Ptr("NC_P46_224_v1"),
+	// 				},
+	// 			},
+	// 			KubernetesVersion: to.Ptr("1.XX.Y"),
+	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
+	// 				Location: to.Ptr("East US"),
+	// 				Name: to.Ptr("my-managed-rg"),
+	// 			},
+	// 			NetworkConfiguration: &armnetworkcloud.NetworkConfiguration{
+	// 				AttachedNetworkConfiguration: &armnetworkcloud.AttachedNetworkConfiguration{
+	// 					L2Networks: []*armnetworkcloud.L2NetworkAttachmentConfiguration{
+	// 						{
+	// 							NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
+	// 							PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeDPDK),
+	// 						},
+	// 					},
+	// 					L3Networks: []*armnetworkcloud.L3NetworkAttachmentConfiguration{
+	// 						{
+	// 							IpamEnabled: to.Ptr(armnetworkcloud.L3NetworkConfigurationIpamEnabledFalse),
+	// 							NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
+	// 							PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeSRIOV),
+	// 						},
+	// 					},
+	// 					TrunkedNetworks: []*armnetworkcloud.TrunkedNetworkAttachmentConfiguration{
+	// 						{
+	// 							NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
+	// 							PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeMACVLAN),
+	// 						},
+	// 					},
+	// 				},
+	// 				BgpServiceLoadBalancerConfiguration: &armnetworkcloud.BgpServiceLoadBalancerConfiguration{
+	// 					BgpAdvertisements: []*armnetworkcloud.BgpAdvertisement{
+	// 						{
+	// 							AdvertiseToFabric: to.Ptr(armnetworkcloud.AdvertiseToFabricTrue),
+	// 							Communities: []*string{
+	// 								to.Ptr("64512:100"),
+	// 							},
+	// 							IPAddressPools: []*string{
+	// 								to.Ptr("pool1"),
+	// 							},
+	// 							Peers: []*string{
+	// 								to.Ptr("peer1"),
+	// 							},
+	// 						},
+	// 					},
+	// 					BgpPeers: []*armnetworkcloud.ServiceLoadBalancerBgpPeer{
+	// 						{
+	// 							BfdEnabled: to.Ptr(armnetworkcloud.BfdEnabledFalse),
+	// 							BgpMultiHop: to.Ptr(armnetworkcloud.BgpMultiHopFalse),
+	// 							HoldTime: to.Ptr("P300s"),
+	// 							KeepAliveTime: to.Ptr("P300s"),
+	// 							MyAsn: to.Ptr[int64](64512),
+	// 							Name: to.Ptr("peer1"),
+	// 							PeerAddress: to.Ptr("203.0.113.254"),
+	// 							PeerAsn: to.Ptr[int64](64497),
+	// 							PeerPort: to.Ptr[int64](179),
+	// 						},
+	// 					},
+	// 					FabricPeeringEnabled: to.Ptr(armnetworkcloud.FabricPeeringEnabledTrue),
+	// 					IPAddressPools: []*armnetworkcloud.IPAddressPool{
+	// 						{
+	// 							Addresses: []*string{
+	// 								to.Ptr("198.51.102.0/24"),
+	// 							},
+	// 							AutoAssign: to.Ptr(armnetworkcloud.BfdEnabledTrue),
+	// 							Name: to.Ptr("pool1"),
+	// 							OnlyUseHostIPs: to.Ptr(armnetworkcloud.BfdEnabledTrue),
+	// 						},
+	// 					},
+	// 				},
+	// 				CloudServicesNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
+	// 				CniNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
+	// 				DNSServiceIP: to.Ptr("198.51.101.2"),
+	// 				PodCidrs: []*string{
+	// 					to.Ptr("198.51.100.0/24"),
+	// 				},
+	// 				ServiceCidrs: []*string{
+	// 					to.Ptr("198.51.101.0/24"),
+	// 				},
+	// 			},
+	// 			Nodes: []*armnetworkcloud.KubernetesClusterNode{
+	// 				{
+	// 					AgentPoolID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesClusters/kubernetesClusterName/agentPools/agentPoolName"),
+	// 					AvailabilityZone: to.Ptr("1"),
+	// 					BareMetalMachineID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
+	// 					CPUCores: to.Ptr[int64](46),
+	// 					DetailedStatus: to.Ptr(armnetworkcloud.KubernetesClusterNodeDetailedStatusRunning),
+	// 					DetailedStatusMessage: to.Ptr("Running - virtual machine is running."),
+	// 					DiskSizeGB: to.Ptr[int64](300),
+	// 					Image: to.Ptr("mariner-guest-image-qcow2-k8s-1.XX.Y"),
+	// 					KubernetesVersion: to.Ptr("v1.XX.Y"),
+	// 					Labels: []*armnetworkcloud.KubernetesLabel{
+	// 						{
+	// 							Key: to.Ptr("kubernetes.label"),
+	// 							Value: to.Ptr("true"),
+	// 						},
+	// 					},
+	// 					MemorySizeGB: to.Ptr[int64](224),
+	// 					Mode: to.Ptr(armnetworkcloud.AgentPoolModeSystem),
+	// 					Name: to.Ptr("kubernetesClusterName-SystemPool-1-md-cqjvd"),
+	// 					NetworkAttachments: []*armnetworkcloud.NetworkAttachment{
+	// 						{
+	// 							AttachedNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
+	// 							DefaultGateway: to.Ptr(armnetworkcloud.DefaultGatewayFalse),
+	// 							IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
+	// 							IPv4Address: to.Ptr("169.254.8.4"),
+	// 							MacAddress: to.Ptr("aa:bb:cc:06:79:2a"),
+	// 							NetworkAttachmentName: to.Ptr("cloudservices"),
+	// 						},
+	// 						{
+	// 							AttachedNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
+	// 							DefaultGateway: to.Ptr(armnetworkcloud.DefaultGatewayFalse),
+	// 							IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
+	// 							IPv4Address: to.Ptr("10.14.48.12"),
+	// 							IPv6Address: to.Ptr("fda0:d59c:da0a:e30::a"),
+	// 							MacAddress: to.Ptr("aa:bb:cc:ad:40:cf"),
+	// 							NetworkAttachmentName: to.Ptr("defaultcni"),
+	// 						},
+	// 					},
+	// 					PowerState: to.Ptr(armnetworkcloud.KubernetesNodePowerStateOn),
+	// 					Role: to.Ptr(armnetworkcloud.KubernetesNodeRoleWorker),
+	// 					Taints: []*armnetworkcloud.KubernetesLabel{
+	// 						{
+	// 							Key: to.Ptr("kubernetes.taint"),
+	// 							Value: to.Ptr("true:NoSchedule"),
+	// 						},
+	// 					},
+	// 					VMSKUName: to.Ptr("NC_P46_224_v1"),
+	// 				},
+	// 				{
+	// 					BareMetalMachineID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
+	// 					CPUCores: to.Ptr[int64](6),
+	// 					DetailedStatus: to.Ptr(armnetworkcloud.KubernetesClusterNodeDetailedStatusRunning),
+	// 					DetailedStatusMessage: to.Ptr("Running - virtual machine is running."),
+	// 					DiskSizeGB: to.Ptr[int64](300),
+	// 					Image: to.Ptr("mariner-guest-image-qcow2-k8s-1.XX.Y"),
+	// 					KubernetesVersion: to.Ptr("v1.XX.Y"),
+	// 					MemorySizeGB: to.Ptr[int64](28),
+	// 					Name: to.Ptr("kubernetesClusterName-control-plane-7nsh2"),
+	// 					NetworkAttachments: []*armnetworkcloud.NetworkAttachment{
+	// 						{
+	// 							AttachedNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
+	// 							DefaultGateway: to.Ptr(armnetworkcloud.DefaultGatewayFalse),
+	// 							IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
+	// 							IPv4Address: to.Ptr("169.254.8.2"),
+	// 							MacAddress: to.Ptr("aa:bb:cc:fa:91:71"),
+	// 							NetworkAttachmentName: to.Ptr("cloudservices"),
+	// 						},
+	// 						{
+	// 							AttachedNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
+	// 							DefaultGateway: to.Ptr(armnetworkcloud.DefaultGatewayFalse),
+	// 							IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
+	// 							IPv4Address: to.Ptr("10.14.48.11"),
+	// 							IPv6Address: to.Ptr("fda0:d59c:da0a:e30::9"),
+	// 							MacAddress: to.Ptr("aa:bb:cc:c8:a2:40"),
+	// 							NetworkAttachmentName: to.Ptr("defaultcni"),
+	// 						},
+	// 					},
+	// 					PowerState: to.Ptr(armnetworkcloud.KubernetesNodePowerStateOn),
+	// 					Role: to.Ptr(armnetworkcloud.KubernetesNodeRoleControlPlane),
+	// 					VMSKUName: to.Ptr("NC_G6_28_v1"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.KubernetesClusterProvisioningStateSucceeded),
+	// 		},
+	// 		SystemData: &armnetworkcloud.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("identityA"),
+	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("identityB"),
+	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("myvalue1"),
+	// 			"key2": to.Ptr("myvalue2"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/kubernetesClusters"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-07-01/KubernetesClusters_Get.json
 func ExampleKubernetesClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1970,378 +2344,4 @@ func ExampleKubernetesClustersClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01/KubernetesClusters_RestartNode.json
-func ExampleKubernetesClustersClient_BeginRestartNode() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewKubernetesClustersClient().BeginRestartNode(ctx, "resourceGroupName", "kubernetesClusterName", armnetworkcloud.KubernetesClusterRestartNodeParameters{
-		NodeName: to.Ptr("nodeName"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01/KubernetesClusters_Patch.json
-func ExampleKubernetesClustersClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewKubernetesClustersClient().BeginUpdate(ctx, "resourceGroupName", "kubernetesClusterName", armnetworkcloud.KubernetesClusterPatchParameters{
-		Properties: &armnetworkcloud.KubernetesClusterPatchProperties{
-			AdministratorConfiguration: &armnetworkcloud.AdministratorConfigurationPatch{
-				SSHPublicKeys: []*armnetworkcloud.SSHPublicKey{
-					{
-						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
-					},
-				},
-			},
-			ControlPlaneNodeConfiguration: &armnetworkcloud.ControlPlaneNodePatchConfiguration{
-				AdministratorConfiguration: &armnetworkcloud.AdministratorConfigurationPatch{
-					SSHPublicKeys: []*armnetworkcloud.SSHPublicKey{
-						{
-							KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
-						},
-					},
-				},
-				Count: to.Ptr[int64](3),
-			},
-			KubernetesVersion: to.Ptr("1.XX.Y"),
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("myvalue1"),
-			"key2": to.Ptr("myvalue2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetworkcloud.KubernetesClustersClientUpdateResponse{
-	// 	KubernetesCluster: armnetworkcloud.KubernetesCluster{
-	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
-	// 			Type: to.Ptr("CustomLocation"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesClusters/kubernetesClusterName"),
-	// 		Location: to.Ptr("location"),
-	// 		Name: to.Ptr("KubernetesClusterName"),
-	// 		Properties: &armnetworkcloud.KubernetesClusterProperties{
-	// 			AADConfiguration: &armnetworkcloud.AADConfiguration{
-	// 				AdminGroupObjectIDs: []*string{
-	// 					to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff"),
-	// 				},
-	// 			},
-	// 			AdministratorConfiguration: &armnetworkcloud.AdministratorConfiguration{
-	// 				AdminUsername: to.Ptr("azure"),
-	// 				SSHPublicKeys: []*armnetworkcloud.SSHPublicKey{
-	// 					{
-	// 						KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
-	// 					},
-	// 				},
-	// 			},
-	// 			AttachedNetworkIDs: []*string{
-	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
-	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
-	// 				to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
-	// 			},
-	// 			AvailableUpgrades: []*armnetworkcloud.AvailableUpgrade{
-	// 				{
-	// 					AvailabilityLifecycle: to.Ptr(armnetworkcloud.AvailabilityLifecycleGenerallyAvailable),
-	// 					Version: to.Ptr("1.XX.Y"),
-	// 				},
-	// 			},
-	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 			ConnectedClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.Kubernetes/connectedClusters/connectedClusterName"),
-	// 			ControlPlaneKubernetesVersion: to.Ptr("1.XX.Y"),
-	// 			ControlPlaneNodeConfiguration: &armnetworkcloud.ControlPlaneNodeConfiguration{
-	// 				AdministratorConfiguration: &armnetworkcloud.AdministratorConfiguration{
-	// 					AdminUsername: to.Ptr("azure"),
-	// 					SSHPublicKeys: []*armnetworkcloud.SSHPublicKey{
-	// 						{
-	// 							KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
-	// 						},
-	// 					},
-	// 				},
-	// 				AvailabilityZones: []*string{
-	// 					to.Ptr("1"),
-	// 					to.Ptr("2"),
-	// 					to.Ptr("3"),
-	// 				},
-	// 				Count: to.Ptr[int64](3),
-	// 				VMSKUName: to.Ptr("NC_G6_28_v1"),
-	// 			},
-	// 			DetailedStatus: to.Ptr(armnetworkcloud.KubernetesClusterDetailedStatusAvailable),
-	// 			DetailedStatusMessage: to.Ptr("Kubernetes cluster is operational"),
-	// 			FeatureStatuses: []*armnetworkcloud.FeatureStatus{
-	// 				{
-	// 					DetailedStatus: to.Ptr(armnetworkcloud.FeatureDetailedStatusRunning),
-	// 					DetailedStatusMessage: to.Ptr("No issues detected"),
-	// 					Name: to.Ptr("Feature1"),
-	// 					Version: to.Ptr("1"),
-	// 				},
-	// 			},
-	// 			InitialAgentPoolConfigurations: []*armnetworkcloud.InitialAgentPoolConfiguration{
-	// 				{
-	// 					AdministratorConfiguration: &armnetworkcloud.AdministratorConfiguration{
-	// 						AdminUsername: to.Ptr("azure"),
-	// 						SSHPublicKeys: []*armnetworkcloud.SSHPublicKey{
-	// 							{
-	// 								KeyData: to.Ptr("ssh-rsa AAtsE3njSONzDYRIZv/WLjVuMfrUSByHp+jfaaOLHTIIB4fJvo6dQUZxE20w2iDHV3tEkmnTo84eba97VMueQD6OzJPEyWZMRpz8UYWOd0IXeRqiFu1lawNblZhwNT/ojNZfpB3af/YDzwQCZgTcTRyNNhL4o/blKUmug0daSsSXISTRnIDpcf5qytjs1Xo+yYyJMvzLL59mhAyb3p/cD+Y3/s3WhAx+l0XOKpzXnblrv9d3q4c2tWmm/SyFqthaqd0= admin@vm"),
-	// 							},
-	// 						},
-	// 					},
-	// 					AgentOptions: &armnetworkcloud.AgentOptions{
-	// 						HugepagesCount: to.Ptr[int64](96),
-	// 						HugepagesSize: to.Ptr(armnetworkcloud.HugepagesSizeOneG),
-	// 					},
-	// 					AttachedNetworkConfiguration: &armnetworkcloud.AttachedNetworkConfiguration{
-	// 						L2Networks: []*armnetworkcloud.L2NetworkAttachmentConfiguration{
-	// 							{
-	// 								NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
-	// 								PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeDPDK),
-	// 							},
-	// 						},
-	// 						L3Networks: []*armnetworkcloud.L3NetworkAttachmentConfiguration{
-	// 							{
-	// 								IpamEnabled: to.Ptr(armnetworkcloud.L3NetworkConfigurationIpamEnabledFalse),
-	// 								NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
-	// 								PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeSRIOV),
-	// 							},
-	// 						},
-	// 						TrunkedNetworks: []*armnetworkcloud.TrunkedNetworkAttachmentConfiguration{
-	// 							{
-	// 								NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
-	// 								PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeMACVLAN),
-	// 							},
-	// 						},
-	// 					},
-	// 					AvailabilityZones: []*string{
-	// 						to.Ptr("1"),
-	// 						to.Ptr("2"),
-	// 						to.Ptr("3"),
-	// 					},
-	// 					Count: to.Ptr[int64](3),
-	// 					Labels: []*armnetworkcloud.KubernetesLabel{
-	// 						{
-	// 							Key: to.Ptr("kubernetes.label"),
-	// 							Value: to.Ptr("true"),
-	// 						},
-	// 					},
-	// 					Mode: to.Ptr(armnetworkcloud.AgentPoolModeSystem),
-	// 					Name: to.Ptr("SystemPool-1"),
-	// 					Taints: []*armnetworkcloud.KubernetesLabel{
-	// 						{
-	// 							Key: to.Ptr("kubernetes.taint"),
-	// 							Value: to.Ptr("true:NoSchedule"),
-	// 						},
-	// 					},
-	// 					UpgradeSettings: &armnetworkcloud.AgentPoolUpgradeSettings{
-	// 						MaxSurge: to.Ptr("1"),
-	// 					},
-	// 					VMSKUName: to.Ptr("NC_P46_224_v1"),
-	// 				},
-	// 			},
-	// 			KubernetesVersion: to.Ptr("1.XX.Y"),
-	// 			ManagedResourceGroupConfiguration: &armnetworkcloud.ManagedResourceGroupConfiguration{
-	// 				Location: to.Ptr("East US"),
-	// 				Name: to.Ptr("my-managed-rg"),
-	// 			},
-	// 			NetworkConfiguration: &armnetworkcloud.NetworkConfiguration{
-	// 				AttachedNetworkConfiguration: &armnetworkcloud.AttachedNetworkConfiguration{
-	// 					L2Networks: []*armnetworkcloud.L2NetworkAttachmentConfiguration{
-	// 						{
-	// 							NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l2Networks/l2NetworkName"),
-	// 							PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeDPDK),
-	// 						},
-	// 					},
-	// 					L3Networks: []*armnetworkcloud.L3NetworkAttachmentConfiguration{
-	// 						{
-	// 							IpamEnabled: to.Ptr(armnetworkcloud.L3NetworkConfigurationIpamEnabledFalse),
-	// 							NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
-	// 							PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeSRIOV),
-	// 						},
-	// 					},
-	// 					TrunkedNetworks: []*armnetworkcloud.TrunkedNetworkAttachmentConfiguration{
-	// 						{
-	// 							NetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/trunkedNetworks/trunkedNetworkName"),
-	// 							PluginType: to.Ptr(armnetworkcloud.KubernetesPluginTypeMACVLAN),
-	// 						},
-	// 					},
-	// 				},
-	// 				BgpServiceLoadBalancerConfiguration: &armnetworkcloud.BgpServiceLoadBalancerConfiguration{
-	// 					BgpAdvertisements: []*armnetworkcloud.BgpAdvertisement{
-	// 						{
-	// 							AdvertiseToFabric: to.Ptr(armnetworkcloud.AdvertiseToFabricTrue),
-	// 							Communities: []*string{
-	// 								to.Ptr("64512:100"),
-	// 							},
-	// 							IPAddressPools: []*string{
-	// 								to.Ptr("pool1"),
-	// 							},
-	// 							Peers: []*string{
-	// 								to.Ptr("peer1"),
-	// 							},
-	// 						},
-	// 					},
-	// 					BgpPeers: []*armnetworkcloud.ServiceLoadBalancerBgpPeer{
-	// 						{
-	// 							BfdEnabled: to.Ptr(armnetworkcloud.BfdEnabledFalse),
-	// 							BgpMultiHop: to.Ptr(armnetworkcloud.BgpMultiHopFalse),
-	// 							HoldTime: to.Ptr("P300s"),
-	// 							KeepAliveTime: to.Ptr("P300s"),
-	// 							MyAsn: to.Ptr[int64](64512),
-	// 							Name: to.Ptr("peer1"),
-	// 							PeerAddress: to.Ptr("203.0.113.254"),
-	// 							PeerAsn: to.Ptr[int64](64497),
-	// 							PeerPort: to.Ptr[int64](179),
-	// 						},
-	// 					},
-	// 					FabricPeeringEnabled: to.Ptr(armnetworkcloud.FabricPeeringEnabledTrue),
-	// 					IPAddressPools: []*armnetworkcloud.IPAddressPool{
-	// 						{
-	// 							Addresses: []*string{
-	// 								to.Ptr("198.51.102.0/24"),
-	// 							},
-	// 							AutoAssign: to.Ptr(armnetworkcloud.BfdEnabledTrue),
-	// 							Name: to.Ptr("pool1"),
-	// 							OnlyUseHostIPs: to.Ptr(armnetworkcloud.BfdEnabledTrue),
-	// 						},
-	// 					},
-	// 				},
-	// 				CloudServicesNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
-	// 				CniNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
-	// 				DNSServiceIP: to.Ptr("198.51.101.2"),
-	// 				PodCidrs: []*string{
-	// 					to.Ptr("198.51.100.0/24"),
-	// 				},
-	// 				ServiceCidrs: []*string{
-	// 					to.Ptr("198.51.101.0/24"),
-	// 				},
-	// 			},
-	// 			Nodes: []*armnetworkcloud.KubernetesClusterNode{
-	// 				{
-	// 					AgentPoolID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/kubernetesClusters/kubernetesClusterName/agentPools/agentPoolName"),
-	// 					AvailabilityZone: to.Ptr("1"),
-	// 					BareMetalMachineID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
-	// 					CPUCores: to.Ptr[int64](46),
-	// 					DetailedStatus: to.Ptr(armnetworkcloud.KubernetesClusterNodeDetailedStatusRunning),
-	// 					DetailedStatusMessage: to.Ptr("Running - virtual machine is running."),
-	// 					DiskSizeGB: to.Ptr[int64](300),
-	// 					Image: to.Ptr("mariner-guest-image-qcow2-k8s-1.XX.Y"),
-	// 					KubernetesVersion: to.Ptr("v1.XX.Y"),
-	// 					Labels: []*armnetworkcloud.KubernetesLabel{
-	// 						{
-	// 							Key: to.Ptr("kubernetes.label"),
-	// 							Value: to.Ptr("true"),
-	// 						},
-	// 					},
-	// 					MemorySizeGB: to.Ptr[int64](224),
-	// 					Mode: to.Ptr(armnetworkcloud.AgentPoolModeSystem),
-	// 					Name: to.Ptr("kubernetesClusterName-SystemPool-1-md-cqjvd"),
-	// 					NetworkAttachments: []*armnetworkcloud.NetworkAttachment{
-	// 						{
-	// 							AttachedNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
-	// 							DefaultGateway: to.Ptr(armnetworkcloud.DefaultGatewayFalse),
-	// 							IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
-	// 							IPv4Address: to.Ptr("169.254.8.4"),
-	// 							MacAddress: to.Ptr("aa:bb:cc:06:79:2a"),
-	// 							NetworkAttachmentName: to.Ptr("cloudservices"),
-	// 						},
-	// 						{
-	// 							AttachedNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
-	// 							DefaultGateway: to.Ptr(armnetworkcloud.DefaultGatewayFalse),
-	// 							IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
-	// 							IPv4Address: to.Ptr("10.14.48.12"),
-	// 							IPv6Address: to.Ptr("fda0:d59c:da0a:e30::a"),
-	// 							MacAddress: to.Ptr("aa:bb:cc:ad:40:cf"),
-	// 							NetworkAttachmentName: to.Ptr("defaultcni"),
-	// 						},
-	// 					},
-	// 					PowerState: to.Ptr(armnetworkcloud.KubernetesNodePowerStateOn),
-	// 					Role: to.Ptr(armnetworkcloud.KubernetesNodeRoleWorker),
-	// 					Taints: []*armnetworkcloud.KubernetesLabel{
-	// 						{
-	// 							Key: to.Ptr("kubernetes.taint"),
-	// 							Value: to.Ptr("true:NoSchedule"),
-	// 						},
-	// 					},
-	// 					VMSKUName: to.Ptr("NC_P46_224_v1"),
-	// 				},
-	// 				{
-	// 					BareMetalMachineID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/bareMetalMachines/bareMetalMachineName"),
-	// 					CPUCores: to.Ptr[int64](6),
-	// 					DetailedStatus: to.Ptr(armnetworkcloud.KubernetesClusterNodeDetailedStatusRunning),
-	// 					DetailedStatusMessage: to.Ptr("Running - virtual machine is running."),
-	// 					DiskSizeGB: to.Ptr[int64](300),
-	// 					Image: to.Ptr("mariner-guest-image-qcow2-k8s-1.XX.Y"),
-	// 					KubernetesVersion: to.Ptr("v1.XX.Y"),
-	// 					MemorySizeGB: to.Ptr[int64](28),
-	// 					Name: to.Ptr("kubernetesClusterName-control-plane-7nsh2"),
-	// 					NetworkAttachments: []*armnetworkcloud.NetworkAttachment{
-	// 						{
-	// 							AttachedNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/cloudServicesNetworks/cloudServicesNetworkName"),
-	// 							DefaultGateway: to.Ptr(armnetworkcloud.DefaultGatewayFalse),
-	// 							IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
-	// 							IPv4Address: to.Ptr("169.254.8.2"),
-	// 							MacAddress: to.Ptr("aa:bb:cc:fa:91:71"),
-	// 							NetworkAttachmentName: to.Ptr("cloudservices"),
-	// 						},
-	// 						{
-	// 							AttachedNetworkID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/l3Networks/l3NetworkName"),
-	// 							DefaultGateway: to.Ptr(armnetworkcloud.DefaultGatewayFalse),
-	// 							IPAllocationMethod: to.Ptr(armnetworkcloud.VirtualMachineIPAllocationMethodDynamic),
-	// 							IPv4Address: to.Ptr("10.14.48.11"),
-	// 							IPv6Address: to.Ptr("fda0:d59c:da0a:e30::9"),
-	// 							MacAddress: to.Ptr("aa:bb:cc:c8:a2:40"),
-	// 							NetworkAttachmentName: to.Ptr("defaultcni"),
-	// 						},
-	// 					},
-	// 					PowerState: to.Ptr(armnetworkcloud.KubernetesNodePowerStateOn),
-	// 					Role: to.Ptr(armnetworkcloud.KubernetesNodeRoleControlPlane),
-	// 					VMSKUName: to.Ptr("NC_G6_28_v1"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnetworkcloud.KubernetesClusterProvisioningStateSucceeded),
-	// 		},
-	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("identityA"),
-	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("identityB"),
-	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("myvalue1"),
-	// 			"key2": to.Ptr("myvalue2"),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.NetworkCloud/kubernetesClusters"),
-	// 	},
-	// }
 }

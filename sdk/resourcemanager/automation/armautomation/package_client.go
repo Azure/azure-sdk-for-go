@@ -66,7 +66,8 @@ func (client *PackageClient) CreateOrUpdate(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return PackageClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -141,7 +142,8 @@ func (client *PackageClient) Delete(ctx context.Context, resourceGroupName strin
 		return PackageClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PackageClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PackageClientDeleteResponse{}, err
 	}
 	return PackageClientDeleteResponse{}, nil
 }
@@ -200,7 +202,8 @@ func (client *PackageClient) Get(ctx context.Context, resourceGroupName string, 
 	if err != nil {
 		return PackageClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -353,7 +356,8 @@ func (client *PackageClient) Update(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return PackageClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

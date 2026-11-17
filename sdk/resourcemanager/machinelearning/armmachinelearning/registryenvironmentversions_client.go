@@ -74,7 +74,7 @@ func (client *RegistryEnvironmentVersionsClient) BeginCreateOrUpdate(ctx context
 	}
 }
 
-// CreateOrUpdate - Create or update version.
+// createOrUpdate - Create or update version.
 //
 // Create or update version.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -93,12 +93,13 @@ func (client *RegistryEnvironmentVersionsClient) createOrUpdate(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *RegistryEnvironmentVersionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, registryName string, environmentName string, version string, body EnvironmentVersion, _ *RegistryEnvironmentVersionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/environments/{environmentName}/versions/{version}"
 	if client.subscriptionID == "" {
@@ -163,7 +164,7 @@ func (client *RegistryEnvironmentVersionsClient) BeginDelete(ctx context.Context
 	}
 }
 
-// Delete - Delete version.
+// deleteOperation - Delete version.
 //
 // Delete version.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -182,12 +183,13 @@ func (client *RegistryEnvironmentVersionsClient) deleteOperation(ctx context.Con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *RegistryEnvironmentVersionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, registryName string, environmentName string, version string, _ *RegistryEnvironmentVersionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/registries/{registryName}/environments/{environmentName}/versions/{version}"
 	if client.subscriptionID == "" {
@@ -244,7 +246,8 @@ func (client *RegistryEnvironmentVersionsClient) Get(ctx context.Context, resour
 	if err != nil {
 		return RegistryEnvironmentVersionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -62,7 +62,8 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) CreateProductSerialNumb
 	if err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientCreateProductSerialNumberResponse{}, err
 	}
-	return client.createProductSerialNumberHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createProductSerialNumberHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createProductSerialNumberCreateRequest creates the CreateProductSerialNumber request.
@@ -113,7 +114,8 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) ListCloudManagerTenants
 	if err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientListCloudManagerTenantsResponse{}, err
 	}
-	return client.listCloudManagerTenantsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listCloudManagerTenantsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCloudManagerTenantsCreateRequest creates the ListCloudManagerTenants request.
@@ -164,7 +166,8 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) ListProductSerialNumber
 	if err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientListProductSerialNumberStatusResponse{}, err
 	}
-	return client.listProductSerialNumberStatusHandleResponse(httpResp, http.StatusOK, http.StatusNotFound)
+	resp, err := client.listProductSerialNumberStatusHandleResponse(httpResp, http.StatusOK, http.StatusNotFound)
+	return resp, err
 }
 
 // listProductSerialNumberStatusCreateRequest creates the ListProductSerialNumberStatus request.
@@ -215,7 +218,8 @@ func (client *PaloAltoNetworksCloudngfwOperationsClient) ListSupportInfo(ctx con
 	if err != nil {
 		return PaloAltoNetworksCloudngfwOperationsClientListSupportInfoResponse{}, err
 	}
-	return client.listSupportInfoHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listSupportInfoHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listSupportInfoCreateRequest creates the ListSupportInfo request.

@@ -83,7 +83,8 @@ func (client *VipSwapClient) create(ctx context.Context, groupName string, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -137,7 +138,8 @@ func (client *VipSwapClient) Get(ctx context.Context, groupName string, resource
 	if err != nil {
 		return VipSwapClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -198,7 +200,8 @@ func (client *VipSwapClient) List(ctx context.Context, groupName string, resourc
 	if err != nil {
 		return VipSwapClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

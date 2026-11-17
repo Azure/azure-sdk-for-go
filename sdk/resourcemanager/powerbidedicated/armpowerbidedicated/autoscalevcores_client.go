@@ -64,7 +64,8 @@ func (client *AutoScaleVCoresClient) Create(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AutoScaleVCoresClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -129,7 +130,8 @@ func (client *AutoScaleVCoresClient) Delete(ctx context.Context, resourceGroupNa
 		return AutoScaleVCoresClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AutoScaleVCoresClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AutoScaleVCoresClientDeleteResponse{}, err
 	}
 	return AutoScaleVCoresClientDeleteResponse{}, nil
 }
@@ -178,7 +180,8 @@ func (client *AutoScaleVCoresClient) Get(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return AutoScaleVCoresClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -378,7 +381,8 @@ func (client *AutoScaleVCoresClient) Update(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AutoScaleVCoresClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

@@ -205,6 +205,150 @@ func ExampleInferenceGroupsClient_BeginDelete() {
 	// }
 }
 
+// Generated from example definition: 2026-03-15-preview/InferenceGroup/modifyDeltaModelsAsync.json
+func ExampleInferenceGroupsClient_BeginModifyDeltaModelsAsync() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewInferenceGroupsClient().BeginModifyDeltaModelsAsync(ctx, "test-rg", "my-aml-workspace", "string", "string", armmachinelearning.DeltaModelModifyRequest{
+		AddDeltaModels: []*string{
+			to.Ptr("string"),
+		},
+		RemoveDeltaModels: []*string{
+			to.Ptr("string"),
+		},
+		TargetBaseModel: to.Ptr("azureml://registries/test-registry/models/modelabc/versions/1"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/update.json
+func ExampleInferenceGroupsClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewInferenceGroupsClient().BeginUpdate(ctx, "test-rg", "my-aml-workspace", "string", "string", armmachinelearning.PartialMinimalTrackedResourceWithSKU{
+		SKU: &armmachinelearning.PartialSKU{
+			Name:     to.Ptr("string"),
+			Capacity: to.Ptr[int32](1),
+			Family:   to.Ptr("string"),
+			Size:     to.Ptr("string"),
+			Tier:     to.Ptr(armmachinelearning.SKUTierStandard),
+		},
+		Tags: map[string]*string{},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmachinelearning.InferenceGroupsClientUpdateResponse{
+	// 	InferenceGroup: armmachinelearning.InferenceGroup{
+	// 		Name: to.Ptr("string"),
+	// 		Type: to.Ptr("string"),
+	// 		ID: to.Ptr("string"),
+	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
+	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
+	// 				"string": &armmachinelearning.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Kind: to.Ptr("string"),
+	// 		Location: to.Ptr("string"),
+	// 		Properties: &armmachinelearning.InferenceGroupProperties{
+	// 			Description: to.Ptr("string"),
+	// 			EnvironmentConfiguration: &armmachinelearning.GroupEnvironmentConfiguration{
+	// 				EnvironmentID: to.Ptr("azureml://registries/test-registry/models/enginefeed/versions/1"),
+	// 				EnvironmentVariables: []*armmachinelearning.StringStringKeyValuePair{
+	// 					{
+	// 						Key: to.Ptr("string"),
+	// 						Value: to.Ptr("string"),
+	// 					},
+	// 				},
+	// 				LivenessProbe: &armmachinelearning.ProbeSettings{
+	// 					FailureThreshold: to.Ptr[int32](1),
+	// 					InitialDelay: to.Ptr("PT5M"),
+	// 					Period: to.Ptr("PT5M"),
+	// 					SuccessThreshold: to.Ptr[int32](1),
+	// 					Timeout: to.Ptr("PT5M"),
+	// 				},
+	// 				ReadinessProbe: &armmachinelearning.ProbeSettings{
+	// 					FailureThreshold: to.Ptr[int32](1),
+	// 					InitialDelay: to.Ptr("PT5M"),
+	// 					Period: to.Ptr("PT5M"),
+	// 					SuccessThreshold: to.Ptr[int32](1),
+	// 					Timeout: to.Ptr("PT5M"),
+	// 				},
+	// 				StartupProbe: &armmachinelearning.ProbeSettings{
+	// 					FailureThreshold: to.Ptr[int32](1),
+	// 					InitialDelay: to.Ptr("PT5M"),
+	// 					Period: to.Ptr("PT5M"),
+	// 					SuccessThreshold: to.Ptr[int32](1),
+	// 					Timeout: to.Ptr("PT5M"),
+	// 				},
+	// 			},
+	// 			ModelConfiguration: &armmachinelearning.GroupModelConfiguration{
+	// 				ModelID: to.Ptr("azureml://registries/test-registry/models/modelabc/versions/1"),
+	// 			},
+	// 			NodeSKUType: to.Ptr("string"),
+	// 			Properties: []*armmachinelearning.StringStringKeyValuePair{
+	// 				{
+	// 					Key: to.Ptr("string"),
+	// 					Value: to.Ptr("string"),
+	// 				},
+	// 			},
+	// 			ProvisioningState: to.Ptr(armmachinelearning.PoolProvisioningStateFailed),
+	// 			ScaleUnitSize: to.Ptr[int32](1),
+	// 		},
+	// 		SKU: &armmachinelearning.SKU{
+	// 			Name: to.Ptr("string"),
+	// 			Capacity: to.Ptr[int32](1),
+	// 			Family: to.Ptr("string"),
+	// 			Size: to.Ptr("string"),
+	// 			Tier: to.Ptr(armmachinelearning.SKUTierStandard),
+	// 		},
+	// 		SystemData: &armmachinelearning.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 17, 56, 999000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("string"),
+	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 17, 56, 999000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("string"),
+	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/get.json
 func ExampleInferenceGroupsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -382,6 +526,43 @@ func ExampleInferenceGroupsClient_GetStatus() {
 	// }
 }
 
+// Generated from example definition: 2026-03-15-preview/InferenceGroup/listDeltaModelsAsync.json
+func ExampleInferenceGroupsClient_NewListDeltaModelsAsyncPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewInferenceGroupsClient().NewListDeltaModelsAsyncPager("test-rg", "my-aml-workspace", "string", "string", armmachinelearning.DeltaModelListRequest{
+		Count:           to.Ptr[int32](-1),
+		SkipToken:       to.Ptr("string"),
+		TargetBaseModel: to.Ptr("azureml://registries/test-registry/models/modelabc/versions/1"),
+	}, nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armmachinelearning.InferenceGroupsClientListDeltaModelsAsyncResponse{
+		// 	StringArmPaginatedResult: armmachinelearning.StringArmPaginatedResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/inferenceGroups/testInferenceGroupName/listDeltaModels?api-version=2025-07-01-preview&$skip=2"),
+		// 		Value: []*string{
+		// 			to.Ptr("string"),
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/list.json
 func ExampleInferenceGroupsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -498,43 +679,6 @@ func ExampleInferenceGroupsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-15-preview/InferenceGroup/listDeltaModelsAsync.json
-func ExampleInferenceGroupsClient_NewListDeltaModelsAsyncPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewInferenceGroupsClient().NewListDeltaModelsAsyncPager("test-rg", "my-aml-workspace", "string", "string", armmachinelearning.DeltaModelListRequest{
-		Count:           to.Ptr[int32](-1),
-		SkipToken:       to.Ptr("string"),
-		TargetBaseModel: to.Ptr("azureml://registries/test-registry/models/modelabc/versions/1"),
-	}, nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmachinelearning.InferenceGroupsClientListDeltaModelsAsyncResponse{
-		// 	StringArmPaginatedResult: armmachinelearning.StringArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.MachineLearningServices/workspaces/my-aml-workspace/inferenceGroups/testInferenceGroupName/listDeltaModels?api-version=2025-07-01-preview&$skip=2"),
-		// 		Value: []*string{
-		// 			to.Ptr("string"),
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/listSkus.json
 func ExampleInferenceGroupsClient_NewListSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -579,148 +723,4 @@ func ExampleInferenceGroupsClient_NewListSKUsPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-03-15-preview/InferenceGroup/modifyDeltaModelsAsync.json
-func ExampleInferenceGroupsClient_BeginModifyDeltaModelsAsync() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewInferenceGroupsClient().BeginModifyDeltaModelsAsync(ctx, "test-rg", "my-aml-workspace", "string", "string", armmachinelearning.DeltaModelModifyRequest{
-		AddDeltaModels: []*string{
-			to.Ptr("string"),
-		},
-		RemoveDeltaModels: []*string{
-			to.Ptr("string"),
-		},
-		TargetBaseModel: to.Ptr("azureml://registries/test-registry/models/modelabc/versions/1"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-03-15-preview/Workspace/InferenceGroup/update.json
-func ExampleInferenceGroupsClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewInferenceGroupsClient().BeginUpdate(ctx, "test-rg", "my-aml-workspace", "string", "string", armmachinelearning.PartialMinimalTrackedResourceWithSKU{
-		SKU: &armmachinelearning.PartialSKU{
-			Name:     to.Ptr("string"),
-			Capacity: to.Ptr[int32](1),
-			Family:   to.Ptr("string"),
-			Size:     to.Ptr("string"),
-			Tier:     to.Ptr(armmachinelearning.SKUTierStandard),
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armmachinelearning.InferenceGroupsClientUpdateResponse{
-	// 	InferenceGroup: armmachinelearning.InferenceGroup{
-	// 		Name: to.Ptr("string"),
-	// 		Type: to.Ptr("string"),
-	// 		ID: to.Ptr("string"),
-	// 		Identity: &armmachinelearning.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armmachinelearning.ManagedServiceIdentityTypeSystemAssignedUserAssigned),
-	// 			PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			TenantID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 			UserAssignedIdentities: map[string]*armmachinelearning.UserAssignedIdentity{
-	// 				"string": &armmachinelearning.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 					PrincipalID: to.Ptr("00000000-1111-2222-3333-444444444444"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Kind: to.Ptr("string"),
-	// 		Location: to.Ptr("string"),
-	// 		Properties: &armmachinelearning.InferenceGroupProperties{
-	// 			Description: to.Ptr("string"),
-	// 			EnvironmentConfiguration: &armmachinelearning.GroupEnvironmentConfiguration{
-	// 				EnvironmentID: to.Ptr("azureml://registries/test-registry/models/enginefeed/versions/1"),
-	// 				EnvironmentVariables: []*armmachinelearning.StringStringKeyValuePair{
-	// 					{
-	// 						Key: to.Ptr("string"),
-	// 						Value: to.Ptr("string"),
-	// 					},
-	// 				},
-	// 				LivenessProbe: &armmachinelearning.ProbeSettings{
-	// 					FailureThreshold: to.Ptr[int32](1),
-	// 					InitialDelay: to.Ptr("PT5M"),
-	// 					Period: to.Ptr("PT5M"),
-	// 					SuccessThreshold: to.Ptr[int32](1),
-	// 					Timeout: to.Ptr("PT5M"),
-	// 				},
-	// 				ReadinessProbe: &armmachinelearning.ProbeSettings{
-	// 					FailureThreshold: to.Ptr[int32](1),
-	// 					InitialDelay: to.Ptr("PT5M"),
-	// 					Period: to.Ptr("PT5M"),
-	// 					SuccessThreshold: to.Ptr[int32](1),
-	// 					Timeout: to.Ptr("PT5M"),
-	// 				},
-	// 				StartupProbe: &armmachinelearning.ProbeSettings{
-	// 					FailureThreshold: to.Ptr[int32](1),
-	// 					InitialDelay: to.Ptr("PT5M"),
-	// 					Period: to.Ptr("PT5M"),
-	// 					SuccessThreshold: to.Ptr[int32](1),
-	// 					Timeout: to.Ptr("PT5M"),
-	// 				},
-	// 			},
-	// 			ModelConfiguration: &armmachinelearning.GroupModelConfiguration{
-	// 				ModelID: to.Ptr("azureml://registries/test-registry/models/modelabc/versions/1"),
-	// 			},
-	// 			NodeSKUType: to.Ptr("string"),
-	// 			Properties: []*armmachinelearning.StringStringKeyValuePair{
-	// 				{
-	// 					Key: to.Ptr("string"),
-	// 					Value: to.Ptr("string"),
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr(armmachinelearning.PoolProvisioningStateFailed),
-	// 			ScaleUnitSize: to.Ptr[int32](1),
-	// 		},
-	// 		SKU: &armmachinelearning.SKU{
-	// 			Name: to.Ptr("string"),
-	// 			Capacity: to.Ptr[int32](1),
-	// 			Family: to.Ptr("string"),
-	// 			Size: to.Ptr("string"),
-	// 			Tier: to.Ptr(armmachinelearning.SKUTierStandard),
-	// 		},
-	// 		SystemData: &armmachinelearning.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 17, 56, 999000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("string"),
-	// 			CreatedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2020, time.January, 1, 12, 17, 56, 999000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("string"),
-	// 			LastModifiedByType: to.Ptr(armmachinelearning.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
 }

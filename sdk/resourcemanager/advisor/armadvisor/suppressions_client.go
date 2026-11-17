@@ -67,7 +67,8 @@ func (client *SuppressionsClient) Create(ctx context.Context, resourceURI string
 	if err != nil {
 		return SuppressionsClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -134,7 +135,8 @@ func (client *SuppressionsClient) Delete(ctx context.Context, resourceURI string
 		return SuppressionsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return SuppressionsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SuppressionsClientDeleteResponse{}, err
 	}
 	return SuppressionsClientDeleteResponse{}, nil
 }
@@ -184,7 +186,8 @@ func (client *SuppressionsClient) Get(ctx context.Context, resourceURI string, r
 	if err != nil {
 		return SuppressionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

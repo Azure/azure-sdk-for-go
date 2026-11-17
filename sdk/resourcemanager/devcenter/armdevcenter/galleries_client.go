@@ -70,7 +70,7 @@ func (client *GalleriesClient) BeginCreateOrUpdate(ctx context.Context, resource
 	}
 }
 
-// CreateOrUpdate - Creates or updates a gallery.
+// createOrUpdate - Creates or updates a gallery.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GalleriesClient) createOrUpdate(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, body Gallery, options *GalleriesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *GalleriesClient) createOrUpdate(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *GalleriesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, body Gallery, _ *GalleriesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *GalleriesClient) BeginDelete(ctx context.Context, resourceGroupNam
 	}
 }
 
-// Delete - Deletes a gallery resource.
+// deleteOperation - Deletes a gallery resource.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GalleriesClient) deleteOperation(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, options *GalleriesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *GalleriesClient) deleteOperation(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GalleriesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, devCenterName string, galleryName string, _ *GalleriesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}"
 	if client.subscriptionID == "" {
@@ -220,7 +222,8 @@ func (client *GalleriesClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return GalleriesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

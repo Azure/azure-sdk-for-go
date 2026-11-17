@@ -65,7 +65,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) GetResourceAssociati
 	if err != nil {
 		return NetworkSecurityPerimeterConfigurationsClientGetResourceAssociationNameResponse{}, err
 	}
-	return client.getResourceAssociationNameHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getResourceAssociationNameHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getResourceAssociationNameCreateRequest creates the GetResourceAssociationName request.
@@ -132,7 +133,8 @@ func (client *NetworkSecurityPerimeterConfigurationsClient) Reconcile(ctx contex
 		return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, err
 	}
 	return NetworkSecurityPerimeterConfigurationsClientReconcileResponse{}, nil
 }

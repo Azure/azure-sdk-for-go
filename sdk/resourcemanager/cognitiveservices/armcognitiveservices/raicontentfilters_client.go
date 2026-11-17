@@ -19,7 +19,7 @@ import (
 // RaiContentFiltersClient contains the methods for the RaiContentFilters group.
 // Don't use this type directly, use NewRaiContentFiltersClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-01
 type RaiContentFiltersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -63,7 +63,8 @@ func (client *RaiContentFiltersClient) Get(ctx context.Context, location string,
 	if err != nil {
 		return RaiContentFiltersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -86,7 +87,7 @@ func (client *RaiContentFiltersClient) getCreateRequest(ctx context.Context, loc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -157,7 +158,7 @@ func (client *RaiContentFiltersClient) listCreateRequest(ctx context.Context, lo
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260915Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

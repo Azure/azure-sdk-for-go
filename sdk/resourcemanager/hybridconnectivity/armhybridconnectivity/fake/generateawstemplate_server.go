@@ -8,14 +8,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"net/http"
-	"regexp"
-	"slices"
-
 	azfake "github.com/Azure/azure-sdk-for-go/sdk/azcore/fake"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/hybridconnectivity/armhybridconnectivity"
+	"net/http"
+	"regexp"
+	"slices"
 )
 
 // GenerateAwsTemplateServer is a fake server for instances of the armhybridconnectivity.GenerateAwsTemplateClient type.
@@ -43,7 +42,7 @@ func (g *GenerateAwsTemplateServerTransport) Do(req *http.Request) (*http.Respon
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return g.dispatchToMethodFake(req, method)

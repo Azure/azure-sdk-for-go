@@ -35,13 +35,13 @@ type DatastoresServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *armmachinelearning.DatastoresClientGetOptions) (resp azfake.Responder[armmachinelearning.DatastoresClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DatastoresClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, workspaceName string, options *armmachinelearning.DatastoresClientListOptions) (resp azfake.PagerResponder[armmachinelearning.DatastoresClientListResponse])
-
 	// ListSecrets is the fake for method DatastoresClient.ListSecrets
 	// HTTP status codes to indicate success: http.StatusOK
 	ListSecrets func(ctx context.Context, resourceGroupName string, workspaceName string, name string, options *armmachinelearning.DatastoresClientListSecretsOptions) (resp azfake.Responder[armmachinelearning.DatastoresClientListSecretsResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method DatastoresClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, workspaceName string, options *armmachinelearning.DatastoresClientListOptions) (resp azfake.PagerResponder[armmachinelearning.DatastoresClientListResponse])
 }
 
 // NewDatastoresServerTransport creates a new instance of DatastoresServerTransport with the provided implementation.
@@ -66,7 +66,7 @@ func (d *DatastoresServerTransport) Do(req *http.Request) (*http.Response, error
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return d.dispatchToMethodFake(req, method)
@@ -88,10 +88,10 @@ func (d *DatastoresServerTransport) dispatchToMethodFake(req *http.Request, meth
 				res.resp, res.err = d.dispatchDelete(req)
 			case "DatastoresClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DatastoresClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DatastoresClient.ListSecrets":
 				res.resp, res.err = d.dispatchListSecrets(req)
+			case "DatastoresClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -234,82 +234,6 @@ func (d *DatastoresServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	return resp, nil
 }
 
-func (d *DatastoresServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/datastores`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 4 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
-		if err != nil {
-			return nil, err
-		}
-		skipParam := getOptional(qp.Get("$skip"))
-		countParam, err := parseOptional(qp.Get("count"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		isDefaultParam, err := parseOptional(qp.Get("isDefault"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		namesParam := splitHelper(qp.Get("names"), ",")
-		searchTextParam := getOptional(qp.Get("searchText"))
-		orderByParam := getOptional(qp.Get("orderBy"))
-		orderByAscParam, err := parseOptional(qp.Get("orderByAsc"), strconv.ParseBool)
-		if err != nil {
-			return nil, err
-		}
-		var options *armmachinelearning.DatastoresClientListOptions
-		if skipParam != nil || countParam != nil || isDefaultParam != nil || len(namesParam) > 0 || searchTextParam != nil || orderByParam != nil || orderByAscParam != nil {
-			options = &armmachinelearning.DatastoresClientListOptions{
-				Skip:       skipParam,
-				Count:      countParam,
-				IsDefault:  isDefaultParam,
-				Names:      namesParam,
-				SearchText: searchTextParam,
-				OrderBy:    orderByParam,
-				OrderByAsc: orderByAscParam,
-			}
-		}
-		resp := d.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, options)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmachinelearning.DatastoresClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (d *DatastoresServerTransport) dispatchListSecrets(req *http.Request) (*http.Response, error) {
 	if d.srv.ListSecrets == nil {
 		return nil, &nonRetriableError{errors.New("fake for method ListSecrets not implemented")}
@@ -353,6 +277,90 @@ func (d *DatastoresServerTransport) dispatchListSecrets(req *http.Request) (*htt
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DatastoreSecretsClassification, req)
 	if err != nil {
 		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DatastoresServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.MachineLearningServices/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/datastores`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 4 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		rawQP, err := parseRawURIQuery(req.URL.RawQuery)
+		if err != nil {
+			return nil, err
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		workspaceNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workspaceName")])
+		if err != nil {
+			return nil, err
+		}
+		skipParam := getOptional(qp.Get("$skip"))
+		countParam, err := parseOptional(qp.Get("count"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		isDefaultParam, err := parseOptional(qp.Get("isDefault"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var namesParam []string
+		if rawQP.Has("names") {
+			parsed, parseErr := parseURIQueryArray(rawQP.Get("names"), func(v string) (string, error) { return v, nil })
+			if parseErr != nil {
+				return nil, parseErr
+			}
+			namesParam = parsed
+		}
+		searchTextParam := getOptional(qp.Get("searchText"))
+		orderByParam := getOptional(qp.Get("orderBy"))
+		orderByAscParam, err := parseOptional(qp.Get("orderByAsc"), strconv.ParseBool)
+		if err != nil {
+			return nil, err
+		}
+		var options *armmachinelearning.DatastoresClientListOptions
+		if skipParam != nil || countParam != nil || isDefaultParam != nil || namesParam != nil || searchTextParam != nil || orderByParam != nil || orderByAscParam != nil {
+			options = &armmachinelearning.DatastoresClientListOptions{
+				Skip:       skipParam,
+				Count:      countParam,
+				IsDefault:  isDefaultParam,
+				Names:      namesParam,
+				SearchText: searchTextParam,
+				OrderBy:    orderByParam,
+				OrderByAsc: orderByAscParam,
+			}
+		}
+		resp := d.srv.NewListPager(resourceGroupNameParam, workspaceNameParam, options)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armmachinelearning.DatastoresClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }

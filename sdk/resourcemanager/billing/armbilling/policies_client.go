@@ -67,7 +67,7 @@ func (client *PoliciesClient) BeginCreateOrUpdateByBillingAccount(ctx context.Co
 	}
 }
 
-// CreateOrUpdateByBillingAccount - Update the policies for a billing account of Enterprise Agreement type.
+// createOrUpdateByBillingAccount - Update the policies for a billing account of Enterprise Agreement type.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PoliciesClient) createOrUpdateByBillingAccount(ctx context.Context, billingAccountName string, parameters AccountPolicy, options *PoliciesClientBeginCreateOrUpdateByBillingAccountOptions) (*http.Response, error) {
 	var err error
@@ -84,12 +84,13 @@ func (client *PoliciesClient) createOrUpdateByBillingAccount(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateByBillingAccountCreateRequest creates the CreateOrUpdateByBillingAccount request.
+// createOrUpdateByBillingAccountCreateRequest creates the createOrUpdateByBillingAccount request.
 func (client *PoliciesClient) createOrUpdateByBillingAccountCreateRequest(ctx context.Context, billingAccountName string, parameters AccountPolicy, _ *PoliciesClientBeginCreateOrUpdateByBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/policies/default"
 	if billingAccountName == "" {
@@ -136,7 +137,7 @@ func (client *PoliciesClient) BeginCreateOrUpdateByBillingProfile(ctx context.Co
 	}
 }
 
-// CreateOrUpdateByBillingProfile - Updates the policies for a billing profile. This operation is supported only for billing
+// createOrUpdateByBillingProfile - Updates the policies for a billing profile. This operation is supported only for billing
 // accounts with agreement type Microsoft Customer Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PoliciesClient) createOrUpdateByBillingProfile(ctx context.Context, billingAccountName string, billingProfileName string, parameters ProfilePolicy, options *PoliciesClientBeginCreateOrUpdateByBillingProfileOptions) (*http.Response, error) {
@@ -154,12 +155,13 @@ func (client *PoliciesClient) createOrUpdateByBillingProfile(ctx context.Context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateByBillingProfileCreateRequest creates the CreateOrUpdateByBillingProfile request.
+// createOrUpdateByBillingProfileCreateRequest creates the createOrUpdateByBillingProfile request.
 func (client *PoliciesClient) createOrUpdateByBillingProfileCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, parameters ProfilePolicy, _ *PoliciesClientBeginCreateOrUpdateByBillingProfileOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/policies/default"
 	if billingAccountName == "" {
@@ -211,7 +213,7 @@ func (client *PoliciesClient) BeginCreateOrUpdateByCustomer(ctx context.Context,
 	}
 }
 
-// CreateOrUpdateByCustomer - Updates the policies for a customer. This operation is supported only for billing accounts with
+// createOrUpdateByCustomer - Updates the policies for a customer. This operation is supported only for billing accounts with
 // agreement type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PoliciesClient) createOrUpdateByCustomer(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters CustomerPolicy, options *PoliciesClientBeginCreateOrUpdateByCustomerOptions) (*http.Response, error) {
@@ -229,12 +231,13 @@ func (client *PoliciesClient) createOrUpdateByCustomer(ctx context.Context, bill
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateByCustomerCreateRequest creates the CreateOrUpdateByCustomer request.
+// createOrUpdateByCustomerCreateRequest creates the createOrUpdateByCustomer request.
 func (client *PoliciesClient) createOrUpdateByCustomerCreateRequest(ctx context.Context, billingAccountName string, billingProfileName string, customerName string, parameters CustomerPolicy, _ *PoliciesClientBeginCreateOrUpdateByCustomerOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/customers/{customerName}/policies/default"
 	if billingAccountName == "" {
@@ -289,7 +292,7 @@ func (client *PoliciesClient) BeginCreateOrUpdateByCustomerAtBillingAccount(ctx 
 	}
 }
 
-// CreateOrUpdateByCustomerAtBillingAccount - Updates the policies for a customer at billing account scope. This operation
+// createOrUpdateByCustomerAtBillingAccount - Updates the policies for a customer at billing account scope. This operation
 // is supported only for billing accounts with agreement type Microsoft Partner Agreement.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PoliciesClient) createOrUpdateByCustomerAtBillingAccount(ctx context.Context, billingAccountName string, customerName string, parameters CustomerPolicy, options *PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions) (*http.Response, error) {
@@ -307,12 +310,13 @@ func (client *PoliciesClient) createOrUpdateByCustomerAtBillingAccount(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateByCustomerAtBillingAccountCreateRequest creates the CreateOrUpdateByCustomerAtBillingAccount request.
+// createOrUpdateByCustomerAtBillingAccountCreateRequest creates the createOrUpdateByCustomerAtBillingAccount request.
 func (client *PoliciesClient) createOrUpdateByCustomerAtBillingAccountCreateRequest(ctx context.Context, billingAccountName string, customerName string, parameters CustomerPolicy, _ *PoliciesClientBeginCreateOrUpdateByCustomerAtBillingAccountOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/customers/{customerName}/policies/default"
 	if billingAccountName == "" {
@@ -357,7 +361,8 @@ func (client *PoliciesClient) GetByBillingAccount(ctx context.Context, billingAc
 	if err != nil {
 		return PoliciesClientGetByBillingAccountResponse{}, err
 	}
-	return client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingAccountCreateRequest creates the GetByBillingAccount request.
@@ -411,7 +416,8 @@ func (client *PoliciesClient) GetByBillingProfile(ctx context.Context, billingAc
 	if err != nil {
 		return PoliciesClientGetByBillingProfileResponse{}, err
 	}
-	return client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByBillingProfileHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByBillingProfileCreateRequest creates the GetByBillingProfile request.
@@ -470,7 +476,8 @@ func (client *PoliciesClient) GetByCustomer(ctx context.Context, billingAccountN
 	if err != nil {
 		return PoliciesClientGetByCustomerResponse{}, err
 	}
-	return client.getByCustomerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByCustomerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByCustomerCreateRequest creates the GetByCustomer request.
@@ -536,7 +543,8 @@ func (client *PoliciesClient) GetByCustomerAtBillingAccount(ctx context.Context,
 	if err != nil {
 		return PoliciesClientGetByCustomerAtBillingAccountResponse{}, err
 	}
-	return client.getByCustomerAtBillingAccountHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByCustomerAtBillingAccountHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByCustomerAtBillingAccountCreateRequest creates the GetByCustomerAtBillingAccount request.
@@ -592,7 +600,8 @@ func (client *PoliciesClient) GetBySubscription(ctx context.Context, options *Po
 	if err != nil {
 		return PoliciesClientGetBySubscriptionResponse{}, err
 	}
-	return client.getBySubscriptionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBySubscriptionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBySubscriptionCreateRequest creates the GetBySubscription request.

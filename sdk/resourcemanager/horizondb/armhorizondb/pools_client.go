@@ -57,13 +57,14 @@ func NewPoolsClient(subscriptionID string, credential azcore.TokenCredential, op
 // cannot outlive or be deleted independently from it. When the first pool is created, the service automatically designates
 // it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one Pool before
 // a private endpoint connection can be created or approved. This API version supports at most one pool per cluster; an attempt
-// to create another pool is rejected with 409 Conflict. parameterGroup, parameterGroupResourceId, and applyMethod are required.
-// When creating a new pool in this API version, parameterGroupResourceId must identify the corresponding default parameter
-// group; a customer-created parameter group is rejected. When replacing an existing pool, the request can switch its association
-// in either direction between the corresponding default parameter group and a customer-created parameter group. applyMethod
-// controls when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-// Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute constraints
-// are validated before the resource is changed.
+// to create another pool is rejected with 409 Conflict. parameterGroup is optional during creation. When omitted during creation,
+// the service applies the default parameter group compatible with the parent cluster's PostgreSQL version. When parameterGroup
+// is supplied, parameterGroupResourceId and applyMethod are required. When creating a new pool in this API version, a supplied
+// parameterGroupResourceId must identify the corresponding default parameter group; a customer-created parameter group is
+// rejected. When replacing an existing pool, the request can switch its association in either direction between the corresponding
+// default parameter group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
+// effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and scheduled maintenance
+// do not apply pending changes. Subtype-specific compute constraints are validated before the resource is changed.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - clusterName - The name of the HorizonDB cluster.
@@ -101,13 +102,14 @@ func (client *PoolsClient) BeginCreateOrReplace(ctx context.Context, resourceGro
 // cannot outlive or be deleted independently from it. When the first pool is created, the service automatically designates
 // it to host the cluster's read-write node when an eligible node is available. A Cluster must contain at least one Pool before
 // a private endpoint connection can be created or approved. This API version supports at most one pool per cluster; an attempt
-// to create another pool is rejected with 409 Conflict. parameterGroup, parameterGroupResourceId, and applyMethod are required.
-// When creating a new pool in this API version, parameterGroupResourceId must identify the corresponding default parameter
-// group; a customer-created parameter group is rejected. When replacing an existing pool, the request can switch its association
-// in either direction between the corresponding default parameter group and a customer-created parameter group. applyMethod
-// controls when dynamic parameter changes become effective. Static parameter changes always require a customer-initiated
-// Restart; Stop followed by Start and scheduled maintenance do not apply pending changes. Subtype-specific compute constraints
-// are validated before the resource is changed.
+// to create another pool is rejected with 409 Conflict. parameterGroup is optional during creation. When omitted during creation,
+// the service applies the default parameter group compatible with the parent cluster's PostgreSQL version. When parameterGroup
+// is supplied, parameterGroupResourceId and applyMethod are required. When creating a new pool in this API version, a supplied
+// parameterGroupResourceId must identify the corresponding default parameter group; a customer-created parameter group is
+// rejected. When replacing an existing pool, the request can switch its association in either direction between the corresponding
+// default parameter group and a customer-created parameter group. applyMethod controls when dynamic parameter changes become
+// effective. Static parameter changes always require a customer-initiated Restart; Stop followed by Start and scheduled maintenance
+// do not apply pending changes. Subtype-specific compute constraints are validated before the resource is changed.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *PoolsClient) createOrReplace(ctx context.Context, resourceGroupName string, clusterName string, poolName string, resource Pool, options *PoolsClientBeginCreateOrReplaceOptions) (*http.Response, error) {
 	var err error
@@ -124,7 +126,8 @@ func (client *PoolsClient) createOrReplace(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -215,7 +218,8 @@ func (client *PoolsClient) deleteOperation(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -301,7 +305,8 @@ func (client *PoolsClient) restart(ctx context.Context, resourceGroupName string
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -388,7 +393,8 @@ func (client *PoolsClient) start(ctx context.Context, resourceGroupName string, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -473,7 +479,8 @@ func (client *PoolsClient) stop(ctx context.Context, resourceGroupName string, c
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -575,7 +582,8 @@ func (client *PoolsClient) update(ctx context.Context, resourceGroupName string,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -634,7 +642,8 @@ func (client *PoolsClient) Get(ctx context.Context, resourceGroupName string, cl
 	if err != nil {
 		return PoolsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

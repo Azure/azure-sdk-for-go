@@ -231,6 +231,38 @@ func TestRetryPolicyNoRetries(t *testing.T) {
 	}
 }
 
+func TestRetryPolicyNoDelay(t *testing.T) {
+	for _, override := range []bool{false, true} {
+		t.Run(fmt.Sprintf("override=%t", override), func(t *testing.T) {
+			srv, close := mock.NewServer()
+			defer close()
+			srv.RepeatResponse(2, mock.WithStatusCode(http.StatusInternalServerError))
+			srv.AppendResponse(mock.WithStatusCode(http.StatusOK))
+
+			options := policy.RetryOptions{MaxRetries: 2, RetryDelay: -1}
+			clientOptions := options
+			ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+			defer cancel()
+			if override {
+				clientOptions.RetryDelay = time.Hour
+				ctx = policy.WithRetryOptions(ctx, options)
+			}
+			pl := NewPipeline("test", "v1.0.0", PipelineOptions{}, &policy.ClientOptions{
+				Transport: srv,
+				Retry:     clientOptions,
+			})
+			req, err := NewRequest(ctx, http.MethodGet, srv.URL())
+			require.NoError(t, err)
+
+			resp, err := pl.Do(req)
+			require.NoError(t, err)
+			require.NotNil(t, resp)
+			require.Equal(t, http.StatusOK, resp.StatusCode)
+			require.Equal(t, 3, srv.Requests())
+		})
+	}
+}
+
 func TestRetryPolicyUnlimitedRetryDelay(t *testing.T) {
 	srv, close := mock.NewServer()
 	defer close()
@@ -923,6 +955,31 @@ func TestCalcDelay(t *testing.T) {
 			"%.2f not within jitter of %.2f", actual.Seconds(), expected.Seconds(),
 		)
 	}
+
+	t.Run("default delay", func(t *testing.T) {
+		retryOptions := policy.RetryOptions{}
+		setDefaults(&retryOptions)
+		require.Equal(t, 800*time.Millisecond, retryOptions.RetryDelay)
+		requireWithinJitter(t, retryOptions.RetryDelay, calcDelay(retryOptions, 1))
+	})
+
+	t.Run("no delay", func(t *testing.T) {
+		for _, retryDelay := range []time.Duration{-1, -time.Second, math.MinInt64} {
+			for _, maxRetryDelay := range []time.Duration{0, time.Second, -1} {
+				retryOptions := policy.RetryOptions{
+					RetryDelay:    retryDelay,
+					MaxRetryDelay: maxRetryDelay,
+				}
+				setDefaults(&retryOptions)
+				require.Zero(t, retryOptions.RetryDelay)
+
+				for _, try := range []int32{1, 2, 62, 63, math.MaxInt32} {
+					require.Zero(t, calcDelay(retryOptions, try),
+						"RetryDelay=%s, MaxRetryDelay=%s, try=%d", retryDelay, maxRetryDelay, try)
+				}
+			}
+		}
+	})
 
 	t.Run("basic cases", func(t *testing.T) {
 		retryOptions := policy.RetryOptions{

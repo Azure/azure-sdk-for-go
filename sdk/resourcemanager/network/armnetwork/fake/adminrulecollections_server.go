@@ -63,7 +63,7 @@ func (a *AdminRuleCollectionsServerTransport) Do(req *http.Request) (*http.Respo
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return a.dispatchToMethodFake(req, method)
@@ -278,11 +278,8 @@ func (a *AdminRuleCollectionsServerTransport) dispatchNewListPager(req *http.Req
 			return nil, err
 		}
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

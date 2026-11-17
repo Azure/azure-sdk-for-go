@@ -345,110 +345,6 @@ func ExampleAppServiceCertificateOrdersClient_GetCertificate() {
 	// }
 }
 
-// Generated from example definition: 2024-11-01/ListAppServiceCertificateOrdersBySubscription.json
-func ExampleAppServiceCertificateOrdersClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armcertificateregistration.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAppServiceCertificateOrdersClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcertificateregistration.AppServiceCertificateOrdersClientListResponse{
-		// 	AppServiceCertificateOrderCollection: armcertificateregistration.AppServiceCertificateOrderCollection{
-		// 		Value: []*armcertificateregistration.AppServiceCertificateOrder{
-		// 			{
-		// 				Name: to.Ptr("SampleCertificateOrderName"),
-		// 				Type: to.Ptr("Microsoft.CertificateRegistration/certificateOrders"),
-		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.CertificateRegistration/certificateOrders/SampleCertificateOrderName"),
-		// 				Location: to.Ptr("Global"),
-		// 				Properties: &armcertificateregistration.AppServiceCertificateOrderProperties{
-		// 					AppServiceCertificateNotRenewableReasons: []*armcertificateregistration.ResourceNotRenewableReason{
-		// 						to.Ptr(armcertificateregistration.ResourceNotRenewableReasonExpirationNotInRenewalTimeRange),
-		// 					},
-		// 					AutoRenew: to.Ptr(true),
-		// 					Certificates: map[string]*armcertificateregistration.AppServiceCertificate{
-		// 						"SampleCertName1": &armcertificateregistration.AppServiceCertificate{
-		// 							KeyVaultID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
-		// 							KeyVaultSecretName: to.Ptr("SampleSecretName1"),
-		// 							ProvisioningState: to.Ptr(armcertificateregistration.KeyVaultSecretStatusSucceeded),
-		// 						},
-		// 						"SampleCertName2": &armcertificateregistration.AppServiceCertificate{
-		// 							KeyVaultID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
-		// 							KeyVaultSecretName: to.Ptr("SampleSecretName2"),
-		// 							ProvisioningState: to.Ptr(armcertificateregistration.KeyVaultSecretStatusKeyVaultSecretDoesNotExist),
-		// 						},
-		// 					},
-		// 					Contact: &armcertificateregistration.CertificateOrderContact{
-		// 						Email: to.Ptr("contact@email.com"),
-		// 						NameFirst: to.Ptr("SampleFirstName"),
-		// 						NameLast: to.Ptr("SampleLastName"),
-		// 						Phone: to.Ptr("1-224-550-332"),
-		// 					},
-		// 					Csr: to.Ptr("xdf!x|"),
-		// 					DistinguishedName: to.Ptr("CN=SampleCustomDomain.com"),
-		// 					DomainVerificationToken: to.Ptr("awe4163Br6d32r"),
-		// 					ExpirationTime: to.Ptr(time.Date(2022, time.November, 12, 23, 40, 25, 0, time.UTC)),
-		// 					Intermediate: &armcertificateregistration.CertificateDetails{
-		// 						Issuer: to.Ptr("CACert"),
-		// 						NotAfter: to.Ptr(time.Date(2023, time.November, 12, 23, 40, 25, 0, time.UTC)),
-		// 						NotBefore: to.Ptr(time.Date(2021, time.May, 12, 23, 40, 25, 0, time.UTC)),
-		// 						SerialNumber: to.Ptr("k45kad0024"),
-		// 						SignatureAlgorithm: to.Ptr("SHA"),
-		// 						Subject: to.Ptr("CN=IntermediateCertSubjectName"),
-		// 						Thumbprint: to.Ptr("RF3D7411A44163B6D32B3343559B03E175886EBFE"),
-		// 						Version: to.Ptr[int32](5589220),
-		// 					},
-		// 					IsPrivateKeyExternal: to.Ptr(false),
-		// 					KeySize: to.Ptr[int32](2048),
-		// 					LastCertificateIssuanceTime: to.Ptr(time.Date(2021, time.November, 12, 23, 40, 25, 0, time.UTC)),
-		// 					NextAutoRenewalTimeStamp: to.Ptr(time.Date(2022, time.November, 12, 23, 40, 25, 0, time.UTC)),
-		// 					ProductType: to.Ptr(armcertificateregistration.CertificateProductTypeStandardDomainValidatedSSL),
-		// 					ProvisioningState: to.Ptr(armcertificateregistration.ProvisioningStateSucceeded),
-		// 					Root: &armcertificateregistration.CertificateDetails{
-		// 						Issuer: to.Ptr("CACert"),
-		// 						NotAfter: to.Ptr(time.Date(2023, time.November, 12, 23, 40, 25, 0, time.UTC)),
-		// 						NotBefore: to.Ptr(time.Date(2021, time.May, 12, 23, 40, 25, 0, time.UTC)),
-		// 						SerialNumber: to.Ptr("jkskd890ajdd00124"),
-		// 						SignatureAlgorithm: to.Ptr("SHA"),
-		// 						Subject: to.Ptr("CN=RootCertSubjectName"),
-		// 						Thumbprint: to.Ptr("ZD3D7411A44163B6D32B3343559B03E175886EBFE"),
-		// 						Version: to.Ptr[int32](3430921),
-		// 					},
-		// 					SerialNumber: to.Ptr("12324325325"),
-		// 					SignedCertificate: &armcertificateregistration.CertificateDetails{
-		// 						Issuer: to.Ptr("CACert"),
-		// 						NotAfter: to.Ptr(time.Date(2022, time.November, 12, 23, 40, 25, 0, time.UTC)),
-		// 						NotBefore: to.Ptr(time.Date(2021, time.November, 12, 23, 40, 25, 0, time.UTC)),
-		// 						SerialNumber: to.Ptr("sds12424k"),
-		// 						SignatureAlgorithm: to.Ptr("SHA"),
-		// 						Subject: to.Ptr("CN=CertSubjectName"),
-		// 						Thumbprint: to.Ptr("FE703D7411A44163B6D32B3AD9B03E175886EBFE"),
-		// 						Version: to.Ptr[int32](1232490),
-		// 					},
-		// 					Status: to.Ptr(armcertificateregistration.CertificateOrderStatusIssued),
-		// 					ValidityInYears: to.Ptr[int32](2),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2024-11-01/ListAppServiceCertificateOrdersByResourceGroup.json
 func ExampleAppServiceCertificateOrdersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -598,6 +494,110 @@ func ExampleAppServiceCertificateOrdersClient_NewListCertificatesPager() {
 		// 					KeyVaultID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
 		// 					KeyVaultSecretName: to.Ptr("SampleCertName2"),
 		// 					ProvisioningState: to.Ptr(armcertificateregistration.KeyVaultSecretStatusKeyVaultSecretDoesNotExist),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2024-11-01/ListAppServiceCertificateOrdersBySubscription.json
+func ExampleAppServiceCertificateOrdersClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcertificateregistration.NewClientFactory("34adfa4f-cedf-4dc0-ba29-b6d1a69ab345", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAppServiceCertificateOrdersClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcertificateregistration.AppServiceCertificateOrdersClientListResponse{
+		// 	AppServiceCertificateOrderCollection: armcertificateregistration.AppServiceCertificateOrderCollection{
+		// 		Value: []*armcertificateregistration.AppServiceCertificateOrder{
+		// 			{
+		// 				Name: to.Ptr("SampleCertificateOrderName"),
+		// 				Type: to.Ptr("Microsoft.CertificateRegistration/certificateOrders"),
+		// 				ID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.CertificateRegistration/certificateOrders/SampleCertificateOrderName"),
+		// 				Location: to.Ptr("Global"),
+		// 				Properties: &armcertificateregistration.AppServiceCertificateOrderProperties{
+		// 					AppServiceCertificateNotRenewableReasons: []*armcertificateregistration.ResourceNotRenewableReason{
+		// 						to.Ptr(armcertificateregistration.ResourceNotRenewableReasonExpirationNotInRenewalTimeRange),
+		// 					},
+		// 					AutoRenew: to.Ptr(true),
+		// 					Certificates: map[string]*armcertificateregistration.AppServiceCertificate{
+		// 						"SampleCertName1": &armcertificateregistration.AppServiceCertificate{
+		// 							KeyVaultID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
+		// 							KeyVaultSecretName: to.Ptr("SampleSecretName1"),
+		// 							ProvisioningState: to.Ptr(armcertificateregistration.KeyVaultSecretStatusSucceeded),
+		// 						},
+		// 						"SampleCertName2": &armcertificateregistration.AppServiceCertificate{
+		// 							KeyVaultID: to.Ptr("/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName"),
+		// 							KeyVaultSecretName: to.Ptr("SampleSecretName2"),
+		// 							ProvisioningState: to.Ptr(armcertificateregistration.KeyVaultSecretStatusKeyVaultSecretDoesNotExist),
+		// 						},
+		// 					},
+		// 					Contact: &armcertificateregistration.CertificateOrderContact{
+		// 						Email: to.Ptr("contact@email.com"),
+		// 						NameFirst: to.Ptr("SampleFirstName"),
+		// 						NameLast: to.Ptr("SampleLastName"),
+		// 						Phone: to.Ptr("1-224-550-332"),
+		// 					},
+		// 					Csr: to.Ptr("xdf!x|"),
+		// 					DistinguishedName: to.Ptr("CN=SampleCustomDomain.com"),
+		// 					DomainVerificationToken: to.Ptr("awe4163Br6d32r"),
+		// 					ExpirationTime: to.Ptr(time.Date(2022, time.November, 12, 23, 40, 25, 0, time.UTC)),
+		// 					Intermediate: &armcertificateregistration.CertificateDetails{
+		// 						Issuer: to.Ptr("CACert"),
+		// 						NotAfter: to.Ptr(time.Date(2023, time.November, 12, 23, 40, 25, 0, time.UTC)),
+		// 						NotBefore: to.Ptr(time.Date(2021, time.May, 12, 23, 40, 25, 0, time.UTC)),
+		// 						SerialNumber: to.Ptr("k45kad0024"),
+		// 						SignatureAlgorithm: to.Ptr("SHA"),
+		// 						Subject: to.Ptr("CN=IntermediateCertSubjectName"),
+		// 						Thumbprint: to.Ptr("RF3D7411A44163B6D32B3343559B03E175886EBFE"),
+		// 						Version: to.Ptr[int32](5589220),
+		// 					},
+		// 					IsPrivateKeyExternal: to.Ptr(false),
+		// 					KeySize: to.Ptr[int32](2048),
+		// 					LastCertificateIssuanceTime: to.Ptr(time.Date(2021, time.November, 12, 23, 40, 25, 0, time.UTC)),
+		// 					NextAutoRenewalTimeStamp: to.Ptr(time.Date(2022, time.November, 12, 23, 40, 25, 0, time.UTC)),
+		// 					ProductType: to.Ptr(armcertificateregistration.CertificateProductTypeStandardDomainValidatedSSL),
+		// 					ProvisioningState: to.Ptr(armcertificateregistration.ProvisioningStateSucceeded),
+		// 					Root: &armcertificateregistration.CertificateDetails{
+		// 						Issuer: to.Ptr("CACert"),
+		// 						NotAfter: to.Ptr(time.Date(2023, time.November, 12, 23, 40, 25, 0, time.UTC)),
+		// 						NotBefore: to.Ptr(time.Date(2021, time.May, 12, 23, 40, 25, 0, time.UTC)),
+		// 						SerialNumber: to.Ptr("jkskd890ajdd00124"),
+		// 						SignatureAlgorithm: to.Ptr("SHA"),
+		// 						Subject: to.Ptr("CN=RootCertSubjectName"),
+		// 						Thumbprint: to.Ptr("ZD3D7411A44163B6D32B3343559B03E175886EBFE"),
+		// 						Version: to.Ptr[int32](3430921),
+		// 					},
+		// 					SerialNumber: to.Ptr("12324325325"),
+		// 					SignedCertificate: &armcertificateregistration.CertificateDetails{
+		// 						Issuer: to.Ptr("CACert"),
+		// 						NotAfter: to.Ptr(time.Date(2022, time.November, 12, 23, 40, 25, 0, time.UTC)),
+		// 						NotBefore: to.Ptr(time.Date(2021, time.November, 12, 23, 40, 25, 0, time.UTC)),
+		// 						SerialNumber: to.Ptr("sds12424k"),
+		// 						SignatureAlgorithm: to.Ptr("SHA"),
+		// 						Subject: to.Ptr("CN=CertSubjectName"),
+		// 						Thumbprint: to.Ptr("FE703D7411A44163B6D32B3AD9B03E175886EBFE"),
+		// 						Version: to.Ptr[int32](1232490),
+		// 					},
+		// 					Status: to.Ptr(armcertificateregistration.CertificateOrderStatusIssued),
+		// 					ValidityInYears: to.Ptr[int32](2),
 		// 				},
 		// 			},
 		// 		},

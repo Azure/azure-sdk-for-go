@@ -70,7 +70,7 @@ func (client *ServicesClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create or update a Service Fabric managed service resource with the specified name.
+// createOrUpdate - Create or update a Service Fabric managed service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResource, options *ServicesClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *ServicesClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ServicesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters ServiceResource, _ *ServicesClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/services/{serviceName}"
 	if client.subscriptionID == "" {
@@ -154,7 +155,7 @@ func (client *ServicesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a Service Fabric managed service resource with the specified name.
+// deleteOperation - Delete a Service Fabric managed service resource with the specified name.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, options *ServicesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -171,12 +172,13 @@ func (client *ServicesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, _ *ServicesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/services/{serviceName}"
 	if client.subscriptionID == "" {
@@ -209,6 +211,92 @@ func (client *ServicesClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
+// BeginRestartReplica - A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - clusterName - The name of the cluster resource.
+//   - applicationName - The name of the application resource.
+//   - serviceName - The name of the service resource in the format of {applicationName}~{serviceName}.
+//   - parameters - The parameters for restarting replicas.
+//   - options - ServicesClientBeginRestartReplicaOptions contains the optional parameters for the ServicesClient.BeginRestartReplica
+//     method.
+func (client *ServicesClient) BeginRestartReplica(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters RestartReplicaRequest, options *ServicesClientBeginRestartReplicaOptions) (*runtime.Poller[ServicesClientRestartReplicaResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.restartReplica(ctx, resourceGroupName, clusterName, applicationName, serviceName, parameters, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServicesClientRestartReplicaResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServicesClientRestartReplicaResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// restartReplica - A long-running resource action.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *ServicesClient) restartReplica(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters RestartReplicaRequest, options *ServicesClientBeginRestartReplicaOptions) (*http.Response, error) {
+	var err error
+	const operationName = "ServicesClient.BeginRestartReplica"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.restartReplicaCreateRequest(ctx, resourceGroupName, clusterName, applicationName, serviceName, parameters, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// restartReplicaCreateRequest creates the restartReplica request.
+func (client *ServicesClient) restartReplicaCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters RestartReplicaRequest, _ *ServicesClientBeginRestartReplicaOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/services/{serviceName}/restartReplica"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if clusterName == "" {
+		return nil, errors.New("parameter clusterName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
+	if applicationName == "" {
+		return nil, errors.New("parameter applicationName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
+	if serviceName == "" {
+		return nil, errors.New("parameter serviceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260501Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get a Service Fabric service resource created or in the process of being created in the Service Fabric managed application
 // resource.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -231,7 +319,8 @@ func (client *ServicesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return ServicesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -363,91 +452,6 @@ func (client *ServicesClient) listByApplicationsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// BeginRestartReplica - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - clusterName - The name of the cluster resource.
-//   - applicationName - The name of the application resource.
-//   - serviceName - The name of the service resource in the format of {applicationName}~{serviceName}.
-//   - parameters - The parameters for restarting replicas.
-//   - options - ServicesClientBeginRestartReplicaOptions contains the optional parameters for the ServicesClient.BeginRestartReplica
-//     method.
-func (client *ServicesClient) BeginRestartReplica(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters RestartReplicaRequest, options *ServicesClientBeginRestartReplicaOptions) (*runtime.Poller[ServicesClientRestartReplicaResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.restartReplica(ctx, resourceGroupName, clusterName, applicationName, serviceName, parameters, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[ServicesClientRestartReplicaResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[ServicesClientRestartReplicaResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// RestartReplica - A long-running resource action.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *ServicesClient) restartReplica(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters RestartReplicaRequest, options *ServicesClientBeginRestartReplicaOptions) (*http.Response, error) {
-	var err error
-	const operationName = "ServicesClient.BeginRestartReplica"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.restartReplicaCreateRequest(ctx, resourceGroupName, clusterName, applicationName, serviceName, parameters, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// restartReplicaCreateRequest creates the RestartReplica request.
-func (client *ServicesClient) restartReplicaCreateRequest(ctx context.Context, resourceGroupName string, clusterName string, applicationName string, serviceName string, parameters RestartReplicaRequest, _ *ServicesClientBeginRestartReplicaOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/managedClusters/{clusterName}/applications/{applicationName}/services/{serviceName}/restartReplica"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if clusterName == "" {
-		return nil, errors.New("parameter clusterName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{clusterName}", url.PathEscape(clusterName))
-	if applicationName == "" {
-		return nil, errors.New("parameter applicationName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{applicationName}", url.PathEscape(applicationName))
-	if serviceName == "" {
-		return nil, errors.New("parameter serviceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{serviceName}", url.PathEscape(serviceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260501Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
-		return nil, err
-	}
-	return req, nil
-}
-
 // Update - Updates the tags of a service resource of a given managed cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -470,7 +474,8 @@ func (client *ServicesClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return ServicesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

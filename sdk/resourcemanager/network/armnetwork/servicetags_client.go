@@ -62,7 +62,8 @@ func (client *ServiceTagsClient) List(ctx context.Context, location string, opti
 	if err != nil {
 		return ServiceTagsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

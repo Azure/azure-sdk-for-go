@@ -92,7 +92,8 @@ func (client *BlobContainersClient) objectLevelWorm(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -152,7 +153,8 @@ func (client *BlobContainersClient) ClearLegalHold(ctx context.Context, resource
 	if err != nil {
 		return BlobContainersClientClearLegalHoldResponse{}, err
 	}
-	return client.clearLegalHoldHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.clearLegalHoldHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // clearLegalHoldCreateRequest creates the ClearLegalHold request.
@@ -226,7 +228,8 @@ func (client *BlobContainersClient) Create(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return BlobContainersClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -301,7 +304,8 @@ func (client *BlobContainersClient) CreateOrUpdateImmutabilityPolicy(ctx context
 	if err != nil {
 		return BlobContainersClientCreateOrUpdateImmutabilityPolicyResponse{}, err
 	}
-	return client.createOrUpdateImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateImmutabilityPolicyCreateRequest creates the CreateOrUpdateImmutabilityPolicy request.
@@ -380,7 +384,8 @@ func (client *BlobContainersClient) Delete(ctx context.Context, resourceGroupNam
 		return BlobContainersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return BlobContainersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BlobContainersClientDeleteResponse{}, err
 	}
 	return BlobContainersClientDeleteResponse{}, nil
 }
@@ -442,7 +447,8 @@ func (client *BlobContainersClient) DeleteImmutabilityPolicy(ctx context.Context
 	if err != nil {
 		return BlobContainersClientDeleteImmutabilityPolicyResponse{}, err
 	}
-	return client.deleteImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.deleteImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // deleteImmutabilityPolicyCreateRequest creates the DeleteImmutabilityPolicy request.
@@ -518,7 +524,8 @@ func (client *BlobContainersClient) ExtendImmutabilityPolicy(ctx context.Context
 	if err != nil {
 		return BlobContainersClientExtendImmutabilityPolicyResponse{}, err
 	}
-	return client.extendImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.extendImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // extendImmutabilityPolicyCreateRequest creates the ExtendImmutabilityPolicy request.
@@ -597,7 +604,8 @@ func (client *BlobContainersClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return BlobContainersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -667,7 +675,8 @@ func (client *BlobContainersClient) GetImmutabilityPolicy(ctx context.Context, r
 	if err != nil {
 		return BlobContainersClientGetImmutabilityPolicyResponse{}, err
 	}
-	return client.getImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getImmutabilityPolicyCreateRequest creates the GetImmutabilityPolicy request.
@@ -742,7 +751,8 @@ func (client *BlobContainersClient) Lease(ctx context.Context, resourceGroupName
 	if err != nil {
 		return BlobContainersClientLeaseResponse{}, err
 	}
-	return client.leaseHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.leaseHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // leaseCreateRequest creates the Lease request.
@@ -821,7 +831,8 @@ func (client *BlobContainersClient) LockImmutabilityPolicy(ctx context.Context, 
 	if err != nil {
 		return BlobContainersClientLockImmutabilityPolicyResponse{}, err
 	}
-	return client.lockImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.lockImmutabilityPolicyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // lockImmutabilityPolicyCreateRequest creates the LockImmutabilityPolicy request.
@@ -983,7 +994,8 @@ func (client *BlobContainersClient) SetLegalHold(ctx context.Context, resourceGr
 	if err != nil {
 		return BlobContainersClientSetLegalHoldResponse{}, err
 	}
-	return client.setLegalHoldHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.setLegalHoldHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // setLegalHoldCreateRequest creates the SetLegalHold request.
@@ -1057,7 +1069,8 @@ func (client *BlobContainersClient) Update(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return BlobContainersClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

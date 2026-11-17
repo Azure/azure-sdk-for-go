@@ -22,6 +22,82 @@ import (
 
 // DeploymentsServer is a fake server for instances of the armdeployments.DeploymentsClient type.
 type DeploymentsServer struct {
+	// BeginCreateOrUpdate is the fake for method DeploymentsClient.BeginCreateOrUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateAtManagementGroupScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateAtScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateAtScope func(ctx context.Context, scope string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateAtSubscriptionScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginCreateOrUpdateAtTenantScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtTenantScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
+	BeginCreateOrUpdateAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtTenantScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginDelete is the fake for method DeploymentsClient.BeginDelete
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDelete func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteAtManagementGroupScope is the fake for method DeploymentsClient.BeginDeleteAtManagementGroupScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeleteAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteAtScope is the fake for method DeploymentsClient.BeginDeleteAtScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeleteAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteAtSubscriptionScope is the fake for method DeploymentsClient.BeginDeleteAtSubscriptionScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeleteAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginDeleteAtTenantScope is the fake for method DeploymentsClient.BeginDeleteAtTenantScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
+	BeginDeleteAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtTenantScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidate is the fake for method DeploymentsClient.BeginValidate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
+	BeginValidate func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginValidateOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateAtManagementGroupScope is the fake for method DeploymentsClient.BeginValidateAtManagementGroupScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
+	BeginValidateAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginValidateAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateAtScope is the fake for method DeploymentsClient.BeginValidateAtScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
+	BeginValidateAtScope func(ctx context.Context, scope string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginValidateAtScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateAtSubscriptionScope is the fake for method DeploymentsClient.BeginValidateAtSubscriptionScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
+	BeginValidateAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginValidateAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginValidateAtTenantScope is the fake for method DeploymentsClient.BeginValidateAtTenantScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
+	BeginValidateAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginValidateAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtTenantScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginWhatIf is the fake for method DeploymentsClient.BeginWhatIf
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginWhatIf func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.DeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfResponse], errResp azfake.ErrorResponder)
+
+	// BeginWhatIfAtManagementGroupScope is the fake for method DeploymentsClient.BeginWhatIfAtManagementGroupScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginWhatIfAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginWhatIfAtSubscriptionScope is the fake for method DeploymentsClient.BeginWhatIfAtSubscriptionScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginWhatIfAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.DeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
+
+	// BeginWhatIfAtTenantScope is the fake for method DeploymentsClient.BeginWhatIfAtTenantScope
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginWhatIfAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtTenantScopeResponse], errResp azfake.ErrorResponder)
+
 	// CalculateTemplateHash is the fake for method DeploymentsClient.CalculateTemplateHash
 	// HTTP status codes to indicate success: http.StatusOK
 	CalculateTemplateHash func(ctx context.Context, templateParam any, options *armdeployments.DeploymentsClientCalculateTemplateHashOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCalculateTemplateHashResponse], errResp azfake.ErrorResponder)
@@ -65,46 +141,6 @@ type DeploymentsServer struct {
 	// CheckExistenceAtTenantScope is the fake for method DeploymentsClient.CheckExistenceAtTenantScope
 	// HTTP status codes to indicate success: http.StatusNoContent, http.StatusNotFound
 	CheckExistenceAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientCheckExistenceAtTenantScopeOptions) (resp azfake.Responder[armdeployments.DeploymentsClientCheckExistenceAtTenantScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginCreateOrUpdate is the fake for method DeploymentsClient.BeginCreateOrUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
-
-	// BeginCreateOrUpdateAtManagementGroupScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdateAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginCreateOrUpdateAtScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdateAtScope func(ctx context.Context, scope string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginCreateOrUpdateAtSubscriptionScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdateAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginCreateOrUpdateAtTenantScope is the fake for method DeploymentsClient.BeginCreateOrUpdateAtTenantScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdateAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginCreateOrUpdateAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientCreateOrUpdateAtTenantScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginDelete is the fake for method DeploymentsClient.BeginDelete
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteResponse], errResp azfake.ErrorResponder)
-
-	// BeginDeleteAtManagementGroupScope is the fake for method DeploymentsClient.BeginDeleteAtManagementGroupScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginDeleteAtScope is the fake for method DeploymentsClient.BeginDeleteAtScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtScope func(ctx context.Context, scope string, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginDeleteAtSubscriptionScope is the fake for method DeploymentsClient.BeginDeleteAtSubscriptionScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtSubscriptionScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginDeleteAtTenantScope is the fake for method DeploymentsClient.BeginDeleteAtTenantScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDeleteAtTenantScope func(ctx context.Context, deploymentName string, options *armdeployments.DeploymentsClientBeginDeleteAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtTenantScopeResponse], errResp azfake.ErrorResponder)
 
 	// ExportTemplate is the fake for method DeploymentsClient.ExportTemplate
 	// HTTP status codes to indicate success: http.StatusOK
@@ -165,42 +201,6 @@ type DeploymentsServer struct {
 	// NewListByResourceGroupPager is the fake for method DeploymentsClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armdeployments.DeploymentsClientListByResourceGroupOptions) (resp azfake.PagerResponder[armdeployments.DeploymentsClientListByResourceGroupResponse])
-
-	// BeginValidate is the fake for method DeploymentsClient.BeginValidate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidate func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginValidateOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateResponse], errResp azfake.ErrorResponder)
-
-	// BeginValidateAtManagementGroupScope is the fake for method DeploymentsClient.BeginValidateAtManagementGroupScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidateAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginValidateAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginValidateAtScope is the fake for method DeploymentsClient.BeginValidateAtScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidateAtScope func(ctx context.Context, scope string, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginValidateAtScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginValidateAtSubscriptionScope is the fake for method DeploymentsClient.BeginValidateAtSubscriptionScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidateAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.Deployment, options *armdeployments.DeploymentsClientBeginValidateAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginValidateAtTenantScope is the fake for method DeploymentsClient.BeginValidateAtTenantScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusBadRequest
-	BeginValidateAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeployment, options *armdeployments.DeploymentsClientBeginValidateAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtTenantScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginWhatIf is the fake for method DeploymentsClient.BeginWhatIf
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIf func(ctx context.Context, resourceGroupName string, deploymentName string, parameters armdeployments.DeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfResponse], errResp azfake.ErrorResponder)
-
-	// BeginWhatIfAtManagementGroupScope is the fake for method DeploymentsClient.BeginWhatIfAtManagementGroupScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIfAtManagementGroupScope func(ctx context.Context, groupID string, deploymentName string, parameters armdeployments.ScopedDeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfAtManagementGroupScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtManagementGroupScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginWhatIfAtSubscriptionScope is the fake for method DeploymentsClient.BeginWhatIfAtSubscriptionScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIfAtSubscriptionScope func(ctx context.Context, deploymentName string, parameters armdeployments.DeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfAtSubscriptionScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtSubscriptionScopeResponse], errResp azfake.ErrorResponder)
-
-	// BeginWhatIfAtTenantScope is the fake for method DeploymentsClient.BeginWhatIfAtTenantScope
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginWhatIfAtTenantScope func(ctx context.Context, deploymentName string, parameters armdeployments.ScopedDeploymentWhatIf, options *armdeployments.DeploymentsClientBeginWhatIfAtTenantScopeOptions) (resp azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtTenantScopeResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDeploymentsServerTransport creates a new instance of DeploymentsServerTransport with the provided implementation.
@@ -219,11 +219,6 @@ func NewDeploymentsServerTransport(srv *DeploymentsServer) *DeploymentsServerTra
 		beginDeleteAtScope:                        newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtScopeResponse]](),
 		beginDeleteAtSubscriptionScope:            newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtSubscriptionScopeResponse]](),
 		beginDeleteAtTenantScope:                  newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtTenantScopeResponse]](),
-		newListAtManagementGroupScopePager:        newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtManagementGroupScopeResponse]](),
-		newListAtScopePager:                       newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtScopeResponse]](),
-		newListAtSubscriptionScopePager:           newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtSubscriptionScopeResponse]](),
-		newListAtTenantScopePager:                 newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtTenantScopeResponse]](),
-		newListByResourceGroupPager:               newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListByResourceGroupResponse]](),
 		beginValidate:                             newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateResponse]](),
 		beginValidateAtManagementGroupScope:       newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtManagementGroupScopeResponse]](),
 		beginValidateAtScope:                      newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtScopeResponse]](),
@@ -233,6 +228,11 @@ func NewDeploymentsServerTransport(srv *DeploymentsServer) *DeploymentsServerTra
 		beginWhatIfAtManagementGroupScope:         newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtManagementGroupScopeResponse]](),
 		beginWhatIfAtSubscriptionScope:            newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtSubscriptionScopeResponse]](),
 		beginWhatIfAtTenantScope:                  newTracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtTenantScopeResponse]](),
+		newListAtManagementGroupScopePager:        newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtManagementGroupScopeResponse]](),
+		newListAtScopePager:                       newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtScopeResponse]](),
+		newListAtSubscriptionScopePager:           newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtSubscriptionScopeResponse]](),
+		newListAtTenantScopePager:                 newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtTenantScopeResponse]](),
+		newListByResourceGroupPager:               newTracker[azfake.PagerResponder[armdeployments.DeploymentsClientListByResourceGroupResponse]](),
 	}
 }
 
@@ -250,11 +250,6 @@ type DeploymentsServerTransport struct {
 	beginDeleteAtScope                        *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtScopeResponse]]
 	beginDeleteAtSubscriptionScope            *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtSubscriptionScopeResponse]]
 	beginDeleteAtTenantScope                  *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientDeleteAtTenantScopeResponse]]
-	newListAtManagementGroupScopePager        *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtManagementGroupScopeResponse]]
-	newListAtScopePager                       *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtScopeResponse]]
-	newListAtSubscriptionScopePager           *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtSubscriptionScopeResponse]]
-	newListAtTenantScopePager                 *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtTenantScopeResponse]]
-	newListByResourceGroupPager               *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListByResourceGroupResponse]]
 	beginValidate                             *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateResponse]]
 	beginValidateAtManagementGroupScope       *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtManagementGroupScopeResponse]]
 	beginValidateAtScope                      *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientValidateAtScopeResponse]]
@@ -264,6 +259,11 @@ type DeploymentsServerTransport struct {
 	beginWhatIfAtManagementGroupScope         *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtManagementGroupScopeResponse]]
 	beginWhatIfAtSubscriptionScope            *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtSubscriptionScopeResponse]]
 	beginWhatIfAtTenantScope                  *tracker[azfake.PollerResponder[armdeployments.DeploymentsClientWhatIfAtTenantScopeResponse]]
+	newListAtManagementGroupScopePager        *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtManagementGroupScopeResponse]]
+	newListAtScopePager                       *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtScopeResponse]]
+	newListAtSubscriptionScopePager           *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtSubscriptionScopeResponse]]
+	newListAtTenantScopePager                 *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListAtTenantScopeResponse]]
+	newListByResourceGroupPager               *tracker[azfake.PagerResponder[armdeployments.DeploymentsClientListByResourceGroupResponse]]
 }
 
 // Do implements the policy.Transporter interface for DeploymentsServerTransport.
@@ -271,7 +271,7 @@ func (d *DeploymentsServerTransport) Do(req *http.Request) (*http.Response, erro
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return d.dispatchToMethodFake(req, method)
@@ -287,6 +287,44 @@ func (d *DeploymentsServerTransport) dispatchToMethodFake(req *http.Request, met
 		}
 		if !intercepted {
 			switch method {
+			case "DeploymentsClient.BeginCreateOrUpdate":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
+			case "DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtManagementGroupScope(req)
+			case "DeploymentsClient.BeginCreateOrUpdateAtScope":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtScope(req)
+			case "DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtSubscriptionScope(req)
+			case "DeploymentsClient.BeginCreateOrUpdateAtTenantScope":
+				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtTenantScope(req)
+			case "DeploymentsClient.BeginDelete":
+				res.resp, res.err = d.dispatchBeginDelete(req)
+			case "DeploymentsClient.BeginDeleteAtManagementGroupScope":
+				res.resp, res.err = d.dispatchBeginDeleteAtManagementGroupScope(req)
+			case "DeploymentsClient.BeginDeleteAtScope":
+				res.resp, res.err = d.dispatchBeginDeleteAtScope(req)
+			case "DeploymentsClient.BeginDeleteAtSubscriptionScope":
+				res.resp, res.err = d.dispatchBeginDeleteAtSubscriptionScope(req)
+			case "DeploymentsClient.BeginDeleteAtTenantScope":
+				res.resp, res.err = d.dispatchBeginDeleteAtTenantScope(req)
+			case "DeploymentsClient.BeginValidate":
+				res.resp, res.err = d.dispatchBeginValidate(req)
+			case "DeploymentsClient.BeginValidateAtManagementGroupScope":
+				res.resp, res.err = d.dispatchBeginValidateAtManagementGroupScope(req)
+			case "DeploymentsClient.BeginValidateAtScope":
+				res.resp, res.err = d.dispatchBeginValidateAtScope(req)
+			case "DeploymentsClient.BeginValidateAtSubscriptionScope":
+				res.resp, res.err = d.dispatchBeginValidateAtSubscriptionScope(req)
+			case "DeploymentsClient.BeginValidateAtTenantScope":
+				res.resp, res.err = d.dispatchBeginValidateAtTenantScope(req)
+			case "DeploymentsClient.BeginWhatIf":
+				res.resp, res.err = d.dispatchBeginWhatIf(req)
+			case "DeploymentsClient.BeginWhatIfAtManagementGroupScope":
+				res.resp, res.err = d.dispatchBeginWhatIfAtManagementGroupScope(req)
+			case "DeploymentsClient.BeginWhatIfAtSubscriptionScope":
+				res.resp, res.err = d.dispatchBeginWhatIfAtSubscriptionScope(req)
+			case "DeploymentsClient.BeginWhatIfAtTenantScope":
+				res.resp, res.err = d.dispatchBeginWhatIfAtTenantScope(req)
 			case "DeploymentsClient.CalculateTemplateHash":
 				res.resp, res.err = d.dispatchCalculateTemplateHash(req)
 			case "DeploymentsClient.Cancel":
@@ -309,26 +347,6 @@ func (d *DeploymentsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = d.dispatchCheckExistenceAtSubscriptionScope(req)
 			case "DeploymentsClient.CheckExistenceAtTenantScope":
 				res.resp, res.err = d.dispatchCheckExistenceAtTenantScope(req)
-			case "DeploymentsClient.BeginCreateOrUpdate":
-				res.resp, res.err = d.dispatchBeginCreateOrUpdate(req)
-			case "DeploymentsClient.BeginCreateOrUpdateAtManagementGroupScope":
-				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtManagementGroupScope(req)
-			case "DeploymentsClient.BeginCreateOrUpdateAtScope":
-				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtScope(req)
-			case "DeploymentsClient.BeginCreateOrUpdateAtSubscriptionScope":
-				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtSubscriptionScope(req)
-			case "DeploymentsClient.BeginCreateOrUpdateAtTenantScope":
-				res.resp, res.err = d.dispatchBeginCreateOrUpdateAtTenantScope(req)
-			case "DeploymentsClient.BeginDelete":
-				res.resp, res.err = d.dispatchBeginDelete(req)
-			case "DeploymentsClient.BeginDeleteAtManagementGroupScope":
-				res.resp, res.err = d.dispatchBeginDeleteAtManagementGroupScope(req)
-			case "DeploymentsClient.BeginDeleteAtScope":
-				res.resp, res.err = d.dispatchBeginDeleteAtScope(req)
-			case "DeploymentsClient.BeginDeleteAtSubscriptionScope":
-				res.resp, res.err = d.dispatchBeginDeleteAtSubscriptionScope(req)
-			case "DeploymentsClient.BeginDeleteAtTenantScope":
-				res.resp, res.err = d.dispatchBeginDeleteAtTenantScope(req)
 			case "DeploymentsClient.ExportTemplate":
 				res.resp, res.err = d.dispatchExportTemplate(req)
 			case "DeploymentsClient.ExportTemplateAtManagementGroupScope":
@@ -359,24 +377,6 @@ func (d *DeploymentsServerTransport) dispatchToMethodFake(req *http.Request, met
 				res.resp, res.err = d.dispatchNewListAtTenantScopePager(req)
 			case "DeploymentsClient.NewListByResourceGroupPager":
 				res.resp, res.err = d.dispatchNewListByResourceGroupPager(req)
-			case "DeploymentsClient.BeginValidate":
-				res.resp, res.err = d.dispatchBeginValidate(req)
-			case "DeploymentsClient.BeginValidateAtManagementGroupScope":
-				res.resp, res.err = d.dispatchBeginValidateAtManagementGroupScope(req)
-			case "DeploymentsClient.BeginValidateAtScope":
-				res.resp, res.err = d.dispatchBeginValidateAtScope(req)
-			case "DeploymentsClient.BeginValidateAtSubscriptionScope":
-				res.resp, res.err = d.dispatchBeginValidateAtSubscriptionScope(req)
-			case "DeploymentsClient.BeginValidateAtTenantScope":
-				res.resp, res.err = d.dispatchBeginValidateAtTenantScope(req)
-			case "DeploymentsClient.BeginWhatIf":
-				res.resp, res.err = d.dispatchBeginWhatIf(req)
-			case "DeploymentsClient.BeginWhatIfAtManagementGroupScope":
-				res.resp, res.err = d.dispatchBeginWhatIfAtManagementGroupScope(req)
-			case "DeploymentsClient.BeginWhatIfAtSubscriptionScope":
-				res.resp, res.err = d.dispatchBeginWhatIfAtSubscriptionScope(req)
-			case "DeploymentsClient.BeginWhatIfAtTenantScope":
-				res.resp, res.err = d.dispatchBeginWhatIfAtTenantScope(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -391,337 +391,6 @@ func (d *DeploymentsServerTransport) dispatchToMethodFake(req *http.Request, met
 	case res := <-resultChan:
 		return res.resp, res.err
 	}
-}
-
-func (d *DeploymentsServerTransport) dispatchCalculateTemplateHash(req *http.Request) (*http.Response, error) {
-	if d.srv.CalculateTemplateHash == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CalculateTemplateHash not implemented")}
-	}
-	body, err := server.UnmarshalRequestAsJSON[any](req)
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CalculateTemplateHash(req.Context(), body, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TemplateHashResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
-	if d.srv.Cancel == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Cancel(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchCancelAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if d.srv.CancelAtManagementGroupScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CancelAtManagementGroupScope not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
-	if err != nil {
-		return nil, err
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CancelAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchCancelAtScope(req *http.Request) (*http.Response, error) {
-	if d.srv.CancelAtScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CancelAtScope not implemented")}
-	}
-	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	scopeParam := matches[regex.SubexpIndex("scope")]
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CancelAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchCancelAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if d.srv.CancelAtSubscriptionScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CancelAtSubscriptionScope not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CancelAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchCancelAtTenantScope(req *http.Request) (*http.Response, error) {
-	if d.srv.CancelAtTenantScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CancelAtTenantScope not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CancelAtTenantScope(req.Context(), deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchCheckExistence(req *http.Request) (*http.Response, error) {
-	if d.srv.CheckExistence == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckExistence not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CheckExistence(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchCheckExistenceAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if d.srv.CheckExistenceAtManagementGroupScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtManagementGroupScope not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
-	if err != nil {
-		return nil, err
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CheckExistenceAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchCheckExistenceAtScope(req *http.Request) (*http.Response, error) {
-	if d.srv.CheckExistenceAtScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtScope not implemented")}
-	}
-	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	scopeParam := matches[regex.SubexpIndex("scope")]
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CheckExistenceAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchCheckExistenceAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if d.srv.CheckExistenceAtSubscriptionScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtSubscriptionScope not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CheckExistenceAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchCheckExistenceAtTenantScope(req *http.Request) (*http.Response, error) {
-	if d.srv.CheckExistenceAtTenantScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtTenantScope not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.CheckExistenceAtTenantScope(req.Context(), deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
-	}
-	resp, err := server.NewResponse(respContent, req, nil)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }
 
 func (d *DeploymentsServerTransport) dispatchBeginCreateOrUpdate(req *http.Request) (*http.Response, error) {
@@ -1162,577 +831,6 @@ func (d *DeploymentsServerTransport) dispatchBeginDeleteAtTenantScope(req *http.
 	return resp, nil
 }
 
-func (d *DeploymentsServerTransport) dispatchExportTemplate(req *http.Request) (*http.Response, error) {
-	if d.srv.ExportTemplate == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ExportTemplate not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.ExportTemplate(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExportResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchExportTemplateAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if d.srv.ExportTemplateAtManagementGroupScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtManagementGroupScope not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
-	if err != nil {
-		return nil, err
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.ExportTemplateAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExportResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchExportTemplateAtScope(req *http.Request) (*http.Response, error) {
-	if d.srv.ExportTemplateAtScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtScope not implemented")}
-	}
-	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	scopeParam := matches[regex.SubexpIndex("scope")]
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.ExportTemplateAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExportResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchExportTemplateAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if d.srv.ExportTemplateAtSubscriptionScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtSubscriptionScope not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.ExportTemplateAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExportResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchExportTemplateAtTenantScope(req *http.Request) (*http.Response, error) {
-	if d.srv.ExportTemplateAtTenantScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtTenantScope not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.ExportTemplateAtTenantScope(req.Context(), deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExportResult, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if d.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExtended, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchGetAtManagementGroupScope(req *http.Request) (*http.Response, error) {
-	if d.srv.GetAtManagementGroupScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetAtManagementGroupScope not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
-	if err != nil {
-		return nil, err
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.GetAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExtended, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchGetAtScope(req *http.Request) (*http.Response, error) {
-	if d.srv.GetAtScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetAtScope not implemented")}
-	}
-	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	scopeParam := matches[regex.SubexpIndex("scope")]
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.GetAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExtended, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchGetAtSubscriptionScope(req *http.Request) (*http.Response, error) {
-	if d.srv.GetAtSubscriptionScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetAtSubscriptionScope not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 3 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.GetAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExtended, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchGetAtTenantScope(req *http.Request) (*http.Response, error) {
-	if d.srv.GetAtTenantScope == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetAtTenantScope not implemented")}
-	}
-	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 2 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := d.srv.GetAtTenantScope(req.Context(), deploymentNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExtended, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchNewListAtManagementGroupScopePager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListAtManagementGroupScopePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAtManagementGroupScopePager not implemented")}
-	}
-	newListAtManagementGroupScopePager := d.newListAtManagementGroupScopePager.get(req)
-	if newListAtManagementGroupScopePager == nil {
-		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdeployments.DeploymentsClientListAtManagementGroupScopeOptions
-		if filterParam != nil || topParam != nil {
-			options = &armdeployments.DeploymentsClientListAtManagementGroupScopeOptions{
-				Filter: filterParam,
-				Top:    topParam,
-			}
-		}
-		resp := d.srv.NewListAtManagementGroupScopePager(groupIDParam, options)
-		newListAtManagementGroupScopePager = &resp
-		d.newListAtManagementGroupScopePager.add(req, newListAtManagementGroupScopePager)
-		server.PagerResponderInjectNextLinks(newListAtManagementGroupScopePager, req, func(page *armdeployments.DeploymentsClientListAtManagementGroupScopeResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAtManagementGroupScopePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListAtManagementGroupScopePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAtManagementGroupScopePager) {
-		d.newListAtManagementGroupScopePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchNewListAtScopePager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListAtScopePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAtScopePager not implemented")}
-	}
-	newListAtScopePager := d.newListAtScopePager.get(req)
-	if newListAtScopePager == nil {
-		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/deployments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		scopeParam := matches[regex.SubexpIndex("scope")]
-		filterParam := getOptional(qp.Get("$filter"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdeployments.DeploymentsClientListAtScopeOptions
-		if filterParam != nil || topParam != nil {
-			options = &armdeployments.DeploymentsClientListAtScopeOptions{
-				Filter: filterParam,
-				Top:    topParam,
-			}
-		}
-		resp := d.srv.NewListAtScopePager(scopeParam, options)
-		newListAtScopePager = &resp
-		d.newListAtScopePager.add(req, newListAtScopePager)
-		server.PagerResponderInjectNextLinks(newListAtScopePager, req, func(page *armdeployments.DeploymentsClientListAtScopeResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAtScopePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListAtScopePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAtScopePager) {
-		d.newListAtScopePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchNewListAtSubscriptionScopePager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListAtSubscriptionScopePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAtSubscriptionScopePager not implemented")}
-	}
-	newListAtSubscriptionScopePager := d.newListAtSubscriptionScopePager.get(req)
-	if newListAtSubscriptionScopePager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdeployments.DeploymentsClientListAtSubscriptionScopeOptions
-		if filterParam != nil || topParam != nil {
-			options = &armdeployments.DeploymentsClientListAtSubscriptionScopeOptions{
-				Filter: filterParam,
-				Top:    topParam,
-			}
-		}
-		resp := d.srv.NewListAtSubscriptionScopePager(options)
-		newListAtSubscriptionScopePager = &resp
-		d.newListAtSubscriptionScopePager.add(req, newListAtSubscriptionScopePager)
-		server.PagerResponderInjectNextLinks(newListAtSubscriptionScopePager, req, func(page *armdeployments.DeploymentsClientListAtSubscriptionScopeResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAtSubscriptionScopePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListAtSubscriptionScopePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAtSubscriptionScopePager) {
-		d.newListAtSubscriptionScopePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchNewListAtTenantScopePager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListAtTenantScopePager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListAtTenantScopePager not implemented")}
-	}
-	newListAtTenantScopePager := d.newListAtTenantScopePager.get(req)
-	if newListAtTenantScopePager == nil {
-		qp := req.URL.Query()
-		filterParam := getOptional(qp.Get("$filter"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdeployments.DeploymentsClientListAtTenantScopeOptions
-		if filterParam != nil || topParam != nil {
-			options = &armdeployments.DeploymentsClientListAtTenantScopeOptions{
-				Filter: filterParam,
-				Top:    topParam,
-			}
-		}
-		resp := d.srv.NewListAtTenantScopePager(options)
-		newListAtTenantScopePager = &resp
-		d.newListAtTenantScopePager.add(req, newListAtTenantScopePager)
-		server.PagerResponderInjectNextLinks(newListAtTenantScopePager, req, func(page *armdeployments.DeploymentsClientListAtTenantScopeResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListAtTenantScopePager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListAtTenantScopePager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListAtTenantScopePager) {
-		d.newListAtTenantScopePager.remove(req)
-	}
-	return resp, nil
-}
-
-func (d *DeploymentsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		var options *armdeployments.DeploymentsClientListByResourceGroupOptions
-		if filterParam != nil || topParam != nil {
-			options = &armdeployments.DeploymentsClientListByResourceGroupOptions{
-				Filter: filterParam,
-				Top:    topParam,
-			}
-		}
-		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdeployments.DeploymentsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		d.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (d *DeploymentsServerTransport) dispatchBeginValidate(req *http.Request) (*http.Response, error) {
 	if d.srv.BeginValidate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginValidate not implemented")}
@@ -2143,6 +1241,893 @@ func (d *DeploymentsServerTransport) dispatchBeginWhatIfAtTenantScope(req *http.
 		d.beginWhatIfAtTenantScope.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchCalculateTemplateHash(req *http.Request) (*http.Response, error) {
+	if d.srv.CalculateTemplateHash == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CalculateTemplateHash not implemented")}
+	}
+	body, err := server.UnmarshalRequestAsJSON[any](req)
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CalculateTemplateHash(req.Context(), body, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).TemplateHashResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchCancel(req *http.Request) (*http.Response, error) {
+	if d.srv.Cancel == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Cancel not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Cancel(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchCancelAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CancelAtManagementGroupScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CancelAtManagementGroupScope not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CancelAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchCancelAtScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CancelAtScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CancelAtScope not implemented")}
+	}
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CancelAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchCancelAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CancelAtSubscriptionScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CancelAtSubscriptionScope not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CancelAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchCancelAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CancelAtTenantScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CancelAtTenantScope not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancel`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CancelAtTenantScope(req.Context(), deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchCheckExistence(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckExistence == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckExistence not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CheckExistence(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchCheckExistenceAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckExistenceAtManagementGroupScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtManagementGroupScope not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CheckExistenceAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchCheckExistenceAtScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckExistenceAtScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtScope not implemented")}
+	}
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CheckExistenceAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchCheckExistenceAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckExistenceAtSubscriptionScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtSubscriptionScope not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CheckExistenceAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchCheckExistenceAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.CheckExistenceAtTenantScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method CheckExistenceAtTenantScope not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.CheckExistenceAtTenantScope(req.Context(), deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusNoContent, http.StatusNotFound}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusNoContent, http.StatusNotFound", respContent.HTTPStatus)}
+	}
+	resp, err := server.NewResponse(respContent, req, nil)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchExportTemplate(req *http.Request) (*http.Response, error) {
+	if d.srv.ExportTemplate == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ExportTemplate not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.ExportTemplate(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExportResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchExportTemplateAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.ExportTemplateAtManagementGroupScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtManagementGroupScope not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.ExportTemplateAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExportResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchExportTemplateAtScope(req *http.Request) (*http.Response, error) {
+	if d.srv.ExportTemplateAtScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtScope not implemented")}
+	}
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.ExportTemplateAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExportResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchExportTemplateAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.ExportTemplateAtSubscriptionScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtSubscriptionScope not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.ExportTemplateAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExportResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchExportTemplateAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.ExportTemplateAtTenantScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ExportTemplateAtTenantScope not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/exportTemplate`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.ExportTemplateAtTenantScope(req.Context(), deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExportResult, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if d.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.Get(req.Context(), resourceGroupNameParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExtended, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchGetAtManagementGroupScope(req *http.Request) (*http.Response, error) {
+	if d.srv.GetAtManagementGroupScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetAtManagementGroupScope not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+	if err != nil {
+		return nil, err
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.GetAtManagementGroupScope(req.Context(), groupIDParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExtended, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchGetAtScope(req *http.Request) (*http.Response, error) {
+	if d.srv.GetAtScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetAtScope not implemented")}
+	}
+	const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	scopeParam := matches[regex.SubexpIndex("scope")]
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.GetAtScope(req.Context(), scopeParam, deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExtended, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchGetAtSubscriptionScope(req *http.Request) (*http.Response, error) {
+	if d.srv.GetAtSubscriptionScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetAtSubscriptionScope not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 3 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.GetAtSubscriptionScope(req.Context(), deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExtended, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchGetAtTenantScope(req *http.Request) (*http.Response, error) {
+	if d.srv.GetAtTenantScope == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetAtTenantScope not implemented")}
+	}
+	const regexStr = `/providers/Microsoft\.Resources/deployments/(?P<deploymentName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 2 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	deploymentNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("deploymentName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := d.srv.GetAtTenantScope(req.Context(), deploymentNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).DeploymentExtended, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchNewListAtManagementGroupScopePager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListAtManagementGroupScopePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAtManagementGroupScopePager not implemented")}
+	}
+	newListAtManagementGroupScopePager := d.newListAtManagementGroupScopePager.get(req)
+	if newListAtManagementGroupScopePager == nil {
+		const regexStr = `/providers/Microsoft\.Management/managementGroups/(?P<groupId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		groupIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("groupId")])
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdeployments.DeploymentsClientListAtManagementGroupScopeOptions
+		if filterParam != nil || topParam != nil {
+			options = &armdeployments.DeploymentsClientListAtManagementGroupScopeOptions{
+				Filter: filterParam,
+				Top:    topParam,
+			}
+		}
+		resp := d.srv.NewListAtManagementGroupScopePager(groupIDParam, options)
+		newListAtManagementGroupScopePager = &resp
+		d.newListAtManagementGroupScopePager.add(req, newListAtManagementGroupScopePager)
+		server.PagerResponderInjectNextLinks(newListAtManagementGroupScopePager, req, func(page *armdeployments.DeploymentsClientListAtManagementGroupScopeResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAtManagementGroupScopePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAtManagementGroupScopePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAtManagementGroupScopePager) {
+		d.newListAtManagementGroupScopePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchNewListAtScopePager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListAtScopePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAtScopePager not implemented")}
+	}
+	newListAtScopePager := d.newListAtScopePager.get(req)
+	if newListAtScopePager == nil {
+		const regexStr = `/(?P<scope>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Resources/deployments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		scopeParam := matches[regex.SubexpIndex("scope")]
+		filterParam := getOptional(qp.Get("$filter"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdeployments.DeploymentsClientListAtScopeOptions
+		if filterParam != nil || topParam != nil {
+			options = &armdeployments.DeploymentsClientListAtScopeOptions{
+				Filter: filterParam,
+				Top:    topParam,
+			}
+		}
+		resp := d.srv.NewListAtScopePager(scopeParam, options)
+		newListAtScopePager = &resp
+		d.newListAtScopePager.add(req, newListAtScopePager)
+		server.PagerResponderInjectNextLinks(newListAtScopePager, req, func(page *armdeployments.DeploymentsClientListAtScopeResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAtScopePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAtScopePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAtScopePager) {
+		d.newListAtScopePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchNewListAtSubscriptionScopePager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListAtSubscriptionScopePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAtSubscriptionScopePager not implemented")}
+	}
+	newListAtSubscriptionScopePager := d.newListAtSubscriptionScopePager.get(req)
+	if newListAtSubscriptionScopePager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		filterParam := getOptional(qp.Get("$filter"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdeployments.DeploymentsClientListAtSubscriptionScopeOptions
+		if filterParam != nil || topParam != nil {
+			options = &armdeployments.DeploymentsClientListAtSubscriptionScopeOptions{
+				Filter: filterParam,
+				Top:    topParam,
+			}
+		}
+		resp := d.srv.NewListAtSubscriptionScopePager(options)
+		newListAtSubscriptionScopePager = &resp
+		d.newListAtSubscriptionScopePager.add(req, newListAtSubscriptionScopePager)
+		server.PagerResponderInjectNextLinks(newListAtSubscriptionScopePager, req, func(page *armdeployments.DeploymentsClientListAtSubscriptionScopeResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAtSubscriptionScopePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAtSubscriptionScopePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAtSubscriptionScopePager) {
+		d.newListAtSubscriptionScopePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchNewListAtTenantScopePager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListAtTenantScopePager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListAtTenantScopePager not implemented")}
+	}
+	newListAtTenantScopePager := d.newListAtTenantScopePager.get(req)
+	if newListAtTenantScopePager == nil {
+		qp := req.URL.Query()
+		filterParam := getOptional(qp.Get("$filter"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdeployments.DeploymentsClientListAtTenantScopeOptions
+		if filterParam != nil || topParam != nil {
+			options = &armdeployments.DeploymentsClientListAtTenantScopeOptions{
+				Filter: filterParam,
+				Top:    topParam,
+			}
+		}
+		resp := d.srv.NewListAtTenantScopePager(options)
+		newListAtTenantScopePager = &resp
+		d.newListAtTenantScopePager.add(req, newListAtTenantScopePager)
+		server.PagerResponderInjectNextLinks(newListAtTenantScopePager, req, func(page *armdeployments.DeploymentsClientListAtTenantScopeResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListAtTenantScopePager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListAtTenantScopePager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListAtTenantScopePager) {
+		d.newListAtTenantScopePager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DeploymentsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := d.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourcegroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Resources/deployments`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		var options *armdeployments.DeploymentsClientListByResourceGroupOptions
+		if filterParam != nil || topParam != nil {
+			options = &armdeployments.DeploymentsClientListByResourceGroupOptions{
+				Filter: filterParam,
+				Top:    topParam,
+			}
+		}
+		resp := d.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		d.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armdeployments.DeploymentsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		d.newListByResourceGroupPager.remove(req)
+	}
 	return resp, nil
 }
 

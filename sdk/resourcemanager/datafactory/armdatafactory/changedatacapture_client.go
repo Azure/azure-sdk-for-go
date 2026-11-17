@@ -66,7 +66,8 @@ func (client *ChangeDataCaptureClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return ChangeDataCaptureClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -140,7 +141,8 @@ func (client *ChangeDataCaptureClient) Delete(ctx context.Context, resourceGroup
 		return ChangeDataCaptureClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ChangeDataCaptureClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ChangeDataCaptureClientDeleteResponse{}, err
 	}
 	return ChangeDataCaptureClientDeleteResponse{}, nil
 }
@@ -194,7 +196,8 @@ func (client *ChangeDataCaptureClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ChangeDataCaptureClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -340,7 +343,8 @@ func (client *ChangeDataCaptureClient) Start(ctx context.Context, resourceGroupN
 		return ChangeDataCaptureClientStartResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ChangeDataCaptureClientStartResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ChangeDataCaptureClientStartResponse{}, err
 	}
 	return ChangeDataCaptureClientStartResponse{}, nil
 }
@@ -395,7 +399,8 @@ func (client *ChangeDataCaptureClient) Status(ctx context.Context, resourceGroup
 	if err != nil {
 		return ChangeDataCaptureClientStatusResponse{}, err
 	}
-	return client.statusHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.statusHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // statusCreateRequest creates the Status request.
@@ -461,7 +466,8 @@ func (client *ChangeDataCaptureClient) Stop(ctx context.Context, resourceGroupNa
 		return ChangeDataCaptureClientStopResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ChangeDataCaptureClientStopResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ChangeDataCaptureClientStopResponse{}, err
 	}
 	return ChangeDataCaptureClientStopResponse{}, nil
 }

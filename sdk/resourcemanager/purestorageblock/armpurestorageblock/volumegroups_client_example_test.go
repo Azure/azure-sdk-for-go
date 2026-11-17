@@ -106,183 +106,6 @@ func ExampleVolumeGroupsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_Get_MaximumSet_Gen.json
-func ExampleVolumeGroupsClient_Get() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVolumeGroupsClient().Get(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.VolumeGroupsClientGetResponse{
-	// 	VolumeGroup: armpurestorageblock.VolumeGroup{
-	// 		Properties: &armpurestorageblock.VolumeGroupProperties{
-	// 			StoragePoolInternalID: to.Ptr("pool-abc123"),
-	// 			VolumeGroupInternalID: to.Ptr("vg-xyz789"),
-	// 			PerformanceParameters: &armpurestorageblock.PerformanceParameters{
-	// 				BandwidthLimitMbPerSec: to.Ptr[int64](500),
-	// 				IopsLimit: to.Ptr[int64](10000),
-	// 			},
-	// 			ProtectionParameters: &armpurestorageblock.ProtectionParameters{
-	// 				Retention: to.Ptr("P7D"),
-	// 				Frequency: to.Ptr("PT1H"),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"environment": to.Ptr("production"),
-	// 		},
-	// 		Location: to.Ptr("eastus"),
-	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01"),
-	// 		Name: to.Ptr("volumegroup-01"),
-	// 		Type: to.Ptr("PureStorage.Block/storagePools/volumeGroups"),
-	// 		SystemData: &armpurestorageblock.SystemData{
-	// 			CreatedBy: to.Ptr("user@contoso.com"),
-	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
-	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_GetStatus_MaximumSet_Gen.json
-func ExampleVolumeGroupsClient_GetStatus() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVolumeGroupsClient().GetStatus(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.VolumeGroupsClientGetStatusResponse{
-	// 	VolumeGroupStatus: armpurestorageblock.VolumeGroupStatus{
-	// 		Space: &armpurestorageblock.Space{
-	// 			TotalUsed: to.Ptr[int64](5368709120),
-	// 			Unique: to.Ptr[int64](2684354560),
-	// 			Snapshots: to.Ptr[int64](1342177280),
-	// 			Shared: to.Ptr[int64](1342177280),
-	// 		},
-	// 		ConnectedHostCount: to.Ptr[int32](3),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_ListByStoragePool_MaximumSet_Gen.json
-func ExampleVolumeGroupsClient_NewListByStoragePoolPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewVolumeGroupsClient().NewListByStoragePoolPager("rgpurestorage", "storagepool-01", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armpurestorageblock.VolumeGroupsClientListByStoragePoolResponse{
-		// 	VolumeGroupListResult: armpurestorageblock.VolumeGroupListResult{
-		// 		Value: []*armpurestorageblock.VolumeGroup{
-		// 			{
-		// 				Properties: &armpurestorageblock.VolumeGroupProperties{
-		// 					StoragePoolInternalID: to.Ptr("pool-abc123"),
-		// 					VolumeGroupInternalID: to.Ptr("vg-xyz789"),
-		// 					PerformanceParameters: &armpurestorageblock.PerformanceParameters{
-		// 						BandwidthLimitMbPerSec: to.Ptr[int64](500),
-		// 						IopsLimit: to.Ptr[int64](10000),
-		// 					},
-		// 					ProtectionParameters: &armpurestorageblock.ProtectionParameters{
-		// 						Retention: to.Ptr("P7D"),
-		// 						Frequency: to.Ptr("PT1H"),
-		// 					},
-		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 				},
-		// 				Location: to.Ptr("eastus"),
-		// 				ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01"),
-		// 				Name: to.Ptr("volumegroup-01"),
-		// 				Type: to.Ptr("PureStorage.Block/storagePools/volumeGroups"),
-		// 				SystemData: &armpurestorageblock.SystemData{
-		// 					CreatedBy: to.Ptr("user@contoso.com"),
-		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
-		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
-		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-05-01-preview/VolumeGroups_ListConnectionParameters_MaximumSet_Gen.json
-func ExampleVolumeGroupsClient_ListConnectionParameters() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewVolumeGroupsClient().ListConnectionParameters(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armpurestorageblock.VolumeGroupsClientListConnectionParametersResponse{
-	// 	ConnectionParametersResponse: armpurestorageblock.ConnectionParametersResponse{
-	// 		Iscsi: &armpurestorageblock.IscsiConnectionParameters{
-	// 			Endpoints: []*armpurestorageblock.IscsiEndpoint{
-	// 				{
-	// 					IP: to.Ptr("10.0.1.10"),
-	// 					Port: to.Ptr[int32](3260),
-	// 					Iqn: to.Ptr("iqn.2010-06.com.purestorage:volumegroup-01"),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2026-05-01-preview/VolumeGroups_Overwrite_MaximumSet_Gen.json
 func ExampleVolumeGroupsClient_BeginOverwrite() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -375,4 +198,181 @@ func ExampleVolumeGroupsClient_BeginUpdate() {
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_Get_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_Get() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVolumeGroupsClient().Get(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.VolumeGroupsClientGetResponse{
+	// 	VolumeGroup: armpurestorageblock.VolumeGroup{
+	// 		Properties: &armpurestorageblock.VolumeGroupProperties{
+	// 			StoragePoolInternalID: to.Ptr("pool-abc123"),
+	// 			VolumeGroupInternalID: to.Ptr("vg-xyz789"),
+	// 			PerformanceParameters: &armpurestorageblock.PerformanceParameters{
+	// 				BandwidthLimitMbPerSec: to.Ptr[int64](500),
+	// 				IopsLimit: to.Ptr[int64](10000),
+	// 			},
+	// 			ProtectionParameters: &armpurestorageblock.ProtectionParameters{
+	// 				Retention: to.Ptr("P7D"),
+	// 				Frequency: to.Ptr("PT1H"),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 		},
+	// 		Location: to.Ptr("eastus"),
+	// 		ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01"),
+	// 		Name: to.Ptr("volumegroup-01"),
+	// 		Type: to.Ptr("PureStorage.Block/storagePools/volumeGroups"),
+	// 		SystemData: &armpurestorageblock.SystemData{
+	// 			CreatedBy: to.Ptr("user@contoso.com"),
+	// 			CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("user@contoso.com"),
+	// 			LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_GetStatus_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_GetStatus() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVolumeGroupsClient().GetStatus(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.VolumeGroupsClientGetStatusResponse{
+	// 	VolumeGroupStatus: armpurestorageblock.VolumeGroupStatus{
+	// 		Space: &armpurestorageblock.Space{
+	// 			TotalUsed: to.Ptr[int64](5368709120),
+	// 			Unique: to.Ptr[int64](2684354560),
+	// 			Snapshots: to.Ptr[int64](1342177280),
+	// 			Shared: to.Ptr[int64](1342177280),
+	// 		},
+	// 		ConnectedHostCount: to.Ptr[int32](3),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_ListConnectionParameters_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_ListConnectionParameters() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewVolumeGroupsClient().ListConnectionParameters(ctx, "rgpurestorage", "storagepool-01", "volumegroup-01", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armpurestorageblock.VolumeGroupsClientListConnectionParametersResponse{
+	// 	ConnectionParametersResponse: armpurestorageblock.ConnectionParametersResponse{
+	// 		Iscsi: &armpurestorageblock.IscsiConnectionParameters{
+	// 			Endpoints: []*armpurestorageblock.IscsiEndpoint{
+	// 				{
+	// 					IP: to.Ptr("10.0.1.10"),
+	// 					Port: to.Ptr[int32](3260),
+	// 					Iqn: to.Ptr("iqn.2010-06.com.purestorage:volumegroup-01"),
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-05-01-preview/VolumeGroups_ListByStoragePool_MaximumSet_Gen.json
+func ExampleVolumeGroupsClient_NewListByStoragePoolPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armpurestorageblock.NewClientFactory("11111111-1111-1111-1111-111111111111", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewVolumeGroupsClient().NewListByStoragePoolPager("rgpurestorage", "storagepool-01", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armpurestorageblock.VolumeGroupsClientListByStoragePoolResponse{
+		// 	VolumeGroupListResult: armpurestorageblock.VolumeGroupListResult{
+		// 		Value: []*armpurestorageblock.VolumeGroup{
+		// 			{
+		// 				Properties: &armpurestorageblock.VolumeGroupProperties{
+		// 					StoragePoolInternalID: to.Ptr("pool-abc123"),
+		// 					VolumeGroupInternalID: to.Ptr("vg-xyz789"),
+		// 					PerformanceParameters: &armpurestorageblock.PerformanceParameters{
+		// 						BandwidthLimitMbPerSec: to.Ptr[int64](500),
+		// 						IopsLimit: to.Ptr[int64](10000),
+		// 					},
+		// 					ProtectionParameters: &armpurestorageblock.ProtectionParameters{
+		// 						Retention: to.Ptr("P7D"),
+		// 						Frequency: to.Ptr("PT1H"),
+		// 					},
+		// 					ProvisioningState: to.Ptr(armpurestorageblock.ProvisioningStateSucceeded),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 				},
+		// 				Location: to.Ptr("eastus"),
+		// 				ID: to.Ptr("/subscriptions/11111111-1111-1111-1111-111111111111/resourceGroups/rgpurestorage/providers/PureStorage.Block/storagePools/storagepool-01/volumeGroups/volumegroup-01"),
+		// 				Name: to.Ptr("volumegroup-01"),
+		// 				Type: to.Ptr("PureStorage.Block/storagePools/volumeGroups"),
+		// 				SystemData: &armpurestorageblock.SystemData{
+		// 					CreatedBy: to.Ptr("user@contoso.com"),
+		// 					CreatedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					CreatedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+		// 					LastModifiedBy: to.Ptr("user@contoso.com"),
+		// 					LastModifiedByType: to.Ptr(armpurestorageblock.CreatedByTypeUser),
+		// 					LastModifiedAt: to.Ptr(time.Date(2026, time.January, 16, 7, 25, 56, 721000000, time.UTC)),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }

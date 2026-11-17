@@ -70,7 +70,7 @@ func (client *WorkloadClient) BeginCreateOrUpdate(ctx context.Context, resourceG
 	}
 }
 
-// CreateOrUpdate - Create a WorkloadResource
+// createOrUpdate - Create a WorkloadResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkloadClient) createOrUpdate(ctx context.Context, resourceGroupName string, virtualEnclaveName string, workloadName string, resource WorkloadResource, options *WorkloadClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *WorkloadClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *WorkloadClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, workloadName string, resource WorkloadResource, _ *WorkloadClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *WorkloadClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// Delete - Delete a WorkloadResource
+// deleteOperation - Delete a WorkloadResource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *WorkloadClient) deleteOperation(ctx context.Context, resourceGroupName string, virtualEnclaveName string, workloadName string, options *WorkloadClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *WorkloadClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *WorkloadClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, workloadName string, _ *WorkloadClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}"
 	if client.subscriptionID == "" {
@@ -200,6 +202,87 @@ func (client *WorkloadClient) deleteCreateRequest(ctx context.Context, resourceG
 	return req, nil
 }
 
+// BeginUpdate - Update a WorkloadResource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - virtualEnclaveName - The name of the enclaveResource Resource
+//   - workloadName - The name of the workloadResource Resource
+//   - properties - The resource properties to be updated.
+//   - options - WorkloadClientBeginUpdateOptions contains the optional parameters for the WorkloadClient.BeginUpdate method.
+func (client *WorkloadClient) BeginUpdate(ctx context.Context, resourceGroupName string, virtualEnclaveName string, workloadName string, properties WorkloadPatchModel, options *WorkloadClientBeginUpdateOptions) (*runtime.Poller[WorkloadClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, virtualEnclaveName, workloadName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Update a WorkloadResource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *WorkloadClient) update(ctx context.Context, resourceGroupName string, virtualEnclaveName string, workloadName string, properties WorkloadPatchModel, options *WorkloadClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "WorkloadClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, virtualEnclaveName, workloadName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *WorkloadClient) updateCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, workloadName string, properties WorkloadPatchModel, _ *WorkloadClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if virtualEnclaveName == "" {
+		return nil, errors.New("parameter virtualEnclaveName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{virtualEnclaveName}", url.PathEscape(virtualEnclaveName))
+	if workloadName == "" {
+		return nil, errors.New("parameter workloadName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{workloadName}", url.PathEscape(workloadName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260401)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Get a WorkloadResource
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -220,7 +303,8 @@ func (client *WorkloadClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return WorkloadClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -412,84 +496,4 @@ func (client *WorkloadClient) listBySubscriptionHandleResponse(resp *http.Respon
 		return WorkloadClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginUpdate - Update a WorkloadResource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - virtualEnclaveName - The name of the enclaveResource Resource
-//   - workloadName - The name of the workloadResource Resource
-//   - properties - The resource properties to be updated.
-//   - options - WorkloadClientBeginUpdateOptions contains the optional parameters for the WorkloadClient.BeginUpdate method.
-func (client *WorkloadClient) BeginUpdate(ctx context.Context, resourceGroupName string, virtualEnclaveName string, workloadName string, properties WorkloadPatchModel, options *WorkloadClientBeginUpdateOptions) (*runtime.Poller[WorkloadClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, virtualEnclaveName, workloadName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[WorkloadClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[WorkloadClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Update a WorkloadResource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *WorkloadClient) update(ctx context.Context, resourceGroupName string, virtualEnclaveName string, workloadName string, properties WorkloadPatchModel, options *WorkloadClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "WorkloadClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, virtualEnclaveName, workloadName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *WorkloadClient) updateCreateRequest(ctx context.Context, resourceGroupName string, virtualEnclaveName string, workloadName string, properties WorkloadPatchModel, _ *WorkloadClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Mission/virtualEnclaves/{virtualEnclaveName}/workloads/{workloadName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if virtualEnclaveName == "" {
-		return nil, errors.New("parameter virtualEnclaveName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{virtualEnclaveName}", url.PathEscape(virtualEnclaveName))
-	if workloadName == "" {
-		return nil, errors.New("parameter workloadName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{workloadName}", url.PathEscape(workloadName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260401)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

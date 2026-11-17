@@ -5,7 +5,7 @@
 package armkeyvault
 
 const (
-	version20260515 string = "2026-05-15"
+	version20261001Preview string = "2026-10-01-preview"
 )
 
 type AccessPolicyUpdateKind string
@@ -22,6 +22,24 @@ func PossibleAccessPolicyUpdateKindValues() []AccessPolicyUpdateKind {
 		AccessPolicyUpdateKindAdd,
 		AccessPolicyUpdateKindRemove,
 		AccessPolicyUpdateKindReplace,
+	}
+}
+
+// AccessRuleDirection - Direction of Access Rule
+type AccessRuleDirection string
+
+const (
+	// AccessRuleDirectionInbound - Applies to inbound network traffic to the secured resources.
+	AccessRuleDirectionInbound AccessRuleDirection = "Inbound"
+	// AccessRuleDirectionOutbound - Applies to outbound network traffic from the secured resources
+	AccessRuleDirectionOutbound AccessRuleDirection = "Outbound"
+)
+
+// PossibleAccessRuleDirectionValues returns the possible values for the AccessRuleDirection const type.
+func PossibleAccessRuleDirectionValues() []AccessRuleDirection {
+	return []AccessRuleDirection{
+		AccessRuleDirectionInbound,
+		AccessRuleDirectionOutbound,
 	}
 }
 
@@ -191,6 +209,33 @@ func PossibleGeoReplicationRegionProvisioningStateValues() []GeoReplicationRegio
 		GeoReplicationRegionProvisioningStatePreprovisioning,
 		GeoReplicationRegionProvisioningStateProvisioning,
 		GeoReplicationRegionProvisioningStateSucceeded,
+	}
+}
+
+// IssueType - Type of issue
+type IssueType string
+
+const (
+	// IssueTypeConfigurationPropagationFailure - An error occurred while applying the network security perimeter (NSP) configuration.
+	IssueTypeConfigurationPropagationFailure IssueType = "ConfigurationPropagationFailure"
+	// IssueTypeMissingIdentityConfiguration - An managed identity hasn't been associated with the resource. The resource will
+	// still be able to validate inbound traffic from the network security perimeter (NSP) or matching inbound access rules, but
+	// it won't be able to perform outbound access as a member of the NSP.
+	IssueTypeMissingIdentityConfiguration IssueType = "MissingIdentityConfiguration"
+	// IssueTypeMissingPerimeterConfiguration - A network connectivity issue is happening on the resource which could be addressed
+	// either by adding new resources to the network security perimeter (NSP) or by modifying access rules.
+	IssueTypeMissingPerimeterConfiguration IssueType = "MissingPerimeterConfiguration"
+	// IssueTypeUnknown - Unknown issue type
+	IssueTypeUnknown IssueType = "Unknown"
+)
+
+// PossibleIssueTypeValues returns the possible values for the IssueType const type.
+func PossibleIssueTypeValues() []IssueType {
+	return []IssueType{
+		IssueTypeConfigurationPropagationFailure,
+		IssueTypeMissingIdentityConfiguration,
+		IssueTypeMissingPerimeterConfiguration,
+		IssueTypeUnknown,
 	}
 }
 
@@ -450,6 +495,41 @@ func PossibleNetworkRuleBypassOptionsValues() []NetworkRuleBypassOptions {
 	}
 }
 
+// NetworkSecurityPerimeterConfigurationProvisioningState - Provisioning state of a network security perimeter configuration
+// that is being created or updated.
+type NetworkSecurityPerimeterConfigurationProvisioningState string
+
+const (
+	// NetworkSecurityPerimeterConfigurationProvisioningStateAccepted - The configuration request was accepted and provisioning
+	// has not started yet.
+	NetworkSecurityPerimeterConfigurationProvisioningStateAccepted NetworkSecurityPerimeterConfigurationProvisioningState = "Accepted"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateCanceled - The configuration provisioning was canceled.
+	NetworkSecurityPerimeterConfigurationProvisioningStateCanceled NetworkSecurityPerimeterConfigurationProvisioningState = "Canceled"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateCreating - The configuration is being created.
+	NetworkSecurityPerimeterConfigurationProvisioningStateCreating NetworkSecurityPerimeterConfigurationProvisioningState = "Creating"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateDeleting - The configuration is being deleted.
+	NetworkSecurityPerimeterConfigurationProvisioningStateDeleting NetworkSecurityPerimeterConfigurationProvisioningState = "Deleting"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateFailed - The configuration failed to provision.
+	NetworkSecurityPerimeterConfigurationProvisioningStateFailed NetworkSecurityPerimeterConfigurationProvisioningState = "Failed"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded - The configuration was provisioned successfully.
+	NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded NetworkSecurityPerimeterConfigurationProvisioningState = "Succeeded"
+	// NetworkSecurityPerimeterConfigurationProvisioningStateUpdating - The configuration is being updated.
+	NetworkSecurityPerimeterConfigurationProvisioningStateUpdating NetworkSecurityPerimeterConfigurationProvisioningState = "Updating"
+)
+
+// PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues returns the possible values for the NetworkSecurityPerimeterConfigurationProvisioningState const type.
+func PossibleNetworkSecurityPerimeterConfigurationProvisioningStateValues() []NetworkSecurityPerimeterConfigurationProvisioningState {
+	return []NetworkSecurityPerimeterConfigurationProvisioningState{
+		NetworkSecurityPerimeterConfigurationProvisioningStateAccepted,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCanceled,
+		NetworkSecurityPerimeterConfigurationProvisioningStateCreating,
+		NetworkSecurityPerimeterConfigurationProvisioningStateDeleting,
+		NetworkSecurityPerimeterConfigurationProvisioningStateFailed,
+		NetworkSecurityPerimeterConfigurationProvisioningStateSucceeded,
+		NetworkSecurityPerimeterConfigurationProvisioningStateUpdating,
+	}
+}
+
 // PrivateEndpointConnectionProvisioningState - The current provisioning state.
 type PrivateEndpointConnectionProvisioningState string
 
@@ -562,6 +642,29 @@ func PossibleReasonValues() []Reason {
 	}
 }
 
+// ResourceAssociationAccessMode - Access mode of the resource association
+type ResourceAssociationAccessMode string
+
+const (
+	// ResourceAssociationAccessModeAudit - Audit access mode - traffic to the resource that fails access checks is logged but
+	// not blocked
+	ResourceAssociationAccessModeAudit ResourceAssociationAccessMode = "Audit"
+	// ResourceAssociationAccessModeEnforced - Enforced access mode - traffic to the resource that failed access checks is blocked
+	ResourceAssociationAccessModeEnforced ResourceAssociationAccessMode = "Enforced"
+	// ResourceAssociationAccessModeLearning - Learning access mode - traffic to the resource is enabled for analysis but not
+	// blocked
+	ResourceAssociationAccessModeLearning ResourceAssociationAccessMode = "Learning"
+)
+
+// PossibleResourceAssociationAccessModeValues returns the possible values for the ResourceAssociationAccessMode const type.
+func PossibleResourceAssociationAccessModeValues() []ResourceAssociationAccessMode {
+	return []ResourceAssociationAccessMode{
+		ResourceAssociationAccessModeAudit,
+		ResourceAssociationAccessModeEnforced,
+		ResourceAssociationAccessModeLearning,
+	}
+}
+
 // SKUFamily - SKU family name
 type SKUFamily string
 
@@ -621,6 +724,24 @@ func PossibleSecretPermissionsValues() []SecretPermissions {
 	}
 }
 
+// Severity - Severity of the issue.
+type Severity string
+
+const (
+	// SeverityError - The issue is an error and prevents the configuration from being applied.
+	SeverityError Severity = "Error"
+	// SeverityWarning - The issue is a warning and does not prevent the configuration from being applied.
+	SeverityWarning Severity = "Warning"
+)
+
+// PossibleSeverityValues returns the possible values for the Severity const type.
+func PossibleSeverityValues() []Severity {
+	return []Severity{
+		SeverityError,
+		SeverityWarning,
+	}
+}
+
 type StoragePermissions string
 
 const (
@@ -659,6 +780,52 @@ func PossibleStoragePermissionsValues() []StoragePermissions {
 		StoragePermissionsSet,
 		StoragePermissionsSetsas,
 		StoragePermissionsUpdate,
+	}
+}
+
+// TokenBindingMode - This specifies whether token binding is disabled, enabled or enforced.
+type TokenBindingMode string
+
+const (
+	// TokenBindingModeEnforced - Token binding is enforced for the vault. Only bounded tokens will be accepted. Bearer tokens
+	// will be rejected.
+	TokenBindingModeEnforced TokenBindingMode = "Enforced"
+	// TokenBindingModeNotEnforced - Token binding is not enforced for the vault. Bounded tokens will be rejected.
+	TokenBindingModeNotEnforced TokenBindingMode = "NotEnforced"
+)
+
+// PossibleTokenBindingModeValues returns the possible values for the TokenBindingMode const type.
+func PossibleTokenBindingModeValues() []TokenBindingMode {
+	return []TokenBindingMode{
+		TokenBindingModeEnforced,
+		TokenBindingModeNotEnforced,
+	}
+}
+
+// TokenBindingStrength - Must be one of the following values "NoValidation", "Unattested", "AttestedTrustedLaunch", "AttestedConfidential".
+// Strength of the token binding increases with each value in that order.
+type TokenBindingStrength string
+
+const (
+	// TokenBindingStrengthAttestedConfidential - Bounded Entra token must originate from a confidential VM with attestation proof
+	// from the attestation authority like Microsoft Azure Attestation.
+	TokenBindingStrengthAttestedConfidential TokenBindingStrength = "AttestedConfidential"
+	// TokenBindingStrengthAttestedTrustedLaunch - Bounded Entra token must originate from a trusted launch VM with attestation
+	// proof from the attestation authority like Microsoft Azure Attestation.
+	TokenBindingStrengthAttestedTrustedLaunch TokenBindingStrength = "AttestedTrustedLaunch"
+	// TokenBindingStrengthNoValidation - This is default when token binding is not enabled.
+	TokenBindingStrengthNoValidation TokenBindingStrength = "NoValidation"
+	// TokenBindingStrengthUnattested - No attestation proof is required for the bounded token.
+	TokenBindingStrengthUnattested TokenBindingStrength = "Unattested"
+)
+
+// PossibleTokenBindingStrengthValues returns the possible values for the TokenBindingStrength const type.
+func PossibleTokenBindingStrengthValues() []TokenBindingStrength {
+	return []TokenBindingStrength{
+		TokenBindingStrengthAttestedConfidential,
+		TokenBindingStrengthAttestedTrustedLaunch,
+		TokenBindingStrengthNoValidation,
+		TokenBindingStrengthUnattested,
 	}
 }
 

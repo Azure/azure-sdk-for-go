@@ -99,7 +99,7 @@ func (l *LongTermRetentionManagedInstanceBackupsServerTransport) Do(req *http.Re
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return l.dispatchToMethodFake(req, method)
@@ -480,21 +480,15 @@ func (l *LongTermRetentionManagedInstanceBackupsServerTransport) dispatchNewList
 		}
 		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
 		skipParam, err := parseOptional(qp.Get("$skip"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
 		}
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -678,21 +672,15 @@ func (l *LongTermRetentionManagedInstanceBackupsServerTransport) dispatchNewList
 		}
 		databaseStateParam := getOptional(armsql.DatabaseState(qp.Get("databaseState")))
 		skipParam, err := parseOptional(qp.Get("$skip"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
 		}
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

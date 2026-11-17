@@ -53,7 +53,7 @@ func (s *SavingsPlanOrdersServerTransport) Do(req *http.Request) (*http.Response
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return s.dispatchToMethodFake(req, method)
@@ -150,11 +150,8 @@ func (s *SavingsPlanOrdersServerTransport) dispatchNewListByBillingAccountPager(
 		filterParam := getOptional(qp.Get("filter"))
 		orderByParam := getOptional(qp.Get("orderBy"))
 		skiptokenParam, err := parseOptional(qp.Get("skiptoken"), func(v string) (float32, error) {
-			p, parseErr := strconv.ParseFloat(v, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return float32(p), nil
+			parsed, parseErr := strconv.ParseFloat(v, 32)
+			return float32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

@@ -70,7 +70,8 @@ func (client *PrivateEndpointConnectionsClient) Delete(ctx context.Context, reso
 	if err != nil {
 		return PrivateEndpointConnectionsClientDeleteResponse{}, err
 	}
-	return client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNotFound)
+	resp, err := client.deleteHandleResponse(httpResp, http.StatusOK, http.StatusNotFound)
+	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
@@ -140,7 +141,8 @@ func (client *PrivateEndpointConnectionsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return PrivateEndpointConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -291,7 +293,8 @@ func (client *PrivateEndpointConnectionsClient) Update(ctx context.Context, reso
 	if err != nil {
 		return PrivateEndpointConnectionsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

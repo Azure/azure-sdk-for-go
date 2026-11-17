@@ -69,7 +69,7 @@ func (client *ManagedInstanceDtcsClient) BeginCreateOrUpdate(ctx context.Context
 	}
 }
 
-// CreateOrUpdate - Updates managed instance DTC settings.
+// createOrUpdate - Updates managed instance DTC settings.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ManagedInstanceDtcsClient) createOrUpdate(ctx context.Context, resourceGroupName string, managedInstanceName string, dtcName DtcName, parameters ManagedInstanceDtc, options *ManagedInstanceDtcsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *ManagedInstanceDtcsClient) createOrUpdate(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ManagedInstanceDtcsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, managedInstanceName string, dtcName DtcName, parameters ManagedInstanceDtc, _ *ManagedInstanceDtcsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/managedInstances/{managedInstanceName}/dtc/{dtcName}"
 	if client.subscriptionID == "" {
@@ -145,7 +146,8 @@ func (client *ManagedInstanceDtcsClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return ManagedInstanceDtcsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

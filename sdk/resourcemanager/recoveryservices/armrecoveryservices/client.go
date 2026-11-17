@@ -65,7 +65,8 @@ func (client *Client) Capabilities(ctx context.Context, location string, input R
 	if err != nil {
 		return ClientCapabilitiesResponse{}, err
 	}
-	return client.capabilitiesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.capabilitiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // capabilitiesCreateRequest creates the Capabilities request.
@@ -132,7 +133,8 @@ func (client *Client) CheckNameAvailability(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.

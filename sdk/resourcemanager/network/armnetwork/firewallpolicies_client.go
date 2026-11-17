@@ -86,7 +86,8 @@ func (client *FirewallPoliciesClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -132,7 +133,7 @@ func (client *FirewallPoliciesClient) createOrUpdateCreateRequest(ctx context.Co
 //     method.
 func (client *FirewallPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPoliciesClientBeginDeleteOptions) (*runtime.Poller[FirewallPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, firewallPolicyName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, firewallPolicyName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -147,9 +148,9 @@ func (client *FirewallPoliciesClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// delete - Deletes the specified Firewall Policy.
+// deleteOperation - Deletes the specified Firewall Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *FirewallPoliciesClient) delete(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPoliciesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *FirewallPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, firewallPolicyName string, options *FirewallPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "FirewallPoliciesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -164,7 +165,8 @@ func (client *FirewallPoliciesClient) delete(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -213,7 +215,8 @@ func (client *FirewallPoliciesClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return FirewallPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -417,7 +420,8 @@ func (client *FirewallPoliciesClient) UpdateTags(ctx context.Context, resourceGr
 	if err != nil {
 		return FirewallPoliciesClientUpdateTagsResponse{}, err
 	}
-	return client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateTagsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateTagsCreateRequest creates the UpdateTags request.

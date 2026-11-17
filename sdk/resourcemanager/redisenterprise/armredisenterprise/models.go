@@ -44,11 +44,19 @@ type AccessPolicyAssignmentList struct {
 
 // AccessPolicyAssignmentProperties - Properties of Redis Enterprise database access policy assignment.
 type AccessPolicyAssignmentProperties struct {
-	// REQUIRED; Name of access policy under specific access policy assignment. Only "default" policy is supported for now.
-	AccessPolicyName *string
-
 	// REQUIRED; The user associated with the access policy.
 	User *AccessPolicyAssignmentPropertiesUser
+
+	// **Deprecated.** This property always returns "default". Use `accessString` to configure custom Redis ACL permissions instead.
+	AccessPolicyName *string
+
+	// The Redis ACL permissions string applied to this assignment, for example `+@read ~cache:*`. Defaults to `+@all ~*` if not
+	// specified.
+	AccessString *string
+
+	// READ-ONLY; Provisioning error details when the access string failed to apply (e.g., invalid ACL syntax). Null when provisioning
+	// succeeded.
+	ProvisioningError *AccessPolicyAssignmentProvisioningError
 
 	// READ-ONLY; Current provisioning status of the access policy assignment.
 	ProvisioningState *ProvisioningState
@@ -58,6 +66,18 @@ type AccessPolicyAssignmentProperties struct {
 type AccessPolicyAssignmentPropertiesUser struct {
 	// The object ID of the user.
 	ObjectID *string
+}
+
+// AccessPolicyAssignmentProvisioningError - Error details for access policy assignment provisioning failures.
+type AccessPolicyAssignmentProvisioningError struct {
+	// REQUIRED; Machine-readable error code (e.g., "InvalidAccessString").
+	Code *string
+
+	// REQUIRED; Human-readable error message describing the failure.
+	Message *string
+
+	// The property that caused the error (e.g., "properties.accessString").
+	Target *string
 }
 
 // AzureCacheForRedisMigrationProperties - Properties for Redis Enterprise migration operation for Azure Cache for Redis.
@@ -160,6 +180,16 @@ type ClusterCreateProperties struct {
 	// Encryption-at-rest configuration for the cluster.
 	Encryption *ClusterPropertiesEncryption
 
+	// The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At most 250 rules are supported, and non-empty
+	// rules require publicNetworkAccess to be Enabled.
+	// On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty array clears all rules.
+	// On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules; rules absent from
+	// it are deleted. Supplying an empty array clears all rules.
+	// Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule set allows all
+	// public traffic; it does not deny all traffic.
+	// Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+	FirewallRules []*FirewallRule
+
 	// Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the availability SLA,
 	// and increases the risk of data loss.
 	HighAvailability *HighAvailability
@@ -251,6 +281,16 @@ type ClusterUpdate struct {
 type ClusterUpdateProperties struct {
 	// Encryption-at-rest configuration for the cluster.
 	Encryption *ClusterPropertiesEncryption
+
+	// The complete set of firewall rules for an Azure Managed Redis (AMR) cluster. At most 250 rules are supported, and non-empty
+	// rules require publicNetworkAccess to be Enabled.
+	// On PUT, the supplied array replaces all existing rules. Omitting this property or supplying an empty array clears all rules.
+	// On PATCH, omitting this property preserves existing rules. A supplied array replaces all existing rules; rules absent from
+	// it are deleted. Supplying an empty array clears all rules.
+	// Disabling publicNetworkAccess also clears existing rules. With publicNetworkAccess Enabled, an empty rule set allows all
+	// public traffic; it does not deny all traffic.
+	// Firewall rule changes cannot be combined with scaling or encryption changes in the same update request.
+	FirewallRules []*FirewallRule
 
 	// Enabled by default. If highAvailability is disabled, the data set is not replicated. This affects the availability SLA,
 	// and increases the risk of data loss.
@@ -464,6 +504,17 @@ type ErrorResponse struct {
 type ExportClusterParameters struct {
 	// REQUIRED; SAS URI for the target directory to export to
 	SasURI *string
+}
+
+// FirewallRule - A firewall rule associated with the cluster.
+type FirewallRule struct {
+	// REQUIRED; The name of the firewall rule, unique within the cluster ignoring case. Must be 1-80 characters and contain only
+	// letters, numbers, hyphens, or underscores.
+	Name *string
+
+	// REQUIRED; An IPv4 address (for example, "203.0.113.1"), IPv4 CIDR prefix (for example, "203.0.113.0/24"), or Azure service
+	// tag (for example, "AzureCloud"). IPv6 addresses are not supported.
+	SourceAddressPrefix *string
 }
 
 // FlushParameters - Parameters for a Redis Enterprise active geo-replication flush operation

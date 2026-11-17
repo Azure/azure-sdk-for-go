@@ -64,7 +64,8 @@ func (client *PrivateLinkResourcesClient) ListByElasticSan(ctx context.Context, 
 	if err != nil {
 		return PrivateLinkResourcesClientListByElasticSanResponse{}, err
 	}
-	return client.listByElasticSanHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByElasticSanHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByElasticSanCreateRequest creates the ListByElasticSan request.

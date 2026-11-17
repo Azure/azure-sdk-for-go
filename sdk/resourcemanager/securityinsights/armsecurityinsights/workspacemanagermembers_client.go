@@ -67,7 +67,8 @@ func (client *WorkspaceManagerMembersClient) CreateOrUpdate(ctx context.Context,
 	if err != nil {
 		return WorkspaceManagerMembersClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -138,7 +139,8 @@ func (client *WorkspaceManagerMembersClient) Delete(ctx context.Context, resourc
 		return WorkspaceManagerMembersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return WorkspaceManagerMembersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return WorkspaceManagerMembersClientDeleteResponse{}, err
 	}
 	return WorkspaceManagerMembersClientDeleteResponse{}, nil
 }
@@ -193,7 +195,8 @@ func (client *WorkspaceManagerMembersClient) Get(ctx context.Context, resourceGr
 	if err != nil {
 		return WorkspaceManagerMembersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

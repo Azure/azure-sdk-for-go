@@ -70,7 +70,8 @@ func (client *LocalUsersClient) CreateOrUpdate(ctx context.Context, resourceGrou
 	if err != nil {
 		return LocalUsersClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -142,7 +143,8 @@ func (client *LocalUsersClient) Delete(ctx context.Context, resourceGroupName st
 		return LocalUsersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return LocalUsersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return LocalUsersClientDeleteResponse{}, err
 	}
 	return LocalUsersClientDeleteResponse{}, nil
 }
@@ -198,7 +200,8 @@ func (client *LocalUsersClient) Get(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return LocalUsersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -265,7 +268,8 @@ func (client *LocalUsersClient) ListKeys(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return LocalUsersClientListKeysResponse{}, err
 	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysCreateRequest creates the ListKeys request.
@@ -419,7 +423,8 @@ func (client *LocalUsersClient) RegeneratePassword(ctx context.Context, resource
 	if err != nil {
 		return LocalUsersClientRegeneratePasswordResponse{}, err
 	}
-	return client.regeneratePasswordHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.regeneratePasswordHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // regeneratePasswordCreateRequest creates the RegeneratePassword request.

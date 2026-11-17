@@ -87,6 +87,14 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
+// NewSandboxGroupsClient creates a new instance of SandboxGroupsClient.
+func (c *ClientFactory) NewSandboxGroupsClient() *SandboxGroupsClient {
+	return &SandboxGroupsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
 // NewSubnetServiceAssociationLinkClient creates a new instance of SubnetServiceAssociationLinkClient.
 func (c *ClientFactory) NewSubnetServiceAssociationLinkClient() *SubnetServiceAssociationLinkClient {
 	return &SubnetServiceAssociationLinkClient{

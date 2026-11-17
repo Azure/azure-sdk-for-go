@@ -19,7 +19,7 @@ import (
 // SettingsClient contains the methods for the Settings group.
 // Don't use this type directly, use NewSettingsClient() instead.
 //
-// Generated from API version 2026-07-15
+// Generated from API version 2026-09-01
 type SettingsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -66,7 +66,8 @@ func (client *SettingsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return SettingsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -101,7 +102,7 @@ func (client *SettingsClient) getCreateRequest(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -142,7 +143,8 @@ func (client *SettingsClient) Patch(ctx context.Context, resourceGroupName strin
 	if err != nil {
 		return SettingsClientPatchResponse{}, err
 	}
-	return client.patchHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.patchHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // patchCreateRequest creates the Patch request.
@@ -177,7 +179,7 @@ func (client *SettingsClient) patchCreateRequest(ctx context.Context, resourceGr
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -222,7 +224,8 @@ func (client *SettingsClient) Update(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return SettingsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -257,7 +260,7 @@ func (client *SettingsClient) updateCreateRequest(ctx context.Context, resourceG
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260715)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}

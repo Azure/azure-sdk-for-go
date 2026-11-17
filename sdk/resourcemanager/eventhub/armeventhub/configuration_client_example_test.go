@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterQuotaConfigurationGet.json
+// Generated from example definition: 2026-07-01-preview/Clusters/ClusterQuotaConfigurationGet.json
 func ExampleConfigurationClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,7 +40,7 @@ func ExampleConfigurationClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2025-05-01-preview/Clusters/ClusterQuotaConfigurationPatch.json
+// Generated from example definition: 2026-07-01-preview/Clusters/ClusterQuotaConfigurationPatch.json
 func ExampleConfigurationClient_Patch() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

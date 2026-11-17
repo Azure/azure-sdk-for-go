@@ -85,7 +85,8 @@ func (client *AuthenticationPoliciesClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -141,7 +142,8 @@ func (client *AuthenticationPoliciesClient) Delete(ctx context.Context, resource
 		return AuthenticationPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return AuthenticationPoliciesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AuthenticationPoliciesClientDeleteResponse{}, err
 	}
 	return AuthenticationPoliciesClientDeleteResponse{}, nil
 }
@@ -191,7 +193,8 @@ func (client *AuthenticationPoliciesClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return AuthenticationPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -392,7 +395,8 @@ func (client *AuthenticationPoliciesClient) Update(ctx context.Context, resource
 	if err != nil {
 		return AuthenticationPoliciesClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

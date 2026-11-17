@@ -59,7 +59,8 @@ func (client *EnrollmentAccountsClient) Get(ctx context.Context, billingAccountN
 	if err != nil {
 		return EnrollmentAccountsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -118,7 +119,8 @@ func (client *EnrollmentAccountsClient) GetByDepartment(ctx context.Context, bil
 	if err != nil {
 		return EnrollmentAccountsClientGetByDepartmentResponse{}, err
 	}
-	return client.getByDepartmentHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getByDepartmentHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getByDepartmentCreateRequest creates the GetByDepartment request.

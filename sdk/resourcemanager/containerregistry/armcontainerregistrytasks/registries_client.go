@@ -64,7 +64,8 @@ func (client *RegistriesClient) GetBuildSourceUploadURL(ctx context.Context, res
 	if err != nil {
 		return RegistriesClientGetBuildSourceUploadURLResponse{}, err
 	}
-	return client.getBuildSourceUploadURLHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getBuildSourceUploadURLHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getBuildSourceUploadURLCreateRequest creates the GetBuildSourceUploadURL request.
@@ -125,7 +126,8 @@ func (client *RegistriesClient) ScheduleRun(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return RegistriesClientScheduleRunResponse{}, err
 	}
-	return client.scheduleRunHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.scheduleRunHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // scheduleRunCreateRequest creates the ScheduleRun request.

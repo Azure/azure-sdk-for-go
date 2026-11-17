@@ -86,7 +86,8 @@ func (client *DiskAccessesClient) createOrUpdate(ctx context.Context, resourceGr
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -162,7 +163,8 @@ func (client *DiskAccessesClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -234,7 +236,8 @@ func (client *DiskAccessesClient) deleteAPrivateEndpointConnection(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -310,7 +313,8 @@ func (client *DiskAccessesClient) update(ctx context.Context, resourceGroupName 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -391,7 +395,8 @@ func (client *DiskAccessesClient) updateAPrivateEndpointConnection(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -450,7 +455,8 @@ func (client *DiskAccessesClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return DiskAccessesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -513,7 +519,8 @@ func (client *DiskAccessesClient) GetAPrivateEndpointConnection(ctx context.Cont
 	if err != nil {
 		return DiskAccessesClientGetAPrivateEndpointConnectionResponse{}, err
 	}
-	return client.getAPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAPrivateEndpointConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAPrivateEndpointConnectionCreateRequest creates the GetAPrivateEndpointConnection request.
@@ -579,7 +586,8 @@ func (client *DiskAccessesClient) GetPrivateLinkResources(ctx context.Context, r
 	if err != nil {
 		return DiskAccessesClientGetPrivateLinkResourcesResponse{}, err
 	}
-	return client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getPrivateLinkResourcesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getPrivateLinkResourcesCreateRequest creates the GetPrivateLinkResources request.

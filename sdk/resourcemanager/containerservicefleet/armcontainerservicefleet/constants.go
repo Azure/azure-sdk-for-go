@@ -5,7 +5,7 @@
 package armcontainerservicefleet
 
 const (
-	version20260602Preview string = "2026-06-02-preview"
+	version20261101 string = "2026-11-01"
 )
 
 // ActionType - Extensible enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.

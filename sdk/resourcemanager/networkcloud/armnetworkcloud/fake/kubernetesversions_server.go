@@ -30,6 +30,10 @@ type KubernetesVersionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
 	BeginDelete func(ctx context.Context, resourceGroupName string, kubernetesVersionName string, options *armnetworkcloud.KubernetesVersionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
+	// BeginUpdate is the fake for method KubernetesVersionsClient.BeginUpdate
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
+	BeginUpdate func(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters armnetworkcloud.KubernetesVersionPatchParameters, options *armnetworkcloud.KubernetesVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
+
 	// Get is the fake for method KubernetesVersionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, kubernetesVersionName string, options *armnetworkcloud.KubernetesVersionsClientGetOptions) (resp azfake.Responder[armnetworkcloud.KubernetesVersionsClientGetResponse], errResp azfake.ErrorResponder)
@@ -41,10 +45,6 @@ type KubernetesVersionsServer struct {
 	// NewListBySubscriptionPager is the fake for method KubernetesVersionsClient.NewListBySubscriptionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListBySubscriptionPager func(options *armnetworkcloud.KubernetesVersionsClientListBySubscriptionOptions) (resp azfake.PagerResponder[armnetworkcloud.KubernetesVersionsClientListBySubscriptionResponse])
-
-	// BeginUpdate is the fake for method KubernetesVersionsClient.BeginUpdate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	BeginUpdate func(ctx context.Context, resourceGroupName string, kubernetesVersionName string, kubernetesVersionPatchParameters armnetworkcloud.KubernetesVersionPatchParameters, options *armnetworkcloud.KubernetesVersionsClientBeginUpdateOptions) (resp azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse], errResp azfake.ErrorResponder)
 }
 
 // NewKubernetesVersionsServerTransport creates a new instance of KubernetesVersionsServerTransport with the provided implementation.
@@ -55,9 +55,9 @@ func NewKubernetesVersionsServerTransport(srv *KubernetesVersionsServer) *Kubern
 		srv:                         srv,
 		beginCreateOrUpdate:         newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientCreateOrUpdateResponse]](),
 		beginDelete:                 newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientDeleteResponse]](),
+		beginUpdate:                 newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse]](),
 		newListByResourceGroupPager: newTracker[azfake.PagerResponder[armnetworkcloud.KubernetesVersionsClientListByResourceGroupResponse]](),
 		newListBySubscriptionPager:  newTracker[azfake.PagerResponder[armnetworkcloud.KubernetesVersionsClientListBySubscriptionResponse]](),
-		beginUpdate:                 newTracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse]](),
 	}
 }
 
@@ -67,9 +67,9 @@ type KubernetesVersionsServerTransport struct {
 	srv                         *KubernetesVersionsServer
 	beginCreateOrUpdate         *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientCreateOrUpdateResponse]]
 	beginDelete                 *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientDeleteResponse]]
+	beginUpdate                 *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse]]
 	newListByResourceGroupPager *tracker[azfake.PagerResponder[armnetworkcloud.KubernetesVersionsClientListByResourceGroupResponse]]
 	newListBySubscriptionPager  *tracker[azfake.PagerResponder[armnetworkcloud.KubernetesVersionsClientListBySubscriptionResponse]]
-	beginUpdate                 *tracker[azfake.PollerResponder[armnetworkcloud.KubernetesVersionsClientUpdateResponse]]
 }
 
 // Do implements the policy.Transporter interface for KubernetesVersionsServerTransport.
@@ -77,7 +77,7 @@ func (k *KubernetesVersionsServerTransport) Do(req *http.Request) (*http.Respons
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return k.dispatchToMethodFake(req, method)
@@ -97,14 +97,14 @@ func (k *KubernetesVersionsServerTransport) dispatchToMethodFake(req *http.Reque
 				res.resp, res.err = k.dispatchBeginCreateOrUpdate(req)
 			case "KubernetesVersionsClient.BeginDelete":
 				res.resp, res.err = k.dispatchBeginDelete(req)
+			case "KubernetesVersionsClient.BeginUpdate":
+				res.resp, res.err = k.dispatchBeginUpdate(req)
 			case "KubernetesVersionsClient.Get":
 				res.resp, res.err = k.dispatchGet(req)
 			case "KubernetesVersionsClient.NewListByResourceGroupPager":
 				res.resp, res.err = k.dispatchNewListByResourceGroupPager(req)
 			case "KubernetesVersionsClient.NewListBySubscriptionPager":
 				res.resp, res.err = k.dispatchNewListBySubscriptionPager(req)
-			case "KubernetesVersionsClient.BeginUpdate":
-				res.resp, res.err = k.dispatchBeginUpdate(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -231,147 +231,6 @@ func (k *KubernetesVersionsServerTransport) dispatchBeginDelete(req *http.Reques
 	return resp, nil
 }
 
-func (k *KubernetesVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
-	if k.srv.Get == nil {
-		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesVersions/(?P<kubernetesVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	kubernetesVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesVersionName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := k.srv.Get(req.Context(), resourceGroupNameParam, kubernetesVersionNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).KubernetesVersion, req)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-func (k *KubernetesVersionsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if k.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := k.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesVersions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armnetworkcloud.KubernetesVersionsClientListByResourceGroupOptions
-		if topParam != nil || skipTokenParam != nil {
-			options = &armnetworkcloud.KubernetesVersionsClientListByResourceGroupOptions{
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := k.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
-		newListByResourceGroupPager = &resp
-		k.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetworkcloud.KubernetesVersionsClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		k.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		k.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (k *KubernetesVersionsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
-	if k.srv.NewListBySubscriptionPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
-	}
-	newListBySubscriptionPager := k.newListBySubscriptionPager.get(req)
-	if newListBySubscriptionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesVersions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		skipTokenParam := getOptional(qp.Get("$skipToken"))
-		var options *armnetworkcloud.KubernetesVersionsClientListBySubscriptionOptions
-		if topParam != nil || skipTokenParam != nil {
-			options = &armnetworkcloud.KubernetesVersionsClientListBySubscriptionOptions{
-				Top:       topParam,
-				SkipToken: skipTokenParam,
-			}
-		}
-		resp := k.srv.NewListBySubscriptionPager(options)
-		newListBySubscriptionPager = &resp
-		k.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
-		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetworkcloud.KubernetesVersionsClientListBySubscriptionResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		k.newListBySubscriptionPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListBySubscriptionPager) {
-		k.newListBySubscriptionPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (k *KubernetesVersionsServerTransport) dispatchBeginUpdate(req *http.Request) (*http.Response, error) {
 	if k.srv.BeginUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method BeginUpdate not implemented")}
@@ -426,6 +285,141 @@ func (k *KubernetesVersionsServerTransport) dispatchBeginUpdate(req *http.Reques
 		k.beginUpdate.remove(req)
 	}
 
+	return resp, nil
+}
+
+func (k *KubernetesVersionsServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+	if k.srv.Get == nil {
+		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesVersions/(?P<kubernetesVersionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	kubernetesVersionNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("kubernetesVersionName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := k.srv.Get(req.Context(), resourceGroupNameParam, kubernetesVersionNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).KubernetesVersion, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
+func (k *KubernetesVersionsServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if k.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := k.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesVersions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armnetworkcloud.KubernetesVersionsClientListByResourceGroupOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armnetworkcloud.KubernetesVersionsClientListByResourceGroupOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := k.srv.NewListByResourceGroupPager(resourceGroupNameParam, options)
+		newListByResourceGroupPager = &resp
+		k.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armnetworkcloud.KubernetesVersionsClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		k.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		k.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (k *KubernetesVersionsServerTransport) dispatchNewListBySubscriptionPager(req *http.Request) (*http.Response, error) {
+	if k.srv.NewListBySubscriptionPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListBySubscriptionPager not implemented")}
+	}
+	newListBySubscriptionPager := k.newListBySubscriptionPager.get(req)
+	if newListBySubscriptionPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.NetworkCloud/kubernetesVersions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		skipTokenParam := getOptional(qp.Get("$skipToken"))
+		var options *armnetworkcloud.KubernetesVersionsClientListBySubscriptionOptions
+		if topParam != nil || skipTokenParam != nil {
+			options = &armnetworkcloud.KubernetesVersionsClientListBySubscriptionOptions{
+				Top:       topParam,
+				SkipToken: skipTokenParam,
+			}
+		}
+		resp := k.srv.NewListBySubscriptionPager(options)
+		newListBySubscriptionPager = &resp
+		k.newListBySubscriptionPager.add(req, newListBySubscriptionPager)
+		server.PagerResponderInjectNextLinks(newListBySubscriptionPager, req, func(page *armnetworkcloud.KubernetesVersionsClientListBySubscriptionResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListBySubscriptionPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		k.newListBySubscriptionPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListBySubscriptionPager) {
+		k.newListBySubscriptionPager.remove(req)
+	}
 	return resp, nil
 }
 

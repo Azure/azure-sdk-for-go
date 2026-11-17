@@ -85,7 +85,8 @@ func (client *IPGroupsClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -127,7 +128,7 @@ func (client *IPGroupsClient) createOrUpdateCreateRequest(ctx context.Context, r
 //   - options - IPGroupsClientBeginDeleteOptions contains the optional parameters for the IPGroupsClient.BeginDelete method.
 func (client *IPGroupsClient) BeginDelete(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsClientBeginDeleteOptions) (*runtime.Poller[IPGroupsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, ipGroupsName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, ipGroupsName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -142,9 +143,9 @@ func (client *IPGroupsClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Deletes the specified ipGroups.
+// deleteOperation - Deletes the specified ipGroups.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *IPGroupsClient) delete(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *IPGroupsClient) deleteOperation(ctx context.Context, resourceGroupName string, ipGroupsName string, options *IPGroupsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "IPGroupsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -159,7 +160,8 @@ func (client *IPGroupsClient) delete(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -208,7 +210,8 @@ func (client *IPGroupsClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return IPGroupsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -410,7 +413,8 @@ func (client *IPGroupsClient) UpdateGroups(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return IPGroupsClientUpdateGroupsResponse{}, err
 	}
-	return client.updateGroupsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateGroupsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateGroupsCreateRequest creates the UpdateGroups request.

@@ -12,62 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-12-01/StorageSyncServiceCheckNameAvailability_AlreadyExists.json
-func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvailabilityAlreadyExists() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstoragesync.NewClientFactory("5c6bc8e1-1eaf-4192-94d8-58ce463ac86c", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, "westus", armstoragesync.CheckNameAvailabilityParameters{
-		Name: to.Ptr("newstoragesyncservicename"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstoragesync.ServicesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: armstoragesync.CheckNameAvailabilityResult{
-	// 		Message: to.Ptr("An account named 'newstoragesyncservicename' is already in use."),
-	// 		NameAvailable: to.Ptr(false),
-	// 		Reason: to.Ptr(armstoragesync.NameAvailabilityReasonAlreadyExists),
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2025-12-01/StorageSyncServiceCheckNameAvailability_Available.json
-func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvailabilityAvailable() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstoragesync.NewClientFactory("5c6bc8e1-1eaf-4192-94d8-58ce463ac86c", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, "westus", armstoragesync.CheckNameAvailabilityParameters{
-		Name: to.Ptr("newstoragesyncservicename"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstoragesync.ServicesClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityResult: armstoragesync.CheckNameAvailabilityResult{
-	// 		NameAvailable: to.Ptr(true),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2025-12-01/StorageSyncServices_Create.json
 func ExampleServicesClient_BeginCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -156,6 +100,129 @@ func ExampleServicesClient_BeginDelete() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armstoragesync.ServicesClientDeleteResponse{
+	// }
+}
+
+// Generated from example definition: 2025-12-01/StorageSyncServices_Update.json
+func ExampleServicesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragesync.NewClientFactory("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewServicesClient().BeginUpdate(ctx, "SampleResourceGroup_1", "SampleStorageSyncService_1", armstoragesync.ServiceUpdateParameters{
+		Properties: &armstoragesync.ServiceUpdateProperties{
+			IncomingTrafficPolicy: to.Ptr(armstoragesync.IncomingTrafficPolicyAllowAllTraffic),
+			UseIdentity:           to.Ptr(true),
+		},
+		Tags: map[string]*string{
+			"Dept":        to.Ptr("IT"),
+			"Environment": to.Ptr("Test"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstoragesync.ServicesClientUpdateResponse{
+	// 	Service: armstoragesync.Service{
+	// 		Name: to.Ptr("SampleStorageSyncService_1"),
+	// 		Type: to.Ptr("Microsoft.StorageSync/storageSyncServices"),
+	// 		ID: to.Ptr("/subscriptions/3a048283-338f-4002-a9dd-a50fdadcb392/resourceGroups/SampleResourceGroup_1/providers/Microsoft.StorageSync/storageSyncServices/SampleStorageSyncService_1"),
+	// 		Identity: &armstoragesync.ManagedServiceIdentity{
+	// 			Type: to.Ptr(armstoragesync.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			UserAssignedIdentities: map[string]*armstoragesync.UserAssignedIdentity{
+	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-identity": &armstoragesync.UserAssignedIdentity{
+	// 					ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 				},
+	// 			},
+	// 		},
+	// 		Location: to.Ptr("WestUS"),
+	// 		Properties: &armstoragesync.ServiceProperties{
+	// 			IncomingTrafficPolicy: to.Ptr(armstoragesync.IncomingTrafficPolicyAllowAllTraffic),
+	// 		},
+	// 		SystemData: &armstoragesync.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 16, 3, 944000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("sample-user"),
+	// 			CreatedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 17, 3, 944000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("sample-user"),
+	// 			LastModifiedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"Dept": to.Ptr("IT"),
+	// 			"Environment": to.Ptr("Test"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01/StorageSyncServiceCheckNameAvailability_AlreadyExists.json
+func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvailabilityAlreadyExists() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragesync.NewClientFactory("5c6bc8e1-1eaf-4192-94d8-58ce463ac86c", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, "westus", armstoragesync.CheckNameAvailabilityParameters{
+		Name: to.Ptr("newstoragesyncservicename"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstoragesync.ServicesClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResult: armstoragesync.CheckNameAvailabilityResult{
+	// 		Message: to.Ptr("An account named 'newstoragesyncservicename' is already in use."),
+	// 		NameAvailable: to.Ptr(false),
+	// 		Reason: to.Ptr(armstoragesync.NameAvailabilityReasonAlreadyExists),
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2025-12-01/StorageSyncServiceCheckNameAvailability_Available.json
+func ExampleServicesClient_CheckNameAvailability_storageSyncServiceCheckNameAvailabilityAvailable() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armstoragesync.NewClientFactory("5c6bc8e1-1eaf-4192-94d8-58ce463ac86c", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewServicesClient().CheckNameAvailability(ctx, "westus", armstoragesync.CheckNameAvailabilityParameters{
+		Name: to.Ptr("newstoragesyncservicename"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armstoragesync.ServicesClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityResult: armstoragesync.CheckNameAvailabilityResult{
+	// 		NameAvailable: to.Ptr(true),
+	// 	},
 	// }
 }
 
@@ -485,71 +552,4 @@ func ExampleServicesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2025-12-01/StorageSyncServices_Update.json
-func ExampleServicesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armstoragesync.NewClientFactory("52b8da2f-61e0-4a1f-8dde-336911f367fb", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewServicesClient().BeginUpdate(ctx, "SampleResourceGroup_1", "SampleStorageSyncService_1", armstoragesync.ServiceUpdateParameters{
-		Properties: &armstoragesync.ServiceUpdateProperties{
-			IncomingTrafficPolicy: to.Ptr(armstoragesync.IncomingTrafficPolicyAllowAllTraffic),
-			UseIdentity:           to.Ptr(true),
-		},
-		Tags: map[string]*string{
-			"Dept":        to.Ptr("IT"),
-			"Environment": to.Ptr("Test"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armstoragesync.ServicesClientUpdateResponse{
-	// 	Service: armstoragesync.Service{
-	// 		Name: to.Ptr("SampleStorageSyncService_1"),
-	// 		Type: to.Ptr("Microsoft.StorageSync/storageSyncServices"),
-	// 		ID: to.Ptr("/subscriptions/3a048283-338f-4002-a9dd-a50fdadcb392/resourceGroups/SampleResourceGroup_1/providers/Microsoft.StorageSync/storageSyncServices/SampleStorageSyncService_1"),
-	// 		Identity: &armstoragesync.ManagedServiceIdentity{
-	// 			Type: to.Ptr(armstoragesync.ManagedServiceIdentityType("SystemAssigned, UserAssigned")),
-	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 			UserAssignedIdentities: map[string]*armstoragesync.UserAssignedIdentity{
-	// 				"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-identity": &armstoragesync.UserAssignedIdentity{
-	// 					ClientID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 				},
-	// 			},
-	// 		},
-	// 		Location: to.Ptr("WestUS"),
-	// 		Properties: &armstoragesync.ServiceProperties{
-	// 			IncomingTrafficPolicy: to.Ptr(armstoragesync.IncomingTrafficPolicyAllowAllTraffic),
-	// 		},
-	// 		SystemData: &armstoragesync.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 16, 3, 944000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("sample-user"),
-	// 			CreatedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.August, 11, 3, 17, 3, 944000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("sample-user"),
-	// 			LastModifiedByType: to.Ptr(armstoragesync.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"Dept": to.Ptr("IT"),
-	// 			"Environment": to.Ptr("Test"),
-	// 		},
-	// 	},
-	// }
 }

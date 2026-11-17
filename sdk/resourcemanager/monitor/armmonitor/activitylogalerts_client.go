@@ -65,7 +65,8 @@ func (client *ActivityLogAlertsClient) CreateOrUpdate(ctx context.Context, resou
 	if err != nil {
 		return ActivityLogAlertsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -131,7 +132,8 @@ func (client *ActivityLogAlertsClient) Delete(ctx context.Context, resourceGroup
 		return ActivityLogAlertsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ActivityLogAlertsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ActivityLogAlertsClientDeleteResponse{}, err
 	}
 	return ActivityLogAlertsClientDeleteResponse{}, nil
 }
@@ -180,7 +182,8 @@ func (client *ActivityLogAlertsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ActivityLogAlertsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -382,7 +385,8 @@ func (client *ActivityLogAlertsClient) Update(ctx context.Context, resourceGroup
 	if err != nil {
 		return ActivityLogAlertsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

@@ -86,7 +86,8 @@ func (client *NatRulesClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -133,7 +134,7 @@ func (client *NatRulesClient) createOrUpdateCreateRequest(ctx context.Context, r
 //   - options - NatRulesClientBeginDeleteOptions contains the optional parameters for the NatRulesClient.BeginDelete method.
 func (client *NatRulesClient) BeginDelete(ctx context.Context, resourceGroupName string, gatewayName string, natRuleName string, options *NatRulesClientBeginDeleteOptions) (*runtime.Poller[NatRulesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, gatewayName, natRuleName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, gatewayName, natRuleName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -148,9 +149,9 @@ func (client *NatRulesClient) BeginDelete(ctx context.Context, resourceGroupName
 	}
 }
 
-// delete - Deletes a nat rule.
+// deleteOperation - Deletes a nat rule.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *NatRulesClient) delete(ctx context.Context, resourceGroupName string, gatewayName string, natRuleName string, options *NatRulesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *NatRulesClient) deleteOperation(ctx context.Context, resourceGroupName string, gatewayName string, natRuleName string, options *NatRulesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "NatRulesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -165,7 +166,8 @@ func (client *NatRulesClient) delete(ctx context.Context, resourceGroupName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -219,7 +221,8 @@ func (client *NatRulesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return NatRulesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -53,7 +53,7 @@ func (p *PrivateLinkResourceServerTransport) Do(req *http.Request) (*http.Respon
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return p.dispatchToMethodFake(req, method)
@@ -148,11 +148,8 @@ func (p *PrivateLinkResourceServerTransport) dispatchNewListByBatchAccountPager(
 			return nil, err
 		}
 		maxresultsParam, err := parseOptional(qp.Get("maxresults"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

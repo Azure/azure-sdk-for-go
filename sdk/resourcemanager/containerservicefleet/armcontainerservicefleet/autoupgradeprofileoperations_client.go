@@ -19,7 +19,7 @@ import (
 // AutoUpgradeProfileOperationsClient contains the methods for the AutoUpgradeProfileOperations group.
 // Don't use this type directly, use NewAutoUpgradeProfileOperationsClient() instead.
 //
-// Generated from API version 2026-06-02-preview
+// Generated from API version 2026-11-01
 type AutoUpgradeProfileOperationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -69,7 +69,7 @@ func (client *AutoUpgradeProfileOperationsClient) BeginGenerateUpdateRun(ctx con
 	}
 }
 
-// GenerateUpdateRun - Generates an update run for a given auto upgrade profile.
+// generateUpdateRun - Generates an update run for a given auto upgrade profile.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AutoUpgradeProfileOperationsClient) generateUpdateRun(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, options *AutoUpgradeProfileOperationsClientBeginGenerateUpdateRunOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *AutoUpgradeProfileOperationsClient) generateUpdateRun(ctx context.
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// generateUpdateRunCreateRequest creates the GenerateUpdateRun request.
+// generateUpdateRunCreateRequest creates the generateUpdateRun request.
 func (client *AutoUpgradeProfileOperationsClient) generateUpdateRunCreateRequest(ctx context.Context, resourceGroupName string, fleetName string, autoUpgradeProfileName string, _ *AutoUpgradeProfileOperationsClientBeginGenerateUpdateRunOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/autoUpgradeProfiles/{autoUpgradeProfileName}/generateUpdateRun"
 	if client.subscriptionID == "" {
@@ -115,7 +116,7 @@ func (client *AutoUpgradeProfileOperationsClient) generateUpdateRunCreateRequest
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260602Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil

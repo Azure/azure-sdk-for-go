@@ -52,7 +52,7 @@ func NewWebApplicationFirewallPoliciesClient(subscriptionID string, credential a
 //     method.
 func (client *WebApplicationFirewallPoliciesClient) BeginDelete(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesClientBeginDeleteOptions) (*runtime.Poller[WebApplicationFirewallPoliciesClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, policyName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, policyName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -67,9 +67,9 @@ func (client *WebApplicationFirewallPoliciesClient) BeginDelete(ctx context.Cont
 	}
 }
 
-// delete - Deletes Policy.
+// deleteOperation - Deletes Policy.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *WebApplicationFirewallPoliciesClient) delete(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesClientBeginDeleteOptions) (*http.Response, error) {
+func (client *WebApplicationFirewallPoliciesClient) deleteOperation(ctx context.Context, resourceGroupName string, policyName string, options *WebApplicationFirewallPoliciesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "WebApplicationFirewallPoliciesClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -84,7 +84,8 @@ func (client *WebApplicationFirewallPoliciesClient) delete(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -135,7 +136,8 @@ func (client *WebApplicationFirewallPoliciesClient) CreateOrUpdate(ctx context.C
 	if err != nil {
 		return WebApplicationFirewallPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -200,7 +202,8 @@ func (client *WebApplicationFirewallPoliciesClient) Get(ctx context.Context, res
 	if err != nil {
 		return WebApplicationFirewallPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

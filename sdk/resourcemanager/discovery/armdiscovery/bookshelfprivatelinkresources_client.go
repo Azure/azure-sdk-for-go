@@ -65,7 +65,8 @@ func (client *BookshelfPrivateLinkResourcesClient) Get(ctx context.Context, reso
 	if err != nil {
 		return BookshelfPrivateLinkResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

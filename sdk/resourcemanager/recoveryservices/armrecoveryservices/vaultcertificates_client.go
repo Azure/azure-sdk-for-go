@@ -66,7 +66,8 @@ func (client *VaultCertificatesClient) Create(ctx context.Context, resourceGroup
 	if err != nil {
 		return VaultCertificatesClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.

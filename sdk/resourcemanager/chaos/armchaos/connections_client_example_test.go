@@ -8,27 +8,27 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
 	"log"
 )
 
-// Generated from example definition: 2026-08-01-preview/Connections_CreateOrUpdate.json
+// Generated from example definition: 2026-11-01/Connections_CreateOrUpdate.json
 func ExampleConnectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	clientFactory, err := armchaos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewConnectionsClient().CreateOrUpdate(ctx, "exampleRG", "exampleWorkspace", "aksClusterConnection", armchaos.Connection{
 		Properties: &armchaos.ConnectionProperties{
 			Kind:             to.Ptr(armchaos.ConnectionKindAksExtension),
-			TargetResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ContainerService/managedClusters/exampleCluster"),
-			PrincipalID:      to.Ptr("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"),
-			TenantID:         to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+			TargetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.ContainerService/managedClusters/exampleCluster"),
+			PrincipalID:      to.Ptr("00000000-0000-0000-0000-000000000000"),
+			TenantID:         to.Ptr("00000000-0000-0000-0000-000000000000"),
 		},
 	}, nil)
 	if err != nil {
@@ -39,14 +39,14 @@ func ExampleConnectionsClient_CreateOrUpdate() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armchaos.ConnectionsClientCreateOrUpdateResponse{
 	// 	Connection: armchaos.Connection{
-	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/connections/aksClusterConnection"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/connections/aksClusterConnection"),
 	// 		Name: to.Ptr("aksClusterConnection"),
 	// 		Type: to.Ptr("Microsoft.Chaos/workspaces/connections"),
 	// 		Properties: &armchaos.ConnectionProperties{
 	// 			Kind: to.Ptr(armchaos.ConnectionKindAksExtension),
-	// 			TargetResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ContainerService/managedClusters/exampleCluster"),
-	// 			PrincipalID: to.Ptr("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"),
-	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 			TargetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.ContainerService/managedClusters/exampleCluster"),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			DataPlaneEndpoint: to.Ptr("https://eastus.dp.chaos.azure.com"),
 	// 			Status: to.Ptr(armchaos.ConnectionStatusConnected),
 	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
@@ -63,14 +63,14 @@ func ExampleConnectionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/Connections_Delete.json
+// Generated from example definition: 2026-11-01/Connections_Delete.json
 func ExampleConnectionsClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	clientFactory, err := armchaos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -85,14 +85,14 @@ func ExampleConnectionsClient_Delete() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/Connections_Get.json
+// Generated from example definition: 2026-11-01/Connections_Get.json
 func ExampleConnectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	clientFactory, err := armchaos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -105,14 +105,14 @@ func ExampleConnectionsClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armchaos.ConnectionsClientGetResponse{
 	// 	Connection: armchaos.Connection{
-	// 		ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/connections/aksClusterConnection"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/connections/aksClusterConnection"),
 	// 		Name: to.Ptr("aksClusterConnection"),
 	// 		Type: to.Ptr("Microsoft.Chaos/workspaces/connections"),
 	// 		Properties: &armchaos.ConnectionProperties{
 	// 			Kind: to.Ptr(armchaos.ConnectionKindAksExtension),
-	// 			TargetResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ContainerService/managedClusters/exampleCluster"),
-	// 			PrincipalID: to.Ptr("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"),
-	// 			TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+	// 			TargetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.ContainerService/managedClusters/exampleCluster"),
+	// 			PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+	// 			TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 	// 			DataPlaneEndpoint: to.Ptr("https://eastus.dp.chaos.azure.com"),
 	// 			Status: to.Ptr(armchaos.ConnectionStatusConnected),
 	// 			ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
@@ -129,14 +129,14 @@ func ExampleConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-01-preview/Connections_ListAll.json
+// Generated from example definition: 2026-11-01/Connections_ListAll.json
 func ExampleConnectionsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
 	}
 	ctx := context.Background()
-	clientFactory, err := armchaos.NewClientFactory("6b052e15-03d3-4f17-b2e1-be7f07588291", cred, nil)
+	clientFactory, err := armchaos.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
@@ -155,14 +155,14 @@ func ExampleConnectionsClient_NewListAllPager() {
 		// 	ConnectionListResult: armchaos.ConnectionListResult{
 		// 		Value: []*armchaos.Connection{
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/connections/aksClusterConnection"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/connections/aksClusterConnection"),
 		// 				Name: to.Ptr("aksClusterConnection"),
 		// 				Type: to.Ptr("Microsoft.Chaos/workspaces/connections"),
 		// 				Properties: &armchaos.ConnectionProperties{
 		// 					Kind: to.Ptr(armchaos.ConnectionKindAksExtension),
-		// 					TargetResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.ContainerService/managedClusters/exampleCluster"),
-		// 					PrincipalID: to.Ptr("1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d"),
-		// 					TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
+		// 					TargetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.ContainerService/managedClusters/exampleCluster"),
+		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
 		// 					DataPlaneEndpoint: to.Ptr("https://eastus.dp.chaos.azure.com"),
 		// 					Status: to.Ptr(armchaos.ConnectionStatusConnected),
 		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateSucceeded),
@@ -177,17 +177,16 @@ func ExampleConnectionsClient_NewListAllPager() {
 		// 				},
 		// 			},
 		// 			{
-		// 				ID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/connections/csfiConnection"),
-		// 				Name: to.Ptr("csfiConnection"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.Chaos/workspaces/exampleWorkspace/connections/agentConnection"),
+		// 				Name: to.Ptr("agentConnection"),
 		// 				Type: to.Ptr("Microsoft.Chaos/workspaces/connections"),
 		// 				Properties: &armchaos.ConnectionProperties{
-		// 					Kind: to.Ptr(armchaos.ConnectionKindCsfi),
-		// 					TargetResourceID: to.Ptr("/subscriptions/6b052e15-03d3-4f17-b2e1-be7f07588291/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVm"),
-		// 					PrincipalID: to.Ptr("9f8e7d6c-5b4a-3c2d-1e0f-9a8b7c6d5e4f"),
-		// 					TenantID: to.Ptr("72f988bf-86f1-41af-91ab-2d7cd011db47"),
-		// 					CertificateSubjectName: to.Ptr("CN=chaos-csfi.dsts.core.windows.net"),
-		// 					CertificateIssuer: to.Ptr("CN=Microsoft Azure TLS Issuing CA"),
-		// 					DstsPrincipal: to.Ptr("chaos-csfi.dsts.core.windows.net"),
+		// 					Kind: to.Ptr(armchaos.ConnectionKindChaosAgent),
+		// 					TargetResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/exampleRG/providers/Microsoft.Compute/virtualMachines/exampleVm"),
+		// 					PrincipalID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					TenantID: to.Ptr("00000000-0000-0000-0000-000000000000"),
+		// 					CertificateSubjectName: to.Ptr("CN=exampleVm.agent.chaos.azure.com"),
+		// 					CertificateIssuer: to.Ptr("CN=CACert"),
 		// 					Status: to.Ptr(armchaos.ConnectionStatusPending),
 		// 					ProvisioningState: to.Ptr(armchaos.ProvisioningStateCreating),
 		// 				},

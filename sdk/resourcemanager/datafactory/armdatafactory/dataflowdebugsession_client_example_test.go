@@ -176,30 +176,6 @@ func ExampleDataFlowDebugSessionClient_BeginCreate() {
 	// }
 }
 
-// Generated from example definition: 2018-06-01/DataFlowDebugSession_Delete.json
-func ExampleDataFlowDebugSessionClient_Delete() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewDataFlowDebugSessionClient().Delete(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DeleteDataFlowDebugSessionRequest{
-		SessionID: to.Ptr("91fb57e0-8292-47be-89ff-c8f2d2bb2a7e"),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armdatafactory.DataFlowDebugSessionClientDeleteResponse{
-	// }
-}
-
 // Generated from example definition: 2018-06-01/DataFlowDebugSession_ExecuteCommand.json
 func ExampleDataFlowDebugSessionClient_BeginExecuteCommand() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -234,6 +210,30 @@ func ExampleDataFlowDebugSessionClient_BeginExecuteCommand() {
 	// 		Data: to.Ptr("some output"),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
+	// }
+}
+
+// Generated from example definition: 2018-06-01/DataFlowDebugSession_Delete.json
+func ExampleDataFlowDebugSessionClient_Delete() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armdatafactory.NewClientFactory("12345678-1234-1234-1234-123456789012", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewDataFlowDebugSessionClient().Delete(ctx, "exampleResourceGroup", "exampleFactoryName", armdatafactory.DeleteDataFlowDebugSessionRequest{
+		SessionID: to.Ptr("91fb57e0-8292-47be-89ff-c8f2d2bb2a7e"),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armdatafactory.DataFlowDebugSessionClientDeleteResponse{
 	// }
 }
 

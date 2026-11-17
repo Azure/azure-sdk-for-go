@@ -65,7 +65,8 @@ func (client *ManifestsClient) CreateOrUpdate(ctx context.Context, providerNames
 	if err != nil {
 		return ManifestsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -129,7 +130,8 @@ func (client *ManifestsClient) Get(ctx context.Context, providerNamespace string
 	if err != nil {
 		return ManifestsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

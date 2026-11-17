@@ -66,7 +66,7 @@ func (client *HubsClient) BeginCreateOrUpdate(ctx context.Context, hubName strin
 	}
 }
 
-// CreateOrUpdate - Create or update a hub setting.
+// createOrUpdate - Create or update a hub setting.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *HubsClient) createOrUpdate(ctx context.Context, hubName string, resourceGroupName string, resourceName string, parameters Hub, options *HubsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -83,12 +83,13 @@ func (client *HubsClient) createOrUpdate(ctx context.Context, hubName string, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *HubsClient) createOrUpdateCreateRequest(ctx context.Context, hubName string, resourceGroupName string, resourceName string, parameters Hub, _ *HubsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}"
 	if client.subscriptionID == "" {
@@ -143,7 +144,7 @@ func (client *HubsClient) BeginDelete(ctx context.Context, hubName string, resou
 	}
 }
 
-// Delete - Delete a hub setting.
+// deleteOperation - Delete a hub setting.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *HubsClient) deleteOperation(ctx context.Context, hubName string, resourceGroupName string, resourceName string, options *HubsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -160,12 +161,13 @@ func (client *HubsClient) deleteOperation(ctx context.Context, hubName string, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *HubsClient) deleteCreateRequest(ctx context.Context, hubName string, resourceGroupName string, resourceName string, _ *HubsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/webPubSub/{resourceName}/hubs/{hubName}"
 	if client.subscriptionID == "" {
@@ -212,7 +214,8 @@ func (client *HubsClient) Get(ctx context.Context, hubName string, resourceGroup
 	if err != nil {
 		return HubsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -57,7 +57,8 @@ func (client *CreditsClient) Get(ctx context.Context, billingAccountID string, b
 	if err != nil {
 		return CreditsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

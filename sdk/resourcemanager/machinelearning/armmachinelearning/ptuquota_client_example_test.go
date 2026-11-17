@@ -38,6 +38,43 @@ func ExamplePTUQuotaClient_GetAvailable() {
 	// }
 }
 
+// Generated from example definition: 2026-03-15-preview/PTUQuota/listAvailable.json
+func ExamplePTUQuotaClient_NewListAvailablePager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPTUQuotaClient().NewListAvailablePager("location", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armmachinelearning.PTUQuotaClientListAvailableResponse{
+		// 	AvailableQuotaArmPaginatedResult: armmachinelearning.AvailableQuotaArmPaginatedResult{
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/providers/Microsoft.MachineLearningServices/locations/eastus/ptuQuotas/available?api-version=2025-07-01-preview&$skip=2"),
+		// 		Value: []*armmachinelearning.AvailableQuota{
+		// 			{
+		// 				Properties: &armmachinelearning.AvailableQuotaProperties{
+		// 					Total: to.Ptr[int64](1),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2026-03-15-preview/PTUQuota/list.json
 func ExamplePTUQuotaClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -75,43 +112,6 @@ func ExamplePTUQuotaClient_NewListPager() {
 		// 						Usage: to.Ptr[int64](1),
 		// 						WorkspaceName: to.Ptr("string"),
 		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2026-03-15-preview/PTUQuota/listAvailable.json
-func ExamplePTUQuotaClient_NewListAvailablePager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armmachinelearning.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPTUQuotaClient().NewListAvailablePager("location", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armmachinelearning.PTUQuotaClientListAvailableResponse{
-		// 	AvailableQuotaArmPaginatedResult: armmachinelearning.AvailableQuotaArmPaginatedResult{
-		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/providers/Microsoft.MachineLearningServices/locations/eastus/ptuQuotas/available?api-version=2025-07-01-preview&$skip=2"),
-		// 		Value: []*armmachinelearning.AvailableQuota{
-		// 			{
-		// 				Properties: &armmachinelearning.AvailableQuotaProperties{
-		// 					Total: to.Ptr[int64](1),
 		// 				},
 		// 			},
 		// 		},

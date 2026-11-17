@@ -71,7 +71,7 @@ func (client *PlansClient) BeginCreateOrUpdate(ctx context.Context, resourceGrou
 	}
 }
 
-// CreateOrUpdate - Creates or updates an App Service Plan.
+// createOrUpdate - Creates or updates an App Service Plan.
 //
 // Description for Creates or updates an App Service Plan.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -90,12 +90,13 @@ func (client *PlansClient) createOrUpdate(ctx context.Context, resourceGroupName
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *PlansClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, appServicePlan Plan, _ *PlansClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}"
 	if client.subscriptionID == "" {
@@ -150,7 +151,8 @@ func (client *PlansClient) CreateOrUpdateVnetRoute(ctx context.Context, resource
 	if err != nil {
 		return PlansClientCreateOrUpdateVnetRouteResponse{}, err
 	}
-	return client.createOrUpdateVnetRouteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateVnetRouteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateVnetRouteCreateRequest creates the CreateOrUpdateVnetRoute request.
@@ -225,7 +227,8 @@ func (client *PlansClient) Delete(ctx context.Context, resourceGroupName string,
 		return PlansClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PlansClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PlansClientDeleteResponse{}, err
 	}
 	return PlansClientDeleteResponse{}, nil
 }
@@ -280,7 +283,8 @@ func (client *PlansClient) DeleteHybridConnection(ctx context.Context, resourceG
 		return PlansClientDeleteHybridConnectionResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return PlansClientDeleteHybridConnectionResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PlansClientDeleteHybridConnectionResponse{}, err
 	}
 	return PlansClientDeleteHybridConnectionResponse{}, nil
 }
@@ -342,7 +346,8 @@ func (client *PlansClient) DeleteVnetRoute(ctx context.Context, resourceGroupNam
 		return PlansClientDeleteVnetRouteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return PlansClientDeleteVnetRouteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PlansClientDeleteVnetRouteResponse{}, err
 	}
 	return PlansClientDeleteVnetRouteResponse{}, nil
 }
@@ -401,7 +406,8 @@ func (client *PlansClient) Get(ctx context.Context, resourceGroupName string, na
 	if err != nil {
 		return PlansClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -466,7 +472,8 @@ func (client *PlansClient) GetHybridConnection(ctx context.Context, resourceGrou
 	if err != nil {
 		return PlansClientGetHybridConnectionResponse{}, err
 	}
-	return client.getHybridConnectionHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHybridConnectionHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getHybridConnectionCreateRequest creates the GetHybridConnection request.
@@ -537,7 +544,8 @@ func (client *PlansClient) GetHybridConnectionPlanLimit(ctx context.Context, res
 	if err != nil {
 		return PlansClientGetHybridConnectionPlanLimitResponse{}, err
 	}
-	return client.getHybridConnectionPlanLimitHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHybridConnectionPlanLimitHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getHybridConnectionPlanLimitCreateRequest creates the GetHybridConnectionPlanLimit request.
@@ -601,7 +609,8 @@ func (client *PlansClient) GetRouteForVnet(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PlansClientGetRouteForVnetResponse{}, err
 	}
-	return client.getRouteForVnetHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getRouteForVnetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getRouteForVnetCreateRequest creates the GetRouteForVnet request.
@@ -672,7 +681,8 @@ func (client *PlansClient) GetServerFarmInstanceDetails(ctx context.Context, res
 	if err != nil {
 		return PlansClientGetServerFarmInstanceDetailsResponse{}, err
 	}
-	return client.getServerFarmInstanceDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getServerFarmInstanceDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getServerFarmInstanceDetailsCreateRequest creates the GetServerFarmInstanceDetails request.
@@ -735,7 +745,8 @@ func (client *PlansClient) GetServerFarmRdpPassword(ctx context.Context, resourc
 	if err != nil {
 		return PlansClientGetServerFarmRdpPasswordResponse{}, err
 	}
-	return client.getServerFarmRdpPasswordHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getServerFarmRdpPasswordHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getServerFarmRdpPasswordCreateRequest creates the GetServerFarmRdpPassword request.
@@ -797,7 +808,8 @@ func (client *PlansClient) GetServerFarmSKUs(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PlansClientGetServerFarmSKUsResponse{}, err
 	}
-	return client.getServerFarmSKUsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getServerFarmSKUsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getServerFarmSKUsCreateRequest creates the GetServerFarmSKUs request.
@@ -861,7 +873,8 @@ func (client *PlansClient) GetVnetFromServerFarm(ctx context.Context, resourceGr
 	if err != nil {
 		return PlansClientGetVnetFromServerFarmResponse{}, err
 	}
-	return client.getVnetFromServerFarmHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVnetFromServerFarmHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVnetFromServerFarmCreateRequest creates the GetVnetFromServerFarm request.
@@ -929,7 +942,8 @@ func (client *PlansClient) GetVnetGateway(ctx context.Context, resourceGroupName
 	if err != nil {
 		return PlansClientGetVnetGatewayResponse{}, err
 	}
-	return client.getVnetGatewayHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getVnetGatewayHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getVnetGatewayCreateRequest creates the GetVnetGateway request.
@@ -978,73 +992,270 @@ func (client *PlansClient) getVnetGatewayHandleResponse(resp *http.Response, suc
 	return result, nil
 }
 
-// NewListPager - Get all App Service plans for a subscription.
+// ListCapabilities - List all capabilities of an App Service plan.
 //
-// Description for Get all App Service plans for a subscription.
-//   - options - PlansClientListOptions contains the optional parameters for the PlansClient.NewListPager method.
-func (client *PlansClient) NewListPager(options *PlansClientListOptions) *runtime.Pager[PlansClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PlansClientListResponse]{
-		More: func(page PlansClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *PlansClientListResponse) (PlansClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PlansClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listCreateRequest(ctx, nextLink, options)
-			if err != nil {
-				return PlansClientListResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PlansClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
+// Description for List all capabilities of an App Service plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service plan.
+//   - options - PlansClientListCapabilitiesOptions contains the optional parameters for the PlansClient.ListCapabilities method.
+func (client *PlansClient) ListCapabilities(ctx context.Context, resourceGroupName string, name string, options *PlansClientListCapabilitiesOptions) (PlansClientListCapabilitiesResponse, error) {
+	var err error
+	const operationName = "PlansClient.ListCapabilities"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listCapabilitiesCreateRequest(ctx, resourceGroupName, name, options)
+	if err != nil {
+		return PlansClientListCapabilitiesResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PlansClientListCapabilitiesResponse{}, err
+	}
+	resp, err := client.listCapabilitiesHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
-// listCreateRequest creates the List request.
-func (client *PlansClient) listCreateRequest(ctx context.Context, nextLink string, options *PlansClientListOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+// listCapabilitiesCreateRequest creates the ListCapabilities request.
+func (client *PlansClient) listCapabilitiesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientListCapabilitiesOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/capabilities"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20250501)
-		if options != nil && options.Detailed != nil {
-			reqQP.Set("detailed", strconv.FormatBool(*options.Detailed))
-		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
-// listHandleResponse handles the List response.
-func (client *PlansClient) listHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListResponse, error) {
-	result := PlansClientListResponse{}
+// listCapabilitiesHandleResponse handles the ListCapabilities response.
+func (client *PlansClient) listCapabilitiesHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListCapabilitiesResponse, error) {
+	result := PlansClientListCapabilitiesResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.PlanCollection); err != nil {
-		return PlansClientListResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityArray); err != nil {
+		return PlansClientListCapabilitiesResponse{}, err
+	}
+	return result, nil
+}
+
+// ListHybridConnectionKeys - Get the send key name and value of a Hybrid Connection.
+//
+// Description for Get the send key name and value of a Hybrid Connection.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service plan.
+//   - namespaceName - Name of the Service Bus namespace.
+//   - relayName - Name of the Service Bus relay.
+//   - options - PlansClientListHybridConnectionKeysOptions contains the optional parameters for the PlansClient.ListHybridConnectionKeys
+//     method.
+func (client *PlansClient) ListHybridConnectionKeys(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientListHybridConnectionKeysOptions) (PlansClientListHybridConnectionKeysResponse, error) {
+	var err error
+	const operationName = "PlansClient.ListHybridConnectionKeys"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listHybridConnectionKeysCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
+	if err != nil {
+		return PlansClientListHybridConnectionKeysResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PlansClientListHybridConnectionKeysResponse{}, err
+	}
+	resp, err := client.listHybridConnectionKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listHybridConnectionKeysCreateRequest creates the ListHybridConnectionKeys request.
+func (client *PlansClient) listHybridConnectionKeysCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, _ *PlansClientListHybridConnectionKeysOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if namespaceName == "" {
+		return nil, errors.New("parameter namespaceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
+	if relayName == "" {
+		return nil, errors.New("parameter relayName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{relayName}", url.PathEscape(relayName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listHybridConnectionKeysHandleResponse handles the ListHybridConnectionKeys response.
+func (client *PlansClient) listHybridConnectionKeysHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListHybridConnectionKeysResponse, error) {
+	result := PlansClientListHybridConnectionKeysResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionKey); err != nil {
+		return PlansClientListHybridConnectionKeysResponse{}, err
+	}
+	return result, nil
+}
+
+// ListRoutesForVnet - Get all routes that are associated with a Virtual Network in an App Service plan.
+//
+// Description for Get all routes that are associated with a Virtual Network in an App Service plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service plan.
+//   - vnetName - Name of the Virtual Network.
+//   - options - PlansClientListRoutesForVnetOptions contains the optional parameters for the PlansClient.ListRoutesForVnet method.
+func (client *PlansClient) ListRoutesForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, options *PlansClientListRoutesForVnetOptions) (PlansClientListRoutesForVnetResponse, error) {
+	var err error
+	const operationName = "PlansClient.ListRoutesForVnet"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listRoutesForVnetCreateRequest(ctx, resourceGroupName, name, vnetName, options)
+	if err != nil {
+		return PlansClientListRoutesForVnetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PlansClientListRoutesForVnetResponse{}, err
+	}
+	resp, err := client.listRoutesForVnetHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listRoutesForVnetCreateRequest creates the ListRoutesForVnet request.
+func (client *PlansClient) listRoutesForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, _ *PlansClientListRoutesForVnetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	if vnetName == "" {
+		return nil, errors.New("parameter vnetName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{vnetName}", url.PathEscape(vnetName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listRoutesForVnetHandleResponse handles the ListRoutesForVnet response.
+func (client *PlansClient) listRoutesForVnetHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListRoutesForVnetResponse, error) {
+	result := PlansClientListRoutesForVnetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
+		return PlansClientListRoutesForVnetResponse{}, err
+	}
+	return result, nil
+}
+
+// ListVnets - Get all Virtual Networks associated with an App Service plan.
+//
+// Description for Get all Virtual Networks associated with an App Service plan.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service plan.
+//   - options - PlansClientListVnetsOptions contains the optional parameters for the PlansClient.ListVnets method.
+func (client *PlansClient) ListVnets(ctx context.Context, resourceGroupName string, name string, options *PlansClientListVnetsOptions) (PlansClientListVnetsResponse, error) {
+	var err error
+	const operationName = "PlansClient.ListVnets"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.listVnetsCreateRequest(ctx, resourceGroupName, name, options)
+	if err != nil {
+		return PlansClientListVnetsResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return PlansClientListVnetsResponse{}, err
+	}
+	resp, err := client.listVnetsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// listVnetsCreateRequest creates the ListVnets request.
+func (client *PlansClient) listVnetsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientListVnetsOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if name == "" {
+		return nil, errors.New("parameter name cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20250501)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// listVnetsHandleResponse handles the ListVnets response.
+func (client *PlansClient) listVnetsHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListVnetsResponse, error) {
+	result := PlansClientListVnetsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResourceArray); err != nil {
+		return PlansClientListVnetsResponse{}, err
 	}
 	return result, nil
 }
@@ -1119,141 +1330,6 @@ func (client *PlansClient) listByResourceGroupHandleResponse(resp *http.Response
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.PlanCollection); err != nil {
 		return PlansClientListByResourceGroupResponse{}, err
-	}
-	return result, nil
-}
-
-// ListCapabilities - List all capabilities of an App Service plan.
-//
-// Description for List all capabilities of an App Service plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service plan.
-//   - options - PlansClientListCapabilitiesOptions contains the optional parameters for the PlansClient.ListCapabilities method.
-func (client *PlansClient) ListCapabilities(ctx context.Context, resourceGroupName string, name string, options *PlansClientListCapabilitiesOptions) (PlansClientListCapabilitiesResponse, error) {
-	var err error
-	const operationName = "PlansClient.ListCapabilities"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listCapabilitiesCreateRequest(ctx, resourceGroupName, name, options)
-	if err != nil {
-		return PlansClientListCapabilitiesResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return PlansClientListCapabilitiesResponse{}, err
-	}
-	return client.listCapabilitiesHandleResponse(httpResp, http.StatusOK)
-}
-
-// listCapabilitiesCreateRequest creates the ListCapabilities request.
-func (client *PlansClient) listCapabilitiesCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientListCapabilitiesOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/capabilities"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listCapabilitiesHandleResponse handles the ListCapabilities response.
-func (client *PlansClient) listCapabilitiesHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListCapabilitiesResponse, error) {
-	result := PlansClientListCapabilitiesResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CapabilityArray); err != nil {
-		return PlansClientListCapabilitiesResponse{}, err
-	}
-	return result, nil
-}
-
-// ListHybridConnectionKeys - Get the send key name and value of a Hybrid Connection.
-//
-// Description for Get the send key name and value of a Hybrid Connection.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service plan.
-//   - namespaceName - Name of the Service Bus namespace.
-//   - relayName - Name of the Service Bus relay.
-//   - options - PlansClientListHybridConnectionKeysOptions contains the optional parameters for the PlansClient.ListHybridConnectionKeys
-//     method.
-func (client *PlansClient) ListHybridConnectionKeys(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, options *PlansClientListHybridConnectionKeysOptions) (PlansClientListHybridConnectionKeysResponse, error) {
-	var err error
-	const operationName = "PlansClient.ListHybridConnectionKeys"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listHybridConnectionKeysCreateRequest(ctx, resourceGroupName, name, namespaceName, relayName, options)
-	if err != nil {
-		return PlansClientListHybridConnectionKeysResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return PlansClientListHybridConnectionKeysResponse{}, err
-	}
-	return client.listHybridConnectionKeysHandleResponse(httpResp, http.StatusOK)
-}
-
-// listHybridConnectionKeysCreateRequest creates the ListHybridConnectionKeys request.
-func (client *PlansClient) listHybridConnectionKeysCreateRequest(ctx context.Context, resourceGroupName string, name string, namespaceName string, relayName string, _ *PlansClientListHybridConnectionKeysOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/hybridConnectionNamespaces/{namespaceName}/relays/{relayName}/listKeys"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if namespaceName == "" {
-		return nil, errors.New("parameter namespaceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{namespaceName}", url.PathEscape(namespaceName))
-	if relayName == "" {
-		return nil, errors.New("parameter relayName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{relayName}", url.PathEscape(relayName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHybridConnectionKeysHandleResponse handles the ListHybridConnectionKeys response.
-func (client *PlansClient) listHybridConnectionKeysHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListHybridConnectionKeysResponse, error) {
-	result := PlansClientListHybridConnectionKeysResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.HybridConnectionKey); err != nil {
-		return PlansClientListHybridConnectionKeysResponse{}, err
 	}
 	return result, nil
 }
@@ -1337,69 +1413,73 @@ func (client *PlansClient) listHybridConnectionsHandleResponse(resp *http.Respon
 	return result, nil
 }
 
-// ListRoutesForVnet - Get all routes that are associated with a Virtual Network in an App Service plan.
+// NewListPager - Get all App Service plans for a subscription.
 //
-// Description for Get all routes that are associated with a Virtual Network in an App Service plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service plan.
-//   - vnetName - Name of the Virtual Network.
-//   - options - PlansClientListRoutesForVnetOptions contains the optional parameters for the PlansClient.ListRoutesForVnet method.
-func (client *PlansClient) ListRoutesForVnet(ctx context.Context, resourceGroupName string, name string, vnetName string, options *PlansClientListRoutesForVnetOptions) (PlansClientListRoutesForVnetResponse, error) {
-	var err error
-	const operationName = "PlansClient.ListRoutesForVnet"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listRoutesForVnetCreateRequest(ctx, resourceGroupName, name, vnetName, options)
-	if err != nil {
-		return PlansClientListRoutesForVnetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return PlansClientListRoutesForVnetResponse{}, err
-	}
-	return client.listRoutesForVnetHandleResponse(httpResp, http.StatusOK)
+// Description for Get all App Service plans for a subscription.
+//   - options - PlansClientListOptions contains the optional parameters for the PlansClient.NewListPager method.
+func (client *PlansClient) NewListPager(options *PlansClientListOptions) *runtime.Pager[PlansClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PlansClientListResponse]{
+		More: func(page PlansClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PlansClientListResponse) (PlansClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PlansClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return PlansClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PlansClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
 }
 
-// listRoutesForVnetCreateRequest creates the ListRoutesForVnet request.
-func (client *PlansClient) listRoutesForVnetCreateRequest(ctx context.Context, resourceGroupName string, name string, vnetName string, _ *PlansClientListRoutesForVnetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections/{vnetName}/routes"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
+// listCreateRequest creates the List request.
+func (client *PlansClient) listCreateRequest(ctx context.Context, nextLink string, options *PlansClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Web/serverfarms"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	if vnetName == "" {
-		return nil, errors.New("parameter vnetName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{vnetName}", url.PathEscape(vnetName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250501)
+		if options != nil && options.Detailed != nil {
+			reqQP.Set("detailed", strconv.FormatBool(*options.Detailed))
+		}
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
-// listRoutesForVnetHandleResponse handles the ListRoutesForVnet response.
-func (client *PlansClient) listRoutesForVnetHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListRoutesForVnetResponse, error) {
-	result := PlansClientListRoutesForVnetResponse{}
+// listHandleResponse handles the List response.
+func (client *PlansClient) listHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListResponse, error) {
+	result := PlansClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VnetRouteArray); err != nil {
-		return PlansClientListRoutesForVnetResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.PlanCollection); err != nil {
+		return PlansClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -1481,155 +1561,6 @@ func (client *PlansClient) listUsagesHandleResponse(resp *http.Response, success
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CsmUsageQuotaCollection); err != nil {
 		return PlansClientListUsagesResponse{}, err
-	}
-	return result, nil
-}
-
-// ListVnets - Get all Virtual Networks associated with an App Service plan.
-//
-// Description for Get all Virtual Networks associated with an App Service plan.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service plan.
-//   - options - PlansClientListVnetsOptions contains the optional parameters for the PlansClient.ListVnets method.
-func (client *PlansClient) ListVnets(ctx context.Context, resourceGroupName string, name string, options *PlansClientListVnetsOptions) (PlansClientListVnetsResponse, error) {
-	var err error
-	const operationName = "PlansClient.ListVnets"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.listVnetsCreateRequest(ctx, resourceGroupName, name, options)
-	if err != nil {
-		return PlansClientListVnetsResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return PlansClientListVnetsResponse{}, err
-	}
-	return client.listVnetsHandleResponse(httpResp, http.StatusOK)
-}
-
-// listVnetsCreateRequest creates the ListVnets request.
-func (client *PlansClient) listVnetsCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *PlansClientListVnetsOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/virtualNetworkConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if name == "" {
-		return nil, errors.New("parameter name cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250501)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listVnetsHandleResponse handles the ListVnets response.
-func (client *PlansClient) listVnetsHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListVnetsResponse, error) {
-	result := PlansClientListVnetsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.VnetInfoResourceArray); err != nil {
-		return PlansClientListVnetsResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListWebAppsPager - Get all apps associated with an App Service plan.
-//
-// Description for Get all apps associated with an App Service plan.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - name - Name of the App Service plan.
-//   - options - PlansClientListWebAppsOptions contains the optional parameters for the PlansClient.NewListWebAppsPager method.
-func (client *PlansClient) NewListWebAppsPager(resourceGroupName string, name string, options *PlansClientListWebAppsOptions) *runtime.Pager[PlansClientListWebAppsResponse] {
-	return runtime.NewPager(runtime.PagingHandler[PlansClientListWebAppsResponse]{
-		More: func(page PlansClientListWebAppsResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *PlansClientListWebAppsResponse) (PlansClientListWebAppsResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PlansClient.NewListWebAppsPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			req, err := client.listWebAppsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
-			if err != nil {
-				return PlansClientListWebAppsResponse{}, err
-			}
-			resp, err := client.internal.Pipeline().Do(req)
-			if err != nil {
-				return PlansClientListWebAppsResponse{}, err
-			}
-			return client.listWebAppsHandleResponse(resp, http.StatusOK)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listWebAppsCreateRequest creates the ListWebApps request.
-func (client *PlansClient) listWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, options *PlansClientListWebAppsOptions) (*policy.Request, error) {
-	firstPage := nextLink == ""
-	var req *policy.Request
-	var err error
-	if firstPage {
-		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites"
-		if client.subscriptionID == "" {
-			return nil, errors.New("parameter subscriptionID cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-		if resourceGroupName == "" {
-			return nil, errors.New("parameter resourceGroupName cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-		if name == "" {
-			return nil, errors.New("parameter name cannot be empty")
-		}
-		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
-		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	} else {
-		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
-	}
-	if err != nil {
-		return nil, err
-	}
-	if firstPage {
-		reqQP := req.Raw().URL.Query()
-		if options != nil && options.Filter != nil {
-			reqQP.Set("$filter", *options.Filter)
-		}
-		if options != nil && options.SkipToken != nil {
-			reqQP.Set("$skipToken", *options.SkipToken)
-		}
-		if options != nil && options.Top != nil {
-			reqQP.Set("$top", *options.Top)
-		}
-		reqQP.Set("api-version", version20250501)
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-		req.Raw().Header["Accept"] = []string{"application/json"}
-	}
-	return req, nil
-}
-
-// listWebAppsHandleResponse handles the ListWebApps response.
-func (client *PlansClient) listWebAppsHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListWebAppsResponse, error) {
-	result := PlansClientListWebAppsResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
-		return PlansClientListWebAppsResponse{}, err
 	}
 	return result, nil
 }
@@ -1723,6 +1654,93 @@ func (client *PlansClient) listWebAppsByHybridConnectionHandleResponse(resp *htt
 	return result, nil
 }
 
+// NewListWebAppsPager - Get all apps associated with an App Service plan.
+//
+// Description for Get all apps associated with an App Service plan.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - name - Name of the App Service plan.
+//   - options - PlansClientListWebAppsOptions contains the optional parameters for the PlansClient.NewListWebAppsPager method.
+func (client *PlansClient) NewListWebAppsPager(resourceGroupName string, name string, options *PlansClientListWebAppsOptions) *runtime.Pager[PlansClientListWebAppsResponse] {
+	return runtime.NewPager(runtime.PagingHandler[PlansClientListWebAppsResponse]{
+		More: func(page PlansClientListWebAppsResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *PlansClientListWebAppsResponse) (PlansClientListWebAppsResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "PlansClient.NewListWebAppsPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listWebAppsCreateRequest(ctx, resourceGroupName, name, nextLink, options)
+			if err != nil {
+				return PlansClientListWebAppsResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return PlansClientListWebAppsResponse{}, err
+			}
+			return client.listWebAppsHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listWebAppsCreateRequest creates the ListWebApps request.
+func (client *PlansClient) listWebAppsCreateRequest(ctx context.Context, resourceGroupName string, name string, nextLink string, options *PlansClientListWebAppsOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/serverfarms/{name}/sites"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if name == "" {
+			return nil, errors.New("parameter name cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{name}", url.PathEscape(name))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		if options != nil && options.SkipToken != nil {
+			reqQP.Set("$skipToken", *options.SkipToken)
+		}
+		if options != nil && options.Top != nil {
+			reqQP.Set("$top", *options.Top)
+		}
+		reqQP.Set("api-version", version20250501)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listWebAppsHandleResponse handles the ListWebApps response.
+func (client *PlansClient) listWebAppsHandleResponse(resp *http.Response, successCodes ...int) (PlansClientListWebAppsResponse, error) {
+	result := PlansClientListWebAppsResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.WebAppCollection); err != nil {
+		return PlansClientListWebAppsResponse{}, err
+	}
+	return result, nil
+}
+
 // RebootWorker - Reboot a worker machine in an App Service plan.
 //
 // Description for Reboot a worker machine in an App Service plan.
@@ -1746,7 +1764,8 @@ func (client *PlansClient) RebootWorker(ctx context.Context, resourceGroupName s
 		return PlansClientRebootWorkerResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return PlansClientRebootWorkerResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PlansClientRebootWorkerResponse{}, err
 	}
 	return PlansClientRebootWorkerResponse{}, nil
 }
@@ -1803,7 +1822,8 @@ func (client *PlansClient) RecycleManagedInstanceWorker(ctx context.Context, res
 	if err != nil {
 		return PlansClientRecycleManagedInstanceWorkerResponse{}, err
 	}
-	return client.recycleManagedInstanceWorkerHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.recycleManagedInstanceWorkerHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // recycleManagedInstanceWorkerCreateRequest creates the RecycleManagedInstanceWorker request.
@@ -1870,7 +1890,8 @@ func (client *PlansClient) RestartWebApps(ctx context.Context, resourceGroupName
 		return PlansClientRestartWebAppsResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return PlansClientRestartWebAppsResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return PlansClientRestartWebAppsResponse{}, err
 	}
 	return PlansClientRestartWebAppsResponse{}, nil
 }
@@ -1925,7 +1946,8 @@ func (client *PlansClient) Update(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return PlansClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.
@@ -1994,7 +2016,8 @@ func (client *PlansClient) UpdateVnetGateway(ctx context.Context, resourceGroupN
 	if err != nil {
 		return PlansClientUpdateVnetGatewayResponse{}, err
 	}
-	return client.updateVnetGatewayHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateVnetGatewayHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateVnetGatewayCreateRequest creates the UpdateVnetGateway request.
@@ -2071,7 +2094,8 @@ func (client *PlansClient) UpdateVnetRoute(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return PlansClientUpdateVnetRouteResponse{}, err
 	}
-	return client.updateVnetRouteHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateVnetRouteHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateVnetRouteCreateRequest creates the UpdateVnetRoute request.

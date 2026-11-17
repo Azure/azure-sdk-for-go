@@ -91,7 +91,8 @@ func (client *NeuroShieldProtectedResourcesClient) createOrUpdate(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -179,7 +180,8 @@ func (client *NeuroShieldProtectedResourcesClient) deleteOperation(ctx context.C
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -239,7 +241,8 @@ func (client *NeuroShieldProtectedResourcesClient) Get(ctx context.Context, reso
 	if err != nil {
 		return NeuroShieldProtectedResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -395,7 +398,8 @@ func (client *NeuroShieldProtectedResourcesClient) TriggerInventoryUpload(ctx co
 	if err != nil {
 		return NeuroShieldProtectedResourcesClientTriggerInventoryUploadResponse{}, err
 	}
-	return client.triggerInventoryUploadHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.triggerInventoryUploadHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // triggerInventoryUploadCreateRequest creates the TriggerInventoryUpload request.

@@ -20,7 +20,7 @@ import (
 // AgentApplicationsClient contains the methods for the AgentApplications group.
 // Don't use this type directly, use NewAgentApplicationsClient() instead.
 //
-// Generated from API version 2026-09-15-preview
+// Generated from API version 2026-11-01
 type AgentApplicationsClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -92,7 +92,8 @@ func (client *AgentApplicationsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -125,7 +126,7 @@ func (client *AgentApplicationsClient) createOrUpdateCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -147,7 +148,7 @@ func (client *AgentApplicationsClient) createOrUpdateCreateRequest(ctx context.C
 //     method.
 func (client *AgentApplicationsClient) BeginDelete(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientBeginDeleteOptions) (*runtime.Poller[AgentApplicationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, accountName, projectName, name, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, accountName, projectName, name, options)
 		if err != nil {
 			return nil, err
 		}
@@ -162,11 +163,11 @@ func (client *AgentApplicationsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// delete - Delete Agent Application.
+// deleteOperation - Delete Agent Application.
 //
 // Delete Agent Application.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AgentApplicationsClient) delete(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AgentApplicationsClient) deleteOperation(ctx context.Context, resourceGroupName string, accountName string, projectName string, name string, options *AgentApplicationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AgentApplicationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -181,7 +182,8 @@ func (client *AgentApplicationsClient) delete(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -214,7 +216,7 @@ func (client *AgentApplicationsClient) deleteCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -244,7 +246,8 @@ func (client *AgentApplicationsClient) Disable(ctx context.Context, resourceGrou
 		return AgentApplicationsClientDisableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return AgentApplicationsClientDisableResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AgentApplicationsClientDisableResponse{}, err
 	}
 	return AgentApplicationsClientDisableResponse{}, nil
 }
@@ -277,7 +280,7 @@ func (client *AgentApplicationsClient) disableCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -307,7 +310,8 @@ func (client *AgentApplicationsClient) Enable(ctx context.Context, resourceGroup
 		return AgentApplicationsClientEnableResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return AgentApplicationsClientEnableResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return AgentApplicationsClientEnableResponse{}, err
 	}
 	return AgentApplicationsClientEnableResponse{}, nil
 }
@@ -340,7 +344,7 @@ func (client *AgentApplicationsClient) enableCreateRequest(ctx context.Context, 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -368,7 +372,8 @@ func (client *AgentApplicationsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return AgentApplicationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -399,7 +404,7 @@ func (client *AgentApplicationsClient) getCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -441,7 +446,8 @@ func (client *AgentApplicationsClient) ListAgents(ctx context.Context, resourceG
 	if err != nil {
 		return AgentApplicationsClientListAgentsResponse{}, err
 	}
-	return client.listAgentsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listAgentsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listAgentsCreateRequest creates the ListAgents request.
@@ -472,7 +478,7 @@ func (client *AgentApplicationsClient) listAgentsCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260915Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -561,7 +567,7 @@ func (client *AgentApplicationsClient) listCreateRequest(ctx context.Context, re
 		if options != nil && options.SkipToken != nil {
 			reqQP.Set("$skipToken", *options.SkipToken)
 		}
-		reqQP.Set("api-version", version20260915Preview)
+		reqQP.Set("api-version", version20261101)
 		if options != nil && options.Count != nil {
 			reqQP.Set("count", strconv.FormatInt(int64(*options.Count), 10))
 		}

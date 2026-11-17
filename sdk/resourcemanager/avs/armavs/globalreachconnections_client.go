@@ -70,7 +70,7 @@ func (client *GlobalReachConnectionsClient) BeginCreateOrUpdate(ctx context.Cont
 	}
 }
 
-// CreateOrUpdate - Create a GlobalReachConnection
+// createOrUpdate - Create a GlobalReachConnection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GlobalReachConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, globalReachConnection GlobalReachConnection, options *GlobalReachConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *GlobalReachConnectionsClient) createOrUpdate(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *GlobalReachConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, globalReachConnection GlobalReachConnection, _ *GlobalReachConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}"
 	if client.subscriptionID == "" {
@@ -150,7 +151,7 @@ func (client *GlobalReachConnectionsClient) BeginDelete(ctx context.Context, res
 	}
 }
 
-// Delete - Delete a GlobalReachConnection
+// deleteOperation - Delete a GlobalReachConnection
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *GlobalReachConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, options *GlobalReachConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -167,12 +168,13 @@ func (client *GlobalReachConnectionsClient) deleteOperation(ctx context.Context,
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *GlobalReachConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, privateCloudName string, globalReachConnectionName string, _ *GlobalReachConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds/{privateCloudName}/globalReachConnections/{globalReachConnectionName}"
 	if client.subscriptionID == "" {
@@ -222,7 +224,8 @@ func (client *GlobalReachConnectionsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return GlobalReachConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -63,7 +63,8 @@ func (client *JobOperationResultsClient) Get(ctx context.Context, vaultName stri
 		return JobOperationResultsClientGetResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return JobOperationResultsClientGetResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return JobOperationResultsClientGetResponse{}, err
 	}
 	return JobOperationResultsClientGetResponse{}, nil
 }

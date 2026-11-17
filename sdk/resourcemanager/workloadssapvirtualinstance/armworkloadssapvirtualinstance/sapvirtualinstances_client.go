@@ -68,7 +68,7 @@ func (client *SAPVirtualInstancesClient) BeginCreate(ctx context.Context, resour
 	}
 }
 
-// Create - Creates a Virtual Instance for SAP solutions (VIS) resource
+// create - Creates a Virtual Instance for SAP solutions (VIS) resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SAPVirtualInstancesClient) create(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, resource SAPVirtualInstance, options *SAPVirtualInstancesClientBeginCreateOptions) (*http.Response, error) {
 	var err error
@@ -85,12 +85,13 @@ func (client *SAPVirtualInstancesClient) create(ctx context.Context, resourceGro
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *SAPVirtualInstancesClient) createCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, resource SAPVirtualInstance, _ *SAPVirtualInstancesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}"
 	if client.subscriptionID == "" {
@@ -144,8 +145,8 @@ func (client *SAPVirtualInstancesClient) BeginDelete(ctx context.Context, resour
 	}
 }
 
-// Delete - Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
-// Services Instance, Application Server Instances and Database Instance.
+// deleteOperation - Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated
+// Central Services Instance, Application Server Instances and Database Instance.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *SAPVirtualInstancesClient) deleteOperation(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -162,12 +163,13 @@ func (client *SAPVirtualInstancesClient) deleteOperation(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *SAPVirtualInstancesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, _ *SAPVirtualInstancesClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}"
 	if client.subscriptionID == "" {
@@ -192,6 +194,241 @@ func (client *SAPVirtualInstancesClient) deleteCreateRequest(ctx context.Context
 	return req, nil
 }
 
+// BeginStart - Starts the SAP application, that is the Central Services instance and Application server instances.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
+//   - options - SAPVirtualInstancesClientBeginStartOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginStart
+//     method.
+func (client *SAPVirtualInstancesClient) BeginStart(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStartOptions) (*runtime.Poller[SAPVirtualInstancesClientStartResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.start(ctx, resourceGroupName, sapVirtualInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPVirtualInstancesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPVirtualInstancesClientStartResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// start - Starts the SAP application, that is the Central Services instance and Application server instances.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SAPVirtualInstancesClient) start(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStartOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SAPVirtualInstancesClient.BeginStart"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.startCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// startCreateRequest creates the start request.
+func (client *SAPVirtualInstancesClient) startCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStartOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/start"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sapVirtualInstanceName == "" {
+		return nil, errors.New("parameter sapVirtualInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sapVirtualInstanceName}", url.PathEscape(sapVirtualInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginStop - Stops the SAP Application, that is the Application server instances and Central Services instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
+//   - options - SAPVirtualInstancesClientBeginStopOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginStop
+//     method.
+func (client *SAPVirtualInstancesClient) BeginStop(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStopOptions) (*runtime.Poller[SAPVirtualInstancesClientStopResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.stop(ctx, resourceGroupName, sapVirtualInstanceName, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPVirtualInstancesClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPVirtualInstancesClientStopResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// stop - Stops the SAP Application, that is the Application server instances and Central Services instance.
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SAPVirtualInstancesClient) stop(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStopOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SAPVirtualInstancesClient.BeginStop"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.stopCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// stopCreateRequest creates the stop request.
+func (client *SAPVirtualInstancesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStopOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/stop"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sapVirtualInstanceName == "" {
+		return nil, errors.New("parameter sapVirtualInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sapVirtualInstanceName}", url.PathEscape(sapVirtualInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	if options != nil && options.Body != nil {
+		req.Raw().Header["Content-Type"] = []string{"application/json"}
+		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
+			return nil, err
+		}
+		return req, nil
+	}
+	return req, nil
+}
+
+// BeginUpdate - Updates a Virtual Instance for SAP solutions resource
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
+//   - properties - Request body to update a Virtual Instance for SAP solutions resource.
+//   - options - SAPVirtualInstancesClientBeginUpdateOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginUpdate
+//     method.
+func (client *SAPVirtualInstancesClient) BeginUpdate(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, properties UpdateSAPVirtualInstanceRequest, options *SAPVirtualInstancesClientBeginUpdateOptions) (*runtime.Poller[SAPVirtualInstancesClientUpdateResponse], error) {
+	if options == nil || options.ResumeToken == "" {
+		resp, err := client.update(ctx, resourceGroupName, sapVirtualInstanceName, properties, options)
+		if err != nil {
+			return nil, err
+		}
+		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPVirtualInstancesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+		return poller, err
+	} else {
+		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPVirtualInstancesClientUpdateResponse]{
+			Tracer: client.internal.Tracer(),
+		})
+	}
+}
+
+// update - Updates a Virtual Instance for SAP solutions resource
+// If the operation fails it returns an *azcore.ResponseError type.
+func (client *SAPVirtualInstancesClient) update(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, properties UpdateSAPVirtualInstanceRequest, options *SAPVirtualInstancesClientBeginUpdateOptions) (*http.Response, error) {
+	var err error
+	const operationName = "SAPVirtualInstancesClient.BeginUpdate"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.updateCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, properties, options)
+	if err != nil {
+		return nil, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return nil, err
+	}
+	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
+	}
+	return httpResp, nil
+}
+
+// updateCreateRequest creates the update request.
+func (client *SAPVirtualInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, properties UpdateSAPVirtualInstanceRequest, _ *SAPVirtualInstancesClientBeginUpdateOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if sapVirtualInstanceName == "" {
+		return nil, errors.New("parameter sapVirtualInstanceName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{sapVirtualInstanceName}", url.PathEscape(sapVirtualInstanceName))
+	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20240901)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	req.Raw().Header["Content-Type"] = []string{"application/json"}
+	if err := runtime.MarshalAsJSON(req, properties); err != nil {
+		return nil, err
+	}
+	return req, nil
+}
+
 // Get - Gets a Virtual Instance for SAP solutions resource
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -211,7 +448,8 @@ func (client *SAPVirtualInstancesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return SAPVirtualInstancesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -272,7 +510,8 @@ func (client *SAPVirtualInstancesClient) GetAvailabilityZoneDetails(ctx context.
 	if err != nil {
 		return SAPVirtualInstancesClientGetAvailabilityZoneDetailsResponse{}, err
 	}
-	return client.getAvailabilityZoneDetailsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getAvailabilityZoneDetailsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getAvailabilityZoneDetailsCreateRequest creates the GetAvailabilityZoneDetails request.
@@ -333,7 +572,8 @@ func (client *SAPVirtualInstancesClient) GetDiskConfigurations(ctx context.Conte
 	if err != nil {
 		return SAPVirtualInstancesClientGetDiskConfigurationsResponse{}, err
 	}
-	return client.getDiskConfigurationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDiskConfigurationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDiskConfigurationsCreateRequest creates the GetDiskConfigurations request.
@@ -394,7 +634,8 @@ func (client *SAPVirtualInstancesClient) GetSapSupportedSKU(ctx context.Context,
 	if err != nil {
 		return SAPVirtualInstancesClientGetSapSupportedSKUResponse{}, err
 	}
-	return client.getSapSupportedSKUHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSapSupportedSKUHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSapSupportedSKUCreateRequest creates the GetSapSupportedSKU request.
@@ -455,7 +696,8 @@ func (client *SAPVirtualInstancesClient) GetSizingRecommendations(ctx context.Co
 	if err != nil {
 		return SAPVirtualInstancesClientGetSizingRecommendationsResponse{}, err
 	}
-	return client.getSizingRecommendationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSizingRecommendationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSizingRecommendationsCreateRequest creates the GetSizingRecommendations request.
@@ -633,236 +875,4 @@ func (client *SAPVirtualInstancesClient) listBySubscriptionHandleResponse(resp *
 		return SAPVirtualInstancesClientListBySubscriptionResponse{}, err
 	}
 	return result, nil
-}
-
-// BeginStart - Starts the SAP application, that is the Central Services instance and Application server instances.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
-//   - options - SAPVirtualInstancesClientBeginStartOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginStart
-//     method.
-func (client *SAPVirtualInstancesClient) BeginStart(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStartOptions) (*runtime.Poller[SAPVirtualInstancesClientStartResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.start(ctx, resourceGroupName, sapVirtualInstanceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPVirtualInstancesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPVirtualInstancesClientStartResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Start - Starts the SAP application, that is the Central Services instance and Application server instances.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SAPVirtualInstancesClient) start(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStartOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SAPVirtualInstancesClient.BeginStart"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.startCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// startCreateRequest creates the Start request.
-func (client *SAPVirtualInstancesClient) startCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStartOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/start"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if sapVirtualInstanceName == "" {
-		return nil, errors.New("parameter sapVirtualInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sapVirtualInstanceName}", url.PathEscape(sapVirtualInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Body != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
-// BeginStop - Stops the SAP Application, that is the Application server instances and Central Services instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
-//   - options - SAPVirtualInstancesClientBeginStopOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginStop
-//     method.
-func (client *SAPVirtualInstancesClient) BeginStop(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStopOptions) (*runtime.Poller[SAPVirtualInstancesClientStopResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.stop(ctx, resourceGroupName, sapVirtualInstanceName, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPVirtualInstancesClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPVirtualInstancesClientStopResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Stop - Stops the SAP Application, that is the Application server instances and Central Services instance.
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SAPVirtualInstancesClient) stop(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStopOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SAPVirtualInstancesClient.BeginStop"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.stopCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// stopCreateRequest creates the Stop request.
-func (client *SAPVirtualInstancesClient) stopCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, options *SAPVirtualInstancesClientBeginStopOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/stop"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if sapVirtualInstanceName == "" {
-		return nil, errors.New("parameter sapVirtualInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sapVirtualInstanceName}", url.PathEscape(sapVirtualInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	if options != nil && options.Body != nil {
-		req.Raw().Header["Content-Type"] = []string{"application/json"}
-		if err := runtime.MarshalAsJSON(req, *options.Body); err != nil {
-			return nil, err
-		}
-		return req, nil
-	}
-	return req, nil
-}
-
-// BeginUpdate - Updates a Virtual Instance for SAP solutions resource
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - sapVirtualInstanceName - The name of the Virtual Instances for SAP solutions resource
-//   - properties - Request body to update a Virtual Instance for SAP solutions resource.
-//   - options - SAPVirtualInstancesClientBeginUpdateOptions contains the optional parameters for the SAPVirtualInstancesClient.BeginUpdate
-//     method.
-func (client *SAPVirtualInstancesClient) BeginUpdate(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, properties UpdateSAPVirtualInstanceRequest, options *SAPVirtualInstancesClientBeginUpdateOptions) (*runtime.Poller[SAPVirtualInstancesClientUpdateResponse], error) {
-	if options == nil || options.ResumeToken == "" {
-		resp, err := client.update(ctx, resourceGroupName, sapVirtualInstanceName, properties, options)
-		if err != nil {
-			return nil, err
-		}
-		poller, err := runtime.NewPoller(resp, client.internal.Pipeline(), &runtime.NewPollerOptions[SAPVirtualInstancesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-		return poller, err
-	} else {
-		return runtime.NewPollerFromResumeToken(options.ResumeToken, client.internal.Pipeline(), &runtime.NewPollerFromResumeTokenOptions[SAPVirtualInstancesClientUpdateResponse]{
-			Tracer: client.internal.Tracer(),
-		})
-	}
-}
-
-// Update - Updates a Virtual Instance for SAP solutions resource
-// If the operation fails it returns an *azcore.ResponseError type.
-func (client *SAPVirtualInstancesClient) update(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, properties UpdateSAPVirtualInstanceRequest, options *SAPVirtualInstancesClientBeginUpdateOptions) (*http.Response, error) {
-	var err error
-	const operationName = "SAPVirtualInstancesClient.BeginUpdate"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.updateCreateRequest(ctx, resourceGroupName, sapVirtualInstanceName, properties, options)
-	if err != nil {
-		return nil, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return nil, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
-	}
-	return httpResp, nil
-}
-
-// updateCreateRequest creates the Update request.
-func (client *SAPVirtualInstancesClient) updateCreateRequest(ctx context.Context, resourceGroupName string, sapVirtualInstanceName string, properties UpdateSAPVirtualInstanceRequest, _ *SAPVirtualInstancesClientBeginUpdateOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if sapVirtualInstanceName == "" {
-		return nil, errors.New("parameter sapVirtualInstanceName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{sapVirtualInstanceName}", url.PathEscape(sapVirtualInstanceName))
-	req, err := runtime.NewRequest(ctx, http.MethodPatch, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240901)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	req.Raw().Header["Content-Type"] = []string{"application/json"}
-	if err := runtime.MarshalAsJSON(req, properties); err != nil {
-		return nil, err
-	}
-	return req, nil
 }

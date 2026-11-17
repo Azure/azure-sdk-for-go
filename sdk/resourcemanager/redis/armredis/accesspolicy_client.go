@@ -69,7 +69,7 @@ func (client *AccessPolicyClient) BeginCreateUpdate(ctx context.Context, resourc
 	}
 }
 
-// CreateUpdate - Adds an access policy to the redis cache
+// createUpdate - Adds an access policy to the redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessPolicyClient) createUpdate(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyName string, parameters CacheAccessPolicy, options *AccessPolicyClientBeginCreateUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *AccessPolicyClient) createUpdate(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createUpdateCreateRequest creates the CreateUpdate request.
+// createUpdateCreateRequest creates the createUpdate request.
 func (client *AccessPolicyClient) createUpdateCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyName string, parameters CacheAccessPolicy, _ *AccessPolicyClientBeginCreateUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies/{accessPolicyName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *AccessPolicyClient) BeginDelete(ctx context.Context, resourceGroup
 	}
 }
 
-// Delete - Deletes the access policy from a redis cache
+// deleteOperation - Deletes the access policy from a redis cache
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AccessPolicyClient) deleteOperation(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyName string, options *AccessPolicyClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *AccessPolicyClient) deleteOperation(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AccessPolicyClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cacheName string, accessPolicyName string, _ *AccessPolicyClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicies/{accessPolicyName}"
 	if client.subscriptionID == "" {
@@ -220,7 +222,8 @@ func (client *AccessPolicyClient) Get(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return AccessPolicyClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

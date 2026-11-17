@@ -59,7 +59,8 @@ func (client *ExportsClient) CreateOrUpdate(ctx context.Context, scope string, e
 	if err != nil {
 		return ExportsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -120,7 +121,8 @@ func (client *ExportsClient) Delete(ctx context.Context, scope string, exportNam
 		return ExportsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ExportsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ExportsClientDeleteResponse{}, err
 	}
 	return ExportsClientDeleteResponse{}, nil
 }
@@ -166,7 +168,8 @@ func (client *ExportsClient) Execute(ctx context.Context, scope string, exportNa
 		return ExportsClientExecuteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ExportsClientExecuteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ExportsClientExecuteResponse{}, err
 	}
 	return ExportsClientExecuteResponse{}, nil
 }
@@ -218,7 +221,8 @@ func (client *ExportsClient) Get(ctx context.Context, scope string, exportName s
 	if err != nil {
 		return ExportsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -278,7 +282,8 @@ func (client *ExportsClient) GetExecutionHistory(ctx context.Context, scope stri
 	if err != nil {
 		return ExportsClientGetExecutionHistoryResponse{}, err
 	}
-	return client.getExecutionHistoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getExecutionHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getExecutionHistoryCreateRequest creates the GetExecutionHistory request.
@@ -341,7 +346,8 @@ func (client *ExportsClient) List(ctx context.Context, scope string, options *Ex
 	if err != nil {
 		return ExportsClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

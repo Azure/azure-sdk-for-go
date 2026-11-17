@@ -44,75 +44,6 @@ func NewCustomAIModelsClient(subscriptionID string, credential azcore.TokenCrede
 	return client, nil
 }
 
-// CalculateCost - Returns a ranked list of GPU SKU pricing plans for deploying this custom model in the target region, each
-// annotated with feasibility and per-replica hourly cost. Feasibility is determined by region availability, GPU quota, and
-// model architecture fit (verified at registration time). `servingPerformanceEstimation` is omitted for custom models. No
-// Azure or Kubernetes resources are provisioned.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - aiManagerName - The name of the AI Manager resource.
-//   - customAIModelName - The name of the custom AI model resource.
-//   - options - CustomAIModelsClientCalculateCostOptions contains the optional parameters for the CustomAIModelsClient.CalculateCost
-//     method.
-func (client *CustomAIModelsClient) CalculateCost(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *CustomAIModelsClientCalculateCostOptions) (CustomAIModelsClientCalculateCostResponse, error) {
-	var err error
-	const operationName = "CustomAIModelsClient.CalculateCost"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.calculateCostCreateRequest(ctx, resourceGroupName, aiManagerName, customAIModelName, options)
-	if err != nil {
-		return CustomAIModelsClientCalculateCostResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return CustomAIModelsClientCalculateCostResponse{}, err
-	}
-	return client.calculateCostHandleResponse(httpResp, http.StatusOK)
-}
-
-// calculateCostCreateRequest creates the CalculateCost request.
-func (client *CustomAIModelsClient) calculateCostCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, _ *CustomAIModelsClientCalculateCostOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}/calculateCost"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if aiManagerName == "" {
-		return nil, errors.New("parameter aiManagerName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
-	if customAIModelName == "" {
-		return nil, errors.New("parameter customAIModelName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{customAIModelName}", url.PathEscape(customAIModelName))
-	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260902Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// calculateCostHandleResponse handles the CalculateCost response.
-func (client *CustomAIModelsClient) calculateCostHandleResponse(resp *http.Response, successCodes ...int) (CustomAIModelsClientCalculateCostResponse, error) {
-	result := CustomAIModelsClientCalculateCostResponse{}
-	if !runtime.HasStatusCode(resp, successCodes...) {
-		return result, runtime.NewResponseError(resp)
-	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.CalculateCostResponse); err != nil {
-		return CustomAIModelsClientCalculateCostResponse{}, err
-	}
-	return result, nil
-}
-
 // BeginCreateOrUpdate - Create or update a `CustomAIModel`. This is a full-replace operation: any optional property omitted
 // from the request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields
 // (e.g. `description`), perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match`
@@ -141,7 +72,7 @@ func (client *CustomAIModelsClient) BeginCreateOrUpdate(ctx context.Context, res
 	}
 }
 
-// CreateOrUpdate - Create or update a `CustomAIModel`. This is a full-replace operation: any optional property omitted from
+// createOrUpdate - Create or update a `CustomAIModel`. This is a full-replace operation: any optional property omitted from
 // the request body is reset to its default value, or cleared if it has no default. To safely modify a subset of fields (e.g.
 // `description`), perform a GET, modify the returned resource, and PUT it back using the returned ETag via the `If-Match`
 // header. A PUT that changes the immutable `modelId` or `modelSourceResourceId` is rejected.
@@ -161,12 +92,13 @@ func (client *CustomAIModelsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *CustomAIModelsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, resource CustomAIModel, options *CustomAIModelsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}"
 	if client.subscriptionID == "" {
@@ -230,7 +162,7 @@ func (client *CustomAIModelsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// Delete - Delete a CustomAIModel
+// deleteOperation - Delete a CustomAIModel
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *CustomAIModelsClient) deleteOperation(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *CustomAIModelsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -247,12 +179,13 @@ func (client *CustomAIModelsClient) deleteOperation(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *CustomAIModelsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *CustomAIModelsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}"
 	if client.subscriptionID == "" {
@@ -284,6 +217,76 @@ func (client *CustomAIModelsClient) deleteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
+// CalculateCost - Returns a ranked list of GPU SKU pricing plans for deploying this custom model in the target region, each
+// annotated with feasibility and per-replica hourly cost. Feasibility is determined by region availability, GPU quota, and
+// model architecture fit (verified at registration time). `servingPerformanceEstimation` is omitted for custom models. No
+// Azure or Kubernetes resources are provisioned.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - aiManagerName - The name of the AI Manager resource.
+//   - customAIModelName - The name of the custom AI model resource.
+//   - options - CustomAIModelsClientCalculateCostOptions contains the optional parameters for the CustomAIModelsClient.CalculateCost
+//     method.
+func (client *CustomAIModelsClient) CalculateCost(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, options *CustomAIModelsClientCalculateCostOptions) (CustomAIModelsClientCalculateCostResponse, error) {
+	var err error
+	const operationName = "CustomAIModelsClient.CalculateCost"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.calculateCostCreateRequest(ctx, resourceGroupName, aiManagerName, customAIModelName, options)
+	if err != nil {
+		return CustomAIModelsClientCalculateCostResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return CustomAIModelsClientCalculateCostResponse{}, err
+	}
+	resp, err := client.calculateCostHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// calculateCostCreateRequest creates the CalculateCost request.
+func (client *CustomAIModelsClient) calculateCostCreateRequest(ctx context.Context, resourceGroupName string, aiManagerName string, customAIModelName string, _ *CustomAIModelsClientCalculateCostOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/aiManagers/{aiManagerName}/customAIModels/{customAIModelName}/calculateCost"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if aiManagerName == "" {
+		return nil, errors.New("parameter aiManagerName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{aiManagerName}", url.PathEscape(aiManagerName))
+	if customAIModelName == "" {
+		return nil, errors.New("parameter customAIModelName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{customAIModelName}", url.PathEscape(customAIModelName))
+	req, err := runtime.NewRequest(ctx, http.MethodPost, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20260902Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// calculateCostHandleResponse handles the CalculateCost response.
+func (client *CustomAIModelsClient) calculateCostHandleResponse(resp *http.Response, successCodes ...int) (CustomAIModelsClientCalculateCostResponse, error) {
+	result := CustomAIModelsClientCalculateCostResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.CalculateCostResponse); err != nil {
+		return CustomAIModelsClientCalculateCostResponse{}, err
+	}
+	return result, nil
+}
+
 // Get - Get a CustomAIModel
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
@@ -304,7 +307,8 @@ func (client *CustomAIModelsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return CustomAIModelsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -200,6 +200,147 @@ func ExampleStorageAppliancesClient_BeginEnableRemoteVendorManagement() {
 	}
 }
 
+// Generated from example definition: 2026-07-01/StorageAppliances_RunReadCommands.json
+func ExampleStorageAppliancesClient_BeginRunReadCommands() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStorageAppliancesClient().BeginRunReadCommands(ctx, "resourceGroupName", "storageApplianceName", armnetworkcloud.StorageApplianceRunReadCommandsParameters{
+		Commands: []*armnetworkcloud.StorageApplianceCommandSpecification{
+			{
+				Arguments: []*string{
+					to.Ptr("list"),
+					to.Ptr("--filter"),
+					to.Ptr("state='open'"),
+				},
+				Command: to.Ptr("purealert"),
+			},
+		},
+		LimitTimeSeconds: to.Ptr[int64](60),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
+// Generated from example definition: 2026-07-01/StorageAppliances_Patch.json
+func ExampleStorageAppliancesClient_BeginUpdate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewStorageAppliancesClient().BeginUpdate(ctx, "resourceGroupName", "storageApplianceName", armnetworkcloud.StorageAppliancePatchParameters{
+		Properties: &armnetworkcloud.StorageAppliancePatchProperties{
+			SerialNumber: to.Ptr("BM1219XXX"),
+		},
+		Tags: map[string]*string{
+			"key1": to.Ptr("myvalue1"),
+			"key2": to.Ptr("myvalue2"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armnetworkcloud.StorageAppliancesClientUpdateResponse{
+	// 	StorageAppliance: armnetworkcloud.StorageAppliance{
+	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
+	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
+	// 			Type: to.Ptr("CustomLocation"),
+	// 		},
+	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
+	// 		Location: to.Ptr("location"),
+	// 		Name: to.Ptr("storageApplianceName"),
+	// 		Properties: &armnetworkcloud.StorageApplianceProperties{
+	// 			AdministratorCredentials: &armnetworkcloud.AdministrativeCredentials{
+	// 				Username: to.Ptr("adminUser"),
+	// 			},
+	// 			CaCertificate: &armnetworkcloud.CertificateInfo{
+	// 				Hash: to.Ptr("dea698309efd2830a1d440a807650d9aa6d954b3243ab8cb556ac98c1f3faa60"),
+	// 				Value: to.Ptr("-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAL4a5b1d8f2wM...A0GCSqGSIb3DQEBCwUAMEUxCzAJB==\n-----END CERTIFICATE-----"),
+	// 			},
+	// 			Capacity: to.Ptr[int64](893),
+	// 			CapacityUsed: to.Ptr[int64](500),
+	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
+	// 			DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
+	// 			DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
+	// 			ExpansionShelves: []*armnetworkcloud.StorageApplianceExpansionShelf{
+	// 				{
+	// 					Model: to.Ptr("ArrayStore-Exp24"),
+	// 					Version: to.Ptr("6.5.0/2.2.0"),
+	// 				},
+	// 				{
+	// 					Model: to.Ptr("ArrayStore-Exp24"),
+	// 					Version: to.Ptr("6.5.1/2.0.0"),
+	// 				},
+	// 			},
+	// 			ManagementIPv4Address: to.Ptr("192.0.2.2"),
+	// 			Manufacturer: to.Ptr("Contoso Storage"),
+	// 			Model: to.Ptr("ArrayStore-Flash70"),
+	// 			MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
+	// 				LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusLogLevelDefault),
+	// 				MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusMetricsLevelDefault),
+	// 			},
+	// 			ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
+	// 			RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
+	// 			RackSlot: to.Ptr[int64](1),
+	// 			RemoteVendorManagementFeature: to.Ptr(armnetworkcloud.RemoteVendorManagementFeatureSupported),
+	// 			RemoteVendorManagementStatus: to.Ptr(armnetworkcloud.RemoteVendorManagementStatusEnabled),
+	// 			SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
+	// 				{
+	// 					ExpirePeriodDays: to.Ptr[int64](90),
+	// 					LastRotationTime: to.Ptr(time.Date(2023, time.September, 30, 13, 27, 23, 103000000, time.UTC)),
+	// 					RotationPeriodDays: to.Ptr[int64](60),
+	// 					SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
+	// 						KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
+	// 						SecretName: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff-resource-group-cluster-1679871-storage-appliance-credential-manager-ffffffff"),
+	// 						SecretVersion: to.Ptr("02ab6c1f9c0f4982b0632b0d5d74a33b"),
+	// 					},
+	// 					SecretType: to.Ptr("Storage Appliance User"),
+	// 				},
+	// 			},
+	// 			SerialNumber: to.Ptr("BM1219XXX"),
+	// 			StorageApplianceSKUID: to.Ptr("684E-3B16-399E"),
+	// 			Version: to.Ptr("9.9.9"),
+	// 		},
+	// 		SystemData: &armnetworkcloud.SystemData{
+	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
+	// 			CreatedBy: to.Ptr("identityA"),
+	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
+	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
+	// 			LastModifiedBy: to.Ptr("identityB"),
+	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
+	// 		},
+	// 		Tags: map[string]*string{
+	// 			"key1": to.Ptr("myvalue1"),
+	// 			"key2": to.Ptr("myvalue2"),
+	// 		},
+	// 		Type: to.Ptr("Microsoft.NetworkCloud/storageAppliances"),
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2026-07-01/StorageAppliances_Get.json
 func ExampleStorageAppliancesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -506,145 +647,4 @@ func ExampleStorageAppliancesClient_NewListBySubscriptionPager() {
 		// 	},
 		// }
 	}
-}
-
-// Generated from example definition: 2026-07-01/StorageAppliances_RunReadCommands.json
-func ExampleStorageAppliancesClient_BeginRunReadCommands() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStorageAppliancesClient().BeginRunReadCommands(ctx, "resourceGroupName", "storageApplianceName", armnetworkcloud.StorageApplianceRunReadCommandsParameters{
-		Commands: []*armnetworkcloud.StorageApplianceCommandSpecification{
-			{
-				Arguments: []*string{
-					to.Ptr("list"),
-					to.Ptr("--filter"),
-					to.Ptr("state='open'"),
-				},
-				Command: to.Ptr("purealert"),
-			},
-		},
-		LimitTimeSeconds: to.Ptr[int64](60),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-}
-
-// Generated from example definition: 2026-07-01/StorageAppliances_Patch.json
-func ExampleStorageAppliancesClient_BeginUpdate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armnetworkcloud.NewClientFactory("123e4567-e89b-12d3-a456-426655440000", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewStorageAppliancesClient().BeginUpdate(ctx, "resourceGroupName", "storageApplianceName", armnetworkcloud.StorageAppliancePatchParameters{
-		Properties: &armnetworkcloud.StorageAppliancePatchProperties{
-			SerialNumber: to.Ptr("BM1219XXX"),
-		},
-		Tags: map[string]*string{
-			"key1": to.Ptr("myvalue1"),
-			"key2": to.Ptr("myvalue2"),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armnetworkcloud.StorageAppliancesClientUpdateResponse{
-	// 	StorageAppliance: armnetworkcloud.StorageAppliance{
-	// 		ExtendedLocation: &armnetworkcloud.ExtendedLocation{
-	// 			Name: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.ExtendedLocation/customLocations/clusterExtendedLocationName"),
-	// 			Type: to.Ptr("CustomLocation"),
-	// 		},
-	// 		ID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/storageAppliances/storageApplianceName"),
-	// 		Location: to.Ptr("location"),
-	// 		Name: to.Ptr("storageApplianceName"),
-	// 		Properties: &armnetworkcloud.StorageApplianceProperties{
-	// 			AdministratorCredentials: &armnetworkcloud.AdministrativeCredentials{
-	// 				Username: to.Ptr("adminUser"),
-	// 			},
-	// 			CaCertificate: &armnetworkcloud.CertificateInfo{
-	// 				Hash: to.Ptr("dea698309efd2830a1d440a807650d9aa6d954b3243ab8cb556ac98c1f3faa60"),
-	// 				Value: to.Ptr("-----BEGIN CERTIFICATE-----\nMIIDXTCCAkWgAwIBAgIJAL4a5b1d8f2wM...A0GCSqGSIb3DQEBCwUAMEUxCzAJB==\n-----END CERTIFICATE-----"),
-	// 			},
-	// 			Capacity: to.Ptr[int64](893),
-	// 			CapacityUsed: to.Ptr[int64](500),
-	// 			ClusterID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/clusters/clusterName"),
-	// 			DetailedStatus: to.Ptr(armnetworkcloud.StorageApplianceDetailedStatusAvailable),
-	// 			DetailedStatusMessage: to.Ptr("Storage appliance is up and running"),
-	// 			ExpansionShelves: []*armnetworkcloud.StorageApplianceExpansionShelf{
-	// 				{
-	// 					Model: to.Ptr("ArrayStore-Exp24"),
-	// 					Version: to.Ptr("6.5.0/2.2.0"),
-	// 				},
-	// 				{
-	// 					Model: to.Ptr("ArrayStore-Exp24"),
-	// 					Version: to.Ptr("6.5.1/2.0.0"),
-	// 				},
-	// 			},
-	// 			ManagementIPv4Address: to.Ptr("192.0.2.2"),
-	// 			Manufacturer: to.Ptr("Contoso Storage"),
-	// 			Model: to.Ptr("ArrayStore-Flash70"),
-	// 			MonitoringConfigurationStatus: &armnetworkcloud.StorageApplianceMonitoringConfigurationStatus{
-	// 				LogLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusLogLevelDefault),
-	// 				MetricsLevel: to.Ptr(armnetworkcloud.StorageApplianceMonitoringConfigurationStatusMetricsLevelDefault),
-	// 			},
-	// 			ProvisioningState: to.Ptr(armnetworkcloud.StorageApplianceProvisioningStateSucceeded),
-	// 			RackID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.NetworkCloud/racks/rackName"),
-	// 			RackSlot: to.Ptr[int64](1),
-	// 			RemoteVendorManagementFeature: to.Ptr(armnetworkcloud.RemoteVendorManagementFeatureSupported),
-	// 			RemoteVendorManagementStatus: to.Ptr(armnetworkcloud.RemoteVendorManagementStatusEnabled),
-	// 			SecretRotationStatus: []*armnetworkcloud.SecretRotationStatus{
-	// 				{
-	// 					ExpirePeriodDays: to.Ptr[int64](90),
-	// 					LastRotationTime: to.Ptr(time.Date(2023, time.September, 30, 13, 27, 23, 103000000, time.UTC)),
-	// 					RotationPeriodDays: to.Ptr[int64](60),
-	// 					SecretArchiveReference: &armnetworkcloud.SecretArchiveReference{
-	// 						KeyVaultID: to.Ptr("/subscriptions/123e4567-e89b-12d3-a456-426655440000/resourceGroups/resourceGroupName/providers/Microsoft.KeyVault/vaults/keyVaultName"),
-	// 						SecretName: to.Ptr("ffffffff-ffff-ffff-ffff-ffffffffffff-resource-group-cluster-1679871-storage-appliance-credential-manager-ffffffff"),
-	// 						SecretVersion: to.Ptr("02ab6c1f9c0f4982b0632b0d5d74a33b"),
-	// 					},
-	// 					SecretType: to.Ptr("Storage Appliance User"),
-	// 				},
-	// 			},
-	// 			SerialNumber: to.Ptr("BM1219XXX"),
-	// 			StorageApplianceSKUID: to.Ptr("684E-3B16-399E"),
-	// 			Version: to.Ptr("9.9.9"),
-	// 		},
-	// 		SystemData: &armnetworkcloud.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 27, 3, 8000000, time.UTC)),
-	// 			CreatedBy: to.Ptr("identityA"),
-	// 			CreatedByType: to.Ptr(armnetworkcloud.CreatedByTypeApplication),
-	// 			LastModifiedAt: to.Ptr(time.Date(2021, time.January, 22, 13, 29, 3, 1000000, time.UTC)),
-	// 			LastModifiedBy: to.Ptr("identityB"),
-	// 			LastModifiedByType: to.Ptr(armnetworkcloud.CreatedByTypeUser),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 			"key1": to.Ptr("myvalue1"),
-	// 			"key2": to.Ptr("myvalue2"),
-	// 		},
-	// 		Type: to.Ptr("Microsoft.NetworkCloud/storageAppliances"),
-	// 	},
-	// }
 }

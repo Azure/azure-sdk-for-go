@@ -66,7 +66,7 @@ func (client *AddonsClient) BeginCreateOrUpdate(ctx context.Context, deviceName 
 	}
 }
 
-// CreateOrUpdate - Create or update a addon.
+// createOrUpdate - Create or update a addon.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AddonsClient) createOrUpdate(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, addon AddonClassification, options *AddonsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -83,12 +83,13 @@ func (client *AddonsClient) createOrUpdate(ctx context.Context, deviceName strin
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *AddonsClient) createOrUpdateCreateRequest(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, addon AddonClassification, _ *AddonsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/addons/{addonName}"
 	if client.subscriptionID == "" {
@@ -147,7 +148,7 @@ func (client *AddonsClient) BeginDelete(ctx context.Context, deviceName string, 
 	}
 }
 
-// Delete - Deletes the addon on the device.
+// deleteOperation - Deletes the addon on the device.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *AddonsClient) deleteOperation(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, options *AddonsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -164,12 +165,13 @@ func (client *AddonsClient) deleteOperation(ctx context.Context, deviceName stri
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *AddonsClient) deleteCreateRequest(ctx context.Context, deviceName string, roleName string, addonName string, resourceGroupName string, _ *AddonsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/roles/{roleName}/addons/{addonName}"
 	if client.subscriptionID == "" {
@@ -220,7 +222,8 @@ func (client *AddonsClient) Get(ctx context.Context, deviceName string, roleName
 	if err != nil {
 		return AddonsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

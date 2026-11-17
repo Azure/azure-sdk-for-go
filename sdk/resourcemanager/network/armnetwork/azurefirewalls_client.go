@@ -86,7 +86,8 @@ func (client *AzureFirewallsClient) createOrUpdate(ctx context.Context, resource
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -132,7 +133,7 @@ func (client *AzureFirewallsClient) createOrUpdateCreateRequest(ctx context.Cont
 //     method.
 func (client *AzureFirewallsClient) BeginDelete(ctx context.Context, resourceGroupName string, azureFirewallName string, options *AzureFirewallsClientBeginDeleteOptions) (*runtime.Poller[AzureFirewallsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, azureFirewallName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, azureFirewallName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -147,9 +148,9 @@ func (client *AzureFirewallsClient) BeginDelete(ctx context.Context, resourceGro
 	}
 }
 
-// delete - Deletes the specified Azure Firewall.
+// deleteOperation - Deletes the specified Azure Firewall.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *AzureFirewallsClient) delete(ctx context.Context, resourceGroupName string, azureFirewallName string, options *AzureFirewallsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *AzureFirewallsClient) deleteOperation(ctx context.Context, resourceGroupName string, azureFirewallName string, options *AzureFirewallsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "AzureFirewallsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -164,7 +165,8 @@ func (client *AzureFirewallsClient) delete(ctx context.Context, resourceGroupNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -234,7 +236,8 @@ func (client *AzureFirewallsClient) listLearnedPrefixes(ctx context.Context, res
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -306,7 +309,8 @@ func (client *AzureFirewallsClient) packetCapture(ctx context.Context, resourceG
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -381,7 +385,8 @@ func (client *AzureFirewallsClient) packetCaptureOperation(ctx context.Context, 
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -457,7 +462,8 @@ func (client *AzureFirewallsClient) updateTags(ctx context.Context, resourceGrou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -511,7 +517,8 @@ func (client *AzureFirewallsClient) Get(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AzureFirewallsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

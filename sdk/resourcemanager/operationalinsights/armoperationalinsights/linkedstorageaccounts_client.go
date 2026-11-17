@@ -67,7 +67,8 @@ func (client *LinkedStorageAccountsClient) CreateOrUpdate(ctx context.Context, r
 	if err != nil {
 		return LinkedStorageAccountsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -138,7 +139,8 @@ func (client *LinkedStorageAccountsClient) Delete(ctx context.Context, resourceG
 		return LinkedStorageAccountsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return LinkedStorageAccountsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return LinkedStorageAccountsClientDeleteResponse{}, err
 	}
 	return LinkedStorageAccountsClientDeleteResponse{}, nil
 }
@@ -193,7 +195,8 @@ func (client *LinkedStorageAccountsClient) Get(ctx context.Context, resourceGrou
 	if err != nil {
 		return LinkedStorageAccountsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

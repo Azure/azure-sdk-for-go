@@ -65,7 +65,8 @@ func (client *FirmwaresClient) Create(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FirmwaresClientCreateResponse{}, err
 	}
-	return client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createCreateRequest creates the Create request.
@@ -135,7 +136,8 @@ func (client *FirmwaresClient) Delete(ctx context.Context, resourceGroupName str
 		return FirmwaresClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return FirmwaresClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return FirmwaresClientDeleteResponse{}, err
 	}
 	return FirmwaresClientDeleteResponse{}, nil
 }
@@ -189,7 +191,8 @@ func (client *FirmwaresClient) Get(ctx context.Context, resourceGroupName string
 	if err != nil {
 		return FirmwaresClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -332,7 +335,8 @@ func (client *FirmwaresClient) Update(ctx context.Context, resourceGroupName str
 	if err != nil {
 		return FirmwaresClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

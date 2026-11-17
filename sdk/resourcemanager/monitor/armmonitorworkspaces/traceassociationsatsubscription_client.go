@@ -63,7 +63,8 @@ func (client *TraceAssociationsAtSubscriptionClient) CreateOrUpdate(ctx context.
 	if err != nil {
 		return TraceAssociationsAtSubscriptionClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -119,7 +120,8 @@ func (client *TraceAssociationsAtSubscriptionClient) Delete(ctx context.Context,
 		return TraceAssociationsAtSubscriptionClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return TraceAssociationsAtSubscriptionClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return TraceAssociationsAtSubscriptionClientDeleteResponse{}, err
 	}
 	return TraceAssociationsAtSubscriptionClientDeleteResponse{}, nil
 }
@@ -159,7 +161,8 @@ func (client *TraceAssociationsAtSubscriptionClient) Get(ctx context.Context, op
 	if err != nil {
 		return TraceAssociationsAtSubscriptionClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

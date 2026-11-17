@@ -67,7 +67,8 @@ func (client *ManagementPoliciesClient) CreateOrUpdate(ctx context.Context, reso
 	if err != nil {
 		return ManagementPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -139,7 +140,8 @@ func (client *ManagementPoliciesClient) Delete(ctx context.Context, resourceGrou
 		return ManagementPoliciesClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ManagementPoliciesClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ManagementPoliciesClientDeleteResponse{}, err
 	}
 	return ManagementPoliciesClientDeleteResponse{}, nil
 }
@@ -194,7 +196,8 @@ func (client *ManagementPoliciesClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return ManagementPoliciesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

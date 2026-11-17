@@ -67,7 +67,8 @@ func (client *DatabaseRecommendedActionsClient) Get(ctx context.Context, resourc
 	if err != nil {
 		return DatabaseRecommendedActionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -142,7 +143,8 @@ func (client *DatabaseRecommendedActionsClient) ListByDatabaseAdvisor(ctx contex
 	if err != nil {
 		return DatabaseRecommendedActionsClientListByDatabaseAdvisorResponse{}, err
 	}
-	return client.listByDatabaseAdvisorHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listByDatabaseAdvisorHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listByDatabaseAdvisorCreateRequest creates the ListByDatabaseAdvisor request.
@@ -215,7 +217,8 @@ func (client *DatabaseRecommendedActionsClient) Update(ctx context.Context, reso
 	if err != nil {
 		return DatabaseRecommendedActionsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

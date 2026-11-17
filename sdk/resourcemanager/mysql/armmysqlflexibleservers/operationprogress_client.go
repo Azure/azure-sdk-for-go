@@ -65,7 +65,8 @@ func (client *OperationProgressClient) Get(ctx context.Context, locationName str
 	if err != nil {
 		return OperationProgressClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

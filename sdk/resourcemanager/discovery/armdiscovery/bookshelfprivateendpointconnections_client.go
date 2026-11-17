@@ -69,7 +69,7 @@ func (client *BookshelfPrivateEndpointConnectionsClient) BeginCreateOrUpdate(ctx
 	}
 }
 
-// CreateOrUpdate - Approves or updates the specified private endpoint connection.
+// createOrUpdate - Approves or updates the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BookshelfPrivateEndpointConnectionsClient) createOrUpdate(ctx context.Context, resourceGroupName string, bookshelfName string, privateEndpointConnectionName string, resource BookshelfPrivateEndpointConnection, options *BookshelfPrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -86,12 +86,13 @@ func (client *BookshelfPrivateEndpointConnectionsClient) createOrUpdate(ctx cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BookshelfPrivateEndpointConnectionsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, bookshelfName string, privateEndpointConnectionName string, resource BookshelfPrivateEndpointConnection, _ *BookshelfPrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *BookshelfPrivateEndpointConnectionsClient) BeginDelete(ctx context
 	}
 }
 
-// Delete - Deletes the specified private endpoint connection.
+// deleteOperation - Deletes the specified private endpoint connection.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BookshelfPrivateEndpointConnectionsClient) deleteOperation(ctx context.Context, resourceGroupName string, bookshelfName string, privateEndpointConnectionName string, options *BookshelfPrivateEndpointConnectionsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -166,12 +167,13 @@ func (client *BookshelfPrivateEndpointConnectionsClient) deleteOperation(ctx con
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *BookshelfPrivateEndpointConnectionsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, bookshelfName string, privateEndpointConnectionName string, _ *BookshelfPrivateEndpointConnectionsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Discovery/bookshelves/{bookshelfName}/privateEndpointConnections/{privateEndpointConnectionName}"
 	if client.subscriptionID == "" {
@@ -221,7 +223,8 @@ func (client *BookshelfPrivateEndpointConnectionsClient) Get(ctx context.Context
 	if err != nil {
 		return BookshelfPrivateEndpointConnectionsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

@@ -67,7 +67,8 @@ func (client *NamespacesClient) CheckNameAvailability(ctx context.Context, resou
 	if err != nil {
 		return NamespacesClientCheckNameAvailabilityResponse{}, err
 	}
-	return client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkNameAvailabilityHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkNameAvailabilityCreateRequest creates the CheckNameAvailability request.

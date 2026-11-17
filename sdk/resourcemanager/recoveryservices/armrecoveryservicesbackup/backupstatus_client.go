@@ -65,7 +65,8 @@ func (client *BackupStatusClient) Get(ctx context.Context, azureRegion string, p
 	if err != nil {
 		return BackupStatusClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

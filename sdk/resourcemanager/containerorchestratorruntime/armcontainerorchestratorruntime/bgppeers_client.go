@@ -63,7 +63,7 @@ func (client *BgpPeersClient) BeginCreateOrUpdate(ctx context.Context, resourceU
 	}
 }
 
-// CreateOrUpdate - Create a BgpPeer
+// createOrUpdate - Create a BgpPeer
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *BgpPeersClient) createOrUpdate(ctx context.Context, resourceURI string, bgpPeerName string, resource BgpPeer, options *BgpPeersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -80,12 +80,13 @@ func (client *BgpPeersClient) createOrUpdate(ctx context.Context, resourceURI st
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *BgpPeersClient) createOrUpdateCreateRequest(ctx context.Context, resourceURI string, bgpPeerName string, resource BgpPeer, _ *BgpPeersClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/{resourceUri}/providers/Microsoft.KubernetesRuntime/bgpPeers/{bgpPeerName}"
 	if resourceURI == "" {
@@ -131,7 +132,8 @@ func (client *BgpPeersClient) Delete(ctx context.Context, resourceURI string, bg
 		return BgpPeersClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return BgpPeersClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return BgpPeersClientDeleteResponse{}, err
 	}
 	return BgpPeersClientDeleteResponse{}, nil
 }
@@ -176,7 +178,8 @@ func (client *BgpPeersClient) Get(ctx context.Context, resourceURI string, bgpPe
 	if err != nil {
 		return BgpPeersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

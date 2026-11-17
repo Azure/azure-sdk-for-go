@@ -65,7 +65,7 @@ func (f *FeaturestoreEntityVersionsServerTransport) Do(req *http.Request) (*http
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return f.dispatchToMethodFake(req, method)
@@ -283,11 +283,8 @@ func (f *FeaturestoreEntityVersionsServerTransport) dispatchNewListPager(req *ht
 		tagsParam := getOptional(qp.Get("tags"))
 		listViewTypeParam := getOptional(armmachinelearning.ListViewType(qp.Get("listViewType")))
 		pageSizeParam, err := parseOptional(qp.Get("pageSize"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

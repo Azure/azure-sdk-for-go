@@ -36,6 +36,30 @@ type ActionDependency struct {
 	OnActionLifecycle *ActionLifecycle
 }
 
+// ActionError - Structured information about a scenario action failure.
+type ActionError struct {
+	// READ-ONLY; The stable code that identifies the action failure.
+	Code *string
+
+	// READ-ONLY; The customer-safe description of the action failure.
+	Message *string
+
+	// READ-ONLY; Additional customer-safe details about the action failure.
+	Details []*ActionErrorDetail
+}
+
+// ActionErrorDetail - Additional information about a scenario action failure.
+type ActionErrorDetail struct {
+	// READ-ONLY; The stable code that identifies the failure detail.
+	Code *string
+
+	// READ-ONLY; The customer-safe description of the failure detail.
+	Message *string
+
+	// READ-ONLY; The target associated with the failure detail.
+	Target *string
+}
+
 // ActionListResult - Model that represents a list of Action resources and a link for pagination.
 type ActionListResult struct {
 	// REQUIRED; The Action items on this page
@@ -315,9 +339,6 @@ type ConnectionProperties struct {
 	// The subject name of the certificate used to authenticate the connection.
 	CertificateSubjectName *string
 
-	// The dSTS principal name used to authenticate the connection.
-	DstsPrincipal *string
-
 	// The Microsoft Entra principal (object) ID of the identity used by the connection.
 	PrincipalID *string
 
@@ -439,6 +460,16 @@ type DiscoveredResourceProperties struct {
 
 	// READ-ONLY; The scope of the discovered resource.
 	Scope *string
+
+	// READ-ONLY; The Azure region the discovered resource is deployed to, in lowercase with no spaces. Absent when no single
+	// deployment region was captured, including global and multi-region resources.
+	Location *string
+
+	// READ-ONLY; The availability zones the discovered resource occupies. Values are logical zone identifiers, such as `["1",
+	// "2"]` for a zone-pinned resource, or the single value `zone-redundant` when redundancy is expressed as a flag or SKU rather
+	// than a zone list. Absent, and never empty, when no zone information was captured; a non-zone-aware resource and a zone-aware
+	// resource without an assigned zone are not distinguished.
+	Zones []*string
 }
 
 // DiscreteAction - Model that represents a discrete action.
@@ -920,166 +951,6 @@ type PhysicalToLogicalZoneMapping struct {
 	PhysicalZone *string
 }
 
-// PrivateAccesses tracked resource.
-type PrivateAccess struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// REQUIRED; The resource-specific properties for this resource.
-	Properties *PrivateAccessProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// PrivateAccessListResult - Model that represents a list of private access resources and a link for pagination.
-type PrivateAccessListResult struct {
-	// REQUIRED; The PrivateAccess items on this page
-	Value []*PrivateAccess
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// PrivateAccessPatch - Describes a private access update.
-type PrivateAccessPatch struct {
-	// Resource tags.
-	Tags map[string]*string
-}
-
-// PrivateAccessProperties - The properties of a private access resource
-type PrivateAccessProperties struct {
-	// Public Network Access Control for PrivateAccess resource.
-	PublicNetworkAccess *PublicNetworkAccessOption
-
-	// READ-ONLY; A readonly collection of private endpoint connection. Currently only one endpoint connection is supported.
-	PrivateEndpointConnections []*PrivateEndpointConnection
-
-	// READ-ONLY; Most recent provisioning state for the given privateAccess resource.
-	ProvisioningState *ProvisioningState
-}
-
-// PrivateEndpoint - The private endpoint resource.
-type PrivateEndpoint struct {
-	// READ-ONLY; The Azure identifier for private endpoint.
-	ID *string
-}
-
-// PrivateEndpointConnection - The private endpoint connection resource.
-type PrivateEndpointConnection struct {
-	// Resource properties.
-	Properties *PrivateEndpointConnectionProperties
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// PrivateEndpointConnectionListResult - A list of private link resources
-type PrivateEndpointConnectionListResult struct {
-	// REQUIRED; The PrivateEndpointConnection items on this page
-	Value []*PrivateEndpointConnection
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// PrivateEndpointConnectionProperties - Properties of the private endpoint connection.
-type PrivateEndpointConnectionProperties struct {
-	// REQUIRED; A collection of information about the state of the connection between service consumer and provider.
-	PrivateLinkServiceConnectionState *PrivateLinkServiceConnectionState
-
-	// The private endpoint resource.
-	PrivateEndpoint *PrivateEndpoint
-
-	// READ-ONLY; The group ids for the private endpoint resource.
-	GroupIDs []*string
-
-	// READ-ONLY; The provisioning state of the private endpoint connection resource.
-	ProvisioningState *ProvisioningState
-}
-
-// PrivateLinkResource - A private link resource.
-type PrivateLinkResource struct {
-	// REQUIRED; The geo-location where the resource lives
-	Location *string
-
-	// REQUIRED; The resource-specific properties for this resource.
-	Properties *PrivateLinkResourceProperties
-
-	// Resource tags.
-	Tags map[string]*string
-
-	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
-	ID *string
-
-	// READ-ONLY; The name of the resource
-	Name *string
-
-	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
-	SystemData *SystemData
-
-	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-	Type *string
-}
-
-// PrivateLinkResourceListResult - A list of private link resources
-type PrivateLinkResourceListResult struct {
-	// REQUIRED; The PrivateLinkResource items on this page
-	Value []*PrivateLinkResource
-
-	// The link to the next page of items
-	NextLink *string
-}
-
-// PrivateLinkResourceProperties - Properties of a private link resource.
-type PrivateLinkResourceProperties struct {
-	// The private link resource private link DNS zone name.
-	RequiredZoneNames []*string
-
-	// READ-ONLY; The private link resource group id.
-	GroupID *string
-
-	// READ-ONLY; Resource provisioning state. Not currently in use.
-	ProvisioningState *ProvisioningState
-
-	// READ-ONLY; The private link resource required member names.
-	RequiredMembers []*string
-}
-
-// PrivateLinkServiceConnectionState - A collection of information about the state of the connection between service consumer
-// and provider.
-type PrivateLinkServiceConnectionState struct {
-	// A message indicating if changes on the service provider require any updates on the consumer.
-	ActionsRequired *string
-
-	// The reason for approval/rejection of the connection.
-	Description *string
-
-	// Indicates whether the connection has been Approved/Rejected/Removed by the owner of the service.
-	Status *PrivateEndpointServiceConnectionStatus
-}
-
 // Recommendation - Model that represents a scenario recommendation.
 type Recommendation struct {
 	// READ-ONLY; The recommendation status.
@@ -1092,7 +963,7 @@ type Recommendation struct {
 // ResourceStateError - Model that represents the resource state error.
 type ResourceStateError struct {
 	// READ-ONLY; The error code.
-	ErrorCode *int32
+	ErrorCode *string
 
 	// READ-ONLY; The error message.
 	ErrorMessage *string
@@ -1230,17 +1101,37 @@ type ScenarioAction struct {
 	// External resource reference for the action.
 	ExternalResource *ExternalResource
 
+	// Per-action override for how the scenario run reacts when this action fails. When omitted,
+	// the action inherits the scenario-level `failureBehavior`; when neither is supplied the
+	// effective behavior is `Stop`.
+	FailureBehavior *FailureBehavior
+
 	// Action-specific parameter values.
 	Parameters []*KeyValuePair
 
 	// Action dependencies that control when this action starts.
 	RunAfter *RunAfter
 
+	// Action-specific target selectors evaluated during execution. When provided,
+	// the collection must contain either `logicalZone` and `location`, or `physicalZone`.
+	// Selector names must be unique, the two modes cannot be combined, and the service
+	// enforces the cross-item combination at runtime.
+	Selectors []*ScenarioActionSelector
+
 	// ISO 8601 duration for maximum action execution time. Supports template macro syntax.
 	Timeout *string
 
 	// ISO 8601 duration to wait before action starts (e.g., PT30S for 30 seconds). Supports template macro syntax.
 	WaitBefore *string
+}
+
+// ScenarioActionSelector - Model that represents an action-specific target selector.
+type ScenarioActionSelector struct {
+	// REQUIRED; The selector name, such as `logicalZone`, `physicalZone`, or `location`.
+	Name *ScenarioActionSelectorName
+
+	// REQUIRED; The value that targets must match. Supports template macro syntax.
+	Value *string
 }
 
 // ScenarioConfiguration - Model that represents the scenario.
@@ -1329,32 +1220,66 @@ type ScenarioParameter struct {
 	// Description of the parameter.
 	Description *string
 
+	// Format validation applied to the parameter's value, and examples of values that satisfy it.
+	Format *ScenarioParameterFormat
+
 	// Whether this parameter is required.
 	Required *bool
 }
 
+// ScenarioParameterFormat - Model that represents the format validation applied to a scenario parameter's value.
+type ScenarioParameterFormat struct {
+	// Human-readable examples of values that satisfy the format.
+	Examples []*string
+
+	// The built-in format the value is validated against.
+	FormatType *ParameterFormatType
+}
+
 // ScenarioProperties - Model that represents the properties of the scenario.
 type ScenarioProperties struct {
-	// REQUIRED; Array of actions that define the scenario's orchestration.
+	// Array of actions that define the scenario's orchestration.
 	Actions []*ScenarioAction
 
-	// REQUIRED; Parameter definitions for the scenario.
-	Parameters []*ScenarioParameter
+	// Resource ID of the template version this scenario was created from (optional).
+	// The ID has the form
+	// `/providers/Microsoft.Chaos/scenarioTemplates/{scenarioTemplateName}/versions/{version}`.
+	// This property retains its existing string representation for compatibility
+	// with earlier API versions and SDKs.
+	// A scenario's structure comes from exactly one of two mutually exclusive sources.
+	// When `createdFrom` is supplied on create, the referenced template version is the
+	// authoritative source for the scenario's structure; inline `parameters` and
+	// `actions` are not used. When `createdFrom` is absent, the structure comes from
+	// the inline `parameters` and `actions` supplied in the request.
+	// Supplying neither source is rejected by request validation.
+	CreatedFrom *string
 
 	// Description of what this scenario does (optional).
 	Description *string
 
-	// READ-ONLY; Resource ID of the template version this scenario was created from (optional).
-	CreatedFrom *string
+	// Scenario-wide default for how a scenario run reacts when one of its actions fails.
+	// An action that does not supply its own `failureBehavior` inherits this value; when
+	// neither is supplied the effective behavior is `Stop`.
+	// Not used when `createdFrom` is supplied, for the same reason as `parameters` and
+	// `actions`: the referenced template version is then the authoritative source for the
+	// scenario's structure, and it supplies this policy too. A value sent in the request is
+	// ignored in that case — on create the referenced template's policy is used, and on update
+	// the policy of the already persisted template is preserved.
+	FailureBehavior *FailureBehavior
+
+	// Parameter definitions for the scenario.
+	Parameters []*ScenarioParameter
+
+	// Version of the scenario, supplied by the author. Defaults to `1.0` when not
+	// supplied on create. This is the scenario's own version and is independent of
+	// the version of any template it was created from.
+	Version *string
 
 	// READ-ONLY; Most recent provisioning state for the given scenario resource.
 	ProvisioningState *ProvisioningState
 
 	// READ-ONLY; The recommendation information for this scenario.
 	Recommendation *Recommendation
-
-	// READ-ONLY; Version of the scenario.
-	Version *string
 }
 
 // ScenarioRun - Model that represents the scenario run.
@@ -1373,6 +1298,21 @@ type ScenarioRun struct {
 
 	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
 	Type *string
+}
+
+// ScenarioRunEffectiveTarget - Model that represents the outcome for a concrete action target.
+type ScenarioRunEffectiveTarget struct {
+	// READ-ONLY; The target resource ID.
+	ID *string
+
+	// READ-ONLY; The target execution state.
+	State *ScenarioRunTargetState
+
+	// READ-ONLY; When target processing completed.
+	CompletedAt *time.Time
+
+	// READ-ONLY; When target processing started.
+	StartedAt *time.Time
 }
 
 // ScenarioRunListResult - Model that represents a list of scenario runs and a link for pagination.
@@ -1433,6 +1373,9 @@ type ScenarioRunProperties struct {
 	// READ-ONLY; The scenario run summary.
 	ScenarioRunSummary []*ScenarioRunSummaryAction
 
+	// READ-ONLY; Customer-actionable warnings encountered during the scenario run.
+	Warnings []*ScenarioRunWarning
+
 	// READ-ONLY; Zone resolution information. Present when the scenario configuration
 	// used physical zone targeting (`physicalZones`). Contains the mode,
 	// requested physical zones, and per-subscription logical zone mappings.
@@ -1450,8 +1393,9 @@ type ScenarioRunSummaryAction struct {
 	// READ-ONLY; The urn for the given chaos action.
 	ActionUrn *string
 
-	// READ-ONLY; The resources associated with the specified action.
-	Resources []*ScenarioRunResource
+	// READ-ONLY; The resources associated with the specified action, including the concrete targets
+	// evaluated during execution.
+	Resources []*ScenarioRunSummaryResource
 
 	// READ-ONLY; The state of the action.
 	State *ScenarioSummaryState
@@ -1459,8 +1403,209 @@ type ScenarioRunSummaryAction struct {
 	// READ-ONLY; When the action was completed.
 	CompletedAt *time.Time
 
+	// READ-ONLY; Structured information about the action failure.
+	Error *ActionError
+
+	// READ-ONLY; Whether this action's failure was suppressed by the effective `failureBehavior`
+	// and therefore did not fail the scenario run. Present only for actions in the
+	// `Failed` state; absent otherwise.
+	FailureSuppressed *bool
+
 	// READ-ONLY; When the action was started.
 	StartedAt *time.Time
+}
+
+// ScenarioRunSummaryResource - Model that represents a resource associated with a scenario run action.
+type ScenarioRunSummaryResource struct {
+	// READ-ONLY; The resource ID.
+	ID *string
+
+	// READ-ONLY; The resources affected during action execution.
+	AffectedResources []*ScenarioRunEffectiveTarget
+}
+
+// ScenarioRunWarning - Customer-actionable warning associated with a scenario run.
+type ScenarioRunWarning struct {
+	// READ-ONLY; The stable code that identifies the warning.
+	Code *string
+
+	// READ-ONLY; The customer-safe description of the warning.
+	Message *string
+
+	// READ-ONLY; Additional customer-safe details about the warning.
+	Details []*ScenarioRunWarningDetail
+}
+
+// ScenarioRunWarningDetail - Additional information about a scenario run warning.
+type ScenarioRunWarningDetail struct {
+	// READ-ONLY; The stable code that identifies the warning detail.
+	Code *string
+
+	// READ-ONLY; The customer-safe description of the warning detail.
+	Message *string
+
+	// READ-ONLY; The target associated with the warning detail.
+	Target *string
+}
+
+// ScenarioTemplate - Model that represents a built-in scenario template. A scenario template is a versioned,
+// read-only blueprint published by Microsoft that can be used to create a scenario. Templates
+// are the same shape as the scenarios they produce, so an action read from a template is valid
+// input to a scenario create.
+// The template is addressed without a version, and always describes its newest published
+// version. Address a specific version through the child versions resource.
+type ScenarioTemplate struct {
+	// REQUIRED; The properties of the scenario template's newest published version.
+	Properties *ScenarioTemplateProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ScenarioTemplateListResult - Model that represents a list of scenario templates and a link for pagination.
+type ScenarioTemplateListResult struct {
+	// REQUIRED; The ScenarioTemplate items on this page
+	Value []*ScenarioTemplate
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ScenarioTemplateProperties - Model that represents the properties of a scenario template. These are the properties of the
+// template's newest published version, together with the version number that identifies it.
+type ScenarioTemplateProperties struct {
+	// READ-ONLY; The actions that define the template's orchestration. These are the same model a scenario
+	// publishes, and carry unresolved `%%\{...\}%%` macros; the macros are substituted when the
+	// scenario runs, not when it is read or created.
+	// Three macro namespaces may appear:
+	//
+	//   - `%%\{parameters.\<name\>\}%%` — resolves from the parameter values supplied when the
+	//
+	// scenario is configured. The accepted names are declared by `parameters`.
+	//
+	//   - `%%\{resourceTargeting.include.\<dimension\>\}%%` — resolves from the resource targeting
+	//
+	// of the scenario's configuration (for example `zones`, `locations`). The template does not
+	// declare these; they are dimensions of the configuration supplied at run time.
+	//
+	//   - `%%\{filters.\<dimension\>\}%%` — deprecated spelling of `resourceTargeting.include.`,
+	//
+	// retained only so that superseded template versions keep resolving. Do not depend on it;
+	// the newest version of every template uses `resourceTargeting.include.`.
+	// An action's `failureBehavior` overrides the template-wide `failureBehavior` for that action
+	// alone; an action that does not carry one inherits the template-wide value.
+	Actions []*ScenarioAction
+
+	// READ-ONLY; The newest published version of the template, for example 1.2. This is the version whose
+	// content the remaining properties describe, and the version a scenario records when it is
+	// created from the template without naming one.
+	LatestVersion *string
+
+	// READ-ONLY; Description of what the template does, and what resilience question it answers.
+	Description *string
+
+	// READ-ONLY; Localized display name of the template.
+	DisplayName *string
+
+	// READ-ONLY; Template-wide default for how a scenario run reacts when one of this template's actions
+	// fails. An action that does not carry its own `failureBehavior` inherits this value; when
+	// neither is present the effective behavior is `Stop`.
+	// A scenario created from this template takes this policy with the rest of the template's
+	// structure, so it is also the scenario's resolved `failureBehavior`. Template versions
+	// published before this policy existed do not carry one and report it as absent, which the
+	// run resolves as `Stop`.
+	FailureBehavior *FailureBehavior
+
+	// READ-ONLY; Parameter definitions the template accepts. Values are supplied when the scenario created
+	// from this template is configured, and are referenced from an action through the
+	// `%%\{parameters.\<name\>\}%%` macro.
+	Parameters []*ScenarioParameter
+}
+
+// ScenarioTemplateVersion - Model that represents a single published version of a scenario template. A published version
+// is immutable: corrections are shipped as a new version rather than by changing an existing
+// one, so a scenario that records the version it was created from always resolves to the same
+// content.
+type ScenarioTemplateVersion struct {
+	// REQUIRED; The properties of the scenario template version.
+	Properties *ScenarioTemplateVersionProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// ScenarioTemplateVersionListResult - Model that represents a list of scenario template versions and a link for pagination.
+type ScenarioTemplateVersionListResult struct {
+	// REQUIRED; The ScenarioTemplateVersion items on this page
+	Value []*ScenarioTemplateVersion
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// ScenarioTemplateVersionProperties - Model that represents the properties of a single published version of a scenario template
+// —
+// the blueprint content itself.
+type ScenarioTemplateVersionProperties struct {
+	// READ-ONLY; The actions that define the template's orchestration. These are the same model a scenario
+	// publishes, and carry unresolved `%%\{...\}%%` macros; the macros are substituted when the
+	// scenario runs, not when it is read or created.
+	// Three macro namespaces may appear:
+	//
+	//   - `%%\{parameters.\<name\>\}%%` — resolves from the parameter values supplied when the
+	//
+	// scenario is configured. The accepted names are declared by `parameters`.
+	//
+	//   - `%%\{resourceTargeting.include.\<dimension\>\}%%` — resolves from the resource targeting
+	//
+	// of the scenario's configuration (for example `zones`, `locations`). The template does not
+	// declare these; they are dimensions of the configuration supplied at run time.
+	//
+	//   - `%%\{filters.\<dimension\>\}%%` — deprecated spelling of `resourceTargeting.include.`,
+	//
+	// retained only so that superseded template versions keep resolving. Do not depend on it;
+	// the newest version of every template uses `resourceTargeting.include.`.
+	// An action's `failureBehavior` overrides the template-wide `failureBehavior` for that action
+	// alone; an action that does not carry one inherits the template-wide value.
+	Actions []*ScenarioAction
+
+	// READ-ONLY; Description of what the template does, and what resilience question it answers.
+	Description *string
+
+	// READ-ONLY; Localized display name of the template.
+	DisplayName *string
+
+	// READ-ONLY; Template-wide default for how a scenario run reacts when one of this template's actions
+	// fails. An action that does not carry its own `failureBehavior` inherits this value; when
+	// neither is present the effective behavior is `Stop`.
+	// A scenario created from this template takes this policy with the rest of the template's
+	// structure, so it is also the scenario's resolved `failureBehavior`. Template versions
+	// published before this policy existed do not carry one and report it as absent, which the
+	// run resolves as `Stop`.
+	FailureBehavior *FailureBehavior
+
+	// READ-ONLY; Parameter definitions the template accepts. Values are supplied when the scenario created
+	// from this template is configured, and are referenced from an action through the
+	// `%%\{parameters.\<name\>\}%%` macro.
+	Parameters []*ScenarioParameter
 }
 
 // StepStatus - Model that represents the a list of branches and branch statuses.
@@ -1685,13 +1830,11 @@ type TemplateEvaluationResultItem struct {
 	// REQUIRED; The evaluation result for this template.
 	EvaluationResult *RecommendationStatus
 
-	// The template ID that was evaluated. Optional because the underlying BE field may
-	// be null for legacy evaluations created before template-centric persistence landed;
-	// the GW falls back to `scenarioName` in that case (`scenario.Id == templateId` by BE
-	// convention), so ARM responses are typically populated in practice.
+	// READ-ONLY; The canonical ARM ID of the evaluated scenario-template version. Scenario IDs and versionless template aliases
+	// are not valid substitutes.
 	TemplateID *string
 
-	// The template name that was evaluated. Optional for the same reason as `templateId`.
+	// READ-ONLY; The stable catalog name of the evaluated scenario template, not a localized display name.
 	TemplateName *string
 }
 
@@ -1779,7 +1922,65 @@ type Workspace struct {
 	Type *string
 }
 
-// WorkspaceDiscovery - Model that represents the latest workspace discovery result.
+// WorkspaceCustomerManagedKeyEncryption - A customer-managed key reference, not key material.
+type WorkspaceCustomerManagedKeyEncryption struct {
+	// REQUIRED; The versionless HTTPS Key Vault key URI in the supported cloud and Workspace
+	// tenant. The key vault must belong to the same Microsoft Entra tenant as
+	// the Workspace. Its HTTPS origin must match the vault referenced by
+	// keyVaultResourceId. The service validates the effective pair and caller
+	// vault-read permission synchronously through Azure Resource Manager before
+	// creating public operation metadata, accepting the configuration operation,
+	// persisting requested encryption, or changing Storage or customer data.
+	// Supports RSA keys in Azure Key Vault and RSA-HSM keys in Premium Key Vault,
+	// with key sizes of 2048, 3072, or 4096 bits. Premium RSA-HSM keys use the same
+	// vault URL. The separate Azure Managed HSM service is not supported;
+	// Managed HSM endpoints are rejected before operation acceptance.
+	// A key version, query string, or fragment is not permitted.
+	// Azure Storage follows key versions automatically. Keep the previous version
+	// available for at least 24 hours after rotation.
+	KeyEncryptionKeyURL *string
+
+	// REQUIRED; The fully qualified Azure resource ID of the key vault that contains the key.
+	// Use /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName},
+	// not a key child resource, Managed HSM, or URL. Full PUT with CMK and PATCH
+	// that changes either CMK member require Microsoft.KeyVault/vaults/read on
+	// the effective vault. The service compares its canonical ID, tenant, and
+	// vault URI with the requested pair before accepting the operation.
+	KeyVaultResourceID *string
+}
+
+// WorkspaceCustomerManagedKeyEncryptionPatchMergePatchUpdateOrCreate - A partial customer key reference, validated after
+// merging with the stored setting.
+type WorkspaceCustomerManagedKeyEncryptionPatchMergePatchUpdateOrCreate struct {
+	// The replacement versionless key URI. Omission retains the URI; null deletes
+	// it. A same-vault replacement retains the stored vault ID. The effective
+	// pair is authorized and validated before acceptance; an incomplete or
+	// mismatched pair is rejected. Key path and name casing is preserved.
+	KeyEncryptionKeyURL *string
+
+	// The vault resource ID to merge with the key URL. Omission retains the ID,
+	// but does not bypass caller authorization when the URL changes. Null deletes
+	// the ID; a remaining CMK object without both members is invalid. Changing
+	// vault requires a coherent new URL and ID pair.
+	KeyVaultResourceID *string
+}
+
+// WorkspaceCustomerManagedKeyOnboarding - The service application that the customer authorizes to use the key.
+type WorkspaceCustomerManagedKeyOnboarding struct {
+	// READ-ONLY; The Microsoft Entra application ID used for customer consent, returned for
+	// existing Workspaces, including Microsoft-managed Workspaces. This does not
+	// permit adding CMK to an existing Microsoft-managed Workspace. Before
+	// creating a Workspace with a customer key, obtain the application name and
+	// ID for the target cloud from the service onboarding documentation or Portal,
+	// then consent and grant key access. The configuring caller separately needs
+	// Microsoft.KeyVault/vaults/read on the referenced vault.
+	// GET returns the same application ID.
+	// This is not a service principal object ID or an identity selector.
+	// The Workspace's top-level identity does not select this application.
+	ApplicationID *string
+}
+
+// WorkspaceDiscovery - A retained workspace discovery result and its accepted coverage facts.
 type WorkspaceDiscovery struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkspaceDiscoveryProperties
@@ -1797,6 +1998,84 @@ type WorkspaceDiscovery struct {
 	Type *string
 }
 
+// WorkspaceDiscoveryAccessWarning - Neutral guidance when access versus absence could not be established.
+type WorkspaceDiscoveryAccessWarning struct {
+	// READ-ONLY; Human-readable guidance with attribution appropriate to the reason.
+	Message *string
+
+	// READ-ONLY; Identifies neutral access-versus-absence guidance.
+	Reason *WorkspaceDiscoveryWarningReason
+
+	// READ-ONLY; The affected resource or member identity.
+	ResourceID *string
+
+	// READ-ONLY; The normalized expanded source scope where the affected obligation was encountered.
+	ScopeID *string
+
+	// READ-ONLY; The source scope kind, such as Subscription, ResourceGroup, ServiceGroup, or Resource.
+	ScopeKind *string
+}
+
+// GetWorkspaceDiscoveryWarning implements the WorkspaceDiscoveryWarningClassification interface for type WorkspaceDiscoveryAccessWarning.
+func (w *WorkspaceDiscoveryAccessWarning) GetWorkspaceDiscoveryWarning() *WorkspaceDiscoveryWarning {
+	return &WorkspaceDiscoveryWarning{
+		Message:   w.Message,
+		Reason:    w.Reason,
+		ScopeID:   w.ScopeID,
+		ScopeKind: w.ScopeKind,
+	}
+}
+
+// WorkspaceDiscoveryCoverageSummary - Aggregate coverage of expanded Azure Resource Manager scope occurrences. Non-Azure
+// Resource Manager discovery ingress is outside this population. VerificationIncomplete dominates KnownPartial, then BaselineUnknown,
+// then Established.
+type WorkspaceDiscoveryCoverageSummary struct {
+	// READ-ONLY; The scope-occurrence coverage partitions for this discovery result.
+	Scopes *WorkspaceDiscoveryScopeCoverageSummary
+
+	// READ-ONLY; Required resource occurrences only from scopes with a known complete expected inventory set. Absent exactly
+	// when knownExpectedSetCount is zero. Unknown is not a known empty set.
+	Resources *WorkspaceDiscoveryResourceCoverageSummary
+}
+
+// WorkspaceDiscoveryListResult - The response of a WorkspaceDiscovery list operation.
+type WorkspaceDiscoveryListResult struct {
+	// REQUIRED; The WorkspaceDiscovery items on this page
+	Value []*WorkspaceDiscovery
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// WorkspaceDiscoveryPermissionWarning - Confirmed read-authorization guidance. Permission details are required composition,
+// not an optional shell reused for other causes.
+type WorkspaceDiscoveryPermissionWarning struct {
+	// READ-ONLY; Human-readable guidance with attribution appropriate to the reason.
+	Message *string
+
+	// READ-ONLY; The affected resource, required permissions, recommended roles, and optional identity details.
+	Permission *PermissionError
+
+	// READ-ONLY; Identifies confirmed read-authorization guidance.
+	Reason *WorkspaceDiscoveryWarningReason
+
+	// READ-ONLY; The normalized expanded source scope where the affected obligation was encountered.
+	ScopeID *string
+
+	// READ-ONLY; The source scope kind, such as Subscription, ResourceGroup, ServiceGroup, or Resource.
+	ScopeKind *string
+}
+
+// GetWorkspaceDiscoveryWarning implements the WorkspaceDiscoveryWarningClassification interface for type WorkspaceDiscoveryPermissionWarning.
+func (w *WorkspaceDiscoveryPermissionWarning) GetWorkspaceDiscoveryWarning() *WorkspaceDiscoveryWarning {
+	return &WorkspaceDiscoveryWarning{
+		Message:   w.Message,
+		Reason:    w.Reason,
+		ScopeID:   w.ScopeID,
+		ScopeKind: w.ScopeKind,
+	}
+}
+
 // WorkspaceDiscoveryProperties - Model that represents the properties of the workspace discovery.
 type WorkspaceDiscoveryProperties struct {
 	// READ-ONLY; The discovery status.
@@ -1804,6 +2083,14 @@ type WorkspaceDiscoveryProperties struct {
 
 	// READ-ONLY; The workspace ID this discovery belongs to.
 	WorkspaceID *string
+
+	// READ-ONLY; The coverage established by the accepted discovery result for Azure Resource Manager scopes. Present with coverageSummary
+	// on newly produced snapshot results; absence is not Established or a known zero.
+	Completeness *WorkspaceDiscoveryCompleteness
+
+	// READ-ONLY; Coverage facts for the accepted result. Scope counts, resource-occurrence counts, warning counts, and returned
+	// inventory-row counts are different units and must not be combined.
+	CoverageSummary *WorkspaceDiscoveryCoverageSummary
 
 	// READ-ONLY; The discovery UTC end time.
 	EndTime *time.Time
@@ -1816,9 +2103,179 @@ type WorkspaceDiscoveryProperties struct {
 
 	// READ-ONLY; The discovery UTC start time.
 	StartTime *time.Time
+
+	// READ-ONLY; Confirmed access, missing-resource, or access-indeterminate guidance. System verification failures are reported
+	// in errors, not as permission warnings. The returned array may be a subset; use warningsTotalCount and warningsTruncated.
+	Warnings []WorkspaceDiscoveryWarningClassification
+
+	// READ-ONLY; The deduplicated number of warning identities before sampling. Identity consists of the expanded scope, affected
+	// resource, and reason. Absent means no accepted warning population was recorded, not zero warnings.
+	WarningsTotalCount *int64
+
+	// READ-ONLY; Whether warnings contains fewer entries than warningsTotalCount. False requires equality; true requires a smaller
+	// returned array. An accepted empty warning population is an empty array, zero total, and false.
+	WarningsTruncated *bool
 }
 
-// WorkspaceEvaluation - Model that represents the latest workspace evaluation result.
+// WorkspaceDiscoveryResourceCoverageSummary - Required resource occurrences from known-set scopes, keyed by normalized scope
+// and resource before global inventory-row deduplication. classifiedCount plus unclassifiedCount equals expectedCount, and
+// coveredCount does not exceed classifiedCount.
+type WorkspaceDiscoveryResourceCoverageSummary struct {
+	// READ-ONLY; The number of expected occurrences with a terminal access or presence classification.
+	ClassifiedCount *int64
+
+	// READ-ONLY; The number of classified expected occurrences actually represented in the produced snapshot. Access to a container
+	// or its descendants does not invent a resource occurrence.
+	CoveredCount *int64
+
+	// READ-ONLY; The number of unique required resource occurrences across known-set scopes, not the number of service-group
+	// container members or listed inventory rows.
+	ExpectedCount *int64
+
+	// READ-ONLY; The number of expected occurrences that required system verification could not classify.
+	UnclassifiedCount *int64
+}
+
+// WorkspaceDiscoveryResourceWarning - Guidance for a resource or membership confirmed missing.
+type WorkspaceDiscoveryResourceWarning struct {
+	// READ-ONLY; Human-readable guidance with attribution appropriate to the reason.
+	Message *string
+
+	// READ-ONLY; Identifies confirmed missing-resource guidance.
+	Reason *WorkspaceDiscoveryWarningReason
+
+	// READ-ONLY; The affected resource or member identity.
+	ResourceID *string
+
+	// READ-ONLY; The normalized expanded source scope where the affected obligation was encountered.
+	ScopeID *string
+
+	// READ-ONLY; The source scope kind, such as Subscription, ResourceGroup, ServiceGroup, or Resource.
+	ScopeKind *string
+}
+
+// GetWorkspaceDiscoveryWarning implements the WorkspaceDiscoveryWarningClassification interface for type WorkspaceDiscoveryResourceWarning.
+func (w *WorkspaceDiscoveryResourceWarning) GetWorkspaceDiscoveryWarning() *WorkspaceDiscoveryWarning {
+	return &WorkspaceDiscoveryWarning{
+		Message:   w.Message,
+		Reason:    w.Reason,
+		ScopeID:   w.ScopeID,
+		ScopeKind: w.ScopeKind,
+	}
+}
+
+// WorkspaceDiscoveryScopeCoverageSummary - Two independent partitions of expanded scope occurrences after normalized-scope
+// deduplication. Distinct service groups remain distinct even if their members coincide. The known/unknown counts and the
+// four completeness counts each sum to totalCount.
+type WorkspaceDiscoveryScopeCoverageSummary struct {
+	// READ-ONLY; The number of scopes with a structurally unavailable denominator and no observed shortfall, including successful
+	// observed-empty container scans.
+	BaselineUnknownCount *int64
+
+	// READ-ONLY; The number of scopes with Established coverage.
+	EstablishedCount *int64
+
+	// READ-ONLY; The number of scopes with an authoritative complete expected resource-occurrence set, including authoritatively
+	// empty sets.
+	KnownExpectedSetCount *int64
+
+	// READ-ONLY; The number of scopes with confirmed undelivered obligations and no remaining system-verification gap.
+	KnownPartialCount *int64
+
+	// READ-ONLY; The number of expanded Azure Resource Manager scope occurrences represented by the result.
+	TotalCount *int64
+
+	// READ-ONLY; The number of scopes whose complete expected inventory set is unavailable. A service group's known subscription
+	// or resource-group membership does not establish its descendant-resource denominator.
+	UnknownExpectedSetCount *int64
+
+	// READ-ONLY; The number of scopes with required verification failure, unavailable required child enumeration, or a proven
+	// accessible required resource absent from the snapshot.
+	VerificationIncompleteCount *int64
+}
+
+// WorkspaceDiscoveryWarning - The common fields of a discovery guidance warning, discriminated by reason. Known reasons use
+// their corresponding subtype; unknown future reasons retain these base fields.
+type WorkspaceDiscoveryWarning struct {
+	// READ-ONLY; Human-readable guidance with attribution appropriate to the reason.
+	Message *string
+
+	// READ-ONLY; The confirmed guidance reason, not a system-verification failure.
+	Reason *WorkspaceDiscoveryWarningReason
+
+	// READ-ONLY; The normalized expanded source scope where the affected obligation was encountered.
+	ScopeID *string
+
+	// READ-ONLY; The source scope kind, such as Subscription, ResourceGroup, ServiceGroup, or Resource.
+	ScopeKind *string
+}
+
+// GetWorkspaceDiscoveryWarning implements the WorkspaceDiscoveryWarningClassification interface for type WorkspaceDiscoveryWarning.
+func (w *WorkspaceDiscoveryWarning) GetWorkspaceDiscoveryWarning() *WorkspaceDiscoveryWarning {
+	return w
+}
+
+// WorkspaceEncryption - The validated requested key and vault reference, onboarding information, and service observations.
+type WorkspaceEncryption struct {
+	// The requested customer-managed key. Its presence is fixed by accepted
+	// Workspace creation: adding CMK to a Microsoft-managed Workspace or removing
+	// CMK from a CMK-created Workspace is rejected with InvalidEncryptionConfiguration.
+	// The key pair remains updateable on CMK-created Workspaces, including after
+	// a failed creation. A present object requires a coherent keyEncryptionKeyUrl and
+	// keyVaultResourceId pair. After synchronous caller and vault validation,
+	// the accepted pair can be returned while configuration is Pending.
+	// It does not prove that active data already uses the requested key.
+	CustomerManagedKeyEncryption *WorkspaceCustomerManagedKeyEncryption
+
+	// READ-ONLY; The service application to authorize before creating a new CMK Workspace; also returned for existing Workspaces.
+	CustomerManagedKeyOnboarding *WorkspaceCustomerManagedKeyOnboarding
+
+	// READ-ONLY; The observed result, separate from the requested setting.
+	Status *WorkspaceEncryptionStatus
+}
+
+// WorkspaceEncryptionPatchMergePatchUpdateOrCreate - A partial encryption setting. Omitted fields are unchanged and null
+// deletes a
+// writable field. A remaining customerManagedKeyEncryption object must have a
+// coherent key URL and vault resource ID. Read-only onboarding and status
+// inputs are ignored. The accepted creation choice cannot change. Only a
+// CMK-created Workspace can update the pair. Changing either member requires synchronous caller and
+// vault validation of the merged pair, including any retained member.
+type WorkspaceEncryptionPatchMergePatchUpdateOrCreate struct {
+	// The customer key configuration to merge on a CMK-created Workspace.
+	// Null deletion is rejected on CMK and is a no-op only when already absent
+	// on a Microsoft-managed Workspace. An empty object retains an existing
+	// complete pair without a lookup when neither member changes, but is invalid
+	// when the merged pair is incomplete. Unsupported mode changes are rejected
+	// before vault lookup, operation creation, desired mutation, or Storage effects.
+	CustomerManagedKeyEncryption *WorkspaceCustomerManagedKeyEncryptionPatchMergePatchUpdateOrCreate
+}
+
+// WorkspaceEncryptionStatus - Service observations of protection and access for customer data under the Workspace encryption
+// scope.
+type WorkspaceEncryptionStatus struct {
+	// READ-ONLY; The result of configuration or the most recent usable health observation.
+	State *WorkspaceEncryptionState
+
+	// READ-ONLY; The configuration or health error. Failed state includes a code and message.
+	// CustomerKeyAccessFailed means Azure Storage cannot use the customer key.
+	// EncryptionConfigurationFailed means a service-side configuration step failed.
+	// A more specific cause is included only when the platform response identifies it.
+	Error *ErrorDetail
+
+	// READ-ONLY; The UTC time of the observation, including a failed check.
+	LastCheckedAt *time.Time
+
+	// READ-ONLY; The active key URI reported by Azure Storage, including its version when
+	// available. Omitted when unknown or when protection is Microsoft-managed.
+	// This value is not inferred from the requested key.
+	ObservedKeyEncryptionKeyURL *string
+
+	// READ-ONLY; The last directly observed active protection. Omitted when unknown.
+	ObservedProtection *WorkspaceEncryptionProtection
+}
+
+// WorkspaceEvaluation - A retained workspace evaluation of published scenario-template versions.
 type WorkspaceEvaluation struct {
 	// The resource-specific properties for this resource.
 	Properties *WorkspaceEvaluationProperties
@@ -1836,22 +2293,20 @@ type WorkspaceEvaluation struct {
 	Type *string
 }
 
+// WorkspaceEvaluationListResult - The response of a WorkspaceEvaluation list operation.
+type WorkspaceEvaluationListResult struct {
+	// REQUIRED; The WorkspaceEvaluation items on this page
+	Value []*WorkspaceEvaluation
+
+	// The link to the next page of items
+	NextLink *string
+}
+
 // WorkspaceEvaluationProperties - Model that represents the properties of the workspace evaluation.
 type WorkspaceEvaluationProperties struct {
-	// READ-ONLY; The evaluation status.
-	Status *WorkspaceEvaluationStatus
-
-	// READ-ONLY; The workspace ID this evaluation belongs to.
-	WorkspaceID *string
-
-	// READ-ONLY; The evaluation UTC end time.
-	EndTime *time.Time
-
-	// READ-ONLY; System or infrastructure errors encountered during evaluation.
-	Errors []*OperationError
-
-	// READ-ONLY; The overall evaluation result.
-	EvaluationResult *RecommendationStatus
+	// READ-ONLY; The canonical Azure resource ID of the retained discovery result that supplied resourceSnapshotId. This reference
+	// does not change when the latest discovery changes and never identifies the latest alias or a protected LRO polling handle.
+	DiscoveryResultID *string
 
 	// READ-ONLY; The number of templates that were cancelled during evaluation.
 	NumTemplatesEvaluatedCancelled *int32
@@ -1867,6 +2322,18 @@ type WorkspaceEvaluationProperties struct {
 
 	// READ-ONLY; The resource snapshot ID used for this evaluation.
 	ResourceSnapshotID *string
+
+	// READ-ONLY; The evaluation status.
+	Status *WorkspaceEvaluationStatus
+
+	// READ-ONLY; The workspace ID this evaluation belongs to.
+	WorkspaceID *string
+
+	// READ-ONLY; The evaluation UTC end time.
+	EndTime *time.Time
+
+	// READ-ONLY; System or infrastructure errors encountered during evaluation.
+	Errors []*OperationError
 
 	// READ-ONLY; Per-template evaluation results.
 	Results []*TemplateEvaluationResultItem
@@ -1889,8 +2356,12 @@ type WorkspaceProperties struct {
 	// REQUIRED; The intended workspace-level resource scope to be used by child scenarios.
 	Scopes []*string
 
-	// READ-ONLY; The communication endpoint used to connect and communicate with the workspace for fault-injection orchestration.
-	CommunicationEndpoint *string
+	// The requested customer key and service observations. Accepted creation fixes
+	// whether customerManagedKeyEncryption is present. On PUT, omission of
+	// encryption or its CMK object, or an empty encryption object, is valid for
+	// Microsoft-managed Workspaces but rejected for CMK-created Workspaces.
+	// Null is not a valid PUT value. A CMK-created Workspace can replace its key.
+	Encryption *WorkspaceEncryption
 
 	// READ-ONLY; Most recent provisioning state for the given Workspace resource.
 	ProvisioningState *ProvisioningState
@@ -1901,8 +2372,20 @@ type WorkspaceUpdate struct {
 	// The managed service identities assigned to this resource.
 	Identity *ManagedServiceIdentity
 
+	// The resource-specific fields to update. Omitted fields are unchanged.
+	Properties *WorkspaceUpdateProperties
+
 	// Resource tags.
 	Tags map[string]*string
+}
+
+// WorkspaceUpdateProperties - The Workspace properties supported by partial updates.
+type WorkspaceUpdateProperties struct {
+	// A JSON Merge Patch of the requested encryption setting. Omission leaves the
+	// setting unchanged. Null deletion is rejected on a CMK-created Workspace
+	// and is a no-op only when the setting is already absent on a Microsoft-managed
+	// Workspace. The service validates the creation choice and merged pair first.
+	Encryption *WorkspaceEncryptionPatchMergePatchUpdateOrCreate
 }
 
 // ZoneResolutionInfo - Information about how physical zones were resolved to logical zones

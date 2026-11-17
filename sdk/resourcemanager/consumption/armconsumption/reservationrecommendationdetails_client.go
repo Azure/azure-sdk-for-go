@@ -65,7 +65,8 @@ func (client *ReservationRecommendationDetailsClient) Get(ctx context.Context, r
 	if err != nil {
 		return ReservationRecommendationDetailsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusNoContent)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

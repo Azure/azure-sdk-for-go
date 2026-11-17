@@ -86,7 +86,8 @@ func (client *ExpressRouteCircuitAuthorizationsClient) createOrUpdate(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -134,7 +135,7 @@ func (client *ExpressRouteCircuitAuthorizationsClient) createOrUpdateCreateReque
 //     method.
 func (client *ExpressRouteCircuitAuthorizationsClient) BeginDelete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions) (*runtime.Poller[ExpressRouteCircuitAuthorizationsClientDeleteResponse], error) {
 	if options == nil || options.ResumeToken == "" {
-		resp, err := client.delete(ctx, resourceGroupName, circuitName, authorizationName, options)
+		resp, err := client.deleteOperation(ctx, resourceGroupName, circuitName, authorizationName, options)
 		if err != nil {
 			return nil, err
 		}
@@ -149,9 +150,9 @@ func (client *ExpressRouteCircuitAuthorizationsClient) BeginDelete(ctx context.C
 	}
 }
 
-// delete - Deletes the specified authorization from the specified express route circuit.
+// deleteOperation - Deletes the specified authorization from the specified express route circuit.
 // If the operation fails it returns an *azcore.ResponseError type.
-func (client *ExpressRouteCircuitAuthorizationsClient) delete(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
+func (client *ExpressRouteCircuitAuthorizationsClient) deleteOperation(ctx context.Context, resourceGroupName string, circuitName string, authorizationName string, options *ExpressRouteCircuitAuthorizationsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
 	const operationName = "ExpressRouteCircuitAuthorizationsClient.BeginDelete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
@@ -166,7 +167,8 @@ func (client *ExpressRouteCircuitAuthorizationsClient) delete(ctx context.Contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -221,7 +223,8 @@ func (client *ExpressRouteCircuitAuthorizationsClient) Get(ctx context.Context, 
 	if err != nil {
 		return ExpressRouteCircuitAuthorizationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -287,7 +290,8 @@ func (client *ExpressRouteCircuitAuthorizationsClient) ListKeys(ctx context.Cont
 	if err != nil {
 		return ExpressRouteCircuitAuthorizationsClientListKeysResponse{}, err
 	}
-	return client.listKeysHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listKeysHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listKeysCreateRequest creates the ListKeys request.

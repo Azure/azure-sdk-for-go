@@ -70,7 +70,7 @@ func (client *ExecutionPlanRunsClient) BeginCreateOrUpdate(ctx context.Context, 
 	}
 }
 
-// CreateOrUpdate - Create or update a validation test execution plan
+// createOrUpdate - Create or update a validation test execution plan
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExecutionPlanRunsClient) createOrUpdate(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, resource ExecutionPlanRun, options *ExecutionPlanRunsClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -87,12 +87,13 @@ func (client *ExecutionPlanRunsClient) createOrUpdate(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ExecutionPlanRunsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, resource ExecutionPlanRun, _ *ExecutionPlanRunsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PlatformValidation/cloudValidations/{cloudValidationName}/validationExecutionPlans/{validationExecutionPlanName}/executionPlanRuns/{executionPlanRunName}"
 	if client.subscriptionID == "" {
@@ -155,7 +156,7 @@ func (client *ExecutionPlanRunsClient) BeginDelete(ctx context.Context, resource
 	}
 }
 
-// Delete - Delete a validation test execution plan run resource
+// deleteOperation - Delete a validation test execution plan run resource
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *ExecutionPlanRunsClient) deleteOperation(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, options *ExecutionPlanRunsClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -172,12 +173,13 @@ func (client *ExecutionPlanRunsClient) deleteOperation(ctx context.Context, reso
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *ExecutionPlanRunsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, cloudValidationName string, validationExecutionPlanName string, executionPlanRunName string, _ *ExecutionPlanRunsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.PlatformValidation/cloudValidations/{cloudValidationName}/validationExecutionPlans/{validationExecutionPlanName}/executionPlanRuns/{executionPlanRunName}"
 	if client.subscriptionID == "" {
@@ -231,7 +233,8 @@ func (client *ExecutionPlanRunsClient) Get(ctx context.Context, resourceGroupNam
 	if err != nil {
 		return ExecutionPlanRunsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

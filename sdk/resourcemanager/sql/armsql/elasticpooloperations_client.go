@@ -67,7 +67,8 @@ func (client *ElasticPoolOperationsClient) Cancel(ctx context.Context, resourceG
 		return ElasticPoolOperationsClientCancelResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		return ElasticPoolOperationsClientCancelResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ElasticPoolOperationsClientCancelResponse{}, err
 	}
 	return ElasticPoolOperationsClientCancelResponse{}, nil
 }

@@ -63,7 +63,8 @@ func (client *ProtectionIntentClient) CreateOrUpdate(ctx context.Context, vaultN
 	if err != nil {
 		return ProtectionIntentClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -135,7 +136,8 @@ func (client *ProtectionIntentClient) Delete(ctx context.Context, vaultName stri
 		return ProtectionIntentClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return ProtectionIntentClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ProtectionIntentClientDeleteResponse{}, err
 	}
 	return ProtectionIntentClientDeleteResponse{}, nil
 }
@@ -193,7 +195,8 @@ func (client *ProtectionIntentClient) Get(ctx context.Context, vaultName string,
 	if err != nil {
 		return ProtectionIntentClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -272,7 +275,8 @@ func (client *ProtectionIntentClient) Validate(ctx context.Context, azureRegion 
 	if err != nil {
 		return ProtectionIntentClientValidateResponse{}, err
 	}
-	return client.validateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // validateCreateRequest creates the Validate request.

@@ -70,7 +70,7 @@ func (client *KubeEnvironmentsClient) BeginCreateOrUpdate(ctx context.Context, r
 	}
 }
 
-// CreateOrUpdate - Creates or updates a Kubernetes Environment.
+// createOrUpdate - Creates or updates a Kubernetes Environment.
 //
 // Description for Creates or updates a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -89,12 +89,13 @@ func (client *KubeEnvironmentsClient) createOrUpdate(ctx context.Context, resour
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *KubeEnvironmentsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, name string, kubeEnvironmentEnvelope KubeEnvironment, _ *KubeEnvironmentsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}"
 	if client.subscriptionID == "" {
@@ -149,7 +150,7 @@ func (client *KubeEnvironmentsClient) BeginDelete(ctx context.Context, resourceG
 	}
 }
 
-// Delete - Delete a Kubernetes Environment.
+// deleteOperation - Delete a Kubernetes Environment.
 //
 // Description for Delete a Kubernetes Environment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -168,12 +169,13 @@ func (client *KubeEnvironmentsClient) deleteOperation(ctx context.Context, resou
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *KubeEnvironmentsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, name string, _ *KubeEnvironmentsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/kubeEnvironments/{name}"
 	if client.subscriptionID == "" {
@@ -219,7 +221,8 @@ func (client *KubeEnvironmentsClient) Get(ctx context.Context, resourceGroupName
 	if err != nil {
 		return KubeEnvironmentsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -425,7 +428,8 @@ func (client *KubeEnvironmentsClient) Update(ctx context.Context, resourceGroupN
 	if err != nil {
 		return KubeEnvironmentsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

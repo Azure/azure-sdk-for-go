@@ -45,7 +45,7 @@ func (o *OrganizationOperationsServerTransport) Do(req *http.Request) (*http.Res
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return o.dispatchToMethodFake(req, method)

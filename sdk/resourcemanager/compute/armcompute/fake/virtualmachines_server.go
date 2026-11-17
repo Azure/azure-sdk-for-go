@@ -196,7 +196,7 @@ func (v *VirtualMachinesServerTransport) Do(req *http.Request) (*http.Response, 
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return v.dispatchToMethodFake(req, method)
@@ -1471,11 +1471,8 @@ func (v *VirtualMachinesServerTransport) dispatchRetrieveBootDiagnosticsData(req
 		return nil, err
 	}
 	sasURIExpirationTimeInMinutesParam, err := parseOptional(qp.Get("sasUriExpirationTimeInMinutes"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err

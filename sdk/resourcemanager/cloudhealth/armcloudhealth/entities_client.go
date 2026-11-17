@@ -67,7 +67,8 @@ func (client *EntitiesClient) AddDataAnnotation(ctx context.Context, resourceGro
 	if err != nil {
 		return EntitiesClientAddDataAnnotationResponse{}, err
 	}
-	return client.addDataAnnotationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.addDataAnnotationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // addDataAnnotationCreateRequest creates the AddDataAnnotation request.
@@ -158,7 +159,8 @@ func (client *EntitiesClient) createOrUpdate(ctx context.Context, resourceGroupN
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -237,7 +239,8 @@ func (client *EntitiesClient) deleteOperation(ctx context.Context, resourceGroup
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -291,7 +294,8 @@ func (client *EntitiesClient) Get(ctx context.Context, resourceGroupName string,
 	if err != nil {
 		return EntitiesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -358,7 +362,8 @@ func (client *EntitiesClient) GetDataAnnotations(ctx context.Context, resourceGr
 	if err != nil {
 		return EntitiesClientGetDataAnnotationsResponse{}, err
 	}
-	return client.getDataAnnotationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getDataAnnotationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getDataAnnotationsCreateRequest creates the GetDataAnnotations request.
@@ -428,7 +433,8 @@ func (client *EntitiesClient) GetHistory(ctx context.Context, resourceGroupName 
 	if err != nil {
 		return EntitiesClientGetHistoryResponse{}, err
 	}
-	return client.getHistoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getHistoryCreateRequest creates the GetHistory request.
@@ -499,7 +505,8 @@ func (client *EntitiesClient) GetSignalHistory(ctx context.Context, resourceGrou
 	if err != nil {
 		return EntitiesClientGetSignalHistoryResponse{}, err
 	}
-	return client.getSignalHistoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSignalHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSignalHistoryCreateRequest creates the GetSignalHistory request.
@@ -570,7 +577,8 @@ func (client *EntitiesClient) GetSignalRecommendations(ctx context.Context, reso
 	if err != nil {
 		return EntitiesClientGetSignalRecommendationsResponse{}, err
 	}
-	return client.getSignalRecommendationsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getSignalRecommendationsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getSignalRecommendationsCreateRequest creates the GetSignalRecommendations request.
@@ -638,7 +646,8 @@ func (client *EntitiesClient) IngestHealthReport(ctx context.Context, resourceGr
 		return EntitiesClientIngestHealthReportResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusNoContent) {
-		return EntitiesClientIngestHealthReportResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return EntitiesClientIngestHealthReportResponse{}, err
 	}
 	return EntitiesClientIngestHealthReportResponse{}, nil
 }

@@ -92,7 +92,8 @@ func (client *ReplicationProtectionClustersClient) applyRecoveryPoint(ctx contex
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -187,7 +188,8 @@ func (client *ReplicationProtectionClustersClient) create(ctx context.Context, r
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -281,7 +283,8 @@ func (client *ReplicationProtectionClustersClient) failoverCommit(ctx context.Co
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -373,7 +376,8 @@ func (client *ReplicationProtectionClustersClient) purge(ctx context.Context, re
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -462,7 +466,8 @@ func (client *ReplicationProtectionClustersClient) repairReplication(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -553,7 +558,8 @@ func (client *ReplicationProtectionClustersClient) testFailover(ctx context.Cont
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -648,7 +654,8 @@ func (client *ReplicationProtectionClustersClient) testFailoverCleanup(ctx conte
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -743,7 +750,8 @@ func (client *ReplicationProtectionClustersClient) unplannedFailover(ctx context
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -815,7 +823,8 @@ func (client *ReplicationProtectionClustersClient) Get(ctx context.Context, reso
 	if err != nil {
 		return ReplicationProtectionClustersClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -894,7 +903,8 @@ func (client *ReplicationProtectionClustersClient) GetOperationResults(ctx conte
 	if err != nil {
 		return ReplicationProtectionClustersClientGetOperationResultsResponse{}, err
 	}
-	return client.getOperationResultsHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getOperationResultsHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getOperationResultsCreateRequest creates the GetOperationResults request.

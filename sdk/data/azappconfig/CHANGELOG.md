@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+* Improved Microsoft Entra ID authentication audience inference for additional App Configuration endpoint formats.
 
 ## 2.3.0 (2026-10-12)
 

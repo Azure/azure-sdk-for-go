@@ -78,7 +78,8 @@ func (client *SolutionConfigurationsClient) syncNow(ctx context.Context, resourc
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
@@ -126,7 +127,8 @@ func (client *SolutionConfigurationsClient) CreateOrUpdate(ctx context.Context, 
 	if err != nil {
 		return SolutionConfigurationsClientCreateOrUpdateResponse{}, err
 	}
-	return client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
+	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
@@ -188,7 +190,8 @@ func (client *SolutionConfigurationsClient) Delete(ctx context.Context, resource
 		return SolutionConfigurationsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return SolutionConfigurationsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return SolutionConfigurationsClientDeleteResponse{}, err
 	}
 	return SolutionConfigurationsClientDeleteResponse{}, nil
 }
@@ -234,7 +237,8 @@ func (client *SolutionConfigurationsClient) Get(ctx context.Context, resourceURI
 	if err != nil {
 		return SolutionConfigurationsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -360,7 +364,8 @@ func (client *SolutionConfigurationsClient) Update(ctx context.Context, resource
 	if err != nil {
 		return SolutionConfigurationsClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

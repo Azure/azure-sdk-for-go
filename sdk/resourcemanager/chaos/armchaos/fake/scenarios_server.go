@@ -12,7 +12,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/fake/server"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/chaos/armchaos/v2"
 	"net/http"
 	"net/url"
 	"regexp"
@@ -60,7 +60,7 @@ func (s *ScenariosServerTransport) Do(req *http.Request) (*http.Response, error)
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return s.dispatchToMethodFake(req, method)
@@ -126,7 +126,16 @@ func (s *ScenariosServerTransport) dispatchCreateOrUpdate(req *http.Request) (*h
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, scenarioNameParam, body, nil)
+	ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+	var options *armchaos.ScenariosClientCreateOrUpdateOptions
+	if ifNoneMatchParam != nil || ifMatchParam != nil {
+		options = &armchaos.ScenariosClientCreateOrUpdateOptions{
+			IfNoneMatch: ifNoneMatchParam,
+			IfMatch:     ifMatchParam,
+		}
+	}
+	respr, errRespr := s.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, workspaceNameParam, scenarioNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

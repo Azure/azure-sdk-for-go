@@ -64,7 +64,7 @@ func (client *Client) BeginCreateOrUpdate(ctx context.Context, groupID string, c
 	}
 }
 
-// CreateOrUpdate - Create or update a management group.
+// createOrUpdate - Create or update a management group.
 // If a management group is already created and a subsequent create request is issued with different properties, the management
 // group properties will be updated.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -83,12 +83,13 @@ func (client *Client) createOrUpdate(ctx context.Context, groupID string, create
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *Client) createOrUpdateCreateRequest(ctx context.Context, groupID string, createManagementGroupRequest CreateManagementGroupRequest, options *ClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}"
 	if groupID == "" {
@@ -136,7 +137,7 @@ func (client *Client) BeginDelete(ctx context.Context, groupID string, options *
 	}
 }
 
-// Delete - Delete management group.
+// deleteOperation - Delete management group.
 // If a management group contains child resources, the request will fail.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *Client) deleteOperation(ctx context.Context, groupID string, options *ClientBeginDeleteOptions) (*http.Response, error) {
@@ -154,12 +155,13 @@ func (client *Client) deleteOperation(ctx context.Context, groupID string, optio
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusAccepted, http.StatusNoContent) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *Client) deleteCreateRequest(ctx context.Context, groupID string, options *ClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/providers/Microsoft.Management/managementGroups/{groupId}"
 	if groupID == "" {
@@ -198,7 +200,8 @@ func (client *Client) Get(ctx context.Context, groupID string, options *ClientGe
 	if err != nil {
 		return ClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -403,7 +406,8 @@ func (client *Client) Update(ctx context.Context, groupID string, patchGroupRequ
 	if err != nil {
 		return ClientUpdateResponse{}, err
 	}
-	return client.updateHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // updateCreateRequest creates the Update request.

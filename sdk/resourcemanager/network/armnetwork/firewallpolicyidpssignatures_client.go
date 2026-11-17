@@ -65,7 +65,8 @@ func (client *FirewallPolicyIdpsSignaturesClient) List(ctx context.Context, reso
 	if err != nil {
 		return FirewallPolicyIdpsSignaturesClientListResponse{}, err
 	}
-	return client.listHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // listCreateRequest creates the List request.

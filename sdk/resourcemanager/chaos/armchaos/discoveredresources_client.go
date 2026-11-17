@@ -19,7 +19,7 @@ import (
 // DiscoveredResourcesClient contains the methods for the DiscoveredResources group.
 // Don't use this type directly, use NewDiscoveredResourcesClient() instead.
 //
-// Generated from API version 2026-08-01-preview
+// Generated from API version 2026-11-01
 type DiscoveredResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -64,7 +64,8 @@ func (client *DiscoveredResourcesClient) Get(ctx context.Context, resourceGroupN
 	if err != nil {
 		return DiscoveredResourcesClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.
@@ -91,7 +92,7 @@ func (client *DiscoveredResourcesClient) getCreateRequest(ctx context.Context, r
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260801Preview)
+	reqQP.Set("api-version", version20261101)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -167,7 +168,7 @@ func (client *DiscoveredResourcesClient) listByWorkspaceCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260801Preview)
+		reqQP.Set("api-version", version20261101)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

@@ -26,13 +26,13 @@ type WorkflowRunActionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, name string, workflowName string, runName string, actionName string, options *armappservice.WorkflowRunActionsClientGetOptions) (resp azfake.Responder[armappservice.WorkflowRunActionsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method WorkflowRunActionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, name string, workflowName string, runName string, options *armappservice.WorkflowRunActionsClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunActionsClientListResponse])
-
 	// NewListExpressionTracesPager is the fake for method WorkflowRunActionsClient.NewListExpressionTracesPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListExpressionTracesPager func(resourceGroupName string, name string, workflowName string, runName string, actionName string, options *armappservice.WorkflowRunActionsClientListExpressionTracesOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunActionsClientListExpressionTracesResponse])
+
+	// NewListPager is the fake for method WorkflowRunActionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, name string, workflowName string, runName string, options *armappservice.WorkflowRunActionsClientListOptions) (resp azfake.PagerResponder[armappservice.WorkflowRunActionsClientListResponse])
 }
 
 // NewWorkflowRunActionsServerTransport creates a new instance of WorkflowRunActionsServerTransport with the provided implementation.
@@ -41,8 +41,8 @@ type WorkflowRunActionsServer struct {
 func NewWorkflowRunActionsServerTransport(srv *WorkflowRunActionsServer) *WorkflowRunActionsServerTransport {
 	return &WorkflowRunActionsServerTransport{
 		srv:                          srv,
-		newListPager:                 newTracker[azfake.PagerResponder[armappservice.WorkflowRunActionsClientListResponse]](),
 		newListExpressionTracesPager: newTracker[azfake.PagerResponder[armappservice.WorkflowRunActionsClientListExpressionTracesResponse]](),
+		newListPager:                 newTracker[azfake.PagerResponder[armappservice.WorkflowRunActionsClientListResponse]](),
 	}
 }
 
@@ -50,8 +50,8 @@ func NewWorkflowRunActionsServerTransport(srv *WorkflowRunActionsServer) *Workfl
 // Don't use this type directly, use NewWorkflowRunActionsServerTransport instead.
 type WorkflowRunActionsServerTransport struct {
 	srv                          *WorkflowRunActionsServer
-	newListPager                 *tracker[azfake.PagerResponder[armappservice.WorkflowRunActionsClientListResponse]]
 	newListExpressionTracesPager *tracker[azfake.PagerResponder[armappservice.WorkflowRunActionsClientListExpressionTracesResponse]]
+	newListPager                 *tracker[azfake.PagerResponder[armappservice.WorkflowRunActionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for WorkflowRunActionsServerTransport.
@@ -59,7 +59,7 @@ func (w *WorkflowRunActionsServerTransport) Do(req *http.Request) (*http.Respons
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return w.dispatchToMethodFake(req, method)
@@ -77,10 +77,10 @@ func (w *WorkflowRunActionsServerTransport) dispatchToMethodFake(req *http.Reque
 			switch method {
 			case "WorkflowRunActionsClient.Get":
 				res.resp, res.err = w.dispatchGet(req)
-			case "WorkflowRunActionsClient.NewListPager":
-				res.resp, res.err = w.dispatchNewListPager(req)
 			case "WorkflowRunActionsClient.NewListExpressionTracesPager":
 				res.resp, res.err = w.dispatchNewListExpressionTracesPager(req)
+			case "WorkflowRunActionsClient.NewListPager":
+				res.resp, res.err = w.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -142,74 +142,6 @@ func (w *WorkflowRunActionsServerTransport) dispatchGet(req *http.Request) (*htt
 	return resp, nil
 }
 
-func (w *WorkflowRunActionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if w.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := w.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runs/(?P<runName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/actions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 6 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		qp := req.URL.Query()
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
-		if err != nil {
-			return nil, err
-		}
-		workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
-		if err != nil {
-			return nil, err
-		}
-		runNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runName")])
-		if err != nil {
-			return nil, err
-		}
-		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
-		})
-		if err != nil {
-			return nil, err
-		}
-		filterParam := getOptional(qp.Get("$filter"))
-		var options *armappservice.WorkflowRunActionsClientListOptions
-		if topParam != nil || filterParam != nil {
-			options = &armappservice.WorkflowRunActionsClientListOptions{
-				Top:    topParam,
-				Filter: filterParam,
-			}
-		}
-		resp := w.srv.NewListPager(resourceGroupNameParam, nameParam, workflowNameParam, runNameParam, options)
-		newListPager = &resp
-		w.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.WorkflowRunActionsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		w.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		w.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (w *WorkflowRunActionsServerTransport) dispatchNewListExpressionTracesPager(req *http.Request) (*http.Response, error) {
 	if w.srv.NewListExpressionTracesPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListExpressionTracesPager not implemented")}
@@ -259,6 +191,71 @@ func (w *WorkflowRunActionsServerTransport) dispatchNewListExpressionTracesPager
 	}
 	if !server.PagerResponderMore(newListExpressionTracesPager) {
 		w.newListExpressionTracesPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (w *WorkflowRunActionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if w.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := w.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Web/sites/(?P<name>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/hostruntime/runtime/webhooks/workflow/api/management/workflows/(?P<workflowName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/runs/(?P<runName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/actions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 6 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		qp := req.URL.Query()
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		nameParam, err := url.PathUnescape(matches[regex.SubexpIndex("name")])
+		if err != nil {
+			return nil, err
+		}
+		workflowNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("workflowName")])
+		if err != nil {
+			return nil, err
+		}
+		runNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("runName")])
+		if err != nil {
+			return nil, err
+		}
+		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
+		})
+		if err != nil {
+			return nil, err
+		}
+		filterParam := getOptional(qp.Get("$filter"))
+		var options *armappservice.WorkflowRunActionsClientListOptions
+		if topParam != nil || filterParam != nil {
+			options = &armappservice.WorkflowRunActionsClientListOptions{
+				Top:    topParam,
+				Filter: filterParam,
+			}
+		}
+		resp := w.srv.NewListPager(resourceGroupNameParam, nameParam, workflowNameParam, runNameParam, options)
+		newListPager = &resp
+		w.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armappservice.WorkflowRunActionsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		w.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		w.newListPager.remove(req)
 	}
 	return resp, nil
 }

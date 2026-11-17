@@ -68,7 +68,7 @@ func (client *ProtectedItemsClient) BeginCreateOrUpdate(ctx context.Context, vau
 	}
 }
 
-// CreateOrUpdate - Enables backup of an item or to modifies the backup policy information of an already backed up item. This
+// createOrUpdate - Enables backup of an item or to modifies the backup policy information of an already backed up item. This
 // is an
 // asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -87,12 +87,13 @@ func (client *ProtectedItemsClient) createOrUpdate(ctx context.Context, vaultNam
 		return nil, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted) {
-		return nil, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return nil, err
 	}
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *ProtectedItemsClient) createOrUpdateCreateRequest(ctx context.Context, vaultName string, resourceGroupName string, fabricName string, containerName string, protectedItemName string, parameters ProtectedItemResource, options *ProtectedItemsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}"
 	if client.subscriptionID == "" {
@@ -158,7 +159,8 @@ func (client *ProtectedItemsClient) Delete(ctx context.Context, vaultName string
 		return ProtectedItemsClientDeleteResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		return ProtectedItemsClientDeleteResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ProtectedItemsClientDeleteResponse{}, err
 	}
 	return ProtectedItemsClientDeleteResponse{}, nil
 }
@@ -219,7 +221,8 @@ func (client *ProtectedItemsClient) Get(ctx context.Context, vaultName string, r
 	if err != nil {
 		return ProtectedItemsClientGetResponse{}, err
 	}
-	return client.getHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getCreateRequest creates the Get request.

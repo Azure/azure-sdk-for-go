@@ -64,7 +64,8 @@ func (client *NameAvailabilityClient) CheckGlobally(ctx context.Context, paramet
 	if err != nil {
 		return NameAvailabilityClientCheckGloballyResponse{}, err
 	}
-	return client.checkGloballyHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkGloballyHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkGloballyCreateRequest creates the CheckGlobally request.
@@ -121,7 +122,8 @@ func (client *NameAvailabilityClient) CheckWithLocation(ctx context.Context, loc
 	if err != nil {
 		return NameAvailabilityClientCheckWithLocationResponse{}, err
 	}
-	return client.checkWithLocationHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.checkWithLocationHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // checkWithLocationCreateRequest creates the CheckWithLocation request.

@@ -19,7 +19,7 @@ import (
 // CollectionPartitionRegionClient contains the methods for the CollectionPartitionRegion group.
 // Don't use this type directly, use NewCollectionPartitionRegionClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-07-15
 type CollectionPartitionRegionClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -122,7 +122,7 @@ func (client *CollectionPartitionRegionClient) listMetricsCreateRequest(ctx cont
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
 		reqQP.Set("$filter", filter)
-		reqQP.Set("api-version", version20260401Preview)
+		reqQP.Set("api-version", version20260715)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

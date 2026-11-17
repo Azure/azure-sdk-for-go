@@ -68,7 +68,8 @@ func (client *ContainerAppsLabelHistoryClient) DeleteLabelHistory(ctx context.Co
 		return ContainerAppsLabelHistoryClientDeleteLabelHistoryResponse{}, err
 	}
 	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusNoContent) {
-		return ContainerAppsLabelHistoryClientDeleteLabelHistoryResponse{}, runtime.NewResponseError(httpResp)
+		err = runtime.NewResponseError(httpResp)
+		return ContainerAppsLabelHistoryClientDeleteLabelHistoryResponse{}, err
 	}
 	return ContainerAppsLabelHistoryClientDeleteLabelHistoryResponse{}, nil
 }
@@ -125,7 +126,8 @@ func (client *ContainerAppsLabelHistoryClient) GetLabelHistory(ctx context.Conte
 	if err != nil {
 		return ContainerAppsLabelHistoryClientGetLabelHistoryResponse{}, err
 	}
-	return client.getLabelHistoryHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getLabelHistoryHandleResponse(httpResp, http.StatusOK)
+	return resp, err
 }
 
 // getLabelHistoryCreateRequest creates the GetLabelHistory request.

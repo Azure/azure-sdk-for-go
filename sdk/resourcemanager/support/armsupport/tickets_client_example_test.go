@@ -12,36 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-04-01/CheckNameAvailabilityWithSubscription.json
-func ExampleTicketsClient_CheckNameAvailability() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsupport.NewClientFactory("132d901f-189d-4381-9214-fe68e27e05a1", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewTicketsClient().CheckNameAvailability(ctx, armsupport.CheckNameAvailabilityInput{
-		Name: to.Ptr("sampleName"),
-		Type: to.Ptr(armsupport.TypeMicrosoftSupportSupportTickets),
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsupport.TicketsClientCheckNameAvailabilityResponse{
-	// 	CheckNameAvailabilityOutput: armsupport.CheckNameAvailabilityOutput{
-	// 		Message: to.Ptr("Name not available"),
-	// 		NameAvailable: to.Ptr(false),
-	// 		Reason: to.Ptr("Name is already in use"),
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2024-04-01/CreateBatchQuotaTicketForSpecificBatchAccountForActiveJobs.json
 func ExampleTicketsClient_BeginCreate_createATicketToRequestQuotaIncreaseForActiveJobsAndJobSchedulesForABatchAccount() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -1769,6 +1739,36 @@ func ExampleTicketsClient_BeginCreate_createATicketForTechnicalIssueRelatedToASp
 	// 			},
 	// 			Title: to.Ptr("my title"),
 	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2024-04-01/CheckNameAvailabilityWithSubscription.json
+func ExampleTicketsClient_CheckNameAvailability() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsupport.NewClientFactory("132d901f-189d-4381-9214-fe68e27e05a1", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewTicketsClient().CheckNameAvailability(ctx, armsupport.CheckNameAvailabilityInput{
+		Name: to.Ptr("sampleName"),
+		Type: to.Ptr(armsupport.TypeMicrosoftSupportSupportTickets),
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsupport.TicketsClientCheckNameAvailabilityResponse{
+	// 	CheckNameAvailabilityOutput: armsupport.CheckNameAvailabilityOutput{
+	// 		Message: to.Ptr("Name not available"),
+	// 		NameAvailable: to.Ptr(false),
+	// 		Reason: to.Ptr("Name is already in use"),
 	// 	},
 	// }
 }

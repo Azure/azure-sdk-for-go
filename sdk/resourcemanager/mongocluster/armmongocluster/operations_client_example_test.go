@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-06-15-preview/Operations_List.json
+// Generated from example definition: 2026-09-01/Operations_List.json
 func ExampleOperationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -40,18 +40,18 @@ func ExampleOperationsClient_NewListPager() {
 		// 				Name: to.Ptr("Microsoft.DocumentDB/mongoClusters/read"),
 		// 				Display: &armmongocluster.OperationDisplay{
 		// 					Provider: to.Ptr("Microsoft.DocumentDB"),
-		// 					Resource: to.Ptr("Mongo Cluster"),
-		// 					Operation: to.Ptr("Read Mongo Clusters"),
-		// 					Description: to.Ptr("Reads a Mongo Cluster or list all Mongo Clusters."),
+		// 					Resource: to.Ptr("DocumentDB cluster"),
+		// 					Operation: to.Ptr("Read DocumentDB Clusters"),
+		// 					Description: to.Ptr("Reads a DocumentDB cluster or list all DocumentDB Clusters."),
 		// 				},
 		// 			},
 		// 			{
 		// 				Name: to.Ptr("Microsoft.DocumentDB/mongoClusters/write"),
 		// 				Display: &armmongocluster.OperationDisplay{
 		// 					Provider: to.Ptr("Microsoft.DocumentDB"),
-		// 					Resource: to.Ptr("Mongo Cluster"),
-		// 					Operation: to.Ptr("Create or Update Mongo Cluster"),
-		// 					Description: to.Ptr("Create or Update the properties or tags of the specified Mongo Cluster."),
+		// 					Resource: to.Ptr("DocumentDB cluster"),
+		// 					Operation: to.Ptr("Create or Update DocumentDB cluster"),
+		// 					Description: to.Ptr("Create or Update the properties or tags of the specified DocumentDB cluster."),
 		// 				},
 		// 			},
 		// 		},

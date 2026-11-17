@@ -39,8 +39,8 @@ type ServerFactory struct {
 	// ArcDeploymentsServer contains the fakes for client ArcDeploymentsClient
 	ArcDeploymentsServer ArcDeploymentsServer
 
-	// AttachedAksClustersServer contains the fakes for client AttachedAksClustersClient
-	AttachedAksClustersServer AttachedAksClustersServer
+	// AttachedAKSClustersServer contains the fakes for client AttachedAKSClustersClient
+	AttachedAKSClustersServer AttachedAKSClustersServer
 
 	// CommitmentPlansServer contains the fakes for client CommitmentPlansClient
 	CommitmentPlansServer CommitmentPlansServer
@@ -194,7 +194,7 @@ type ServerFactoryTransport struct {
 	trAgentApplicationsServer                      *AgentApplicationsServerTransport
 	trAgentDeploymentsServer                       *AgentDeploymentsServerTransport
 	trArcDeploymentsServer                         *ArcDeploymentsServerTransport
-	trAttachedAksClustersServer                    *AttachedAksClustersServerTransport
+	trAttachedAKSClustersServer                    *AttachedAKSClustersServerTransport
 	trCommitmentPlansServer                        *CommitmentPlansServerTransport
 	trCommitmentTiersServer                        *CommitmentTiersServerTransport
 	trComputeOperationsServer                      *ComputeOperationsServerTransport
@@ -291,11 +291,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewArcDeploymentsServerTransport(&s.srv.ArcDeploymentsServer)
 		})
 		resp, err = s.trArcDeploymentsServer.Do(req)
-	case "AttachedAksClustersClient":
-		initServer(&s.trMu, &s.trAttachedAksClustersServer, func() *AttachedAksClustersServerTransport {
-			return NewAttachedAksClustersServerTransport(&s.srv.AttachedAksClustersServer)
+	case "AttachedAKSClustersClient":
+		initServer(&s.trMu, &s.trAttachedAKSClustersServer, func() *AttachedAKSClustersServerTransport {
+			return NewAttachedAKSClustersServerTransport(&s.srv.AttachedAKSClustersServer)
 		})
-		resp, err = s.trAttachedAksClustersServer.Do(req)
+		resp, err = s.trAttachedAKSClustersServer.Do(req)
 	case "CommitmentPlansClient":
 		initServer(&s.trMu, &s.trCommitmentPlansServer, func() *CommitmentPlansServerTransport {
 			return NewCommitmentPlansServerTransport(&s.srv.CommitmentPlansServer)

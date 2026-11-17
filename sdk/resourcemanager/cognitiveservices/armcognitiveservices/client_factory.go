@@ -96,9 +96,9 @@ func (c *ClientFactory) NewArcDeploymentsClient() *ArcDeploymentsClient {
 	}
 }
 
-// NewAttachedAksClustersClient creates a new instance of AttachedAksClustersClient.
-func (c *ClientFactory) NewAttachedAksClustersClient() *AttachedAksClustersClient {
-	return &AttachedAksClustersClient{
+// NewAttachedAKSClustersClient creates a new instance of AttachedAKSClustersClient.
+func (c *ClientFactory) NewAttachedAKSClustersClient() *AttachedAKSClustersClient {
+	return &AttachedAKSClustersClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0-beta.1 (2026-11-16)
+## 4.1.0-beta.1 (2026-11-17)
 ### Features Added
 
 - New value `ConnectionCategoryOpenAPI` added to enum type `ConnectionCategory`
@@ -61,15 +61,15 @@
 - New function `*ArcDeploymentsClient.Get(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, options *ArcDeploymentsClientGetOptions) (ArcDeploymentsClientGetResponse, error)`
 - New function `*ArcDeploymentsClient.NewListPager(resourceGroupName string, accountName string, options *ArcDeploymentsClientListOptions) *runtime.Pager[ArcDeploymentsClientListResponse]`
 - New function `*ArcDeploymentsClient.BeginUpdate(ctx context.Context, resourceGroupName string, accountName string, deploymentName string, properties ArcDeploymentUpdate, options *ArcDeploymentsClientBeginUpdateOptions) (*runtime.Poller[ArcDeploymentsClientUpdateResponse], error)`
-- New function `NewAttachedAksClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedAksClustersClient, error)`
-- New function `*AttachedAksClustersClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, resource AttachedAksCluster, options *AttachedAksClustersClientCreateOrUpdateOptions) (AttachedAksClustersClientCreateOrUpdateResponse, error)`
-- New function `*AttachedAksClustersClient.Delete(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAksClustersClientDeleteOptions) (AttachedAksClustersClientDeleteResponse, error)`
-- New function `*AttachedAksClustersClient.Get(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAksClustersClientGetOptions) (AttachedAksClustersClientGetResponse, error)`
-- New function `*AttachedAksClustersClient.NewListPager(resourceGroupName string, accountName string, options *AttachedAksClustersClientListOptions) *runtime.Pager[AttachedAksClustersClientListResponse]`
+- New function `NewAttachedAKSClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedAKSClustersClient, error)`
+- New function `*AttachedAKSClustersClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, resource AttachedAksCluster, options *AttachedAKSClustersClientCreateOrUpdateOptions) (AttachedAKSClustersClientCreateOrUpdateResponse, error)`
+- New function `*AttachedAKSClustersClient.Delete(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAKSClustersClientDeleteOptions) (AttachedAKSClustersClientDeleteResponse, error)`
+- New function `*AttachedAKSClustersClient.Get(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAKSClustersClientGetOptions) (AttachedAKSClustersClientGetResponse, error)`
+- New function `*AttachedAKSClustersClient.NewListPager(resourceGroupName string, accountName string, options *AttachedAKSClustersClientListOptions) *runtime.Pager[AttachedAKSClustersClientListResponse]`
 - New function `*ClientFactory.NewAccountCostControlsClient() *AccountCostControlsClient`
 - New function `*ClientFactory.NewAdapterDeploymentsClient() *AdapterDeploymentsClient`
 - New function `*ClientFactory.NewArcDeploymentsClient() *ArcDeploymentsClient`
-- New function `*ClientFactory.NewAttachedAksClustersClient() *AttachedAksClustersClient`
+- New function `*ClientFactory.NewAttachedAKSClustersClient() *AttachedAKSClustersClient`
 - New function `*ClientFactory.NewComputeOperationsClient() *ComputeOperationsClient`
 - New function `*ClientFactory.NewComputesClient() *ComputesClient`
 - New function `*ClientFactory.NewManagedComputeDeploymentsClient() *ManagedComputeDeploymentsClient`

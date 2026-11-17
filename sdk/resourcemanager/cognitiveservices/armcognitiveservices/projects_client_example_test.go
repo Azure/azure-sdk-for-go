@@ -6,7 +6,6 @@ package armcognitiveservices_test
 
 import (
 	"context"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/cognitiveservices/armcognitiveservices/v4"
@@ -237,8 +236,7 @@ func ExampleProjectsClient_BeginUpdate_clearAFoundryProjectSToolControlsWithExpl
 	}
 	poller, err := clientFactory.NewProjectsClient().BeginUpdate(ctx, "myResourceGroup", "myAccount", "myProject", armcognitiveservices.Project{
 		Properties: &armcognitiveservices.ProjectProperties{
-			// Workaround for Azure/typespec-azure#6090 until the example emitter generates azcore.NullValue.
-			ToolControls: azcore.NullValue[*armcognitiveservices.ToolControls](),
+			ToolControls: nil,
 		},
 	}, nil)
 	if err != nil {

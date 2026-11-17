@@ -13,7 +13,7 @@ import (
 )
 
 // Generated from example definition: 2026-11-15-preview/CreateOrUpdateAttachedAksCluster.json
-func ExampleAttachedAksClustersClient_CreateOrUpdate() {
+func ExampleAttachedAKSClustersClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -23,7 +23,7 @@ func ExampleAttachedAksClustersClient_CreateOrUpdate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAttachedAksClustersClient().CreateOrUpdate(ctx, "rgcognitiveservices", "myAccount", "myAttachment", armcognitiveservices.AttachedAksCluster{
+	res, err := clientFactory.NewAttachedAKSClustersClient().CreateOrUpdate(ctx, "rgcognitiveservices", "myAccount", "myAttachment", armcognitiveservices.AttachedAksCluster{
 		Properties: &armcognitiveservices.AttachedAksClusterProperties{
 			ClusterResourceID: to.Ptr("/subscriptions/11111111-2222-3333-4444-555555555555/resourceGroups/rgaks/providers/Microsoft.ContainerService/managedClusters/myAks"),
 			Capabilities: []*armcognitiveservices.AttachedAksClusterCapability{
@@ -45,7 +45,7 @@ func ExampleAttachedAksClustersClient_CreateOrUpdate() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcognitiveservices.AttachedAksClustersClientCreateOrUpdateResponse{
+	// res = armcognitiveservices.AttachedAKSClustersClientCreateOrUpdateResponse{
 	// 	AttachedAksCluster: armcognitiveservices.AttachedAksCluster{
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/attachedAksClusters/myAttachment"),
 	// 		Name: to.Ptr("myAttachment"),
@@ -66,7 +66,7 @@ func ExampleAttachedAksClustersClient_CreateOrUpdate() {
 }
 
 // Generated from example definition: 2026-11-15-preview/DeleteAttachedAksCluster.json
-func ExampleAttachedAksClustersClient_Delete() {
+func ExampleAttachedAKSClustersClient_Delete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -76,14 +76,14 @@ func ExampleAttachedAksClustersClient_Delete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	_, err = clientFactory.NewAttachedAksClustersClient().Delete(ctx, "rgcognitiveservices", "myAccount", "myAttachment", nil)
+	_, err = clientFactory.NewAttachedAKSClustersClient().Delete(ctx, "rgcognitiveservices", "myAccount", "myAttachment", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 }
 
 // Generated from example definition: 2026-11-15-preview/GetAttachedAksCluster.json
-func ExampleAttachedAksClustersClient_Get() {
+func ExampleAttachedAKSClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -93,14 +93,14 @@ func ExampleAttachedAksClustersClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewAttachedAksClustersClient().Get(ctx, "rgcognitiveservices", "myAccount", "myAttachment", nil)
+	res, err := clientFactory.NewAttachedAKSClustersClient().Get(ctx, "rgcognitiveservices", "myAccount", "myAttachment", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armcognitiveservices.AttachedAksClustersClientGetResponse{
+	// res = armcognitiveservices.AttachedAKSClustersClientGetResponse{
 	// 	AttachedAksCluster: armcognitiveservices.AttachedAksCluster{
 	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgcognitiveservices/providers/Microsoft.CognitiveServices/accounts/myAccount/attachedAksClusters/myAttachment"),
 	// 		Name: to.Ptr("myAttachment"),
@@ -161,7 +161,7 @@ func ExampleAttachedAksClustersClient_Get() {
 }
 
 // Generated from example definition: 2026-11-15-preview/ListAttachedAksClusters.json
-func ExampleAttachedAksClustersClient_NewListPager() {
+func ExampleAttachedAKSClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -171,7 +171,7 @@ func ExampleAttachedAksClustersClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAttachedAksClustersClient().NewListPager("rgcognitiveservices", "myAccount", &armcognitiveservices.AttachedAksClustersClientListOptions{
+	pager := clientFactory.NewAttachedAKSClustersClient().NewListPager("rgcognitiveservices", "myAccount", &armcognitiveservices.AttachedAKSClustersClientListOptions{
 		Filter:  to.Ptr("stage eq 'Ready'"),
 		Orderby: to.Ptr("createdTime desc"),
 		Top:     to.Ptr[int32](1),
@@ -186,7 +186,7 @@ func ExampleAttachedAksClustersClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armcognitiveservices.AttachedAksClustersClientListResponse{
+		// page = armcognitiveservices.AttachedAKSClustersClientListResponse{
 		// 	AttachedAksClusterListResult: armcognitiveservices.AttachedAksClusterListResult{
 		// 		Value: []*armcognitiveservices.AttachedAksClusterListItem{
 		// 			{

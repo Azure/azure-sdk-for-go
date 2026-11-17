@@ -17,20 +17,20 @@ import (
 	"strings"
 )
 
-// AttachedAksClustersClient - Manages account-level attachments to existing AKS clusters.
-// Don't use this type directly, use NewAttachedAksClustersClient() instead.
+// AttachedAKSClustersClient - Manages account-level attachments to existing AKS clusters.
+// Don't use this type directly, use NewAttachedAKSClustersClient() instead.
 //
 // Generated from API version 2026-11-15-preview
-type AttachedAksClustersClient struct {
+type AttachedAKSClustersClient struct {
 	internal       *arm.Client
 	subscriptionID string
 }
 
-// NewAttachedAksClustersClient creates a new instance of AttachedAksClustersClient with the specified values.
+// NewAttachedAKSClustersClient creates a new instance of AttachedAKSClustersClient with the specified values.
 //   - subscriptionID - The ID of the target subscription. The value must be an UUID.
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
-func NewAttachedAksClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedAksClustersClient, error) {
+func NewAttachedAKSClustersClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AttachedAKSClustersClient, error) {
 	if subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
@@ -38,7 +38,7 @@ func NewAttachedAksClustersClient(subscriptionID string, credential azcore.Token
 	if err != nil {
 		return nil, err
 	}
-	client := &AttachedAksClustersClient{
+	client := &AttachedAKSClustersClient{
 		subscriptionID: subscriptionID,
 		internal:       cl,
 	}
@@ -55,28 +55,28 @@ func NewAttachedAksClustersClient(subscriptionID string, credential azcore.Token
 //   - attachedAksClusterName - The name of the account-level AKS attachment. It must contain 1-63 letters, digits, periods, underscores,
 //     or hyphens, and start and end with a letter or digit.
 //   - resource - Resource create parameters.
-//   - options - AttachedAksClustersClientCreateOrUpdateOptions contains the optional parameters for the AttachedAksClustersClient.CreateOrUpdate
+//   - options - AttachedAKSClustersClientCreateOrUpdateOptions contains the optional parameters for the AttachedAKSClustersClient.CreateOrUpdate
 //     method.
-func (client *AttachedAksClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, resource AttachedAksCluster, options *AttachedAksClustersClientCreateOrUpdateOptions) (AttachedAksClustersClientCreateOrUpdateResponse, error) {
+func (client *AttachedAKSClustersClient) CreateOrUpdate(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, resource AttachedAksCluster, options *AttachedAKSClustersClientCreateOrUpdateOptions) (AttachedAKSClustersClientCreateOrUpdateResponse, error) {
 	var err error
-	const operationName = "AttachedAksClustersClient.CreateOrUpdate"
+	const operationName = "AttachedAKSClustersClient.CreateOrUpdate"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.createOrUpdateCreateRequest(ctx, resourceGroupName, accountName, attachedAksClusterName, resource, options)
 	if err != nil {
-		return AttachedAksClustersClientCreateOrUpdateResponse{}, err
+		return AttachedAKSClustersClientCreateOrUpdateResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AttachedAksClustersClientCreateOrUpdateResponse{}, err
+		return AttachedAKSClustersClientCreateOrUpdateResponse{}, err
 	}
 	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusAccepted)
 	return resp, err
 }
 
 // createOrUpdateCreateRequest creates the CreateOrUpdate request.
-func (client *AttachedAksClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, resource AttachedAksCluster, _ *AttachedAksClustersClientCreateOrUpdateOptions) (*policy.Request, error) {
+func (client *AttachedAKSClustersClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, resource AttachedAksCluster, _ *AttachedAKSClustersClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/attachedAksClusters/{attachedAksClusterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -110,13 +110,13 @@ func (client *AttachedAksClustersClient) createOrUpdateCreateRequest(ctx context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AttachedAksClustersClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AttachedAksClustersClientCreateOrUpdateResponse, error) {
-	result := AttachedAksClustersClientCreateOrUpdateResponse{}
+func (client *AttachedAKSClustersClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AttachedAKSClustersClientCreateOrUpdateResponse, error) {
+	result := AttachedAKSClustersClientCreateOrUpdateResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedAksCluster); err != nil {
-		return AttachedAksClustersClientCreateOrUpdateResponse{}, err
+		return AttachedAKSClustersClientCreateOrUpdateResponse{}, err
 	}
 	return result, nil
 }
@@ -130,28 +130,28 @@ func (client *AttachedAksClustersClient) createOrUpdateHandleResponse(resp *http
 //   - accountName - The name of Cognitive Services account.
 //   - attachedAksClusterName - The name of the account-level AKS attachment. It must contain 1-63 letters, digits, periods, underscores,
 //     or hyphens, and start and end with a letter or digit.
-//   - options - AttachedAksClustersClientDeleteOptions contains the optional parameters for the AttachedAksClustersClient.Delete
+//   - options - AttachedAKSClustersClientDeleteOptions contains the optional parameters for the AttachedAKSClustersClient.Delete
 //     method.
-func (client *AttachedAksClustersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAksClustersClientDeleteOptions) (AttachedAksClustersClientDeleteResponse, error) {
+func (client *AttachedAKSClustersClient) Delete(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAKSClustersClientDeleteOptions) (AttachedAKSClustersClientDeleteResponse, error) {
 	var err error
-	const operationName = "AttachedAksClustersClient.Delete"
+	const operationName = "AttachedAKSClustersClient.Delete"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.deleteCreateRequest(ctx, resourceGroupName, accountName, attachedAksClusterName, options)
 	if err != nil {
-		return AttachedAksClustersClientDeleteResponse{}, err
+		return AttachedAKSClustersClientDeleteResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AttachedAksClustersClientDeleteResponse{}, err
+		return AttachedAKSClustersClientDeleteResponse{}, err
 	}
 	resp, err := client.deleteHandleResponse(httpResp, http.StatusAccepted, http.StatusNoContent)
 	return resp, err
 }
 
 // deleteCreateRequest creates the Delete request.
-func (client *AttachedAksClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAksClustersClientDeleteOptions) (*policy.Request, error) {
+func (client *AttachedAKSClustersClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAKSClustersClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/attachedAksClusters/{attachedAksClusterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -184,13 +184,13 @@ func (client *AttachedAksClustersClient) deleteCreateRequest(ctx context.Context
 }
 
 // deleteHandleResponse handles the Delete response.
-func (client *AttachedAksClustersClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (AttachedAksClustersClientDeleteResponse, error) {
-	result := AttachedAksClustersClientDeleteResponse{}
+func (client *AttachedAKSClustersClient) deleteHandleResponse(resp *http.Response, successCodes ...int) (AttachedAKSClustersClientDeleteResponse, error) {
+	result := AttachedAKSClustersClientDeleteResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedAksCluster); err != nil {
-		return AttachedAksClustersClientDeleteResponse{}, err
+		return AttachedAKSClustersClientDeleteResponse{}, err
 	}
 	return result, nil
 }
@@ -201,27 +201,27 @@ func (client *AttachedAksClustersClient) deleteHandleResponse(resp *http.Respons
 //   - accountName - The name of Cognitive Services account.
 //   - attachedAksClusterName - The name of the account-level AKS attachment. It must contain 1-63 letters, digits, periods, underscores,
 //     or hyphens, and start and end with a letter or digit.
-//   - options - AttachedAksClustersClientGetOptions contains the optional parameters for the AttachedAksClustersClient.Get method.
-func (client *AttachedAksClustersClient) Get(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAksClustersClientGetOptions) (AttachedAksClustersClientGetResponse, error) {
+//   - options - AttachedAKSClustersClientGetOptions contains the optional parameters for the AttachedAKSClustersClient.Get method.
+func (client *AttachedAKSClustersClient) Get(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *AttachedAKSClustersClientGetOptions) (AttachedAKSClustersClientGetResponse, error) {
 	var err error
-	const operationName = "AttachedAksClustersClient.Get"
+	const operationName = "AttachedAKSClustersClient.Get"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
 	req, err := client.getCreateRequest(ctx, resourceGroupName, accountName, attachedAksClusterName, options)
 	if err != nil {
-		return AttachedAksClustersClientGetResponse{}, err
+		return AttachedAKSClustersClientGetResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return AttachedAksClustersClientGetResponse{}, err
+		return AttachedAKSClustersClientGetResponse{}, err
 	}
 	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
 // getCreateRequest creates the Get request.
-func (client *AttachedAksClustersClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, _ *AttachedAksClustersClientGetOptions) (*policy.Request, error) {
+func (client *AttachedAKSClustersClient) getCreateRequest(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, _ *AttachedAKSClustersClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CognitiveServices/accounts/{accountName}/attachedAksClusters/{attachedAksClusterName}"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -251,13 +251,13 @@ func (client *AttachedAksClustersClient) getCreateRequest(ctx context.Context, r
 }
 
 // getHandleResponse handles the Get response.
-func (client *AttachedAksClustersClient) getHandleResponse(resp *http.Response, successCodes ...int) (AttachedAksClustersClientGetResponse, error) {
-	result := AttachedAksClustersClientGetResponse{}
+func (client *AttachedAKSClustersClient) getHandleResponse(resp *http.Response, successCodes ...int) (AttachedAKSClustersClientGetResponse, error) {
+	result := AttachedAKSClustersClientGetResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedAksCluster); err != nil {
-		return AttachedAksClustersClientGetResponse{}, err
+		return AttachedAKSClustersClientGetResponse{}, err
 	}
 	return result, nil
 }
@@ -266,26 +266,26 @@ func (client *AttachedAksClustersClient) getHandleResponse(resp *http.Response, 
 // Use GET on an individual attachment to retrieve its full status and bindings.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - accountName - The name of Cognitive Services account.
-//   - options - AttachedAksClustersClientListOptions contains the optional parameters for the AttachedAksClustersClient.NewListPager
+//   - options - AttachedAKSClustersClientListOptions contains the optional parameters for the AttachedAKSClustersClient.NewListPager
 //     method.
-func (client *AttachedAksClustersClient) NewListPager(resourceGroupName string, accountName string, options *AttachedAksClustersClientListOptions) *runtime.Pager[AttachedAksClustersClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AttachedAksClustersClientListResponse]{
-		More: func(page AttachedAksClustersClientListResponse) bool {
+func (client *AttachedAKSClustersClient) NewListPager(resourceGroupName string, accountName string, options *AttachedAKSClustersClientListOptions) *runtime.Pager[AttachedAKSClustersClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AttachedAKSClustersClientListResponse]{
+		More: func(page AttachedAKSClustersClientListResponse) bool {
 			return page.NextLink != nil && len(*page.NextLink) > 0
 		},
-		Fetcher: func(ctx context.Context, page *AttachedAksClustersClientListResponse) (AttachedAksClustersClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AttachedAksClustersClient.NewListPager")
+		Fetcher: func(ctx context.Context, page *AttachedAKSClustersClientListResponse) (AttachedAKSClustersClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AttachedAKSClustersClient.NewListPager")
 			nextLink := ""
 			if page != nil {
 				nextLink = *page.NextLink
 			}
 			req, err := client.listCreateRequest(ctx, resourceGroupName, accountName, nextLink, options)
 			if err != nil {
-				return AttachedAksClustersClientListResponse{}, err
+				return AttachedAKSClustersClientListResponse{}, err
 			}
 			resp, err := client.internal.Pipeline().Do(req)
 			if err != nil {
-				return AttachedAksClustersClientListResponse{}, err
+				return AttachedAKSClustersClientListResponse{}, err
 			}
 			return client.listHandleResponse(resp, http.StatusOK)
 		},
@@ -294,7 +294,7 @@ func (client *AttachedAksClustersClient) NewListPager(resourceGroupName string, 
 }
 
 // listCreateRequest creates the List request.
-func (client *AttachedAksClustersClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, options *AttachedAksClustersClientListOptions) (*policy.Request, error) {
+func (client *AttachedAKSClustersClient) listCreateRequest(ctx context.Context, resourceGroupName string, accountName string, nextLink string, options *AttachedAKSClustersClientListOptions) (*policy.Request, error) {
 	firstPage := nextLink == ""
 	var req *policy.Request
 	var err error
@@ -341,13 +341,13 @@ func (client *AttachedAksClustersClient) listCreateRequest(ctx context.Context, 
 }
 
 // listHandleResponse handles the List response.
-func (client *AttachedAksClustersClient) listHandleResponse(resp *http.Response, successCodes ...int) (AttachedAksClustersClientListResponse, error) {
-	result := AttachedAksClustersClientListResponse{}
+func (client *AttachedAKSClustersClient) listHandleResponse(resp *http.Response, successCodes ...int) (AttachedAKSClustersClientListResponse, error) {
+	result := AttachedAKSClustersClientListResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AttachedAksClusterListResult); err != nil {
-		return AttachedAksClustersClientListResponse{}, err
+		return AttachedAKSClustersClientListResponse{}, err
 	}
 	return result, nil
 }

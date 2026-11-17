@@ -308,26 +308,26 @@ type ArcDeploymentsClientUpdateResponse struct {
 	ArcDeployment
 }
 
-// AttachedAksClustersClientCreateOrUpdateResponse contains the response from method AttachedAksClustersClient.CreateOrUpdate.
-type AttachedAksClustersClientCreateOrUpdateResponse struct {
+// AttachedAKSClustersClientCreateOrUpdateResponse contains the response from method AttachedAKSClustersClient.CreateOrUpdate.
+type AttachedAKSClustersClientCreateOrUpdateResponse struct {
 	// An existing Azure Kubernetes Service cluster attached to a Cognitive Services account.
 	AttachedAksCluster
 }
 
-// AttachedAksClustersClientDeleteResponse contains the response from method AttachedAksClustersClient.Delete.
-type AttachedAksClustersClientDeleteResponse struct {
+// AttachedAKSClustersClientDeleteResponse contains the response from method AttachedAKSClustersClient.Delete.
+type AttachedAKSClustersClientDeleteResponse struct {
 	// An existing Azure Kubernetes Service cluster attached to a Cognitive Services account.
 	AttachedAksCluster
 }
 
-// AttachedAksClustersClientGetResponse contains the response from method AttachedAksClustersClient.Get.
-type AttachedAksClustersClientGetResponse struct {
+// AttachedAKSClustersClientGetResponse contains the response from method AttachedAKSClustersClient.Get.
+type AttachedAKSClustersClientGetResponse struct {
 	// An existing Azure Kubernetes Service cluster attached to a Cognitive Services account.
 	AttachedAksCluster
 }
 
-// AttachedAksClustersClientListResponse contains the response from method AttachedAksClustersClient.NewListPager.
-type AttachedAksClustersClientListResponse struct {
+// AttachedAKSClustersClientListResponse contains the response from method AttachedAKSClustersClient.NewListPager.
+type AttachedAKSClustersClientListResponse struct {
 	// A page of lightweight attachment summaries.
 	AttachedAksClusterListResult
 }

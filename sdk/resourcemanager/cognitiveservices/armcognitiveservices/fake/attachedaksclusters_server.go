@@ -20,44 +20,44 @@ import (
 	"strconv"
 )
 
-// AttachedAksClustersServer is a fake server for instances of the armcognitiveservices.AttachedAksClustersClient type.
-type AttachedAksClustersServer struct {
-	// CreateOrUpdate is the fake for method AttachedAksClustersClient.CreateOrUpdate
+// AttachedAKSClustersServer is a fake server for instances of the armcognitiveservices.AttachedAKSClustersClient type.
+type AttachedAKSClustersServer struct {
+	// CreateOrUpdate is the fake for method AttachedAKSClustersClient.CreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
-	CreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, resource armcognitiveservices.AttachedAksCluster, options *armcognitiveservices.AttachedAksClustersClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.AttachedAksClustersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	CreateOrUpdate func(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, resource armcognitiveservices.AttachedAksCluster, options *armcognitiveservices.AttachedAKSClustersClientCreateOrUpdateOptions) (resp azfake.Responder[armcognitiveservices.AttachedAKSClustersClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
-	// Delete is the fake for method AttachedAksClustersClient.Delete
+	// Delete is the fake for method AttachedAKSClustersClient.Delete
 	// HTTP status codes to indicate success: http.StatusAccepted, http.StatusNoContent
-	Delete func(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *armcognitiveservices.AttachedAksClustersClientDeleteOptions) (resp azfake.Responder[armcognitiveservices.AttachedAksClustersClientDeleteResponse], errResp azfake.ErrorResponder)
+	Delete func(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *armcognitiveservices.AttachedAKSClustersClientDeleteOptions) (resp azfake.Responder[armcognitiveservices.AttachedAKSClustersClientDeleteResponse], errResp azfake.ErrorResponder)
 
-	// Get is the fake for method AttachedAksClustersClient.Get
+	// Get is the fake for method AttachedAKSClustersClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *armcognitiveservices.AttachedAksClustersClientGetOptions) (resp azfake.Responder[armcognitiveservices.AttachedAksClustersClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, accountName string, attachedAksClusterName string, options *armcognitiveservices.AttachedAKSClustersClientGetOptions) (resp azfake.Responder[armcognitiveservices.AttachedAKSClustersClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method AttachedAksClustersClient.NewListPager
+	// NewListPager is the fake for method AttachedAKSClustersClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.AttachedAksClustersClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.AttachedAksClustersClientListResponse])
+	NewListPager func(resourceGroupName string, accountName string, options *armcognitiveservices.AttachedAKSClustersClientListOptions) (resp azfake.PagerResponder[armcognitiveservices.AttachedAKSClustersClientListResponse])
 }
 
-// NewAttachedAksClustersServerTransport creates a new instance of AttachedAksClustersServerTransport with the provided implementation.
-// The returned AttachedAksClustersServerTransport instance is connected to an instance of armcognitiveservices.AttachedAksClustersClient via the
+// NewAttachedAKSClustersServerTransport creates a new instance of AttachedAKSClustersServerTransport with the provided implementation.
+// The returned AttachedAKSClustersServerTransport instance is connected to an instance of armcognitiveservices.AttachedAKSClustersClient via the
 // azcore.ClientOptions.Transporter field in the client's constructor parameters.
-func NewAttachedAksClustersServerTransport(srv *AttachedAksClustersServer) *AttachedAksClustersServerTransport {
-	return &AttachedAksClustersServerTransport{
+func NewAttachedAKSClustersServerTransport(srv *AttachedAKSClustersServer) *AttachedAKSClustersServerTransport {
+	return &AttachedAKSClustersServerTransport{
 		srv:          srv,
-		newListPager: newTracker[azfake.PagerResponder[armcognitiveservices.AttachedAksClustersClientListResponse]](),
+		newListPager: newTracker[azfake.PagerResponder[armcognitiveservices.AttachedAKSClustersClientListResponse]](),
 	}
 }
 
-// AttachedAksClustersServerTransport connects instances of armcognitiveservices.AttachedAksClustersClient to instances of AttachedAksClustersServer.
-// Don't use this type directly, use NewAttachedAksClustersServerTransport instead.
-type AttachedAksClustersServerTransport struct {
-	srv          *AttachedAksClustersServer
-	newListPager *tracker[azfake.PagerResponder[armcognitiveservices.AttachedAksClustersClientListResponse]]
+// AttachedAKSClustersServerTransport connects instances of armcognitiveservices.AttachedAKSClustersClient to instances of AttachedAKSClustersServer.
+// Don't use this type directly, use NewAttachedAKSClustersServerTransport instead.
+type AttachedAKSClustersServerTransport struct {
+	srv          *AttachedAKSClustersServer
+	newListPager *tracker[azfake.PagerResponder[armcognitiveservices.AttachedAKSClustersClientListResponse]]
 }
 
-// Do implements the policy.Transporter interface for AttachedAksClustersServerTransport.
-func (a *AttachedAksClustersServerTransport) Do(req *http.Request) (*http.Response, error) {
+// Do implements the policy.Transporter interface for AttachedAKSClustersServerTransport.
+func (a *AttachedAKSClustersServerTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
@@ -67,7 +67,7 @@ func (a *AttachedAksClustersServerTransport) Do(req *http.Request) (*http.Respon
 	return a.dispatchToMethodFake(req, method)
 }
 
-func (a *AttachedAksClustersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
+func (a *AttachedAKSClustersServerTransport) dispatchToMethodFake(req *http.Request, method string) (*http.Response, error) {
 	resultChan := make(chan result, 1)
 	go func() {
 		var intercepted bool
@@ -77,13 +77,13 @@ func (a *AttachedAksClustersServerTransport) dispatchToMethodFake(req *http.Requ
 		}
 		if !intercepted {
 			switch method {
-			case "AttachedAksClustersClient.CreateOrUpdate":
+			case "AttachedAKSClustersClient.CreateOrUpdate":
 				res.resp, res.err = a.dispatchCreateOrUpdate(req)
-			case "AttachedAksClustersClient.Delete":
+			case "AttachedAKSClustersClient.Delete":
 				res.resp, res.err = a.dispatchDelete(req)
-			case "AttachedAksClustersClient.Get":
+			case "AttachedAKSClustersClient.Get":
 				res.resp, res.err = a.dispatchGet(req)
-			case "AttachedAksClustersClient.NewListPager":
+			case "AttachedAKSClustersClient.NewListPager":
 				res.resp, res.err = a.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
@@ -101,7 +101,7 @@ func (a *AttachedAksClustersServerTransport) dispatchToMethodFake(req *http.Requ
 	}
 }
 
-func (a *AttachedAksClustersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
+func (a *AttachedAKSClustersServerTransport) dispatchCreateOrUpdate(req *http.Request) (*http.Response, error) {
 	if a.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
@@ -142,7 +142,7 @@ func (a *AttachedAksClustersServerTransport) dispatchCreateOrUpdate(req *http.Re
 	return resp, nil
 }
 
-func (a *AttachedAksClustersServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
+func (a *AttachedAKSClustersServerTransport) dispatchDelete(req *http.Request) (*http.Response, error) {
 	if a.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
@@ -166,9 +166,9 @@ func (a *AttachedAksClustersServerTransport) dispatchDelete(req *http.Request) (
 		return nil, err
 	}
 	clusterDispositionParam := getOptional(qp.Get("clusterDisposition"))
-	var options *armcognitiveservices.AttachedAksClustersClientDeleteOptions
+	var options *armcognitiveservices.AttachedAKSClustersClientDeleteOptions
 	if clusterDispositionParam != nil {
-		options = &armcognitiveservices.AttachedAksClustersClientDeleteOptions{
+		options = &armcognitiveservices.AttachedAKSClustersClientDeleteOptions{
 			ClusterDisposition: clusterDispositionParam,
 		}
 	}
@@ -187,7 +187,7 @@ func (a *AttachedAksClustersServerTransport) dispatchDelete(req *http.Request) (
 	return resp, nil
 }
 
-func (a *AttachedAksClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
+func (a *AttachedAKSClustersServerTransport) dispatchGet(req *http.Request) (*http.Response, error) {
 	if a.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
@@ -224,7 +224,7 @@ func (a *AttachedAksClustersServerTransport) dispatchGet(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (a *AttachedAksClustersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+func (a *AttachedAKSClustersServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if a.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
@@ -261,9 +261,9 @@ func (a *AttachedAksClustersServerTransport) dispatchNewListPager(req *http.Requ
 		if err != nil {
 			return nil, err
 		}
-		var options *armcognitiveservices.AttachedAksClustersClientListOptions
+		var options *armcognitiveservices.AttachedAKSClustersClientListOptions
 		if filterParam != nil || orderbyParam != nil || topParam != nil || skipParam != nil {
-			options = &armcognitiveservices.AttachedAksClustersClientListOptions{
+			options = &armcognitiveservices.AttachedAKSClustersClientListOptions{
 				Filter:  filterParam,
 				Orderby: orderbyParam,
 				Top:     topParam,
@@ -273,7 +273,7 @@ func (a *AttachedAksClustersServerTransport) dispatchNewListPager(req *http.Requ
 		resp := a.srv.NewListPager(resourceGroupNameParam, accountNameParam, options)
 		newListPager = &resp
 		a.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.AttachedAksClustersClientListResponse, createLink func() string) {
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armcognitiveservices.AttachedAKSClustersClientListResponse, createLink func() string) {
 			page.NextLink = to.Ptr(createLink())
 		})
 	}
@@ -291,7 +291,7 @@ func (a *AttachedAksClustersServerTransport) dispatchNewListPager(req *http.Requ
 	return resp, nil
 }
 
-// set this to conditionally intercept incoming requests to AttachedAksClustersServerTransport
+// set this to conditionally intercept incoming requests to AttachedAKSClustersServerTransport
 var attachedAksClustersServerTransportInterceptor interface {
 	// Do returns true if the server transport should use the returned response/error
 	Do(*http.Request) (*http.Response, error, bool)

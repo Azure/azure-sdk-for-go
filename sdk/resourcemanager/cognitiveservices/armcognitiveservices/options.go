@@ -335,25 +335,25 @@ type ArcDeploymentsClientListOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttachedAksClustersClientCreateOrUpdateOptions contains the optional parameters for the AttachedAksClustersClient.CreateOrUpdate
+// AttachedAKSClustersClientCreateOrUpdateOptions contains the optional parameters for the AttachedAKSClustersClient.CreateOrUpdate
 // method.
-type AttachedAksClustersClientCreateOrUpdateOptions struct {
+type AttachedAKSClustersClientCreateOrUpdateOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttachedAksClustersClientDeleteOptions contains the optional parameters for the AttachedAksClustersClient.Delete method.
-type AttachedAksClustersClientDeleteOptions struct {
+// AttachedAKSClustersClientDeleteOptions contains the optional parameters for the AttachedAKSClustersClient.Delete method.
+type AttachedAKSClustersClientDeleteOptions struct {
 	// Retains the physical AKS and AI Manager resources. Only Keep is supported.
 	ClusterDisposition *string
 }
 
-// AttachedAksClustersClientGetOptions contains the optional parameters for the AttachedAksClustersClient.Get method.
-type AttachedAksClustersClientGetOptions struct {
+// AttachedAKSClustersClientGetOptions contains the optional parameters for the AttachedAKSClustersClient.Get method.
+type AttachedAKSClustersClientGetOptions struct {
 	// placeholder for future optional parameters
 }
 
-// AttachedAksClustersClientListOptions contains the optional parameters for the AttachedAksClustersClient.NewListPager method.
-type AttachedAksClustersClientListOptions struct {
+// AttachedAKSClustersClientListOptions contains the optional parameters for the AttachedAKSClustersClient.NewListPager method.
+type AttachedAKSClustersClientListOptions struct {
 	// OData filter expression for attachment summaries.
 	Filter *string
 

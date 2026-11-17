@@ -1,14 +1,21 @@
 ## Release History
 
-### 1.6.0-beta.2 (Unreleased)
+### 1.6.0 (Unreleased)
 
 #### Features Added
+* Added the `ekm` package for external key management operations
 
 #### Breaking Changes
-
-#### Bugs Fixed
+> These changes affect only code written against beta version v1.6.0-beta.1
+* Renamed `ekm.KeyVaultClient` to `ekm.Client`
+* Renamed `fake.KeyVaultServer` to `fake.Server` and `fake.NewKeyVaultServerTransport` to `fake.NewServerTransport`
+  in the `ekm/fake` package
+* Removed "Ekm" from `ekm.Client` method names and their option and response types e.g. `CreateEkmConnection`
+  is now `CreateConnection` and `GetEkmCertificate` is now `GetCertificate`
+* Renamed `ekm.ProxyInfo` fields `EkmProduct` and `EkmVendor` to `EKMProduct` and `EKMVendor`
 
 #### Other Changes
+* Upgraded to API service version `2026-04-01`
 
 ### 1.6.0-beta.1 (2026-06-09)
 

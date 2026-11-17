@@ -31,21 +31,21 @@ var (
 	clientCACerts    = [][]byte{[]byte("fake-client-ca-certificate-bytes")}
 )
 
-func getServer() fake.KeyVaultServer {
-	return fake.KeyVaultServer{
-		CheckEkmConnection: func(ctx context.Context, options *ekm.CheckEkmConnectionOptions) (resp azfake.Responder[ekm.CheckEkmConnectionResponse], errResp azfake.ErrorResponder) {
-			kvResp := ekm.CheckEkmConnectionResponse{ProxyInfo: ekm.ProxyInfo{
+func getServer() fake.Server {
+	return fake.Server{
+		CheckConnection: func(ctx context.Context, options *ekm.CheckConnectionOptions) (resp azfake.Responder[ekm.CheckConnectionResponse], errResp azfake.ErrorResponder) {
+			kvResp := ekm.CheckConnectionResponse{ProxyInfo: ekm.ProxyInfo{
 				APIVersion:  to.Ptr(ekmAPIVersion),
-				EkmProduct:  to.Ptr(ekmProduct),
-				EkmVendor:   to.Ptr(ekmVendor),
+				EKMProduct:  to.Ptr(ekmProduct),
+				EKMVendor:   to.Ptr(ekmVendor),
 				ProxyName:   to.Ptr(proxyName),
 				ProxyVendor: to.Ptr(proxyVendor),
 			}}
 			resp.SetResponse(http.StatusOK, kvResp, nil)
 			return
 		},
-		CreateEkmConnection: func(ctx context.Context, ekmConnection ekm.Connection, options *ekm.CreateEkmConnectionOptions) (resp azfake.Responder[ekm.CreateEkmConnectionResponse], errResp azfake.ErrorResponder) {
-			kvResp := ekm.CreateEkmConnectionResponse{Connection: ekm.Connection{
+		CreateConnection: func(ctx context.Context, ekmConnection ekm.Connection, options *ekm.CreateConnectionOptions) (resp azfake.Responder[ekm.CreateConnectionResponse], errResp azfake.ErrorResponder) {
+			kvResp := ekm.CreateConnectionResponse{Connection: ekm.Connection{
 				Host:                    to.Ptr(ekmHost),
 				ServerCaCertificates:    ekmCACerts,
 				ServerSubjectCommonName: to.Ptr(ekmCommonName),
@@ -53,8 +53,8 @@ func getServer() fake.KeyVaultServer {
 			resp.SetResponse(http.StatusOK, kvResp, nil)
 			return
 		},
-		DeleteEkmConnection: func(ctx context.Context, options *ekm.DeleteEkmConnectionOptions) (resp azfake.Responder[ekm.DeleteEkmConnectionResponse], errResp azfake.ErrorResponder) {
-			kvResp := ekm.DeleteEkmConnectionResponse{Connection: ekm.Connection{
+		DeleteConnection: func(ctx context.Context, options *ekm.DeleteConnectionOptions) (resp azfake.Responder[ekm.DeleteConnectionResponse], errResp azfake.ErrorResponder) {
+			kvResp := ekm.DeleteConnectionResponse{Connection: ekm.Connection{
 				Host:                    to.Ptr(ekmHost),
 				ServerCaCertificates:    ekmCACerts,
 				ServerSubjectCommonName: to.Ptr(ekmCommonName),
@@ -62,16 +62,16 @@ func getServer() fake.KeyVaultServer {
 			resp.SetResponse(http.StatusOK, kvResp, nil)
 			return
 		},
-		GetEkmCertificate: func(ctx context.Context, options *ekm.GetEkmCertificateOptions) (resp azfake.Responder[ekm.GetEkmCertificateResponse], errResp azfake.ErrorResponder) {
-			kvResp := ekm.GetEkmCertificateResponse{ProxyClientCertificateInfo: ekm.ProxyClientCertificateInfo{
+		GetCertificate: func(ctx context.Context, options *ekm.GetCertificateOptions) (resp azfake.Responder[ekm.GetCertificateResponse], errResp azfake.ErrorResponder) {
+			kvResp := ekm.GetCertificateResponse{ProxyClientCertificateInfo: ekm.ProxyClientCertificateInfo{
 				CaCertificates:    clientCACerts,
 				SubjectCommonName: to.Ptr(clientCommonName),
 			}}
 			resp.SetResponse(http.StatusOK, kvResp, nil)
 			return
 		},
-		GetEkmConnection: func(ctx context.Context, options *ekm.GetEkmConnectionOptions) (resp azfake.Responder[ekm.GetEkmConnectionResponse], errResp azfake.ErrorResponder) {
-			kvResp := ekm.GetEkmConnectionResponse{Connection: ekm.Connection{
+		GetConnection: func(ctx context.Context, options *ekm.GetConnectionOptions) (resp azfake.Responder[ekm.GetConnectionResponse], errResp azfake.ErrorResponder) {
+			kvResp := ekm.GetConnectionResponse{Connection: ekm.Connection{
 				Host:                    to.Ptr(ekmHost),
 				ServerCaCertificates:    ekmCACerts,
 				ServerSubjectCommonName: to.Ptr(ekmCommonName),
@@ -79,8 +79,8 @@ func getServer() fake.KeyVaultServer {
 			resp.SetResponse(http.StatusOK, kvResp, nil)
 			return
 		},
-		UpdateEkmConnection: func(ctx context.Context, ekmConnection ekm.Connection, options *ekm.UpdateEkmConnectionOptions) (resp azfake.Responder[ekm.UpdateEkmConnectionResponse], errResp azfake.ErrorResponder) {
-			kvResp := ekm.UpdateEkmConnectionResponse{Connection: ekm.Connection{
+		UpdateConnection: func(ctx context.Context, ekmConnection ekm.Connection, options *ekm.UpdateConnectionOptions) (resp azfake.Responder[ekm.UpdateConnectionResponse], errResp azfake.ErrorResponder) {
+			kvResp := ekm.UpdateConnectionResponse{Connection: ekm.Connection{
 				Host:                    to.Ptr(ekmHost),
 				ServerCaCertificates:    ekmCACerts,
 				ServerSubjectCommonName: to.Ptr("updated.contoso.com"),
@@ -96,46 +96,46 @@ func TestServer(t *testing.T) {
 
 	client, err := ekm.NewClient("https://fake-hsm.managedhsm.azure.net", &azfake.TokenCredential{}, &ekm.ClientOptions{
 		ClientOptions: azcore.ClientOptions{
-			Transport: fake.NewKeyVaultServerTransport(&fakeServer),
+			Transport: fake.NewServerTransport(&fakeServer),
 		},
 	})
 	require.NoError(t, err)
 
 	// check
-	checkResp, err := client.CheckEkmConnection(context.TODO(), nil)
+	checkResp, err := client.CheckConnection(context.TODO(), nil)
 	require.NoError(t, err)
 	require.Equal(t, ekmAPIVersion, *checkResp.APIVersion)
-	require.Equal(t, ekmProduct, *checkResp.EkmProduct)
-	require.Equal(t, ekmVendor, *checkResp.EkmVendor)
+	require.Equal(t, ekmProduct, *checkResp.EKMProduct)
+	require.Equal(t, ekmVendor, *checkResp.EKMVendor)
 	require.Equal(t, proxyName, *checkResp.ProxyName)
 	require.Equal(t, proxyVendor, *checkResp.ProxyVendor)
 
 	// create
-	createResp, err := client.CreateEkmConnection(context.TODO(), ekm.Connection{}, nil)
+	createResp, err := client.CreateConnection(context.TODO(), ekm.Connection{}, nil)
 	require.NoError(t, err)
 	require.Equal(t, ekmHost, *createResp.Host)
 	require.Equal(t, ekmCommonName, *createResp.ServerSubjectCommonName)
 	require.Equal(t, ekmCACerts, createResp.ServerCaCertificates)
 
 	// get
-	getResp, err := client.GetEkmConnection(context.TODO(), nil)
+	getResp, err := client.GetConnection(context.TODO(), nil)
 	require.NoError(t, err)
 	require.Equal(t, ekmHost, *getResp.Host)
 	require.Equal(t, ekmCommonName, *getResp.ServerSubjectCommonName)
 
 	// update
-	updateResp, err := client.UpdateEkmConnection(context.TODO(), ekm.Connection{}, nil)
+	updateResp, err := client.UpdateConnection(context.TODO(), ekm.Connection{}, nil)
 	require.NoError(t, err)
 	require.Equal(t, "updated.contoso.com", *updateResp.ServerSubjectCommonName)
 
 	// get certificate
-	certResp, err := client.GetEkmCertificate(context.TODO(), nil)
+	certResp, err := client.GetCertificate(context.TODO(), nil)
 	require.NoError(t, err)
 	require.Equal(t, clientCommonName, *certResp.SubjectCommonName)
 	require.Equal(t, clientCACerts, certResp.CaCertificates)
 
 	// delete
-	deleteResp, err := client.DeleteEkmConnection(context.TODO(), nil)
+	deleteResp, err := client.DeleteConnection(context.TODO(), nil)
 	require.NoError(t, err)
 	require.Equal(t, ekmHost, *deleteResp.Host)
 }

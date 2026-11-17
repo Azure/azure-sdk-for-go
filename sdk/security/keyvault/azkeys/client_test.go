@@ -755,7 +755,7 @@ func TestSecureWrapUnwrap(t *testing.T) {
 		// The service enforces a specific shape for keys used with the secure variants:
 		//   - the secure ops must be granted explicitly (the MHSM default key_ops doesn't include them)
 		//   - the key cannot be Exportable
-		//   - the key MUST have a release policy
+		//   - the key MUST have a release policy, and that policy cannot be immutable
 		params := azkeys.CreateKeyParameters{
 			Kty: to.Ptr(azkeys.KeyTypeRSAHSM),
 			KeyOps: to.SliceOfPtrs(
@@ -764,7 +764,6 @@ func TestSecureWrapUnwrap(t *testing.T) {
 			),
 			ReleasePolicy: &azkeys.KeyReleasePolicy{
 				EncodedPolicy: getMarshalledReleasePolicy(attestationURL),
-				Immutable:     to.Ptr(true),
 			},
 		}
 		createResp, err = client.CreateKey(context.Background(), keyName, params, nil)

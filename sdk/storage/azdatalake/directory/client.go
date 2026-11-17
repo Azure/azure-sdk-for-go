@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azblob/blockblob"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/datalakeerror"
 	"github.com/Azure/azure-sdk-for-go/sdk/storage/azdatalake/file"
@@ -464,12 +463,21 @@ func (d *Client) setAccessControlRecursiveHelper(ctx context.Context, mode gener
 		if err != nil {
 			return finalResponse, exported.ConvertToDFSError(err)
 		}
-		finalResponse.DirectoriesSuccessful = to.Ptr(*finalResponse.DirectoriesSuccessful + *resp.DirectoriesSuccessful)
-		finalResponse.FilesSuccessful = to.Ptr(*finalResponse.FilesSuccessful + *resp.FilesSuccessful)
-		finalResponse.FailureCount = to.Ptr(*finalResponse.FailureCount + *resp.FailureCount)
+		// The service may omit a count when it is zero, so treat a missing count as zero.
+		pageFailureCount := int32(0)
+		if resp.FailureCount != nil {
+			pageFailureCount = *resp.FailureCount
+		}
+		if resp.DirectoriesSuccessful != nil {
+			totalSuccessfulDirs += *resp.DirectoriesSuccessful
+		}
+		if resp.FilesSuccessful != nil {
+			totalSuccessfulFiles += *resp.FilesSuccessful
+		}
+		totalFailureCount += pageFailureCount
 		finalResponse.FailedEntries = append(finalResponse.FailedEntries, resp.FailedEntries...)
 		counter--
-		if !*continueOnFailure && *resp.FailureCount > 0 {
+		if !*continueOnFailure && pageFailureCount > 0 {
 			return finalResponse, exported.ConvertToDFSError(err)
 		}
 	}

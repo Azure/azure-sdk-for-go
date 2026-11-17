@@ -6,6 +6,7 @@ package directory_test
 import (
 	"context"
 	"fmt"
+	"io"
 	"net/http"
 	"strconv"
 	"strings"
@@ -3858,6 +3859,51 @@ func TestDirectoryRenameEncodesSourcePath(t *testing.T) {
 	renameSource := renameSourceVals[0]
 	_require.Contains(renameSource, "my%20dir")
 	_require.NotContains(renameSource, "my dir")
+}
+
+type fixedBodyTransport struct {
+	body string
+}
+
+func (f *fixedBodyTransport) Do(req *http.Request) (*http.Response, error) {
+	return &http.Response{
+		Request:    req,
+		Status:     "OK",
+		StatusCode: http.StatusOK,
+		Header:     http.Header{"Content-Type": []string{"application/json"}},
+		Body:       io.NopCloser(strings.NewReader(f.body)),
+	}, nil
+}
+
+// TestSetAccessControlRecursiveMissingCounts is a regression test for a nil pointer dereference
+// when the service omits the directoriesSuccessful, filesSuccessful or failureCount fields.
+func TestSetAccessControlRecursiveMissingCounts(t *testing.T) {
+	for _, body := range []string{`{}`, `{"failedEntries":[]}`, `{"directoriesSuccessful":2}`} {
+		for _, continueOnFailure := range []bool{true, false} {
+			_require := require.New(t)
+			dClient, err := directory.NewClientWithNoCredential("https://fake.dfs.core.windows.net/myfs/mydir", &directory.ClientOptions{
+				ClientOptions: policy.ClientOptions{Transport: &fixedBodyTransport{body: body}},
+			})
+			_require.NoError(err)
+
+			opts := &directory.SetAccessControlRecursiveOptions{ContinueOnFailure: to.Ptr(continueOnFailure)}
+			var resp directory.SetAccessControlRecursiveResponse
+			_require.NotPanics(func() {
+				resp, err = dClient.SetAccessControlRecursive(context.Background(), "user::rwx", opts)
+			}, "body %s", body)
+			_require.NoError(err)
+			_require.NotNil(resp.DirectoriesSuccessful)
+			_require.NotNil(resp.FilesSuccessful)
+			_require.NotNil(resp.FailureCount)
+			_require.EqualValues(0, *resp.FilesSuccessful)
+			_require.EqualValues(0, *resp.FailureCount)
+			if body == `{"directoriesSuccessful":2}` {
+				_require.EqualValues(2, *resp.DirectoriesSuccessful)
+			} else {
+				_require.EqualValues(0, *resp.DirectoriesSuccessful)
+			}
+		}
+	}
 }
 
 func (s *UnrecordedTestSuite) TestDirGetSetTagsFileSystemIdentitySas() {

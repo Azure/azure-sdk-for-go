@@ -103,14 +103,6 @@ func (c *ClientFactory) NewOperationsClient() *OperationsClient {
 	}
 }
 
-// NewPrivateAccessesClient creates a new instance of PrivateAccessesClient.
-func (c *ClientFactory) NewPrivateAccessesClient() *PrivateAccessesClient {
-	return &PrivateAccessesClient{
-		subscriptionID: c.subscriptionID,
-		internal:       c.internal,
-	}
-}
-
 // NewScenarioConfigurationsClient creates a new instance of ScenarioConfigurationsClient.
 func (c *ClientFactory) NewScenarioConfigurationsClient() *ScenarioConfigurationsClient {
 	return &ScenarioConfigurationsClient{
@@ -124,6 +116,20 @@ func (c *ClientFactory) NewScenarioRunsClient() *ScenarioRunsClient {
 	return &ScenarioRunsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
+	}
+}
+
+// NewScenarioTemplateVersionsClient creates a new instance of ScenarioTemplateVersionsClient.
+func (c *ClientFactory) NewScenarioTemplateVersionsClient() *ScenarioTemplateVersionsClient {
+	return &ScenarioTemplateVersionsClient{
+		internal: c.internal,
+	}
+}
+
+// NewScenarioTemplatesClient creates a new instance of ScenarioTemplatesClient.
+func (c *ClientFactory) NewScenarioTemplatesClient() *ScenarioTemplatesClient {
+	return &ScenarioTemplatesClient{
+		internal: c.internal,
 	}
 }
 
@@ -146,6 +152,22 @@ func (c *ClientFactory) NewTargetTypesClient() *TargetTypesClient {
 // NewTargetsClient creates a new instance of TargetsClient.
 func (c *ClientFactory) NewTargetsClient() *TargetsClient {
 	return &TargetsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewWorkspaceDiscoveriesClient creates a new instance of WorkspaceDiscoveriesClient.
+func (c *ClientFactory) NewWorkspaceDiscoveriesClient() *WorkspaceDiscoveriesClient {
+	return &WorkspaceDiscoveriesClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}
+
+// NewWorkspaceEvaluationsClient creates a new instance of WorkspaceEvaluationsClient.
+func (c *ClientFactory) NewWorkspaceEvaluationsClient() *WorkspaceEvaluationsClient {
+	return &WorkspaceEvaluationsClient{
 		subscriptionID: c.subscriptionID,
 		internal:       c.internal,
 	}

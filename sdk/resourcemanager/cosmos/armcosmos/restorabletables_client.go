@@ -19,7 +19,7 @@ import (
 // RestorableTablesClient contains the methods for the RestorableTables group.
 // Don't use this type directly, use NewRestorableTablesClient() instead.
 //
-// Generated from API version 2026-04-01-preview
+// Generated from API version 2026-07-15
 type RestorableTablesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -104,7 +104,7 @@ func (client *RestorableTablesClient) listCreateRequest(ctx context.Context, loc
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260401Preview)
+		reqQP.Set("api-version", version20260715)
 		if options != nil && options.EndTime != nil {
 			reqQP.Set("endTime", *options.EndTime)
 		}

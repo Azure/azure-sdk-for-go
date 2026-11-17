@@ -42,14 +42,17 @@ type ServerFactory struct {
 	// OperationsServer contains the fakes for client OperationsClient
 	OperationsServer OperationsServer
 
-	// PrivateAccessesServer contains the fakes for client PrivateAccessesClient
-	PrivateAccessesServer PrivateAccessesServer
-
 	// ScenarioConfigurationsServer contains the fakes for client ScenarioConfigurationsClient
 	ScenarioConfigurationsServer ScenarioConfigurationsServer
 
 	// ScenarioRunsServer contains the fakes for client ScenarioRunsClient
 	ScenarioRunsServer ScenarioRunsServer
+
+	// ScenarioTemplateVersionsServer contains the fakes for client ScenarioTemplateVersionsClient
+	ScenarioTemplateVersionsServer ScenarioTemplateVersionsServer
+
+	// ScenarioTemplatesServer contains the fakes for client ScenarioTemplatesClient
+	ScenarioTemplatesServer ScenarioTemplatesServer
 
 	// ScenariosServer contains the fakes for client ScenariosClient
 	ScenariosServer ScenariosServer
@@ -59,6 +62,12 @@ type ServerFactory struct {
 
 	// TargetsServer contains the fakes for client TargetsClient
 	TargetsServer TargetsServer
+
+	// WorkspaceDiscoveriesServer contains the fakes for client WorkspaceDiscoveriesClient
+	WorkspaceDiscoveriesServer WorkspaceDiscoveriesServer
+
+	// WorkspaceEvaluationsServer contains the fakes for client WorkspaceEvaluationsClient
+	WorkspaceEvaluationsServer WorkspaceEvaluationsServer
 
 	// WorkspacesServer contains the fakes for client WorkspacesClient
 	WorkspacesServer WorkspacesServer
@@ -76,24 +85,27 @@ func NewServerFactoryTransport(srv *ServerFactory) *ServerFactoryTransport {
 // ServerFactoryTransport connects instances of armchaos.ClientFactory to instances of ServerFactory.
 // Don't use this type directly, use NewServerFactoryTransport instead.
 type ServerFactoryTransport struct {
-	srv                            *ServerFactory
-	trMu                           sync.Mutex
-	trActionVersionsServer         *ActionVersionsServerTransport
-	trActionsServer                *ActionsServerTransport
-	trCapabilitiesServer           *CapabilitiesServerTransport
-	trCapabilityTypesServer        *CapabilityTypesServerTransport
-	trConnectionsServer            *ConnectionsServerTransport
-	trDiscoveredResourcesServer    *DiscoveredResourcesServerTransport
-	trExperimentsServer            *ExperimentsServerTransport
-	trOperationStatusesServer      *OperationStatusesServerTransport
-	trOperationsServer             *OperationsServerTransport
-	trPrivateAccessesServer        *PrivateAccessesServerTransport
-	trScenarioConfigurationsServer *ScenarioConfigurationsServerTransport
-	trScenarioRunsServer           *ScenarioRunsServerTransport
-	trScenariosServer              *ScenariosServerTransport
-	trTargetTypesServer            *TargetTypesServerTransport
-	trTargetsServer                *TargetsServerTransport
-	trWorkspacesServer             *WorkspacesServerTransport
+	srv                              *ServerFactory
+	trMu                             sync.Mutex
+	trActionVersionsServer           *ActionVersionsServerTransport
+	trActionsServer                  *ActionsServerTransport
+	trCapabilitiesServer             *CapabilitiesServerTransport
+	trCapabilityTypesServer          *CapabilityTypesServerTransport
+	trConnectionsServer              *ConnectionsServerTransport
+	trDiscoveredResourcesServer      *DiscoveredResourcesServerTransport
+	trExperimentsServer              *ExperimentsServerTransport
+	trOperationStatusesServer        *OperationStatusesServerTransport
+	trOperationsServer               *OperationsServerTransport
+	trScenarioConfigurationsServer   *ScenarioConfigurationsServerTransport
+	trScenarioRunsServer             *ScenarioRunsServerTransport
+	trScenarioTemplateVersionsServer *ScenarioTemplateVersionsServerTransport
+	trScenarioTemplatesServer        *ScenarioTemplatesServerTransport
+	trScenariosServer                *ScenariosServerTransport
+	trTargetTypesServer              *TargetTypesServerTransport
+	trTargetsServer                  *TargetsServerTransport
+	trWorkspaceDiscoveriesServer     *WorkspaceDiscoveriesServerTransport
+	trWorkspaceEvaluationsServer     *WorkspaceEvaluationsServerTransport
+	trWorkspacesServer               *WorkspacesServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -144,11 +156,6 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "OperationsClient":
 		initServer(&s.trMu, &s.trOperationsServer, func() *OperationsServerTransport { return NewOperationsServerTransport(&s.srv.OperationsServer) })
 		resp, err = s.trOperationsServer.Do(req)
-	case "PrivateAccessesClient":
-		initServer(&s.trMu, &s.trPrivateAccessesServer, func() *PrivateAccessesServerTransport {
-			return NewPrivateAccessesServerTransport(&s.srv.PrivateAccessesServer)
-		})
-		resp, err = s.trPrivateAccessesServer.Do(req)
 	case "ScenarioConfigurationsClient":
 		initServer(&s.trMu, &s.trScenarioConfigurationsServer, func() *ScenarioConfigurationsServerTransport {
 			return NewScenarioConfigurationsServerTransport(&s.srv.ScenarioConfigurationsServer)
@@ -157,6 +164,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "ScenarioRunsClient":
 		initServer(&s.trMu, &s.trScenarioRunsServer, func() *ScenarioRunsServerTransport { return NewScenarioRunsServerTransport(&s.srv.ScenarioRunsServer) })
 		resp, err = s.trScenarioRunsServer.Do(req)
+	case "ScenarioTemplateVersionsClient":
+		initServer(&s.trMu, &s.trScenarioTemplateVersionsServer, func() *ScenarioTemplateVersionsServerTransport {
+			return NewScenarioTemplateVersionsServerTransport(&s.srv.ScenarioTemplateVersionsServer)
+		})
+		resp, err = s.trScenarioTemplateVersionsServer.Do(req)
+	case "ScenarioTemplatesClient":
+		initServer(&s.trMu, &s.trScenarioTemplatesServer, func() *ScenarioTemplatesServerTransport {
+			return NewScenarioTemplatesServerTransport(&s.srv.ScenarioTemplatesServer)
+		})
+		resp, err = s.trScenarioTemplatesServer.Do(req)
 	case "ScenariosClient":
 		initServer(&s.trMu, &s.trScenariosServer, func() *ScenariosServerTransport { return NewScenariosServerTransport(&s.srv.ScenariosServer) })
 		resp, err = s.trScenariosServer.Do(req)
@@ -166,6 +183,16 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "TargetsClient":
 		initServer(&s.trMu, &s.trTargetsServer, func() *TargetsServerTransport { return NewTargetsServerTransport(&s.srv.TargetsServer) })
 		resp, err = s.trTargetsServer.Do(req)
+	case "WorkspaceDiscoveriesClient":
+		initServer(&s.trMu, &s.trWorkspaceDiscoveriesServer, func() *WorkspaceDiscoveriesServerTransport {
+			return NewWorkspaceDiscoveriesServerTransport(&s.srv.WorkspaceDiscoveriesServer)
+		})
+		resp, err = s.trWorkspaceDiscoveriesServer.Do(req)
+	case "WorkspaceEvaluationsClient":
+		initServer(&s.trMu, &s.trWorkspaceEvaluationsServer, func() *WorkspaceEvaluationsServerTransport {
+			return NewWorkspaceEvaluationsServerTransport(&s.srv.WorkspaceEvaluationsServer)
+		})
+		resp, err = s.trWorkspaceEvaluationsServer.Do(req)
 	case "WorkspacesClient":
 		initServer(&s.trMu, &s.trWorkspacesServer, func() *WorkspacesServerTransport { return NewWorkspacesServerTransport(&s.srv.WorkspacesServer) })
 		resp, err = s.trWorkspacesServer.Do(req)

@@ -20,7 +20,7 @@ import (
 // ManagedClustersClient contains the methods for the ManagedClusters group.
 // Don't use this type directly, use NewManagedClustersClient() instead.
 //
-// Generated from API version 2026-08-02-preview
+// Generated from API version 2026-09-02-preview
 type ManagedClustersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -119,7 +119,7 @@ func (client *ManagedClustersClient) abortLatestOperationCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -191,7 +191,7 @@ func (client *ManagedClustersClient) createOrUpdateCreateRequest(ctx context.Con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -273,7 +273,7 @@ func (client *ManagedClustersClient) deleteCreateRequest(ctx context.Context, re
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	if options != nil && options.IgnorePodDisruptionBudget != nil {
 		reqQP.Set("ignore-pod-disruption-budget", strconv.FormatBool(*options.IgnorePodDisruptionBudget))
 	}
@@ -351,7 +351,7 @@ func (client *ManagedClustersClient) rebalanceLoadBalancersCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -433,7 +433,7 @@ func (client *ManagedClustersClient) resetAADProfileCreateRequest(ctx context.Co
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -513,7 +513,7 @@ func (client *ManagedClustersClient) resetServicePrincipalProfileCreateRequest(c
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, parameters); err != nil {
@@ -594,7 +594,7 @@ func (client *ManagedClustersClient) rotateClusterCertificatesCreateRequest(ctx 
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -665,7 +665,7 @@ func (client *ManagedClustersClient) rotateServiceAccountSigningKeysCreateReques
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -743,7 +743,7 @@ func (client *ManagedClustersClient) runCommandCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -823,7 +823,7 @@ func (client *ManagedClustersClient) startCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -904,7 +904,7 @@ func (client *ManagedClustersClient) stopCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
@@ -976,7 +976,7 @@ func (client *ManagedClustersClient) updateTagsCreateRequest(ctx context.Context
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	if options != nil && options.IfMatch != nil {
@@ -1032,7 +1032,7 @@ func (client *ManagedClustersClient) getCreateRequest(ctx context.Context, resou
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1102,7 +1102,7 @@ func (client *ManagedClustersClient) getAccessProfileCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1169,7 +1169,7 @@ func (client *ManagedClustersClient) getCommandResultCreateRequest(ctx context.C
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1236,7 +1236,7 @@ func (client *ManagedClustersClient) getGuardrailsVersionsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1300,7 +1300,7 @@ func (client *ManagedClustersClient) getMeshRevisionProfileCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1367,7 +1367,7 @@ func (client *ManagedClustersClient) getMeshUpgradeProfileCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1431,7 +1431,7 @@ func (client *ManagedClustersClient) getSafeguardsVersionsCreateRequest(ctx cont
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1493,7 +1493,7 @@ func (client *ManagedClustersClient) getUpgradeProfileCreateRequest(ctx context.
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1555,7 +1555,7 @@ func (client *ManagedClustersClient) listClusterAdminCredentialsCreateRequest(ct
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	if options != nil && options.ServerFqdn != nil {
 		reqQP.Set("server-fqdn", *options.ServerFqdn)
 	}
@@ -1620,7 +1620,7 @@ func (client *ManagedClustersClient) listClusterMonitoringUserCredentialsCreateR
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	if options != nil && options.ServerFqdn != nil {
 		reqQP.Set("server-fqdn", *options.ServerFqdn)
 	}
@@ -1685,7 +1685,7 @@ func (client *ManagedClustersClient) listClusterUserCredentialsCreateRequest(ctx
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	if options != nil && options.Format != nil {
 		reqQP.Set("format", string(*options.Format))
 	}
@@ -1751,7 +1751,7 @@ func (client *ManagedClustersClient) listKubernetesVersionsCreateRequest(ctx con
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -1822,7 +1822,7 @@ func (client *ManagedClustersClient) listByResourceGroupCreateRequest(ctx contex
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260802Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -1896,7 +1896,7 @@ func (client *ManagedClustersClient) listGuardrailsVersionsCreateRequest(ctx con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260802Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -1970,7 +1970,7 @@ func (client *ManagedClustersClient) listMeshRevisionProfilesCreateRequest(ctx c
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260802Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -2047,7 +2047,7 @@ func (client *ManagedClustersClient) listMeshUpgradeProfilesCreateRequest(ctx co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260802Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -2128,7 +2128,7 @@ func (client *ManagedClustersClient) listOutboundNetworkDependenciesEndpointsCre
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260802Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -2195,7 +2195,7 @@ func (client *ManagedClustersClient) listCreateRequest(ctx context.Context, next
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260802Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -2269,7 +2269,7 @@ func (client *ManagedClustersClient) listSafeguardsVersionsCreateRequest(ctx con
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260802Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

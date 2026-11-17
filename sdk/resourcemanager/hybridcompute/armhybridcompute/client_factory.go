@@ -171,3 +171,11 @@ func (c *ClientFactory) NewSettingsClient() *SettingsClient {
 		internal:       c.internal,
 	}
 }
+
+// NewVMApplicationsClient creates a new instance of VMApplicationsClient.
+func (c *ClientFactory) NewVMApplicationsClient() *VMApplicationsClient {
+	return &VMApplicationsClient{
+		subscriptionID: c.subscriptionID,
+		internal:       c.internal,
+	}
+}

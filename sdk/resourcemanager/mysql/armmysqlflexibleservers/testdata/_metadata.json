@@ -2,5 +2,5 @@
   "apiVersions": {
     "Microsoft.DBforMySQL": "2024-12-30"
   },
-  "emitterVersion": "0.18.0"
+  "emitterVersion": "0.19.0"
 }

@@ -12,255 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-10-01-preview/CreateOrReplace_IoTHub_With_MqttV5.json
-func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIoTHubWithMqttV5() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armiothub.NewClientFactory("91d12660-3dec-467a-be2a-213b5544ddc0", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewResourceClient().BeginCreateOrUpdate(ctx, "myResourceGroup", "testHub", armiothub.Description{
-		Etag:     to.Ptr("AAAAAAFD6M4="),
-		Location: to.Ptr("centraluseuap"),
-		Properties: &armiothub.Properties{
-			ConnectionProfile: to.Ptr(armiothub.ConnectionProfileMqttV5),
-			CloudToDevice: &armiothub.CloudToDeviceProperties{
-				DefaultTTLAsIso8601: to.Ptr("PT1H"),
-				Feedback: &armiothub.FeedbackProperties{
-					LockDurationAsIso8601: to.Ptr("PT1M"),
-					MaxDeliveryCount:      to.Ptr[int32](10),
-					TTLAsIso8601:          to.Ptr("PT1H"),
-				},
-				MaxDeliveryCount: to.Ptr[int32](10),
-			},
-			EnableDataResidency:           to.Ptr(true),
-			EnableFileUploadNotifications: to.Ptr(false),
-			EventHubEndpoints: map[string]*armiothub.EventHubProperties{
-				"events": {
-					PartitionCount:      to.Ptr[int32](2),
-					RetentionTimeInDays: to.Ptr[int64](1),
-				},
-			},
-			Features:      to.Ptr(armiothub.CapabilitiesNone),
-			IPFilterRules: []*armiothub.IPFilterRule{},
-			IPVersion:     to.Ptr(armiothub.IPVersionIPv4IPv6),
-			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
-				"fileNotifications": {
-					LockDurationAsIso8601: to.Ptr("PT1M"),
-					MaxDeliveryCount:      to.Ptr[int32](10),
-					TTLAsIso8601:          to.Ptr("PT1H"),
-				},
-			},
-			MinTLSVersion: to.Ptr("1.2"),
-			MqttV5Settings: &armiothub.MqttV5Settings{
-				TopicGroups: []*armiothub.TopicGroup{
-					{
-						TopicGroupID: to.Ptr("myTopicGroup"),
-						TopicTemplates: []*string{
-							to.Ptr("mytopics/telemetry/temperature/*"),
-							to.Ptr("mytopics/telemetry/humidity/*"),
-						},
-					},
-				},
-			},
-			NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
-				ApplyToBuiltInEventHubEndpoint: to.Ptr(true),
-				DefaultAction:                  to.Ptr(armiothub.DefaultActionDeny),
-				IPRules: []*armiothub.NetworkRuleSetIPRule{
-					{
-						Action:     to.Ptr(armiothub.NetworkRuleIPActionAllow),
-						FilterName: to.Ptr("rule1"),
-						IPMask:     to.Ptr("131.117.159.53"),
-					},
-					{
-						Action:     to.Ptr(armiothub.NetworkRuleIPActionAllow),
-						FilterName: to.Ptr("rule2"),
-						IPMask:     to.Ptr("157.55.59.128/25"),
-					},
-				},
-			},
-			RootCertificate: &armiothub.RootCertificateProperties{
-				EnableRootCertificateV2: to.Ptr(true),
-			},
-			Routing: &armiothub.RoutingProperties{
-				Endpoints: &armiothub.RoutingEndpoints{
-					EventHubs:         []*armiothub.RoutingEventHubProperties{},
-					ServiceBusQueues:  []*armiothub.RoutingServiceBusQueueEndpointProperties{},
-					ServiceBusTopics:  []*armiothub.RoutingServiceBusTopicEndpointProperties{},
-					StorageContainers: []*armiothub.RoutingStorageContainerProperties{},
-				},
-				FallbackRoute: &armiothub.FallbackRouteProperties{
-					Name:      to.Ptr("$fallback"),
-					Condition: to.Ptr("true"),
-					EndpointNames: []*string{
-						to.Ptr("events"),
-					},
-					IsEnabled: to.Ptr(true),
-					Source:    to.Ptr(armiothub.RoutingSourceDeviceMessages),
-				},
-				Routes: []*armiothub.RouteProperties{},
-			},
-			StorageEndpoints: map[string]*armiothub.StorageEndpointProperties{
-				"$default": {
-					ConnectionString: to.Ptr(""),
-					ContainerName:    to.Ptr(""),
-					SasTTLAsIso8601:  to.Ptr("PT1H"),
-				},
-			},
-		},
-		SKU: &armiothub.SKUInfo{
-			Name:     to.Ptr(armiothub.IotHubSKUS1),
-			Capacity: to.Ptr[int64](1),
-		},
-		Tags: map[string]*string{},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	res, err := poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armiothub.ResourceClientCreateOrUpdateResponse{
-	// 	Description: armiothub.Description{
-	// 		Name: to.Ptr("testHub"),
-	// 		Type: to.Ptr("Microsoft.Devices/IotHubs"),
-	// 		Etag: to.Ptr("AAAAAAFD6M4="),
-	// 		ID: to.Ptr("/subscriptions/ae24ff83-d2ca-4fc8-9717-05dae4bba489/resourceGroups/myResourceGroup/providers/Microsoft.Devices/IotHubs/testHub"),
-	// 		Location: to.Ptr("centraluseuap"),
-	// 		Properties: &armiothub.Properties{
-	// 			ConnectionProfile: to.Ptr(armiothub.ConnectionProfileMqttV5),
-	// 			CloudToDevice: &armiothub.CloudToDeviceProperties{
-	// 				DefaultTTLAsIso8601: to.Ptr("PT1H"),
-	// 				Feedback: &armiothub.FeedbackProperties{
-	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
-	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsIso8601: to.Ptr("PT1H"),
-	// 				},
-	// 				MaxDeliveryCount: to.Ptr[int32](10),
-	// 			},
-	// 			EnableDataResidency: to.Ptr(true),
-	// 			EnableFileUploadNotifications: to.Ptr(false),
-	// 			EventHubEndpoints: map[string]*armiothub.EventHubProperties{
-	// 				"events": &armiothub.EventHubProperties{
-	// 					Path: to.Ptr("iot-dps-cit-hub-1"),
-	// 					Endpoint: to.Ptr("sb://iothub-ns-iot-dps-ci-245306-76aca8e13b.servicebus.windows.net/"),
-	// 					PartitionCount: to.Ptr[int32](2),
-	// 					PartitionIDs: []*string{
-	// 						to.Ptr("0"),
-	// 						to.Ptr("1"),
-	// 					},
-	// 					RetentionTimeInDays: to.Ptr[int64](1),
-	// 				},
-	// 			},
-	// 			Features: to.Ptr(armiothub.CapabilitiesNone),
-	// 			IPFilterRules: []*armiothub.IPFilterRule{
-	// 				{
-	// 					Action: to.Ptr(armiothub.IPFilterActionTypeAccept),
-	// 					FilterName: to.Ptr("rule1"),
-	// 					IPMask: to.Ptr("131.117.159.53"),
-	// 				},
-	// 				{
-	// 					Action: to.Ptr(armiothub.IPFilterActionTypeAccept),
-	// 					FilterName: to.Ptr("rule2"),
-	// 					IPMask: to.Ptr("157.55.59.128/25"),
-	// 				},
-	// 			},
-	// 			IPVersion: to.Ptr(armiothub.IPVersionIPv4IPv6),
-	// 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
-	// 				"fileNotifications": &armiothub.MessagingEndpointProperties{
-	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
-	// 					MaxDeliveryCount: to.Ptr[int32](10),
-	// 					TTLAsIso8601: to.Ptr("PT1H"),
-	// 				},
-	// 			},
-	// 			MinTLSVersion: to.Ptr("1.2"),
-	// 			MqttV5Settings: &armiothub.MqttV5Settings{
-	// 				TopicGroups: []*armiothub.TopicGroup{
-	// 					{
-	// 						TopicGroupID: to.Ptr("myTopicGroup"),
-	// 						TopicTemplates: []*string{
-	// 							to.Ptr("mytopics/telemetry/temperature/*"),
-	// 							to.Ptr("mytopics/telemetry/humidity/*"),
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			NetworkRuleSets: &armiothub.NetworkRuleSetProperties{
-	// 				ApplyToBuiltInEventHubEndpoint: to.Ptr(true),
-	// 				DefaultAction: to.Ptr(armiothub.DefaultActionDeny),
-	// 				IPRules: []*armiothub.NetworkRuleSetIPRule{
-	// 					{
-	// 						Action: to.Ptr(armiothub.NetworkRuleIPActionAllow),
-	// 						FilterName: to.Ptr("rule1"),
-	// 						IPMask: to.Ptr("131.117.159.53"),
-	// 					},
-	// 					{
-	// 						Action: to.Ptr(armiothub.NetworkRuleIPActionAllow),
-	// 						FilterName: to.Ptr("rule2"),
-	// 						IPMask: to.Ptr("157.55.59.128/25"),
-	// 					},
-	// 				},
-	// 			},
-	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			RootCertificate: &armiothub.RootCertificateProperties{
-	// 				EnableRootCertificateV2: to.Ptr(true),
-	// 				LastUpdatedTimeUTC: to.Ptr(time.Date(2022, time.April, 8, 18, 16, 49, 74895800, time.UTC)),
-	// 			},
-	// 			Routing: &armiothub.RoutingProperties{
-	// 				Endpoints: &armiothub.RoutingEndpoints{
-	// 					EventHubs: []*armiothub.RoutingEventHubProperties{
-	// 					},
-	// 					ServiceBusQueues: []*armiothub.RoutingServiceBusQueueEndpointProperties{
-	// 					},
-	// 					ServiceBusTopics: []*armiothub.RoutingServiceBusTopicEndpointProperties{
-	// 					},
-	// 					StorageContainers: []*armiothub.RoutingStorageContainerProperties{
-	// 					},
-	// 				},
-	// 				FallbackRoute: &armiothub.FallbackRouteProperties{
-	// 					Name: to.Ptr("$fallback"),
-	// 					Condition: to.Ptr("true"),
-	// 					EndpointNames: []*string{
-	// 						to.Ptr("events"),
-	// 					},
-	// 					IsEnabled: to.Ptr(true),
-	// 					Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
-	// 				},
-	// 				Routes: []*armiothub.RouteProperties{
-	// 				},
-	// 			},
-	// 			State: to.Ptr("Active"),
-	// 			StorageEndpoints: map[string]*armiothub.StorageEndpointProperties{
-	// 				"$default": &armiothub.StorageEndpointProperties{
-	// 					ConnectionString: to.Ptr(""),
-	// 					ContainerName: to.Ptr(""),
-	// 					SasTTLAsIso8601: to.Ptr("PT1H"),
-	// 				},
-	// 			},
-	// 		},
-	// 		SKU: &armiothub.SKUInfo{
-	// 			Name: to.Ptr(armiothub.IotHubSKUS1),
-	// 			Capacity: to.Ptr[int64](1),
-	// 			Tier: to.Ptr(armiothub.IotHubSKUTierStandard),
-	// 		},
-	// 		SystemData: &armiothub.SystemData{
-	// 			CreatedAt: to.Ptr(time.Date(2021, time.January, 30, 0, 28, 38, 963000000, time.UTC)),
-	// 		},
-	// 		Tags: map[string]*string{
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2026-10-01-preview/CreateOrReplace_IotHub.json
+// Generated from example definition: 2026-11-01/CreateOrReplace_IotHub.json
 func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIotHub() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -308,10 +60,9 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIotHub() {
 				},
 				Routes: []*armiothub.RouteProperties{
 					{
-						Name:       to.Ptr("Routeid"),
-						Source:     to.Ptr(armiothub.RoutingSourceDeviceMessages),
-						Condition:  to.Ptr("true"),
-						DataSchema: to.Ptr("aio-sr://aiosaalkopkedev/62a24af1d7db61cd44b2ad6b6c3f4ab7312be447f89ff3401d18357d0d05ce3a:1"),
+						Name:      to.Ptr("Routeid"),
+						Source:    to.Ptr(armiothub.RoutingSourceDeviceMessages),
+						Condition: to.Ptr("true"),
 						EndpointNames: []*string{
 							to.Ptr("events"),
 						},
@@ -320,7 +71,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIotHub() {
 				},
 				FallbackRoute: &armiothub.FallbackRouteProperties{
 					Name:      to.Ptr("$fallback"),
-					Source:    to.Ptr(armiothub.RoutingSourceDeviceMessages),
+					Source:    to.Ptr(armiothub.FallbackRouteSourceDeviceMessages),
 					Condition: to.Ptr("true"),
 					EndpointNames: []*string{
 						to.Ptr("events"),
@@ -355,10 +106,6 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIotHub() {
 			Features:            to.Ptr(armiothub.CapabilitiesNone),
 			MinTLSVersion:       to.Ptr("1.2"),
 			EnableDataResidency: to.Ptr(true),
-			RootCertificate: &armiothub.RootCertificateProperties{
-				EnableRootCertificateV2: to.Ptr(true),
-			},
-			IPVersion: to.Ptr(armiothub.IPVersionIPv4IPv6),
 		},
 		SKU: &armiothub.SKUInfo{
 			Name:     to.Ptr(armiothub.IotHubSKUS1),
@@ -446,7 +193,6 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIotHub() {
 	// 						Name: to.Ptr("Routeid"),
 	// 						Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
 	// 						Condition: to.Ptr("true"),
-	// 						DataSchema: to.Ptr("aio-sr://aiosaalkopkedev/62a24af1d7db61cd44b2ad6b6c3f4ab7312be447f89ff3401d18357d0d05ce3a:1"),
 	// 						EndpointNames: []*string{
 	// 							to.Ptr("events"),
 	// 						},
@@ -455,7 +201,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIotHub() {
 	// 				},
 	// 				FallbackRoute: &armiothub.FallbackRouteProperties{
 	// 					Name: to.Ptr("$fallback"),
-	// 					Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
+	// 					Source: to.Ptr(armiothub.FallbackRouteSourceDeviceMessages),
 	// 					Condition: to.Ptr("true"),
 	// 					EndpointNames: []*string{
 	// 						to.Ptr("events"),
@@ -490,11 +236,6 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIotHub() {
 	// 			Features: to.Ptr(armiothub.CapabilitiesNone),
 	// 			MinTLSVersion: to.Ptr("1.2"),
 	// 			EnableDataResidency: to.Ptr(true),
-	// 			RootCertificate: &armiothub.RootCertificateProperties{
-	// 				EnableRootCertificateV2: to.Ptr(true),
-	// 				LastUpdatedTimeUTC: to.Ptr(time.Date(2022, time.April, 8, 18, 16, 49, 74895800, time.UTC)),
-	// 			},
-	// 			IPVersion: to.Ptr(armiothub.IPVersionIPv4IPv6),
 	// 			IotHubDetails: &armiothub.Details{
 	// 				GatewayVersion: to.Ptr(armiothub.GatewayVersionV2),
 	// 			},
@@ -511,7 +252,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_createOrReplaceIotHub() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_createOrUpdate.json
+// Generated from example definition: 2026-11-01/iothub_createOrUpdate.json
 func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -548,7 +289,6 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 			},
 			Features:      to.Ptr(armiothub.CapabilitiesNone),
 			IPFilterRules: []*armiothub.IPFilterRule{},
-			IPVersion:     to.Ptr(armiothub.IPVersionIPv4IPv6),
 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 				"fileNotifications": {
 					LockDurationAsIso8601: to.Ptr("PT1M"),
@@ -573,9 +313,6 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 					},
 				},
 			},
-			RootCertificate: &armiothub.RootCertificateProperties{
-				EnableRootCertificateV2: to.Ptr(true),
-			},
 			Routing: &armiothub.RoutingProperties{
 				Endpoints: &armiothub.RoutingEndpoints{
 					EventHubs:         []*armiothub.RoutingEventHubProperties{},
@@ -584,14 +321,13 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 					StorageContainers: []*armiothub.RoutingStorageContainerProperties{},
 					EventStreams: []*armiothub.RoutingEventStreamProperties{
 						{
-							Name:                 to.Ptr("eventstreamendpoint1"),
-							EndpointURI:          to.Ptr("sb://eventstreamcustomsourceehns.azure.servicebus.net"),
-							EntityPath:           to.Ptr("eventstreamcustomsourceeh"),
-							AuthenticationType:   to.Ptr(armiothub.EventStreamAuthenticationTypeIdentityBased),
-							WorkspaceID:          to.Ptr("11111111-1111-1111-1111-111111111111"),
-							EventStreamID:        to.Ptr("22222222-2222-2222-2222-222222222222"),
-							SourceID:             to.Ptr("33333333-3333-3333-3333-333333333333"),
-							MessagePayloadFormat: to.Ptr(armiothub.MessagePayloadFormatDOObservationV1),
+							Name:               to.Ptr("eventstreamendpoint1"),
+							EndpointURI:        to.Ptr("sb://eventstreamcustomsourceehns.azure.servicebus.net"),
+							EntityPath:         to.Ptr("eventstreamcustomsourceeh"),
+							AuthenticationType: to.Ptr(armiothub.EventStreamAuthenticationTypeIdentityBased),
+							WorkspaceID:        to.Ptr("11111111-1111-1111-1111-111111111111"),
+							EventStreamID:      to.Ptr("22222222-2222-2222-2222-222222222222"),
+							SourceID:           to.Ptr("33333333-3333-3333-3333-333333333333"),
 						},
 					},
 				},
@@ -602,7 +338,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 						to.Ptr("events"),
 					},
 					IsEnabled: to.Ptr(true),
-					Source:    to.Ptr(armiothub.RoutingSourceDeviceMessages),
+					Source:    to.Ptr(armiothub.FallbackRouteSourceDeviceMessages),
 				},
 				Routes: []*armiothub.RouteProperties{},
 			},
@@ -680,7 +416,6 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	// 					IPMask: to.Ptr("157.55.59.128/25"),
 	// 				},
 	// 			},
-	// 			IPVersion: to.Ptr(armiothub.IPVersionIPv4IPv6),
 	// 			MessagingEndpoints: map[string]*armiothub.MessagingEndpointProperties{
 	// 				"fileNotifications": &armiothub.MessagingEndpointProperties{
 	// 					LockDurationAsIso8601: to.Ptr("PT1M"),
@@ -706,10 +441,6 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	// 				},
 	// 			},
 	// 			ProvisioningState: to.Ptr("Succeeded"),
-	// 			RootCertificate: &armiothub.RootCertificateProperties{
-	// 				EnableRootCertificateV2: to.Ptr(true),
-	// 				LastUpdatedTimeUTC: to.Ptr(time.Date(2022, time.April, 8, 18, 16, 49, 74895800, time.UTC)),
-	// 			},
 	// 			Routing: &armiothub.RoutingProperties{
 	// 				Endpoints: &armiothub.RoutingEndpoints{
 	// 					EventHubs: []*armiothub.RoutingEventHubProperties{
@@ -730,7 +461,6 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	// 							WorkspaceID: to.Ptr("11111111-1111-1111-1111-111111111111"),
 	// 							EventStreamID: to.Ptr("22222222-2222-2222-2222-222222222222"),
 	// 							SourceID: to.Ptr("33333333-3333-3333-3333-333333333333"),
-	// 							MessagePayloadFormat: to.Ptr(armiothub.MessagePayloadFormatDOObservationV1),
 	// 						},
 	// 					},
 	// 				},
@@ -741,7 +471,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	// 						to.Ptr("events"),
 	// 					},
 	// 					IsEnabled: to.Ptr(true),
-	// 					Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
+	// 					Source: to.Ptr(armiothub.FallbackRouteSourceDeviceMessages),
 	// 				},
 	// 				Routes: []*armiothub.RouteProperties{
 	// 				},
@@ -769,7 +499,7 @@ func ExampleResourceClient_BeginCreateOrUpdate_iotHubResourceCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_delete.json
+// Generated from example definition: 2026-11-01/iothub_delete.json
 func ExampleResourceClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -876,7 +606,7 @@ func ExampleResourceClient_BeginDelete() {
 	// 						to.Ptr("events"),
 	// 					},
 	// 					IsEnabled: to.Ptr(true),
-	// 					Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
+	// 					Source: to.Ptr(armiothub.FallbackRouteSourceDeviceMessages),
 	// 				},
 	// 				Routes: []*armiothub.RouteProperties{
 	// 				},
@@ -904,7 +634,7 @@ func ExampleResourceClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_patch.json
+// Generated from example definition: 2026-11-01/iothub_patch.json
 func ExampleResourceClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1016,7 +746,7 @@ func ExampleResourceClient_BeginUpdate() {
 	// 						to.Ptr("events"),
 	// 					},
 	// 					IsEnabled: to.Ptr(true),
-	// 					Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
+	// 					Source: to.Ptr(armiothub.FallbackRouteSourceDeviceMessages),
 	// 				},
 	// 				Routes: []*armiothub.RouteProperties{
 	// 				},
@@ -1045,7 +775,7 @@ func ExampleResourceClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/checkNameAvailability.json
+// Generated from example definition: 2026-11-01/checkNameAvailability.json
 func ExampleResourceClient_CheckNameAvailability() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1074,7 +804,7 @@ func ExampleResourceClient_CheckNameAvailability() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_createconsumergroup.json
+// Generated from example definition: 2026-11-01/iothub_createconsumergroup.json
 func ExampleResourceClient_CreateEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1109,7 +839,7 @@ func ExampleResourceClient_CreateEventHubConsumerGroup() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_deleteconsumergroup.json
+// Generated from example definition: 2026-11-01/iothub_deleteconsumergroup.json
 func ExampleResourceClient_DeleteEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1131,7 +861,7 @@ func ExampleResourceClient_DeleteEventHubConsumerGroup() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_exportdevices.json
+// Generated from example definition: 2026-11-01/iothub_exportdevices.json
 func ExampleResourceClient_ExportDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1167,7 +897,7 @@ func ExampleResourceClient_ExportDevices() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/Get_IotHub_With_DeviceRegistry.json
+// Generated from example definition: 2026-11-01/Get_IotHub_With_DeviceRegistry.json
 func ExampleResourceClient_Get_getIotHubWithDeviceRegistry() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1254,7 +984,7 @@ func ExampleResourceClient_Get_getIotHubWithDeviceRegistry() {
 	// 				Routes: []*armiothub.RouteProperties{
 	// 				},
 	// 				FallbackRoute: &armiothub.FallbackRouteProperties{
-	// 					Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
+	// 					Source: to.Ptr(armiothub.FallbackRouteSourceDeviceMessages),
 	// 					Condition: to.Ptr("true"),
 	// 					EndpointNames: []*string{
 	// 						to.Ptr("events"),
@@ -1287,11 +1017,6 @@ func ExampleResourceClient_Get_getIotHubWithDeviceRegistry() {
 	// 				},
 	// 			},
 	// 			Features: to.Ptr(armiothub.CapabilitiesNone),
-	// 			DeviceStreams: &armiothub.PropertiesDeviceStreams{
-	// 				StreamingEndpoints: []*string{
-	// 					to.Ptr("https://streams.azure-devices-int.net:9443"),
-	// 				},
-	// 			},
 	// 			Locations: []*armiothub.LocationDescription{
 	// 				{
 	// 					Location: to.Ptr("West US"),
@@ -1303,7 +1028,6 @@ func ExampleResourceClient_Get_getIotHubWithDeviceRegistry() {
 	// 				},
 	// 			},
 	// 			MinTLSVersion: to.Ptr("1.2"),
-	// 			IPVersion: to.Ptr(armiothub.IPVersionIPv4IPv6),
 	// 			DeviceRegistry: &armiothub.DeviceRegistry{
 	// 				NamespaceResourceID: to.Ptr("/subscriptions/ae24ff83-d2ca-4fc8-9717-05dae4bba489/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/testNamespace"),
 	// 				NamespaceUUID: to.Ptr("0dd781aa-f7a9-4f7e-8105-0579ce78f407"),
@@ -1332,7 +1056,7 @@ func ExampleResourceClient_Get_getIotHubWithDeviceRegistry() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/Get_IotHub_With_DeviceRegistry_Linking_Error.json
+// Generated from example definition: 2026-11-01/Get_IotHub_With_DeviceRegistry_Linking_Error.json
 func ExampleResourceClient_Get_getIotHubWithDeviceRegistryLinkingError() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1419,7 +1143,7 @@ func ExampleResourceClient_Get_getIotHubWithDeviceRegistryLinkingError() {
 	// 				Routes: []*armiothub.RouteProperties{
 	// 				},
 	// 				FallbackRoute: &armiothub.FallbackRouteProperties{
-	// 					Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
+	// 					Source: to.Ptr(armiothub.FallbackRouteSourceDeviceMessages),
 	// 					Condition: to.Ptr("true"),
 	// 					EndpointNames: []*string{
 	// 						to.Ptr("events"),
@@ -1452,11 +1176,6 @@ func ExampleResourceClient_Get_getIotHubWithDeviceRegistryLinkingError() {
 	// 				},
 	// 			},
 	// 			Features: to.Ptr(armiothub.CapabilitiesNone),
-	// 			DeviceStreams: &armiothub.PropertiesDeviceStreams{
-	// 				StreamingEndpoints: []*string{
-	// 					to.Ptr("https://streams.azure-devices-int.net:9443"),
-	// 				},
-	// 			},
 	// 			Locations: []*armiothub.LocationDescription{
 	// 				{
 	// 					Location: to.Ptr("West US"),
@@ -1468,7 +1187,6 @@ func ExampleResourceClient_Get_getIotHubWithDeviceRegistryLinkingError() {
 	// 				},
 	// 			},
 	// 			MinTLSVersion: to.Ptr("1.2"),
-	// 			IPVersion: to.Ptr(armiothub.IPVersionIPv4IPv6),
 	// 			DeviceRegistry: &armiothub.DeviceRegistry{
 	// 				NamespaceResourceID: to.Ptr("/subscriptions/ae24ff83-d2ca-4fc8-9717-05dae4bba489/resourceGroups/myResourceGroup/providers/Microsoft.DeviceRegistry/namespaces/testNamespace"),
 	// 				NamespaceUUID: to.Ptr("0dd781aa-f7a9-4f7e-8105-0579ce78f407"),
@@ -1503,7 +1221,7 @@ func ExampleResourceClient_Get_getIotHubWithDeviceRegistryLinkingError() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_get.json
+// Generated from example definition: 2026-11-01/iothub_get.json
 func ExampleResourceClient_Get_iotHubResourceGet() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1538,11 +1256,6 @@ func ExampleResourceClient_Get_iotHubResourceGet() {
 	// 				},
 	// 				MaxDeliveryCount: to.Ptr[int32](10),
 	// 			},
-	// 			DeviceStreams: &armiothub.PropertiesDeviceStreams{
-	// 				StreamingEndpoints: []*string{
-	// 					to.Ptr("https://streams.azure-devices-int.net:9443"),
-	// 				},
-	// 			},
 	// 			EnableFileUploadNotifications: to.Ptr(false),
 	// 			EventHubEndpoints: map[string]*armiothub.EventHubProperties{
 	// 				"events": &armiothub.EventHubProperties{
@@ -1570,7 +1283,6 @@ func ExampleResourceClient_Get_iotHubResourceGet() {
 	// 					IPMask: to.Ptr("157.55.59.128/25"),
 	// 				},
 	// 			},
-	// 			IPVersion: to.Ptr(armiothub.IPVersionIPv4IPv6),
 	// 			Locations: []*armiothub.LocationDescription{
 	// 				{
 	// 					Location: to.Ptr("West US"),
@@ -1623,7 +1335,7 @@ func ExampleResourceClient_Get_iotHubResourceGet() {
 	// 						to.Ptr("events"),
 	// 					},
 	// 					IsEnabled: to.Ptr(true),
-	// 					Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
+	// 					Source: to.Ptr(armiothub.FallbackRouteSourceDeviceMessages),
 	// 				},
 	// 				Routes: []*armiothub.RouteProperties{
 	// 				},
@@ -1651,7 +1363,7 @@ func ExampleResourceClient_Get_iotHubResourceGet() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_getconsumergroup.json
+// Generated from example definition: 2026-11-01/iothub_getconsumergroup.json
 func ExampleResourceClient_GetEventHubConsumerGroup() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1682,7 +1394,7 @@ func ExampleResourceClient_GetEventHubConsumerGroup() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_getjob.json
+// Generated from example definition: 2026-11-01/iothub_getjob.json
 func ExampleResourceClient_GetJob() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1711,7 +1423,7 @@ func ExampleResourceClient_GetJob() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_getkey.json
+// Generated from example definition: 2026-11-01/iothub_getkey.json
 func ExampleResourceClient_GetKeysForKeyName() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1739,7 +1451,7 @@ func ExampleResourceClient_GetKeysForKeyName() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_stats.json
+// Generated from example definition: 2026-11-01/iothub_stats.json
 func ExampleResourceClient_GetStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1766,7 +1478,7 @@ func ExampleResourceClient_GetStats() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_importdevices.json
+// Generated from example definition: 2026-11-01/iothub_importdevices.json
 func ExampleResourceClient_ImportDevices() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1798,7 +1510,7 @@ func ExampleResourceClient_ImportDevices() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_routingendpointhealth.json
+// Generated from example definition: 2026-11-01/iothub_routingendpointhealth.json
 func ExampleResourceClient_NewGetEndpointHealthPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1847,7 +1559,7 @@ func ExampleResourceClient_NewGetEndpointHealthPager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_quotametrics.json
+// Generated from example definition: 2026-11-01/iothub_quotametrics.json
 func ExampleResourceClient_NewGetQuotaMetricsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1888,7 +1600,7 @@ func ExampleResourceClient_NewGetQuotaMetricsPager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_getskus.json
+// Generated from example definition: 2026-11-01/iothub_getskus.json
 func ExampleResourceClient_NewGetValidSKUsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1956,7 +1668,7 @@ func ExampleResourceClient_NewGetValidSKUsPager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_listbyrg.json
+// Generated from example definition: 2026-11-01/iothub_listbyrg.json
 func ExampleResourceClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2066,7 +1778,7 @@ func ExampleResourceClient_NewListByResourceGroupPager() {
 		// 								to.Ptr("events"),
 		// 							},
 		// 							IsEnabled: to.Ptr(true),
-		// 							Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
+		// 							Source: to.Ptr(armiothub.FallbackRouteSourceDeviceMessages),
 		// 						},
 		// 						Routes: []*armiothub.RouteProperties{
 		// 						},
@@ -2097,7 +1809,7 @@ func ExampleResourceClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_listbysubscription.json
+// Generated from example definition: 2026-11-01/iothub_listbysubscription.json
 func ExampleResourceClient_NewListBySubscriptionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2207,7 +1919,7 @@ func ExampleResourceClient_NewListBySubscriptionPager() {
 		// 								to.Ptr("events"),
 		// 							},
 		// 							IsEnabled: to.Ptr(true),
-		// 							Source: to.Ptr(armiothub.RoutingSourceDeviceMessages),
+		// 							Source: to.Ptr(armiothub.FallbackRouteSourceDeviceMessages),
 		// 						},
 		// 						Routes: []*armiothub.RouteProperties{
 		// 						},
@@ -2238,7 +1950,7 @@ func ExampleResourceClient_NewListBySubscriptionPager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_listehgroups.json
+// Generated from example definition: 2026-11-01/iothub_listehgroups.json
 func ExampleResourceClient_NewListEventHubConsumerGroupsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2278,7 +1990,7 @@ func ExampleResourceClient_NewListEventHubConsumerGroupsPager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_listjobs.json
+// Generated from example definition: 2026-11-01/iothub_listjobs.json
 func ExampleResourceClient_NewListJobsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2316,7 +2028,7 @@ func ExampleResourceClient_NewListJobsPager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_listkeys.json
+// Generated from example definition: 2026-11-01/iothub_listkeys.json
 func ExampleResourceClient_NewListKeysPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2377,7 +2089,7 @@ func ExampleResourceClient_NewListKeysPager() {
 	}
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_testallroutes.json
+// Generated from example definition: 2026-11-01/iothub_testallroutes.json
 func ExampleResourceClient_TestAllRoutes() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2424,7 +2136,7 @@ func ExampleResourceClient_TestAllRoutes() {
 	// }
 }
 
-// Generated from example definition: 2026-10-01-preview/iothub_testnewroute.json
+// Generated from example definition: 2026-11-01/iothub_testnewroute.json
 func ExampleResourceClient_TestRoute() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -20,7 +20,7 @@ import (
 // OperationStatusResultClient contains the methods for the OperationStatusResult group.
 // Don't use this type directly, use NewOperationStatusResultClient() instead.
 //
-// Generated from API version 2026-08-02-preview
+// Generated from API version 2026-09-02-preview
 type OperationStatusResultClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -94,7 +94,7 @@ func (client *OperationStatusResultClient) getCreateRequest(ctx context.Context,
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -166,7 +166,7 @@ func (client *OperationStatusResultClient) getByAgentPoolCreateRequest(ctx conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260802Preview)
+	reqQP.Set("api-version", version20260902Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -250,7 +250,7 @@ func (client *OperationStatusResultClient) listByAgentPoolCreateRequest(ctx cont
 		if options != nil && options.ActiveOnly != nil {
 			reqQP.Set("activeOnly", strconv.FormatBool(*options.ActiveOnly))
 		}
-		reqQP.Set("api-version", version20260802Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -327,7 +327,7 @@ func (client *OperationStatusResultClient) listCreateRequest(ctx context.Context
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260802Preview)
+		reqQP.Set("api-version", version20260902Preview)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

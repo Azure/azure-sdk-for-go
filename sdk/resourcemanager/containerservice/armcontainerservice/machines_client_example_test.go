@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-08-02-preview/MachineCreate_Update.json
+// Generated from example definition: 2026-09-02-preview/MachineCreate_Update.json
 func ExampleMachinesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -108,7 +108,7 @@ func ExampleMachinesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/MachineGet.json
+// Generated from example definition: 2026-09-02-preview/MachineGet.json
 func ExampleMachinesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -128,9 +128,9 @@ func ExampleMachinesClient_Get() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcontainerservice.MachinesClientGetResponse{
 	// 	Machine: armcontainerservice.Machine{
-	// 		Name: to.Ptr("aks-nodepool1-25481572-vmss000000"),
+	// 		Name: to.Ptr("aks-nodepool1-42263519-vmss00000t"),
 	// 		Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools/machines"),
-	// 		ID: to.Ptr("/subscriptions/26fe00f8-9173-4872-9134-bb1d2e00343a/resourceGroups/dummyRG/providers/Microsoft.ContainerService/managedClusters/round/agentPools/nodepool1/machines/aks-nodepool1-25481572-vmss000000"),
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/machines/aks-nodepool1-42263519-vmss00000t"),
 	// 		Properties: &armcontainerservice.MachineProperties{
 	// 			Hardware: &armcontainerservice.MachineHardwareProfile{
 	// 				VMSize: to.Ptr("Standard_DS1_v2"),
@@ -172,7 +172,7 @@ func ExampleMachinesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-08-02-preview/MachineList.json
+// Generated from example definition: 2026-09-02-preview/MachineList.json
 func ExampleMachinesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,12 +196,12 @@ func ExampleMachinesClient_NewListPager() {
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 		// page = armcontainerservice.MachinesClientListResponse{
 		// 	MachineListResult: armcontainerservice.MachineListResult{
-		// 		NextLink: to.Ptr("http://xxxx.azure.com?encodedToken=c2tpcFRva2VuPTE"),
+		// 		NextLink: to.Ptr("https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/machines?api-version=2026-09-02-preview&$skipToken=example"),
 		// 		Value: []*armcontainerservice.Machine{
 		// 			{
 		// 				Name: to.Ptr("aks-nodepool1-25481572-vmss000000"),
 		// 				Type: to.Ptr("Microsoft.ContainerService/managedClusters/agentPools/machines"),
-		// 				ID: to.Ptr("/subscriptions/26fe00f8-9173-4872-9134-bb1d2e00343a/resourceGroups/dummyRG/providers/Microsoft.ContainerService/managedClusters/round/agentPools/nodepool1/machines/aks-nodepool1-25481572-vmss000000"),
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ContainerService/managedClusters/clustername1/agentPools/agentpool1/machines/aks-nodepool1-25481572-vmss000000"),
 		// 				Properties: &armcontainerservice.MachineProperties{
 		// 					Hardware: &armcontainerservice.MachineHardwareProfile{
 		// 						VMSize: to.Ptr("Standard_DS1_v2"),

@@ -68,6 +68,9 @@ type ServerFactory struct {
 
 	// SettingsServer contains the fakes for client SettingsClient
 	SettingsServer SettingsServer
+
+	// VMApplicationsServer contains the fakes for client VMApplicationsClient
+	VMApplicationsServer VMApplicationsServer
 }
 
 // NewServerFactoryTransport creates a new instance of ServerFactoryTransport with the provided implementation.
@@ -102,6 +105,7 @@ type ServerFactoryTransport struct {
 	trPrivateLinkResourcesServer                   *PrivateLinkResourcesServerTransport
 	trPrivateLinkScopesServer                      *PrivateLinkScopesServerTransport
 	trSettingsServer                               *SettingsServerTransport
+	trVMApplicationsServer                         *VMApplicationsServerTransport
 }
 
 // Do implements the policy.Transporter interface for ServerFactoryTransport.
@@ -195,6 +199,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "SettingsClient":
 		initServer(&s.trMu, &s.trSettingsServer, func() *SettingsServerTransport { return NewSettingsServerTransport(&s.srv.SettingsServer) })
 		resp, err = s.trSettingsServer.Do(req)
+	case "VMApplicationsClient":
+		initServer(&s.trMu, &s.trVMApplicationsServer, func() *VMApplicationsServerTransport {
+			return NewVMApplicationsServerTransport(&s.srv.VMApplicationsServer)
+		})
+		resp, err = s.trVMApplicationsServer.Do(req)
 	default:
 		err = fmt.Errorf("unhandled client %s", client)
 	}

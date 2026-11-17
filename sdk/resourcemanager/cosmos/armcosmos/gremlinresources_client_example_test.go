@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseCreateUpdate.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinDatabaseCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -25,13 +25,13 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	}
 	poller, err := clientFactory.NewGremlinResourcesClient().BeginCreateUpdateGremlinDatabase(ctx, "rg1", "ddb1", "databaseName", armcosmos.GremlinDatabaseCreateUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.GremlinDatabaseCreateUpdateProperties{
-			Options: &armcosmos.CreateUpdateOptions{},
 			Resource: &armcosmos.GremlinDatabaseResource{
 				ID: to.Ptr("databaseName"),
 			},
+			Options: &armcosmos.CreateUpdateOptions{},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -45,25 +45,25 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinDatabase() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientCreateUpdateGremlinDatabaseResponse{
 	// 	GremlinDatabaseGetResults: armcosmos.GremlinDatabaseGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName"),
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.GremlinDatabaseGetProperties{
 	// 			Resource: &armcosmos.GremlinDatabaseGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
+	// 				ID: to.Ptr("databaseName"),
 	// 				Rid: to.Ptr("CqNBAA=="),
 	// 				Ts: to.Ptr[float32](1449602962),
-	// 				ID: to.Ptr("databaseName"),
+	// 				Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphCreateUpdate.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinGraphCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,43 +76,39 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	}
 	poller, err := clientFactory.NewGremlinResourcesClient().BeginCreateUpdateGremlinGraph(ctx, "rg1", "ddb1", "databaseName", "graphName", armcosmos.GremlinGraphCreateUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.GremlinGraphCreateUpdateProperties{
-			Options: &armcosmos.CreateUpdateOptions{},
 			Resource: &armcosmos.GremlinGraphResource{
-				ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-					ConflictResolutionPath: to.Ptr("/path"),
-					Mode:                   to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-				},
-				DefaultTTL: to.Ptr[int32](100),
-				ID:         to.Ptr("graphName"),
+				ID: to.Ptr("graphName"),
 				IndexingPolicy: &armcosmos.IndexingPolicy{
-					Automatic:     to.Ptr(true),
-					ExcludedPaths: []*armcosmos.ExcludedPath{},
+					IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
+					Automatic:    to.Ptr(true),
 					IncludedPaths: []*armcosmos.IncludedPath{
 						{
 							Path: to.Ptr("/*"),
 							Indexes: []*armcosmos.Indexes{
 								{
-									DataType:  to.Ptr(armcosmos.DataTypeString),
 									Kind:      to.Ptr(armcosmos.IndexKindRange),
+									DataType:  to.Ptr(armcosmos.DataTypeString),
 									Precision: to.Ptr[int32](-1),
 								},
 								{
-									DataType:  to.Ptr(armcosmos.DataTypeNumber),
 									Kind:      to.Ptr(armcosmos.IndexKindRange),
+									DataType:  to.Ptr(armcosmos.DataTypeNumber),
 									Precision: to.Ptr[int32](-1),
 								},
 							},
 						},
 					},
-					IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
+					ExcludedPaths: []*armcosmos.ExcludedPath{},
 				},
 				PartitionKey: &armcosmos.ContainerPartitionKey{
-					Kind: to.Ptr(armcosmos.PartitionKindHash),
 					Paths: []*string{
 						to.Ptr("/AccountNumber"),
 					},
+					Kind: to.Ptr(armcosmos.PartitionKindHash),
 				},
+				DefaultTTL: to.Ptr[int32](100),
 				UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
 					UniqueKeys: []*armcosmos.UniqueKey{
 						{
@@ -122,9 +118,13 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 						},
 					},
 				},
+				ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+					Mode:                   to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
+					ConflictResolutionPath: to.Ptr("/path"),
+				},
 			},
+			Options: &armcosmos.CreateUpdateOptions{},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -138,50 +138,45 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientCreateUpdateGremlinGraphResponse{
 	// 	GremlinGraphGetResults: armcosmos.GremlinGraphGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/gremlinGraphs/graphName"),
 	// 		Name: to.Ptr("graphName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/gremlinGraphs"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/gremlinGraphs/graphName"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.GremlinGraphGetProperties{
 	// 			Resource: &armcosmos.GremlinGraphGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-	// 					ConflictResolutionPath: to.Ptr("/path"),
-	// 					Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-	// 				},
-	// 				DefaultTTL: to.Ptr[int32](100),
 	// 				ID: to.Ptr("graphName"),
 	// 				IndexingPolicy: &armcosmos.IndexingPolicy{
+	// 					IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
 	// 					Automatic: to.Ptr(true),
-	// 					ExcludedPaths: []*armcosmos.ExcludedPath{
-	// 					},
 	// 					IncludedPaths: []*armcosmos.IncludedPath{
 	// 						{
 	// 							Path: to.Ptr("/*"),
 	// 							Indexes: []*armcosmos.Indexes{
 	// 								{
-	// 									DataType: to.Ptr(armcosmos.DataTypeString),
 	// 									Kind: to.Ptr(armcosmos.IndexKindRange),
+	// 									DataType: to.Ptr(armcosmos.DataTypeString),
 	// 									Precision: to.Ptr[int32](-1),
 	// 								},
 	// 								{
-	// 									DataType: to.Ptr(armcosmos.DataTypeNumber),
 	// 									Kind: to.Ptr(armcosmos.IndexKindRange),
+	// 									DataType: to.Ptr(armcosmos.DataTypeNumber),
 	// 									Precision: to.Ptr[int32](-1),
 	// 								},
 	// 							},
 	// 						},
 	// 					},
-	// 					IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
+	// 					ExcludedPaths: []*armcosmos.ExcludedPath{
+	// 					},
 	// 				},
 	// 				PartitionKey: &armcosmos.ContainerPartitionKey{
-	// 					Kind: to.Ptr(armcosmos.PartitionKindHash),
 	// 					Paths: []*string{
 	// 						to.Ptr("/AccountNumber"),
 	// 					},
+	// 					Kind: to.Ptr(armcosmos.PartitionKindHash),
 	// 				},
+	// 				DefaultTTL: to.Ptr[int32](100),
 	// 				UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
 	// 					UniqueKeys: []*armcosmos.UniqueKey{
 	// 						{
@@ -191,15 +186,20 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinGraph() {
 	// 						},
 	// 					},
 	// 				},
+	// 				ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+	// 					Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
+	// 					ConflictResolutionPath: to.Ptr("/path"),
+	// 				},
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentCreateUpdate.json
+// Generated from example definition: 2026-07-15/gremlinrbac/CosmosDBGremlinRoleAssignmentCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -241,7 +241,7 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionCreateUpdate.json
+// Generated from example definition: 2026-07-15/gremlinrbac/CosmosDBGremlinRoleDefinitionCreateUpdate.json
 func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -306,7 +306,7 @@ func ExampleGremlinResourcesClient_BeginCreateUpdateGremlinRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseDelete.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinDatabaseDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -327,7 +327,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinDatabase() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphDelete.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinGraphDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -348,7 +348,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinGraph() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentDelete.json
+// Generated from example definition: 2026-07-15/gremlinrbac/CosmosDBGremlinRoleAssignmentDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -374,7 +374,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionDelete.json
+// Generated from example definition: 2026-07-15/gremlinrbac/CosmosDBGremlinRoleDefinitionDelete.json
 func ExampleGremlinResourcesClient_BeginDeleteGremlinRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -400,7 +400,7 @@ func ExampleGremlinResourcesClient_BeginDeleteGremlinRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseMigrateToAutoscale.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinDatabaseMigrateToAutoscale.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -426,22 +426,22 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToAutoscale() {
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
 	// 					MaxThroughput: to.Ptr[int32](4000),
 	// 				},
 	// 				MinimumThroughput: to.Ptr("4000"),
 	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinDatabaseMigrateToManualThroughput.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -467,19 +467,19 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinDatabaseToManualThroughput
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphMigrateToAutoscale.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinGraphMigrateToAutoscale.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -505,22 +505,22 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToAutoscale() {
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				AutoscaleSettings: &armcosmos.AutoscaleSettingsResource{
 	// 					MaxThroughput: to.Ptr[int32](4000),
 	// 				},
 	// 				MinimumThroughput: to.Ptr("4000"),
 	// 				OfferReplacePending: to.Ptr("false"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphMigrateToManualThroughput.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinGraphMigrateToManualThroughput.json
 func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToManualThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -546,19 +546,19 @@ func ExampleGremlinResourcesClient_BeginMigrateGremlinGraphToManualThroughput() 
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphBackupInformation.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinGraphBackupInformation.json
 func ExampleGremlinResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -591,7 +591,7 @@ func ExampleGremlinResourcesClient_BeginRetrieveContinuousBackupInformation() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseThroughputUpdate.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinDatabaseThroughputUpdate.json
 func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -604,12 +604,12 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	}
 	poller, err := clientFactory.NewGremlinResourcesClient().BeginUpdateGremlinDatabaseThroughput(ctx, "rg1", "ddb1", "databaseName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
 			Resource: &armcosmos.ThroughputSettingsResource{
 				Throughput: to.Ptr[int32](400),
 			},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -623,27 +623,27 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinDatabaseThroughput() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientUpdateGremlinDatabaseThroughputResponse{
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphThroughputUpdate.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinGraphThroughputUpdate.json
 func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -656,12 +656,12 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 	}
 	poller, err := clientFactory.NewGremlinResourcesClient().BeginUpdateGremlinGraphThroughput(ctx, "rg1", "ddb1", "databaseName", "graphName", armcosmos.ThroughputSettingsUpdateParameters{
 		Location: to.Ptr("West US"),
+		Tags:     map[string]*string{},
 		Properties: &armcosmos.ThroughputSettingsUpdateProperties{
 			Resource: &armcosmos.ThroughputSettingsResource{
 				Throughput: to.Ptr[int32](400),
 			},
 		},
-		Tags: map[string]*string{},
 	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
@@ -675,27 +675,27 @@ func ExampleGremlinResourcesClient_BeginUpdateGremlinGraphThroughput() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientUpdateGremlinGraphThroughputResponse{
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/gremlinGraphs/graphName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/gremlinGraphs/graphName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseGet.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinDatabaseGet.json
 func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -715,25 +715,25 @@ func ExampleGremlinResourcesClient_GetGremlinDatabase() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientGetGremlinDatabaseResponse{
 	// 	GremlinDatabaseGetResults: armcosmos.GremlinDatabaseGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName"),
 	// 		Name: to.Ptr("databaseName"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.GremlinDatabaseGetProperties{
 	// 			Resource: &armcosmos.GremlinDatabaseGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
+	// 				ID: to.Ptr("databaseName"),
 	// 				Rid: to.Ptr("CqNBAA=="),
 	// 				Ts: to.Ptr[float32](1449602962),
-	// 				ID: to.Ptr("databaseName"),
+	// 				Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseThroughputGet.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinDatabaseThroughputGet.json
 func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -753,29 +753,29 @@ func ExampleGremlinResourcesClient_GetGremlinDatabaseThroughput() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientGetGremlinDatabaseThroughputResponse{
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				InstantMaximumThroughput: to.Ptr("10000"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
+	// 				InstantMaximumThroughput: to.Ptr("10000"),
 	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphGet.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinGraphGet.json
 func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -795,49 +795,42 @@ func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientGetGremlinGraphResponse{
 	// 	GremlinGraphGetResults: armcosmos.GremlinGraphGetResults{
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/graphs/graphName"),
 	// 		Name: to.Ptr("graphName"),
-	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/apis/databases/graphs"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/graphs/graphName"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs"),
 	// 		Properties: &armcosmos.GremlinGraphGetProperties{
 	// 			Resource: &armcosmos.GremlinGraphGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-	// 					ConflictResolutionPath: to.Ptr("/path"),
-	// 					Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-	// 				},
-	// 				DefaultTTL: to.Ptr[int32](100),
 	// 				ID: to.Ptr("graphName"),
 	// 				IndexingPolicy: &armcosmos.IndexingPolicy{
+	// 					IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
 	// 					Automatic: to.Ptr(true),
-	// 					ExcludedPaths: []*armcosmos.ExcludedPath{
-	// 					},
 	// 					IncludedPaths: []*armcosmos.IncludedPath{
 	// 						{
 	// 							Path: to.Ptr("/*"),
 	// 							Indexes: []*armcosmos.Indexes{
 	// 								{
-	// 									DataType: to.Ptr(armcosmos.DataTypeString),
 	// 									Kind: to.Ptr(armcosmos.IndexKindRange),
+	// 									DataType: to.Ptr(armcosmos.DataTypeString),
 	// 									Precision: to.Ptr[int32](-1),
 	// 								},
 	// 								{
-	// 									DataType: to.Ptr(armcosmos.DataTypeNumber),
 	// 									Kind: to.Ptr(armcosmos.IndexKindRange),
+	// 									DataType: to.Ptr(armcosmos.DataTypeNumber),
 	// 									Precision: to.Ptr[int32](-1),
 	// 								},
 	// 							},
 	// 						},
 	// 					},
-	// 					IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
+	// 					ExcludedPaths: []*armcosmos.ExcludedPath{
+	// 					},
 	// 				},
 	// 				PartitionKey: &armcosmos.ContainerPartitionKey{
-	// 					Kind: to.Ptr(armcosmos.PartitionKindHash),
 	// 					Paths: []*string{
 	// 						to.Ptr("/AccountNumber"),
 	// 					},
+	// 					Kind: to.Ptr(armcosmos.PartitionKindHash),
 	// 				},
+	// 				DefaultTTL: to.Ptr[int32](100),
 	// 				UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
 	// 					UniqueKeys: []*armcosmos.UniqueKey{
 	// 						{
@@ -847,13 +840,20 @@ func ExampleGremlinResourcesClient_GetGremlinGraph() {
 	// 						},
 	// 					},
 	// 				},
+	// 				ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+	// 					Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
+	// 					ConflictResolutionPath: to.Ptr("/path"),
+	// 				},
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphThroughputGet.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinGraphThroughputGet.json
 func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -873,29 +873,29 @@ func ExampleGremlinResourcesClient_GetGremlinGraphThroughput() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcosmos.GremlinResourcesClientGetGremlinGraphThroughputResponse{
 	// 	ThroughputSettingsGetResults: armcosmos.ThroughputSettingsGetResults{
+	// 		ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/gremlinGraphs/graphName/throughputSettings/default"),
 	// 		Name: to.Ptr("default"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/throughputSettings"),
-	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/gremlinGraphs/graphName/throughputSettings/default"),
 	// 		Location: to.Ptr("West US"),
+	// 		Tags: map[string]*string{
+	// 		},
 	// 		Properties: &armcosmos.ThroughputSettingsGetProperties{
 	// 			Resource: &armcosmos.ThroughputSettingsGetPropertiesResource{
-	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-	// 				Rid: to.Ptr("PD5DALigDgw="),
-	// 				Ts: to.Ptr[float32](1459200611),
-	// 				InstantMaximumThroughput: to.Ptr("10000"),
+	// 				Throughput: to.Ptr[int32](400),
 	// 				MinimumThroughput: to.Ptr("400"),
 	// 				OfferReplacePending: to.Ptr("true"),
+	// 				InstantMaximumThroughput: to.Ptr("10000"),
 	// 				SoftAllowedMaximumThroughput: to.Ptr("1000000"),
-	// 				Throughput: to.Ptr[int32](400),
+	// 				Rid: to.Ptr("PD5DALigDgw="),
+	// 				Ts: to.Ptr[float32](1459200611),
+	// 				Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 	// 			},
-	// 		},
-	// 		Tags: map[string]*string{
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentGet.json
+// Generated from example definition: 2026-07-15/gremlinrbac/CosmosDBGremlinRoleAssignmentGet.json
 func ExampleGremlinResourcesClient_GetGremlinRoleAssignment() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -927,7 +927,7 @@ func ExampleGremlinResourcesClient_GetGremlinRoleAssignment() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionGet.json
+// Generated from example definition: 2026-07-15/gremlinrbac/CosmosDBGremlinRoleDefinitionGet.json
 func ExampleGremlinResourcesClient_GetGremlinRoleDefinition() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -972,7 +972,7 @@ func ExampleGremlinResourcesClient_GetGremlinRoleDefinition() {
 	// }
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinDatabaseList.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinDatabaseList.json
 func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -998,19 +998,19 @@ func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 		// 	GremlinDatabaseListResult: armcosmos.GremlinDatabaseListResult{
 		// 		Value: []*armcosmos.GremlinDatabaseGetResults{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName"),
 		// 				Name: to.Ptr("databaseName"),
 		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName"),
 		// 				Location: to.Ptr("West US"),
+		// 				Tags: map[string]*string{
+		// 				},
 		// 				Properties: &armcosmos.GremlinDatabaseGetProperties{
 		// 					Resource: &armcosmos.GremlinDatabaseGetPropertiesResource{
-		// 						Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
+		// 						ID: to.Ptr("databaseName"),
 		// 						Rid: to.Ptr("CqNBAA=="),
 		// 						Ts: to.Ptr[float32](1449602962),
-		// 						ID: to.Ptr("databaseName"),
+		// 						Etag: to.Ptr("\"00000a00-0000-0000-0000-56672f920000\""),
 		// 					},
-		// 				},
-		// 				Tags: map[string]*string{
 		// 				},
 		// 			},
 		// 		},
@@ -1019,7 +1019,7 @@ func ExampleGremlinResourcesClient_NewListGremlinDatabasesPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/CosmosDBGremlinGraphList.json
+// Generated from example definition: 2026-07-15/CosmosDBGremlinGraphList.json
 func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1045,49 +1045,42 @@ func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 		// 	GremlinGraphListResult: armcosmos.GremlinGraphListResult{
 		// 		Value: []*armcosmos.GremlinGraphGetResults{
 		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rg1/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/graphs/testgrf"),
 		// 				Name: to.Ptr("testgrf"),
-		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/apis/databases/graphs"),
-		// 				ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/rgName/providers/Microsoft.DocumentDB/databaseAccounts/ddb1/gremlinDatabases/databaseName/graphs/testgrf"),
+		// 				Type: to.Ptr("Microsoft.DocumentDB/databaseAccounts/gremlinDatabases/graphs"),
 		// 				Properties: &armcosmos.GremlinGraphGetProperties{
 		// 					Resource: &armcosmos.GremlinGraphGetPropertiesResource{
-		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
-		// 						Rid: to.Ptr("PD5DALigDgw="),
-		// 						Ts: to.Ptr[float32](1459200611),
-		// 						ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
-		// 							ConflictResolutionPath: to.Ptr("/path"),
-		// 							Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
-		// 						},
-		// 						DefaultTTL: to.Ptr[int32](100),
 		// 						ID: to.Ptr("testgrf"),
 		// 						IndexingPolicy: &armcosmos.IndexingPolicy{
+		// 							IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
 		// 							Automatic: to.Ptr(true),
-		// 							ExcludedPaths: []*armcosmos.ExcludedPath{
-		// 							},
 		// 							IncludedPaths: []*armcosmos.IncludedPath{
 		// 								{
 		// 									Path: to.Ptr("/*"),
 		// 									Indexes: []*armcosmos.Indexes{
 		// 										{
-		// 											DataType: to.Ptr(armcosmos.DataTypeString),
 		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
+		// 											DataType: to.Ptr(armcosmos.DataTypeString),
 		// 											Precision: to.Ptr[int32](-1),
 		// 										},
 		// 										{
-		// 											DataType: to.Ptr(armcosmos.DataTypeNumber),
 		// 											Kind: to.Ptr(armcosmos.IndexKindRange),
+		// 											DataType: to.Ptr(armcosmos.DataTypeNumber),
 		// 											Precision: to.Ptr[int32](-1),
 		// 										},
 		// 									},
 		// 								},
 		// 							},
-		// 							IndexingMode: to.Ptr(armcosmos.IndexingModeConsistent),
+		// 							ExcludedPaths: []*armcosmos.ExcludedPath{
+		// 							},
 		// 						},
 		// 						PartitionKey: &armcosmos.ContainerPartitionKey{
-		// 							Kind: to.Ptr(armcosmos.PartitionKindHash),
 		// 							Paths: []*string{
 		// 								to.Ptr("/AccountNumber"),
 		// 							},
+		// 							Kind: to.Ptr(armcosmos.PartitionKindHash),
 		// 						},
+		// 						DefaultTTL: to.Ptr[int32](100),
 		// 						UniqueKeyPolicy: &armcosmos.UniqueKeyPolicy{
 		// 							UniqueKeys: []*armcosmos.UniqueKey{
 		// 								{
@@ -1097,6 +1090,13 @@ func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 		// 								},
 		// 							},
 		// 						},
+		// 						ConflictResolutionPolicy: &armcosmos.ConflictResolutionPolicy{
+		// 							Mode: to.Ptr(armcosmos.ConflictResolutionModeLastWriterWins),
+		// 							ConflictResolutionPath: to.Ptr("/path"),
+		// 						},
+		// 						Rid: to.Ptr("PD5DALigDgw="),
+		// 						Ts: to.Ptr[float32](1459200611),
+		// 						Etag: to.Ptr("\"00005900-0000-0000-0000-56f9a2630000\""),
 		// 					},
 		// 				},
 		// 			},
@@ -1106,7 +1106,7 @@ func ExampleGremlinResourcesClient_NewListGremlinGraphsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleAssignmentList.json
+// Generated from example definition: 2026-07-15/gremlinrbac/CosmosDBGremlinRoleAssignmentList.json
 func ExampleGremlinResourcesClient_NewListGremlinRoleAssignmentsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1147,7 +1147,7 @@ func ExampleGremlinResourcesClient_NewListGremlinRoleAssignmentsPager() {
 	}
 }
 
-// Generated from example definition: 2026-04-01-preview/gremlinrbac/CosmosDBGremlinRoleDefinitionList.json
+// Generated from example definition: 2026-07-15/gremlinrbac/CosmosDBGremlinRoleDefinitionList.json
 func ExampleGremlinResourcesClient_NewListGremlinRoleDefinitionsPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

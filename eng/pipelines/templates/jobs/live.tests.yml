@@ -44,7 +44,7 @@ jobs:
   - job:
     displayName: Live Test on
     dependsOn: ${{ parameters.DependsOn }}
-    condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
+    condition: and(succeededOrFailed(), ne(variables['Skip.LiveTests'], 'true'), ne(${{ parameters.Matrix }}, '{}'))
     strategy:
       maxParallel: 0
       matrix: $[ ${{ parameters.Matrix }} ]

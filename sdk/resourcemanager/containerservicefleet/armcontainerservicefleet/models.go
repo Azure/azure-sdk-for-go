@@ -40,6 +40,27 @@ type AgentProfile struct {
 	VMSize *string
 }
 
+// AllowedSubject - A subject authorized to use the identity binding for token exchange.
+// The namespace selector is required and must be non-empty. The service
+// account selector is optional; when omitted, all service accounts in
+// matching namespaces are authorized. Selectors within a single
+// AllowedSubject are AND'd; multiple AllowedSubjects on an identity
+// binding profile are OR'd.
+type AllowedSubject struct {
+	// REQUIRED; Label selector matching the namespaces in which this identity may be
+	// used. Must be non-empty: an empty selector would match every namespace
+	// and is rejected to prevent overly permissive bindings. Use the built-in
+	// `kubernetes.io/metadata.name` label to target specific namespaces by
+	// name.
+	NamespaceSelector *IdentityBindingLabelSelector
+
+	// Optional label selector matching the service accounts (within the
+	// namespaces matched by `namespaceSelector`) that may use this identity.
+	// When omitted, all service accounts in matching namespaces are
+	// authorized. When provided, it must be non-empty.
+	ServiceAccountSelector *IdentityBindingLabelSelector
+}
+
 // AutoUpgradeNodeImageSelection - The node image upgrade to be applied to the target clusters in auto upgrade.
 type AutoUpgradeNodeImageSelection struct {
 	// REQUIRED; The node image upgrade type.
@@ -727,6 +748,130 @@ type GateTarget struct {
 type GenerateResponse struct {
 	// READ-ONLY; The ARM resource id of the generated UpdateRun. e.g.: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/fleets/{fleetName}/updateRuns/{updateRunName}'.
 	ID *string
+}
+
+// IdentityBindingLabelSelector - A label selector is a label query over a set of resources. The result of matchLabels and
+// matchExpressions are ANDed. An empty label selector matches all objects. A null label selector matches no objects.
+type IdentityBindingLabelSelector struct {
+	// matchExpressions is a list of label selector requirements. The requirements are ANDed.
+	MatchExpressions []*IdentityBindingLabelSelectorRequirement
+
+	// matchLabels is an array of {key=value} pairs. A single {key=value} in the matchLabels map is equivalent to an element of
+	// matchExpressions, whose key field is `key`, the operator is `In`, and the values array contains only `value`. The requirements
+	// are ANDed.
+	MatchLabels []*string
+}
+
+// IdentityBindingLabelSelectorRequirement - A label selector requirement is a selector that contains values, a key, and an
+// operator that relates the key and values.
+type IdentityBindingLabelSelectorRequirement struct {
+	// key is the label key that the selector applies to.
+	Key *string
+
+	// operator represents a key's relationship to a set of values. Valid operators are In, NotIn, Exists and DoesNotExist.
+	Operator *IdentityBindingLabelSelectorOperator
+
+	// values is an array of string values. For In or NotIn, the array must be non-empty. For Exists or DoesNotExist, the array
+	// must be empty or omitted.
+	Values []*string
+}
+
+// IdentityBindingManagedIdentityProfile - Managed identity profile for the identity binding.
+type IdentityBindingManagedIdentityProfile struct {
+	// REQUIRED; The resource ID of the user-assigned managed identity.
+	ResourceID *string
+
+	// READ-ONLY; The client ID of the managed identity.
+	ClientID *string
+
+	// READ-ONLY; The object ID of the managed identity.
+	ObjectID *string
+
+	// READ-ONLY; The tenant ID of the managed identity.
+	TenantID *string
+}
+
+// IdentityBindingOIDCIssuerProfile - The OIDC issuer profile of the identity binding profile.
+type IdentityBindingOIDCIssuerProfile struct {
+	// READ-ONLY; The OIDC issuer URL of the identity binding profile.
+	OIDCIssuerURL *string
+}
+
+// IdentityBindingProfile - A fleet identity binding profile.
+type IdentityBindingProfile struct {
+	// The resource-specific properties for this resource.
+	Properties *IdentityBindingProfileProperties
+
+	// READ-ONLY; If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
+	// Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity tags in
+	// the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section 14.27) header
+	// fields.
+	ETag *string
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// IdentityBindingProfileListResult - The response of a IdentityBindingProfile list operation.
+type IdentityBindingProfileListResult struct {
+	// REQUIRED; The IdentityBindingProfile items on this page
+	Value []*IdentityBindingProfile
+
+	// The link to the next page of items
+	NextLink *string
+}
+
+// IdentityBindingProfileProperties - The properties of an identity binding profile.
+type IdentityBindingProfileProperties struct {
+	// REQUIRED; The identity binding properties applied to each selected fleet member.
+	IdentityBindingProperties *IdentityBindingProperties
+
+	// Select the fleet members that this identity binding profile is applied to.
+	//
+	//   - Only key/value pairs with the `=` operator are accepted in the label selector.
+	//   - If empty or not specified, no fleet members will be selected.
+	MemberSelector *MemberSelector
+
+	// READ-ONLY; The status of the last operation.
+	ProvisioningState *IdentityBindingProfileProvisioningState
+
+	// READ-ONLY; The identity binding profile status.
+	Status *IdentityBindingProfileStatus
+}
+
+// IdentityBindingProfileStatus - Status of the identity binding profile.
+type IdentityBindingProfileStatus struct {
+	// READ-ONLY; The last operation error of the identity binding profile.
+	LastOperationError *ErrorDetail
+
+	// READ-ONLY; The last operation ID for the identity binding profile.
+	LastOperationID *string
+}
+
+// IdentityBindingProperties - The properties of the identity bindings created on each selected fleet member.
+type IdentityBindingProperties struct {
+	// REQUIRED; Managed identity profile for the identity binding.
+	ManagedIdentity *IdentityBindingManagedIdentityProfile
+
+	// Optional list of subjects authorized to use this identity binding for
+	// token exchange. Each entry pairs a required namespace label selector
+	// with an optional service account label selector; selectors within an
+	// entry are AND'd, and multiple entries are OR'd. When omitted or empty,
+	// authorization falls back exclusively to ClusterRole/ClusterRoleBinding
+	// evaluation. Maximum 100 entries.
+	AllowedSubjects []*AllowedSubject
+
+	// READ-ONLY; The OIDC issuer profile of the identity binding profile.
+	OIDCIssuer *IdentityBindingOIDCIssuerProfile
 }
 
 // LabelSelector - A label selector is a label query over a set of resources. The result of matchLabels and matchExpressions

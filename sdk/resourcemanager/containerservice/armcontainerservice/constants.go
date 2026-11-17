@@ -5,7 +5,7 @@
 package armcontainerservice
 
 const (
-	version20260802Preview string = "2026-08-02-preview"
+	version20260902Preview string = "2026-09-02-preview"
 )
 
 // AccelerationMode - Enable advanced network acceleration options. This allows users to configure acceleration using BPF

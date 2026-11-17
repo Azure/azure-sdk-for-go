@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-09-15-preview/DeleteRaiToolLabel.json
+// Generated from example definition: 2026-11-01/DeleteRaiToolLabel.json
 func ExampleRaiToolLabelsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleRaiToolLabelsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-09-15-preview/PutRaiToolLabel.json
+// Generated from example definition: 2026-11-01/PutRaiToolLabel.json
 func ExampleRaiToolLabelsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -105,7 +105,7 @@ func ExampleRaiToolLabelsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/GetRaiToolLabel.json
+// Generated from example definition: 2026-11-01/GetRaiToolLabel.json
 func ExampleRaiToolLabelsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -156,7 +156,7 @@ func ExampleRaiToolLabelsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-15-preview/ListRaiToolLabels.json
+// Generated from example definition: 2026-11-01/ListRaiToolLabels.json
 func ExampleRaiToolLabelsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

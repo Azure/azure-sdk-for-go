@@ -152,11 +152,8 @@ func (p *PriceSheetServerTransport) dispatchGet(req *http.Request) (*http.Respon
 	expandParam := getOptional(qp.Get("$expand"))
 	skiptokenParam := getOptional(qp.Get("$skiptoken"))
 	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err
@@ -202,11 +199,8 @@ func (p *PriceSheetServerTransport) dispatchGetByBillingPeriod(req *http.Request
 	expandParam := getOptional(qp.Get("$expand"))
 	skiptokenParam := getOptional(qp.Get("$skiptoken"))
 	topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err

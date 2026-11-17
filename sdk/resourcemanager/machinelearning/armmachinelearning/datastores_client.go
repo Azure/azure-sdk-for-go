@@ -380,8 +380,30 @@ func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceG
 	if err != nil {
 		return nil, err
 	}
+	if !firstPage {
+		queryURL, queryErr := url.Parse(nextLink)
+		if queryErr != nil {
+			return nil, queryErr
+		}
+		if queryURL.RawQuery != "" {
+			var rawQueryValues url.Values
+			rawQueryValues, queryErr = preserveQueryExpansions(queryURL.RawQuery, "names")
+			if queryErr != nil {
+				return nil, queryErr
+			}
+			req.Raw().URL.RawQuery = encodeQuery(req.Raw().URL.Query(), rawQueryValues)
+		}
+	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
+		rawQueryValues := url.Values{}
+		if req.Raw().URL.RawQuery != "" {
+			var queryErr error
+			rawQueryValues, queryErr = preserveQueryExpansions(req.Raw().URL.RawQuery, "names")
+			if queryErr != nil {
+				return nil, queryErr
+			}
+		}
 		if options != nil && options.Skip != nil {
 			reqQP.Set("$skip", *options.Skip)
 		}
@@ -393,7 +415,9 @@ func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceG
 			reqQP.Set("isDefault", strconv.FormatBool(*options.IsDefault))
 		}
 		if options != nil && options.Names != nil {
-			reqQP.Set("names", strings.Join(options.Names, ","))
+			rawQueryValues.Set("names", expandQueryArray(options.Names, func(value string) string {
+				return value
+			}))
 		}
 		if options != nil && options.OrderBy != nil {
 			reqQP.Set("orderBy", *options.OrderBy)
@@ -404,7 +428,7 @@ func (client *DatastoresClient) listCreateRequest(ctx context.Context, resourceG
 		if options != nil && options.SearchText != nil {
 			reqQP.Set("searchText", *options.SearchText)
 		}
-		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().URL.RawQuery = encodeQuery(reqQP, rawQueryValues)
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
 	return req, nil

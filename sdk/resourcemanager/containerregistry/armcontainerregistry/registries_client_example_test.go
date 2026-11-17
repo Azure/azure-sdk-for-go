@@ -8,12 +8,12 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v4"
 	"log"
 	"time"
 )
 
-// Generated from example definition: 2026-09-01-preview/RegistryCreate.json
+// Generated from example definition: 2026-10-15-preview/RegistryCreate.json
 func ExampleRegistriesClient_BeginCreate_registryCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -114,7 +114,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryCreateAbac.json
+// Generated from example definition: 2026-10-15-preview/RegistryCreateAbac.json
 func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -215,7 +215,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateAbac() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryCreateDomainNameLabelScope.json
+// Generated from example definition: 2026-10-15-preview/RegistryCreateDomainNameLabelScope.json
 func ExampleRegistriesClient_BeginCreate_registryCreateDomainNameLabelScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -316,7 +316,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateDomainNameLabelScope() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryCreateZoneRedundant.json
+// Generated from example definition: 2026-10-15-preview/RegistryCreateZoneRedundant.json
 func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,7 +417,7 @@ func ExampleRegistriesClient_BeginCreate_registryCreateZoneRedundant() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryDelete.json
+// Generated from example definition: 2026-10-15-preview/RegistryDelete.json
 func ExampleRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -443,7 +443,7 @@ func ExampleRegistriesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryGenerateCredentials.json
+// Generated from example definition: 2026-10-15-preview/RegistryGenerateCredentials.json
 func ExampleRegistriesClient_BeginGenerateCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -487,7 +487,7 @@ func ExampleRegistriesClient_BeginGenerateCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ImportImageByManifestDigest.json
+// Generated from example definition: 2026-10-15-preview/ImportImageByManifestDigest.json
 func ExampleRegistriesClient_BeginImportImage_importImageByManifestDigest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -525,7 +525,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageByManifestDigest() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ImportImageByTag.json
+// Generated from example definition: 2026-10-15-preview/ImportImageByTag.json
 func ExampleRegistriesClient_BeginImportImage_importImageByTag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -563,7 +563,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageByTag() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ImportImageFromPublicRegistry.json
+// Generated from example definition: 2026-10-15-preview/ImportImageFromPublicRegistry.json
 func ExampleRegistriesClient_BeginImportImage_importImageFromPublicRegistry() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -601,7 +601,7 @@ func ExampleRegistriesClient_BeginImportImage_importImageFromPublicRegistry() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryUpdate.json
+// Generated from example definition: 2026-10-15-preview/RegistryUpdate.json
 func ExampleRegistriesClient_BeginUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -702,7 +702,7 @@ func ExampleRegistriesClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryCheckNameAvailable.json
+// Generated from example definition: 2026-10-15-preview/RegistryCheckNameAvailable.json
 func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -733,7 +733,7 @@ func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameAvailable() 
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryCheckNameNotAvailable.json
+// Generated from example definition: 2026-10-15-preview/RegistryCheckNameNotAvailable.json
 func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameNotAvailable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -765,7 +765,7 @@ func ExampleRegistriesClient_CheckNameAvailability_registryCheckNameNotAvailable
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryGet.json
+// Generated from example definition: 2026-10-15-preview/RegistryGet.json
 func ExampleRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -851,7 +851,7 @@ func ExampleRegistriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryGetPrivateLinkResource.json
+// Generated from example definition: 2026-10-15-preview/RegistryGetPrivateLinkResource.json
 func ExampleRegistriesClient_GetPrivateLinkResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -888,7 +888,7 @@ func ExampleRegistriesClient_GetPrivateLinkResource() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryListCredentials.json
+// Generated from example definition: 2026-10-15-preview/RegistryListCredentials.json
 func ExampleRegistriesClient_ListCredentials() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -923,7 +923,7 @@ func ExampleRegistriesClient_ListCredentials() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryListUsages.json
+// Generated from example definition: 2026-10-15-preview/RegistryListUsages.json
 func ExampleRegistriesClient_ListUsages() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -961,7 +961,7 @@ func ExampleRegistriesClient_ListUsages() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryListByResourceGroup.json
+// Generated from example definition: 2026-10-15-preview/RegistryListByResourceGroup.json
 func ExampleRegistriesClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1056,7 +1056,7 @@ func ExampleRegistriesClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryList.json
+// Generated from example definition: 2026-10-15-preview/RegistryList.json
 func ExampleRegistriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1151,7 +1151,7 @@ func ExampleRegistriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryListPrivateLinkResources.json
+// Generated from example definition: 2026-10-15-preview/RegistryListPrivateLinkResources.json
 func ExampleRegistriesClient_NewListPrivateLinkResourcesPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1197,7 +1197,7 @@ func ExampleRegistriesClient_NewListPrivateLinkResourcesPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/RegistryRegenerateCredential.json
+// Generated from example definition: 2026-10-15-preview/RegistryRegenerateCredential.json
 func ExampleRegistriesClient_RegenerateCredential() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

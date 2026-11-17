@@ -1334,21 +1334,15 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByBillingAccountPager(re
 		}
 		filterParam := getOptional(qp.Get("filter"))
 		topParam, err := parseOptional(qp.Get("top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
 		}
 		skipParam, err := parseOptional(qp.Get("skip"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -1405,21 +1399,15 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByBillingProfilePager(re
 		}
 		filterParam := getOptional(qp.Get("filter"))
 		topParam, err := parseOptional(qp.Get("top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
 		}
 		skipParam, err := parseOptional(qp.Get("skip"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -1480,21 +1468,15 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByCustomerPager(req *htt
 		}
 		filterParam := getOptional(qp.Get("filter"))
 		topParam, err := parseOptional(qp.Get("top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
 		}
 		skipParam, err := parseOptional(qp.Get("skip"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -1637,21 +1619,15 @@ func (r *RoleAssignmentsServerTransport) dispatchNewListByInvoiceSectionPager(re
 		}
 		filterParam := getOptional(qp.Get("filter"))
 		topParam, err := parseOptional(qp.Get("top"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
 		}
 		skipParam, err := parseOptional(qp.Get("skip"), func(v string) (int64, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 64)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return p, nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 64)
+			return int64(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

@@ -341,11 +341,8 @@ func (d *DeploymentOperationsServerTransport) dispatchNewListAtManagementGroupSc
 			return nil, err
 		}
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -396,11 +393,8 @@ func (d *DeploymentOperationsServerTransport) dispatchNewListAtScopePager(req *h
 			return nil, err
 		}
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -450,11 +444,8 @@ func (d *DeploymentOperationsServerTransport) dispatchNewListAtSubscriptionScope
 			return nil, err
 		}
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -504,11 +495,8 @@ func (d *DeploymentOperationsServerTransport) dispatchNewListAtTenantScopePager(
 			return nil, err
 		}
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -562,11 +550,8 @@ func (d *DeploymentOperationsServerTransport) dispatchNewListPager(req *http.Req
 			return nil, err
 		}
 		topParam, err := parseOptional(qp.Get("$top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

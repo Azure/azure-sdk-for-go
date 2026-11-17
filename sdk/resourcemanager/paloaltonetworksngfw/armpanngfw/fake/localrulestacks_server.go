@@ -451,11 +451,8 @@ func (l *LocalRulestacksServerTransport) dispatchListAdvancedSecurityObjects(req
 	}
 	skipParam := getOptional(qp.Get("skip"))
 	topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err
@@ -536,11 +533,8 @@ func (l *LocalRulestacksServerTransport) dispatchListSecurityServices(req *http.
 	}
 	skipParam := getOptional(qp.Get("skip"))
 	topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
-		p, parseErr := strconv.ParseInt(v, 10, 32)
-		if parseErr != nil {
-			return 0, parseErr
-		}
-		return int32(p), nil
+		parsed, parseErr := strconv.ParseInt(v, 10, 32)
+		return int32(parsed), parseErr
 	})
 	if err != nil {
 		return nil, err
@@ -592,11 +586,8 @@ func (l *LocalRulestacksServerTransport) dispatchNewListAppIDsPager(req *http.Re
 		appPrefixParam := getOptional(qp.Get("appPrefix"))
 		skipParam := getOptional(qp.Get("skip"))
 		topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -724,11 +715,8 @@ func (l *LocalRulestacksServerTransport) dispatchNewListCountriesPager(req *http
 		}
 		skipParam := getOptional(qp.Get("skip"))
 		topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err
@@ -784,11 +772,8 @@ func (l *LocalRulestacksServerTransport) dispatchNewListPredefinedURLCategoriesP
 		}
 		skipParam := getOptional(qp.Get("skip"))
 		topParam, err := parseOptional(qp.Get("top"), func(v string) (int32, error) {
-			p, parseErr := strconv.ParseInt(v, 10, 32)
-			if parseErr != nil {
-				return 0, parseErr
-			}
-			return int32(p), nil
+			parsed, parseErr := strconv.ParseInt(v, 10, 32)
+			return int32(parsed), parseErr
 		})
 		if err != nil {
 			return nil, err

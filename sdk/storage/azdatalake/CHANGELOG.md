@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (2026-11-13)
 
 ### Features Added
 * Added support for session authentication. Set `Session` on `ClientOptions` to configure it. Sessions apply only to
@@ -22,13 +22,12 @@
   disabled; false disables it explicitly. When the service can't provide a layout, downloads use the client's
   configured endpoint.
 
-### Breaking Changes
-
 ### Bugs Fixed
 * The token credential constructors now return the error from creating their blob client instead of discarding it.
 
 ### Other Changes
 * Updated `azblob` version to `1.9.0-beta.1`
+* Updated `sdk/storage/internal` version to `0.2.0-beta.1`
 
 ## 1.7.1 (2026-11-03)
 

@@ -8,11 +8,11 @@ import (
 	"context"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/azidentity"
-	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v3"
+	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/containerregistry/armcontainerregistry/v4"
 	"log"
 )
 
-// Generated from example definition: 2026-09-01-preview/ConnectedRegistryCreate.json
+// Generated from example definition: 2026-10-15-preview/ConnectedRegistryCreate.json
 func ExampleConnectedRegistriesClient_BeginCreate_connectedRegistryCreate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -95,7 +95,7 @@ func ExampleConnectedRegistriesClient_BeginCreate_connectedRegistryCreate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ConnectedRegistryCreateManagedIdentity.json
+// Generated from example definition: 2026-10-15-preview/ConnectedRegistryCreateManagedIdentity.json
 func ExampleConnectedRegistriesClient_BeginCreate_connectedRegistryCreateManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -193,7 +193,7 @@ func ExampleConnectedRegistriesClient_BeginCreate_connectedRegistryCreateManaged
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ConnectedRegistryDeactivate.json
+// Generated from example definition: 2026-10-15-preview/ConnectedRegistryDeactivate.json
 func ExampleConnectedRegistriesClient_BeginDeactivate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -219,7 +219,7 @@ func ExampleConnectedRegistriesClient_BeginDeactivate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ConnectedRegistryDelete.json
+// Generated from example definition: 2026-10-15-preview/ConnectedRegistryDelete.json
 func ExampleConnectedRegistriesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -245,7 +245,7 @@ func ExampleConnectedRegistriesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ConnectedRegistryUpdate.json
+// Generated from example definition: 2026-10-15-preview/ConnectedRegistryUpdate.json
 func ExampleConnectedRegistriesClient_BeginUpdate_connectedRegistryUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -345,7 +345,7 @@ func ExampleConnectedRegistriesClient_BeginUpdate_connectedRegistryUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ConnectedRegistryUpdateManagedIdentity.json
+// Generated from example definition: 2026-10-15-preview/ConnectedRegistryUpdateManagedIdentity.json
 func ExampleConnectedRegistriesClient_BeginUpdate_connectedRegistryUpdateManagedIdentity() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -461,7 +461,7 @@ func ExampleConnectedRegistriesClient_BeginUpdate_connectedRegistryUpdateManaged
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ConnectedRegistryGet.json
+// Generated from example definition: 2026-10-15-preview/ConnectedRegistryGet.json
 func ExampleConnectedRegistriesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -535,7 +535,7 @@ func ExampleConnectedRegistriesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-09-01-preview/ConnectedRegistryList.json
+// Generated from example definition: 2026-10-15-preview/ConnectedRegistryList.json
 func ExampleConnectedRegistriesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -618,7 +618,7 @@ func ExampleConnectedRegistriesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-09-01-preview/ConnectedRegistryResync.json
+// Generated from example definition: 2026-10-15-preview/ConnectedRegistryResync.json
 func ExampleConnectedRegistriesClient_Resync() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

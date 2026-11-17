@@ -19,7 +19,7 @@ import (
 // RestorableGremlinResourcesClient contains the methods for the RestorableGremlinResources group.
 // Don't use this type directly, use NewRestorableGremlinResourcesClient() instead.
 //
-// Generated from API version 2026-07-15
+// Generated from API version 2026-09-01-preview
 type RestorableGremlinResourcesClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -104,7 +104,7 @@ func (client *RestorableGremlinResourcesClient) listCreateRequest(ctx context.Co
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260715)
+		reqQP.Set("api-version", version20260901Preview)
 		if options != nil && options.RestoreLocation != nil {
 			reqQP.Set("restoreLocation", *options.RestoreLocation)
 		}

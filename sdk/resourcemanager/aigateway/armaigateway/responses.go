@@ -318,10 +318,10 @@ type ToolServerResourcesClientDeleteResponse struct {
 	// placeholder for future response values
 }
 
-// ToolServerResourcesClientGetOauth2LoginLinksResponse contains the response from method ToolServerResourcesClient.GetOauth2LoginLinks.
-type ToolServerResourcesClientGetOauth2LoginLinksResponse struct {
+// ToolServerResourcesClientGetOAuth2LoginLinksResponse contains the response from method ToolServerResourcesClient.GetOAuth2LoginLinks.
+type ToolServerResourcesClientGetOAuth2LoginLinksResponse struct {
 	// Links for completing OAuth consent for a tool-server endpoint.
-	ToolServerOauth2LoginLinks
+	ToolServerOAuth2LoginLinks
 }
 
 // ToolServerResourcesClientGetResponse contains the response from method ToolServerResourcesClient.Get.

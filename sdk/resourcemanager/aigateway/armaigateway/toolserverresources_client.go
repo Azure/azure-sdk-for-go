@@ -333,35 +333,35 @@ func (client *ToolServerResourcesClient) getHandleResponse(resp *http.Response, 
 	return result, nil
 }
 
-// GetOauth2LoginLinks - Gets links to complete OAuth consent for a tool server endpoint.
+// GetOAuth2LoginLinks - Gets links to complete OAuth consent for a tool server endpoint.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - aiGatewayName - The name of the AiGatewayResource
 //   - workspaceName - The name of the AiGatewayWorkspaceResource
 //   - toolServerName - The name of the AiGatewayToolServerResource
 //   - body - The content of the action request
-//   - options - ToolServerResourcesClientGetOauth2LoginLinksOptions contains the optional parameters for the ToolServerResourcesClient.GetOauth2LoginLinks
+//   - options - ToolServerResourcesClientGetOAuth2LoginLinksOptions contains the optional parameters for the ToolServerResourcesClient.GetOAuth2LoginLinks
 //     method.
-func (client *ToolServerResourcesClient) GetOauth2LoginLinks(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, body ToolServerLoginLinksRequest, options *ToolServerResourcesClientGetOauth2LoginLinksOptions) (ToolServerResourcesClientGetOauth2LoginLinksResponse, error) {
+func (client *ToolServerResourcesClient) GetOAuth2LoginLinks(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, body ToolServerLoginLinksRequest, options *ToolServerResourcesClientGetOAuth2LoginLinksOptions) (ToolServerResourcesClientGetOAuth2LoginLinksResponse, error) {
 	var err error
-	const operationName = "ToolServerResourcesClient.GetOauth2LoginLinks"
+	const operationName = "ToolServerResourcesClient.GetOAuth2LoginLinks"
 	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
 	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
 	defer func() { endSpan(err) }()
-	req, err := client.getOauth2LoginLinksCreateRequest(ctx, resourceGroupName, aiGatewayName, workspaceName, toolServerName, body, options)
+	req, err := client.getOAuth2LoginLinksCreateRequest(ctx, resourceGroupName, aiGatewayName, workspaceName, toolServerName, body, options)
 	if err != nil {
-		return ToolServerResourcesClientGetOauth2LoginLinksResponse{}, err
+		return ToolServerResourcesClientGetOAuth2LoginLinksResponse{}, err
 	}
 	httpResp, err := client.internal.Pipeline().Do(req)
 	if err != nil {
-		return ToolServerResourcesClientGetOauth2LoginLinksResponse{}, err
+		return ToolServerResourcesClientGetOAuth2LoginLinksResponse{}, err
 	}
-	resp, err := client.getOauth2LoginLinksHandleResponse(httpResp, http.StatusOK)
+	resp, err := client.getOAuth2LoginLinksHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
-// getOauth2LoginLinksCreateRequest creates the GetOauth2LoginLinks request.
-func (client *ToolServerResourcesClient) getOauth2LoginLinksCreateRequest(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, body ToolServerLoginLinksRequest, _ *ToolServerResourcesClientGetOauth2LoginLinksOptions) (*policy.Request, error) {
+// getOAuth2LoginLinksCreateRequest creates the GetOAuth2LoginLinks request.
+func (client *ToolServerResourcesClient) getOAuth2LoginLinksCreateRequest(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, body ToolServerLoginLinksRequest, _ *ToolServerResourcesClientGetOAuth2LoginLinksOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/aigateways/{aiGatewayName}/workspaces/{workspaceName}/toolServers/{toolServerName}/getOauth2LoginLinks"
 	if client.subscriptionID == "" {
 		return nil, errors.New("parameter subscriptionID cannot be empty")
@@ -398,14 +398,14 @@ func (client *ToolServerResourcesClient) getOauth2LoginLinksCreateRequest(ctx co
 	return req, nil
 }
 
-// getOauth2LoginLinksHandleResponse handles the GetOauth2LoginLinks response.
-func (client *ToolServerResourcesClient) getOauth2LoginLinksHandleResponse(resp *http.Response, successCodes ...int) (ToolServerResourcesClientGetOauth2LoginLinksResponse, error) {
-	result := ToolServerResourcesClientGetOauth2LoginLinksResponse{}
+// getOAuth2LoginLinksHandleResponse handles the GetOAuth2LoginLinks response.
+func (client *ToolServerResourcesClient) getOAuth2LoginLinksHandleResponse(resp *http.Response, successCodes ...int) (ToolServerResourcesClientGetOAuth2LoginLinksResponse, error) {
+	result := ToolServerResourcesClientGetOAuth2LoginLinksResponse{}
 	if !runtime.HasStatusCode(resp, successCodes...) {
 		return result, runtime.NewResponseError(resp)
 	}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ToolServerOauth2LoginLinks); err != nil {
-		return ToolServerResourcesClientGetOauth2LoginLinksResponse{}, err
+	if err := runtime.UnmarshalAsJSON(resp, &result.ToolServerOAuth2LoginLinks); err != nil {
+		return ToolServerResourcesClientGetOAuth2LoginLinksResponse{}, err
 	}
 	return result, nil
 }

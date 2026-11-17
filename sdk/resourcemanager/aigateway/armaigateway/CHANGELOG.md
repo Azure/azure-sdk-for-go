@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2026-11-13)
+## 1.0.0 (2026-11-17)
 ### Features Added
 
 - New enum type `AliasSelectionStage` with values `AliasSelectionStageAutoModelSelection`, `AliasSelectionStagePriority`, `AliasSelectionStageSessionBackendPreference`
@@ -91,7 +91,7 @@
 - New function `*ToolServerResourcesClient.CreateOrUpdate(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, resource ToolServerResource, options *ToolServerResourcesClientCreateOrUpdateOptions) (ToolServerResourcesClientCreateOrUpdateResponse, error)`
 - New function `*ToolServerResourcesClient.Delete(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, ifMatch string, options *ToolServerResourcesClientDeleteOptions) (ToolServerResourcesClientDeleteResponse, error)`
 - New function `*ToolServerResourcesClient.Get(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, options *ToolServerResourcesClientGetOptions) (ToolServerResourcesClientGetResponse, error)`
-- New function `*ToolServerResourcesClient.GetOauth2LoginLinks(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, body ToolServerLoginLinksRequest, options *ToolServerResourcesClientGetOauth2LoginLinksOptions) (ToolServerResourcesClientGetOauth2LoginLinksResponse, error)`
+- New function `*ToolServerResourcesClient.GetOAuth2LoginLinks(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, body ToolServerLoginLinksRequest, options *ToolServerResourcesClientGetOAuth2LoginLinksOptions) (ToolServerResourcesClientGetOAuth2LoginLinksResponse, error)`
 - New function `*ToolServerResourcesClient.NewListByWorkspacePager(resourceGroupName string, aiGatewayName string, workspaceName string, options *ToolServerResourcesClientListByWorkspaceOptions) *runtime.Pager[ToolServerResourcesClientListByWorkspaceResponse]`
 - New function `*ToolServerResourcesClient.ListSecrets(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, options *ToolServerResourcesClientListSecretsOptions) (ToolServerResourcesClientListSecretsResponse, error)`
 - New function `*ToolServerResourcesClient.Update(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, ifMatch string, properties ToolServerUpdateParameters, options *ToolServerResourcesClientUpdateOptions) (ToolServerResourcesClientUpdateResponse, error)`
@@ -211,8 +211,8 @@
 - New struct `ToolServerFederationAppCredential`
 - New struct `ToolServerLoginLinksRequest`
 - New struct `ToolServerManagedIdentityAuthentication`
+- New struct `ToolServerOAuth2LoginLinks`
 - New struct `ToolServerOauth2Authentication`
-- New struct `ToolServerOauth2LoginLinks`
 - New struct `ToolServerOauth2Parameter`
 - New struct `ToolServerProperties`
 - New struct `ToolServerResource`

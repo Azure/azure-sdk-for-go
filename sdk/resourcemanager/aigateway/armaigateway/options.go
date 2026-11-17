@@ -322,9 +322,9 @@ type ToolServerResourcesClientDeleteOptions struct {
 	// placeholder for future optional parameters
 }
 
-// ToolServerResourcesClientGetOauth2LoginLinksOptions contains the optional parameters for the ToolServerResourcesClient.GetOauth2LoginLinks
+// ToolServerResourcesClientGetOAuth2LoginLinksOptions contains the optional parameters for the ToolServerResourcesClient.GetOAuth2LoginLinks
 // method.
-type ToolServerResourcesClientGetOauth2LoginLinksOptions struct {
+type ToolServerResourcesClientGetOAuth2LoginLinksOptions struct {
 	// placeholder for future optional parameters
 }
 

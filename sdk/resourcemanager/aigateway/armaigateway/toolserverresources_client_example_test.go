@@ -570,7 +570,7 @@ func ExampleToolServerResourcesClient_Get_getAToolServerWithOAuthConnectionStatu
 }
 
 // Generated from example definition: 2026-11-01/AiGatewayToolServerGetOauth2LoginLinks.json
-func ExampleToolServerResourcesClient_GetOauth2LoginLinks() {
+func ExampleToolServerResourcesClient_GetOAuth2LoginLinks() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -580,7 +580,7 @@ func ExampleToolServerResourcesClient_GetOauth2LoginLinks() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewToolServerResourcesClient().GetOauth2LoginLinks(ctx, "example-rg", "example-gateway", "default", "weather-tools", armaigateway.ToolServerLoginLinksRequest{
+	res, err := clientFactory.NewToolServerResourcesClient().GetOAuth2LoginLinks(ctx, "example-rg", "example-gateway", "default", "weather-tools", armaigateway.ToolServerLoginLinksRequest{
 		EndpointID: to.Ptr("endpoint-1"),
 	}, nil)
 	if err != nil {
@@ -589,8 +589,8 @@ func ExampleToolServerResourcesClient_GetOauth2LoginLinks() {
 	// You could use response here. We use blank identifier for just demo purposes.
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armaigateway.ToolServerResourcesClientGetOauth2LoginLinksResponse{
-	// 	ToolServerOauth2LoginLinks: armaigateway.ToolServerOauth2LoginLinks{
+	// res = armaigateway.ToolServerResourcesClientGetOAuth2LoginLinksResponse{
+	// 	ToolServerOAuth2LoginLinks: armaigateway.ToolServerOAuth2LoginLinks{
 	// 		LoginLink: to.Ptr("https://example-gateway.azure-api.net/oauth2/start?state=example-signed-capability"),
 	// 		RedirectURI: to.Ptr("https://example-gateway.azure-api.net/oauth2/callback"),
 	// 		ExpiresUTC: to.Ptr(time.Date(2026, time.October, 13, 0, 0, 0, 0, time.UTC)),

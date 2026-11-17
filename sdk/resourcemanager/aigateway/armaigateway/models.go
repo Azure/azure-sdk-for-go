@@ -1661,6 +1661,18 @@ type ToolServerManagedIdentityAuthentication struct {
 	Resource *string
 }
 
+// ToolServerOAuth2LoginLinks - Links for completing OAuth consent for a tool-server endpoint.
+type ToolServerOAuth2LoginLinks struct {
+	// REQUIRED; UTC expiry of the signed start capability.
+	ExpiresUTC *time.Time
+
+	// Gateway URL to open to begin consent; includes an expiring signed capability.
+	LoginLink *string
+
+	// Gateway callback URI to register with the identity provider.
+	RedirectURI *string
+}
+
 // ToolServerOauth2Authentication - OAuth 2.0 authentication for a tool server endpoint.
 type ToolServerOauth2Authentication struct {
 	// OAuth authorization endpoint.
@@ -1701,18 +1713,6 @@ type ToolServerOauth2Authentication struct {
 
 	// READ-ONLY; UTC timestamp of the last OAuth connection-status transition.
 	StatusUpdatedUTC *time.Time
-}
-
-// ToolServerOauth2LoginLinks - Links for completing OAuth consent for a tool-server endpoint.
-type ToolServerOauth2LoginLinks struct {
-	// REQUIRED; UTC expiry of the signed start capability.
-	ExpiresUTC *time.Time
-
-	// Gateway URL to open to begin consent; includes an expiring signed capability.
-	LoginLink *string
-
-	// Gateway callback URI to register with the identity provider.
-	RedirectURI *string
 }
 
 // ToolServerOauth2Parameter - An additional parameter sent to an OAuth 2.0 endpoint.

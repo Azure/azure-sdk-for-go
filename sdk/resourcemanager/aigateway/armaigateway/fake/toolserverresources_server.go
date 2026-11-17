@@ -37,9 +37,9 @@ type ToolServerResourcesServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, options *armaigateway.ToolServerResourcesClientGetOptions) (resp azfake.Responder[armaigateway.ToolServerResourcesClientGetResponse], errResp azfake.ErrorResponder)
 
-	// GetOauth2LoginLinks is the fake for method ToolServerResourcesClient.GetOauth2LoginLinks
+	// GetOAuth2LoginLinks is the fake for method ToolServerResourcesClient.GetOAuth2LoginLinks
 	// HTTP status codes to indicate success: http.StatusOK
-	GetOauth2LoginLinks func(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, body armaigateway.ToolServerLoginLinksRequest, options *armaigateway.ToolServerResourcesClientGetOauth2LoginLinksOptions) (resp azfake.Responder[armaigateway.ToolServerResourcesClientGetOauth2LoginLinksResponse], errResp azfake.ErrorResponder)
+	GetOAuth2LoginLinks func(ctx context.Context, resourceGroupName string, aiGatewayName string, workspaceName string, toolServerName string, body armaigateway.ToolServerLoginLinksRequest, options *armaigateway.ToolServerResourcesClientGetOAuth2LoginLinksOptions) (resp azfake.Responder[armaigateway.ToolServerResourcesClientGetOAuth2LoginLinksResponse], errResp azfake.ErrorResponder)
 
 	// ListSecrets is the fake for method ToolServerResourcesClient.ListSecrets
 	// HTTP status codes to indicate success: http.StatusOK
@@ -100,8 +100,8 @@ func (t *ToolServerResourcesServerTransport) dispatchToMethodFake(req *http.Requ
 				res.resp, res.err = t.dispatchDelete(req)
 			case "ToolServerResourcesClient.Get":
 				res.resp, res.err = t.dispatchGet(req)
-			case "ToolServerResourcesClient.GetOauth2LoginLinks":
-				res.resp, res.err = t.dispatchGetOauth2LoginLinks(req)
+			case "ToolServerResourcesClient.GetOAuth2LoginLinks":
+				res.resp, res.err = t.dispatchGetOAuth2LoginLinks(req)
 			case "ToolServerResourcesClient.ListSecrets":
 				res.resp, res.err = t.dispatchListSecrets(req)
 			case "ToolServerResourcesClient.NewListByWorkspacePager":
@@ -304,9 +304,9 @@ func (t *ToolServerResourcesServerTransport) dispatchGet(req *http.Request) (*ht
 	return resp, nil
 }
 
-func (t *ToolServerResourcesServerTransport) dispatchGetOauth2LoginLinks(req *http.Request) (*http.Response, error) {
-	if t.srv.GetOauth2LoginLinks == nil {
-		return nil, &nonRetriableError{errors.New("fake for method GetOauth2LoginLinks not implemented")}
+func (t *ToolServerResourcesServerTransport) dispatchGetOAuth2LoginLinks(req *http.Request) (*http.Response, error) {
+	if t.srv.GetOAuth2LoginLinks == nil {
+		return nil, &nonRetriableError{errors.New("fake for method GetOAuth2LoginLinks not implemented")}
 	}
 	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.ApiManagement/aigateways/(?P<aiGatewayName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/workspaces/(?P<workspaceName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/toolServers/(?P<toolServerName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/getOauth2LoginLinks`
 	regex := regexp.MustCompile(regexStr)
@@ -334,7 +334,7 @@ func (t *ToolServerResourcesServerTransport) dispatchGetOauth2LoginLinks(req *ht
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := t.srv.GetOauth2LoginLinks(req.Context(), resourceGroupNameParam, aiGatewayNameParam, workspaceNameParam, toolServerNameParam, body, nil)
+	respr, errRespr := t.srv.GetOAuth2LoginLinks(req.Context(), resourceGroupNameParam, aiGatewayNameParam, workspaceNameParam, toolServerNameParam, body, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -342,7 +342,7 @@ func (t *ToolServerResourcesServerTransport) dispatchGetOauth2LoginLinks(req *ht
 	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
 		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
 	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ToolServerOauth2LoginLinks, req)
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).ToolServerOAuth2LoginLinks, req)
 	if err != nil {
 		return nil, err
 	}

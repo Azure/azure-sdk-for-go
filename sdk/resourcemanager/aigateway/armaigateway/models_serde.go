@@ -4472,6 +4472,41 @@ func (t *ToolServerManagedIdentityAuthentication) UnmarshalJSON(data []byte) err
 	return nil
 }
 
+// MarshalJSON implements the json.Marshaller interface for type ToolServerOAuth2LoginLinks.
+func (t ToolServerOAuth2LoginLinks) MarshalJSON() ([]byte, error) {
+	objectMap := make(map[string]any)
+	populateTime[datetime.RFC3339](objectMap, "expiresUtc", t.ExpiresUTC, true)
+	populate(objectMap, "loginLink", t.LoginLink)
+	populate(objectMap, "redirectUri", t.RedirectURI)
+	return json.Marshal(objectMap)
+}
+
+// UnmarshalJSON implements the json.Unmarshaller interface for type ToolServerOAuth2LoginLinks.
+func (t *ToolServerOAuth2LoginLinks) UnmarshalJSON(data []byte) error {
+	var rawMsg map[string]json.RawMessage
+	if err := json.Unmarshal(data, &rawMsg); err != nil {
+		return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+	}
+	for key, val := range rawMsg {
+		var err error
+		switch key {
+		case "expiresUtc":
+			err = unpopulateTime[datetime.RFC3339](val, "ExpiresUTC", &t.ExpiresUTC)
+			delete(rawMsg, key)
+		case "loginLink":
+			err = unpopulate(val, "LoginLink", &t.LoginLink)
+			delete(rawMsg, key)
+		case "redirectUri":
+			err = unpopulate(val, "RedirectURI", &t.RedirectURI)
+			delete(rawMsg, key)
+		}
+		if err != nil {
+			return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
+		}
+	}
+	return nil
+}
+
 // MarshalJSON implements the json.Marshaller interface for type ToolServerOauth2Authentication.
 func (t ToolServerOauth2Authentication) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
@@ -4538,41 +4573,6 @@ func (t *ToolServerOauth2Authentication) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "tokenParameters":
 			err = unpopulate(val, "TokenParameters", &t.TokenParameters)
-			delete(rawMsg, key)
-		}
-		if err != nil {
-			return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
-		}
-	}
-	return nil
-}
-
-// MarshalJSON implements the json.Marshaller interface for type ToolServerOauth2LoginLinks.
-func (t ToolServerOauth2LoginLinks) MarshalJSON() ([]byte, error) {
-	objectMap := make(map[string]any)
-	populateTime[datetime.RFC3339](objectMap, "expiresUtc", t.ExpiresUTC, true)
-	populate(objectMap, "loginLink", t.LoginLink)
-	populate(objectMap, "redirectUri", t.RedirectURI)
-	return json.Marshal(objectMap)
-}
-
-// UnmarshalJSON implements the json.Unmarshaller interface for type ToolServerOauth2LoginLinks.
-func (t *ToolServerOauth2LoginLinks) UnmarshalJSON(data []byte) error {
-	var rawMsg map[string]json.RawMessage
-	if err := json.Unmarshal(data, &rawMsg); err != nil {
-		return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
-	}
-	for key, val := range rawMsg {
-		var err error
-		switch key {
-		case "expiresUtc":
-			err = unpopulateTime[datetime.RFC3339](val, "ExpiresUTC", &t.ExpiresUTC)
-			delete(rawMsg, key)
-		case "loginLink":
-			err = unpopulate(val, "LoginLink", &t.LoginLink)
-			delete(rawMsg, key)
-		case "redirectUri":
-			err = unpopulate(val, "RedirectURI", &t.RedirectURI)
 			delete(rawMsg, key)
 		}
 		if err != nil {

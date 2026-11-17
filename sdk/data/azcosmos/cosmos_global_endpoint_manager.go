@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"runtime/debug"
 	"sync"
 	"sync/atomic"
 	"time"
@@ -226,12 +227,13 @@ func (gem *globalEndpointManager) ResolveServiceEndpoint(locationIndex int, reso
 // the data plane keeps using the cached topology until the throttle expires
 // and a fresh refresh can run.
 //
-// Update respects ctx cancellation for waiters. The leader's HTTP call runs
-// under context.WithoutCancel(ctx) so an unrelated caller-side cancellation
-// does not poison the shared flight result for other coalesced waiters
-// (GetAccountProperties applies its own 60s timeout). Waiters select between
-// flight completion and their own ctx.Done() so a caller-side timeout cannot
-// be exceeded by an unrelated stuck refresh.
+// Update respects ctx cancellation for the leader and for waiters. The
+// leader's HTTP call runs in a goroutine under context.WithoutCancel(ctx) so
+// an unrelated caller-side cancellation does not poison the shared flight
+// result for other coalesced waiters (GetAccountProperties applies its own
+// 60s timeout). The leader and waiters select between flight completion and
+// their own ctx.Done() so a caller-side timeout cannot be exceeded by a
+// stuck refresh.
 // maxForceRefreshRetries bounds the total number of times a
 // forceRefresh caller may re-enter the leadership-or-wait loop after
 // observing that the last flight predates a later invalidation. The
@@ -316,7 +318,31 @@ func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool)
 			break leader
 		}
 
-		err := gem.runLeaderFlight(ctx, flight, genAtStart)
+		// Run the flight in its own goroutine and wait for it the same way
+		// a waiter does, so the leader's caller is not held past its own
+		// ctx deadline by the shared HTTP call. The flight itself runs
+		// under context.WithoutCancel and records its result for every
+		// other caller even if the leader stops waiting.
+		go func() {
+			// runLeaderFlight records a panic as the flight error and then
+			// re-panics. An unrecovered panic in this goroutine would crash
+			// the process, so recover and log it here; the caller still sees
+			// the recorded flight error.
+			defer func() {
+				if r := recover(); r != nil {
+					log.Writef(azlog.EventResponse,
+						"panic in azcosmos GEM refresh: %v\n%s", r, debug.Stack())
+				}
+			}()
+			_ = gem.runLeaderFlight(ctx, flight, genAtStart)
+		}()
+		var err error
+		select {
+		case <-flight.done:
+			err = flight.err
+		case <-ctx.Done():
+			return ctx.Err()
+		}
 
 		// If we are a forceRefresh caller and an invalidate() fired during
 		// our flight, our flight's genAtStart predates the latest

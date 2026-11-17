@@ -37,11 +37,12 @@ func (p *globalEndpointManagerPolicy) Do(req *policy.Request) (*http.Response, e
 	// failure storm.
 	var err error
 	if !p.gem.populated() {
-		// Use the same context, but without the cancellation signal.
-		// We DO want to preserve things like context values, but the GEM
-		// update needs to complete fully, even if the user cancels the
-		// triggering request.
-		err = p.gem.Update(context.WithoutCancel(req.Raw().Context()), false)
+		// Pass the request's context so the request returns by its own
+		// deadline. gem.Update runs the shared refresh under
+		// context.WithoutCancel, so context values are preserved and the
+		// refresh still completes for other callers even if this request
+		// is cancelled.
+		err = p.gem.Update(req.Raw().Context(), false)
 	}
 	if p.gem.ShouldRefresh() && p.asyncRefreshPending.CompareAndSwap(false, true) {
 		// Capture the context before launching the goroutine so we do not

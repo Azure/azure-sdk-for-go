@@ -1,5 +1,34 @@
 # Release History
 
+## 12.0.0 (2026-11-16)
+### Breaking Changes
+
+- Enum `EnableSubvolumes` has been removed
+- Function `*ClientFactory.NewSubvolumesClient` has been removed
+- Function `NewSubvolumesClient` has been removed
+- Function `*SubvolumesClient.BeginCreate` has been removed
+- Function `*SubvolumesClient.BeginDelete` has been removed
+- Function `*SubvolumesClient.Get` has been removed
+- Function `*SubvolumesClient.BeginGetMetadata` has been removed
+- Function `*SubvolumesClient.NewListByVolumePager` has been removed
+- Function `*SubvolumesClient.BeginUpdate` has been removed
+- Struct `SubvolumeInfo` has been removed
+- Struct `SubvolumeModel` has been removed
+- Struct `SubvolumeModelProperties` has been removed
+- Struct `SubvolumePatchParams` has been removed
+- Struct `SubvolumePatchRequest` has been removed
+- Struct `SubvolumeProperties` has been removed
+- Struct `SubvolumesList` has been removed
+- Field `EnableSubvolumes` of struct `VolumeProperties` has been removed
+
+### Features Added
+
+- New enum type `SmbOplocks` with values `SmbOplocksDisabled`, `SmbOplocksEnabled`
+- New field `SmbOplocks` in struct `SmbSettings`
+- New field `SmbOplocks` in struct `VolumePatchProperties`
+- New field `LdapServerType`, `SmbOplocks` in struct `VolumeProperties`
+
+
 ## 11.1.0-beta.1 (2026-10-30)
 ### Features Added
 

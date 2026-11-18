@@ -6,7 +6,7 @@ package armmongocluster
 
 // FirewallRulesClientCreateOrUpdateResponse contains the response from method FirewallRulesClient.BeginCreateOrUpdate.
 type FirewallRulesClientCreateOrUpdateResponse struct {
-	// Represents a mongo cluster firewall rule.
+	// Represents a DocumentDB cluster firewall rule.
 	FirewallRule
 }
 
@@ -17,7 +17,7 @@ type FirewallRulesClientDeleteResponse struct {
 
 // FirewallRulesClientGetResponse contains the response from method FirewallRulesClient.Get.
 type FirewallRulesClientGetResponse struct {
-	// Represents a mongo cluster firewall rule.
+	// Represents a DocumentDB cluster firewall rule.
 	FirewallRule
 }
 
@@ -35,7 +35,7 @@ type MongoClustersClientCheckNameAvailabilityResponse struct {
 
 // MongoClustersClientCreateOrUpdateResponse contains the response from method MongoClustersClient.BeginCreateOrUpdate.
 type MongoClustersClientCreateOrUpdateResponse struct {
-	// Represents a mongo cluster resource.
+	// Represents a DocumentDB cluster resource.
 	MongoCluster
 }
 
@@ -46,7 +46,7 @@ type MongoClustersClientDeleteResponse struct {
 
 // MongoClustersClientGetResponse contains the response from method MongoClustersClient.Get.
 type MongoClustersClientGetResponse struct {
-	// Represents a mongo cluster resource.
+	// Represents a DocumentDB cluster resource.
 	MongoCluster
 }
 
@@ -58,7 +58,7 @@ type MongoClustersClientListByResourceGroupResponse struct {
 
 // MongoClustersClientListConnectionStringsResponse contains the response from method MongoClustersClient.ListConnectionStrings.
 type MongoClustersClientListConnectionStringsResponse struct {
-	// The connection strings for the given mongo cluster.
+	// The connection strings for the given DocumentDB cluster.
 	ListConnectionStringsResult
 }
 
@@ -75,7 +75,7 @@ type MongoClustersClientPromoteResponse struct {
 
 // MongoClustersClientUpdateResponse contains the response from method MongoClustersClient.BeginUpdate.
 type MongoClustersClientUpdateResponse struct {
-	// Represents a mongo cluster resource.
+	// Represents a DocumentDB cluster resource.
 	MongoCluster
 }
 
@@ -122,7 +122,7 @@ type ReplicasClientListByParentResponse struct {
 
 // UsersClientCreateOrUpdateResponse contains the response from method UsersClient.BeginCreateOrUpdate.
 type UsersClientCreateOrUpdateResponse struct {
-	// Represents a Mongo cluster user.
+	// Represents a DocumentDB cluster user.
 	User
 }
 
@@ -133,7 +133,7 @@ type UsersClientDeleteResponse struct {
 
 // UsersClientGetResponse contains the response from method UsersClient.Get.
 type UsersClientGetResponse struct {
-	// Represents a Mongo cluster user.
+	// Represents a DocumentDB cluster user.
 	User
 }
 

@@ -13,8 +13,8 @@ import (
 	"time"
 )
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_Create.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResource() {
+// Generated from example definition: 2026-09-01/MongoClusters_Create.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterWithDefaultPremiumSSDv2StorageAndStringValuedTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -26,6 +26,10 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	}
 	poller, err := clientFactory.NewMongoClustersClient().BeginCreateOrUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.MongoCluster{
 		Location: to.Ptr("westus2"),
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+			"costCenter":  to.Ptr("1234"),
+		},
 		Properties: &armmongocluster.Properties{
 			Administrator: &armmongocluster.AdministratorProperties{
 				UserName: to.Ptr("mongoAdmin"),
@@ -63,6 +67,10 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armmongocluster.MongoClustersClientCreateOrUpdateResponse{
 	// 	MongoCluster: armmongocluster.MongoCluster{
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 			"costCenter": to.Ptr("1234"),
+	// 		},
 	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
 	// 		Name: to.Ptr("myMongoCluster"),
 	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
@@ -87,7 +95,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](128),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -118,8 +126,8 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_CreateGeoReplica.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterResourceFromASourceResource() {
+// Generated from example definition: 2026-09-01/MongoClusters_CreateGeoReplica.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaDocumentDBClusterResourceFromASourceResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -204,8 +212,8 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_CreateGeoReplica_CMK.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterResourceWithCustomerManagedKeyEncryptionFromASourceResource() {
+// Generated from example definition: 2026-09-01/MongoClusters_CreateGeoReplica_CMK.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaDocumentDBClusterResourceWithCustomerManagedKeyEncryptionFromASourceResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -281,7 +289,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// 			ServerVersion: to.Ptr("7.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](128),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -332,8 +340,8 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAReplicaMongoClusterR
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_CreatePITR.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceFromAPointInTimeRestore() {
+// Generated from example definition: 2026-09-01/MongoClusters_CreatePITR.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterResourceFromAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -385,7 +393,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](128),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -416,8 +424,8 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_CreatePITR_CMK.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceWithCustomerManagedKeyEncryptionFromAPointInTimeRestore() {
+// Generated from example definition: 2026-09-01/MongoClusters_CreatePITR_CMK.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterResourceWithCustomerManagedKeyEncryptionFromAPointInTimeRestore() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -492,7 +500,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// 			ServerVersion: to.Ptr("7.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](32),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -540,8 +548,8 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_CreatePITR_EntraAuth.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIdAuthenticationModeEnabled() {
+// Generated from example definition: 2026-09-01/MongoClusters_CreatePITR_EntraAuth.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsADocumentDBClusterResourceFromAPointInTimeRestoreWithMicrosoftEntraIDAuthenticationModeEnabled() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -591,7 +599,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](128),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -622,8 +630,8 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsAMongoClusterResource
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_Create_CMK.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResourceWithCustomerManagedKeyEncryption() {
+// Generated from example definition: 2026-09-01/MongoClusters_Create_CMK.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewDocumentDBClusterResourceWithCustomerManagedKeyEncryption() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -704,7 +712,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// 			ServerVersion: to.Ptr("7.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](32),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -759,8 +767,8 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_Create_SSDv2.json
-func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResourceWithPremiumSsDv2Storage() {
+// Generated from example definition: 2026-09-01/MongoClusters_Create_SSDv2.json
+func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewDocumentDBClusterResourceWithPremiumSSDv2Storage() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -865,7 +873,7 @@ func ExampleMongoClustersClient_BeginCreateOrUpdate_createsANewMongoClusterResou
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_Delete.json
+// Generated from example definition: 2026-09-01/MongoClusters_Delete.json
 func ExampleMongoClustersClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -886,8 +894,8 @@ func ExampleMongoClustersClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_ForcePromoteReplica.json
-func ExampleMongoClustersClient_BeginPromote_promotesAReplicaMongoClusterResourceToAPrimaryRole() {
+// Generated from example definition: 2026-09-01/MongoClusters_ForcePromoteReplica.json
+func ExampleMongoClustersClient_BeginPromote_promotesAReplicaDocumentDBClusterResourceToAPrimaryRole() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -910,8 +918,8 @@ func ExampleMongoClustersClient_BeginPromote_promotesAReplicaMongoClusterResourc
 	}
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_PlannedPromoteReplica.json
-func ExampleMongoClustersClient_BeginPromote_promotesAReplicaMongoClusterResourceToAPrimaryRoleWaitingForTheReplicaToCatchUpBeforePromoting() {
+// Generated from example definition: 2026-09-01/MongoClusters_PlannedPromoteReplica.json
+func ExampleMongoClustersClient_BeginPromote_promotesAReplicaDocumentDBClusterResourceToAPrimaryRoleWaitingForTheReplicaToCatchUpBeforePromoting() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -934,8 +942,8 @@ func ExampleMongoClustersClient_BeginPromote_promotesAReplicaMongoClusterResourc
 	}
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_PatchCMK.json
-func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionKeyOnAMongoClusterResource() {
+// Generated from example definition: 2026-09-01/MongoClusters_PatchCMK.json
+func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionKeyOnADocumentDBClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -999,7 +1007,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionK
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -1076,8 +1084,8 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheCustomerManagedEncryptionK
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_PatchDataApi.json
-func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResource() {
+// Generated from example definition: 2026-09-01/MongoClusters_PatchDataApi.json
+func ExampleMongoClustersClient_BeginUpdate_enablesDataAPIOnADocumentDBClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1129,7 +1137,7 @@ func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResourc
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -1187,7 +1195,7 @@ func ExampleMongoClustersClient_BeginUpdate_enablesDataApiOnAMongoClusterResourc
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_PatchDisableNativeAuth.json
+// Generated from example definition: 2026-09-01/MongoClusters_PatchDisableNativeAuth.json
 func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModesToRemoveNativeAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1242,7 +1250,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -1274,8 +1282,8 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_PatchDiskSize.json
-func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterResource() {
+// Generated from example definition: 2026-09-01/MongoClusters_PatchDiskSize.json
+func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnADocumentDBClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1327,7 +1335,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterRes
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -1359,8 +1367,8 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheDiskSizeOnAMongoClusterRes
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_PatchEnableEntraIDAuth.json
-func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModesToIncludeMicrosoftEntraIdAuthentication() {
+// Generated from example definition: 2026-09-01/MongoClusters_PatchEnableEntraIDAuth.json
+func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModesToIncludeMicrosoftEntraIDAuthentication() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1416,7 +1424,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -1448,8 +1456,8 @@ func ExampleMongoClustersClient_BeginUpdate_updatesTheAllowedAuthenticationModes
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_PatchNetworkBypassMode.json
-func ExampleMongoClustersClient_BeginUpdate_enablesNetworkBypassModeOnAMongoClusterResourceToAllowAzureCosmosDbServiceToBypassNetworkRestrictions() {
+// Generated from example definition: 2026-09-01/MongoClusters_PatchNetworkBypassMode.json
+func ExampleMongoClustersClient_BeginUpdate_enablesNetworkBypassModeOnAnAzureDocumentDBClusterResourceToAllowTheAzureCosmosDBServiceToBypassNetworkRestrictions() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1499,7 +1507,7 @@ func ExampleMongoClustersClient_BeginUpdate_enablesNetworkBypassModeOnAMongoClus
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -1532,8 +1540,8 @@ func ExampleMongoClustersClient_BeginUpdate_enablesNetworkBypassModeOnAMongoClus
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_PatchPrivateNetworkAccess.json
-func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoClusterResourceWithAPrivateEndpointConnection() {
+// Generated from example definition: 2026-09-01/MongoClusters_PatchPrivateNetworkAccess.json
+func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnADocumentDBClusterResourceWithAPrivateEndpointConnection() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1583,7 +1591,7 @@ func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoC
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -1641,8 +1649,8 @@ func ExampleMongoClustersClient_BeginUpdate_disablesPublicNetworkAccessOnAMongoC
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_PatchSSDv2.json
-func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeOnAMongoClusterResource() {
+// Generated from example definition: 2026-09-01/MongoClusters_PatchSSDv2.json
+func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSSDv2SizeOnADocumentDBClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1727,7 +1735,55 @@ func ExampleMongoClustersClient_BeginUpdate_updatesThePremiumSsDv2SizeOnAMongoCl
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_ResetPassword.json
+// Generated from example definition: 2026-09-01/MongoClusters_PatchTags.json
+func ExampleMongoClustersClient_BeginUpdate_updatesStringValuedResourceTagsWithoutChangingTheExistingPremiumSSDStorageType() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armmongocluster.NewClientFactory("ffffffff-ffff-ffff-ffff-ffffffffffff", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewMongoClustersClient().BeginUpdate(ctx, "TestResourceGroup", "myMongoCluster", armmongocluster.Update{
+		Tags: map[string]*string{
+			"environment": to.Ptr("production"),
+			"costCenter":  to.Ptr("1234"),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armmongocluster.MongoClustersClientUpdateResponse{
+	// 	MongoCluster: armmongocluster.MongoCluster{
+	// 		ID: to.Ptr("/subscriptions/ffffffff-ffff-ffff-ffff-ffffffffffff/resourceGroups/TestResourceGroup/providers/Microsoft.DocumentDB/mongoClusters/myMongoCluster"),
+	// 		Name: to.Ptr("myMongoCluster"),
+	// 		Type: to.Ptr("Microsoft.DocumentDB/mongoClusters"),
+	// 		Location: to.Ptr("westus2"),
+	// 		Tags: map[string]*string{
+	// 			"environment": to.Ptr("production"),
+	// 			"costCenter": to.Ptr("1234"),
+	// 		},
+	// 		Properties: &armmongocluster.Properties{
+	// 			ProvisioningState: to.Ptr(armmongocluster.ProvisioningStateSucceeded),
+	// 			Storage: &armmongocluster.StorageProperties{
+	// 				SizeGb: to.Ptr[int64](128),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-09-01/MongoClusters_ResetPassword.json
 func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1781,7 +1837,7 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -1813,8 +1869,8 @@ func ExampleMongoClustersClient_BeginUpdate_resetsTheAdministratorLoginPassword(
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_Update.json
-func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
+// Generated from example definition: 2026-09-01/MongoClusters_Update.json
+func ExampleMongoClustersClient_BeginUpdate_updatesADocumentDBClusterResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1837,7 +1893,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 			ServerVersion: to.Ptr("5.0"),
 			Storage: &armmongocluster.StorageProperties{
 				SizeGb: to.Ptr[int64](256),
-				Type:   to.Ptr(armmongocluster.StorageTypePremiumSSD),
+				Type:   to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 			},
 			Compute: &armmongocluster.ComputeProperties{
 				Tier: to.Ptr("M50"),
@@ -1891,7 +1947,7 @@ func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](256),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M50"),
@@ -1923,8 +1979,8 @@ func ExampleMongoClustersClient_BeginUpdate_updatesAMongoClusterResource() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_NameAvailability.json
-func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoClusterNameIsAvailableForUse() {
+// Generated from example definition: 2026-09-01/MongoClusters_NameAvailability.json
+func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheDocumentDBClusterNameIsAvailableForUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1951,8 +2007,8 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndConfirmsTheMongoC
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_NameAvailability_AlreadyExists.json
-func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMongoClusterNameIsAlreadyInUse() {
+// Generated from example definition: 2026-09-01/MongoClusters_NameAvailability_AlreadyExists.json
+func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheDocumentDBClusterNameIsAlreadyInUse() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -1981,7 +2037,7 @@ func ExampleMongoClustersClient_CheckNameAvailability_checksAndReturnsThatTheMon
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_Get.json
+// Generated from example definition: 2026-09-01/MongoClusters_Get.json
 func ExampleMongoClustersClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2028,7 +2084,7 @@ func ExampleMongoClustersClient_Get() {
 	// 			ServerVersion: to.Ptr("5.0"),
 	// 			Storage: &armmongocluster.StorageProperties{
 	// 				SizeGb: to.Ptr[int64](128),
-	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+	// 				Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 	// 			},
 	// 			Compute: &armmongocluster.ComputeProperties{
 	// 				Tier: to.Ptr("M30"),
@@ -2061,7 +2117,7 @@ func ExampleMongoClustersClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_ListConnectionStrings.json
+// Generated from example definition: 2026-09-01/MongoClusters_ListConnectionStrings.json
 func ExampleMongoClustersClient_ListConnectionStrings() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2091,7 +2147,7 @@ func ExampleMongoClustersClient_ListConnectionStrings() {
 	// }
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_ListByResourceGroup.json
+// Generated from example definition: 2026-09-01/MongoClusters_ListByResourceGroup.json
 func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2146,7 +2202,7 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 		// 					ServerVersion: to.Ptr("5.0"),
 		// 					Storage: &armmongocluster.StorageProperties{
 		// 						SizeGb: to.Ptr[int64](128),
-		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 		// 					},
 		// 					Compute: &armmongocluster.ComputeProperties{
 		// 						Tier: to.Ptr("M30"),
@@ -2203,7 +2259,7 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 		// 					ServerVersion: to.Ptr("5.0"),
 		// 					Storage: &armmongocluster.StorageProperties{
 		// 						SizeGb: to.Ptr[int64](256),
-		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 		// 					},
 		// 					Compute: &armmongocluster.ComputeProperties{
 		// 						Tier: to.Ptr("M40"),
@@ -2238,7 +2294,7 @@ func ExampleMongoClustersClient_NewListByResourceGroupPager() {
 	}
 }
 
-// Generated from example definition: 2026-06-15-preview/MongoClusters_List.json
+// Generated from example definition: 2026-09-01/MongoClusters_List.json
 func ExampleMongoClustersClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -2293,7 +2349,7 @@ func ExampleMongoClustersClient_NewListPager() {
 		// 					ServerVersion: to.Ptr("5.0"),
 		// 					Storage: &armmongocluster.StorageProperties{
 		// 						SizeGb: to.Ptr[int64](128),
-		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 		// 					},
 		// 					Compute: &armmongocluster.ComputeProperties{
 		// 						Tier: to.Ptr("M30"),
@@ -2350,7 +2406,7 @@ func ExampleMongoClustersClient_NewListPager() {
 		// 					ServerVersion: to.Ptr("5.0"),
 		// 					Storage: &armmongocluster.StorageProperties{
 		// 						SizeGb: to.Ptr[int64](256),
-		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSD),
+		// 						Type: to.Ptr(armmongocluster.StorageTypePremiumSSDv2),
 		// 					},
 		// 					Compute: &armmongocluster.ComputeProperties{
 		// 						Tier: to.Ptr("M40"),

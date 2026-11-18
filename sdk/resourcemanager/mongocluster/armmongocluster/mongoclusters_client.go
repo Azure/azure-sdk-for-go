@@ -19,7 +19,7 @@ import (
 // MongoClustersClient contains the methods for the MongoClusters group.
 // Don't use this type directly, use NewMongoClustersClient() instead.
 //
-// Generated from API version 2026-06-15-preview
+// Generated from API version 2026-09-01
 type MongoClustersClient struct {
 	internal       *arm.Client
 	subscriptionID string
@@ -44,11 +44,11 @@ func NewMongoClustersClient(subscriptionID string, credential azcore.TokenCreden
 	return client, nil
 }
 
-// BeginCreateOrUpdate - Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify
-// some of the properties, use PATCH.
+// BeginCreateOrUpdate - Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only
+// modify some of the properties, use PATCH.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
+//   - mongoClusterName - The name of the DocumentDB cluster.
 //   - resource - Resource create parameters.
 //   - options - MongoClustersClientBeginCreateOrUpdateOptions contains the optional parameters for the MongoClustersClient.BeginCreateOrUpdate
 //     method.
@@ -69,8 +69,8 @@ func (client *MongoClustersClient) BeginCreateOrUpdate(ctx context.Context, reso
 	}
 }
 
-// createOrUpdate - Create or update a mongo cluster. Update overwrites all properties for the resource. To only modify some
-// of the properties, use PATCH.
+// createOrUpdate - Create or update a DocumentDB cluster. Update overwrites all properties for the resource. To only modify
+// some of the properties, use PATCH.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoClustersClient) createOrUpdate(ctx context.Context, resourceGroupName string, mongoClusterName string, resource MongoCluster, options *MongoClustersClientBeginCreateOrUpdateOptions) (*http.Response, error) {
 	var err error
@@ -113,7 +113,7 @@ func (client *MongoClustersClient) createOrUpdateCreateRequest(ctx context.Conte
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -123,10 +123,10 @@ func (client *MongoClustersClient) createOrUpdateCreateRequest(ctx context.Conte
 	return req, nil
 }
 
-// BeginDelete - Deletes a mongo cluster.
+// BeginDelete - Deletes a DocumentDB cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
+//   - mongoClusterName - The name of the DocumentDB cluster.
 //   - options - MongoClustersClientBeginDeleteOptions contains the optional parameters for the MongoClustersClient.BeginDelete
 //     method.
 func (client *MongoClustersClient) BeginDelete(ctx context.Context, resourceGroupName string, mongoClusterName string, options *MongoClustersClientBeginDeleteOptions) (*runtime.Poller[MongoClustersClientDeleteResponse], error) {
@@ -146,7 +146,7 @@ func (client *MongoClustersClient) BeginDelete(ctx context.Context, resourceGrou
 	}
 }
 
-// deleteOperation - Deletes a mongo cluster.
+// deleteOperation - Deletes a DocumentDB cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoClustersClient) deleteOperation(ctx context.Context, resourceGroupName string, mongoClusterName string, options *MongoClustersClientBeginDeleteOptions) (*http.Response, error) {
 	var err error
@@ -189,15 +189,15 @@ func (client *MongoClustersClient) deleteCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
 }
 
-// BeginPromote - Promotes a replica mongo cluster to a primary role.
+// BeginPromote - Promotes a replica DocumentDB cluster to a primary role.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
+//   - mongoClusterName - The name of the DocumentDB cluster.
 //   - body - The content of the action request
 //   - options - MongoClustersClientBeginPromoteOptions contains the optional parameters for the MongoClustersClient.BeginPromote
 //     method.
@@ -218,7 +218,7 @@ func (client *MongoClustersClient) BeginPromote(ctx context.Context, resourceGro
 	}
 }
 
-// promote - Promotes a replica mongo cluster to a primary role.
+// promote - Promotes a replica DocumentDB cluster to a primary role.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoClustersClient) promote(ctx context.Context, resourceGroupName string, mongoClusterName string, body PromoteReplicaRequest, options *MongoClustersClientBeginPromoteOptions) (*http.Response, error) {
 	var err error
@@ -261,7 +261,7 @@ func (client *MongoClustersClient) promoteCreateRequest(ctx context.Context, res
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
 	if err := runtime.MarshalAsJSON(req, body); err != nil {
@@ -270,11 +270,11 @@ func (client *MongoClustersClient) promoteCreateRequest(ctx context.Context, res
 	return req, nil
 }
 
-// BeginUpdate - Updates an existing mongo cluster. The request body can contain one to many of the properties present in
-// the normal mongo cluster definition.
+// BeginUpdate - Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present
+// in the normal DocumentDB cluster definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
+//   - mongoClusterName - The name of the DocumentDB cluster.
 //   - properties - The resource properties to be updated.
 //   - options - MongoClustersClientBeginUpdateOptions contains the optional parameters for the MongoClustersClient.BeginUpdate
 //     method.
@@ -295,8 +295,8 @@ func (client *MongoClustersClient) BeginUpdate(ctx context.Context, resourceGrou
 	}
 }
 
-// update - Updates an existing mongo cluster. The request body can contain one to many of the properties present in the normal
-// mongo cluster definition.
+// update - Updates an existing DocumentDB cluster. The request body can contain one to many of the properties present in
+// the normal DocumentDB cluster definition.
 // If the operation fails it returns an *azcore.ResponseError type.
 func (client *MongoClustersClient) update(ctx context.Context, resourceGroupName string, mongoClusterName string, properties Update, options *MongoClustersClientBeginUpdateOptions) (*http.Response, error) {
 	var err error
@@ -339,7 +339,7 @@ func (client *MongoClustersClient) updateCreateRequest(ctx context.Context, reso
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -349,7 +349,7 @@ func (client *MongoClustersClient) updateCreateRequest(ctx context.Context, reso
 	return req, nil
 }
 
-// CheckNameAvailability - Check if mongo cluster name is available for use.
+// CheckNameAvailability - Check if DocumentDB cluster name is available for use.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - location - The name of the Azure region.
 //   - body - The CheckAvailability request
@@ -389,7 +389,7 @@ func (client *MongoClustersClient) checkNameAvailabilityCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	req.Raw().Header["Content-Type"] = []string{"application/json"}
@@ -411,10 +411,10 @@ func (client *MongoClustersClient) checkNameAvailabilityHandleResponse(resp *htt
 	return result, nil
 }
 
-// Get - Gets information about a mongo cluster.
+// Get - Gets information about a DocumentDB cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
+//   - mongoClusterName - The name of the DocumentDB cluster.
 //   - options - MongoClustersClientGetOptions contains the optional parameters for the MongoClustersClient.Get method.
 func (client *MongoClustersClient) Get(ctx context.Context, resourceGroupName string, mongoClusterName string, options *MongoClustersClientGetOptions) (MongoClustersClientGetResponse, error) {
 	var err error
@@ -454,7 +454,7 @@ func (client *MongoClustersClient) getCreateRequest(ctx context.Context, resourc
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -472,11 +472,11 @@ func (client *MongoClustersClient) getHandleResponse(resp *http.Response, succes
 	return result, nil
 }
 
-// ListConnectionStrings - List mongo cluster connection strings. This includes the default connection string using SCRAM-SHA-256,
+// ListConnectionStrings - List DocumentDB cluster connection strings. This includes the default connection string using SCRAM-SHA-256,
 // as well as other connection strings supported by the cluster.
 // If the operation fails it returns an *azcore.ResponseError type.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - mongoClusterName - The name of the mongo cluster.
+//   - mongoClusterName - The name of the DocumentDB cluster.
 //   - options - MongoClustersClientListConnectionStringsOptions contains the optional parameters for the MongoClustersClient.ListConnectionStrings
 //     method.
 func (client *MongoClustersClient) ListConnectionStrings(ctx context.Context, resourceGroupName string, mongoClusterName string, options *MongoClustersClientListConnectionStringsOptions) (MongoClustersClientListConnectionStringsResponse, error) {
@@ -517,7 +517,7 @@ func (client *MongoClustersClient) listConnectionStringsCreateRequest(ctx contex
 		return nil, err
 	}
 	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20260615Preview)
+	reqQP.Set("api-version", version20260901)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
@@ -535,7 +535,7 @@ func (client *MongoClustersClient) listConnectionStringsHandleResponse(resp *htt
 	return result, nil
 }
 
-// NewListByResourceGroupPager - List all the mongo clusters in a given resource group.
+// NewListByResourceGroupPager - List all the DocumentDB clusters in a given resource group.
 //   - resourceGroupName - The name of the resource group. The name is case insensitive.
 //   - options - MongoClustersClientListByResourceGroupOptions contains the optional parameters for the MongoClustersClient.NewListByResourceGroupPager
 //     method.
@@ -588,7 +588,7 @@ func (client *MongoClustersClient) listByResourceGroupCreateRequest(ctx context.
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260615Preview)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
@@ -607,7 +607,7 @@ func (client *MongoClustersClient) listByResourceGroupHandleResponse(resp *http.
 	return result, nil
 }
 
-// NewListPager - List all the mongo clusters in a given subscription.
+// NewListPager - List all the DocumentDB clusters in a given subscription.
 //   - options - MongoClustersClientListOptions contains the optional parameters for the MongoClustersClient.NewListPager method.
 func (client *MongoClustersClient) NewListPager(options *MongoClustersClientListOptions) *runtime.Pager[MongoClustersClientListResponse] {
 	return runtime.NewPager(runtime.PagingHandler[MongoClustersClientListResponse]{
@@ -654,7 +654,7 @@ func (client *MongoClustersClient) listCreateRequest(ctx context.Context, nextLi
 	}
 	if firstPage {
 		reqQP := req.Raw().URL.Query()
-		reqQP.Set("api-version", version20260615Preview)
+		reqQP.Set("api-version", version20260901)
 		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 		req.Raw().Header["Accept"] = []string{"application/json"}
 	}

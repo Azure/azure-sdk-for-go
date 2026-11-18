@@ -5,8 +5,9 @@
 package azbatch
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
 )
 
 // AccountListSupportedImagesResult - The result of listing the supported Virtual Machine Images.
@@ -244,8 +245,8 @@ type ContainerRegistryReference struct {
 	Username *string
 }
 
-// CreateJobOptions - Parameters for creating an Azure Batch Job.
-type CreateJobOptions struct {
+// CreateJobContent - Parameters for creating an Azure Batch Job.
+type CreateJobContent struct {
 	// REQUIRED; A string that uniquely identifies the Job within the Account. The ID can contain any combination of alphanumeric
 	// characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and
 	// case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
@@ -326,8 +327,8 @@ type CreateJobOptions struct {
 	UsesTaskDependencies *bool
 }
 
-// CreateJobScheduleOptions - Parameters for creating an Azure Batch Job Schedule
-type CreateJobScheduleOptions struct {
+// CreateJobScheduleContent - Parameters for creating an Azure Batch Job Schedule
+type CreateJobScheduleContent struct {
 	// REQUIRED; A string that uniquely identifies the schedule within the Account. The ID can contain any combination of alphanumeric
 	// characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and
 	// case-insensitive (that is, you may not have two IDs within an Account that differ only by case).
@@ -349,8 +350,8 @@ type CreateJobScheduleOptions struct {
 	Metadata []MetadataItem
 }
 
-// CreateNodeUserOptions - Parameters for creating a user account for RDP or SSH access on an Azure Batch Compute Node.
-type CreateNodeUserOptions struct {
+// CreateNodeUserContent - Parameters for creating a user account for RDP or SSH access on an Azure Batch Compute Node.
+type CreateNodeUserContent struct {
 	// REQUIRED; The user name of the Account.
 	Name *string
 
@@ -372,8 +373,8 @@ type CreateNodeUserOptions struct {
 	SSHPublicKey *string
 }
 
-// CreatePoolOptions - Parameters for creating an Azure Batch Pool.
-type CreatePoolOptions struct {
+// CreatePoolContent - Parameters for creating an Azure Batch Pool.
+type CreatePoolContent struct {
 	// REQUIRED; A string that uniquely identifies the Pool within the Account. The ID can contain any combination of alphanumeric
 	// characters including hyphens and underscores, and cannot contain more than 64 characters. The ID is case-preserving and
 	// case-insensitive (that is, you may not have two Pool IDs within an Account that differ only by case).
@@ -475,8 +476,8 @@ type CreateTaskCollectionResult struct {
 	Values []TaskCreateResult
 }
 
-// CreateTaskOptions - Parameters for creating an Azure Batch Task.
-type CreateTaskOptions struct {
+// CreateTaskContent - Parameters for creating an Azure Batch Task.
+type CreateTaskContent struct {
 	// REQUIRED; The command line of the Task. For multi-instance Tasks, the command line is executed as the primary Task, after
 	// the primary Task and all subtasks have finished executing the coordination command line. The command line does not run
 	// under a shell, and therefore cannot take advantage of shell features such as environment variable expansion. If you want
@@ -569,8 +570,8 @@ type DataDisk struct {
 	ManagedDisk *ManagedDisk
 }
 
-// DeallocateNodeOptions - Options for deallocating a Compute Node.
-type DeallocateNodeOptions struct {
+// DeallocateNodeContent - Options for deallocating a Compute Node.
+type DeallocateNodeContent struct {
 	// When to deallocate the Compute Node and what to do with currently running Tasks. The default value is requeue.
 	NodeDeallocateOption *NodeDeallocateOption
 }
@@ -585,14 +586,14 @@ type DiffDiskSettings struct {
 	Placement *DiffDiskPlacement
 }
 
-// DisableJobOptions - Parameters for disabling an Azure Batch Job.
-type DisableJobOptions struct {
+// DisableJobContent - Parameters for disabling an Azure Batch Job.
+type DisableJobContent struct {
 	// REQUIRED; What to do with active Tasks associated with the Job.
 	DisableTasks *DisableJobOption
 }
 
-// DisableNodeSchedulingOptions - Parameters for disabling scheduling on an Azure Batch Compute Node.
-type DisableNodeSchedulingOptions struct {
+// DisableNodeSchedulingContent - Parameters for disabling scheduling on an Azure Batch Compute Node.
+type DisableNodeSchedulingContent struct {
 	// What to do with currently running Tasks when disabling Task scheduling on the Compute Node. The default value is requeue.
 	NodeDisableSchedulingOption *NodeDisableSchedulingOption
 }
@@ -630,8 +631,8 @@ type DiskEncryptionSetParameters struct {
 	ID *string
 }
 
-// EnablePoolAutoScaleOptions - Parameters for enabling automatic scaling on an Azure Batch Pool.
-type EnablePoolAutoScaleOptions struct {
+// EnablePoolAutoScaleContent - Parameters for enabling automatic scaling on an Azure Batch Pool.
+type EnablePoolAutoScaleContent struct {
 	// The time interval at which to automatically adjust the Pool size according to the autoscale formula. The default value
 	// is 15 minutes. The minimum and maximum value are 5 minutes and 168 hours respectively. If you specify a value less than
 	// 5 minutes or greater than 168 hours, the Batch service rejects the request with an invalid property value error; if you
@@ -688,8 +689,8 @@ type ErrorMessage struct {
 	Value *string
 }
 
-// EvaluatePoolAutoScaleOptions - Parameters for evaluating an automatic scaling formula on an Azure Batch Pool.
-type EvaluatePoolAutoScaleOptions struct {
+// EvaluatePoolAutoScaleContent - Parameters for evaluating an automatic scaling formula on an Azure Batch Pool.
+type EvaluatePoolAutoScaleContent struct {
 	// REQUIRED; The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated,
 	// but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information
 	// about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://learn.microsoft.com/azure/batch/batch-automatic-scaling).
@@ -2679,8 +2680,8 @@ type PublicIPAddressConfiguration struct {
 	IPTags []IPTag
 }
 
-// RebootNodeOptions - Parameters for rebooting an Azure Batch Compute Node.
-type RebootNodeOptions struct {
+// RebootNodeContent - Parameters for rebooting an Azure Batch Compute Node.
+type RebootNodeContent struct {
 	// When to reboot the Compute Node and what to do with currently running Tasks. The default value is requeue.
 	NodeRebootKind *NodeRebootKind
 }
@@ -2694,14 +2695,14 @@ type RecentJob struct {
 	URL *string
 }
 
-// ReimageNodeOptions - Parameters for reimaging an Azure Batch Compute Node.
-type ReimageNodeOptions struct {
+// ReimageNodeContent - Parameters for reimaging an Azure Batch Compute Node.
+type ReimageNodeContent struct {
 	// When to reimage the Compute Node and what to do with currently running Tasks. The default value is requeue.
 	NodeReimageOption *NodeReimageOption
 }
 
-// RemoveNodeOptions - Parameters for removing nodes from an Azure Batch Pool.
-type RemoveNodeOptions struct {
+// RemoveNodeContent - Parameters for removing nodes from an Azure Batch Pool.
+type RemoveNodeContent struct {
 	// REQUIRED; A list containing the IDs of the Compute Nodes to be removed from the specified Pool. A maximum of 100 nodes
 	// may be removed per request.
 	NodeIDs []string
@@ -2716,8 +2717,8 @@ type RemoveNodeOptions struct {
 	ResizeTimeout *string
 }
 
-// ReplacePoolOptions - Parameters for replacing properties on an Azure Batch Pool.
-type ReplacePoolOptions struct {
+// ReplacePoolContent - Parameters for replacing properties on an Azure Batch Pool.
+type ReplacePoolContent struct {
 	// REQUIRED; The list of Application Packages to be installed on each Compute Node in the Pool. The list replaces any existing
 	// Application Package references on the Pool. Changes to Application Package references affect all new Compute Nodes joining
 	// the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. There is a
@@ -2754,8 +2755,8 @@ type ResizeError struct {
 	Values []NameValuePair
 }
 
-// ResizePoolOptions - Parameters for changing the size of an Azure Batch Pool.
-type ResizePoolOptions struct {
+// ResizePoolContent - Parameters for changing the size of an Azure Batch Pool.
+type ResizePoolContent struct {
 	// Determines what to do with a Compute Node and its running task(s) if the Pool size is decreasing. The default value is
 	// requeue.
 	NodeDeallocationOption *NodeDeallocationOption
@@ -3370,7 +3371,7 @@ type TaskGroup struct {
 	// REQUIRED; The collection of Tasks to add. The maximum count of Tasks is 100. The total serialized size of this collection
 	// must be less than 1MB. If it is greater than 1MB (for example if each Task has 100's of resource files or environment variables),
 	// the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer Tasks.
-	Values []CreateTaskOptions
+	Values []CreateTaskContent
 }
 
 // TaskIDRange - The start and end of the range are inclusive. For example, if a range has start
@@ -3493,8 +3494,8 @@ type TaskStatistics struct {
 	WriteIoGiB *float32
 }
 
-// TerminateJobOptions - Parameters for terminating an Azure Batch Job.
-type TerminateJobOptions struct {
+// TerminateJobContent - Parameters for terminating an Azure Batch Job.
+type TerminateJobContent struct {
 	// The text you want to appear as the Job's TerminationReason. The default is 'UserTerminate'.
 	TerminationReason *string
 }
@@ -3508,8 +3509,8 @@ type UEFISettings struct {
 	VTPMEnabled *bool
 }
 
-// UpdateJobOptions - Parameters for updating an Azure Batch Job.
-type UpdateJobOptions struct {
+// UpdateJobContent - Parameters for updating an Azure Batch Job.
+type UpdateJobContent struct {
 	// The action the Batch service should take when all Tasks in the Job are in the completed state. If omitted, the completion
 	// behavior is left unchanged. You may not change the value from terminatejob to noaction - that is, once you have engaged
 	// automatic Job termination, you cannot turn it off again. If you try to do this, the request fails with an 'invalid property
@@ -3550,8 +3551,8 @@ type UpdateJobOptions struct {
 	Priority *int32
 }
 
-// UpdateJobScheduleOptions - Parameters for updating an Azure Batch Job Schedule.
-type UpdateJobScheduleOptions struct {
+// UpdateJobScheduleContent - Parameters for updating an Azure Batch Job Schedule.
+type UpdateJobScheduleContent struct {
 	// The details of the Jobs to be created on this schedule. Updates affect only Jobs that are started after the update has
 	// taken place. Any currently active Job continues with the older specification.
 	JobSpecification *JobSpecification
@@ -3565,8 +3566,8 @@ type UpdateJobScheduleOptions struct {
 	Schedule *JobScheduleConfiguration
 }
 
-// UpdateNodeUserOptions - Parameters for updating a user account for RDP or SSH access on an Azure Batch Compute Node.
-type UpdateNodeUserOptions struct {
+// UpdateNodeUserContent - Parameters for updating a user account for RDP or SSH access on an Azure Batch Compute Node.
+type UpdateNodeUserContent struct {
 	// The time at which the Account should expire. If omitted, the default is 1 day from the current time. For Linux Compute
 	// Nodes, the expiryTime has a precision up to a day.
 	ExpiryTime *time.Time
@@ -3582,8 +3583,8 @@ type UpdateNodeUserOptions struct {
 	SSHPublicKey *string
 }
 
-// UpdatePoolOptions - Parameters for updating an Azure Batch Pool.
-type UpdatePoolOptions struct {
+// UpdatePoolContent - Parameters for updating an Azure Batch Pool.
+type UpdatePoolContent struct {
 	// A list of Packages to be installed on each Compute Node in the Pool. Changes to Package references affect all new Nodes
 	// joining the Pool, but do not affect Compute Nodes that are already in the Pool until they are rebooted or reimaged. If
 	// this element is present, it replaces any existing Package references. If you specify an empty collection, then all Package
@@ -3663,8 +3664,8 @@ type UpgradePolicy struct {
 	RollingUpgradePolicy *RollingUpgradePolicy
 }
 
-// UploadNodeLogsOptions - The Azure Batch service log files upload parameters for a Compute Node.
-type UploadNodeLogsOptions struct {
+// UploadNodeLogsContent - The Azure Batch service log files upload parameters for a Compute Node.
+type UploadNodeLogsContent struct {
 	// REQUIRED; The URL of the container within Azure Blob Storage to which to upload the Batch Service log file(s). If a user
 	// assigned managed identity is not being used, the URL must include a Shared Access Signature (SAS) granting write permissions
 	// to the container. The SAS duration must allow enough time for the upload to finish. The start time for SAS is optional

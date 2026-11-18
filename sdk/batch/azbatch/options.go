@@ -4,7 +4,11 @@
 
 package azbatch
 
-import "time"
+import (
+	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+)
 
 // CreateJobOptions contains the optional parameters for the Client.CreateJob method.
 type CreateJobOptions struct {
@@ -15,7 +19,7 @@ type CreateJobOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -34,7 +38,7 @@ type CreateJobScheduleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -53,7 +57,7 @@ type CreateNodeUserOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -72,7 +76,7 @@ type CreatePoolOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -91,7 +95,7 @@ type CreateTaskCollectionOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -110,7 +114,7 @@ type CreateTaskOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -129,7 +133,7 @@ type DeallocateNodeOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// The options to use for deallocating the Compute Node.
 	Options *DeallocateNodeOptions
@@ -155,7 +159,7 @@ type DeleteJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -165,7 +169,7 @@ type DeleteJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -175,7 +179,7 @@ type DeleteJobOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -198,7 +202,7 @@ type DeleteJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -208,7 +212,7 @@ type DeleteJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -218,7 +222,7 @@ type DeleteJobScheduleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -237,7 +241,7 @@ type DeleteNodeFileOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether to delete children of a directory. If the filePath parameter represents
 	// a directory instead of a file, you can set recursive to true to delete the
@@ -262,7 +266,7 @@ type DeleteNodeUserOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -281,7 +285,7 @@ type DeletePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -291,7 +295,7 @@ type DeletePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -301,7 +305,7 @@ type DeletePoolOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -320,7 +324,7 @@ type DeleteTaskFileOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether to delete children of a directory. If the filePath parameter represents
 	// a directory instead of a file, you can set recursive to true to delete the
@@ -345,7 +349,7 @@ type DeleteTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -355,7 +359,7 @@ type DeleteTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -365,7 +369,7 @@ type DeleteTaskOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -384,7 +388,7 @@ type DisableJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -394,7 +398,7 @@ type DisableJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -404,7 +408,7 @@ type DisableJobOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -423,7 +427,7 @@ type DisableJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -433,7 +437,7 @@ type DisableJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -443,7 +447,7 @@ type DisableJobScheduleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -462,7 +466,7 @@ type DisableNodeSchedulingOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// The options to use for disabling scheduling on the Compute Node.
 	Options *DisableNodeSchedulingOptions
@@ -484,7 +488,7 @@ type DisablePoolAutoScaleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -503,7 +507,7 @@ type EnableJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -513,7 +517,7 @@ type EnableJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -523,7 +527,7 @@ type EnableJobOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -542,7 +546,7 @@ type EnableJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -552,7 +556,7 @@ type EnableJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -562,7 +566,7 @@ type EnableJobScheduleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -581,7 +585,7 @@ type EnableNodeSchedulingOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -600,7 +604,7 @@ type EnablePoolAutoScaleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -610,7 +614,7 @@ type EnablePoolAutoScaleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -620,7 +624,7 @@ type EnablePoolAutoScaleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -639,7 +643,7 @@ type EvaluatePoolAutoScaleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -658,7 +662,7 @@ type GetApplicationOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -680,7 +684,7 @@ type GetJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -690,7 +694,7 @@ type GetJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -700,7 +704,7 @@ type GetJobOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -725,7 +729,7 @@ type GetJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -735,7 +739,7 @@ type GetJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -745,7 +749,7 @@ type GetJobScheduleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -767,7 +771,7 @@ type GetJobTaskCountsOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -786,7 +790,7 @@ type GetNodeExtensionOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -817,12 +821,12 @@ type GetNodeFileOptions struct {
 
 	// The byte range to be retrieved. The default is to retrieve the entire file. The
 	// format is bytes=startRange-endRange.
-	OcpRange *string
+	OCPRange *string
 
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -851,7 +855,7 @@ type GetNodeFilePropertiesOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -870,7 +874,7 @@ type GetNodeOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -892,7 +896,7 @@ type GetNodeRemoteLoginSettingsOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -914,7 +918,7 @@ type GetPoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -924,7 +928,7 @@ type GetPoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -934,7 +938,7 @@ type GetPoolOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -965,12 +969,12 @@ type GetTaskFileOptions struct {
 
 	// The byte range to be retrieved. The default is to retrieve the entire file. The
 	// format is bytes=startRange-endRange.
-	OcpRange *string
+	OCPRange *string
 
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -999,7 +1003,7 @@ type GetTaskFilePropertiesOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1021,7 +1025,7 @@ type GetTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1031,7 +1035,7 @@ type GetTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1041,7 +1045,7 @@ type GetTaskOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1063,7 +1067,7 @@ type JobScheduleExistsOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1073,7 +1077,7 @@ type JobScheduleExistsOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1083,7 +1087,7 @@ type JobScheduleExistsOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1106,7 +1110,7 @@ type ListApplicationsOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1134,7 +1138,7 @@ type ListJobPreparationAndReleaseTaskStatusOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1167,7 +1171,7 @@ type ListJobSchedulesOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1200,7 +1204,7 @@ type ListJobsFromScheduleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1233,7 +1237,7 @@ type ListJobsOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1259,7 +1263,7 @@ type ListNodeExtensionsOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1289,7 +1293,7 @@ type ListNodeFilesOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether to list children of a directory.
 	Recursive *bool
@@ -1319,7 +1323,7 @@ type ListNodesOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1349,7 +1353,7 @@ type ListPoolNodeCountsOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1379,7 +1383,7 @@ type ListPoolsOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1401,7 +1405,7 @@ type ListSubTasksOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1431,7 +1435,7 @@ type ListSupportedImagesOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1458,7 +1462,7 @@ type ListTaskFilesOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether to list children of the Task directory. This parameter can be used in
 	// combination with the filter parameter to list specific type of files.
@@ -1492,7 +1496,7 @@ type ListTasksOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1514,7 +1518,7 @@ type PoolExistsOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1524,7 +1528,7 @@ type PoolExistsOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1534,7 +1538,7 @@ type PoolExistsOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1553,7 +1557,7 @@ type ReactivateTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1563,7 +1567,7 @@ type ReactivateTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1573,7 +1577,7 @@ type ReactivateTaskOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1592,7 +1596,7 @@ type RebootNodeOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// The options to use for rebooting the Compute Node.
 	Options *RebootNodeOptions
@@ -1614,7 +1618,7 @@ type ReimageNodeOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// The options to use for reimaging the Compute Node.
 	Options *ReimageNodeOptions
@@ -1636,7 +1640,7 @@ type RemoveNodesOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1646,7 +1650,7 @@ type RemoveNodesOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1656,7 +1660,7 @@ type RemoveNodesOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1675,7 +1679,7 @@ type ReplaceJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1685,7 +1689,7 @@ type ReplaceJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1695,7 +1699,7 @@ type ReplaceJobOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1714,7 +1718,7 @@ type ReplaceJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1724,7 +1728,7 @@ type ReplaceJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1734,7 +1738,7 @@ type ReplaceJobScheduleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1753,7 +1757,7 @@ type ReplaceNodeUserOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1772,7 +1776,7 @@ type ReplacePoolPropertiesOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1791,7 +1795,7 @@ type ReplaceTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1801,7 +1805,7 @@ type ReplaceTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1811,7 +1815,7 @@ type ReplaceTaskOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1830,7 +1834,7 @@ type ResizePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1840,7 +1844,7 @@ type ResizePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1850,7 +1854,7 @@ type ResizePoolOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1869,7 +1873,7 @@ type StartNodeOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1888,7 +1892,7 @@ type StopPoolResizeOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1898,7 +1902,7 @@ type StopPoolResizeOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1908,7 +1912,7 @@ type StopPoolResizeOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -1931,7 +1935,7 @@ type TerminateJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1941,7 +1945,7 @@ type TerminateJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1951,7 +1955,7 @@ type TerminateJobOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// The options to use for terminating the Job.
 	Options *TerminateJobOptions
@@ -1977,7 +1981,7 @@ type TerminateJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1987,7 +1991,7 @@ type TerminateJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -1997,7 +2001,7 @@ type TerminateJobScheduleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -2016,7 +2020,7 @@ type TerminateTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2026,7 +2030,7 @@ type TerminateTaskOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2036,7 +2040,7 @@ type TerminateTaskOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -2055,7 +2059,7 @@ type UpdateJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2065,7 +2069,7 @@ type UpdateJobOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2075,7 +2079,7 @@ type UpdateJobOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -2094,7 +2098,7 @@ type UpdateJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2104,7 +2108,7 @@ type UpdateJobScheduleOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2114,7 +2118,7 @@ type UpdateJobScheduleOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -2133,7 +2137,7 @@ type UpdatePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service exactly matches the value specified by the client.
-	IfMatch *string
+	IfMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2143,7 +2147,7 @@ type UpdatePoolOptions struct {
 	// An ETag value associated with the version of the resource known to the client.
 	// The operation will be performed only if the resource's current ETag on the
 	// service does not match the value specified by the client.
-	IfNoneMatch *string
+	IfNoneMatch *azcore.ETag
 
 	// A timestamp indicating the last modified time of the resource known to the
 	// client. The operation will be performed only if the resource on the service has
@@ -2153,7 +2157,7 @@ type UpdatePoolOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool
@@ -2172,7 +2176,7 @@ type UploadNodeLogsOptions struct {
 	// The time the request was issued. Client libraries typically set this to the
 	// current system clock time; set it explicitly if you are calling the REST API
 	// directly.
-	Ocpdate *time.Time
+	OCPDate *time.Time
 
 	// Whether the server should return the client-request-id in the response.
 	ReturnClientRequestID *bool

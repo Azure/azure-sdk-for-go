@@ -92,6 +92,10 @@ if err != nil {
 
 ## Contributing
 
+To regenerate the SDK, run `go generate ./...` from this module's directory. This also applies
+the [generation transforms](testdata/transform.go) that keep request-body model names distinct
+from method options and preserve the SDK's header types.
+
 This project welcomes contributions and suggestions.
 Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution.
 For details, visit [Contributor License Agreements](https://opensource.microsoft.com/cla/).

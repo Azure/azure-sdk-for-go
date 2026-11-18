@@ -7,12 +7,13 @@ package azbatch
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"reflect"
 	"strconv"
 	"time"
+
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime/datetime"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 )
 
 // MarshalJSON implements the json.Marshaller interface for type AccountListSupportedImagesResult.
@@ -591,8 +592,8 @@ func (c *ContainerRegistryReference) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateJobOptions.
-func (c CreateJobOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type CreateJobContent.
+func (c CreateJobContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "onAllTasksComplete", c.AllTasksCompleteMode)
 	populate(objectMap, "allowTaskPreemption", c.AllowTaskPreemption)
@@ -613,8 +614,8 @@ func (c CreateJobOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreateJobOptions.
-func (c *CreateJobOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type CreateJobContent.
+func (c *CreateJobContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
@@ -678,8 +679,8 @@ func (c *CreateJobOptions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateJobScheduleOptions.
-func (c CreateJobScheduleOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type CreateJobScheduleContent.
+func (c CreateJobScheduleContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "displayName", c.DisplayName)
 	populate(objectMap, "id", c.ID)
@@ -689,8 +690,8 @@ func (c CreateJobScheduleOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreateJobScheduleOptions.
-func (c *CreateJobScheduleOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type CreateJobScheduleContent.
+func (c *CreateJobScheduleContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
@@ -721,8 +722,8 @@ func (c *CreateJobScheduleOptions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateNodeUserOptions.
-func (c CreateNodeUserOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type CreateNodeUserContent.
+func (c CreateNodeUserContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateTime[datetime.RFC3339](objectMap, "expiryTime", c.ExpiryTime, true)
 	populate(objectMap, "isAdmin", c.IsAdmin)
@@ -732,8 +733,8 @@ func (c CreateNodeUserOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreateNodeUserOptions.
-func (c *CreateNodeUserOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type CreateNodeUserContent.
+func (c *CreateNodeUserContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
@@ -764,8 +765,8 @@ func (c *CreateNodeUserOptions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreatePoolOptions.
-func (c CreatePoolOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type CreatePoolContent.
+func (c CreatePoolContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "applicationPackageReferences", c.ApplicationPackageReferences)
 	populate(objectMap, "autoScaleEvaluationInterval", c.AutoScaleEvaluationInterval)
@@ -791,8 +792,8 @@ func (c CreatePoolOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreatePoolOptions.
-func (c *CreatePoolOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type CreatePoolContent.
+func (c *CreatePoolContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
@@ -898,8 +899,8 @@ func (c *CreateTaskCollectionResult) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type CreateTaskOptions.
-func (c CreateTaskOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type CreateTaskContent.
+func (c CreateTaskContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "affinityInfo", c.AffinityInfo)
 	populate(objectMap, "applicationPackageReferences", c.ApplicationPackageReferences)
@@ -919,8 +920,8 @@ func (c CreateTaskOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type CreateTaskOptions.
-func (c *CreateTaskOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type CreateTaskContent.
+func (c *CreateTaskContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", c, err.Error())
@@ -1020,15 +1021,15 @@ func (d *DataDisk) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DeallocateNodeOptions.
-func (d DeallocateNodeOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type DeallocateNodeContent.
+func (d DeallocateNodeContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "nodeDeallocateOption", d.NodeDeallocateOption)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DeallocateNodeOptions.
-func (d *DeallocateNodeOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DeallocateNodeContent.
+func (d *DeallocateNodeContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
@@ -1074,15 +1075,15 @@ func (d *DiffDiskSettings) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DisableJobOptions.
-func (d DisableJobOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type DisableJobContent.
+func (d DisableJobContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "disableTasks", d.DisableTasks)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DisableJobOptions.
-func (d *DisableJobOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DisableJobContent.
+func (d *DisableJobContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
@@ -1101,15 +1102,15 @@ func (d *DisableJobOptions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type DisableNodeSchedulingOptions.
-func (d DisableNodeSchedulingOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type DisableNodeSchedulingContent.
+func (d DisableNodeSchedulingContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "nodeDisableSchedulingOption", d.NodeDisableSchedulingOption)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type DisableNodeSchedulingOptions.
-func (d *DisableNodeSchedulingOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type DisableNodeSchedulingContent.
+func (d *DisableNodeSchedulingContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", d, err.Error())
@@ -1221,16 +1222,16 @@ func (d *DiskEncryptionSetParameters) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EnablePoolAutoScaleOptions.
-func (e EnablePoolAutoScaleOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type EnablePoolAutoScaleContent.
+func (e EnablePoolAutoScaleContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "autoScaleEvaluationInterval", e.AutoScaleEvaluationInterval)
 	populate(objectMap, "autoScaleFormula", e.AutoScaleFormula)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type EnablePoolAutoScaleOptions.
-func (e *EnablePoolAutoScaleOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type EnablePoolAutoScaleContent.
+func (e *EnablePoolAutoScaleContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
@@ -1380,15 +1381,15 @@ func (e *ErrorMessage) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type EvaluatePoolAutoScaleOptions.
-func (e EvaluatePoolAutoScaleOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type EvaluatePoolAutoScaleContent.
+func (e EvaluatePoolAutoScaleContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "autoScaleFormula", e.AutoScaleFormula)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type EvaluatePoolAutoScaleOptions.
-func (e *EvaluatePoolAutoScaleOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type EvaluatePoolAutoScaleContent.
+func (e *EvaluatePoolAutoScaleContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", e, err.Error())
@@ -4888,15 +4889,15 @@ func (p *PublicIPAddressConfiguration) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RebootNodeOptions.
-func (r RebootNodeOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type RebootNodeContent.
+func (r RebootNodeContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "nodeRebootOption", r.NodeRebootKind)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type RebootNodeOptions.
-func (r *RebootNodeOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type RebootNodeContent.
+func (r *RebootNodeContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
@@ -4946,15 +4947,15 @@ func (r *RecentJob) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReimageNodeOptions.
-func (r ReimageNodeOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ReimageNodeContent.
+func (r ReimageNodeContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "nodeReimageOption", r.NodeReimageOption)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReimageNodeOptions.
-func (r *ReimageNodeOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ReimageNodeContent.
+func (r *ReimageNodeContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
@@ -4973,8 +4974,8 @@ func (r *ReimageNodeOptions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type RemoveNodeOptions.
-func (r RemoveNodeOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type RemoveNodeContent.
+func (r RemoveNodeContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "nodeDeallocationOption", r.NodeDeallocationOption)
 	populate(objectMap, "nodeList", r.NodeIDs)
@@ -4982,8 +4983,8 @@ func (r RemoveNodeOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type RemoveNodeOptions.
-func (r *RemoveNodeOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type RemoveNodeContent.
+func (r *RemoveNodeContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
@@ -5008,8 +5009,8 @@ func (r *RemoveNodeOptions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ReplacePoolOptions.
-func (r ReplacePoolOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ReplacePoolContent.
+func (r ReplacePoolContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "applicationPackageReferences", r.ApplicationPackageReferences)
 	populate(objectMap, "metadata", r.Metadata)
@@ -5017,8 +5018,8 @@ func (r ReplacePoolOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ReplacePoolOptions.
-func (r *ReplacePoolOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ReplacePoolContent.
+func (r *ReplacePoolContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
@@ -5105,8 +5106,8 @@ func (r *ResizeError) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type ResizePoolOptions.
-func (r ResizePoolOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type ResizePoolContent.
+func (r ResizePoolContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "nodeDeallocationOption", r.NodeDeallocationOption)
 	populate(objectMap, "resizeTimeout", r.ResizeTimeout)
@@ -5115,8 +5116,8 @@ func (r ResizePoolOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type ResizePoolOptions.
-func (r *ResizePoolOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type ResizePoolContent.
+func (r *ResizePoolContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", r, err.Error())
@@ -6358,15 +6359,15 @@ func (t *TaskStatistics) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type TerminateJobOptions.
-func (t TerminateJobOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type TerminateJobContent.
+func (t TerminateJobContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "terminateReason", t.TerminationReason)
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type TerminateJobOptions.
-func (t *TerminateJobOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type TerminateJobContent.
+func (t *TerminateJobContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", t, err.Error())
@@ -6416,8 +6417,8 @@ func (u *UEFISettings) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateJobOptions.
-func (u UpdateJobOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type UpdateJobContent.
+func (u UpdateJobContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "onAllTasksComplete", u.AllTasksCompleteMode)
 	populate(objectMap, "allowTaskPreemption", u.AllowTaskPreemption)
@@ -6430,8 +6431,8 @@ func (u UpdateJobOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateJobOptions.
-func (u *UpdateJobOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateJobContent.
+func (u *UpdateJobContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
@@ -6471,8 +6472,8 @@ func (u *UpdateJobOptions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateJobScheduleOptions.
-func (u UpdateJobScheduleOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type UpdateJobScheduleContent.
+func (u UpdateJobScheduleContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "jobSpecification", u.JobSpecification)
 	populate(objectMap, "metadata", u.Metadata)
@@ -6480,8 +6481,8 @@ func (u UpdateJobScheduleOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateJobScheduleOptions.
-func (u *UpdateJobScheduleOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateJobScheduleContent.
+func (u *UpdateJobScheduleContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
@@ -6506,8 +6507,8 @@ func (u *UpdateJobScheduleOptions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdateNodeUserOptions.
-func (u UpdateNodeUserOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type UpdateNodeUserContent.
+func (u UpdateNodeUserContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populateTime[datetime.RFC3339](objectMap, "expiryTime", u.ExpiryTime, true)
 	populate(objectMap, "password", u.Password)
@@ -6515,8 +6516,8 @@ func (u UpdateNodeUserOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateNodeUserOptions.
-func (u *UpdateNodeUserOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpdateNodeUserContent.
+func (u *UpdateNodeUserContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
@@ -6541,8 +6542,8 @@ func (u *UpdateNodeUserOptions) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UpdatePoolOptions.
-func (u UpdatePoolOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type UpdatePoolContent.
+func (u UpdatePoolContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "applicationPackageReferences", u.ApplicationPackageReferences)
 	populate(objectMap, "displayName", u.DisplayName)
@@ -6561,8 +6562,8 @@ func (u UpdatePoolOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type UpdatePoolOptions.
-func (u *UpdatePoolOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type UpdatePoolContent.
+func (u *UpdatePoolContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())
@@ -6655,8 +6656,8 @@ func (u *UpgradePolicy) UnmarshalJSON(data []byte) error {
 	return nil
 }
 
-// MarshalJSON implements the json.Marshaller interface for type UploadNodeLogsOptions.
-func (u UploadNodeLogsOptions) MarshalJSON() ([]byte, error) {
+// MarshalJSON implements the json.Marshaller interface for type UploadNodeLogsContent.
+func (u UploadNodeLogsContent) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "containerUrl", u.ContainerURL)
 	populateTime[datetime.RFC3339](objectMap, "endTime", u.EndTime, true)
@@ -6665,8 +6666,8 @@ func (u UploadNodeLogsOptions) MarshalJSON() ([]byte, error) {
 	return json.Marshal(objectMap)
 }
 
-// UnmarshalJSON implements the json.Unmarshaller interface for type UploadNodeLogsOptions.
-func (u *UploadNodeLogsOptions) UnmarshalJSON(data []byte) error {
+// UnmarshalJSON implements the json.Unmarshaller interface for type UploadNodeLogsContent.
+func (u *UploadNodeLogsContent) UnmarshalJSON(data []byte) error {
 	var rawMsg map[string]json.RawMessage
 	if err := json.Unmarshal(data, &rawMsg); err != nil {
 		return fmt.Errorf("unmarshalling type %T: %s", u, err.Error())

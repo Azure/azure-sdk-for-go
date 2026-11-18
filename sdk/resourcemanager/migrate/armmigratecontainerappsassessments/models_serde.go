@@ -1117,7 +1117,7 @@ func (d *DownloadURL) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type Linkages.
 func (l Linkages) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populate(objectMap, "armId", l.ArmID)
+	populate(objectMap, "armId", l.ARMID)
 	populate(objectMap, "kind", l.Kind)
 	populate(objectMap, "linkageType", l.LinkageType)
 	populate(objectMap, "workloadName", l.WorkloadName)
@@ -1134,7 +1134,7 @@ func (l *Linkages) UnmarshalJSON(data []byte) error {
 		var err error
 		switch key {
 		case "armId":
-			err = unpopulate(val, "ArmID", &l.ArmID)
+			err = unpopulate(val, "ARMID", &l.ARMID)
 			delete(rawMsg, key)
 		case "kind":
 			err = unpopulate(val, "Kind", &l.Kind)

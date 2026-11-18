@@ -38,7 +38,7 @@ func ExampleAssessedWebApplicationOperationsClient_Get() {
 	// 					WorkloadName: to.Ptr("iis-webapp"),
 	// 					LinkageType: to.Ptr(armmigratecontainerappsassessments.LinkageTypeSource),
 	// 					Kind: to.Ptr(armmigratecontainerappsassessments.LinkageKindWebApplication),
-	// 					ArmID: to.Ptr("this-will-be-a-valid-arm-id"),
+	// 					ARMID: to.Ptr("this-will-be-a-valid-arm-id"),
 	// 				},
 	// 			},
 	// 			Recommendations: []*armmigratecontainerappsassessments.RecommendationsMigrationIssuesMigrationSuitabilitySKUs{
@@ -214,7 +214,7 @@ func ExampleAssessedWebApplicationOperationsClient_NewListByParentPager() {
 		// 							WorkloadName: to.Ptr("iis-webapp"),
 		// 							LinkageType: to.Ptr(armmigratecontainerappsassessments.LinkageTypeSource),
 		// 							Kind: to.Ptr(armmigratecontainerappsassessments.LinkageKindWebApplication),
-		// 							ArmID: to.Ptr("this-will-be-a-valid-arm-id"),
+		// 							ARMID: to.Ptr("this-will-be-a-valid-arm-id"),
 		// 						},
 		// 					},
 		// 					Recommendations: []*armmigratecontainerappsassessments.RecommendationsMigrationIssuesMigrationSuitabilitySKUs{

@@ -451,7 +451,7 @@ type DownloadURL struct {
 // Linkages details
 type Linkages struct {
 	// READ-ONLY; The arm id.
-	ArmID *string
+	ARMID *string
 
 	// READ-ONLY; The linkage kind.
 	Kind *LinkageKind

@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitCreate.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitCreate.json
 func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCircuit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -83,7 +83,7 @@ func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCir
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitCreateOnExpressRouteLag.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitCreateOnExpressRouteLag.json
 func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCircuitOnExpressRouteLag() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -153,7 +153,7 @@ func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCir
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitCreateOnExpressRouteLagWithAuthorizationKey.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitCreateOnExpressRouteLagWithAuthorizationKey.json
 func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCircuitOnExpressRouteLagWithAuthorizationKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -225,7 +225,7 @@ func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCir
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitCreateOnExpressRoutePort.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitCreateOnExpressRoutePort.json
 func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCircuitOnExpressRoutePort() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -296,7 +296,7 @@ func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createExpressRouteCir
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteMultiCloudCircuitCreateWithActivationKey.json
+// Generated from example definition: 2026-05-01/ExpressRouteMultiCloudCircuitCreateWithActivationKey.json
 func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createMultiCloudExpressRouteCircuitWithActivationKey() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -370,7 +370,7 @@ func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createMultiCloudExpre
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteMultiCloudCircuitCreateWithPartnerAccountId.json
+// Generated from example definition: 2026-05-01/ExpressRouteMultiCloudCircuitCreateWithPartnerAccountId.json
 func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createMultiCloudExpressRouteCircuitWithPartnerAccountId() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -444,7 +444,7 @@ func ExampleExpressRouteCircuitsClient_BeginCreateOrUpdate_createMultiCloudExpre
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitDelete.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitDelete.json
 func ExampleExpressRouteCircuitsClient_BeginDelete_deleteExpressRouteCircuit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -470,7 +470,7 @@ func ExampleExpressRouteCircuitsClient_BeginDelete_deleteExpressRouteCircuit() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteMultiCloudCircuitDelete.json
+// Generated from example definition: 2026-05-01/ExpressRouteMultiCloudCircuitDelete.json
 func ExampleExpressRouteCircuitsClient_BeginDelete_deleteMultiCloudExpressRouteCircuit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -496,7 +496,7 @@ func ExampleExpressRouteCircuitsClient_BeginDelete_deleteMultiCloudExpressRouteC
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitGetCircuitLinkFailoverAllTestsDetails.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitGetCircuitLinkFailoverAllTestsDetails.json
 func ExampleExpressRouteCircuitsClient_BeginGetCircuitLinkFailoverAllTestsDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -546,7 +546,7 @@ func ExampleExpressRouteCircuitsClient_BeginGetCircuitLinkFailoverAllTestsDetail
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitGetCircuitLinkFailoverSingleTestDetails.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitGetCircuitLinkFailoverSingleTestDetails.json
 func ExampleExpressRouteCircuitsClient_BeginGetCircuitLinkFailoverSingleTestDetails() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -615,7 +615,7 @@ func ExampleExpressRouteCircuitsClient_BeginGetCircuitLinkFailoverSingleTestDeta
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitARPTableList.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitARPTableList.json
 func ExampleExpressRouteCircuitsClient_BeginListArpTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -651,7 +651,7 @@ func ExampleExpressRouteCircuitsClient_BeginListArpTable() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitRouteTableList.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitRouteTableList.json
 func ExampleExpressRouteCircuitsClient_BeginListRoutesTable() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -688,7 +688,7 @@ func ExampleExpressRouteCircuitsClient_BeginListRoutesTable() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitRouteTableSummaryList.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitRouteTableSummaryList.json
 func ExampleExpressRouteCircuitsClient_BeginListRoutesTableSummary() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -725,7 +725,7 @@ func ExampleExpressRouteCircuitsClient_BeginListRoutesTableSummary() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitStartCircuitLinkFailoverTest.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitStartCircuitLinkFailoverTest.json
 func ExampleExpressRouteCircuitsClient_BeginStartCircuitLinkFailoverTest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -752,7 +752,7 @@ func ExampleExpressRouteCircuitsClient_BeginStartCircuitLinkFailoverTest() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitStopCircuitLinkFailoverTest.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitStopCircuitLinkFailoverTest.json
 func ExampleExpressRouteCircuitsClient_BeginStopCircuitLinkFailoverTest() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -784,7 +784,7 @@ func ExampleExpressRouteCircuitsClient_BeginStopCircuitLinkFailoverTest() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitGet.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitGet.json
 func ExampleExpressRouteCircuitsClient_Get_getExpressRouteCircuit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -835,7 +835,7 @@ func ExampleExpressRouteCircuitsClient_Get_getExpressRouteCircuit() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteMultiCloudCircuitGet.json
+// Generated from example definition: 2026-05-01/ExpressRouteMultiCloudCircuitGet.json
 func ExampleExpressRouteCircuitsClient_Get_getMultiCloudExpressRouteCircuit() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -886,7 +886,7 @@ func ExampleExpressRouteCircuitsClient_Get_getMultiCloudExpressRouteCircuit() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitPeeringStats.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitPeeringStats.json
 func ExampleExpressRouteCircuitsClient_GetPeeringStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -914,7 +914,7 @@ func ExampleExpressRouteCircuitsClient_GetPeeringStats() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitStats.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitStats.json
 func ExampleExpressRouteCircuitsClient_GetStats() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -942,7 +942,7 @@ func ExampleExpressRouteCircuitsClient_GetStats() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitListBySubscription.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitListBySubscription.json
 func ExampleExpressRouteCircuitsClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1051,7 +1051,7 @@ func ExampleExpressRouteCircuitsClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitListByResourceGroup.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitListByResourceGroup.json
 func ExampleExpressRouteCircuitsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1160,7 +1160,7 @@ func ExampleExpressRouteCircuitsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteCircuitUpdateTags.json
+// Generated from example definition: 2026-05-01/ExpressRouteCircuitUpdateTags.json
 func ExampleExpressRouteCircuitsClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

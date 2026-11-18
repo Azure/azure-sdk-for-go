@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/CustomIpPrefixCreateCustomizedValues.json
+// Generated from example definition: 2026-05-01/CustomIpPrefixCreateCustomizedValues.json
 func ExampleCustomIPPrefixesClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -66,7 +66,7 @@ func ExampleCustomIPPrefixesClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/CustomIpPrefixDelete.json
+// Generated from example definition: 2026-05-01/CustomIpPrefixDelete.json
 func ExampleCustomIPPrefixesClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -92,7 +92,7 @@ func ExampleCustomIPPrefixesClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/CustomIpPrefixGet.json
+// Generated from example definition: 2026-05-01/CustomIpPrefixGet.json
 func ExampleCustomIPPrefixesClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -136,7 +136,7 @@ func ExampleCustomIPPrefixesClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/CustomIpPrefixListAll.json
+// Generated from example definition: 2026-05-01/CustomIpPrefixListAll.json
 func ExampleCustomIPPrefixesClient_NewListAllPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -440,7 +440,7 @@ func ExampleCustomIPPrefixesClient_NewListAllPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/CustomIpPrefixList.json
+// Generated from example definition: 2026-05-01/CustomIpPrefixList.json
 func ExampleCustomIPPrefixesClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -587,7 +587,7 @@ func ExampleCustomIPPrefixesClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/CustomIpPrefixUpdateTags.json
+// Generated from example definition: 2026-05-01/CustomIpPrefixUpdateTags.json
 func ExampleCustomIPPrefixesClient_UpdateTags() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

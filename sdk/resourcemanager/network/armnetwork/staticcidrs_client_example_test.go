@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/StaticCidrs_Delete.json
+// Generated from example definition: 2026-05-01/StaticCidrs_Delete.json
 func ExampleStaticCidrsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -32,7 +32,7 @@ func ExampleStaticCidrsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/StaticCidrs_Create.json
+// Generated from example definition: 2026-05-01/StaticCidrs_Create.json
 func ExampleStaticCidrsClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -75,7 +75,7 @@ func ExampleStaticCidrsClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/StaticCidrs_Get.json
+// Generated from example definition: 2026-05-01/StaticCidrs_Get.json
 func ExampleStaticCidrsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -119,7 +119,7 @@ func ExampleStaticCidrsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/StaticCidrs_List.json
+// Generated from example definition: 2026-05-01/StaticCidrs_List.json
 func ExampleStaticCidrsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

@@ -11,7 +11,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/ExpressRouteLagAuthorizationCreate.json
+// Generated from example definition: 2026-05-01/ExpressRouteLagAuthorizationCreate.json
 func ExampleExpressRouteLagAuthorizationsClient_BeginCreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -50,7 +50,7 @@ func ExampleExpressRouteLagAuthorizationsClient_BeginCreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteLagAuthorizationDelete.json
+// Generated from example definition: 2026-05-01/ExpressRouteLagAuthorizationDelete.json
 func ExampleExpressRouteLagAuthorizationsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func ExampleExpressRouteLagAuthorizationsClient_BeginDelete() {
 	}
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteLagAuthorizationGet.json
+// Generated from example definition: 2026-05-01/ExpressRouteLagAuthorizationGet.json
 func ExampleExpressRouteLagAuthorizationsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -104,7 +104,7 @@ func ExampleExpressRouteLagAuthorizationsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteLagAuthorizationListKeys.json
+// Generated from example definition: 2026-05-01/ExpressRouteLagAuthorizationListKeys.json
 func ExampleExpressRouteLagAuthorizationsClient_ListKeys() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -129,7 +129,7 @@ func ExampleExpressRouteLagAuthorizationsClient_ListKeys() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/ExpressRouteLagAuthorizationList.json
+// Generated from example definition: 2026-05-01/ExpressRouteLagAuthorizationList.json
 func ExampleExpressRouteLagAuthorizationsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

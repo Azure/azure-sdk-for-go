@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-03-01/NetworkManagerRoutingRuleCollectionDelete.json
+// Generated from example definition: 2026-05-01/NetworkManagerRoutingRuleCollectionDelete.json
 func ExampleRoutingRuleCollectionsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -38,7 +38,7 @@ func ExampleRoutingRuleCollectionsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerRoutingRuleCollectionPut.json
+// Generated from example definition: 2026-05-01/NetworkManagerRoutingRuleCollectionPut.json
 func ExampleRoutingRuleCollectionsClient_CreateOrUpdate() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -93,7 +93,7 @@ func ExampleRoutingRuleCollectionsClient_CreateOrUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerRoutingRuleCollectionGet.json
+// Generated from example definition: 2026-05-01/NetworkManagerRoutingRuleCollectionGet.json
 func ExampleRoutingRuleCollectionsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -139,7 +139,7 @@ func ExampleRoutingRuleCollectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-03-01/NetworkManagerRoutingRuleCollectionList.json
+// Generated from example definition: 2026-05-01/NetworkManagerRoutingRuleCollectionList.json
 func ExampleRoutingRuleCollectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

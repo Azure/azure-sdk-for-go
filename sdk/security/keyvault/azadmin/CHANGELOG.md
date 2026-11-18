@@ -13,6 +13,8 @@
 * Removed "Ekm" from `ekm.Client` method names and their option and response types e.g. `CreateEkmConnection`
   is now `CreateConnection` and `GetEkmCertificate` is now `GetCertificate`
 * Renamed `ekm.ProxyInfo` fields `EkmProduct` and `EkmVendor` to `EKMProduct` and `EKMVendor`
+* Renamed `ekm.Connection.ServerCaCertificates` to `ServerCACertificates` and
+  `ekm.ProxyClientCertificateInfo.CaCertificates` to `CACertificates`
 
 #### Other Changes
 * Upgraded to API service version `2026-04-01`

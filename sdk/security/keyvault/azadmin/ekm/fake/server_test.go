@@ -47,7 +47,7 @@ func getServer() fake.Server {
 		CreateConnection: func(ctx context.Context, ekmConnection ekm.Connection, options *ekm.CreateConnectionOptions) (resp azfake.Responder[ekm.CreateConnectionResponse], errResp azfake.ErrorResponder) {
 			kvResp := ekm.CreateConnectionResponse{Connection: ekm.Connection{
 				Host:                    to.Ptr(ekmHost),
-				ServerCaCertificates:    ekmCACerts,
+				ServerCACertificates:    ekmCACerts,
 				ServerSubjectCommonName: to.Ptr(ekmCommonName),
 			}}
 			resp.SetResponse(http.StatusOK, kvResp, nil)
@@ -56,7 +56,7 @@ func getServer() fake.Server {
 		DeleteConnection: func(ctx context.Context, options *ekm.DeleteConnectionOptions) (resp azfake.Responder[ekm.DeleteConnectionResponse], errResp azfake.ErrorResponder) {
 			kvResp := ekm.DeleteConnectionResponse{Connection: ekm.Connection{
 				Host:                    to.Ptr(ekmHost),
-				ServerCaCertificates:    ekmCACerts,
+				ServerCACertificates:    ekmCACerts,
 				ServerSubjectCommonName: to.Ptr(ekmCommonName),
 			}}
 			resp.SetResponse(http.StatusOK, kvResp, nil)
@@ -64,7 +64,7 @@ func getServer() fake.Server {
 		},
 		GetCertificate: func(ctx context.Context, options *ekm.GetCertificateOptions) (resp azfake.Responder[ekm.GetCertificateResponse], errResp azfake.ErrorResponder) {
 			kvResp := ekm.GetCertificateResponse{ProxyClientCertificateInfo: ekm.ProxyClientCertificateInfo{
-				CaCertificates:    clientCACerts,
+				CACertificates:    clientCACerts,
 				SubjectCommonName: to.Ptr(clientCommonName),
 			}}
 			resp.SetResponse(http.StatusOK, kvResp, nil)
@@ -73,7 +73,7 @@ func getServer() fake.Server {
 		GetConnection: func(ctx context.Context, options *ekm.GetConnectionOptions) (resp azfake.Responder[ekm.GetConnectionResponse], errResp azfake.ErrorResponder) {
 			kvResp := ekm.GetConnectionResponse{Connection: ekm.Connection{
 				Host:                    to.Ptr(ekmHost),
-				ServerCaCertificates:    ekmCACerts,
+				ServerCACertificates:    ekmCACerts,
 				ServerSubjectCommonName: to.Ptr(ekmCommonName),
 			}}
 			resp.SetResponse(http.StatusOK, kvResp, nil)
@@ -82,7 +82,7 @@ func getServer() fake.Server {
 		UpdateConnection: func(ctx context.Context, ekmConnection ekm.Connection, options *ekm.UpdateConnectionOptions) (resp azfake.Responder[ekm.UpdateConnectionResponse], errResp azfake.ErrorResponder) {
 			kvResp := ekm.UpdateConnectionResponse{Connection: ekm.Connection{
 				Host:                    to.Ptr(ekmHost),
-				ServerCaCertificates:    ekmCACerts,
+				ServerCACertificates:    ekmCACerts,
 				ServerSubjectCommonName: to.Ptr("updated.contoso.com"),
 			}}
 			resp.SetResponse(http.StatusOK, kvResp, nil)
@@ -115,7 +115,7 @@ func TestServer(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, ekmHost, *createResp.Host)
 	require.Equal(t, ekmCommonName, *createResp.ServerSubjectCommonName)
-	require.Equal(t, ekmCACerts, createResp.ServerCaCertificates)
+	require.Equal(t, ekmCACerts, createResp.ServerCACertificates)
 
 	// get
 	getResp, err := client.GetConnection(context.TODO(), nil)
@@ -132,7 +132,7 @@ func TestServer(t *testing.T) {
 	certResp, err := client.GetCertificate(context.TODO(), nil)
 	require.NoError(t, err)
 	require.Equal(t, clientCommonName, *certResp.SubjectCommonName)
-	require.Equal(t, clientCACerts, certResp.CaCertificates)
+	require.Equal(t, clientCACerts, certResp.CACertificates)
 
 	// delete
 	deleteResp, err := client.DeleteConnection(context.TODO(), nil)

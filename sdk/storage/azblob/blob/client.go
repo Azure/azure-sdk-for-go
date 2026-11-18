@@ -271,7 +271,7 @@ func (b *Client) GetSASURL(permissions sas.BlobPermissions, expiry time.Time, o 
 	if urlParts.Snapshot != "" {
 		t, err = time.Parse(SnapshotTimeFormat, urlParts.Snapshot)
 		if err != nil {
-			return "", fmt.Errorf("invalid snapshot %q: %w", urlParts.Snapshot, err)
+			return "", fmt.Errorf("invalid snapshot %q: %s", urlParts.Snapshot, err)
 		}
 		if t.IsZero() {
 			return "", fmt.Errorf("invalid snapshot %q: snapshot time must not be the zero time", urlParts.Snapshot)

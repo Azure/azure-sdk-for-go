@@ -23,7 +23,7 @@ func ExamplePrivateLinksClient_BeginCreate() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateLinksClient().BeginCreate(ctx, "rg", armsecurity.PrivateLinkResource{
+	poller, err := clientFactory.NewPrivateLinksClient().BeginCreate(ctx, "rg", "spl", armsecurity.PrivateLinkResource{
 		Location:   to.Ptr("eastus"),
 		Properties: &armsecurity.PrivateLinkProperties{},
 		Tags: map[string]*string{
@@ -31,7 +31,7 @@ func ExamplePrivateLinksClient_BeginCreate() {
 			"owner":       to.Ptr("security-team"),
 			"project":     to.Ptr("private-links"),
 		},
-	}, armsecurity.PrivateLinkParameters{PrivateLinkName: "spl"}, nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -91,7 +91,7 @@ func ExamplePrivateLinksClient_BeginDelete() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewPrivateLinksClient().BeginDelete(ctx, "rg", armsecurity.PrivateLinkParameters{PrivateLinkName: "spl"}, nil)
+	poller, err := clientFactory.NewPrivateLinksClient().BeginDelete(ctx, "rg", "spl", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -112,7 +112,7 @@ func ExamplePrivateLinksClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPrivateLinksClient().Get(ctx, "rg", armsecurity.PrivateLinkParameters{PrivateLinkName: "spl"}, nil)
+	res, err := clientFactory.NewPrivateLinksClient().Get(ctx, "rg", "spl", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -187,7 +187,7 @@ func ExamplePrivateLinksClient_Head() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPrivateLinksClient().Head(ctx, "rg", armsecurity.PrivateLinkParameters{PrivateLinkName: "spl"}, nil)
+	res, err := clientFactory.NewPrivateLinksClient().Head(ctx, "rg", "spl", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -196,124 +196,6 @@ func ExamplePrivateLinksClient_Head() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PrivateLinksClientHeadResponse{
 	// }
-}
-
-// Generated from example definition: 2026-01-01/PrivateLinks/PrivateLinks_List.json
-func ExamplePrivateLinksClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewPrivateLinksClient().NewListPager("rg", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsecurity.PrivateLinksClientListResponse{
-		// 	PrivateLinksList: armsecurity.PrivateLinksList{
-		// 		Value: []*armsecurity.PrivateLinkResource{
-		// 			{
-		// 				Name: to.Ptr("spl"),
-		// 				Type: to.Ptr("Microsoft.Security/privateLinks"),
-		// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Security/privateLinks/spl"),
-		// 				Location: to.Ptr("eastus"),
-		// 				Properties: &armsecurity.PrivateLinkProperties{
-		// 					PrivateEndpointConnections: []*armsecurity.PrivateEndpointConnection{
-		// 						{
-		// 							Name: to.Ptr("prod-pe"),
-		// 							Type: to.Ptr("Microsoft.Security/privateLinks/privateEndpointConnections"),
-		// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Security/privateLinks/spl/privateEndpointConnections/prod-pe"),
-		// 							Properties: &armsecurity.PrivateEndpointConnectionProperties{
-		// 								GroupIDs: []*string{
-		// 									to.Ptr("containers"),
-		// 								},
-		// 								PrivateEndpoint: &armsecurity.PrivateEndpoint{
-		// 									ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Network/privateEndpoints/prod-pe"),
-		// 								},
-		// 								PrivateLinkServiceConnectionState: &armsecurity.PrivateLinkServiceConnectionState{
-		// 									Description: to.Ptr("Approved for production use"),
-		// 									ActionsRequired: to.Ptr("None"),
-		// 									Status: to.Ptr(armsecurity.PrivateEndpointServiceConnectionStatusApproved),
-		// 								},
-		// 								ProvisioningState: to.Ptr(armsecurity.PrivateEndpointConnectionProvisioningStateSucceeded),
-		// 							},
-		// 						},
-		// 					},
-		// 					PrivateLinkResources: []*armsecurity.PrivateLinkGroupResource{
-		// 						{
-		// 							Name: to.Ptr("containers"),
-		// 							Type: to.Ptr("Microsoft.Security/privateLinks/privateLinkResources"),
-		// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Security/privateLinks/spl/privateLinkResources/containers"),
-		// 							Properties: &armsecurity.PrivateLinkResourceProperties{
-		// 								GroupID: to.Ptr("containers"),
-		// 								RequiredMembers: []*string{
-		// 									to.Ptr("api"),
-		// 									to.Ptr("data"),
-		// 								},
-		// 								RequiredZoneNames: []*string{
-		// 									to.Ptr("privatelink.cloud.defender.microsoft.com"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armsecurity.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armsecurity.PublicNetworkAccessDisabled),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("production"),
-		// 					"owner": to.Ptr("security-team"),
-		// 					"project": to.Ptr("private-links"),
-		// 				},
-		// 			},
-		// 			{
-		// 				Name: to.Ptr("spl2"),
-		// 				Type: to.Ptr("Microsoft.Security/privateLinks"),
-		// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Security/privateLinks/spl2"),
-		// 				Location: to.Ptr("westus2"),
-		// 				Properties: &armsecurity.PrivateLinkProperties{
-		// 					PrivateEndpointConnections: []*armsecurity.PrivateEndpointConnection{
-		// 					},
-		// 					PrivateLinkResources: []*armsecurity.PrivateLinkGroupResource{
-		// 						{
-		// 							Name: to.Ptr("containers"),
-		// 							Type: to.Ptr("Microsoft.Security/privateLinks/privateLinkResources"),
-		// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Security/privateLinks/spl2/privateLinkResources/containers"),
-		// 							Properties: &armsecurity.PrivateLinkResourceProperties{
-		// 								GroupID: to.Ptr("containers"),
-		// 								RequiredMembers: []*string{
-		// 									to.Ptr("api"),
-		// 									to.Ptr("data"),
-		// 								},
-		// 								RequiredZoneNames: []*string{
-		// 									to.Ptr("privatelink.cloud.defender.microsoft.com"),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					ProvisioningState: to.Ptr(armsecurity.ProvisioningStateSucceeded),
-		// 					PublicNetworkAccess: to.Ptr(armsecurity.PublicNetworkAccessDisabled),
-		// 				},
-		// 				Tags: map[string]*string{
-		// 					"environment": to.Ptr("staging"),
-		// 					"owner": to.Ptr("dev-team"),
-		// 					"project": to.Ptr("private-links"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
 }
 
 // Generated from example definition: 2026-01-01/PrivateLinks/PrivateLinks_ListBySubscription.json
@@ -468,6 +350,124 @@ func ExamplePrivateLinksClient_NewListBySubscriptionPager() {
 	}
 }
 
+// Generated from example definition: 2026-01-01/PrivateLinks/PrivateLinks_List.json
+func ExamplePrivateLinksClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewPrivateLinksClient().NewListPager("rg", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsecurity.PrivateLinksClientListResponse{
+		// 	PrivateLinksList: armsecurity.PrivateLinksList{
+		// 		Value: []*armsecurity.PrivateLinkResource{
+		// 			{
+		// 				Name: to.Ptr("spl"),
+		// 				Type: to.Ptr("Microsoft.Security/privateLinks"),
+		// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Security/privateLinks/spl"),
+		// 				Location: to.Ptr("eastus"),
+		// 				Properties: &armsecurity.PrivateLinkProperties{
+		// 					PrivateEndpointConnections: []*armsecurity.PrivateEndpointConnection{
+		// 						{
+		// 							Name: to.Ptr("prod-pe"),
+		// 							Type: to.Ptr("Microsoft.Security/privateLinks/privateEndpointConnections"),
+		// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Security/privateLinks/spl/privateEndpointConnections/prod-pe"),
+		// 							Properties: &armsecurity.PrivateEndpointConnectionProperties{
+		// 								GroupIDs: []*string{
+		// 									to.Ptr("containers"),
+		// 								},
+		// 								PrivateEndpoint: &armsecurity.PrivateEndpoint{
+		// 									ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Network/privateEndpoints/prod-pe"),
+		// 								},
+		// 								PrivateLinkServiceConnectionState: &armsecurity.PrivateLinkServiceConnectionState{
+		// 									Description: to.Ptr("Approved for production use"),
+		// 									ActionsRequired: to.Ptr("None"),
+		// 									Status: to.Ptr(armsecurity.PrivateEndpointServiceConnectionStatusApproved),
+		// 								},
+		// 								ProvisioningState: to.Ptr(armsecurity.PrivateEndpointConnectionProvisioningStateSucceeded),
+		// 							},
+		// 						},
+		// 					},
+		// 					PrivateLinkResources: []*armsecurity.PrivateLinkGroupResource{
+		// 						{
+		// 							Name: to.Ptr("containers"),
+		// 							Type: to.Ptr("Microsoft.Security/privateLinks/privateLinkResources"),
+		// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Security/privateLinks/spl/privateLinkResources/containers"),
+		// 							Properties: &armsecurity.PrivateLinkResourceProperties{
+		// 								GroupID: to.Ptr("containers"),
+		// 								RequiredMembers: []*string{
+		// 									to.Ptr("api"),
+		// 									to.Ptr("data"),
+		// 								},
+		// 								RequiredZoneNames: []*string{
+		// 									to.Ptr("privatelink.cloud.defender.microsoft.com"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armsecurity.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armsecurity.PublicNetworkAccessDisabled),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("production"),
+		// 					"owner": to.Ptr("security-team"),
+		// 					"project": to.Ptr("private-links"),
+		// 				},
+		// 			},
+		// 			{
+		// 				Name: to.Ptr("spl2"),
+		// 				Type: to.Ptr("Microsoft.Security/privateLinks"),
+		// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Security/privateLinks/spl2"),
+		// 				Location: to.Ptr("westus2"),
+		// 				Properties: &armsecurity.PrivateLinkProperties{
+		// 					PrivateEndpointConnections: []*armsecurity.PrivateEndpointConnection{
+		// 					},
+		// 					PrivateLinkResources: []*armsecurity.PrivateLinkGroupResource{
+		// 						{
+		// 							Name: to.Ptr("containers"),
+		// 							Type: to.Ptr("Microsoft.Security/privateLinks/privateLinkResources"),
+		// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/rg/providers/Microsoft.Security/privateLinks/spl2/privateLinkResources/containers"),
+		// 							Properties: &armsecurity.PrivateLinkResourceProperties{
+		// 								GroupID: to.Ptr("containers"),
+		// 								RequiredMembers: []*string{
+		// 									to.Ptr("api"),
+		// 									to.Ptr("data"),
+		// 								},
+		// 								RequiredZoneNames: []*string{
+		// 									to.Ptr("privatelink.cloud.defender.microsoft.com"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					ProvisioningState: to.Ptr(armsecurity.ProvisioningStateSucceeded),
+		// 					PublicNetworkAccess: to.Ptr(armsecurity.PublicNetworkAccessDisabled),
+		// 				},
+		// 				Tags: map[string]*string{
+		// 					"environment": to.Ptr("staging"),
+		// 					"owner": to.Ptr("dev-team"),
+		// 					"project": to.Ptr("private-links"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
 // Generated from example definition: 2026-01-01/PrivateLinks/PrivateLinks_Update.json
 func ExamplePrivateLinksClient_Update() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -479,13 +479,13 @@ func ExamplePrivateLinksClient_Update() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewPrivateLinksClient().Update(ctx, "rg", armsecurity.PrivateLinkUpdate{
+	res, err := clientFactory.NewPrivateLinksClient().Update(ctx, "rg", "spl", armsecurity.PrivateLinkUpdate{
 		Tags: map[string]*string{
 			"environment": to.Ptr("development"),
 			"owner":       to.Ptr("security-team-updated"),
 			"project":     to.Ptr("private-links"),
 		},
-	}, armsecurity.PrivateLinkParameters{PrivateLinkName: "spl"}, nil)
+	}, nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}

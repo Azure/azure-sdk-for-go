@@ -36,7 +36,7 @@ func ExampleAllowedConnectionsClient_Get() {
 	// 		ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Security/locations/centralus/allowedConnections/Internal"),
 	// 		Location: to.Ptr("centralus"),
 	// 		Properties: &armsecurity.AllowedConnectionsResourceProperties{
-	// 			CalculatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-06T14:55:32.3518545Z"); return t}()),
+	// 			CalculatedDateTime: to.Ptr(time.Date(2018, time.August, 6, 14, 55, 32, 351854500, time.UTC)),
 	// 			ConnectableResources: []*armsecurity.ConnectableResource{
 	// 				{
 	// 					ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/virtaulMachine1"),
@@ -85,8 +85,8 @@ func ExampleAllowedConnectionsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2020-01-01/AllowedConnections/GetAllowedConnectionsSubscription_example.json
-func ExampleAllowedConnectionsClient_NewListPager() {
+// Generated from example definition: 2020-01-01/AllowedConnections/GetAllowedConnectionsSubscriptionLocation_example.json
+func ExampleAllowedConnectionsClient_NewListByHomeRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -96,7 +96,7 @@ func ExampleAllowedConnectionsClient_NewListPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAllowedConnectionsClient().NewListPager(nil)
+	pager := clientFactory.NewAllowedConnectionsClient().NewListByHomeRegionPager("centralus", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -107,7 +107,7 @@ func ExampleAllowedConnectionsClient_NewListPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsecurity.AllowedConnectionsClientListResponse{
+		// page = armsecurity.AllowedConnectionsClientListByHomeRegionResponse{
 		// 	AllowedConnectionsList: armsecurity.AllowedConnectionsList{
 		// 		Value: []*armsecurity.AllowedConnectionsResource{
 		// 			{
@@ -116,7 +116,7 @@ func ExampleAllowedConnectionsClient_NewListPager() {
 		// 				ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Security/locations/centralus/allowedConnections/Internal"),
 		// 				Location: to.Ptr("centralus"),
 		// 				Properties: &armsecurity.AllowedConnectionsResourceProperties{
-		// 					CalculatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-06T14:55:32.3518545Z"); return t}()),
+		// 					CalculatedDateTime: to.Ptr(time.Date(2018, time.August, 6, 14, 55, 32, 351854500, time.UTC)),
 		// 					ConnectableResources: []*armsecurity.ConnectableResource{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/virtaulMachine1"),
@@ -168,8 +168,8 @@ func ExampleAllowedConnectionsClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2020-01-01/AllowedConnections/GetAllowedConnectionsSubscriptionLocation_example.json
-func ExampleAllowedConnectionsClient_NewListByHomeRegionPager() {
+// Generated from example definition: 2020-01-01/AllowedConnections/GetAllowedConnectionsSubscription_example.json
+func ExampleAllowedConnectionsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -179,7 +179,7 @@ func ExampleAllowedConnectionsClient_NewListByHomeRegionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAllowedConnectionsClient().NewListByHomeRegionPager("centralus", nil)
+	pager := clientFactory.NewAllowedConnectionsClient().NewListPager(nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -190,7 +190,7 @@ func ExampleAllowedConnectionsClient_NewListByHomeRegionPager() {
 			_ = v
 		}
 		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsecurity.AllowedConnectionsClientListByHomeRegionResponse{
+		// page = armsecurity.AllowedConnectionsClientListResponse{
 		// 	AllowedConnectionsList: armsecurity.AllowedConnectionsList{
 		// 		Value: []*armsecurity.AllowedConnectionsResource{
 		// 			{
@@ -199,7 +199,7 @@ func ExampleAllowedConnectionsClient_NewListByHomeRegionPager() {
 		// 				ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Security/locations/centralus/allowedConnections/Internal"),
 		// 				Location: to.Ptr("centralus"),
 		// 				Properties: &armsecurity.AllowedConnectionsResourceProperties{
-		// 					CalculatedDateTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-08-06T14:55:32.3518545Z"); return t}()),
+		// 					CalculatedDateTime: to.Ptr(time.Date(2018, time.August, 6, 14, 55, 32, 351854500, time.UTC)),
 		// 					ConnectableResources: []*armsecurity.ConnectableResource{
 		// 						{
 		// 							ID: to.Ptr("/subscriptions/3eeab341-f466-499c-a8be-85427e154baf/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/virtaulMachine1"),

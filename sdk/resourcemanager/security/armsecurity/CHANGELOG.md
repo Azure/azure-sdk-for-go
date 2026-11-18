@@ -1,5 +1,94 @@
 # Release History
 
+## 0.16.0 (2026-11-18)
+### Breaking Changes
+
+- Function `*AlertsClient.NewListResourceGroupLevelByRegionPager` parameter(s) have been changed from `(ascLocation string, resourceGroupName string, options *AlertsClientListResourceGroupLevelByRegionOptions)` to `(resourceGroupName string, ascLocation string, options *AlertsClientListResourceGroupLevelByRegionOptions)`
+- Function `*DefenderForStorageClient.CancelMalwareScan` parameter(s) have been changed from `(ctx context.Context, resourceID string, settingName SettingName, scanID string, options *DefenderForStorageClientCancelMalwareScanOptions)` to `(ctx context.Context, resourceID string, settingName string, scanID string, options *DefenderForStorageClientCancelMalwareScanOptions)`
+- Function `*DefenderForStorageClient.Create` parameter(s) have been changed from `(ctx context.Context, resourceID string, settingName SettingName, defenderForStorageSetting DefenderForStorageSetting, options *DefenderForStorageClientCreateOptions)` to `(ctx context.Context, resourceID string, settingName string, defenderForStorageSetting DefenderForStorageSetting, options *DefenderForStorageClientCreateOptions)`
+- Function `*DefenderForStorageClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceID string, settingName SettingName, options *DefenderForStorageClientGetOptions)` to `(ctx context.Context, resourceID string, settingName string, options *DefenderForStorageClientGetOptions)`
+- Function `*DefenderForStorageClient.GetMalwareScan` parameter(s) have been changed from `(ctx context.Context, resourceID string, settingName SettingName, scanID string, options *DefenderForStorageClientGetMalwareScanOptions)` to `(ctx context.Context, resourceID string, settingName string, scanID string, options *DefenderForStorageClientGetMalwareScanOptions)`
+- Function `*DefenderForStorageClient.StartMalwareScan` parameter(s) have been changed from `(ctx context.Context, resourceID string, settingName SettingName, options *DefenderForStorageClientStartMalwareScanOptions)` to `(ctx context.Context, resourceID string, settingName string, options *DefenderForStorageClientStartMalwareScanOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginCreateOrUpdate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions)` to `(ctx context.Context, resourceGroupName string, privateLinkName string, privateEndpointConnectionName string, privateEndpointConnection PrivateEndpointConnection, options *PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions)`
+- Function `*PrivateEndpointConnectionsClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, privateLinkName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientBeginDeleteOptions)`
+- Function `*PrivateEndpointConnectionsClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientGetOptions)` to `(ctx context.Context, resourceGroupName string, privateLinkName string, privateEndpointConnectionName string, options *PrivateEndpointConnectionsClientGetOptions)`
+- Function `*PrivateEndpointConnectionsClient.NewListPager` parameter(s) have been changed from `(resourceGroupName string, privateLinkName PrivateLinkParameters, options *PrivateEndpointConnectionsClientListOptions)` to `(resourceGroupName string, privateLinkName string, options *PrivateEndpointConnectionsClientListOptions)`
+- Function `*PrivateLinkResourcesClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, groupID string, privateLinkName PrivateLinkParameters, options *PrivateLinkResourcesClientGetOptions)` to `(ctx context.Context, resourceGroupName string, privateLinkName string, groupID string, options *PrivateLinkResourcesClientGetOptions)`
+- Function `*PrivateLinkResourcesClient.NewListPager` parameter(s) have been changed from `(resourceGroupName string, privateLinkName PrivateLinkParameters, options *PrivateLinkResourcesClientListOptions)` to `(resourceGroupName string, privateLinkName string, options *PrivateLinkResourcesClientListOptions)`
+- Function `*PrivateLinksClient.BeginCreate` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, privateLink PrivateLinkResource, privateLinkName PrivateLinkParameters, options *PrivateLinksClientBeginCreateOptions)` to `(ctx context.Context, resourceGroupName string, privateLinkName string, privateLink PrivateLinkResource, options *PrivateLinksClientBeginCreateOptions)`
+- Function `*PrivateLinksClient.BeginDelete` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, privateLinkName PrivateLinkParameters, options *PrivateLinksClientBeginDeleteOptions)` to `(ctx context.Context, resourceGroupName string, privateLinkName string, options *PrivateLinksClientBeginDeleteOptions)`
+- Function `*PrivateLinksClient.Get` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, privateLinkName PrivateLinkParameters, options *PrivateLinksClientGetOptions)` to `(ctx context.Context, resourceGroupName string, privateLinkName string, options *PrivateLinksClientGetOptions)`
+- Function `*PrivateLinksClient.Head` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, privateLinkName PrivateLinkParameters, options *PrivateLinksClientHeadOptions)` to `(ctx context.Context, resourceGroupName string, privateLinkName string, options *PrivateLinksClientHeadOptions)`
+- Function `*PrivateLinksClient.Update` parameter(s) have been changed from `(ctx context.Context, resourceGroupName string, privateLink PrivateLinkUpdate, privateLinkName PrivateLinkParameters, options *PrivateLinksClientUpdateOptions)` to `(ctx context.Context, resourceGroupName string, privateLinkName string, privateLink PrivateLinkUpdate, options *PrivateLinksClientUpdateOptions)`
+- Type of `MalwareScanProperties.ScanEndTime` has been changed from `*string` to `*time.Time`
+- Type of `MalwareScanProperties.ScanStartTime` has been changed from `*string` to `*time.Time`
+- Type of `MalwareScanProperties.ScanStatus` has been changed from `*string` to `*MalwareScanStatus`
+- Type of `OnUploadFilters.ExcludeBlobsLargerThan` has been changed from `any` to `*int64`
+- Function `*TopologyClient.Get` has been removed
+- Function `*TopologyClient.NewListByHomeRegionPager` has been removed
+- Struct `DefenderCspmAwsOfferingCiemDiscovery` has been removed
+- Struct `PrivateLinkParameters` has been removed
+- Field `CiemDiscovery` of struct `DefenderCspmAwsOfferingCiem` has been removed
+
+### Features Added
+
+- New enum type `AwsCloudTrailProvisioningType` with values `AwsCloudTrailProvisioningTypeAutoProvisioning`, `AwsCloudTrailProvisioningTypeBringYourOwn`, `AwsCloudTrailProvisioningTypeManualProvisioning`
+- New enum type `GcpLoggingProvisioningType` with values `GcpLoggingProvisioningTypeAutoProvisioning`, `GcpLoggingProvisioningTypeBringYourOwn`, `GcpLoggingProvisioningTypeManualProvisioning`
+- New enum type `InstallationMethod` with values `InstallationMethodArc`, `InstallationMethodHelm`
+- New enum type `MalwareScanStatus` with values `MalwareScanStatusCanceled`, `MalwareScanStatusCanceling`, `MalwareScanStatusCompleted`, `MalwareScanStatusFailed`, `MalwareScanStatusInProgress`, `MalwareScanStatusQueued`, `MalwareScanStatusWaitingForCompletion`
+- New enum type `ManagedByType` with values `ManagedByTypeMicrosoftDefenderXDR`, `ManagedByTypeNone`, `ManagedByTypeSubscriptionSettingsEnforcer`
+- New enum type `MatchType` with values `MatchTypeExact`, `MatchTypePrefix`
+- New enum type `OriginatedFrom` with values `OriginatedFromM365`
+- New enum type `PricingPlanOperationStatusCode` with values `PricingPlanOperationStatusCodeFailed`, `PricingPlanOperationStatusCodeSucceeded`
+- New function `NewBatchPricingsClient(credential azcore.TokenCredential, options *arm.ClientOptions) (*BatchPricingsClient, error)`
+- New function `*BatchPricingsClient.CreateOrUpdate(ctx context.Context, scopeID string, pricingBatchName string, pricingBatch PricingBatch, options *BatchPricingsClientCreateOrUpdateOptions) (BatchPricingsClientCreateOrUpdateResponse, error)`
+- New function `*BatchPricingsClient.Get(ctx context.Context, scopeID string, pricingBatchName string, options *BatchPricingsClientGetOptions) (BatchPricingsClientGetResponse, error)`
+- New function `*BatchPricingsClient.NewListPager(scopeID string, options *BatchPricingsClientListOptions) *runtime.Pager[BatchPricingsClientListResponse]`
+- New function `*ClientFactory.NewBatchPricingsClient() *BatchPricingsClient`
+- New function `*ClientFactory.NewTopologyResourcesClient() *TopologyResourcesClient`
+- New function `NewTopologyResourcesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TopologyResourcesClient, error)`
+- New function `*TopologyResourcesClient.Get(ctx context.Context, resourceGroupName string, ascLocation string, topologyResourceName string, options *TopologyResourcesClientGetOptions) (TopologyResourcesClientGetResponse, error)`
+- New function `*TopologyResourcesClient.NewListByHomeRegionPager(ascLocation string, options *TopologyResourcesClientListByHomeRegionOptions) *runtime.Pager[TopologyResourcesClientListByHomeRegionResponse]`
+- New struct `AwsCloudTrailConfiguration`
+- New struct `AwsCloudTrailResourceSet`
+- New struct `BlobScanFilter`
+- New struct `DefenderCspmAwsOfferingAgentlessServerlessPosture`
+- New struct `DefenderCspmAwsOfferingCiemLogCollectionOidc`
+- New struct `DefenderCspmAwsOfferingServerlessContainers`
+- New struct `DefenderCspmGcpOfferingCiem`
+- New struct `DefenderCspmGcpOfferingCiemOidc`
+- New struct `FileScanFilter`
+- New struct `GcpAuditLogConfiguration`
+- New struct `GcpLoggingResourceSet`
+- New struct `MalwareScanFilters`
+- New struct `MatchFilter`
+- New struct `PricingBatch`
+- New struct `PricingBatchList`
+- New struct `PricingBatchPlanItem`
+- New struct `PricingBatchProperties`
+- New struct `PricingPlanOperationStatus`
+- New struct `PricingPropertiesReference`
+- New struct `StartMalwareScanRequest`
+- New struct `StartMalwareScanRequestProperties`
+- New field `AgentlessServerlessPosture`, `ServerlessContainers` in struct `DefenderCspmAwsOffering`
+- New field `CloudTrailAuditLogIngestion`, `LogCollectionOidc` in struct `DefenderCspmAwsOfferingCiem`
+- New field `SecurityFindingsEnabled` in struct `DefenderCspmAwsOfferingMdcContainersImageAssessment`
+- New field `Ciem` in struct `DefenderCspmGcpOffering`
+- New field `EnableAuditLogIngestion` in struct `DefenderCspmGcpOfferingCiemDiscovery`
+- New field `SecurityFindingsEnabled` in struct `DefenderCspmGcpOfferingMdcContainersImageAssessment`
+- New field `ContainerAntiMalwareEnabled`, `InstallationMethod`, `SecurityGatingEnabled` in struct `DefenderForContainersAwsOffering`
+- New field `SecurityFindingsEnabled` in struct `DefenderForContainersAwsOfferingMdcContainersImageAssessment`
+- New field `ContainerAntiMalwareEnabled`, `InstallationMethod`, `SecurityGatingEnabled` in struct `DefenderForContainersGcpOffering`
+- New field `SecurityFindingsEnabled` in struct `DefenderForContainersGcpOfferingMdcContainersImageAssessment`
+- New field `Body` in struct `DefenderForStorageClientStartMalwareScanOptions`
+- New field `ManagedBy` in struct `DefenderForStorageSettingProperties`
+- New field `SecurityOperatorResourceID` in struct `Extension`
+- New field `ID`, `Name`, `SystemData`, `Type` in struct `MalwareScan`
+- New field `ScannerResourceID` in struct `MalwareScanningProperties`
+- New field `ManagedBy`, `OriginatedFrom`, `SecurityOperatorResourceID` in struct `PricingProperties`
+- New field `ScannerResourceID` in struct `SensitiveDataDiscoveryProperties`
+
+
 ## 0.15.0 (2026-05-22)
 ### Breaking Changes
 

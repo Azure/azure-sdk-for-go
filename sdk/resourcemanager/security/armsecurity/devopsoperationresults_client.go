@@ -30,6 +30,9 @@ type DevOpsOperationResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDevOpsOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DevOpsOperationResultsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,11 +66,7 @@ func (client *DevOpsOperationResultsClient) Get(ctx context.Context, resourceGro
 	if err != nil {
 		return DevOpsOperationResultsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DevOpsOperationResultsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -75,7 +74,7 @@ func (client *DevOpsOperationResultsClient) Get(ctx context.Context, resourceGro
 func (client *DevOpsOperationResultsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, operationResultID string, _ *DevOpsOperationResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/operationResults/{operationResultId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -102,8 +101,11 @@ func (client *DevOpsOperationResultsClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *DevOpsOperationResultsClient) getHandleResponse(resp *http.Response) (DevOpsOperationResultsClientGetResponse, error) {
+func (client *DevOpsOperationResultsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DevOpsOperationResultsClientGetResponse, error) {
 	result := DevOpsOperationResultsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.OperationStatusResult); err != nil {
 		return DevOpsOperationResultsClientGetResponse{}, err
 	}

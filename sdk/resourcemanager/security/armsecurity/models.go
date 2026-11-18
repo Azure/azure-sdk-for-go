@@ -1641,6 +1641,37 @@ type AutomationValidationStatus struct {
 	Message *string
 }
 
+// AwsCloudTrailConfiguration - The configuration for AWS CloudTrail audit log ingestion
+type AwsCloudTrailConfiguration struct {
+	// The existing CloudTrail resource sets. Required when provisioningType is BringYourOwn.
+	CloudTrailResourceSets []*AwsCloudTrailResourceSet
+
+	// The AWS region in which the CloudTrail resources are provisioned. Required when
+	// provisioningType is ManualProvisioning or AutoProvisioning.
+	DeploymentRegion *string
+
+	// The provisioning type for the CloudTrail resources
+	ProvisioningType *AwsCloudTrailProvisioningType
+
+	// The resource name prefix used when provisioning the CloudTrail resources
+	ResourceNamePrefix *string
+}
+
+// AwsCloudTrailResourceSet - A resource set describing existing AWS CloudTrail audit log resources
+type AwsCloudTrailResourceSet struct {
+	// The KMS key ARN used for CloudTrail log encryption
+	KmsKeyArn *string
+
+	// The AWS region of the resources in this set
+	ResourceRegion *string
+
+	// The S3 bucket ARN in which the CloudTrail logs are stored
+	S3BucketArn *string
+
+	// The SQS queue ARN used for CloudTrail log notifications
+	SqsQueueArn *string
+}
+
 // AwsEnvironmentData - The AWS connector environment data
 type AwsEnvironmentData struct {
 	// CONSTANT; The type of the environment data.
@@ -2023,6 +2054,18 @@ type BenchmarkReference struct {
 
 	// The benchmark reference.
 	Reference *string
+}
+
+// BlobScanFilter - Filter for blob scanning. At least one of 'container' or 'blob' must be specified; a request with neither
+// is rejected by the service. If only container is provided, all blobs in that container are scanned. If only blob is provided,
+// blobs matching the filter across all containers are scanned.
+type BlobScanFilter struct {
+	// Optional filter for specific blob(s). If container is specified, this filters blobs within that container. If container
+	// is not specified, this filters blobs across all containers.
+	Blob *MatchFilter
+
+	// Optional filter for the blob container to scan. If not provided, the blob filter will apply across all containers.
+	Container *MatchFilter
 }
 
 // BlobsScanSummary - A summary of the scan results of the blobs that were scanned.
@@ -2788,6 +2831,9 @@ type DefenderCspmAwsOffering struct {
 	// Field has constant value OfferingTypeDefenderCspmAws, any specified value is ignored.
 	OfferingType *OfferingType
 
+	// The Microsoft Defender agentless serverless posture configuration
+	AgentlessServerlessPosture *DefenderCspmAwsOfferingAgentlessServerlessPosture
+
 	// Defenders CSPM Permissions Management offering configurations
 	Ciem *DefenderCspmAwsOfferingCiem
 
@@ -2802,6 +2848,9 @@ type DefenderCspmAwsOffering struct {
 
 	// The Microsoft Defender container image assessment configuration
 	MdcContainersImageAssessment *DefenderCspmAwsOfferingMdcContainersImageAssessment
+
+	// The Microsoft Defender serverless containers configuration
+	ServerlessContainers *DefenderCspmAwsOfferingServerlessContainers
 
 	// The Microsoft Defender for CSPM offering VM scanning configuration
 	VMScanners *DefenderCspmAwsOfferingVMScanners
@@ -2818,18 +2867,30 @@ func (d *DefenderCspmAwsOffering) GetCloudOffering() *CloudOffering {
 	}
 }
 
-// DefenderCspmAwsOfferingCiem - Defenders CSPM Permissions Management offering configurations
-type DefenderCspmAwsOfferingCiem struct {
-	// Defender CSPM Permissions Management discovery configuration
-	CiemDiscovery *DefenderCspmAwsOfferingCiemDiscovery
+// DefenderCspmAwsOfferingAgentlessServerlessPosture - The Microsoft Defender agentless serverless posture configuration
+type DefenderCspmAwsOfferingAgentlessServerlessPosture struct {
+	// The cloud role ARN in AWS for this feature
+	CloudRoleArn *string
 
-	// AWS Defender CSPM Permissions Management OIDC (open id connect) connection configurations
-	CiemOidc *DefenderCspmAwsOfferingCiemOidc
+	// Is agentless serverless posture enabled
+	Enabled *bool
 }
 
-// DefenderCspmAwsOfferingCiemDiscovery - Defender CSPM Permissions Management discovery configuration
-type DefenderCspmAwsOfferingCiemDiscovery struct {
-	// The cloud role ARN in AWS for Permissions Management discovery
+// DefenderCspmAwsOfferingCiem - Defenders CSPM Permissions Management offering configurations
+type DefenderCspmAwsOfferingCiem struct {
+	// AWS Defender CSPM Permissions Management OIDC (open id connect) connection configurations
+	CiemOidc *DefenderCspmAwsOfferingCiemOidc
+
+	// The CloudTrail audit log ingestion configuration
+	CloudTrailAuditLogIngestion *AwsCloudTrailConfiguration
+
+	// The AWS log collection OIDC (open id connect) connection configuration
+	LogCollectionOidc *DefenderCspmAwsOfferingCiemLogCollectionOidc
+}
+
+// DefenderCspmAwsOfferingCiemLogCollectionOidc - The AWS log collection OIDC (open id connect) connection configuration
+type DefenderCspmAwsOfferingCiemLogCollectionOidc struct {
+	// The cloud role ARN in AWS used for the log collection oidc connection
 	CloudRoleArn *string
 }
 
@@ -2876,6 +2937,15 @@ type DefenderCspmAwsOfferingMdcContainersImageAssessment struct {
 
 	// Is Microsoft Defender container image assessment enabled
 	Enabled *bool
+
+	// Is security findings enabled for container image assessment
+	SecurityFindingsEnabled *bool
+}
+
+// DefenderCspmAwsOfferingServerlessContainers - The Microsoft Defender serverless containers configuration
+type DefenderCspmAwsOfferingServerlessContainers struct {
+	// Is serverless containers scanning enabled
+	Enabled *bool
 }
 
 // DefenderCspmAwsOfferingVMScanners - The Microsoft Defender for CSPM offering VM scanning configuration
@@ -2914,6 +2984,9 @@ type DefenderCspmGcpOffering struct {
 	// Field has constant value OfferingTypeDefenderCspmGcp, any specified value is ignored.
 	OfferingType *OfferingType
 
+	// The GCP Defender CSPM Permissions Management configurations
+	Ciem *DefenderCspmGcpOfferingCiem
+
 	// GCP Defenders CSPM Permissions Management OIDC (Open ID connect) connection configurations
 	CiemDiscovery *DefenderCspmGcpOfferingCiemDiscovery
 
@@ -2941,15 +3014,39 @@ func (d *DefenderCspmGcpOffering) GetCloudOffering() *CloudOffering {
 	}
 }
 
+// DefenderCspmGcpOfferingCiem - The GCP Defender CSPM Permissions Management configurations
+type DefenderCspmGcpOfferingCiem struct {
+	// The GCP Permissions Management OIDC (open id connect) connection configuration
+	CiemOidc *DefenderCspmGcpOfferingCiemOidc
+
+	// The GCP audit log ingestion configuration
+	GcpAuditLogIngestion *GcpAuditLogConfiguration
+
+	// The GCP log collection OIDC (open id connect) connection configuration
+	LogCollectionOidc *DefenderCspmGcpOfferingCiemOidc
+}
+
 // DefenderCspmGcpOfferingCiemDiscovery - GCP Defenders CSPM Permissions Management OIDC (Open ID connect) connection configurations
 type DefenderCspmGcpOfferingCiemDiscovery struct {
 	// the azure active directory app name used of authenticating against GCP workload identity federation
 	AzureActiveDirectoryAppName *string
 
+	// Is audit log ingestion enabled for the Permissions Management offering
+	EnableAuditLogIngestion *bool
+
 	// The service account email address in GCP for Permissions Management offering
 	ServiceAccountEmailAddress *string
 
 	// The GCP workload identity provider id for Permissions Management offering
+	WorkloadIdentityProviderID *string
+}
+
+// DefenderCspmGcpOfferingCiemOidc - A GCP OIDC (open id connect) connection configuration
+type DefenderCspmGcpOfferingCiemOidc struct {
+	// The service account email address in GCP for this feature
+	ServiceAccountEmailAddress *string
+
+	// The GCP workload identity provider id for this feature
 	WorkloadIdentityProviderID *string
 }
 
@@ -2981,6 +3078,9 @@ type DefenderCspmGcpOfferingMdcContainersAgentlessDiscoveryK8S struct {
 type DefenderCspmGcpOfferingMdcContainersImageAssessment struct {
 	// Is Microsoft Defender container image assessment enabled
 	Enabled *bool
+
+	// Is security findings enabled for container image assessment
+	SecurityFindingsEnabled *bool
 
 	// The service account email address in GCP for this feature
 	ServiceAccountEmailAddress *string
@@ -3091,6 +3191,9 @@ type DefenderForContainersAwsOffering struct {
 	// The cloudwatch to kinesis connection configuration
 	CloudWatchToKinesis *DefenderForContainersAwsOfferingCloudWatchToKinesis
 
+	// Is defender anti-malware enabled
+	ContainerAntiMalwareEnabled *bool
+
 	// The externalId used by the data reader to prevent the confused deputy attack
 	DataCollectionExternalID *string
 
@@ -3102,6 +3205,9 @@ type DefenderForContainersAwsOffering struct {
 
 	// Is Policy Kubernetes agent auto provisioning enabled
 	EnablePolicyAgentAutoProvisioning *bool
+
+	// The installation method for the Defender for Containers agent.
+	InstallationMethod *InstallationMethod
 
 	// The kinesis to s3 connection configuration
 	KinesisToS3 *DefenderForContainersAwsOfferingKinesisToS3
@@ -3120,6 +3226,9 @@ type DefenderForContainersAwsOffering struct {
 
 	// The Microsoft Defender container image assessment configuration
 	MdcContainersImageAssessment *DefenderForContainersAwsOfferingMdcContainersImageAssessment
+
+	// Is security gating enabled
+	SecurityGatingEnabled *bool
 
 	// The Microsoft Defender for Container K8s VM host scanning configuration
 	VMScanners *DefenderForContainersAwsOfferingVMScanners
@@ -3177,6 +3286,9 @@ type DefenderForContainersAwsOfferingMdcContainersImageAssessment struct {
 
 	// Is Microsoft Defender container image assessment enabled
 	Enabled *bool
+
+	// Is security findings enabled for container image assessment
+	SecurityFindingsEnabled *bool
 }
 
 // DefenderForContainersAwsOfferingVMScanners - The Microsoft Defender for Container K8s VM host scanning configuration
@@ -3215,6 +3327,9 @@ type DefenderForContainersGcpOffering struct {
 	// Field has constant value OfferingTypeDefenderForContainersGcp, any specified value is ignored.
 	OfferingType *OfferingType
 
+	// Is defender anti-malware enabled
+	ContainerAntiMalwareEnabled *bool
+
 	// The native cloud connection configuration
 	DataPipelineNativeCloudConnection *DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection
 
@@ -3227,6 +3342,9 @@ type DefenderForContainersGcpOffering struct {
 	// Is Policy Kubernetes agent auto provisioning enabled
 	EnablePolicyAgentAutoProvisioning *bool
 
+	// The installation method for the Defender for Containers agent.
+	InstallationMethod *InstallationMethod
+
 	// The Microsoft Defender Container agentless discovery configuration
 	MdcContainersAgentlessDiscoveryK8S *DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S
 
@@ -3235,6 +3353,9 @@ type DefenderForContainersGcpOffering struct {
 
 	// The native cloud connection configuration
 	NativeCloudConnection *DefenderForContainersGcpOfferingNativeCloudConnection
+
+	// Is security gating enabled
+	SecurityGatingEnabled *bool
 
 	// The Microsoft Defender for Container K8s VM host scanning configuration
 	VMScanners *DefenderForContainersGcpOfferingVMScanners
@@ -3277,6 +3398,9 @@ type DefenderForContainersGcpOfferingMdcContainersAgentlessDiscoveryK8S struct {
 type DefenderForContainersGcpOfferingMdcContainersImageAssessment struct {
 	// Is Microsoft Defender container image assessment enabled
 	Enabled *bool
+
+	// Is security findings enabled for container image assessment
+	SecurityFindingsEnabled *bool
 
 	// The service account email address in GCP for this feature
 	ServiceAccountEmailAddress *string
@@ -3592,6 +3716,12 @@ type DefenderForStorageSettingProperties struct {
 
 	// Properties of Sensitive Data Discovery.
 	SensitiveDataDiscovery *SensitiveDataDiscoveryProperties
+
+	// READ-ONLY; Indicates whether this resource's Defender for Storage settings are managed by a higher MDC enforcement scope
+	// and which component is managing them. When set to a value other than 'None', the resource-level settings become read-only
+	// and can only be modified by the managing component. Possible values: 'None' (not managed), 'MicrosoftDefenderXDR' (managed
+	// by Microsoft Defender XDR), 'SubscriptionSettingsEnforcer' (managed by subscription-level settings enforcer).
+	ManagedBy *ManagedByType
 }
 
 // DenylistCustomAlertRule - A custom alert rule that checks if a value (depends on the custom alert type) is denied.
@@ -3972,6 +4102,9 @@ type Extension struct {
 	// Property values associated with the extension.
 	AdditionalExtensionProperties map[string]any
 
+	// Resource ID of the security operator associated with the extension.
+	SecurityOperatorResourceID *string
+
 	// READ-ONLY; Optional. A status describing the success/failure of the extension's enablement/disablement operation.
 	OperationStatus *OperationStatus
 }
@@ -4071,6 +4204,18 @@ func (f *FailedLocalLoginsNotInAllowedRange) GetTimeWindowCustomAlertRule() *Tim
 	}
 }
 
+// FileScanFilter - Filter for file scanning. At least one of 'share' or 'file' must be specified; a request with neither
+// is rejected by the service. If only share is provided, all files in that share are scanned. If only file is provided, files
+// matching the filter across all shares are scanned.
+type FileScanFilter struct {
+	// Optional filter for specific file(s). If share is specified, this filters files within that share. If share is not specified,
+	// this filters files across all shares.
+	File *MatchFilter
+
+	// Optional filter for the file share to scan. If not provided, the file filter will apply across all shares.
+	Share *MatchFilter
+}
+
 // FileUploadsNotInAllowedRange - Number of file uploads is not in allowed range.
 type FileUploadsNotInAllowedRange struct {
 	// REQUIRED; Status of the custom alert.
@@ -4147,6 +4292,25 @@ type FilesScanSummary struct {
 
 	// The total number of files that were scanned.
 	TotalFilesScanned *int64
+}
+
+// GcpAuditLogConfiguration - The configuration for GCP audit log ingestion
+type GcpAuditLogConfiguration struct {
+	// The provisioning type for the GCP logging resources
+	ProvisioningType *GcpLoggingProvisioningType
+
+	// The resource name prefix used when provisioning the GCP logging resources. Required when
+	// provisioningType is ManualProvisioning or AutoProvisioning.
+	ResourceNamePrefix *string
+
+	// The existing GCP logging resource sets. Required when provisioningType is BringYourOwn.
+	ResourceSets []*GcpLoggingResourceSet
+}
+
+// GcpLoggingResourceSet - A resource set describing existing GCP logging resources
+type GcpLoggingResourceSet struct {
+	// The Pub/Sub subscription name in which the GCP logs are stored
+	PubSubSubscriptionName *string
 }
 
 // GcpOrganizationalData - The gcpOrganization data
@@ -5795,21 +5959,44 @@ func (l *LogAnalyticsIdentifier) GetResourceIdentifier() *ResourceIdentifier {
 
 // MalwareScan - Describes the state of a malware scan operation.
 type MalwareScan struct {
+	// The resource-specific properties for this resource.
 	Properties *MalwareScanProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
 }
 
+// MalwareScanFilters - Filters to scope the malware scan.
+type MalwareScanFilters struct {
+	// Optional filter for blob scanning. Specifies which blobs to scan.
+	Blobs *BlobScanFilter
+
+	// Optional filter for file scanning. Specifies which files to scan.
+	Files *FileScanFilter
+}
+
+// MalwareScanProperties - Properties of a malware scan operation.
 type MalwareScanProperties struct {
 	// The time at which the scan has ended. Only available for a scan which has terminated.
-	ScanEndTime *string
+	ScanEndTime *time.Time
 
 	// The identifier of the scan.
 	ScanID *string
 
 	// The time at which the scan had been initiated.
-	ScanStartTime *string
+	ScanStartTime *time.Time
 
 	// A status code of the scan operation.
-	ScanStatus *string
+	ScanStatus *MalwareScanStatus
 
 	// A description of the status of the scan.
 	ScanStatusMessage *string
@@ -5832,8 +6019,21 @@ type MalwareScanningProperties struct {
 	// Optional. Resource id of an Event Grid Topic to send scan results to.
 	ScanResultsEventGridTopicResourceID *string
 
+	// Optional. Resource id of the scanner resource (e.g., securityOperator or dataScanner) whose identity will be used for malware
+	// scanning.
+	ScannerResourceID *string
+
 	// READ-ONLY; Upon failure or partial success. Additional data describing Malware Scanning enable/disable operation.
 	OperationStatus *OperationStatus
+}
+
+// MatchFilter - Filter with value and matching strategy.
+type MatchFilter struct {
+	// REQUIRED; The matching strategy for the filter.
+	Match *MatchType
+
+	// REQUIRED; The value to match against.
+	Value *string
 }
 
 // MdeOnboardingData - The resource of the configuration or data needed to onboard the machine to MDE
@@ -6171,7 +6371,7 @@ func (o *OnPremiseSQLResourceDetails) GetResourceDetails() *ResourceDetails {
 type OnUploadFilters struct {
 	// Optional. Specifies the maximum size in bytes for blobs to be scanned. This parameter accepts a single positive integer
 	// value. Blobs larger than this value will be excluded from scanning.
-	ExcludeBlobsLargerThan any
+	ExcludeBlobsLargerThan *int64
 
 	// Optional. A list of prefixes to exclude from on-upload malware scanning.
 	// Format: `container-name/blob-name` (start with the container name; do not include the storage account name).
@@ -6343,10 +6543,64 @@ type Pricing struct {
 	Type *string
 }
 
+// PricingBatch - Pricing batch resource for updating multiple pricing configurations.
+type PricingBatch struct {
+	// Pricing batch properties.
+	Properties *PricingBatchProperties
+
+	// READ-ONLY; Fully qualified resource ID for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
+	ID *string
+
+	// READ-ONLY; The name of the resource
+	Name *string
+
+	// READ-ONLY; Azure Resource Manager metadata containing createdBy and modifiedBy information.
+	SystemData *SystemData
+
+	// READ-ONLY; The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+	Type *string
+}
+
+// PricingBatchList - A list of pricing batch resources.
+type PricingBatchList struct {
+	// REQUIRED; The pricing batch resources.
+	Value []*PricingBatch
+
+	// READ-ONLY; The URI to fetch the next page.
+	NextLink *string
+}
+
+// PricingBatchPlanItem - An individual pricing plan configuration.
+type PricingBatchPlanItem struct {
+	// REQUIRED; Name of the pricing plan.
+	PlanName *string
+
+	// REQUIRED; Pricing configuration properties for the plan.
+	Properties *PricingPropertiesReference
+
+	// READ-ONLY; Status of this plan's update operation. This property is returned only after a PUT operation.
+	OperationStatus *PricingPlanOperationStatus
+}
+
+// PricingBatchProperties - Properties for a pricing batch resource.
+type PricingBatchProperties struct {
+	// REQUIRED; Pricing plan configurations represented by this resource.
+	PlansConfigurations []*PricingBatchPlanItem
+}
+
 // PricingList - List of pricing configurations response.
 type PricingList struct {
 	// REQUIRED; List of pricing configurations
 	Value []*Pricing
+}
+
+// PricingPlanOperationStatus - Status of a pricing plan update operation.
+type PricingPlanOperationStatus struct {
+	// The operation status code.
+	Code *PricingPlanOperationStatusCode
+
+	// Additional information about the operation result.
+	Message *string
 }
 
 // PricingProperties - Pricing properties for the relevant scope
@@ -6363,6 +6617,9 @@ type PricingProperties struct {
 
 	// Optional. List of extensions offered under a plan.
 	Extensions []*Extension
+
+	// Resource ID of the security operator associated with the pricing configuration.
+	SecurityOperatorResourceID *string
 
 	// The sub-plan selected for a Standard pricing configuration, when more than one sub-plan is available. Each sub-plan enables
 	// a set of security features. When not specified, full plan is applied. For VirtualMachines plan, available sub plans are
@@ -6389,6 +6646,12 @@ type PricingProperties struct {
 	// pricing.
 	InheritedFrom *string
 
+	// READ-ONLY; Indicates who exclusively manages the pricing configuration.
+	ManagedBy *string
+
+	// READ-ONLY; Indicates the origin of the most recent configuration change.
+	OriginatedFrom *OriginatedFrom
+
 	// READ-ONLY; Optional. List of plans that replace this plan. This property exists only if this plan is deprecated.
 	ReplacedBy []*string
 
@@ -6397,6 +6660,10 @@ type PricingProperties struct {
 	// plan status can also be defined at the resource level, there might be misalignment between the subscription's plan status
 	// and the resource status. This field helps indicate the coverage status of the resources.
 	ResourcesCoverageStatus *ResourcesCoverageStatus
+}
+
+// PricingPropertiesReference - Reference to the pricing properties defined in pricings.json.
+type PricingPropertiesReference struct {
 }
 
 // PrivateEndpoint - The private endpoint resource.
@@ -7319,6 +7586,10 @@ type SensitiveDataDiscoveryProperties struct {
 	// Indicates whether Sensitive Data Discovery should be enabled.
 	IsEnabled *bool
 
+	// Optional. Resource id of the scanner resource (e.g., securityOperator or dataScanner) whose identity will be used for sensitive
+	// data discovery.
+	ScannerResourceID *string
+
 	// READ-ONLY; Upon failure or partial success. Additional data describing Sensitive Data Discovery enable/disable operation.
 	OperationStatus *OperationStatus
 }
@@ -7738,6 +8009,18 @@ type StandardProperties struct {
 
 	// READ-ONLY; standard type (Custom or BuiltIn only currently)
 	StandardType *string
+}
+
+// StartMalwareScanRequest - Request body for starting a malware scan with optional filters.
+type StartMalwareScanRequest struct {
+	// Properties for the malware scan request.
+	Properties *StartMalwareScanRequestProperties
+}
+
+// StartMalwareScanRequestProperties - Properties for the malware scan request.
+type StartMalwareScanRequestProperties struct {
+	// Optional filters to scope the malware scan to specific blobs or files.
+	Filters *MalwareScanFilters
 }
 
 // SubAssessment - Security sub-assessment on a resource

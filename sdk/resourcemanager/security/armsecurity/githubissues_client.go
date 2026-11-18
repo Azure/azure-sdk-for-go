@@ -30,6 +30,9 @@ type GitHubIssuesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewGitHubIssuesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*GitHubIssuesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -66,7 +69,7 @@ func (client *GitHubIssuesClient) BeginCreate(ctx context.Context, resourceGroup
 	}
 }
 
-// Create - Creates a GitHub issue for the specified repository and assessment.
+// create - Creates a GitHub issue for the specified repository and assessment.
 //
 // Creates a GitHub issue for the specified repository and assessment.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -91,11 +94,11 @@ func (client *GitHubIssuesClient) create(ctx context.Context, resourceGroupName 
 	return httpResp, nil
 }
 
-// createCreateRequest creates the Create request.
+// createCreateRequest creates the create request.
 func (client *GitHubIssuesClient) createCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, ownerName string, repoName string, options *GitHubIssuesClientBeginCreateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default/gitHubOwners/{ownerName}/repos/{repoName}/issues"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {

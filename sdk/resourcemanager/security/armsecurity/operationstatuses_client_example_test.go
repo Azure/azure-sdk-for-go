@@ -32,10 +32,10 @@ func ExampleOperationStatusesClient_Get() {
 	// res = armsecurity.OperationStatusesClientGetResponse{
 	// 	OperationStatusResult: armsecurity.OperationStatusResult{
 	// 		Name: to.Ptr("00000000-0000-0000-0000-000000000000"),
-	// 		EndTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T10:05:00.000Z"); return t}()),
+	// 		EndTime: to.Ptr(time.Date(2025, time.October, 1, 10, 5, 0, 0, time.UTC)),
 	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/locations/eastus/operationStatuses/00000000-0000-0000-0000-000000000000"),
 	// 		PercentComplete: to.Ptr[float64](100),
-	// 		StartTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-10-01T10:00:00.000Z"); return t}()),
+	// 		StartTime: to.Ptr(time.Date(2025, time.October, 1, 10, 0, 0, 0, time.UTC)),
 	// 		Status: to.Ptr("Succeeded"),
 	// 	},
 	// }

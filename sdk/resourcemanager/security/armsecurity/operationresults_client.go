@@ -31,6 +31,9 @@ type OperationResultsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewOperationResultsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*OperationResultsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,11 +64,7 @@ func (client *OperationResultsClient) Get(ctx context.Context, location string, 
 	if err != nil {
 		return OperationResultsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent) {
-		err = runtime.NewResponseError(httpResp)
-		return OperationResultsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK, http.StatusAccepted, http.StatusNoContent)
 	return resp, err
 }
 
@@ -73,7 +72,7 @@ func (client *OperationResultsClient) Get(ctx context.Context, location string, 
 func (client *OperationResultsClient) getCreateRequest(ctx context.Context, location string, operationID string, _ *OperationResultsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{location}/operationResults/{operationId}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if location == "" {
@@ -95,8 +94,11 @@ func (client *OperationResultsClient) getCreateRequest(ctx context.Context, loca
 }
 
 // getHandleResponse handles the Get response.
-func (client *OperationResultsClient) getHandleResponse(resp *http.Response) (OperationResultsClientGetResponse, error) {
+func (client *OperationResultsClient) getHandleResponse(resp *http.Response, successCodes ...int) (OperationResultsClientGetResponse, error) {
 	result := OperationResultsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if val := resp.Header.Get("Location"); val != "" {
 		result.Location = &val
 	}

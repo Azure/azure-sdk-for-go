@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2025-09-01-preview/DefenderForStorage/CancelMalwareScan_example.json
+// Generated from example definition: 2026-09-01/DefenderForStorage/CancelMalwareScan_example.json
 func ExampleDefenderForStorageClient_CancelMalwareScan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -23,7 +23,7 @@ func ExampleDefenderForStorageClient_CancelMalwareScan() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDefenderForStorageClient().CancelMalwareScan(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount", armsecurity.SettingNameCurrent, "latest", nil)
+	res, err := clientFactory.NewDefenderForStorageClient().CancelMalwareScan(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount", "current", "latest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -32,16 +32,19 @@ func ExampleDefenderForStorageClient_CancelMalwareScan() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.DefenderForStorageClientCancelMalwareScanResponse{
 	// 	MalwareScan: armsecurity.MalwareScan{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount/providers/Microsoft.Security/defenderForStorageSettings/current/malwareScans/3fd3c1be-dbff-4d6e-985f-43f9ec1b1146"),
+	// 		Name: to.Ptr("3fd3c1be-dbff-4d6e-985f-43f9ec1b1146"),
+	// 		Type: to.Ptr("Microsoft.Security/defenderForStorageSettings/malwareScans"),
 	// 		Properties: &armsecurity.MalwareScanProperties{
 	// 			ScanID: to.Ptr("3fd3c1be-dbff-4d6e-985f-43f9ec1b1146"),
-	// 			ScanStatus: to.Ptr("Canceling"),
+	// 			ScanStatus: to.Ptr(armsecurity.MalwareScanStatusCanceling),
 	// 			ScanStatusMessage: to.Ptr("The scan request is being canceled upon user request"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/DefenderForStorage/PutDefenderForStorageSettings_example.json
+// Generated from example definition: 2026-09-01/DefenderForStorage/PutDefenderForStorageSettings_example.json
 func ExampleDefenderForStorageClient_Create() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -52,7 +55,7 @@ func ExampleDefenderForStorageClient_Create() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDefenderForStorageClient().Create(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount", armsecurity.SettingNameCurrent, armsecurity.DefenderForStorageSetting{
+	res, err := clientFactory.NewDefenderForStorageClient().Create(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount", "current", armsecurity.DefenderForStorageSetting{
 		Properties: &armsecurity.DefenderForStorageSettingProperties{
 			IsEnabled: to.Ptr(true),
 			MalwareScanning: &armsecurity.MalwareScanningProperties{
@@ -61,7 +64,7 @@ func ExampleDefenderForStorageClient_Create() {
 				OnUpload: &armsecurity.OnUploadProperties{
 					CapGBPerMonth: to.Ptr[int32](10000),
 					Filters: &armsecurity.OnUploadFilters{
-						ExcludeBlobsLargerThan: 1024,
+						ExcludeBlobsLargerThan: to.Ptr[int64](1024),
 						ExcludeBlobsWithPrefix: []*string{
 							to.Ptr("unscanned-container"),
 							to.Ptr("sample-container/logs"),
@@ -74,10 +77,12 @@ func ExampleDefenderForStorageClient_Create() {
 					IsEnabled: to.Ptr(true),
 				},
 				ScanResultsEventGridTopicResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.EventGrid/topics/sampletopic"),
+				ScannerResourceID:                   to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityOperators/malwareScanningOperator"),
 			},
 			OverrideSubscriptionLevelSettings: to.Ptr(true),
 			SensitiveDataDiscovery: &armsecurity.SensitiveDataDiscoveryProperties{
-				IsEnabled: to.Ptr(true),
+				IsEnabled:         to.Ptr(true),
+				ScannerResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityOperators/sensitiveDataDiscoveryOperator"),
 			},
 		},
 	}, nil)
@@ -100,7 +105,7 @@ func ExampleDefenderForStorageClient_Create() {
 	// 				OnUpload: &armsecurity.OnUploadProperties{
 	// 					CapGBPerMonth: to.Ptr[int32](10000),
 	// 					Filters: &armsecurity.OnUploadFilters{
-	// 						ExcludeBlobsLargerThan: 1024,
+	// 						ExcludeBlobsLargerThan: to.Ptr[int64](1024),
 	// 						ExcludeBlobsWithPrefix: []*string{
 	// 							to.Ptr("sample-container/logs"),
 	// 							to.Ptr("single-excluded-container/"),
@@ -117,10 +122,13 @@ func ExampleDefenderForStorageClient_Create() {
 	// 					Code: to.Ptr("Succeeded"),
 	// 				},
 	// 				ScanResultsEventGridTopicResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.EventGrid/topics/sampletopic"),
+	// 				ScannerResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityOperators/malwareScanningOperator"),
 	// 			},
+	// 			ManagedBy: to.Ptr(armsecurity.ManagedByTypeNone),
 	// 			OverrideSubscriptionLevelSettings: to.Ptr(true),
 	// 			SensitiveDataDiscovery: &armsecurity.SensitiveDataDiscoveryProperties{
 	// 				IsEnabled: to.Ptr(true),
+	// 				ScannerResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityOperators/sensitiveDataDiscoveryOperator"),
 	// 				OperationStatus: &armsecurity.OperationStatus{
 	// 					Code: to.Ptr("Succeeded"),
 	// 				},
@@ -130,7 +138,7 @@ func ExampleDefenderForStorageClient_Create() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/DefenderForStorage/GetDefenderForStorageSettings_example.json
+// Generated from example definition: 2026-09-01/DefenderForStorage/GetDefenderForStorageSettings_example.json
 func ExampleDefenderForStorageClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -141,7 +149,7 @@ func ExampleDefenderForStorageClient_Get() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDefenderForStorageClient().Get(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount", armsecurity.SettingNameCurrent, nil)
+	res, err := clientFactory.NewDefenderForStorageClient().Get(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount", "current", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -161,7 +169,7 @@ func ExampleDefenderForStorageClient_Get() {
 	// 				OnUpload: &armsecurity.OnUploadProperties{
 	// 					CapGBPerMonth: to.Ptr[int32](10000),
 	// 					Filters: &armsecurity.OnUploadFilters{
-	// 						ExcludeBlobsLargerThan: 1024,
+	// 						ExcludeBlobsLargerThan: to.Ptr[int64](1024),
 	// 						ExcludeBlobsWithPrefix: []*string{
 	// 							to.Ptr("sample-container/logs"),
 	// 							to.Ptr("single-excluded-container/"),
@@ -175,17 +183,20 @@ func ExampleDefenderForStorageClient_Get() {
 	// 					IsEnabled: to.Ptr(true),
 	// 				},
 	// 				ScanResultsEventGridTopicResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.EventGrid/topics/sampletopic"),
+	// 				ScannerResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityOperators/malwareScanningOperator"),
 	// 			},
+	// 			ManagedBy: to.Ptr(armsecurity.ManagedByTypeNone),
 	// 			OverrideSubscriptionLevelSettings: to.Ptr(true),
 	// 			SensitiveDataDiscovery: &armsecurity.SensitiveDataDiscoveryProperties{
 	// 				IsEnabled: to.Ptr(true),
+	// 				ScannerResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityOperators/sensitiveDataDiscoveryOperator"),
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/DefenderForStorage/GetMalwareScan_example.json
+// Generated from example definition: 2026-09-01/DefenderForStorage/GetMalwareScan_example.json
 func ExampleDefenderForStorageClient_GetMalwareScan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -196,7 +207,7 @@ func ExampleDefenderForStorageClient_GetMalwareScan() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDefenderForStorageClient().GetMalwareScan(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount", armsecurity.SettingNameCurrent, "latest", nil)
+	res, err := clientFactory.NewDefenderForStorageClient().GetMalwareScan(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount", "current", "latest", nil)
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -205,11 +216,14 @@ func ExampleDefenderForStorageClient_GetMalwareScan() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.DefenderForStorageClientGetMalwareScanResponse{
 	// 	MalwareScan: armsecurity.MalwareScan{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount/providers/Microsoft.Security/defenderForStorageSettings/current/malwareScans/0ce362c5-87a5-4030-ba6a-109566cd7b3d"),
+	// 		Name: to.Ptr("0ce362c5-87a5-4030-ba6a-109566cd7b3d"),
+	// 		Type: to.Ptr("Microsoft.Security/defenderForStorageSettings/malwareScans"),
 	// 		Properties: &armsecurity.MalwareScanProperties{
-	// 			ScanEndTime: to.Ptr("2025-09-01T12:21:17.5648386Z"),
+	// 			ScanEndTime: to.Ptr(time.Date(2025, time.September, 1, 12, 21, 17, 564838600, time.UTC)),
 	// 			ScanID: to.Ptr("0ce362c5-87a5-4030-ba6a-109566cd7b3d"),
-	// 			ScanStartTime: to.Ptr("2025-09-01T12:20:14.6364816Z"),
-	// 			ScanStatus: to.Ptr("Completed"),
+	// 			ScanStartTime: to.Ptr(time.Date(2025, time.September, 1, 12, 20, 14, 636481600, time.UTC)),
+	// 			ScanStatus: to.Ptr(armsecurity.MalwareScanStatusCompleted),
 	// 			ScanSummary: &armsecurity.ScanSummary{
 	// 				Blobs: &armsecurity.BlobsScanSummary{
 	// 					FailedBlobsCount: to.Ptr[int64](0),
@@ -232,7 +246,7 @@ func ExampleDefenderForStorageClient_GetMalwareScan() {
 	// }
 }
 
-// Generated from example definition: 2025-09-01-preview/DefenderForStorage/ListDefenderForStorageSettings_example.json
+// Generated from example definition: 2026-09-01/DefenderForStorage/ListDefenderForStorageSettings_example.json
 func ExampleDefenderForStorageClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -269,7 +283,7 @@ func ExampleDefenderForStorageClient_NewListPager() {
 		// 						OnUpload: &armsecurity.OnUploadProperties{
 		// 							CapGBPerMonth: to.Ptr[int32](10000),
 		// 							Filters: &armsecurity.OnUploadFilters{
-		// 								ExcludeBlobsLargerThan: 1024,
+		// 								ExcludeBlobsLargerThan: to.Ptr[int64](1024),
 		// 								ExcludeBlobsWithPrefix: []*string{
 		// 									to.Ptr("sample-container/logs"),
 		// 									to.Ptr("single-excluded-container/"),
@@ -283,10 +297,13 @@ func ExampleDefenderForStorageClient_NewListPager() {
 		// 							IsEnabled: to.Ptr(true),
 		// 						},
 		// 						ScanResultsEventGridTopicResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.EventGrid/topics/sampletopic"),
+		// 						ScannerResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityOperators/malwareScanningOperator"),
 		// 					},
+		// 					ManagedBy: to.Ptr(armsecurity.ManagedByTypeNone),
 		// 					OverrideSubscriptionLevelSettings: to.Ptr(true),
 		// 					SensitiveDataDiscovery: &armsecurity.SensitiveDataDiscoveryProperties{
 		// 						IsEnabled: to.Ptr(true),
+		// 						ScannerResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityOperators/sensitiveDataDiscoveryOperator"),
 		// 					},
 		// 				},
 		// 			},
@@ -296,7 +313,7 @@ func ExampleDefenderForStorageClient_NewListPager() {
 	}
 }
 
-// Generated from example definition: 2025-09-01-preview/DefenderForStorage/StartMalwareScan_example.json
+// Generated from example definition: 2026-09-01/DefenderForStorage/StartMalwareScan_example.json
 func ExampleDefenderForStorageClient_StartMalwareScan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -307,7 +324,33 @@ func ExampleDefenderForStorageClient_StartMalwareScan() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	res, err := clientFactory.NewDefenderForStorageClient().StartMalwareScan(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount", armsecurity.SettingNameCurrent, nil)
+	res, err := clientFactory.NewDefenderForStorageClient().StartMalwareScan(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount", "current", &armsecurity.DefenderForStorageClientStartMalwareScanOptions{
+		Body: &armsecurity.StartMalwareScanRequest{
+			Properties: &armsecurity.StartMalwareScanRequestProperties{
+				Filters: &armsecurity.MalwareScanFilters{
+					Blobs: &armsecurity.BlobScanFilter{
+						Container: &armsecurity.MatchFilter{
+							Value: to.Ptr("mycontainer"),
+							Match: to.Ptr(armsecurity.MatchTypeExact),
+						},
+						Blob: &armsecurity.MatchFilter{
+							Value: to.Ptr("myblob.txt"),
+							Match: to.Ptr(armsecurity.MatchTypeExact),
+						},
+					},
+					Files: &armsecurity.FileScanFilter{
+						Share: &armsecurity.MatchFilter{
+							Value: to.Ptr("myshare"),
+							Match: to.Ptr(armsecurity.MatchTypeExact),
+						},
+						File: &armsecurity.MatchFilter{
+							Value: to.Ptr("dir"),
+							Match: to.Ptr(armsecurity.MatchTypePrefix),
+						},
+					},
+				},
+			},
+		}})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -316,9 +359,12 @@ func ExampleDefenderForStorageClient_StartMalwareScan() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.DefenderForStorageClientStartMalwareScanResponse{
 	// 	MalwareScan: armsecurity.MalwareScan{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/SampleRG/providers/Microsoft.Storage/storageAccounts/samplestorageaccount/providers/Microsoft.Security/defenderForStorageSettings/current/malwareScans/fc831479-412f-4bc2-8333-a8edda751a80"),
+	// 		Name: to.Ptr("fc831479-412f-4bc2-8333-a8edda751a80"),
+	// 		Type: to.Ptr("Microsoft.Security/defenderForStorageSettings/malwareScans"),
 	// 		Properties: &armsecurity.MalwareScanProperties{
 	// 			ScanID: to.Ptr("fc831479-412f-4bc2-8333-a8edda751a80"),
-	// 			ScanStatus: to.Ptr("Queued"),
+	// 			ScanStatus: to.Ptr(armsecurity.MalwareScanStatusQueued),
 	// 			ScanStatusMessage: to.Ptr("The scan request has been queued for scanning"),
 	// 		},
 	// 	},

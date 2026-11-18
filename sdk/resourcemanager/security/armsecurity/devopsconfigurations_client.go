@@ -30,6 +30,9 @@ type DevOpsConfigurationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewDevOpsConfigurationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*DevOpsConfigurationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -67,7 +70,7 @@ func (client *DevOpsConfigurationsClient) BeginCreateOrUpdate(ctx context.Contex
 	}
 }
 
-// CreateOrUpdate - Creates or updates a DevOps Configuration.
+// createOrUpdate - Creates or updates a DevOps Configuration.
 //
 // Creates or updates a DevOps Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -92,11 +95,11 @@ func (client *DevOpsConfigurationsClient) createOrUpdate(ctx context.Context, re
 	return httpResp, nil
 }
 
-// createOrUpdateCreateRequest creates the CreateOrUpdate request.
+// createOrUpdateCreateRequest creates the createOrUpdate request.
 func (client *DevOpsConfigurationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, devOpsConfiguration DevOpsConfiguration, _ *DevOpsConfigurationsClientBeginCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -147,7 +150,7 @@ func (client *DevOpsConfigurationsClient) BeginDelete(ctx context.Context, resou
 	}
 }
 
-// Delete - Deletes a DevOps Connector.
+// deleteOperation - Deletes a DevOps Connector.
 //
 // Deletes a DevOps Connector.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -172,11 +175,11 @@ func (client *DevOpsConfigurationsClient) deleteOperation(ctx context.Context, r
 	return httpResp, nil
 }
 
-// deleteCreateRequest creates the Delete request.
+// deleteCreateRequest creates the delete request.
 func (client *DevOpsConfigurationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *DevOpsConfigurationsClientBeginDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -195,136 +198,6 @@ func (client *DevOpsConfigurationsClient) deleteCreateRequest(ctx context.Contex
 	reqQP.Set("api-version", version20251101Preview)
 	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
 	return req, nil
-}
-
-// Get - Gets a DevOps Configuration.
-//
-// Gets a DevOps Configuration.
-// If the operation fails it returns an *azcore.ResponseError type.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - securityConnectorName - The security connector name.
-//   - options - DevOpsConfigurationsClientGetOptions contains the optional parameters for the DevOpsConfigurationsClient.Get
-//     method.
-func (client *DevOpsConfigurationsClient) Get(ctx context.Context, resourceGroupName string, securityConnectorName string, options *DevOpsConfigurationsClientGetOptions) (DevOpsConfigurationsClientGetResponse, error) {
-	var err error
-	const operationName = "DevOpsConfigurationsClient.Get"
-	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
-	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
-	defer func() { endSpan(err) }()
-	req, err := client.getCreateRequest(ctx, resourceGroupName, securityConnectorName, options)
-	if err != nil {
-		return DevOpsConfigurationsClientGetResponse{}, err
-	}
-	httpResp, err := client.internal.Pipeline().Do(req)
-	if err != nil {
-		return DevOpsConfigurationsClientGetResponse{}, err
-	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DevOpsConfigurationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
-	return resp, err
-}
-
-// getCreateRequest creates the Get request.
-func (client *DevOpsConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *DevOpsConfigurationsClientGetOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if securityConnectorName == "" {
-		return nil, errors.New("parameter securityConnectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// getHandleResponse handles the Get response.
-func (client *DevOpsConfigurationsClient) getHandleResponse(resp *http.Response) (DevOpsConfigurationsClientGetResponse, error) {
-	result := DevOpsConfigurationsClientGetResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DevOpsConfiguration); err != nil {
-		return DevOpsConfigurationsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - List DevOps Configurations.
-//
-// List DevOps Configurations.
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - securityConnectorName - The security connector name.
-//   - options - DevOpsConfigurationsClientListOptions contains the optional parameters for the DevOpsConfigurationsClient.NewListPager
-//     method.
-func (client *DevOpsConfigurationsClient) NewListPager(resourceGroupName string, securityConnectorName string, options *DevOpsConfigurationsClientListOptions) *runtime.Pager[DevOpsConfigurationsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[DevOpsConfigurationsClientListResponse]{
-		More: func(page DevOpsConfigurationsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *DevOpsConfigurationsClientListResponse) (DevOpsConfigurationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DevOpsConfigurationsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceGroupName, securityConnectorName, options)
-			}, nil)
-			if err != nil {
-				return DevOpsConfigurationsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *DevOpsConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *DevOpsConfigurationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if securityConnectorName == "" {
-		return nil, errors.New("parameter securityConnectorName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20251101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *DevOpsConfigurationsClient) listHandleResponse(resp *http.Response) (DevOpsConfigurationsClientListResponse, error) {
-	result := DevOpsConfigurationsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.DevOpsConfigurationListResponse); err != nil {
-		return DevOpsConfigurationsClientListResponse{}, err
-	}
-	return result, nil
 }
 
 // BeginUpdate - Updates a DevOps Configuration.
@@ -353,7 +226,7 @@ func (client *DevOpsConfigurationsClient) BeginUpdate(ctx context.Context, resou
 	}
 }
 
-// Update - Updates a DevOps Configuration.
+// update - Updates a DevOps Configuration.
 //
 // Updates a DevOps Configuration.
 // If the operation fails it returns an *azcore.ResponseError type.
@@ -378,11 +251,11 @@ func (client *DevOpsConfigurationsClient) update(ctx context.Context, resourceGr
 	return httpResp, nil
 }
 
-// updateCreateRequest creates the Update request.
+// updateCreateRequest creates the update request.
 func (client *DevOpsConfigurationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, devOpsConfiguration DevOpsConfiguration, _ *DevOpsConfigurationsClientBeginUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -406,4 +279,147 @@ func (client *DevOpsConfigurationsClient) updateCreateRequest(ctx context.Contex
 		return nil, err
 	}
 	return req, nil
+}
+
+// Get - Gets a DevOps Configuration.
+//
+// Gets a DevOps Configuration.
+// If the operation fails it returns an *azcore.ResponseError type.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - options - DevOpsConfigurationsClientGetOptions contains the optional parameters for the DevOpsConfigurationsClient.Get
+//     method.
+func (client *DevOpsConfigurationsClient) Get(ctx context.Context, resourceGroupName string, securityConnectorName string, options *DevOpsConfigurationsClientGetOptions) (DevOpsConfigurationsClientGetResponse, error) {
+	var err error
+	const operationName = "DevOpsConfigurationsClient.Get"
+	ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, operationName)
+	ctx, endSpan := runtime.StartSpan(ctx, operationName, client.internal.Tracer(), nil)
+	defer func() { endSpan(err) }()
+	req, err := client.getCreateRequest(ctx, resourceGroupName, securityConnectorName, options)
+	if err != nil {
+		return DevOpsConfigurationsClientGetResponse{}, err
+	}
+	httpResp, err := client.internal.Pipeline().Do(req)
+	if err != nil {
+		return DevOpsConfigurationsClientGetResponse{}, err
+	}
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
+	return resp, err
+}
+
+// getCreateRequest creates the Get request.
+func (client *DevOpsConfigurationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, _ *DevOpsConfigurationsClientGetOptions) (*policy.Request, error) {
+	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops/default"
+	if client.subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+	if resourceGroupName == "" {
+		return nil, errors.New("parameter resourceGroupName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+	if securityConnectorName == "" {
+		return nil, errors.New("parameter securityConnectorName cannot be empty")
+	}
+	urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	if err != nil {
+		return nil, err
+	}
+	reqQP := req.Raw().URL.Query()
+	reqQP.Set("api-version", version20251101Preview)
+	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+	req.Raw().Header["Accept"] = []string{"application/json"}
+	return req, nil
+}
+
+// getHandleResponse handles the Get response.
+func (client *DevOpsConfigurationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DevOpsConfigurationsClientGetResponse, error) {
+	result := DevOpsConfigurationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DevOpsConfiguration); err != nil {
+		return DevOpsConfigurationsClientGetResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - List DevOps Configurations.
+//
+// List DevOps Configurations.
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - securityConnectorName - The security connector name.
+//   - options - DevOpsConfigurationsClientListOptions contains the optional parameters for the DevOpsConfigurationsClient.NewListPager
+//     method.
+func (client *DevOpsConfigurationsClient) NewListPager(resourceGroupName string, securityConnectorName string, options *DevOpsConfigurationsClientListOptions) *runtime.Pager[DevOpsConfigurationsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[DevOpsConfigurationsClientListResponse]{
+		More: func(page DevOpsConfigurationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *DevOpsConfigurationsClientListResponse) (DevOpsConfigurationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "DevOpsConfigurationsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, resourceGroupName, securityConnectorName, nextLink, options)
+			if err != nil {
+				return DevOpsConfigurationsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DevOpsConfigurationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *DevOpsConfigurationsClient) listCreateRequest(ctx context.Context, resourceGroupName string, securityConnectorName string, nextLink string, _ *DevOpsConfigurationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/devops"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if securityConnectorName == "" {
+			return nil, errors.New("parameter securityConnectorName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{securityConnectorName}", url.PathEscape(securityConnectorName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20251101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *DevOpsConfigurationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DevOpsConfigurationsClientListResponse, error) {
+	result := DevOpsConfigurationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.DevOpsConfigurationListResponse); err != nil {
+		return DevOpsConfigurationsClientListResponse{}, err
+	}
+	return result, nil
 }

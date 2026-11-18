@@ -30,6 +30,9 @@ type AssessmentsMetadataClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAssessmentsMetadataClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AssessmentsMetadataClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,11 +64,7 @@ func (client *AssessmentsMetadataClient) CreateInSubscription(ctx context.Contex
 	if err != nil {
 		return AssessmentsMetadataClientCreateInSubscriptionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AssessmentsMetadataClientCreateInSubscriptionResponse{}, err
-	}
-	resp, err := client.createInSubscriptionHandleResponse(httpResp)
+	resp, err := client.createInSubscriptionHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -73,7 +72,7 @@ func (client *AssessmentsMetadataClient) CreateInSubscription(ctx context.Contex
 func (client *AssessmentsMetadataClient) createInSubscriptionCreateRequest(ctx context.Context, assessmentMetadataName string, assessmentMetadata AssessmentMetadataResponse, _ *AssessmentsMetadataClientCreateInSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if assessmentMetadataName == "" {
@@ -96,8 +95,11 @@ func (client *AssessmentsMetadataClient) createInSubscriptionCreateRequest(ctx c
 }
 
 // createInSubscriptionHandleResponse handles the CreateInSubscription response.
-func (client *AssessmentsMetadataClient) createInSubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataClientCreateInSubscriptionResponse, error) {
+func (client *AssessmentsMetadataClient) createInSubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AssessmentsMetadataClientCreateInSubscriptionResponse, error) {
 	result := AssessmentsMetadataClientCreateInSubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentMetadataResponse); err != nil {
 		return AssessmentsMetadataClientCreateInSubscriptionResponse{}, err
 	}
@@ -135,7 +137,7 @@ func (client *AssessmentsMetadataClient) DeleteInSubscription(ctx context.Contex
 func (client *AssessmentsMetadataClient) deleteInSubscriptionCreateRequest(ctx context.Context, assessmentMetadataName string, _ *AssessmentsMetadataClientDeleteInSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if assessmentMetadataName == "" {
@@ -170,11 +172,7 @@ func (client *AssessmentsMetadataClient) Get(ctx context.Context, assessmentMeta
 	if err != nil {
 		return AssessmentsMetadataClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AssessmentsMetadataClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -197,8 +195,11 @@ func (client *AssessmentsMetadataClient) getCreateRequest(ctx context.Context, a
 }
 
 // getHandleResponse handles the Get response.
-func (client *AssessmentsMetadataClient) getHandleResponse(resp *http.Response) (AssessmentsMetadataClientGetResponse, error) {
+func (client *AssessmentsMetadataClient) getHandleResponse(resp *http.Response, successCodes ...int) (AssessmentsMetadataClientGetResponse, error) {
 	result := AssessmentsMetadataClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentMetadataResponse); err != nil {
 		return AssessmentsMetadataClientGetResponse{}, err
 	}
@@ -224,11 +225,7 @@ func (client *AssessmentsMetadataClient) GetInSubscription(ctx context.Context, 
 	if err != nil {
 		return AssessmentsMetadataClientGetInSubscriptionResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AssessmentsMetadataClientGetInSubscriptionResponse{}, err
-	}
-	resp, err := client.getInSubscriptionHandleResponse(httpResp)
+	resp, err := client.getInSubscriptionHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -236,7 +233,7 @@ func (client *AssessmentsMetadataClient) GetInSubscription(ctx context.Context, 
 func (client *AssessmentsMetadataClient) getInSubscriptionCreateRequest(ctx context.Context, assessmentMetadataName string, _ *AssessmentsMetadataClientGetInSubscriptionOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata/{assessmentMetadataName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if assessmentMetadataName == "" {
@@ -255,59 +252,13 @@ func (client *AssessmentsMetadataClient) getInSubscriptionCreateRequest(ctx cont
 }
 
 // getInSubscriptionHandleResponse handles the GetInSubscription response.
-func (client *AssessmentsMetadataClient) getInSubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataClientGetInSubscriptionResponse, error) {
+func (client *AssessmentsMetadataClient) getInSubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AssessmentsMetadataClientGetInSubscriptionResponse, error) {
 	result := AssessmentsMetadataClientGetInSubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentMetadataResponse); err != nil {
 		return AssessmentsMetadataClientGetInSubscriptionResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Get metadata information on all assessment types
-//   - options - AssessmentsMetadataClientListOptions contains the optional parameters for the AssessmentsMetadataClient.NewListPager
-//     method.
-func (client *AssessmentsMetadataClient) NewListPager(options *AssessmentsMetadataClientListOptions) *runtime.Pager[AssessmentsMetadataClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AssessmentsMetadataClientListResponse]{
-		More: func(page AssessmentsMetadataClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AssessmentsMetadataClientListResponse) (AssessmentsMetadataClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssessmentsMetadataClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return AssessmentsMetadataClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AssessmentsMetadataClient) listCreateRequest(ctx context.Context, _ *AssessmentsMetadataClientListOptions) (*policy.Request, error) {
-	urlPath := "/providers/Microsoft.Security/assessmentMetadata"
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250504)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AssessmentsMetadataClient) listHandleResponse(resp *http.Response) (AssessmentsMetadataClientListResponse, error) {
-	result := AssessmentsMetadataClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentMetadataResponseList); err != nil {
-		return AssessmentsMetadataClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -326,41 +277,118 @@ func (client *AssessmentsMetadataClient) NewListBySubscriptionPager(options *Ass
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listBySubscriptionCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listBySubscriptionCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AssessmentsMetadataClientListBySubscriptionResponse{}, err
 			}
-			return client.listBySubscriptionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AssessmentsMetadataClientListBySubscriptionResponse{}, err
+			}
+			return client.listBySubscriptionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listBySubscriptionCreateRequest creates the ListBySubscription request.
-func (client *AssessmentsMetadataClient) listBySubscriptionCreateRequest(ctx context.Context, _ *AssessmentsMetadataClientListBySubscriptionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AssessmentsMetadataClient) listBySubscriptionCreateRequest(ctx context.Context, nextLink string, _ *AssessmentsMetadataClientListBySubscriptionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/assessmentMetadata"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20250504)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250504)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listBySubscriptionHandleResponse handles the ListBySubscription response.
-func (client *AssessmentsMetadataClient) listBySubscriptionHandleResponse(resp *http.Response) (AssessmentsMetadataClientListBySubscriptionResponse, error) {
+func (client *AssessmentsMetadataClient) listBySubscriptionHandleResponse(resp *http.Response, successCodes ...int) (AssessmentsMetadataClientListBySubscriptionResponse, error) {
 	result := AssessmentsMetadataClientListBySubscriptionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentMetadataResponseList); err != nil {
 		return AssessmentsMetadataClientListBySubscriptionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Get metadata information on all assessment types
+//   - options - AssessmentsMetadataClientListOptions contains the optional parameters for the AssessmentsMetadataClient.NewListPager
+//     method.
+func (client *AssessmentsMetadataClient) NewListPager(options *AssessmentsMetadataClientListOptions) *runtime.Pager[AssessmentsMetadataClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AssessmentsMetadataClientListResponse]{
+		More: func(page AssessmentsMetadataClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AssessmentsMetadataClientListResponse) (AssessmentsMetadataClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AssessmentsMetadataClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return AssessmentsMetadataClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AssessmentsMetadataClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *AssessmentsMetadataClient) listCreateRequest(ctx context.Context, nextLink string, _ *AssessmentsMetadataClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/providers/Microsoft.Security/assessmentMetadata"
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20250504)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *AssessmentsMetadataClient) listHandleResponse(resp *http.Response, successCodes ...int) (AssessmentsMetadataClientListResponse, error) {
+	result := AssessmentsMetadataClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AssessmentMetadataResponseList); err != nil {
+		return AssessmentsMetadataClientListResponse{}, err
 	}
 	return result, nil
 }

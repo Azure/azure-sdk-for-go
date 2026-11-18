@@ -30,6 +30,9 @@ type AllowedConnectionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAllowedConnectionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AllowedConnectionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -61,11 +64,7 @@ func (client *AllowedConnectionsClient) Get(ctx context.Context, resourceGroupNa
 	if err != nil {
 		return AllowedConnectionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AllowedConnectionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -73,7 +72,7 @@ func (client *AllowedConnectionsClient) Get(ctx context.Context, resourceGroupNa
 func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, connectionType ConnectionType, _ *AllowedConnectionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/allowedConnections/{connectionType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -100,63 +99,13 @@ func (client *AllowedConnectionsClient) getCreateRequest(ctx context.Context, re
 }
 
 // getHandleResponse handles the Get response.
-func (client *AllowedConnectionsClient) getHandleResponse(resp *http.Response) (AllowedConnectionsClientGetResponse, error) {
+func (client *AllowedConnectionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AllowedConnectionsClientGetResponse, error) {
 	result := AllowedConnectionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsResource); err != nil {
 		return AllowedConnectionsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets the list of all possible traffic between resources for the subscription
-//   - options - AllowedConnectionsClientListOptions contains the optional parameters for the AllowedConnectionsClient.NewListPager
-//     method.
-func (client *AllowedConnectionsClient) NewListPager(options *AllowedConnectionsClientListOptions) *runtime.Pager[AllowedConnectionsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AllowedConnectionsClientListResponse]{
-		More: func(page AllowedConnectionsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AllowedConnectionsClientListResponse) (AllowedConnectionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AllowedConnectionsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return AllowedConnectionsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AllowedConnectionsClient) listCreateRequest(ctx context.Context, _ *AllowedConnectionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/allowedConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AllowedConnectionsClient) listHandleResponse(resp *http.Response) (AllowedConnectionsClientListResponse, error) {
-	result := AllowedConnectionsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsList); err != nil {
-		return AllowedConnectionsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -176,45 +125,126 @@ func (client *AllowedConnectionsClient) NewListByHomeRegionPager(ascLocation str
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByHomeRegionCreateRequest(ctx, ascLocation, options)
-			}, nil)
+			req, err := client.listByHomeRegionCreateRequest(ctx, ascLocation, nextLink, options)
 			if err != nil {
 				return AllowedConnectionsClientListByHomeRegionResponse{}, err
 			}
-			return client.listByHomeRegionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AllowedConnectionsClientListByHomeRegionResponse{}, err
+			}
+			return client.listByHomeRegionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, _ *AllowedConnectionsClientListByHomeRegionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/allowedConnections"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AllowedConnectionsClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, nextLink string, _ *AllowedConnectionsClientListByHomeRegionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/allowedConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if ascLocation == "" {
+			return nil, errors.New("parameter ascLocation cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if ascLocation == "" {
-		return nil, errors.New("parameter ascLocation cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20200101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByHomeRegionHandleResponse handles the ListByHomeRegion response.
-func (client *AllowedConnectionsClient) listByHomeRegionHandleResponse(resp *http.Response) (AllowedConnectionsClientListByHomeRegionResponse, error) {
+func (client *AllowedConnectionsClient) listByHomeRegionHandleResponse(resp *http.Response, successCodes ...int) (AllowedConnectionsClientListByHomeRegionResponse, error) {
 	result := AllowedConnectionsClientListByHomeRegionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsList); err != nil {
 		return AllowedConnectionsClientListByHomeRegionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets the list of all possible traffic between resources for the subscription
+//   - options - AllowedConnectionsClientListOptions contains the optional parameters for the AllowedConnectionsClient.NewListPager
+//     method.
+func (client *AllowedConnectionsClient) NewListPager(options *AllowedConnectionsClientListOptions) *runtime.Pager[AllowedConnectionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AllowedConnectionsClientListResponse]{
+		More: func(page AllowedConnectionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AllowedConnectionsClientListResponse) (AllowedConnectionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AllowedConnectionsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return AllowedConnectionsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AllowedConnectionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *AllowedConnectionsClient) listCreateRequest(ctx context.Context, nextLink string, _ *AllowedConnectionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/allowedConnections"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20200101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *AllowedConnectionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AllowedConnectionsClientListResponse, error) {
+	result := AllowedConnectionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AllowedConnectionsList); err != nil {
+		return AllowedConnectionsClientListResponse{}, err
 	}
 	return result, nil
 }

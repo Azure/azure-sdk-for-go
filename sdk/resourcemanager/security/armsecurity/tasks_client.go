@@ -30,6 +30,9 @@ type TasksClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewTasksClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*TasksClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,11 +65,7 @@ func (client *TasksClient) GetResourceGroupLevelTask(ctx context.Context, resour
 	if err != nil {
 		return TasksClientGetResourceGroupLevelTaskResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TasksClientGetResourceGroupLevelTaskResponse{}, err
-	}
-	resp, err := client.getResourceGroupLevelTaskHandleResponse(httpResp)
+	resp, err := client.getResourceGroupLevelTaskHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -74,7 +73,7 @@ func (client *TasksClient) GetResourceGroupLevelTask(ctx context.Context, resour
 func (client *TasksClient) getResourceGroupLevelTaskCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, taskName string, _ *TasksClientGetResourceGroupLevelTaskOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,8 +100,11 @@ func (client *TasksClient) getResourceGroupLevelTaskCreateRequest(ctx context.Co
 }
 
 // getResourceGroupLevelTaskHandleResponse handles the GetResourceGroupLevelTask response.
-func (client *TasksClient) getResourceGroupLevelTaskHandleResponse(resp *http.Response) (TasksClientGetResourceGroupLevelTaskResponse, error) {
+func (client *TasksClient) getResourceGroupLevelTaskHandleResponse(resp *http.Response, successCodes ...int) (TasksClientGetResourceGroupLevelTaskResponse, error) {
 	result := TasksClientGetResourceGroupLevelTaskResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Task); err != nil {
 		return TasksClientGetResourceGroupLevelTaskResponse{}, err
 	}
@@ -129,11 +131,7 @@ func (client *TasksClient) GetSubscriptionLevelTask(ctx context.Context, ascLoca
 	if err != nil {
 		return TasksClientGetSubscriptionLevelTaskResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return TasksClientGetSubscriptionLevelTaskResponse{}, err
-	}
-	resp, err := client.getSubscriptionLevelTaskHandleResponse(httpResp)
+	resp, err := client.getSubscriptionLevelTaskHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -141,7 +139,7 @@ func (client *TasksClient) GetSubscriptionLevelTask(ctx context.Context, ascLoca
 func (client *TasksClient) getSubscriptionLevelTaskCreateRequest(ctx context.Context, ascLocation string, taskName string, _ *TasksClientGetSubscriptionLevelTaskOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if ascLocation == "" {
@@ -164,65 +162,13 @@ func (client *TasksClient) getSubscriptionLevelTaskCreateRequest(ctx context.Con
 }
 
 // getSubscriptionLevelTaskHandleResponse handles the GetSubscriptionLevelTask response.
-func (client *TasksClient) getSubscriptionLevelTaskHandleResponse(resp *http.Response) (TasksClientGetSubscriptionLevelTaskResponse, error) {
+func (client *TasksClient) getSubscriptionLevelTaskHandleResponse(resp *http.Response, successCodes ...int) (TasksClientGetSubscriptionLevelTaskResponse, error) {
 	result := TasksClientGetSubscriptionLevelTaskResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Task); err != nil {
 		return TasksClientGetSubscriptionLevelTaskResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Recommended tasks that will help improve the security of the subscription proactively
-//   - options - TasksClientListOptions contains the optional parameters for the TasksClient.NewListPager method.
-func (client *TasksClient) NewListPager(options *TasksClientListOptions) *runtime.Pager[TasksClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[TasksClientListResponse]{
-		More: func(page TasksClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *TasksClientListResponse) (TasksClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TasksClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return TasksClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *TasksClient) listCreateRequest(ctx context.Context, options *TasksClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/tasks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
-	}
-	reqQP.Set("api-version", version20150601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *TasksClient) listHandleResponse(resp *http.Response) (TasksClientListResponse, error) {
-	result := TasksClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.TaskList); err != nil {
-		return TasksClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -242,46 +188,60 @@ func (client *TasksClient) NewListByHomeRegionPager(ascLocation string, options 
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByHomeRegionCreateRequest(ctx, ascLocation, options)
-			}, nil)
+			req, err := client.listByHomeRegionCreateRequest(ctx, ascLocation, nextLink, options)
 			if err != nil {
 				return TasksClientListByHomeRegionResponse{}, err
 			}
-			return client.listByHomeRegionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TasksClientListByHomeRegionResponse{}, err
+			}
+			return client.listByHomeRegionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *TasksClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, options *TasksClientListByHomeRegionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TasksClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, nextLink string, options *TasksClientListByHomeRegionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if ascLocation == "" {
+			return nil, errors.New("parameter ascLocation cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if ascLocation == "" {
-		return nil, errors.New("parameter ascLocation cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20150601Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20150601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByHomeRegionHandleResponse handles the ListByHomeRegion response.
-func (client *TasksClient) listByHomeRegionHandleResponse(resp *http.Response) (TasksClientListByHomeRegionResponse, error) {
+func (client *TasksClient) listByHomeRegionHandleResponse(resp *http.Response, successCodes ...int) (TasksClientListByHomeRegionResponse, error) {
 	result := TasksClientListByHomeRegionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskList); err != nil {
 		return TasksClientListByHomeRegionResponse{}, err
 	}
@@ -304,52 +264,135 @@ func (client *TasksClient) NewListByResourceGroupPager(resourceGroupName string,
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, ascLocation, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, ascLocation, nextLink, options)
 			if err != nil {
 				return TasksClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TasksClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *TasksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, options *TasksClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *TasksClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, nextLink string, options *TasksClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if ascLocation == "" {
+			return nil, errors.New("parameter ascLocation cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ascLocation == "" {
-		return nil, errors.New("parameter ascLocation cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20150601Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20150601Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *TasksClient) listByResourceGroupHandleResponse(resp *http.Response) (TasksClientListByResourceGroupResponse, error) {
+func (client *TasksClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (TasksClientListByResourceGroupResponse, error) {
 	result := TasksClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.TaskList); err != nil {
 		return TasksClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Recommended tasks that will help improve the security of the subscription proactively
+//   - options - TasksClientListOptions contains the optional parameters for the TasksClient.NewListPager method.
+func (client *TasksClient) NewListPager(options *TasksClientListOptions) *runtime.Pager[TasksClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[TasksClientListResponse]{
+		More: func(page TasksClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *TasksClientListResponse) (TasksClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "TasksClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return TasksClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return TasksClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *TasksClient) listCreateRequest(ctx context.Context, nextLink string, options *TasksClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/tasks"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20150601Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *TasksClient) listHandleResponse(resp *http.Response, successCodes ...int) (TasksClientListResponse, error) {
+	result := TasksClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.TaskList); err != nil {
+		return TasksClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -387,7 +430,7 @@ func (client *TasksClient) UpdateResourceGroupLevelTaskState(ctx context.Context
 func (client *TasksClient) updateResourceGroupLevelTaskStateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, taskName string, taskUpdateActionType TaskUpdateActionType, _ *TasksClientUpdateResourceGroupLevelTaskStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -448,7 +491,7 @@ func (client *TasksClient) UpdateSubscriptionLevelTaskState(ctx context.Context,
 func (client *TasksClient) updateSubscriptionLevelTaskStateCreateRequest(ctx context.Context, ascLocation string, taskName string, taskUpdateActionType TaskUpdateActionType, _ *TasksClientUpdateSubscriptionLevelTaskStateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/tasks/{taskName}/{taskUpdateActionType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if ascLocation == "" {

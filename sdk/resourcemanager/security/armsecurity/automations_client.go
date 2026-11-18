@@ -30,6 +30,9 @@ type AutomationsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAutomationsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AutomationsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -63,11 +66,7 @@ func (client *AutomationsClient) CreateOrUpdate(ctx context.Context, resourceGro
 	if err != nil {
 		return AutomationsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return AutomationsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
@@ -75,7 +74,7 @@ func (client *AutomationsClient) CreateOrUpdate(ctx context.Context, resourceGro
 func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, _ *AutomationsClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -102,8 +101,11 @@ func (client *AutomationsClient) createOrUpdateCreateRequest(ctx context.Context
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *AutomationsClient) createOrUpdateHandleResponse(resp *http.Response) (AutomationsClientCreateOrUpdateResponse, error) {
+func (client *AutomationsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (AutomationsClientCreateOrUpdateResponse, error) {
 	result := AutomationsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Automation); err != nil {
 		return AutomationsClientCreateOrUpdateResponse{}, err
 	}
@@ -140,7 +142,7 @@ func (client *AutomationsClient) Delete(ctx context.Context, resourceGroupName s
 func (client *AutomationsClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, automationName string, _ *AutomationsClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -180,11 +182,7 @@ func (client *AutomationsClient) Get(ctx context.Context, resourceGroupName stri
 	if err != nil {
 		return AutomationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AutomationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -192,7 +190,7 @@ func (client *AutomationsClient) Get(ctx context.Context, resourceGroupName stri
 func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceGroupName string, automationName string, _ *AutomationsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -215,63 +213,13 @@ func (client *AutomationsClient) getCreateRequest(ctx context.Context, resourceG
 }
 
 // getHandleResponse handles the Get response.
-func (client *AutomationsClient) getHandleResponse(resp *http.Response) (AutomationsClientGetResponse, error) {
+func (client *AutomationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (AutomationsClientGetResponse, error) {
 	result := AutomationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Automation); err != nil {
 		return AutomationsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Lists all the security automations in the specified subscription. Use the 'nextLink' property in the response
-// to get the next page of security automations for the specified subscription.
-//   - options - AutomationsClientListOptions contains the optional parameters for the AutomationsClient.NewListPager method.
-func (client *AutomationsClient) NewListPager(options *AutomationsClientListOptions) *runtime.Pager[AutomationsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[AutomationsClientListResponse]{
-		More: func(page AutomationsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *AutomationsClientListResponse) (AutomationsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AutomationsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return AutomationsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *AutomationsClient) listCreateRequest(ctx context.Context, _ *AutomationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/automations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *AutomationsClient) listHandleResponse(resp *http.Response) (AutomationsClientListResponse, error) {
-	result := AutomationsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationList); err != nil {
-		return AutomationsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -292,45 +240,126 @@ func (client *AutomationsClient) NewListByResourceGroupPager(resourceGroupName s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
 			if err != nil {
 				return AutomationsClientListByResourceGroupResponse{}, err
 			}
-			return client.listByResourceGroupHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AutomationsClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *AutomationsClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AutomationsClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *AutomationsClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20231201Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20231201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *AutomationsClient) listByResourceGroupHandleResponse(resp *http.Response) (AutomationsClientListByResourceGroupResponse, error) {
+func (client *AutomationsClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (AutomationsClientListByResourceGroupResponse, error) {
 	result := AutomationsClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationList); err != nil {
 		return AutomationsClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Lists all the security automations in the specified subscription. Use the 'nextLink' property in the response
+// to get the next page of security automations for the specified subscription.
+//   - options - AutomationsClientListOptions contains the optional parameters for the AutomationsClient.NewListPager method.
+func (client *AutomationsClient) NewListPager(options *AutomationsClientListOptions) *runtime.Pager[AutomationsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[AutomationsClientListResponse]{
+		More: func(page AutomationsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *AutomationsClientListResponse) (AutomationsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "AutomationsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return AutomationsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AutomationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *AutomationsClient) listCreateRequest(ctx context.Context, nextLink string, _ *AutomationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/automations"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20231201Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *AutomationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (AutomationsClientListResponse, error) {
+	result := AutomationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationList); err != nil {
+		return AutomationsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -355,11 +384,7 @@ func (client *AutomationsClient) Update(ctx context.Context, resourceGroupName s
 	if err != nil {
 		return AutomationsClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AutomationsClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -367,7 +392,7 @@ func (client *AutomationsClient) Update(ctx context.Context, resourceGroupName s
 func (client *AutomationsClient) updateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation AutomationUpdateModel, _ *AutomationsClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -394,8 +419,11 @@ func (client *AutomationsClient) updateCreateRequest(ctx context.Context, resour
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AutomationsClient) updateHandleResponse(resp *http.Response) (AutomationsClientUpdateResponse, error) {
+func (client *AutomationsClient) updateHandleResponse(resp *http.Response, successCodes ...int) (AutomationsClientUpdateResponse, error) {
 	result := AutomationsClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.Automation); err != nil {
 		return AutomationsClientUpdateResponse{}, err
 	}
@@ -422,11 +450,7 @@ func (client *AutomationsClient) Validate(ctx context.Context, resourceGroupName
 	if err != nil {
 		return AutomationsClientValidateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AutomationsClientValidateResponse{}, err
-	}
-	resp, err := client.validateHandleResponse(httpResp)
+	resp, err := client.validateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -434,7 +458,7 @@ func (client *AutomationsClient) Validate(ctx context.Context, resourceGroupName
 func (client *AutomationsClient) validateCreateRequest(ctx context.Context, resourceGroupName string, automationName string, automation Automation, _ *AutomationsClientValidateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/automations/{automationName}/validate"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -461,8 +485,11 @@ func (client *AutomationsClient) validateCreateRequest(ctx context.Context, reso
 }
 
 // validateHandleResponse handles the Validate response.
-func (client *AutomationsClient) validateHandleResponse(resp *http.Response) (AutomationsClientValidateResponse, error) {
+func (client *AutomationsClient) validateHandleResponse(resp *http.Response, successCodes ...int) (AutomationsClientValidateResponse, error) {
 	result := AutomationsClientValidateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AutomationValidationStatus); err != nil {
 		return AutomationsClientValidateResponse{}, err
 	}

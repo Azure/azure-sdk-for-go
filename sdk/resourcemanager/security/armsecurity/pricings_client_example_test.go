@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2024-01-01/Pricings/DeleteResourcePricingByNameContainers_example.json
+// Generated from example definition: 2026-07-01/Pricings/DeleteResourcePricingByNameContainers_example.json
 func ExamplePricingsClient_Delete_deleteAPricingOnResourceExampleForContainersPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -34,7 +34,7 @@ func ExamplePricingsClient_Delete_deleteAPricingOnResourceExampleForContainersPl
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/DeleteResourcePricing_example.json
+// Generated from example definition: 2026-07-01/Pricings/DeleteResourcePricing_example.json
 func ExamplePricingsClient_Delete_deleteAPricingOnResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -56,7 +56,7 @@ func ExamplePricingsClient_Delete_deleteAPricingOnResource() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/GetPricingByNameCloudPosture_example.json
+// Generated from example definition: 2026-07-01/Pricings/GetPricingByNameCloudPosture_example.json
 func ExamplePricingsClient_Get_getPricingsOnSubscriptionCloudPosturePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -76,22 +76,22 @@ func ExamplePricingsClient_Get_getPricingsOnSubscriptionCloudPosturePlan() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientGetResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
 	// 		Name: to.Ptr("CloudPosture"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 			EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 			Extensions: []*armsecurity.Extension{
 	// 				{
 	// 					Name: to.Ptr("AgentlessVmScanning"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 					AdditionalExtensionProperties: map[string]any{
 	// 						"ExclusionTags": "[]",
 	// 					},
-	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("AgentlessDiscoveryForKubernetes"),
@@ -115,7 +115,7 @@ func ExamplePricingsClient_Get_getPricingsOnSubscriptionCloudPosturePlan() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/GetPricingByNameContainers_example.json
+// Generated from example definition: 2026-07-01/Pricings/GetPricingByNameContainers_example.json
 func ExamplePricingsClient_Get_getPricingsOnSubscriptionContainersPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -135,14 +135,14 @@ func ExamplePricingsClient_Get_getPricingsOnSubscriptionContainersPlan() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientGetResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/Containers"),
 	// 		Name: to.Ptr("Containers"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/Containers"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 			EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 			Extensions: []*armsecurity.Extension{
 	// 				{
@@ -150,12 +150,13 @@ func ExamplePricingsClient_Get_getPricingsOnSubscriptionContainersPlan() {
 	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 				},
 	// 			},
+	// 			SecurityOperatorResourceID: to.Ptr("/providers/Microsoft.Management/managementGroups/ContosoGroup/providers/Microsoft.Security/securityOperators/ContosoOperator"),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/GetPricingByNameDns_example.json
+// Generated from example definition: 2026-07-01/Pricings/GetPricingByNameDns_example.json
 func ExamplePricingsClient_Get_getPricingsOnSubscriptionDnsPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -175,25 +176,87 @@ func ExamplePricingsClient_Get_getPricingsOnSubscriptionDnsPlan() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientGetResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/Dns"),
 	// 		Name: to.Ptr("Dns"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/Dns"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			Deprecated: to.Ptr(true),
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 			EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 			Deprecated: to.Ptr(true),
 	// 			ReplacedBy: []*string{
 	// 				to.Ptr("VirtualMachines"),
 	// 			},
+	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/GetPricingByNameStorageAccounts_example.json
+// Generated from example definition: 2026-07-01/Pricings/GetPricingByNameExternallyUpdated_example.json
+func ExamplePricingsClient_Get_getPricingsOnSubscriptionManagedByM365SecurityRule() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewPricingsClient().Get(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "CloudPosture", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurity.PricingsClientGetResponse{
+	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
+	// 		Name: to.Ptr("CloudPosture"),
+	// 		Type: to.Ptr("Microsoft.Security/pricings"),
+	// 		Properties: &armsecurity.PricingProperties{
+	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 			EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 			Extensions: []*armsecurity.Extension{
+	// 				{
+	// 					Name: to.Ptr("AgentlessVmScanning"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 					AdditionalExtensionProperties: map[string]any{
+	// 						"ExclusionTags": "[]",
+	// 					},
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("AgentlessDiscoveryForKubernetes"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("SensitiveDataDiscovery"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				},
+	// 				{
+	// 					Name: to.Ptr("EntraPermissionsManagement"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 				},
+	// 			},
+	// 			SecurityOperatorResourceID: to.Ptr("/providers/Microsoft.Management/managementGroups/ContosoGroup/providers/Microsoft.Security/securityOperators/ContosoOperator"),
+	// 			OriginatedFrom: to.Ptr(armsecurity.OriginatedFromM365),
+	// 			ManagedBy: to.Ptr("M365 security rule: /management/rules/b6e2e7e2-2c7a-4e2e-9b7d-2e2e7e2b6e2e"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-07-01/Pricings/GetPricingByNameStorageAccounts_example.json
 func ExamplePricingsClient_Get_getPricingsOnSubscriptionStorageAccountsPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -213,23 +276,23 @@ func ExamplePricingsClient_Get_getPricingsOnSubscriptionStorageAccountsPlan() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientGetResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/StorageAccounts"),
 	// 		Name: to.Ptr("StorageAccounts"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/StorageAccounts"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 			SubPlan: to.Ptr("PerStorageAccount"),
+	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 			EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 			Extensions: []*armsecurity.Extension{
 	// 				{
 	// 					Name: to.Ptr("OnUploadMalwareScanning"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 					AdditionalExtensionProperties: map[string]any{
 	// 						"capGBPerMonthPerStorageAccount": 10,
 	// 					},
-	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("SensitiveDataDiscovery"),
@@ -241,7 +304,7 @@ func ExamplePricingsClient_Get_getPricingsOnSubscriptionStorageAccountsPlan() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/GetPricingByNameVirtualMachines_example.json
+// Generated from example definition: 2026-07-01/Pricings/GetPricingByNameVirtualMachines_example.json
 func ExamplePricingsClient_Get_getPricingsOnSubscriptionVirtualMachinesPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -261,23 +324,23 @@ func ExamplePricingsClient_Get_getPricingsOnSubscriptionVirtualMachinesPlan() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientGetResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 		Name: to.Ptr("VirtualMachines"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusPartiallyCovered),
 	// 			SubPlan: to.Ptr("P2"),
+	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 			EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusPartiallyCovered),
 	// 			Extensions: []*armsecurity.Extension{
 	// 				{
 	// 					Name: to.Ptr("AgentlessVmScanning"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 					AdditionalExtensionProperties: map[string]any{
 	// 						"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
 	// 					},
-	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("MdeDesignatedSubscription"),
@@ -289,7 +352,7 @@ func ExamplePricingsClient_Get_getPricingsOnSubscriptionVirtualMachinesPlan() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/GetResourcePricingByNameContainers_example.json
+// Generated from example definition: 2026-07-01/Pricings/GetResourcePricingByNameContainers_example.json
 func ExamplePricingsClient_Get_getPricingsOnResourceContainersPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -309,14 +372,14 @@ func ExamplePricingsClient_Get_getPricingsOnResourceContainersPlan() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientGetResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/demo-containers-rg/providers/Microsoft.ContainerService/managedClusters/demo-aks-cluster/providers/Microsoft.Security/pricings/Containers"),
 	// 		Name: to.Ptr("Containers"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/demo-containers-rg/providers/Microsoft.ContainerService/managedClusters/demo-aks-cluster/providers/Microsoft.Security/pricings/Containers"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-13T10:30:45.1234567Z"); return t}()),
-	// 			FreeTrialRemainingTime: to.Ptr("P26DT17H24M"),
-	// 			Inherited: to.Ptr(armsecurity.InheritedFalse),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 			FreeTrialRemainingTime: to.Ptr("P26DT17H24M"),
+	// 			EnablementTime: to.Ptr(time.Date(2025, time.January, 13, 10, 30, 45, 123456700, time.UTC)),
+	// 			Inherited: to.Ptr(armsecurity.InheritedFalse),
 	// 			Extensions: []*armsecurity.Extension{
 	// 				{
 	// 					Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
@@ -328,10 +391,10 @@ func ExamplePricingsClient_Get_getPricingsOnResourceContainersPlan() {
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("AgentlessVmScanning"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 					AdditionalExtensionProperties: map[string]any{
 	// 						"ExclusionTags": "[]",
 	// 					},
-	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("ContainerSensor"),
@@ -347,7 +410,7 @@ func ExamplePricingsClient_Get_getPricingsOnResourceContainersPlan() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/GetResourcePricingByNameVirtualMachines_example.json
+// Generated from example definition: 2026-07-01/Pricings/GetResourcePricingByNameVirtualMachines_example.json
 func ExamplePricingsClient_Get_getPricingsOnResourceVirtualMachinesPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -367,23 +430,23 @@ func ExamplePricingsClient_Get_getPricingsOnResourceVirtualMachinesPlan() {
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientGetResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 		Name: to.Ptr("VirtualMachines"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 			Inherited: to.Ptr(armsecurity.InheritedTrue),
-	// 			InheritedFrom: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
 	// 			SubPlan: to.Ptr("P2"),
+	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 			EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 			Inherited: to.Ptr(armsecurity.InheritedTrue),
+	// 			InheritedFrom: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
 	// 			Extensions: []*armsecurity.Extension{
 	// 				{
 	// 					Name: to.Ptr("AgentlessVmScanning"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 					AdditionalExtensionProperties: map[string]any{
 	// 						"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
 	// 					},
-	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("MdeDesignatedSubscription"),
@@ -395,7 +458,7 @@ func ExamplePricingsClient_Get_getPricingsOnResourceVirtualMachinesPlan() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/ListPricingsWithPlanFilter_example.json
+// Generated from example definition: 2026-07-01/Pricings/ListPricingsWithPlanFilter_example.json
 func ExamplePricingsClient_List_getPricingsOnSubscriptionWithPlansFilter() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -417,42 +480,43 @@ func ExamplePricingsClient_List_getPricingsOnSubscriptionWithPlansFilter() {
 	// 	PricingList: armsecurity.PricingList{
 	// 		Value: []*armsecurity.Pricing{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 				Name: to.Ptr("VirtualMachines"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusPartiallyCovered),
 	// 					SubPlan: to.Ptr("P2"),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusPartiallyCovered),
 	// 					Extensions: []*armsecurity.Extension{
 	// 						{
 	// 							Name: to.Ptr("AgentlessVmScanning"),
+	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 							AdditionalExtensionProperties: map[string]any{
 	// 								"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
 	// 							},
-	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 						},
 	// 						{
 	// 							Name: to.Ptr("MdeDesignatedSubscription"),
 	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 						},
 	// 					},
+	// 					SecurityOperatorResourceID: to.Ptr("/providers/Microsoft.Management/managementGroups/ContosoGroup/providers/Microsoft.Security/securityOperators/ContosoOperator"),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/KeyVaults"),
 	// 				Name: to.Ptr("KeyVaults"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/KeyVaults"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 					SubPlan: to.Ptr("PerKeyVault"),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 				},
 	// 			},
 	// 		},
@@ -460,7 +524,7 @@ func ExamplePricingsClient_List_getPricingsOnSubscriptionWithPlansFilter() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/ListPricings_example.json
+// Generated from example definition: 2026-07-01/Pricings/ListPricings_example.json
 func ExamplePricingsClient_List_getPricingsOnSubscription() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -482,72 +546,74 @@ func ExamplePricingsClient_List_getPricingsOnSubscription() {
 	// 	PricingList: armsecurity.PricingList{
 	// 		Value: []*armsecurity.Pricing{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 				Name: to.Ptr("VirtualMachines"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusPartiallyCovered),
 	// 					SubPlan: to.Ptr("P2"),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusPartiallyCovered),
 	// 					Extensions: []*armsecurity.Extension{
 	// 						{
 	// 							Name: to.Ptr("AgentlessVmScanning"),
+	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 							AdditionalExtensionProperties: map[string]any{
 	// 								"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
 	// 							},
-	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 						},
 	// 						{
 	// 							Name: to.Ptr("MdeDesignatedSubscription"),
 	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 						},
 	// 					},
+	// 					SecurityOperatorResourceID: to.Ptr("/providers/Microsoft.Management/managementGroups/ContosoGroup/providers/Microsoft.Security/securityOperators/ContosoOperator"),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/SqlServers"),
 	// 				Name: to.Ptr("SqlServers"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/SqlServers"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/AppServices"),
 	// 				Name: to.Ptr("AppServices"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/AppServices"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierFree),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusNotCovered),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/StorageAccounts"),
 	// 				Name: to.Ptr("StorageAccounts"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/StorageAccounts"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 					SubPlan: to.Ptr("DefenderForStorageV2"),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 					Extensions: []*armsecurity.Extension{
 	// 						{
 	// 							Name: to.Ptr("OnUploadMalwareScanning"),
+	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 							AdditionalExtensionProperties: map[string]any{
 	// 								"capGBPerMonthPerStorageAccount": 10,
 	// 							},
-	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
+	// 							SecurityOperatorResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/securityOperators/ContosoOperator"),
 	// 						},
 	// 						{
 	// 							Name: to.Ptr("SensitiveDataDiscovery"),
@@ -557,109 +623,110 @@ func ExamplePricingsClient_List_getPricingsOnSubscription() {
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/SqlServerVirtualMachines"),
 	// 				Name: to.Ptr("SqlServerVirtualMachines"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/SqlServerVirtualMachines"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/KubernetesService"),
 	// 				Name: to.Ptr("KubernetesService"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/KubernetesService"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					Deprecated: to.Ptr(true),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierFree),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusNotCovered),
+	// 					Deprecated: to.Ptr(true),
 	// 					ReplacedBy: []*string{
 	// 						to.Ptr("Containers"),
 	// 					},
-	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusNotCovered),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/ContainerRegistry"),
 	// 				Name: to.Ptr("ContainerRegistry"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/ContainerRegistry"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					Deprecated: to.Ptr(true),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierFree),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusNotCovered),
+	// 					Deprecated: to.Ptr(true),
 	// 					ReplacedBy: []*string{
 	// 						to.Ptr("Containers"),
 	// 					},
-	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusNotCovered),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/KeyVaults"),
 	// 				Name: to.Ptr("KeyVaults"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/KeyVaults"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 					SubPlan: to.Ptr("PerKeyVault"),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
+	// 					SecurityOperatorResourceID: to.Ptr("/providers/Microsoft.Management/managementGroups/ContosoGroup/providers/Microsoft.Security/securityOperators/ContosoOperator"),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Dns"),
 	// 				Name: to.Ptr("Dns"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Dns"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					Deprecated: to.Ptr(true),
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Deprecated: to.Ptr(true),
 	// 					ReplacedBy: []*string{
 	// 						to.Ptr("VirtualMachines"),
 	// 					},
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Arm"),
 	// 				Name: to.Ptr("Arm"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Arm"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 					SubPlan: to.Ptr("PerSubscription"),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
+	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/OpenSourceRelationalDatabases"),
 	// 				Name: to.Ptr("OpenSourceRelationalDatabases"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/OpenSourceRelationalDatabases"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Containers"),
 	// 				Name: to.Ptr("Containers"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Containers"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 					Extensions: []*armsecurity.Extension{
 	// 						{
@@ -667,25 +734,26 @@ func ExamplePricingsClient_List_getPricingsOnSubscription() {
 	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 						},
 	// 					},
+	// 					SecurityOperatorResourceID: to.Ptr("/providers/Microsoft.Management/managementGroups/ContosoGroup/providers/Microsoft.Security/securityOperators/ContosoOperator"),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/CloudPosture"),
 	// 				Name: to.Ptr("CloudPosture"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/CloudPosture"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 					ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 					Extensions: []*armsecurity.Extension{
 	// 						{
 	// 							Name: to.Ptr("AgentlessVmScanning"),
+	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 							AdditionalExtensionProperties: map[string]any{
 	// 								"ExclusionTags": "[]",
 	// 							},
-	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 						},
 	// 						{
 	// 							Name: to.Ptr("AgentlessDiscoveryForKubernetes"),
@@ -704,16 +772,17 @@ func ExamplePricingsClient_List_getPricingsOnSubscription() {
 	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 						},
 	// 					},
+	// 					SecurityOperatorResourceID: to.Ptr("/providers/Microsoft.Management/managementGroups/ContosoGroup/providers/Microsoft.Security/securityOperators/ContosoOperator"),
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Api"),
 	// 				Name: to.Ptr("Api"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/providers/Microsoft.Security/pricings/Api"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
 	// 					SubPlan: to.Ptr("P1"),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 				},
 	// 			},
 	// 		},
@@ -721,7 +790,7 @@ func ExamplePricingsClient_List_getPricingsOnSubscription() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/ListResourcePricings_example.json
+// Generated from example definition: 2026-07-01/Pricings/ListResourcePricings_example.json
 func ExamplePricingsClient_List_getPricingsOnResource() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -743,23 +812,23 @@ func ExamplePricingsClient_List_getPricingsOnResource() {
 	// 	PricingList: armsecurity.PricingList{
 	// 		Value: []*armsecurity.Pricing{
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 				Name: to.Ptr("VirtualMachines"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 					Inherited: to.Ptr(armsecurity.InheritedTrue),
-	// 					InheritedFrom: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierStandard),
 	// 					SubPlan: to.Ptr("P2"),
+	// 					FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 					EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 					Inherited: to.Ptr(armsecurity.InheritedTrue),
+	// 					InheritedFrom: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
 	// 					Extensions: []*armsecurity.Extension{
 	// 						{
 	// 							Name: to.Ptr("AgentlessVmScanning"),
+	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 							AdditionalExtensionProperties: map[string]any{
 	// 								"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
 	// 							},
-	// 							IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 						},
 	// 						{
 	// 							Name: to.Ptr("MdeDesignatedSubscription"),
@@ -769,12 +838,12 @@ func ExamplePricingsClient_List_getPricingsOnResource() {
 	// 				},
 	// 			},
 	// 			{
+	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/CloudPosture"),
 	// 				Name: to.Ptr("CloudPosture"),
 	// 				Type: to.Ptr("Microsoft.Security/pricings"),
-	// 				ID: to.Ptr("/subscriptions/d34fd44c-ebfa-4a9c-bceb-9eeafe72ac15/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/CloudPosture"),
 	// 				Properties: &armsecurity.PricingProperties{
-	// 					Inherited: to.Ptr(armsecurity.InheritedFalse),
 	// 					PricingTier: to.Ptr(armsecurity.PricingTierFree),
+	// 					Inherited: to.Ptr(armsecurity.InheritedFalse),
 	// 				},
 	// 			},
 	// 		},
@@ -782,7 +851,7 @@ func ExamplePricingsClient_List_getPricingsOnResource() {
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/PutPricingByNamePartialSuccess_example.json
+// Generated from example definition: 2026-07-01/Pricings/PutPricingByNamePartialSuccess_example.json
 func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForCloudPosturePlanPartialSuccess() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -806,14 +875,14 @@ func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForCloudPost
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientUpdateResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
 	// 		Name: to.Ptr("CloudPosture"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 			EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 			Extensions: []*armsecurity.Extension{
 	// 				{
@@ -862,7 +931,7 @@ func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForCloudPost
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/PutPricingByName_example.json
+// Generated from example definition: 2026-07-01/Pricings/PutPricingByName_example.json
 func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForCloudPosturePlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -886,14 +955,14 @@ func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForCloudPost
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientUpdateResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
 	// 		Name: to.Ptr("CloudPosture"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/CloudPosture"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
-	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 			EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 			Enforce: to.Ptr(armsecurity.EnforceFalse),
 	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 			Extensions: []*armsecurity.Extension{
 	// 				{
@@ -942,7 +1011,7 @@ func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForCloudPost
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/PutPricingVMsByName_example.json
+// Generated from example definition: 2026-07-01/Pricings/PutPricingVMsByName_example.json
 func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForVirtualMachinesPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -955,9 +1024,9 @@ func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForVirtualMa
 	}
 	res, err := clientFactory.NewPricingsClient().Update(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "VirtualMachines", armsecurity.Pricing{
 		Properties: &armsecurity.PricingProperties{
-			Enforce:     to.Ptr(armsecurity.EnforceTrue),
 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
 			SubPlan:     to.Ptr("P2"),
+			Enforce:     to.Ptr(armsecurity.EnforceTrue),
 		},
 	}, nil)
 	if err != nil {
@@ -968,16 +1037,16 @@ func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForVirtualMa
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientUpdateResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 		Name: to.Ptr("VirtualMachines"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/pricings/VirtualMachines"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 			Enforce: to.Ptr(armsecurity.EnforceTrue),
-	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 			SubPlan: to.Ptr("P2"),
+	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 			EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 			Enforce: to.Ptr(armsecurity.EnforceTrue),
+	// 			ResourcesCoverageStatus: to.Ptr(armsecurity.ResourcesCoverageStatusFullyCovered),
 	// 			Extensions: []*armsecurity.Extension{
 	// 				{
 	// 					Name: to.Ptr("MdeDesignatedSubscription"),
@@ -985,10 +1054,10 @@ func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForVirtualMa
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("AgentlessVmScanning"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 					AdditionalExtensionProperties: map[string]any{
 	// 						"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
 	// 					},
-	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 					OperationStatus: &armsecurity.OperationStatus{
 	// 						Code: to.Ptr("Succeeded"),
 	// 						Message: to.Ptr("Successfully enabled extension"),
@@ -1000,64 +1069,7 @@ func ExamplePricingsClient_Update_updatePricingOnSubscriptionExampleForVirtualMa
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/PutResourcePricingByNameContainersACR_example.json
-func ExamplePricingsClient_Update_updatePricingOnResourceContainerRegistryAcr() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewPricingsClient().Update(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myContainerRegistry", "Containers", armsecurity.Pricing{
-		Properties: &armsecurity.PricingProperties{
-			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-			Extensions: []*armsecurity.Extension{
-				{
-					Name:      to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
-					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-				},
-				{
-					Name:      to.Ptr("ContainerIntegrityContribution"),
-					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-				},
-			},
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsecurity.PricingsClientUpdateResponse{
-	// 	Pricing: armsecurity.Pricing{
-	// 		Name: to.Ptr("Containers"),
-	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myResourceGroup/providers/Microsoft.ContainerRegistry/registries/myContainerRegistry/providers/Microsoft.Security/pricings/Containers"),
-	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-14T16:35:12.4567890Z"); return t}()),
-	// 			FreeTrialRemainingTime: to.Ptr("P29DT23H55M"),
-	// 			Inherited: to.Ptr(armsecurity.InheritedFalse),
-	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
-	// 			Extensions: []*armsecurity.Extension{
-	// 				{
-	// 					Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
-	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 				},
-	// 				{
-	// 					Name: to.Ptr("ContainerIntegrityContribution"),
-	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
-	// 				},
-	// 			},
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2024-01-01/Pricings/PutResourcePricingByNameContainers_example.json
+// Generated from example definition: 2026-07-01/Pricings/PutResourcePricingByNameContainers_example.json
 func ExamplePricingsClient_Update_updatePricingOnResourceExampleForContainersPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1085,11 +1097,11 @@ func ExamplePricingsClient_Update_updatePricingOnResourceExampleForContainersPla
 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 				},
 				{
-					Name: to.Ptr("AgentlessVmScanning"),
+					Name:      to.Ptr("AgentlessVmScanning"),
+					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 					AdditionalExtensionProperties: map[string]any{
 						"ExclusionTags": "[]",
 					},
-					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 				},
 				{
 					Name:      to.Ptr("ContainerIntegrityContribution"),
@@ -1106,14 +1118,14 @@ func ExamplePricingsClient_Update_updatePricingOnResourceExampleForContainersPla
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientUpdateResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/demo-containers-rg/providers/Microsoft.ContainerService/managedClusters/demo-aks-cluster/providers/Microsoft.Security/pricings/Containers"),
 	// 		Name: to.Ptr("Containers"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/demo-containers-rg/providers/Microsoft.ContainerService/managedClusters/demo-aks-cluster/providers/Microsoft.Security/pricings/Containers"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2025-01-14T16:35:12.4567890Z"); return t}()),
-	// 			FreeTrialRemainingTime: to.Ptr("P29DT23H55M"),
-	// 			Inherited: to.Ptr(armsecurity.InheritedFalse),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
+	// 			FreeTrialRemainingTime: to.Ptr("P29DT23H55M"),
+	// 			EnablementTime: to.Ptr(time.Date(2025, time.January, 14, 16, 35, 12, 456789000, time.UTC)),
+	// 			Inherited: to.Ptr(armsecurity.InheritedFalse),
 	// 			Extensions: []*armsecurity.Extension{
 	// 				{
 	// 					Name: to.Ptr("ContainerRegistriesVulnerabilityAssessments"),
@@ -1129,10 +1141,10 @@ func ExamplePricingsClient_Update_updatePricingOnResourceExampleForContainersPla
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("AgentlessVmScanning"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 					AdditionalExtensionProperties: map[string]any{
 	// 						"ExclusionTags": "[]",
 	// 					},
-	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("ContainerIntegrityContribution"),
@@ -1144,7 +1156,7 @@ func ExamplePricingsClient_Update_updatePricingOnResourceExampleForContainersPla
 	// }
 }
 
-// Generated from example definition: 2024-01-01/Pricings/PutResourcePricingByNameVirtualMachines_example.json
+// Generated from example definition: 2026-07-01/Pricings/PutResourcePricingByNameVirtualMachines_example.json
 func ExamplePricingsClient_Update_updatePricingOnResourceExampleForVirtualMachinesPlan() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -1169,15 +1181,15 @@ func ExamplePricingsClient_Update_updatePricingOnResourceExampleForVirtualMachin
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armsecurity.PricingsClientUpdateResponse{
 	// 	Pricing: armsecurity.Pricing{
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/virtualMachines"),
 	// 		Name: to.Ptr("virtualMachines"),
 	// 		Type: to.Ptr("Microsoft.Security/pricings"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/DEMO/providers/Microsoft.Compute/virtualMachines/VM-1/providers/Microsoft.Security/pricings/virtualMachines"),
 	// 		Properties: &armsecurity.PricingProperties{
-	// 			EnablementTime: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2023-03-01T12:42:42.1921106Z"); return t}()),
-	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
-	// 			Inherited: to.Ptr(armsecurity.InheritedFalse),
 	// 			PricingTier: to.Ptr(armsecurity.PricingTierStandard),
 	// 			SubPlan: to.Ptr("P1"),
+	// 			FreeTrialRemainingTime: to.Ptr("PT0S"),
+	// 			EnablementTime: to.Ptr(time.Date(2023, time.March, 1, 12, 42, 42, 192110600, time.UTC)),
+	// 			Inherited: to.Ptr(armsecurity.InheritedFalse),
 	// 			Extensions: []*armsecurity.Extension{
 	// 				{
 	// 					Name: to.Ptr("MdeDesignatedSubscription"),
@@ -1185,10 +1197,10 @@ func ExamplePricingsClient_Update_updatePricingOnResourceExampleForVirtualMachin
 	// 				},
 	// 				{
 	// 					Name: to.Ptr("AgentlessVmScanning"),
+	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 					AdditionalExtensionProperties: map[string]any{
 	// 						"ExclusionTags": "[{\"Key\":\"TestKey1\",\"Value\":\"TestValue1\"},{\"Key\":\"TestKey2\",\"Value\":\"TestValue2\"}]",
 	// 					},
-	// 					IsEnabled: to.Ptr(armsecurity.IsEnabledTrue),
 	// 				},
 	// 			},
 	// 		},

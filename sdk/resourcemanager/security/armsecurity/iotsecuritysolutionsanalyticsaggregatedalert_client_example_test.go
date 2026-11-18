@@ -59,7 +59,7 @@ func ExampleIotSecuritySolutionsAnalyticsAggregatedAlertClient_Get() {
 	// 		Properties: &armsecurity.IoTSecurityAggregatedAlertProperties{
 	// 			Description: to.Ptr("Multiple unsuccsseful login attempts identified. A Bruteforce attack on the device failed."),
 	// 			ActionTaken: to.Ptr("Detected"),
-	// 			AggregatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2019-02-02"); return t}()),
+	// 			AggregatedDateUTC: to.Ptr(time.Date(2019, time.February, 2, 0, 0, 0, 0, time.UTC)),
 	// 			AlertDisplayName: to.Ptr("Failed Bruteforce"),
 	// 			AlertType: to.Ptr("IoT_Bruteforce_Fail"),
 	// 			Count: to.Ptr[int64](50),
@@ -118,7 +118,7 @@ func ExampleIotSecuritySolutionsAnalyticsAggregatedAlertClient_NewListPager() {
 		// 				Properties: &armsecurity.IoTSecurityAggregatedAlertProperties{
 		// 					Description: to.Ptr("Multiple unsuccsseful login attempts identified. A Bruteforce attack on the device failed."),
 		// 					ActionTaken: to.Ptr("Detected"),
-		// 					AggregatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2019-02-02"); return t}()),
+		// 					AggregatedDateUTC: to.Ptr(time.Date(2019, time.February, 2, 0, 0, 0, 0, time.UTC)),
 		// 					AlertDisplayName: to.Ptr("Failed Bruteforce"),
 		// 					AlertType: to.Ptr("IoT_Bruteforce_Fail"),
 		// 					Count: to.Ptr[int64](50),
@@ -149,7 +149,7 @@ func ExampleIotSecuritySolutionsAnalyticsAggregatedAlertClient_NewListPager() {
 		// 				Properties: &armsecurity.IoTSecurityAggregatedAlertProperties{
 		// 					Description: to.Ptr("Multiple unsuccsseful login attempts identified followed by a succssful login. A Bruteforce attack on the device was Successfule"),
 		// 					ActionTaken: to.Ptr("Detected"),
-		// 					AggregatedDateUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.DateOnly, "2019-02-02"); return t}()),
+		// 					AggregatedDateUTC: to.Ptr(time.Date(2019, time.February, 2, 0, 0, 0, 0, time.UTC)),
 		// 					AlertDisplayName: to.Ptr("Successful Bruteforce"),
 		// 					AlertType: to.Ptr("IoT_Bruteforce_Success"),
 		// 					Count: to.Ptr[int64](600000),

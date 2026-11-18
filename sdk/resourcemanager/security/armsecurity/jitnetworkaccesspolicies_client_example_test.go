@@ -35,14 +35,14 @@ func ExampleJitNetworkAccessPoliciesClient_CreateOrUpdate() {
 			Requests: []*armsecurity.JitNetworkAccessRequest{
 				{
 					Requestor:    to.Ptr("barbara@contoso.com"),
-					StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T08:06:45.5691611Z"); return t }()),
+					StartTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 8, 6, 45, 569161100, time.UTC)),
 					VirtualMachines: []*armsecurity.JitNetworkAccessRequestVirtualMachine{
 						{
 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
 							Ports: []*armsecurity.JitNetworkAccessRequestPort{
 								{
 									AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
-									EndTimeUTC:                 to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T09:06:45.5691611Z"); return t }()),
+									EndTimeUTC:                 to.Ptr(time.Date(2018, time.May, 17, 9, 6, 45, 569161100, time.UTC)),
 									Number:                     to.Ptr[int32](3389),
 									Status:                     to.Ptr(armsecurity.StatusInitiated),
 									StatusReason:               to.Ptr(armsecurity.StatusReasonUserRequested),
@@ -91,14 +91,14 @@ func ExampleJitNetworkAccessPoliciesClient_CreateOrUpdate() {
 	// 			Requests: []*armsecurity.JitNetworkAccessRequest{
 	// 				{
 	// 					Requestor: to.Ptr("barbara@contoso.com"),
-	// 					StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T08:06:45.5691611Z"); return t}()),
+	// 					StartTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 8, 6, 45, 569161100, time.UTC)),
 	// 					VirtualMachines: []*armsecurity.JitNetworkAccessRequestVirtualMachine{
 	// 						{
 	// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
 	// 							Ports: []*armsecurity.JitNetworkAccessRequestPort{
 	// 								{
 	// 									AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
-	// 									EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T09:06:45.5691611Z"); return t}()),
+	// 									EndTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 9, 6, 45, 569161100, time.UTC)),
 	// 									Number: to.Ptr[int32](3389),
 	// 									Status: to.Ptr(armsecurity.StatusInitiated),
 	// 									StatusReason: to.Ptr(armsecurity.StatusReasonUserRequested),
@@ -185,14 +185,14 @@ func ExampleJitNetworkAccessPoliciesClient_Get() {
 	// 				{
 	// 					Justification: to.Ptr("testing a new version of the product"),
 	// 					Requestor: to.Ptr("barbara@contoso.com"),
-	// 					StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T08:06:45.5691611Z"); return t}()),
+	// 					StartTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 8, 6, 45, 569161100, time.UTC)),
 	// 					VirtualMachines: []*armsecurity.JitNetworkAccessRequestVirtualMachine{
 	// 						{
 	// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
 	// 							Ports: []*armsecurity.JitNetworkAccessRequestPort{
 	// 								{
 	// 									AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
-	// 									EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T09:06:45.5691611Z"); return t}()),
+	// 									EndTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 9, 6, 45, 569161100, time.UTC)),
 	// 									Number: to.Ptr[int32](3389),
 	// 									Status: to.Ptr(armsecurity.StatusInitiated),
 	// 									StatusReason: to.Ptr(armsecurity.StatusReasonUserRequested),
@@ -256,87 +256,6 @@ func ExampleJitNetworkAccessPoliciesClient_Initiate() {
 	}
 }
 
-// Generated from example definition: 2020-01-01/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesSubscription_example.json
-func ExampleJitNetworkAccessPoliciesClient_NewListPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewJitNetworkAccessPoliciesClient().NewListPager(nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsecurity.JitNetworkAccessPoliciesClientListResponse{
-		// 	JitNetworkAccessPoliciesList: armsecurity.JitNetworkAccessPoliciesList{
-		// 		Value: []*armsecurity.JitNetworkAccessPolicy{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.Security/locations/jitNetworkAccessPolicies"),
-		// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Security/locations/westeurope/jitNetworkAccessPolicies/default"),
-		// 				Kind: to.Ptr("Basic"),
-		// 				Location: to.Ptr("westeurope"),
-		// 				Properties: &armsecurity.JitNetworkAccessPolicyProperties{
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					Requests: []*armsecurity.JitNetworkAccessRequest{
-		// 						{
-		// 							Justification: to.Ptr("testing a new version of the product"),
-		// 							Requestor: to.Ptr("barbara@contoso.com"),
-		// 							StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T08:06:45.5691611Z"); return t}()),
-		// 							VirtualMachines: []*armsecurity.JitNetworkAccessRequestVirtualMachine{
-		// 								{
-		// 									ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
-		// 									Ports: []*armsecurity.JitNetworkAccessRequestPort{
-		// 										{
-		// 											AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
-		// 											EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T09:06:45.5691611Z"); return t}()),
-		// 											Number: to.Ptr[int32](3389),
-		// 											Status: to.Ptr(armsecurity.StatusInitiated),
-		// 											StatusReason: to.Ptr(armsecurity.StatusReasonUserRequested),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					VirtualMachines: []*armsecurity.JitNetworkAccessPolicyVirtualMachine{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
-		// 							Ports: []*armsecurity.JitNetworkAccessPortRule{
-		// 								{
-		// 									AllowedSourceAddressPrefix: to.Ptr("*"),
-		// 									MaxRequestAccessDuration: to.Ptr("PT3H"),
-		// 									Number: to.Ptr[int32](22),
-		// 									Protocol: to.Ptr(armsecurity.ProtocolAll),
-		// 								},
-		// 								{
-		// 									AllowedSourceAddressPrefix: to.Ptr("*"),
-		// 									MaxRequestAccessDuration: to.Ptr("PT3H"),
-		// 									Number: to.Ptr[int32](3389),
-		// 									Protocol: to.Ptr(armsecurity.ProtocolAll),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
 // Generated from example definition: 2020-01-01/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesSubscriptionLocation_example.json
 func ExampleJitNetworkAccessPoliciesClient_NewListByRegionPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -374,95 +293,14 @@ func ExampleJitNetworkAccessPoliciesClient_NewListByRegionPager() {
 		// 						{
 		// 							Justification: to.Ptr("testing a new version of the product"),
 		// 							Requestor: to.Ptr("barbara@contoso.com"),
-		// 							StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T08:06:45.5691611Z"); return t}()),
+		// 							StartTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 8, 6, 45, 569161100, time.UTC)),
 		// 							VirtualMachines: []*armsecurity.JitNetworkAccessRequestVirtualMachine{
 		// 								{
 		// 									ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
 		// 									Ports: []*armsecurity.JitNetworkAccessRequestPort{
 		// 										{
 		// 											AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
-		// 											EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T09:06:45.5691611Z"); return t}()),
-		// 											Number: to.Ptr[int32](3389),
-		// 											Status: to.Ptr(armsecurity.StatusInitiated),
-		// 											StatusReason: to.Ptr(armsecurity.StatusReasonUserRequested),
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 					VirtualMachines: []*armsecurity.JitNetworkAccessPolicyVirtualMachine{
-		// 						{
-		// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
-		// 							Ports: []*armsecurity.JitNetworkAccessPortRule{
-		// 								{
-		// 									AllowedSourceAddressPrefix: to.Ptr("*"),
-		// 									MaxRequestAccessDuration: to.Ptr("PT3H"),
-		// 									Number: to.Ptr[int32](22),
-		// 									Protocol: to.Ptr(armsecurity.ProtocolAll),
-		// 								},
-		// 								{
-		// 									AllowedSourceAddressPrefix: to.Ptr("*"),
-		// 									MaxRequestAccessDuration: to.Ptr("PT3H"),
-		// 									Number: to.Ptr[int32](3389),
-		// 									Protocol: to.Ptr(armsecurity.ProtocolAll),
-		// 								},
-		// 							},
-		// 						},
-		// 					},
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2020-01-01/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesResourceGroup_example.json
-func ExampleJitNetworkAccessPoliciesClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewJitNetworkAccessPoliciesClient().NewListByResourceGroupPager("myRg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupResponse{
-		// 	JitNetworkAccessPoliciesList: armsecurity.JitNetworkAccessPoliciesList{
-		// 		Value: []*armsecurity.JitNetworkAccessPolicy{
-		// 			{
-		// 				Name: to.Ptr("default"),
-		// 				Type: to.Ptr("Microsoft.Security/locations/jitNetworkAccessPolicies"),
-		// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Security/locations/westeurope/jitNetworkAccessPolicies/default"),
-		// 				Kind: to.Ptr("Basic"),
-		// 				Location: to.Ptr("westeurope"),
-		// 				Properties: &armsecurity.JitNetworkAccessPolicyProperties{
-		// 					ProvisioningState: to.Ptr("Succeeded"),
-		// 					Requests: []*armsecurity.JitNetworkAccessRequest{
-		// 						{
-		// 							Justification: to.Ptr("testing a new version of the product"),
-		// 							Requestor: to.Ptr("barbara@contoso.com"),
-		// 							StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T08:06:45.5691611Z"); return t}()),
-		// 							VirtualMachines: []*armsecurity.JitNetworkAccessRequestVirtualMachine{
-		// 								{
-		// 									ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
-		// 									Ports: []*armsecurity.JitNetworkAccessRequestPort{
-		// 										{
-		// 											AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
-		// 											EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T09:06:45.5691611Z"); return t}()),
+		// 											EndTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 9, 6, 45, 569161100, time.UTC)),
 		// 											Number: to.Ptr[int32](3389),
 		// 											Status: to.Ptr(armsecurity.StatusInitiated),
 		// 											StatusReason: to.Ptr(armsecurity.StatusReasonUserRequested),
@@ -536,14 +374,176 @@ func ExampleJitNetworkAccessPoliciesClient_NewListByResourceGroupAndRegionPager(
 		// 						{
 		// 							Justification: to.Ptr("testing a new version of the product"),
 		// 							Requestor: to.Ptr("barbara@contoso.com"),
-		// 							StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T08:06:45.5691611Z"); return t}()),
+		// 							StartTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 8, 6, 45, 569161100, time.UTC)),
 		// 							VirtualMachines: []*armsecurity.JitNetworkAccessRequestVirtualMachine{
 		// 								{
 		// 									ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
 		// 									Ports: []*armsecurity.JitNetworkAccessRequestPort{
 		// 										{
 		// 											AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
-		// 											EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2018-05-17T09:06:45.5691611Z"); return t}()),
+		// 											EndTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 9, 6, 45, 569161100, time.UTC)),
+		// 											Number: to.Ptr[int32](3389),
+		// 											Status: to.Ptr(armsecurity.StatusInitiated),
+		// 											StatusReason: to.Ptr(armsecurity.StatusReasonUserRequested),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					VirtualMachines: []*armsecurity.JitNetworkAccessPolicyVirtualMachine{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
+		// 							Ports: []*armsecurity.JitNetworkAccessPortRule{
+		// 								{
+		// 									AllowedSourceAddressPrefix: to.Ptr("*"),
+		// 									MaxRequestAccessDuration: to.Ptr("PT3H"),
+		// 									Number: to.Ptr[int32](22),
+		// 									Protocol: to.Ptr(armsecurity.ProtocolAll),
+		// 								},
+		// 								{
+		// 									AllowedSourceAddressPrefix: to.Ptr("*"),
+		// 									MaxRequestAccessDuration: to.Ptr("PT3H"),
+		// 									Number: to.Ptr[int32](3389),
+		// 									Protocol: to.Ptr(armsecurity.ProtocolAll),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2020-01-01/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesResourceGroup_example.json
+func ExampleJitNetworkAccessPoliciesClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewJitNetworkAccessPoliciesClient().NewListByResourceGroupPager("myRg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupResponse{
+		// 	JitNetworkAccessPoliciesList: armsecurity.JitNetworkAccessPoliciesList{
+		// 		Value: []*armsecurity.JitNetworkAccessPolicy{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.Security/locations/jitNetworkAccessPolicies"),
+		// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Security/locations/westeurope/jitNetworkAccessPolicies/default"),
+		// 				Kind: to.Ptr("Basic"),
+		// 				Location: to.Ptr("westeurope"),
+		// 				Properties: &armsecurity.JitNetworkAccessPolicyProperties{
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					Requests: []*armsecurity.JitNetworkAccessRequest{
+		// 						{
+		// 							Justification: to.Ptr("testing a new version of the product"),
+		// 							Requestor: to.Ptr("barbara@contoso.com"),
+		// 							StartTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 8, 6, 45, 569161100, time.UTC)),
+		// 							VirtualMachines: []*armsecurity.JitNetworkAccessRequestVirtualMachine{
+		// 								{
+		// 									ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
+		// 									Ports: []*armsecurity.JitNetworkAccessRequestPort{
+		// 										{
+		// 											AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
+		// 											EndTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 9, 6, 45, 569161100, time.UTC)),
+		// 											Number: to.Ptr[int32](3389),
+		// 											Status: to.Ptr(armsecurity.StatusInitiated),
+		// 											StatusReason: to.Ptr(armsecurity.StatusReasonUserRequested),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					VirtualMachines: []*armsecurity.JitNetworkAccessPolicyVirtualMachine{
+		// 						{
+		// 							ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
+		// 							Ports: []*armsecurity.JitNetworkAccessPortRule{
+		// 								{
+		// 									AllowedSourceAddressPrefix: to.Ptr("*"),
+		// 									MaxRequestAccessDuration: to.Ptr("PT3H"),
+		// 									Number: to.Ptr[int32](22),
+		// 									Protocol: to.Ptr(armsecurity.ProtocolAll),
+		// 								},
+		// 								{
+		// 									AllowedSourceAddressPrefix: to.Ptr("*"),
+		// 									MaxRequestAccessDuration: to.Ptr("PT3H"),
+		// 									Number: to.Ptr[int32](3389),
+		// 									Protocol: to.Ptr(armsecurity.ProtocolAll),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2020-01-01/JitNetworkAccessPolicies/GetJitNetworkAccessPoliciesSubscription_example.json
+func ExampleJitNetworkAccessPoliciesClient_NewListPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewJitNetworkAccessPoliciesClient().NewListPager(nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsecurity.JitNetworkAccessPoliciesClientListResponse{
+		// 	JitNetworkAccessPoliciesList: armsecurity.JitNetworkAccessPoliciesList{
+		// 		Value: []*armsecurity.JitNetworkAccessPolicy{
+		// 			{
+		// 				Name: to.Ptr("default"),
+		// 				Type: to.Ptr("Microsoft.Security/locations/jitNetworkAccessPolicies"),
+		// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Security/locations/westeurope/jitNetworkAccessPolicies/default"),
+		// 				Kind: to.Ptr("Basic"),
+		// 				Location: to.Ptr("westeurope"),
+		// 				Properties: &armsecurity.JitNetworkAccessPolicyProperties{
+		// 					ProvisioningState: to.Ptr("Succeeded"),
+		// 					Requests: []*armsecurity.JitNetworkAccessRequest{
+		// 						{
+		// 							Justification: to.Ptr("testing a new version of the product"),
+		// 							Requestor: to.Ptr("barbara@contoso.com"),
+		// 							StartTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 8, 6, 45, 569161100, time.UTC)),
+		// 							VirtualMachines: []*armsecurity.JitNetworkAccessRequestVirtualMachine{
+		// 								{
+		// 									ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
+		// 									Ports: []*armsecurity.JitNetworkAccessRequestPort{
+		// 										{
+		// 											AllowedSourceAddressPrefix: to.Ptr("192.127.0.2"),
+		// 											EndTimeUTC: to.Ptr(time.Date(2018, time.May, 17, 9, 6, 45, 569161100, time.UTC)),
 		// 											Number: to.Ptr[int32](3389),
 		// 											Status: to.Ptr(armsecurity.StatusInitiated),
 		// 											StatusReason: to.Ptr(armsecurity.StatusReasonUserRequested),

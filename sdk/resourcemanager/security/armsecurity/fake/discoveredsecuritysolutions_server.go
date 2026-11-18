@@ -25,13 +25,13 @@ type DiscoveredSecuritySolutionsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, ascLocation string, discoveredSecuritySolutionName string, options *armsecurity.DiscoveredSecuritySolutionsClientGetOptions) (resp azfake.Responder[armsecurity.DiscoveredSecuritySolutionsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method DiscoveredSecuritySolutionsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsecurity.DiscoveredSecuritySolutionsClientListOptions) (resp azfake.PagerResponder[armsecurity.DiscoveredSecuritySolutionsClientListResponse])
-
 	// NewListByHomeRegionPager is the fake for method DiscoveredSecuritySolutionsClient.NewListByHomeRegionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByHomeRegionPager func(ascLocation string, options *armsecurity.DiscoveredSecuritySolutionsClientListByHomeRegionOptions) (resp azfake.PagerResponder[armsecurity.DiscoveredSecuritySolutionsClientListByHomeRegionResponse])
+
+	// NewListPager is the fake for method DiscoveredSecuritySolutionsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(options *armsecurity.DiscoveredSecuritySolutionsClientListOptions) (resp azfake.PagerResponder[armsecurity.DiscoveredSecuritySolutionsClientListResponse])
 }
 
 // NewDiscoveredSecuritySolutionsServerTransport creates a new instance of DiscoveredSecuritySolutionsServerTransport with the provided implementation.
@@ -40,8 +40,8 @@ type DiscoveredSecuritySolutionsServer struct {
 func NewDiscoveredSecuritySolutionsServerTransport(srv *DiscoveredSecuritySolutionsServer) *DiscoveredSecuritySolutionsServerTransport {
 	return &DiscoveredSecuritySolutionsServerTransport{
 		srv:                      srv,
-		newListPager:             newTracker[azfake.PagerResponder[armsecurity.DiscoveredSecuritySolutionsClientListResponse]](),
 		newListByHomeRegionPager: newTracker[azfake.PagerResponder[armsecurity.DiscoveredSecuritySolutionsClientListByHomeRegionResponse]](),
+		newListPager:             newTracker[azfake.PagerResponder[armsecurity.DiscoveredSecuritySolutionsClientListResponse]](),
 	}
 }
 
@@ -49,8 +49,8 @@ func NewDiscoveredSecuritySolutionsServerTransport(srv *DiscoveredSecuritySoluti
 // Don't use this type directly, use NewDiscoveredSecuritySolutionsServerTransport instead.
 type DiscoveredSecuritySolutionsServerTransport struct {
 	srv                      *DiscoveredSecuritySolutionsServer
-	newListPager             *tracker[azfake.PagerResponder[armsecurity.DiscoveredSecuritySolutionsClientListResponse]]
 	newListByHomeRegionPager *tracker[azfake.PagerResponder[armsecurity.DiscoveredSecuritySolutionsClientListByHomeRegionResponse]]
+	newListPager             *tracker[azfake.PagerResponder[armsecurity.DiscoveredSecuritySolutionsClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for DiscoveredSecuritySolutionsServerTransport.
@@ -58,7 +58,7 @@ func (d *DiscoveredSecuritySolutionsServerTransport) Do(req *http.Request) (*htt
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return d.dispatchToMethodFake(req, method)
@@ -76,10 +76,10 @@ func (d *DiscoveredSecuritySolutionsServerTransport) dispatchToMethodFake(req *h
 			switch method {
 			case "DiscoveredSecuritySolutionsClient.Get":
 				res.resp, res.err = d.dispatchGet(req)
-			case "DiscoveredSecuritySolutionsClient.NewListPager":
-				res.resp, res.err = d.dispatchNewListPager(req)
 			case "DiscoveredSecuritySolutionsClient.NewListByHomeRegionPager":
 				res.resp, res.err = d.dispatchNewListByHomeRegionPager(req)
+			case "DiscoveredSecuritySolutionsClient.NewListPager":
+				res.resp, res.err = d.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -100,7 +100,7 @@ func (d *DiscoveredSecuritySolutionsServerTransport) dispatchGet(req *http.Reque
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/discoveredSecuritySolutions/(?P<discoveredSecuritySolutionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/discoveredSecuritySolutions/(?P<discoveredSecuritySolutionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -133,46 +133,13 @@ func (d *DiscoveredSecuritySolutionsServerTransport) dispatchGet(req *http.Reque
 	return resp, nil
 }
 
-func (d *DiscoveredSecuritySolutionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if d.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := d.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/discoveredSecuritySolutions`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := d.srv.NewListPager(nil)
-		newListPager = &resp
-		d.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.DiscoveredSecuritySolutionsClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		d.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		d.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (d *DiscoveredSecuritySolutionsServerTransport) dispatchNewListByHomeRegionPager(req *http.Request) (*http.Response, error) {
 	if d.srv.NewListByHomeRegionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByHomeRegionPager not implemented")}
 	}
 	newListByHomeRegionPager := d.newListByHomeRegionPager.get(req)
 	if newListByHomeRegionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/discoveredSecuritySolutions`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/discoveredSecuritySolutions`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -199,6 +166,39 @@ func (d *DiscoveredSecuritySolutionsServerTransport) dispatchNewListByHomeRegion
 	}
 	if !server.PagerResponderMore(newListByHomeRegionPager) {
 		d.newListByHomeRegionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (d *DiscoveredSecuritySolutionsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if d.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := d.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/discoveredSecuritySolutions`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := d.srv.NewListPager(nil)
+		newListPager = &resp
+		d.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.DiscoveredSecuritySolutionsClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		d.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		d.newListPager.remove(req)
 	}
 	return resp, nil
 }

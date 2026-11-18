@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/security/armsecurity"
 	"net/http"
 	"net/url"
+	"reflect"
 	"regexp"
 	"slices"
 )
@@ -23,19 +24,19 @@ import (
 type DefenderForStorageServer struct {
 	// CancelMalwareScan is the fake for method DefenderForStorageClient.CancelMalwareScan
 	// HTTP status codes to indicate success: http.StatusOK
-	CancelMalwareScan func(ctx context.Context, resourceID string, settingName armsecurity.SettingName, scanID string, options *armsecurity.DefenderForStorageClientCancelMalwareScanOptions) (resp azfake.Responder[armsecurity.DefenderForStorageClientCancelMalwareScanResponse], errResp azfake.ErrorResponder)
+	CancelMalwareScan func(ctx context.Context, resourceID string, settingName string, scanID string, options *armsecurity.DefenderForStorageClientCancelMalwareScanOptions) (resp azfake.Responder[armsecurity.DefenderForStorageClientCancelMalwareScanResponse], errResp azfake.ErrorResponder)
 
 	// Create is the fake for method DefenderForStorageClient.Create
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	Create func(ctx context.Context, resourceID string, settingName armsecurity.SettingName, defenderForStorageSetting armsecurity.DefenderForStorageSetting, options *armsecurity.DefenderForStorageClientCreateOptions) (resp azfake.Responder[armsecurity.DefenderForStorageClientCreateResponse], errResp azfake.ErrorResponder)
+	Create func(ctx context.Context, resourceID string, settingName string, defenderForStorageSetting armsecurity.DefenderForStorageSetting, options *armsecurity.DefenderForStorageClientCreateOptions) (resp azfake.Responder[armsecurity.DefenderForStorageClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method DefenderForStorageClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceID string, settingName armsecurity.SettingName, options *armsecurity.DefenderForStorageClientGetOptions) (resp azfake.Responder[armsecurity.DefenderForStorageClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceID string, settingName string, options *armsecurity.DefenderForStorageClientGetOptions) (resp azfake.Responder[armsecurity.DefenderForStorageClientGetResponse], errResp azfake.ErrorResponder)
 
 	// GetMalwareScan is the fake for method DefenderForStorageClient.GetMalwareScan
 	// HTTP status codes to indicate success: http.StatusOK
-	GetMalwareScan func(ctx context.Context, resourceID string, settingName armsecurity.SettingName, scanID string, options *armsecurity.DefenderForStorageClientGetMalwareScanOptions) (resp azfake.Responder[armsecurity.DefenderForStorageClientGetMalwareScanResponse], errResp azfake.ErrorResponder)
+	GetMalwareScan func(ctx context.Context, resourceID string, settingName string, scanID string, options *armsecurity.DefenderForStorageClientGetMalwareScanOptions) (resp azfake.Responder[armsecurity.DefenderForStorageClientGetMalwareScanResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method DefenderForStorageClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
@@ -43,7 +44,7 @@ type DefenderForStorageServer struct {
 
 	// StartMalwareScan is the fake for method DefenderForStorageClient.StartMalwareScan
 	// HTTP status codes to indicate success: http.StatusOK
-	StartMalwareScan func(ctx context.Context, resourceID string, settingName armsecurity.SettingName, options *armsecurity.DefenderForStorageClientStartMalwareScanOptions) (resp azfake.Responder[armsecurity.DefenderForStorageClientStartMalwareScanResponse], errResp azfake.ErrorResponder)
+	StartMalwareScan func(ctx context.Context, resourceID string, settingName string, options *armsecurity.DefenderForStorageClientStartMalwareScanOptions) (resp azfake.Responder[armsecurity.DefenderForStorageClientStartMalwareScanResponse], errResp azfake.ErrorResponder)
 }
 
 // NewDefenderForStorageServerTransport creates a new instance of DefenderForStorageServerTransport with the provided implementation.
@@ -68,7 +69,7 @@ func (d *DefenderForStorageServerTransport) Do(req *http.Request) (*http.Respons
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return d.dispatchToMethodFake(req, method)
@@ -116,23 +117,14 @@ func (d *DefenderForStorageServerTransport) dispatchCancelMalwareScan(req *http.
 	if d.srv.CancelMalwareScan == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CancelMalwareScan not implemented")}
 	}
-	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/defenderForStorageSettings/(?P<settingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/malwareScans/(?P<scanId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/cancelMalwareScan`
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/defenderForStorageSettings/(?P<settingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/malwareScans/(?P<scanId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/cancelMalwareScan`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-	if err != nil {
-		return nil, err
-	}
-	settingNameParam, err := parseWithCast(matches[regex.SubexpIndex("settingName")], func(v string) (armsecurity.SettingName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armsecurity.SettingName(p), nil
-	})
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
+	settingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("settingName")])
 	if err != nil {
 		return nil, err
 	}
@@ -159,7 +151,7 @@ func (d *DefenderForStorageServerTransport) dispatchCreate(req *http.Request) (*
 	if d.srv.Create == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Create not implemented")}
 	}
-	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/defenderForStorageSettings/(?P<settingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/defenderForStorageSettings/(?P<settingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
@@ -169,17 +161,8 @@ func (d *DefenderForStorageServerTransport) dispatchCreate(req *http.Request) (*
 	if err != nil {
 		return nil, err
 	}
-	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-	if err != nil {
-		return nil, err
-	}
-	settingNameParam, err := parseWithCast(matches[regex.SubexpIndex("settingName")], func(v string) (armsecurity.SettingName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armsecurity.SettingName(p), nil
-	})
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
+	settingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("settingName")])
 	if err != nil {
 		return nil, err
 	}
@@ -202,23 +185,14 @@ func (d *DefenderForStorageServerTransport) dispatchGet(req *http.Request) (*htt
 	if d.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/defenderForStorageSettings/(?P<settingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/defenderForStorageSettings/(?P<settingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-	if err != nil {
-		return nil, err
-	}
-	settingNameParam, err := parseWithCast(matches[regex.SubexpIndex("settingName")], func(v string) (armsecurity.SettingName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armsecurity.SettingName(p), nil
-	})
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
+	settingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("settingName")])
 	if err != nil {
 		return nil, err
 	}
@@ -241,23 +215,14 @@ func (d *DefenderForStorageServerTransport) dispatchGetMalwareScan(req *http.Req
 	if d.srv.GetMalwareScan == nil {
 		return nil, &nonRetriableError{errors.New("fake for method GetMalwareScan not implemented")}
 	}
-	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/defenderForStorageSettings/(?P<settingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/malwareScans/(?P<scanId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/defenderForStorageSettings/(?P<settingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/malwareScans/(?P<scanId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 4 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-	if err != nil {
-		return nil, err
-	}
-	settingNameParam, err := parseWithCast(matches[regex.SubexpIndex("settingName")], func(v string) (armsecurity.SettingName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
-		}
-		return armsecurity.SettingName(p), nil
-	})
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
+	settingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("settingName")])
 	if err != nil {
 		return nil, err
 	}
@@ -286,16 +251,13 @@ func (d *DefenderForStorageServerTransport) dispatchNewListPager(req *http.Reque
 	}
 	newListPager := d.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/defenderForStorageSettings`
+		const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/defenderForStorageSettings`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 2 {
 			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 		}
-		resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
-		if err != nil {
-			return nil, err
-		}
+		resourceIDParam := matches[regex.SubexpIndex("resourceId")]
 		resp := d.srv.NewListPager(resourceIDParam, nil)
 		newListPager = &resp
 		d.newListPager.add(req, newListPager)
@@ -321,27 +283,28 @@ func (d *DefenderForStorageServerTransport) dispatchStartMalwareScan(req *http.R
 	if d.srv.StartMalwareScan == nil {
 		return nil, &nonRetriableError{errors.New("fake for method StartMalwareScan not implemented")}
 	}
-	const regexStr = `/(?P<resourceId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/defenderForStorageSettings/(?P<settingName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/startMalwareScan`
+	const regexStr = `/(?P<resourceId>[a-zA-Z0-9._~%!$&'()*+,;=:@/-]+)/providers/Microsoft\.Security/defenderForStorageSettings/(?P<settingName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/startMalwareScan`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 3 {
 		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
 	}
-	resourceIDParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceId")])
+	body, err := server.UnmarshalRequestAsJSON[armsecurity.StartMalwareScanRequest](req)
 	if err != nil {
 		return nil, err
 	}
-	settingNameParam, err := parseWithCast(matches[regex.SubexpIndex("settingName")], func(v string) (armsecurity.SettingName, error) {
-		p, unescapeErr := url.PathUnescape(v)
-		if unescapeErr != nil {
-			return "", unescapeErr
+	resourceIDParam := matches[regex.SubexpIndex("resourceId")]
+	settingNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("settingName")])
+	if err != nil {
+		return nil, err
+	}
+	var options *armsecurity.DefenderForStorageClientStartMalwareScanOptions
+	if !reflect.ValueOf(body).IsZero() {
+		options = &armsecurity.DefenderForStorageClientStartMalwareScanOptions{
+			Body: &body,
 		}
-		return armsecurity.SettingName(p), nil
-	})
-	if err != nil {
-		return nil, err
 	}
-	respr, errRespr := d.srv.StartMalwareScan(req.Context(), resourceIDParam, settingNameParam, nil)
+	respr, errRespr := d.srv.StartMalwareScan(req.Context(), resourceIDParam, settingNameParam, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}

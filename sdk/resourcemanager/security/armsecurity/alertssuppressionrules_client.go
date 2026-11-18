@@ -30,6 +30,9 @@ type AlertsSuppressionRulesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewAlertsSuppressionRulesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*AlertsSuppressionRulesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -71,7 +74,7 @@ func (client *AlertsSuppressionRulesClient) Delete(ctx context.Context, alertsSu
 func (client *AlertsSuppressionRulesClient) deleteCreateRequest(ctx context.Context, alertsSuppressionRuleName string, _ *AlertsSuppressionRulesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if alertsSuppressionRuleName == "" {
@@ -107,11 +110,7 @@ func (client *AlertsSuppressionRulesClient) Get(ctx context.Context, alertsSuppr
 	if err != nil {
 		return AlertsSuppressionRulesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsSuppressionRulesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -119,7 +118,7 @@ func (client *AlertsSuppressionRulesClient) Get(ctx context.Context, alertsSuppr
 func (client *AlertsSuppressionRulesClient) getCreateRequest(ctx context.Context, alertsSuppressionRuleName string, _ *AlertsSuppressionRulesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if alertsSuppressionRuleName == "" {
@@ -138,8 +137,11 @@ func (client *AlertsSuppressionRulesClient) getCreateRequest(ctx context.Context
 }
 
 // getHandleResponse handles the Get response.
-func (client *AlertsSuppressionRulesClient) getHandleResponse(resp *http.Response) (AlertsSuppressionRulesClientGetResponse, error) {
+func (client *AlertsSuppressionRulesClient) getHandleResponse(resp *http.Response, successCodes ...int) (AlertsSuppressionRulesClientGetResponse, error) {
 	result := AlertsSuppressionRulesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSuppressionRule); err != nil {
 		return AlertsSuppressionRulesClientGetResponse{}, err
 	}
@@ -160,42 +162,56 @@ func (client *AlertsSuppressionRulesClient) NewListPager(options *AlertsSuppress
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, nextLink, options)
 			if err != nil {
 				return AlertsSuppressionRulesClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return AlertsSuppressionRulesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *AlertsSuppressionRulesClient) listCreateRequest(ctx context.Context, options *AlertsSuppressionRulesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *AlertsSuppressionRulesClient) listCreateRequest(ctx context.Context, nextLink string, options *AlertsSuppressionRulesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.AlertType != nil {
-		reqQP.Set("AlertType", *options.AlertType)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.AlertType != nil {
+			reqQP.Set("AlertType", *options.AlertType)
+		}
+		reqQP.Set("api-version", version20190101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20190101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *AlertsSuppressionRulesClient) listHandleResponse(resp *http.Response) (AlertsSuppressionRulesClientListResponse, error) {
+func (client *AlertsSuppressionRulesClient) listHandleResponse(resp *http.Response, successCodes ...int) (AlertsSuppressionRulesClientListResponse, error) {
 	result := AlertsSuppressionRulesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSuppressionRulesList); err != nil {
 		return AlertsSuppressionRulesClientListResponse{}, err
 	}
@@ -222,11 +238,7 @@ func (client *AlertsSuppressionRulesClient) Update(ctx context.Context, alertsSu
 	if err != nil {
 		return AlertsSuppressionRulesClientUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return AlertsSuppressionRulesClientUpdateResponse{}, err
-	}
-	resp, err := client.updateHandleResponse(httpResp)
+	resp, err := client.updateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -234,7 +246,7 @@ func (client *AlertsSuppressionRulesClient) Update(ctx context.Context, alertsSu
 func (client *AlertsSuppressionRulesClient) updateCreateRequest(ctx context.Context, alertsSuppressionRuleName string, alertsSuppressionRule AlertsSuppressionRule, _ *AlertsSuppressionRulesClientUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/alertsSuppressionRules/{alertsSuppressionRuleName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if alertsSuppressionRuleName == "" {
@@ -257,8 +269,11 @@ func (client *AlertsSuppressionRulesClient) updateCreateRequest(ctx context.Cont
 }
 
 // updateHandleResponse handles the Update response.
-func (client *AlertsSuppressionRulesClient) updateHandleResponse(resp *http.Response) (AlertsSuppressionRulesClientUpdateResponse, error) {
+func (client *AlertsSuppressionRulesClient) updateHandleResponse(resp *http.Response, successCodes ...int) (AlertsSuppressionRulesClientUpdateResponse, error) {
 	result := AlertsSuppressionRulesClientUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.AlertsSuppressionRule); err != nil {
 		return AlertsSuppressionRulesClientUpdateResponse{}, err
 	}

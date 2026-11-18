@@ -59,11 +59,7 @@ func (client *CustomRecommendationsClient) CreateOrUpdate(ctx context.Context, s
 	if err != nil {
 		return CustomRecommendationsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return CustomRecommendationsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
@@ -94,8 +90,11 @@ func (client *CustomRecommendationsClient) createOrUpdateCreateRequest(ctx conte
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *CustomRecommendationsClient) createOrUpdateHandleResponse(resp *http.Response) (CustomRecommendationsClientCreateOrUpdateResponse, error) {
+func (client *CustomRecommendationsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (CustomRecommendationsClientCreateOrUpdateResponse, error) {
 	result := CustomRecommendationsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomRecommendation); err != nil {
 		return CustomRecommendationsClientCreateOrUpdateResponse{}, err
 	}
@@ -170,11 +169,7 @@ func (client *CustomRecommendationsClient) Get(ctx context.Context, scope string
 	if err != nil {
 		return CustomRecommendationsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return CustomRecommendationsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -201,8 +196,11 @@ func (client *CustomRecommendationsClient) getCreateRequest(ctx context.Context,
 }
 
 // getHandleResponse handles the Get response.
-func (client *CustomRecommendationsClient) getHandleResponse(resp *http.Response) (CustomRecommendationsClientGetResponse, error) {
+func (client *CustomRecommendationsClient) getHandleResponse(resp *http.Response, successCodes ...int) (CustomRecommendationsClientGetResponse, error) {
 	result := CustomRecommendationsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomRecommendation); err != nil {
 		return CustomRecommendationsClientGetResponse{}, err
 	}
@@ -224,39 +222,53 @@ func (client *CustomRecommendationsClient) NewListPager(scope string, options *C
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, scope, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, scope, nextLink, options)
 			if err != nil {
 				return CustomRecommendationsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return CustomRecommendationsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *CustomRecommendationsClient) listCreateRequest(ctx context.Context, scope string, _ *CustomRecommendationsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{scope}/providers/Microsoft.Security/customRecommendations"
-	if scope == "" {
-		return nil, errors.New("parameter scope cannot be empty")
+func (client *CustomRecommendationsClient) listCreateRequest(ctx context.Context, scope string, nextLink string, _ *CustomRecommendationsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{scope}/providers/Microsoft.Security/customRecommendations"
+		if scope == "" {
+			return nil, errors.New("parameter scope cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{scope}", scope)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20240801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20240801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *CustomRecommendationsClient) listHandleResponse(resp *http.Response) (CustomRecommendationsClientListResponse, error) {
+func (client *CustomRecommendationsClient) listHandleResponse(resp *http.Response, successCodes ...int) (CustomRecommendationsClientListResponse, error) {
 	result := CustomRecommendationsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.CustomRecommendationsList); err != nil {
 		return CustomRecommendationsClientListResponse{}, err
 	}

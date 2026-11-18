@@ -30,6 +30,9 @@ type MdeOnboardingsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewMdeOnboardingsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*MdeOnboardingsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -58,11 +61,7 @@ func (client *MdeOnboardingsClient) Get(ctx context.Context, options *MdeOnboard
 	if err != nil {
 		return MdeOnboardingsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MdeOnboardingsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -70,7 +69,7 @@ func (client *MdeOnboardingsClient) Get(ctx context.Context, options *MdeOnboard
 func (client *MdeOnboardingsClient) getCreateRequest(ctx context.Context, _ *MdeOnboardingsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings/default"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -85,8 +84,11 @@ func (client *MdeOnboardingsClient) getCreateRequest(ctx context.Context, _ *Mde
 }
 
 // getHandleResponse handles the Get response.
-func (client *MdeOnboardingsClient) getHandleResponse(resp *http.Response) (MdeOnboardingsClientGetResponse, error) {
+func (client *MdeOnboardingsClient) getHandleResponse(resp *http.Response, successCodes ...int) (MdeOnboardingsClientGetResponse, error) {
 	result := MdeOnboardingsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MdeOnboardingData); err != nil {
 		return MdeOnboardingsClientGetResponse{}, err
 	}
@@ -110,11 +112,7 @@ func (client *MdeOnboardingsClient) List(ctx context.Context, options *MdeOnboar
 	if err != nil {
 		return MdeOnboardingsClientListResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return MdeOnboardingsClientListResponse{}, err
-	}
-	resp, err := client.listHandleResponse(httpResp)
+	resp, err := client.listHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -122,7 +120,7 @@ func (client *MdeOnboardingsClient) List(ctx context.Context, options *MdeOnboar
 func (client *MdeOnboardingsClient) listCreateRequest(ctx context.Context, _ *MdeOnboardingsClientListOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/mdeOnboardings"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
@@ -137,8 +135,11 @@ func (client *MdeOnboardingsClient) listCreateRequest(ctx context.Context, _ *Md
 }
 
 // listHandleResponse handles the List response.
-func (client *MdeOnboardingsClient) listHandleResponse(resp *http.Response) (MdeOnboardingsClientListResponse, error) {
+func (client *MdeOnboardingsClient) listHandleResponse(resp *http.Response, successCodes ...int) (MdeOnboardingsClientListResponse, error) {
 	result := MdeOnboardingsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.MdeOnboardingDataList); err != nil {
 		return MdeOnboardingsClientListResponse{}, err
 	}

@@ -60,11 +60,7 @@ func (client *DeviceSecurityGroupsClient) CreateOrUpdate(ctx context.Context, re
 	if err != nil {
 		return DeviceSecurityGroupsClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK, http.StatusCreated) {
-		err = runtime.NewResponseError(httpResp)
-		return DeviceSecurityGroupsClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK, http.StatusCreated)
 	return resp, err
 }
 
@@ -95,8 +91,11 @@ func (client *DeviceSecurityGroupsClient) createOrUpdateCreateRequest(ctx contex
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *DeviceSecurityGroupsClient) createOrUpdateHandleResponse(resp *http.Response) (DeviceSecurityGroupsClientCreateOrUpdateResponse, error) {
+func (client *DeviceSecurityGroupsClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (DeviceSecurityGroupsClientCreateOrUpdateResponse, error) {
 	result := DeviceSecurityGroupsClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroup); err != nil {
 		return DeviceSecurityGroupsClientCreateOrUpdateResponse{}, err
 	}
@@ -173,11 +172,7 @@ func (client *DeviceSecurityGroupsClient) Get(ctx context.Context, resourceID st
 	if err != nil {
 		return DeviceSecurityGroupsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return DeviceSecurityGroupsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -204,8 +199,11 @@ func (client *DeviceSecurityGroupsClient) getCreateRequest(ctx context.Context, 
 }
 
 // getHandleResponse handles the Get response.
-func (client *DeviceSecurityGroupsClient) getHandleResponse(resp *http.Response) (DeviceSecurityGroupsClientGetResponse, error) {
+func (client *DeviceSecurityGroupsClient) getHandleResponse(resp *http.Response, successCodes ...int) (DeviceSecurityGroupsClientGetResponse, error) {
 	result := DeviceSecurityGroupsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroup); err != nil {
 		return DeviceSecurityGroupsClientGetResponse{}, err
 	}
@@ -227,39 +225,53 @@ func (client *DeviceSecurityGroupsClient) NewListPager(resourceID string, option
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, resourceID, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, resourceID, nextLink, options)
 			if err != nil {
 				return DeviceSecurityGroupsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return DeviceSecurityGroupsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *DeviceSecurityGroupsClient) listCreateRequest(ctx context.Context, resourceID string, _ *DeviceSecurityGroupsClientListOptions) (*policy.Request, error) {
-	urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups"
-	if resourceID == "" {
-		return nil, errors.New("parameter resourceID cannot be empty")
+func (client *DeviceSecurityGroupsClient) listCreateRequest(ctx context.Context, resourceID string, nextLink string, _ *DeviceSecurityGroupsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/{resourceId}/providers/Microsoft.Security/deviceSecurityGroups"
+		if resourceID == "" {
+			return nil, errors.New("parameter resourceID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceId}", resourceID)
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20190801)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20190801)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *DeviceSecurityGroupsClient) listHandleResponse(resp *http.Response) (DeviceSecurityGroupsClientListResponse, error) {
+func (client *DeviceSecurityGroupsClient) listHandleResponse(resp *http.Response, successCodes ...int) (DeviceSecurityGroupsClientListResponse, error) {
 	result := DeviceSecurityGroupsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.DeviceSecurityGroupList); err != nil {
 		return DeviceSecurityGroupsClientListResponse{}, err
 	}

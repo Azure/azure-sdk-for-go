@@ -30,6 +30,9 @@ type RegulatoryComplianceAssessmentsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewRegulatoryComplianceAssessmentsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*RegulatoryComplianceAssessmentsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,11 +65,7 @@ func (client *RegulatoryComplianceAssessmentsClient) Get(ctx context.Context, re
 	if err != nil {
 		return RegulatoryComplianceAssessmentsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return RegulatoryComplianceAssessmentsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -74,7 +73,7 @@ func (client *RegulatoryComplianceAssessmentsClient) Get(ctx context.Context, re
 func (client *RegulatoryComplianceAssessmentsClient) getCreateRequest(ctx context.Context, regulatoryComplianceStandardName string, regulatoryComplianceControlName string, regulatoryComplianceAssessmentName string, _ *RegulatoryComplianceAssessmentsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}/regulatoryComplianceAssessments/{regulatoryComplianceAssessmentName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if regulatoryComplianceStandardName == "" {
@@ -101,8 +100,11 @@ func (client *RegulatoryComplianceAssessmentsClient) getCreateRequest(ctx contex
 }
 
 // getHandleResponse handles the Get response.
-func (client *RegulatoryComplianceAssessmentsClient) getHandleResponse(resp *http.Response) (RegulatoryComplianceAssessmentsClientGetResponse, error) {
+func (client *RegulatoryComplianceAssessmentsClient) getHandleResponse(resp *http.Response, successCodes ...int) (RegulatoryComplianceAssessmentsClientGetResponse, error) {
 	result := RegulatoryComplianceAssessmentsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegulatoryComplianceAssessment); err != nil {
 		return RegulatoryComplianceAssessmentsClientGetResponse{}, err
 	}
@@ -125,50 +127,64 @@ func (client *RegulatoryComplianceAssessmentsClient) NewListPager(regulatoryComp
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, regulatoryComplianceStandardName, regulatoryComplianceControlName, options)
-			}, nil)
+			req, err := client.listCreateRequest(ctx, regulatoryComplianceStandardName, regulatoryComplianceControlName, nextLink, options)
 			if err != nil {
 				return RegulatoryComplianceAssessmentsClientListResponse{}, err
 			}
-			return client.listHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return RegulatoryComplianceAssessmentsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listCreateRequest creates the List request.
-func (client *RegulatoryComplianceAssessmentsClient) listCreateRequest(ctx context.Context, regulatoryComplianceStandardName string, regulatoryComplianceControlName string, options *RegulatoryComplianceAssessmentsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}/regulatoryComplianceAssessments"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *RegulatoryComplianceAssessmentsClient) listCreateRequest(ctx context.Context, regulatoryComplianceStandardName string, regulatoryComplianceControlName string, nextLink string, options *RegulatoryComplianceAssessmentsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/regulatoryComplianceStandards/{regulatoryComplianceStandardName}/regulatoryComplianceControls/{regulatoryComplianceControlName}/regulatoryComplianceAssessments"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if regulatoryComplianceStandardName == "" {
+			return nil, errors.New("parameter regulatoryComplianceStandardName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{regulatoryComplianceStandardName}", url.PathEscape(regulatoryComplianceStandardName))
+		if regulatoryComplianceControlName == "" {
+			return nil, errors.New("parameter regulatoryComplianceControlName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{regulatoryComplianceControlName}", url.PathEscape(regulatoryComplianceControlName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if regulatoryComplianceStandardName == "" {
-		return nil, errors.New("parameter regulatoryComplianceStandardName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{regulatoryComplianceStandardName}", url.PathEscape(regulatoryComplianceStandardName))
-	if regulatoryComplianceControlName == "" {
-		return nil, errors.New("parameter regulatoryComplianceControlName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{regulatoryComplianceControlName}", url.PathEscape(regulatoryComplianceControlName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	if options != nil && options.Filter != nil {
-		reqQP.Set("$filter", *options.Filter)
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		if options != nil && options.Filter != nil {
+			reqQP.Set("$filter", *options.Filter)
+		}
+		reqQP.Set("api-version", version20190101Preview)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
 	}
-	reqQP.Set("api-version", version20190101Preview)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
 	return req, nil
 }
 
 // listHandleResponse handles the List response.
-func (client *RegulatoryComplianceAssessmentsClient) listHandleResponse(resp *http.Response) (RegulatoryComplianceAssessmentsClientListResponse, error) {
+func (client *RegulatoryComplianceAssessmentsClient) listHandleResponse(resp *http.Response, successCodes ...int) (RegulatoryComplianceAssessmentsClientListResponse, error) {
 	result := RegulatoryComplianceAssessmentsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.RegulatoryComplianceAssessmentList); err != nil {
 		return RegulatoryComplianceAssessmentsClientListResponse{}, err
 	}

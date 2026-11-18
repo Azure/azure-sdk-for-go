@@ -63,6 +63,9 @@ type ServerFactory struct {
 	// AzureDevOpsReposServer contains the fakes for client AzureDevOpsReposClient
 	AzureDevOpsReposServer AzureDevOpsReposServer
 
+	// BatchPricingsServer contains the fakes for client BatchPricingsClient
+	BatchPricingsServer BatchPricingsServer
+
 	// ComplianceResultsServer contains the fakes for client ComplianceResultsClient
 	ComplianceResultsServer ComplianceResultsServer
 
@@ -240,6 +243,9 @@ type ServerFactory struct {
 	// TopologyServer contains the fakes for client TopologyClient
 	TopologyServer TopologyServer
 
+	// TopologyResourcesServer contains the fakes for client TopologyResourcesClient
+	TopologyResourcesServer TopologyResourcesServer
+
 	// WorkspaceSettingsServer contains the fakes for client WorkspaceSettingsClient
 	WorkspaceSettingsServer WorkspaceSettingsServer
 }
@@ -274,6 +280,7 @@ type ServerFactoryTransport struct {
 	trAzureDevOpsOrgsServer                              *AzureDevOpsOrgsServerTransport
 	trAzureDevOpsProjectsServer                          *AzureDevOpsProjectsServerTransport
 	trAzureDevOpsReposServer                             *AzureDevOpsReposServerTransport
+	trBatchPricingsServer                                *BatchPricingsServerTransport
 	trComplianceResultsServer                            *ComplianceResultsServerTransport
 	trCompliancesServer                                  *CompliancesServerTransport
 	trConnectorApplicationServer                         *ConnectorApplicationServerTransport
@@ -333,6 +340,7 @@ type ServerFactoryTransport struct {
 	trSubAssessmentsServer                               *SubAssessmentsServerTransport
 	trTasksServer                                        *TasksServerTransport
 	trTopologyServer                                     *TopologyServerTransport
+	trTopologyResourcesServer                            *TopologyResourcesServerTransport
 	trWorkspaceSettingsServer                            *WorkspaceSettingsServerTransport
 }
 
@@ -341,7 +349,7 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	client := method[:strings.Index(method, ".")]
@@ -417,6 +425,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 			return NewAzureDevOpsReposServerTransport(&s.srv.AzureDevOpsReposServer)
 		})
 		resp, err = s.trAzureDevOpsReposServer.Do(req)
+	case "BatchPricingsClient":
+		initServer(&s.trMu, &s.trBatchPricingsServer, func() *BatchPricingsServerTransport {
+			return NewBatchPricingsServerTransport(&s.srv.BatchPricingsServer)
+		})
+		resp, err = s.trBatchPricingsServer.Do(req)
 	case "ComplianceResultsClient":
 		initServer(&s.trMu, &s.trComplianceResultsServer, func() *ComplianceResultsServerTransport {
 			return NewComplianceResultsServerTransport(&s.srv.ComplianceResultsServer)
@@ -676,6 +689,11 @@ func (s *ServerFactoryTransport) Do(req *http.Request) (*http.Response, error) {
 	case "TopologyClient":
 		initServer(&s.trMu, &s.trTopologyServer, func() *TopologyServerTransport { return NewTopologyServerTransport(&s.srv.TopologyServer) })
 		resp, err = s.trTopologyServer.Do(req)
+	case "TopologyResourcesClient":
+		initServer(&s.trMu, &s.trTopologyResourcesServer, func() *TopologyResourcesServerTransport {
+			return NewTopologyResourcesServerTransport(&s.srv.TopologyResourcesServer)
+		})
+		resp, err = s.trTopologyResourcesServer.Do(req)
 	case "WorkspaceSettingsClient":
 		initServer(&s.trMu, &s.trWorkspaceSettingsServer, func() *WorkspaceSettingsServerTransport {
 			return NewWorkspaceSettingsServerTransport(&s.srv.WorkspaceSettingsServer)

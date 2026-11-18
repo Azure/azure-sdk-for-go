@@ -30,6 +30,9 @@ type ExternalSecuritySolutionsClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewExternalSecuritySolutionsClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*ExternalSecuritySolutionsClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,11 +65,7 @@ func (client *ExternalSecuritySolutionsClient) Get(ctx context.Context, resource
 	if err != nil {
 		return ExternalSecuritySolutionsClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return ExternalSecuritySolutionsClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -74,7 +73,7 @@ func (client *ExternalSecuritySolutionsClient) Get(ctx context.Context, resource
 func (client *ExternalSecuritySolutionsClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, externalSecuritySolutionsName string, _ *ExternalSecuritySolutionsClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/ExternalSecuritySolutions/{externalSecuritySolutionsName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -101,63 +100,13 @@ func (client *ExternalSecuritySolutionsClient) getCreateRequest(ctx context.Cont
 }
 
 // getHandleResponse handles the Get response.
-func (client *ExternalSecuritySolutionsClient) getHandleResponse(resp *http.Response) (ExternalSecuritySolutionsClientGetResponse, error) {
+func (client *ExternalSecuritySolutionsClient) getHandleResponse(resp *http.Response, successCodes ...int) (ExternalSecuritySolutionsClientGetResponse, error) {
 	result := ExternalSecuritySolutionsClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result); err != nil {
 		return ExternalSecuritySolutionsClientGetResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Gets a list of external security solutions for the subscription.
-//   - options - ExternalSecuritySolutionsClientListOptions contains the optional parameters for the ExternalSecuritySolutionsClient.NewListPager
-//     method.
-func (client *ExternalSecuritySolutionsClient) NewListPager(options *ExternalSecuritySolutionsClientListOptions) *runtime.Pager[ExternalSecuritySolutionsClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[ExternalSecuritySolutionsClientListResponse]{
-		More: func(page ExternalSecuritySolutionsClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *ExternalSecuritySolutionsClientListResponse) (ExternalSecuritySolutionsClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExternalSecuritySolutionsClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return ExternalSecuritySolutionsClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *ExternalSecuritySolutionsClient) listCreateRequest(ctx context.Context, _ *ExternalSecuritySolutionsClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/externalSecuritySolutions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *ExternalSecuritySolutionsClient) listHandleResponse(resp *http.Response) (ExternalSecuritySolutionsClientListResponse, error) {
-	result := ExternalSecuritySolutionsClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSecuritySolutionList); err != nil {
-		return ExternalSecuritySolutionsClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -177,45 +126,126 @@ func (client *ExternalSecuritySolutionsClient) NewListByHomeRegionPager(ascLocat
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByHomeRegionCreateRequest(ctx, ascLocation, options)
-			}, nil)
+			req, err := client.listByHomeRegionCreateRequest(ctx, ascLocation, nextLink, options)
 			if err != nil {
 				return ExternalSecuritySolutionsClientListByHomeRegionResponse{}, err
 			}
-			return client.listByHomeRegionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ExternalSecuritySolutionsClientListByHomeRegionResponse{}, err
+			}
+			return client.listByHomeRegionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByHomeRegionCreateRequest creates the ListByHomeRegion request.
-func (client *ExternalSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, _ *ExternalSecuritySolutionsClientListByHomeRegionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/ExternalSecuritySolutions"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *ExternalSecuritySolutionsClient) listByHomeRegionCreateRequest(ctx context.Context, ascLocation string, nextLink string, _ *ExternalSecuritySolutionsClientListByHomeRegionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/ExternalSecuritySolutions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if ascLocation == "" {
+			return nil, errors.New("parameter ascLocation cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if ascLocation == "" {
-		return nil, errors.New("parameter ascLocation cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20200101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByHomeRegionHandleResponse handles the ListByHomeRegion response.
-func (client *ExternalSecuritySolutionsClient) listByHomeRegionHandleResponse(resp *http.Response) (ExternalSecuritySolutionsClientListByHomeRegionResponse, error) {
+func (client *ExternalSecuritySolutionsClient) listByHomeRegionHandleResponse(resp *http.Response, successCodes ...int) (ExternalSecuritySolutionsClientListByHomeRegionResponse, error) {
 	result := ExternalSecuritySolutionsClientListByHomeRegionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSecuritySolutionList); err != nil {
 		return ExternalSecuritySolutionsClientListByHomeRegionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Gets a list of external security solutions for the subscription.
+//   - options - ExternalSecuritySolutionsClientListOptions contains the optional parameters for the ExternalSecuritySolutionsClient.NewListPager
+//     method.
+func (client *ExternalSecuritySolutionsClient) NewListPager(options *ExternalSecuritySolutionsClientListOptions) *runtime.Pager[ExternalSecuritySolutionsClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[ExternalSecuritySolutionsClientListResponse]{
+		More: func(page ExternalSecuritySolutionsClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *ExternalSecuritySolutionsClientListResponse) (ExternalSecuritySolutionsClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "ExternalSecuritySolutionsClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return ExternalSecuritySolutionsClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return ExternalSecuritySolutionsClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *ExternalSecuritySolutionsClient) listCreateRequest(ctx context.Context, nextLink string, _ *ExternalSecuritySolutionsClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/externalSecuritySolutions"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20200101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *ExternalSecuritySolutionsClient) listHandleResponse(resp *http.Response, successCodes ...int) (ExternalSecuritySolutionsClientListResponse, error) {
+	result := ExternalSecuritySolutionsClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.ExternalSecuritySolutionList); err != nil {
+		return ExternalSecuritySolutionsClientListResponse{}, err
 	}
 	return result, nil
 }

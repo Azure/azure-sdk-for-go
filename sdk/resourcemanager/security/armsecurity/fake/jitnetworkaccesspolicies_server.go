@@ -37,21 +37,21 @@ type JitNetworkAccessPoliciesServer struct {
 	// HTTP status codes to indicate success: http.StatusAccepted
 	Initiate func(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, body armsecurity.JitNetworkAccessPolicyInitiateRequest, options *armsecurity.JitNetworkAccessPoliciesClientInitiateOptions) (resp azfake.Responder[armsecurity.JitNetworkAccessPoliciesClientInitiateResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method JitNetworkAccessPoliciesClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(options *armsecurity.JitNetworkAccessPoliciesClientListOptions) (resp azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListResponse])
-
 	// NewListByRegionPager is the fake for method JitNetworkAccessPoliciesClient.NewListByRegionPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByRegionPager func(ascLocation string, options *armsecurity.JitNetworkAccessPoliciesClientListByRegionOptions) (resp azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByRegionResponse])
+
+	// NewListByResourceGroupAndRegionPager is the fake for method JitNetworkAccessPoliciesClient.NewListByResourceGroupAndRegionPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListByResourceGroupAndRegionPager func(resourceGroupName string, ascLocation string, options *armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions) (resp azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse])
 
 	// NewListByResourceGroupPager is the fake for method JitNetworkAccessPoliciesClient.NewListByResourceGroupPager
 	// HTTP status codes to indicate success: http.StatusOK
 	NewListByResourceGroupPager func(resourceGroupName string, options *armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupOptions) (resp azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupResponse])
 
-	// NewListByResourceGroupAndRegionPager is the fake for method JitNetworkAccessPoliciesClient.NewListByResourceGroupAndRegionPager
+	// NewListPager is the fake for method JitNetworkAccessPoliciesClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListByResourceGroupAndRegionPager func(resourceGroupName string, ascLocation string, options *armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions) (resp azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse])
+	NewListPager func(options *armsecurity.JitNetworkAccessPoliciesClientListOptions) (resp azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListResponse])
 }
 
 // NewJitNetworkAccessPoliciesServerTransport creates a new instance of JitNetworkAccessPoliciesServerTransport with the provided implementation.
@@ -60,10 +60,10 @@ type JitNetworkAccessPoliciesServer struct {
 func NewJitNetworkAccessPoliciesServerTransport(srv *JitNetworkAccessPoliciesServer) *JitNetworkAccessPoliciesServerTransport {
 	return &JitNetworkAccessPoliciesServerTransport{
 		srv:                                  srv,
-		newListPager:                         newTracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListResponse]](),
 		newListByRegionPager:                 newTracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByRegionResponse]](),
-		newListByResourceGroupPager:          newTracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupResponse]](),
 		newListByResourceGroupAndRegionPager: newTracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse]](),
+		newListByResourceGroupPager:          newTracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupResponse]](),
+		newListPager:                         newTracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListResponse]](),
 	}
 }
 
@@ -71,10 +71,10 @@ func NewJitNetworkAccessPoliciesServerTransport(srv *JitNetworkAccessPoliciesSer
 // Don't use this type directly, use NewJitNetworkAccessPoliciesServerTransport instead.
 type JitNetworkAccessPoliciesServerTransport struct {
 	srv                                  *JitNetworkAccessPoliciesServer
-	newListPager                         *tracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListResponse]]
 	newListByRegionPager                 *tracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByRegionResponse]]
-	newListByResourceGroupPager          *tracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupResponse]]
 	newListByResourceGroupAndRegionPager *tracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse]]
+	newListByResourceGroupPager          *tracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupResponse]]
+	newListPager                         *tracker[azfake.PagerResponder[armsecurity.JitNetworkAccessPoliciesClientListResponse]]
 }
 
 // Do implements the policy.Transporter interface for JitNetworkAccessPoliciesServerTransport.
@@ -82,7 +82,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) Do(req *http.Request) (*http.R
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return j.dispatchToMethodFake(req, method)
@@ -106,14 +106,14 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchToMethodFake(req *http
 				res.resp, res.err = j.dispatchGet(req)
 			case "JitNetworkAccessPoliciesClient.Initiate":
 				res.resp, res.err = j.dispatchInitiate(req)
-			case "JitNetworkAccessPoliciesClient.NewListPager":
-				res.resp, res.err = j.dispatchNewListPager(req)
 			case "JitNetworkAccessPoliciesClient.NewListByRegionPager":
 				res.resp, res.err = j.dispatchNewListByRegionPager(req)
-			case "JitNetworkAccessPoliciesClient.NewListByResourceGroupPager":
-				res.resp, res.err = j.dispatchNewListByResourceGroupPager(req)
 			case "JitNetworkAccessPoliciesClient.NewListByResourceGroupAndRegionPager":
 				res.resp, res.err = j.dispatchNewListByResourceGroupAndRegionPager(req)
+			case "JitNetworkAccessPoliciesClient.NewListByResourceGroupPager":
+				res.resp, res.err = j.dispatchNewListByResourceGroupPager(req)
+			case "JitNetworkAccessPoliciesClient.NewListPager":
+				res.resp, res.err = j.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -134,7 +134,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchCreateOrUpdate(req *ht
 	if j.srv.CreateOrUpdate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method CreateOrUpdate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -175,7 +175,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchDelete(req *http.Reque
 	if j.srv.Delete == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Delete not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -212,7 +212,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchGet(req *http.Request)
 	if j.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -249,7 +249,7 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchInitiate(req *http.Req
 	if j.srv.Initiate == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Initiate not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/(?P<jitNetworkAccessPolicyInitiateType>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jitNetworkAccessPolicies/(?P<jitNetworkAccessPolicyName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/(?P<jitNetworkAccessPolicyInitiateType>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -286,46 +286,13 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchInitiate(req *http.Req
 	return resp, nil
 }
 
-func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
-	if j.srv.NewListPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
-	}
-	newListPager := j.newListPager.get(req)
-	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/jitNetworkAccessPolicies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 2 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resp := j.srv.NewListPager(nil)
-		newListPager = &resp
-		j.newListPager.add(req, newListPager)
-		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.JitNetworkAccessPoliciesClientListResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		j.newListPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListPager) {
-		j.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListByRegionPager(req *http.Request) (*http.Response, error) {
 	if j.srv.NewListByRegionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByRegionPager not implemented")}
 	}
 	newListByRegionPager := j.newListByRegionPager.get(req)
 	if newListByRegionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jitNetworkAccessPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 3 {
@@ -356,50 +323,13 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListByRegionPager(r
 	return resp, nil
 }
 
-func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
-	if j.srv.NewListByResourceGroupPager == nil {
-		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
-	}
-	newListByResourceGroupPager := j.newListByResourceGroupPager.get(req)
-	if newListByResourceGroupPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/jitNetworkAccessPolicies`
-		regex := regexp.MustCompile(regexStr)
-		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-		if len(matches) < 3 {
-			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-		}
-		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-		if err != nil {
-			return nil, err
-		}
-		resp := j.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
-		newListByResourceGroupPager = &resp
-		j.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
-		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupResponse, createLink func() string) {
-			page.NextLink = to.Ptr(createLink())
-		})
-	}
-	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
-	if err != nil {
-		return nil, err
-	}
-	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
-		j.newListByResourceGroupPager.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
-	}
-	if !server.PagerResponderMore(newListByResourceGroupPager) {
-		j.newListByResourceGroupPager.remove(req)
-	}
-	return resp, nil
-}
-
 func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListByResourceGroupAndRegionPager(req *http.Request) (*http.Response, error) {
 	if j.srv.NewListByResourceGroupAndRegionPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupAndRegionPager not implemented")}
 	}
 	newListByResourceGroupAndRegionPager := j.newListByResourceGroupAndRegionPager.get(req)
 	if newListByResourceGroupAndRegionPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/jitNetworkAccessPolicies`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/locations/(?P<ascLocation>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/jitNetworkAccessPolicies`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -430,6 +360,76 @@ func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListByResourceGroup
 	}
 	if !server.PagerResponderMore(newListByResourceGroupAndRegionPager) {
 		j.newListByResourceGroupAndRegionPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListByResourceGroupPager(req *http.Request) (*http.Response, error) {
+	if j.srv.NewListByResourceGroupPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListByResourceGroupPager not implemented")}
+	}
+	newListByResourceGroupPager := j.newListByResourceGroupPager.get(req)
+	if newListByResourceGroupPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/jitNetworkAccessPolicies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 3 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+		if err != nil {
+			return nil, err
+		}
+		resp := j.srv.NewListByResourceGroupPager(resourceGroupNameParam, nil)
+		newListByResourceGroupPager = &resp
+		j.newListByResourceGroupPager.add(req, newListByResourceGroupPager)
+		server.PagerResponderInjectNextLinks(newListByResourceGroupPager, req, func(page *armsecurity.JitNetworkAccessPoliciesClientListByResourceGroupResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListByResourceGroupPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		j.newListByResourceGroupPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListByResourceGroupPager) {
+		j.newListByResourceGroupPager.remove(req)
+	}
+	return resp, nil
+}
+
+func (j *JitNetworkAccessPoliciesServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
+	if j.srv.NewListPager == nil {
+		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
+	}
+	newListPager := j.newListPager.get(req)
+	if newListPager == nil {
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/jitNetworkAccessPolicies`
+		regex := regexp.MustCompile(regexStr)
+		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+		if len(matches) < 2 {
+			return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+		}
+		resp := j.srv.NewListPager(nil)
+		newListPager = &resp
+		j.newListPager.add(req, newListPager)
+		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.JitNetworkAccessPoliciesClientListResponse, createLink func() string) {
+			page.NextLink = to.Ptr(createLink())
+		})
+	}
+	resp, err := server.PagerResponderNext(newListPager, req)
+	if err != nil {
+		return nil, err
+	}
+	if !slices.Contains([]int{http.StatusOK}, resp.StatusCode) {
+		j.newListPager.remove(req)
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", resp.StatusCode)}
+	}
+	if !server.PagerResponderMore(newListPager) {
+		j.newListPager.remove(req)
 	}
 	return resp, nil
 }

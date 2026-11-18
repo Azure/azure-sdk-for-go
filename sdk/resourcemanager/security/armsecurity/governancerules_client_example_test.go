@@ -12,298 +12,6 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2022-01-01-preview/GovernanceRules/PutGovernanceRule_example.json
-func ExampleGovernanceRulesClient_CreateOrUpdate_createOrUpdateGovernanceRuleOverSubscriptionScope() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGovernanceRulesClient().CreateOrUpdate(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", armsecurity.GovernanceRule{
-		Properties: &armsecurity.GovernanceRuleProperties{
-			Description: to.Ptr("A rule for critical recommendations"),
-			ConditionSets: []any{
-				map[string]any{
-					"conditions": []any{
-						map[string]any{
-							"operator": "In",
-							"property": "$.AssessmentKey",
-							"value":    "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
-						},
-					},
-				},
-			},
-			DisplayName: to.Ptr("Admin's rule"),
-			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
-				DisableManagerEmailNotification: to.Ptr(false),
-				DisableOwnerEmailNotification:   to.Ptr(false),
-			},
-			IsDisabled:    to.Ptr(false),
-			IsGracePeriod: to.Ptr(true),
-			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
-				Type:  to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
-				Value: to.Ptr("user@contoso.com"),
-			},
-			RemediationTimeframe: to.Ptr("7.00:00:00"),
-			RulePriority:         to.Ptr[int32](200),
-			RuleType:             to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
-			SourceResourceType:   to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsecurity.GovernanceRulesClientCreateOrUpdateResponse{
-	// 	GovernanceRule: armsecurity.GovernanceRule{
-	// 		Name: to.Ptr("ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
-	// 		Type: to.Ptr("Microsoft.Security/governanceRules"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/governanceRules/ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
-	// 		Properties: &armsecurity.GovernanceRuleProperties{
-	// 			Description: to.Ptr("A rule for critical recommendations"),
-	// 			ConditionSets: []any{
-	// 				map[string]any{
-	// 					"conditions": []any{
-	// 						map[string]any{
-	// 							"operator": "In",
-	// 							"property": "$.AssessmentKey",
-	// 							"value": "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			DisplayName: to.Ptr("Admin's rule"),
-	// 			ExcludedScopes: []*string{
-	// 			},
-	// 			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
-	// 				DisableManagerEmailNotification: to.Ptr(false),
-	// 				DisableOwnerEmailNotification: to.Ptr(false),
-	// 			},
-	// 			IncludeMemberScopes: to.Ptr(false),
-	// 			IsDisabled: to.Ptr(false),
-	// 			IsGracePeriod: to.Ptr(true),
-	// 			Metadata: &armsecurity.GovernanceRuleMetadata{
-	// 				CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
-	// 				UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
-	// 			},
-	// 			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
-	// 				Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
-	// 				Value: to.Ptr("user@contoso.com"),
-	// 			},
-	// 			RemediationTimeframe: to.Ptr("7.00:00:00"),
-	// 			RulePriority: to.Ptr[int32](200),
-	// 			RuleType: to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
-	// 			SourceResourceType: to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
-	// 			TenantID: to.Ptr("f0b6d37b-e4bc-4719-9291-c066c3194f23"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2022-01-01-preview/GovernanceRules/PutManagementGroupGovernanceRule_example.json
-func ExampleGovernanceRulesClient_CreateOrUpdate_createOrUpdateGovernanceRuleOverManagementGroupScope() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGovernanceRulesClient().CreateOrUpdate(ctx, "providers/Microsoft.Management/managementGroups/contoso", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", armsecurity.GovernanceRule{
-		Properties: &armsecurity.GovernanceRuleProperties{
-			Description: to.Ptr("A rule for a management group"),
-			ConditionSets: []any{
-				map[string]any{
-					"conditions": []any{
-						map[string]any{
-							"operator": "In",
-							"property": "$.AssessmentKey",
-							"value":    "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
-						},
-					},
-				},
-			},
-			DisplayName: to.Ptr("Management group rule"),
-			ExcludedScopes: []*string{
-				to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
-			},
-			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
-				DisableManagerEmailNotification: to.Ptr(true),
-				DisableOwnerEmailNotification:   to.Ptr(false),
-			},
-			IsDisabled:    to.Ptr(false),
-			IsGracePeriod: to.Ptr(true),
-			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
-				Type:  to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
-				Value: to.Ptr("user@contoso.com"),
-			},
-			RemediationTimeframe: to.Ptr("7.00:00:00"),
-			RulePriority:         to.Ptr[int32](200),
-			RuleType:             to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
-			SourceResourceType:   to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsecurity.GovernanceRulesClientCreateOrUpdateResponse{
-	// 	GovernanceRule: armsecurity.GovernanceRule{
-	// 		Name: to.Ptr("ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
-	// 		Type: to.Ptr("Microsoft.Security/governanceRules"),
-	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/contoso/providers/Microsoft.Security/governanceRules/ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
-	// 		Properties: &armsecurity.GovernanceRuleProperties{
-	// 			Description: to.Ptr("A rule for a management group"),
-	// 			ConditionSets: []any{
-	// 				map[string]any{
-	// 					"conditions": []any{
-	// 						map[string]any{
-	// 							"operator": "In",
-	// 							"property": "$.AssessmentKey",
-	// 							"value": "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			DisplayName: to.Ptr("Management group rule"),
-	// 			ExcludedScopes: []*string{
-	// 				to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
-	// 			},
-	// 			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
-	// 				DisableManagerEmailNotification: to.Ptr(true),
-	// 				DisableOwnerEmailNotification: to.Ptr(false),
-	// 			},
-	// 			IncludeMemberScopes: to.Ptr(false),
-	// 			IsDisabled: to.Ptr(false),
-	// 			IsGracePeriod: to.Ptr(true),
-	// 			Metadata: &armsecurity.GovernanceRuleMetadata{
-	// 				CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
-	// 				UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
-	// 			},
-	// 			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
-	// 				Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
-	// 				Value: to.Ptr("user@contoso.com"),
-	// 			},
-	// 			RemediationTimeframe: to.Ptr("7.00:00:00"),
-	// 			RulePriority: to.Ptr[int32](200),
-	// 			RuleType: to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
-	// 			SourceResourceType: to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
-	// 			TenantID: to.Ptr("f0b6d37b-e4bc-4719-9291-c066c3194f23"),
-	// 		},
-	// 	},
-	// }
-}
-
-// Generated from example definition: 2022-01-01-preview/GovernanceRules/PutSecurityConnectorGovernanceRule_example.json
-func ExampleGovernanceRulesClient_CreateOrUpdate_createOrUpdateGovernanceRuleOverSecurityConnectorScope() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("<subscriptionID>", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	res, err := clientFactory.NewGovernanceRulesClient().CreateOrUpdate(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", armsecurity.GovernanceRule{
-		Properties: &armsecurity.GovernanceRuleProperties{
-			Description: to.Ptr("A rule on critical GCP recommendations"),
-			ConditionSets: []any{
-				map[string]any{
-					"conditions": []any{
-						map[string]any{
-							"operator": "In",
-							"property": "$.AssessmentKey",
-							"value":    "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
-						},
-					},
-				},
-			},
-			DisplayName: to.Ptr("GCP Admin's rule"),
-			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
-				DisableManagerEmailNotification: to.Ptr(true),
-				DisableOwnerEmailNotification:   to.Ptr(false),
-			},
-			IsDisabled:    to.Ptr(false),
-			IsGracePeriod: to.Ptr(true),
-			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
-				Type:  to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
-				Value: to.Ptr("user@contoso.com"),
-			},
-			RemediationTimeframe: to.Ptr("7.00:00:00"),
-			RulePriority:         to.Ptr[int32](200),
-			RuleType:             to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
-			SourceResourceType:   to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	// You could use response here. We use blank identifier for just demo purposes.
-	_ = res
-	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-	// res = armsecurity.GovernanceRulesClientCreateOrUpdateResponse{
-	// 	GovernanceRule: armsecurity.GovernanceRule{
-	// 		Name: to.Ptr("ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
-	// 		Type: to.Ptr("Microsoft.Security/governanceRules"),
-	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector/providers/Microsoft.Security/governanceRules/ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
-	// 		Properties: &armsecurity.GovernanceRuleProperties{
-	// 			Description: to.Ptr("A rule on critical GCP recommendations"),
-	// 			ConditionSets: []any{
-	// 				map[string]any{
-	// 					"conditions": []any{
-	// 						map[string]any{
-	// 							"operator": "In",
-	// 							"property": "$.AssessmentKey",
-	// 							"value": "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
-	// 						},
-	// 					},
-	// 				},
-	// 			},
-	// 			DisplayName: to.Ptr("GCP Admin's rule"),
-	// 			ExcludedScopes: []*string{
-	// 			},
-	// 			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
-	// 				DisableManagerEmailNotification: to.Ptr(true),
-	// 				DisableOwnerEmailNotification: to.Ptr(false),
-	// 			},
-	// 			IncludeMemberScopes: to.Ptr(false),
-	// 			IsDisabled: to.Ptr(false),
-	// 			IsGracePeriod: to.Ptr(true),
-	// 			Metadata: &armsecurity.GovernanceRuleMetadata{
-	// 				CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
-	// 				UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
-	// 			},
-	// 			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
-	// 				Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
-	// 				Value: to.Ptr("user@contoso.com"),
-	// 			},
-	// 			RemediationTimeframe: to.Ptr("7.00:00:00"),
-	// 			RulePriority: to.Ptr[int32](200),
-	// 			RuleType: to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
-	// 			SourceResourceType: to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
-	// 			TenantID: to.Ptr("f0b6d37b-e4bc-4719-9291-c066c3194f23"),
-	// 		},
-	// 	},
-	// }
-}
-
 // Generated from example definition: 2022-01-01-preview/GovernanceRules/DeleteGovernanceRule_example.json
 func ExampleGovernanceRulesClient_BeginDelete_deleteAGovernanceRuleOverSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -445,6 +153,298 @@ func ExampleGovernanceRulesClient_BeginExecute_executeGovernanceRuleOverSecurity
 	}
 }
 
+// Generated from example definition: 2022-01-01-preview/GovernanceRules/PutGovernanceRule_example.json
+func ExampleGovernanceRulesClient_CreateOrUpdate_createOrUpdateGovernanceRuleOverSubscriptionScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGovernanceRulesClient().CreateOrUpdate(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", armsecurity.GovernanceRule{
+		Properties: &armsecurity.GovernanceRuleProperties{
+			Description: to.Ptr("A rule for critical recommendations"),
+			ConditionSets: []any{
+				map[string]any{
+					"conditions": []any{
+						map[string]any{
+							"operator": "In",
+							"property": "$.AssessmentKey",
+							"value":    "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
+						},
+					},
+				},
+			},
+			DisplayName: to.Ptr("Admin's rule"),
+			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
+				DisableManagerEmailNotification: to.Ptr(false),
+				DisableOwnerEmailNotification:   to.Ptr(false),
+			},
+			IsDisabled:    to.Ptr(false),
+			IsGracePeriod: to.Ptr(true),
+			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
+				Type:  to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
+				Value: to.Ptr("user@contoso.com"),
+			},
+			RemediationTimeframe: to.Ptr("7.00:00:00"),
+			RulePriority:         to.Ptr[int32](200),
+			RuleType:             to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
+			SourceResourceType:   to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurity.GovernanceRulesClientCreateOrUpdateResponse{
+	// 	GovernanceRule: armsecurity.GovernanceRule{
+	// 		Name: to.Ptr("ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
+	// 		Type: to.Ptr("Microsoft.Security/governanceRules"),
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/providers/Microsoft.Security/governanceRules/ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
+	// 		Properties: &armsecurity.GovernanceRuleProperties{
+	// 			Description: to.Ptr("A rule for critical recommendations"),
+	// 			ConditionSets: []any{
+	// 				map[string]any{
+	// 					"conditions": []any{
+	// 						map[string]any{
+	// 							"operator": "In",
+	// 							"property": "$.AssessmentKey",
+	// 							"value": "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			DisplayName: to.Ptr("Admin's rule"),
+	// 			ExcludedScopes: []*string{
+	// 			},
+	// 			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
+	// 				DisableManagerEmailNotification: to.Ptr(false),
+	// 				DisableOwnerEmailNotification: to.Ptr(false),
+	// 			},
+	// 			IncludeMemberScopes: to.Ptr(false),
+	// 			IsDisabled: to.Ptr(false),
+	// 			IsGracePeriod: to.Ptr(true),
+	// 			Metadata: &armsecurity.GovernanceRuleMetadata{
+	// 				CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
+	// 				CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
+	// 				UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
+	// 				UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
+	// 			},
+	// 			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
+	// 				Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
+	// 				Value: to.Ptr("user@contoso.com"),
+	// 			},
+	// 			RemediationTimeframe: to.Ptr("7.00:00:00"),
+	// 			RulePriority: to.Ptr[int32](200),
+	// 			RuleType: to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
+	// 			SourceResourceType: to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
+	// 			TenantID: to.Ptr("f0b6d37b-e4bc-4719-9291-c066c3194f23"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2022-01-01-preview/GovernanceRules/PutManagementGroupGovernanceRule_example.json
+func ExampleGovernanceRulesClient_CreateOrUpdate_createOrUpdateGovernanceRuleOverManagementGroupScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGovernanceRulesClient().CreateOrUpdate(ctx, "providers/Microsoft.Management/managementGroups/contoso", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", armsecurity.GovernanceRule{
+		Properties: &armsecurity.GovernanceRuleProperties{
+			Description: to.Ptr("A rule for a management group"),
+			ConditionSets: []any{
+				map[string]any{
+					"conditions": []any{
+						map[string]any{
+							"operator": "In",
+							"property": "$.AssessmentKey",
+							"value":    "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
+						},
+					},
+				},
+			},
+			DisplayName: to.Ptr("Management group rule"),
+			ExcludedScopes: []*string{
+				to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
+			},
+			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
+				DisableManagerEmailNotification: to.Ptr(true),
+				DisableOwnerEmailNotification:   to.Ptr(false),
+			},
+			IsDisabled:    to.Ptr(false),
+			IsGracePeriod: to.Ptr(true),
+			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
+				Type:  to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
+				Value: to.Ptr("user@contoso.com"),
+			},
+			RemediationTimeframe: to.Ptr("7.00:00:00"),
+			RulePriority:         to.Ptr[int32](200),
+			RuleType:             to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
+			SourceResourceType:   to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurity.GovernanceRulesClientCreateOrUpdateResponse{
+	// 	GovernanceRule: armsecurity.GovernanceRule{
+	// 		Name: to.Ptr("ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
+	// 		Type: to.Ptr("Microsoft.Security/governanceRules"),
+	// 		ID: to.Ptr("/providers/Microsoft.Management/managementGroups/contoso/providers/Microsoft.Security/governanceRules/ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
+	// 		Properties: &armsecurity.GovernanceRuleProperties{
+	// 			Description: to.Ptr("A rule for a management group"),
+	// 			ConditionSets: []any{
+	// 				map[string]any{
+	// 					"conditions": []any{
+	// 						map[string]any{
+	// 							"operator": "In",
+	// 							"property": "$.AssessmentKey",
+	// 							"value": "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			DisplayName: to.Ptr("Management group rule"),
+	// 			ExcludedScopes: []*string{
+	// 				to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
+	// 			},
+	// 			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
+	// 				DisableManagerEmailNotification: to.Ptr(true),
+	// 				DisableOwnerEmailNotification: to.Ptr(false),
+	// 			},
+	// 			IncludeMemberScopes: to.Ptr(false),
+	// 			IsDisabled: to.Ptr(false),
+	// 			IsGracePeriod: to.Ptr(true),
+	// 			Metadata: &armsecurity.GovernanceRuleMetadata{
+	// 				CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
+	// 				CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
+	// 				UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
+	// 				UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
+	// 			},
+	// 			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
+	// 				Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
+	// 				Value: to.Ptr("user@contoso.com"),
+	// 			},
+	// 			RemediationTimeframe: to.Ptr("7.00:00:00"),
+	// 			RulePriority: to.Ptr[int32](200),
+	// 			RuleType: to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
+	// 			SourceResourceType: to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
+	// 			TenantID: to.Ptr("f0b6d37b-e4bc-4719-9291-c066c3194f23"),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2022-01-01-preview/GovernanceRules/PutSecurityConnectorGovernanceRule_example.json
+func ExampleGovernanceRulesClient_CreateOrUpdate_createOrUpdateGovernanceRuleOverSecurityConnectorScope() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("<subscriptionID>", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewGovernanceRulesClient().CreateOrUpdate(ctx, "subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector", "ad9a8e26-29d9-4829-bb30-e597a58cdbb8", armsecurity.GovernanceRule{
+		Properties: &armsecurity.GovernanceRuleProperties{
+			Description: to.Ptr("A rule on critical GCP recommendations"),
+			ConditionSets: []any{
+				map[string]any{
+					"conditions": []any{
+						map[string]any{
+							"operator": "In",
+							"property": "$.AssessmentKey",
+							"value":    "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
+						},
+					},
+				},
+			},
+			DisplayName: to.Ptr("GCP Admin's rule"),
+			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
+				DisableManagerEmailNotification: to.Ptr(true),
+				DisableOwnerEmailNotification:   to.Ptr(false),
+			},
+			IsDisabled:    to.Ptr(false),
+			IsGracePeriod: to.Ptr(true),
+			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
+				Type:  to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
+				Value: to.Ptr("user@contoso.com"),
+			},
+			RemediationTimeframe: to.Ptr("7.00:00:00"),
+			RulePriority:         to.Ptr[int32](200),
+			RuleType:             to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
+			SourceResourceType:   to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armsecurity.GovernanceRulesClientCreateOrUpdateResponse{
+	// 	GovernanceRule: armsecurity.GovernanceRule{
+	// 		Name: to.Ptr("ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
+	// 		Type: to.Ptr("Microsoft.Security/governanceRules"),
+	// 		ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourcegroups/gcpResourceGroup/providers/Microsoft.Security/securityConnectors/gcpconnector/providers/Microsoft.Security/governanceRules/ad9a8e26-29d9-4829-bb30-e597a58cdbb8"),
+	// 		Properties: &armsecurity.GovernanceRuleProperties{
+	// 			Description: to.Ptr("A rule on critical GCP recommendations"),
+	// 			ConditionSets: []any{
+	// 				map[string]any{
+	// 					"conditions": []any{
+	// 						map[string]any{
+	// 							"operator": "In",
+	// 							"property": "$.AssessmentKey",
+	// 							"value": "[\"b1cd27e0-4ecc-4246-939f-49c426d9d72f\", \"fe83f80b-073d-4ccf-93d9-6797eb870201\"]",
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			DisplayName: to.Ptr("GCP Admin's rule"),
+	// 			ExcludedScopes: []*string{
+	// 			},
+	// 			GovernanceEmailNotification: &armsecurity.GovernanceRuleEmailNotification{
+	// 				DisableManagerEmailNotification: to.Ptr(true),
+	// 				DisableOwnerEmailNotification: to.Ptr(false),
+	// 			},
+	// 			IncludeMemberScopes: to.Ptr(false),
+	// 			IsDisabled: to.Ptr(false),
+	// 			IsGracePeriod: to.Ptr(true),
+	// 			Metadata: &armsecurity.GovernanceRuleMetadata{
+	// 				CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
+	// 				CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
+	// 				UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
+	// 				UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
+	// 			},
+	// 			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
+	// 				Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
+	// 				Value: to.Ptr("user@contoso.com"),
+	// 			},
+	// 			RemediationTimeframe: to.Ptr("7.00:00:00"),
+	// 			RulePriority: to.Ptr[int32](200),
+	// 			RuleType: to.Ptr(armsecurity.GovernanceRuleTypeIntegrated),
+	// 			SourceResourceType: to.Ptr(armsecurity.GovernanceRuleSourceResourceTypeAssessments),
+	// 			TenantID: to.Ptr("f0b6d37b-e4bc-4719-9291-c066c3194f23"),
+	// 		},
+	// 	},
+	// }
+}
+
 // Generated from example definition: 2022-01-01-preview/GovernanceRules/GetGovernanceRule_example.json
 func ExampleGovernanceRulesClient_Get_getAGovernanceRuleOverSubscriptionScope() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -493,9 +493,9 @@ func ExampleGovernanceRulesClient_Get_getAGovernanceRuleOverSubscriptionScope() 
 	// 			IsGracePeriod: to.Ptr(true),
 	// 			Metadata: &armsecurity.GovernanceRuleMetadata{
 	// 				CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+	// 				CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 	// 				UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+	// 				UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 	// 			},
 	// 			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
 	// 				Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
@@ -560,9 +560,9 @@ func ExampleGovernanceRulesClient_Get_getAGovernanceRuleOverManagementGroupScope
 	// 			IsGracePeriod: to.Ptr(true),
 	// 			Metadata: &armsecurity.GovernanceRuleMetadata{
 	// 				CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+	// 				CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 	// 				UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+	// 				UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 	// 			},
 	// 			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
 	// 				Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
@@ -626,9 +626,9 @@ func ExampleGovernanceRulesClient_Get_getAGovernanceRuleOverSecurityConnectorSco
 	// 			IsGracePeriod: to.Ptr(true),
 	// 			Metadata: &armsecurity.GovernanceRuleMetadata{
 	// 				CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+	// 				CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 	// 				UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-	// 				UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+	// 				UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 	// 			},
 	// 			OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
 	// 				Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
@@ -695,9 +695,9 @@ func ExampleGovernanceRulesClient_NewListPager_listGovernanceRulesByManagementGr
 		// 					IsGracePeriod: to.Ptr(true),
 		// 					Metadata: &armsecurity.GovernanceRuleMetadata{
 		// 						CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 						UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 					},
 		// 					OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
 		// 						Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
@@ -740,9 +740,9 @@ func ExampleGovernanceRulesClient_NewListPager_listGovernanceRulesByManagementGr
 		// 					IsGracePeriod: to.Ptr(true),
 		// 					Metadata: &armsecurity.GovernanceRuleMetadata{
 		// 						CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 						UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 					},
 		// 					OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
 		// 						Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
@@ -815,9 +815,9 @@ func ExampleGovernanceRulesClient_NewListPager_listGovernanceRulesBySecurityConn
 		// 					IsGracePeriod: to.Ptr(true),
 		// 					Metadata: &armsecurity.GovernanceRuleMetadata{
 		// 						CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 						UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 					},
 		// 					OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
 		// 						Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
@@ -859,9 +859,9 @@ func ExampleGovernanceRulesClient_NewListPager_listGovernanceRulesBySecurityConn
 		// 					IsGracePeriod: to.Ptr(true),
 		// 					Metadata: &armsecurity.GovernanceRuleMetadata{
 		// 						CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 						UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 					},
 		// 					OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
 		// 						Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
@@ -934,9 +934,9 @@ func ExampleGovernanceRulesClient_NewListPager_listGovernanceRulesBySubscription
 		// 					IsGracePeriod: to.Ptr(true),
 		// 					Metadata: &armsecurity.GovernanceRuleMetadata{
 		// 						CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 						UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 					},
 		// 					OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
 		// 						Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),
@@ -978,9 +978,9 @@ func ExampleGovernanceRulesClient_NewListPager_listGovernanceRulesBySubscription
 		// 					IsGracePeriod: to.Ptr(true),
 		// 					Metadata: &armsecurity.GovernanceRuleMetadata{
 		// 						CreatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						CreatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						CreatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 						UpdatedBy: to.Ptr("c23b5354-ff0a-4b2a-9f92-6f144effd936"),
-		// 						UpdatedOn: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2022-11-10T08:31:26.7993124Z"); return t}()),
+		// 						UpdatedOn: to.Ptr(time.Date(2022, time.November, 10, 8, 31, 26, 799312400, time.UTC)),
 		// 					},
 		// 					OwnerSource: &armsecurity.GovernanceRuleOwnerSource{
 		// 						Type: to.Ptr(armsecurity.GovernanceRuleOwnerSourceTypeManually),

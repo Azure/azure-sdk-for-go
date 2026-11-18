@@ -30,6 +30,9 @@ type JitNetworkAccessPoliciesClient struct {
 //   - credential - used to authorize requests. Usually a credential from azidentity.
 //   - options - Contains optional client configuration. Pass nil to accept the default values.
 func NewJitNetworkAccessPoliciesClient(subscriptionID string, credential azcore.TokenCredential, options *arm.ClientOptions) (*JitNetworkAccessPoliciesClient, error) {
+	if subscriptionID == "" {
+		return nil, errors.New("parameter subscriptionID cannot be empty")
+	}
 	cl, err := arm.NewClient(moduleName, moduleVersion, credential, options)
 	if err != nil {
 		return nil, err
@@ -62,11 +65,7 @@ func (client *JitNetworkAccessPoliciesClient) CreateOrUpdate(ctx context.Context
 	if err != nil {
 		return JitNetworkAccessPoliciesClientCreateOrUpdateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JitNetworkAccessPoliciesClientCreateOrUpdateResponse{}, err
-	}
-	resp, err := client.createOrUpdateHandleResponse(httpResp)
+	resp, err := client.createOrUpdateHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -74,7 +73,7 @@ func (client *JitNetworkAccessPoliciesClient) CreateOrUpdate(ctx context.Context
 func (client *JitNetworkAccessPoliciesClient) createOrUpdateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicy, _ *JitNetworkAccessPoliciesClientCreateOrUpdateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -105,8 +104,11 @@ func (client *JitNetworkAccessPoliciesClient) createOrUpdateCreateRequest(ctx co
 }
 
 // createOrUpdateHandleResponse handles the CreateOrUpdate response.
-func (client *JitNetworkAccessPoliciesClient) createOrUpdateHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesClientCreateOrUpdateResponse, error) {
+func (client *JitNetworkAccessPoliciesClient) createOrUpdateHandleResponse(resp *http.Response, successCodes ...int) (JitNetworkAccessPoliciesClientCreateOrUpdateResponse, error) {
 	result := JitNetworkAccessPoliciesClientCreateOrUpdateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPolicy); err != nil {
 		return JitNetworkAccessPoliciesClientCreateOrUpdateResponse{}, err
 	}
@@ -145,7 +147,7 @@ func (client *JitNetworkAccessPoliciesClient) Delete(ctx context.Context, resour
 func (client *JitNetworkAccessPoliciesClient) deleteCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, _ *JitNetworkAccessPoliciesClientDeleteOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -191,11 +193,7 @@ func (client *JitNetworkAccessPoliciesClient) Get(ctx context.Context, resourceG
 	if err != nil {
 		return JitNetworkAccessPoliciesClientGetResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusOK) {
-		err = runtime.NewResponseError(httpResp)
-		return JitNetworkAccessPoliciesClientGetResponse{}, err
-	}
-	resp, err := client.getHandleResponse(httpResp)
+	resp, err := client.getHandleResponse(httpResp, http.StatusOK)
 	return resp, err
 }
 
@@ -203,7 +201,7 @@ func (client *JitNetworkAccessPoliciesClient) Get(ctx context.Context, resourceG
 func (client *JitNetworkAccessPoliciesClient) getCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, _ *JitNetworkAccessPoliciesClientGetOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -230,8 +228,11 @@ func (client *JitNetworkAccessPoliciesClient) getCreateRequest(ctx context.Conte
 }
 
 // getHandleResponse handles the Get response.
-func (client *JitNetworkAccessPoliciesClient) getHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesClientGetResponse, error) {
+func (client *JitNetworkAccessPoliciesClient) getHandleResponse(resp *http.Response, successCodes ...int) (JitNetworkAccessPoliciesClientGetResponse, error) {
 	result := JitNetworkAccessPoliciesClientGetResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPolicy); err != nil {
 		return JitNetworkAccessPoliciesClientGetResponse{}, err
 	}
@@ -259,11 +260,7 @@ func (client *JitNetworkAccessPoliciesClient) Initiate(ctx context.Context, reso
 	if err != nil {
 		return JitNetworkAccessPoliciesClientInitiateResponse{}, err
 	}
-	if !runtime.HasStatusCode(httpResp, http.StatusAccepted) {
-		err = runtime.NewResponseError(httpResp)
-		return JitNetworkAccessPoliciesClientInitiateResponse{}, err
-	}
-	resp, err := client.initiateHandleResponse(httpResp)
+	resp, err := client.initiateHandleResponse(httpResp, http.StatusAccepted)
 	return resp, err
 }
 
@@ -271,7 +268,7 @@ func (client *JitNetworkAccessPoliciesClient) Initiate(ctx context.Context, reso
 func (client *JitNetworkAccessPoliciesClient) initiateCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, jitNetworkAccessPolicyName string, body JitNetworkAccessPolicyInitiateRequest, _ *JitNetworkAccessPoliciesClientInitiateOptions) (*policy.Request, error) {
 	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies/{jitNetworkAccessPolicyName}/{jitNetworkAccessPolicyInitiateType}"
 	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+		return nil, errors.New("parameter subscriptionID cannot be empty")
 	}
 	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
 	if resourceGroupName == "" {
@@ -303,63 +300,13 @@ func (client *JitNetworkAccessPoliciesClient) initiateCreateRequest(ctx context.
 }
 
 // initiateHandleResponse handles the Initiate response.
-func (client *JitNetworkAccessPoliciesClient) initiateHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesClientInitiateResponse, error) {
+func (client *JitNetworkAccessPoliciesClient) initiateHandleResponse(resp *http.Response, successCodes ...int) (JitNetworkAccessPoliciesClientInitiateResponse, error) {
 	result := JitNetworkAccessPoliciesClientInitiateResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessRequest); err != nil {
 		return JitNetworkAccessPoliciesClientInitiateResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListPager - Policies for protecting resources using Just-in-Time access control.
-//   - options - JitNetworkAccessPoliciesClientListOptions contains the optional parameters for the JitNetworkAccessPoliciesClient.NewListPager
-//     method.
-func (client *JitNetworkAccessPoliciesClient) NewListPager(options *JitNetworkAccessPoliciesClientListOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListResponse] {
-	return runtime.NewPager(runtime.PagingHandler[JitNetworkAccessPoliciesClientListResponse]{
-		More: func(page JitNetworkAccessPoliciesClientListResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *JitNetworkAccessPoliciesClientListResponse) (JitNetworkAccessPoliciesClientListResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JitNetworkAccessPoliciesClient.NewListPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listCreateRequest(ctx, options)
-			}, nil)
-			if err != nil {
-				return JitNetworkAccessPoliciesClientListResponse{}, err
-			}
-			return client.listHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listCreateRequest creates the List request.
-func (client *JitNetworkAccessPoliciesClient) listCreateRequest(ctx context.Context, _ *JitNetworkAccessPoliciesClientListOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/jitNetworkAccessPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listHandleResponse handles the List response.
-func (client *JitNetworkAccessPoliciesClient) listHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesClientListResponse, error) {
-	result := JitNetworkAccessPoliciesClientListResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
-		return JitNetworkAccessPoliciesClientListResponse{}, err
 	}
 	return result, nil
 }
@@ -379,104 +326,59 @@ func (client *JitNetworkAccessPoliciesClient) NewListByRegionPager(ascLocation s
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByRegionCreateRequest(ctx, ascLocation, options)
-			}, nil)
+			req, err := client.listByRegionCreateRequest(ctx, ascLocation, nextLink, options)
 			if err != nil {
 				return JitNetworkAccessPoliciesClientListByRegionResponse{}, err
 			}
-			return client.listByRegionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return JitNetworkAccessPoliciesClientListByRegionResponse{}, err
+			}
+			return client.listByRegionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByRegionCreateRequest creates the ListByRegion request.
-func (client *JitNetworkAccessPoliciesClient) listByRegionCreateRequest(ctx context.Context, ascLocation string, _ *JitNetworkAccessPoliciesClientListByRegionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *JitNetworkAccessPoliciesClient) listByRegionCreateRequest(ctx context.Context, ascLocation string, nextLink string, _ *JitNetworkAccessPoliciesClientListByRegionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if ascLocation == "" {
+			return nil, errors.New("parameter ascLocation cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if ascLocation == "" {
-		return nil, errors.New("parameter ascLocation cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20200101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByRegionHandleResponse handles the ListByRegion response.
-func (client *JitNetworkAccessPoliciesClient) listByRegionHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesClientListByRegionResponse, error) {
+func (client *JitNetworkAccessPoliciesClient) listByRegionHandleResponse(resp *http.Response, successCodes ...int) (JitNetworkAccessPoliciesClientListByRegionResponse, error) {
 	result := JitNetworkAccessPoliciesClientListByRegionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
 		return JitNetworkAccessPoliciesClientListByRegionResponse{}, err
-	}
-	return result, nil
-}
-
-// NewListByResourceGroupPager - Policies for protecting resources using Just-in-Time access control for the subscription,
-// location
-//   - resourceGroupName - The name of the resource group. The name is case insensitive.
-//   - options - JitNetworkAccessPoliciesClientListByResourceGroupOptions contains the optional parameters for the JitNetworkAccessPoliciesClient.NewListByResourceGroupPager
-//     method.
-func (client *JitNetworkAccessPoliciesClient) NewListByResourceGroupPager(resourceGroupName string, options *JitNetworkAccessPoliciesClientListByResourceGroupOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListByResourceGroupResponse] {
-	return runtime.NewPager(runtime.PagingHandler[JitNetworkAccessPoliciesClientListByResourceGroupResponse]{
-		More: func(page JitNetworkAccessPoliciesClientListByResourceGroupResponse) bool {
-			return page.NextLink != nil && len(*page.NextLink) > 0
-		},
-		Fetcher: func(ctx context.Context, page *JitNetworkAccessPoliciesClientListByResourceGroupResponse) (JitNetworkAccessPoliciesClientListByResourceGroupResponse, error) {
-			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JitNetworkAccessPoliciesClient.NewListByResourceGroupPager")
-			nextLink := ""
-			if page != nil {
-				nextLink = *page.NextLink
-			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupCreateRequest(ctx, resourceGroupName, options)
-			}, nil)
-			if err != nil {
-				return JitNetworkAccessPoliciesClientListByResourceGroupResponse{}, err
-			}
-			return client.listByResourceGroupHandleResponse(resp)
-		},
-		Tracer: client.internal.Tracer(),
-	})
-}
-
-// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, _ *JitNetworkAccessPoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/jitNetworkAccessPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
-	if err != nil {
-		return nil, err
-	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
-	return req, nil
-}
-
-// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesClientListByResourceGroupResponse, error) {
-	result := JitNetworkAccessPoliciesClientListByResourceGroupResponse{}
-	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
-		return JitNetworkAccessPoliciesClientListByResourceGroupResponse{}, err
 	}
 	return result, nil
 }
@@ -498,49 +400,203 @@ func (client *JitNetworkAccessPoliciesClient) NewListByResourceGroupAndRegionPag
 			if page != nil {
 				nextLink = *page.NextLink
 			}
-			resp, err := runtime.FetcherForNextLink(ctx, client.internal.Pipeline(), nextLink, func(ctx context.Context) (*policy.Request, error) {
-				return client.listByResourceGroupAndRegionCreateRequest(ctx, resourceGroupName, ascLocation, options)
-			}, nil)
+			req, err := client.listByResourceGroupAndRegionCreateRequest(ctx, resourceGroupName, ascLocation, nextLink, options)
 			if err != nil {
 				return JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse{}, err
 			}
-			return client.listByResourceGroupAndRegionHandleResponse(resp)
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse{}, err
+			}
+			return client.listByResourceGroupAndRegionHandleResponse(resp, http.StatusOK)
 		},
 		Tracer: client.internal.Tracer(),
 	})
 }
 
 // listByResourceGroupAndRegionCreateRequest creates the ListByResourceGroupAndRegion request.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, _ *JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions) (*policy.Request, error) {
-	urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies"
-	if client.subscriptionID == "" {
-		return nil, errors.New("parameter client.subscriptionID cannot be empty")
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionCreateRequest(ctx context.Context, resourceGroupName string, ascLocation string, nextLink string, _ *JitNetworkAccessPoliciesClientListByResourceGroupAndRegionOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations/{ascLocation}/jitNetworkAccessPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		if ascLocation == "" {
+			return nil, errors.New("parameter ascLocation cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
 	}
-	urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
-	if resourceGroupName == "" {
-		return nil, errors.New("parameter resourceGroupName cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
-	if ascLocation == "" {
-		return nil, errors.New("parameter ascLocation cannot be empty")
-	}
-	urlPath = strings.ReplaceAll(urlPath, "{ascLocation}", url.PathEscape(ascLocation))
-	req, err := runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
 	if err != nil {
 		return nil, err
 	}
-	reqQP := req.Raw().URL.Query()
-	reqQP.Set("api-version", version20200101)
-	req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
-	req.Raw().Header["Accept"] = []string{"application/json"}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20200101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
 	return req, nil
 }
 
 // listByResourceGroupAndRegionHandleResponse handles the ListByResourceGroupAndRegion response.
-func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionHandleResponse(resp *http.Response) (JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse, error) {
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupAndRegionHandleResponse(resp *http.Response, successCodes ...int) (JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse, error) {
 	result := JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
 	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
 		return JitNetworkAccessPoliciesClientListByResourceGroupAndRegionResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListByResourceGroupPager - Policies for protecting resources using Just-in-Time access control for the subscription,
+// location
+//   - resourceGroupName - The name of the resource group. The name is case insensitive.
+//   - options - JitNetworkAccessPoliciesClientListByResourceGroupOptions contains the optional parameters for the JitNetworkAccessPoliciesClient.NewListByResourceGroupPager
+//     method.
+func (client *JitNetworkAccessPoliciesClient) NewListByResourceGroupPager(resourceGroupName string, options *JitNetworkAccessPoliciesClientListByResourceGroupOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListByResourceGroupResponse] {
+	return runtime.NewPager(runtime.PagingHandler[JitNetworkAccessPoliciesClientListByResourceGroupResponse]{
+		More: func(page JitNetworkAccessPoliciesClientListByResourceGroupResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *JitNetworkAccessPoliciesClientListByResourceGroupResponse) (JitNetworkAccessPoliciesClientListByResourceGroupResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JitNetworkAccessPoliciesClient.NewListByResourceGroupPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listByResourceGroupCreateRequest(ctx, resourceGroupName, nextLink, options)
+			if err != nil {
+				return JitNetworkAccessPoliciesClientListByResourceGroupResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return JitNetworkAccessPoliciesClientListByResourceGroupResponse{}, err
+			}
+			return client.listByResourceGroupHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listByResourceGroupCreateRequest creates the ListByResourceGroup request.
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupCreateRequest(ctx context.Context, resourceGroupName string, nextLink string, _ *JitNetworkAccessPoliciesClientListByResourceGroupOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/jitNetworkAccessPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		if resourceGroupName == "" {
+			return nil, errors.New("parameter resourceGroupName cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{resourceGroupName}", url.PathEscape(resourceGroupName))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20200101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listByResourceGroupHandleResponse handles the ListByResourceGroup response.
+func (client *JitNetworkAccessPoliciesClient) listByResourceGroupHandleResponse(resp *http.Response, successCodes ...int) (JitNetworkAccessPoliciesClientListByResourceGroupResponse, error) {
+	result := JitNetworkAccessPoliciesClientListByResourceGroupResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
+		return JitNetworkAccessPoliciesClientListByResourceGroupResponse{}, err
+	}
+	return result, nil
+}
+
+// NewListPager - Policies for protecting resources using Just-in-Time access control.
+//   - options - JitNetworkAccessPoliciesClientListOptions contains the optional parameters for the JitNetworkAccessPoliciesClient.NewListPager
+//     method.
+func (client *JitNetworkAccessPoliciesClient) NewListPager(options *JitNetworkAccessPoliciesClientListOptions) *runtime.Pager[JitNetworkAccessPoliciesClientListResponse] {
+	return runtime.NewPager(runtime.PagingHandler[JitNetworkAccessPoliciesClientListResponse]{
+		More: func(page JitNetworkAccessPoliciesClientListResponse) bool {
+			return page.NextLink != nil && len(*page.NextLink) > 0
+		},
+		Fetcher: func(ctx context.Context, page *JitNetworkAccessPoliciesClientListResponse) (JitNetworkAccessPoliciesClientListResponse, error) {
+			ctx = context.WithValue(ctx, runtime.CtxAPINameKey{}, "JitNetworkAccessPoliciesClient.NewListPager")
+			nextLink := ""
+			if page != nil {
+				nextLink = *page.NextLink
+			}
+			req, err := client.listCreateRequest(ctx, nextLink, options)
+			if err != nil {
+				return JitNetworkAccessPoliciesClientListResponse{}, err
+			}
+			resp, err := client.internal.Pipeline().Do(req)
+			if err != nil {
+				return JitNetworkAccessPoliciesClientListResponse{}, err
+			}
+			return client.listHandleResponse(resp, http.StatusOK)
+		},
+		Tracer: client.internal.Tracer(),
+	})
+}
+
+// listCreateRequest creates the List request.
+func (client *JitNetworkAccessPoliciesClient) listCreateRequest(ctx context.Context, nextLink string, _ *JitNetworkAccessPoliciesClientListOptions) (*policy.Request, error) {
+	firstPage := nextLink == ""
+	var req *policy.Request
+	var err error
+	if firstPage {
+		urlPath := "/subscriptions/{subscriptionId}/providers/Microsoft.Security/jitNetworkAccessPolicies"
+		if client.subscriptionID == "" {
+			return nil, errors.New("parameter subscriptionID cannot be empty")
+		}
+		urlPath = strings.ReplaceAll(urlPath, "{subscriptionId}", url.PathEscape(client.subscriptionID))
+		req, err = runtime.NewRequest(ctx, http.MethodGet, runtime.JoinPaths(client.internal.Endpoint(), urlPath))
+	} else {
+		req, err = runtime.NewRequestForNextLink(ctx, http.MethodGet, client.internal.Endpoint(), nextLink)
+	}
+	if err != nil {
+		return nil, err
+	}
+	if firstPage {
+		reqQP := req.Raw().URL.Query()
+		reqQP.Set("api-version", version20200101)
+		req.Raw().URL.RawQuery = strings.ReplaceAll(reqQP.Encode(), "+", "%20")
+		req.Raw().Header["Accept"] = []string{"application/json"}
+	}
+	return req, nil
+}
+
+// listHandleResponse handles the List response.
+func (client *JitNetworkAccessPoliciesClient) listHandleResponse(resp *http.Response, successCodes ...int) (JitNetworkAccessPoliciesClientListResponse, error) {
+	result := JitNetworkAccessPoliciesClientListResponse{}
+	if !runtime.HasStatusCode(resp, successCodes...) {
+		return result, runtime.NewResponseError(resp)
+	}
+	if err := runtime.UnmarshalAsJSON(resp, &result.JitNetworkAccessPoliciesList); err != nil {
+		return JitNetworkAccessPoliciesClientListResponse{}, err
 	}
 	return result, nil
 }

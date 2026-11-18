@@ -23,19 +23,19 @@ import (
 type PrivateEndpointConnectionsServer struct {
 	// BeginCreateOrUpdate is the fake for method PrivateEndpointConnectionsClient.BeginCreateOrUpdate
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated
-	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateEndpointConnection armsecurity.PrivateEndpointConnection, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsecurity.PrivateEndpointConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
+	BeginCreateOrUpdate func(ctx context.Context, resourceGroupName string, privateLinkName string, privateEndpointConnectionName string, privateEndpointConnection armsecurity.PrivateEndpointConnection, options *armsecurity.PrivateEndpointConnectionsClientBeginCreateOrUpdateOptions) (resp azfake.PollerResponder[armsecurity.PrivateEndpointConnectionsClientCreateOrUpdateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method PrivateEndpointConnectionsClient.BeginDelete
 	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted, http.StatusNoContent
-	BeginDelete func(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armsecurity.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
+	BeginDelete func(ctx context.Context, resourceGroupName string, privateLinkName string, privateEndpointConnectionName string, options *armsecurity.PrivateEndpointConnectionsClientBeginDeleteOptions) (resp azfake.PollerResponder[armsecurity.PrivateEndpointConnectionsClientDeleteResponse], errResp azfake.ErrorResponder)
 
 	// Get is the fake for method PrivateEndpointConnectionsClient.Get
 	// HTTP status codes to indicate success: http.StatusOK
-	Get func(ctx context.Context, resourceGroupName string, privateEndpointConnectionName string, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateEndpointConnectionsClientGetOptions) (resp azfake.Responder[armsecurity.PrivateEndpointConnectionsClientGetResponse], errResp azfake.ErrorResponder)
+	Get func(ctx context.Context, resourceGroupName string, privateLinkName string, privateEndpointConnectionName string, options *armsecurity.PrivateEndpointConnectionsClientGetOptions) (resp azfake.Responder[armsecurity.PrivateEndpointConnectionsClientGetResponse], errResp azfake.ErrorResponder)
 
 	// NewListPager is the fake for method PrivateEndpointConnectionsClient.NewListPager
 	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, privateLinkName armsecurity.PrivateLinkParameters, options *armsecurity.PrivateEndpointConnectionsClientListOptions) (resp azfake.PagerResponder[armsecurity.PrivateEndpointConnectionsClientListResponse])
+	NewListPager func(resourceGroupName string, privateLinkName string, options *armsecurity.PrivateEndpointConnectionsClientListOptions) (resp azfake.PagerResponder[armsecurity.PrivateEndpointConnectionsClientListResponse])
 }
 
 // NewPrivateEndpointConnectionsServerTransport creates a new instance of PrivateEndpointConnectionsServerTransport with the provided implementation.
@@ -64,7 +64,7 @@ func (p *PrivateEndpointConnectionsServerTransport) Do(req *http.Request) (*http
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return p.dispatchToMethodFake(req, method)
@@ -110,7 +110,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginCreateOrUpdate(
 	}
 	beginCreateOrUpdate := p.beginCreateOrUpdate.get(req)
 	if beginCreateOrUpdate == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -132,10 +132,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginCreateOrUpdate(
 		if err != nil {
 			return nil, err
 		}
-		privateLinkName := armsecurity.PrivateLinkParameters{
-			PrivateLinkName: privateLinkNameParam,
-		}
-		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, privateEndpointConnectionNameParam, body, privateLinkName, nil)
+		respr, errRespr := p.srv.BeginCreateOrUpdate(req.Context(), resourceGroupNameParam, privateLinkNameParam, privateEndpointConnectionNameParam, body, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -165,7 +162,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *htt
 	}
 	beginDelete := p.beginDelete.get(req)
 	if beginDelete == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 5 {
@@ -183,10 +180,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchBeginDelete(req *htt
 		if err != nil {
 			return nil, err
 		}
-		privateLinkName := armsecurity.PrivateLinkParameters{
-			PrivateLinkName: privateLinkNameParam,
-		}
-		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, privateEndpointConnectionNameParam, privateLinkName, nil)
+		respr, errRespr := p.srv.BeginDelete(req.Context(), resourceGroupNameParam, privateLinkNameParam, privateEndpointConnectionNameParam, nil)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -214,7 +208,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchGet(req *http.Reques
 	if p.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections/(?P<privateEndpointConnectionName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -232,10 +226,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchGet(req *http.Reques
 	if err != nil {
 		return nil, err
 	}
-	privateLinkName := armsecurity.PrivateLinkParameters{
-		PrivateLinkName: privateLinkNameParam,
-	}
-	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, privateEndpointConnectionNameParam, privateLinkName, nil)
+	respr, errRespr := p.srv.Get(req.Context(), resourceGroupNameParam, privateLinkNameParam, privateEndpointConnectionNameParam, nil)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -256,7 +247,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListPager(req *ht
 	}
 	newListPager := p.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/privateEndpointConnections`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/privateLinks/(?P<privateLinkName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/privateEndpointConnections`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -270,10 +261,7 @@ func (p *PrivateEndpointConnectionsServerTransport) dispatchNewListPager(req *ht
 		if err != nil {
 			return nil, err
 		}
-		privateLinkName := armsecurity.PrivateLinkParameters{
-			PrivateLinkName: privateLinkNameParam,
-		}
-		resp := p.srv.NewListPager(resourceGroupNameParam, privateLinkName, nil)
+		resp := p.srv.NewListPager(resourceGroupNameParam, privateLinkNameParam, nil)
 		newListPager = &resp
 		p.newListPager.add(req, newListPager)
 		server.PagerResponderInjectNextLinks(newListPager, req, func(page *armsecurity.PrivateEndpointConnectionsClientListResponse, createLink func() string) {

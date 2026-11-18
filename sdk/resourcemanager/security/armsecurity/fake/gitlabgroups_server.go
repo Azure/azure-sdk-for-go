@@ -25,13 +25,13 @@ type GitLabGroupsServer struct {
 	// HTTP status codes to indicate success: http.StatusOK
 	Get func(ctx context.Context, resourceGroupName string, securityConnectorName string, groupFQName string, options *armsecurity.GitLabGroupsClientGetOptions) (resp azfake.Responder[armsecurity.GitLabGroupsClientGetResponse], errResp azfake.ErrorResponder)
 
-	// NewListPager is the fake for method GitLabGroupsClient.NewListPager
-	// HTTP status codes to indicate success: http.StatusOK
-	NewListPager func(resourceGroupName string, securityConnectorName string, options *armsecurity.GitLabGroupsClientListOptions) (resp azfake.PagerResponder[armsecurity.GitLabGroupsClientListResponse])
-
 	// ListAvailable is the fake for method GitLabGroupsClient.ListAvailable
 	// HTTP status codes to indicate success: http.StatusOK
 	ListAvailable func(ctx context.Context, resourceGroupName string, securityConnectorName string, options *armsecurity.GitLabGroupsClientListAvailableOptions) (resp azfake.Responder[armsecurity.GitLabGroupsClientListAvailableResponse], errResp azfake.ErrorResponder)
+
+	// NewListPager is the fake for method GitLabGroupsClient.NewListPager
+	// HTTP status codes to indicate success: http.StatusOK
+	NewListPager func(resourceGroupName string, securityConnectorName string, options *armsecurity.GitLabGroupsClientListOptions) (resp azfake.PagerResponder[armsecurity.GitLabGroupsClientListResponse])
 }
 
 // NewGitLabGroupsServerTransport creates a new instance of GitLabGroupsServerTransport with the provided implementation.
@@ -56,7 +56,7 @@ func (g *GitLabGroupsServerTransport) Do(req *http.Request) (*http.Response, err
 	rawMethod := req.Context().Value(runtime.CtxAPINameKey{})
 	method, ok := rawMethod.(string)
 	if !ok {
-		return nil, nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
+		return nil, &nonRetriableError{errors.New("unable to dispatch request, missing value for CtxAPINameKey")}
 	}
 
 	return g.dispatchToMethodFake(req, method)
@@ -74,10 +74,10 @@ func (g *GitLabGroupsServerTransport) dispatchToMethodFake(req *http.Request, me
 			switch method {
 			case "GitLabGroupsClient.Get":
 				res.resp, res.err = g.dispatchGet(req)
-			case "GitLabGroupsClient.NewListPager":
-				res.resp, res.err = g.dispatchNewListPager(req)
 			case "GitLabGroupsClient.ListAvailable":
 				res.resp, res.err = g.dispatchListAvailable(req)
+			case "GitLabGroupsClient.NewListPager":
+				res.resp, res.err = g.dispatchNewListPager(req)
 			default:
 				res.err = fmt.Errorf("unhandled API %s", method)
 			}
@@ -98,7 +98,7 @@ func (g *GitLabGroupsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	if g.srv.Get == nil {
 		return nil, &nonRetriableError{errors.New("fake for method Get not implemented")}
 	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/gitLabGroups/(?P<groupFQName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)`
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devops/default/gitLabGroups/(?P<groupFQName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)`
 	regex := regexp.MustCompile(regexStr)
 	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 	if len(matches) < 5 {
@@ -131,13 +131,46 @@ func (g *GitLabGroupsServerTransport) dispatchGet(req *http.Request) (*http.Resp
 	return resp, nil
 }
 
+func (g *GitLabGroupsServerTransport) dispatchListAvailable(req *http.Request) (*http.Response, error) {
+	if g.srv.ListAvailable == nil {
+		return nil, &nonRetriableError{errors.New("fake for method ListAvailable not implemented")}
+	}
+	const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devops/default/listAvailableGitLabGroups`
+	regex := regexp.MustCompile(regexStr)
+	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
+	if len(matches) < 4 {
+		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
+	}
+	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
+	if err != nil {
+		return nil, err
+	}
+	securityConnectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("securityConnectorName")])
+	if err != nil {
+		return nil, err
+	}
+	respr, errRespr := g.srv.ListAvailable(req.Context(), resourceGroupNameParam, securityConnectorNameParam, nil)
+	if respErr := server.GetError(errRespr, req); respErr != nil {
+		return nil, respErr
+	}
+	respContent := server.GetResponseContent(respr)
+	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
+	}
+	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GitLabGroupListResponse, req)
+	if err != nil {
+		return nil, err
+	}
+	return resp, nil
+}
+
 func (g *GitLabGroupsServerTransport) dispatchNewListPager(req *http.Request) (*http.Response, error) {
 	if g.srv.NewListPager == nil {
 		return nil, &nonRetriableError{errors.New("fake for method NewListPager not implemented")}
 	}
 	newListPager := g.newListPager.get(req)
 	if newListPager == nil {
-		const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/gitLabGroups`
+		const regexStr = `/subscriptions/(?P<subscriptionId>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/resourceGroups/(?P<resourceGroupName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[a-zA-Z0-9._~%!$&'()*+,;=:@-]+)/devops/default/gitLabGroups`
 		regex := regexp.MustCompile(regexStr)
 		matches := regex.FindStringSubmatch(req.URL.EscapedPath())
 		if len(matches) < 4 {
@@ -168,39 +201,6 @@ func (g *GitLabGroupsServerTransport) dispatchNewListPager(req *http.Request) (*
 	}
 	if !server.PagerResponderMore(newListPager) {
 		g.newListPager.remove(req)
-	}
-	return resp, nil
-}
-
-func (g *GitLabGroupsServerTransport) dispatchListAvailable(req *http.Request) (*http.Response, error) {
-	if g.srv.ListAvailable == nil {
-		return nil, &nonRetriableError{errors.New("fake for method ListAvailable not implemented")}
-	}
-	const regexStr = `/subscriptions/(?P<subscriptionId>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/resourceGroups/(?P<resourceGroupName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/providers/Microsoft\.Security/securityConnectors/(?P<securityConnectorName>[!#&$-;=?-\[\]_a-zA-Z0-9~%@]+)/devops/default/listAvailableGitLabGroups`
-	regex := regexp.MustCompile(regexStr)
-	matches := regex.FindStringSubmatch(req.URL.EscapedPath())
-	if len(matches) < 4 {
-		return nil, fmt.Errorf("failed to parse path %s", req.URL.Path)
-	}
-	resourceGroupNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("resourceGroupName")])
-	if err != nil {
-		return nil, err
-	}
-	securityConnectorNameParam, err := url.PathUnescape(matches[regex.SubexpIndex("securityConnectorName")])
-	if err != nil {
-		return nil, err
-	}
-	respr, errRespr := g.srv.ListAvailable(req.Context(), resourceGroupNameParam, securityConnectorNameParam, nil)
-	if respErr := server.GetError(errRespr, req); respErr != nil {
-		return nil, respErr
-	}
-	respContent := server.GetResponseContent(respr)
-	if !slices.Contains([]int{http.StatusOK}, respContent.HTTPStatus) {
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK", respContent.HTTPStatus)}
-	}
-	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).GitLabGroupListResponse, req)
-	if err != nil {
-		return nil, err
 	}
 	return resp, nil
 }

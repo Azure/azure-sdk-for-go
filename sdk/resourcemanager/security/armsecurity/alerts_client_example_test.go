@@ -12,6 +12,42 @@ import (
 	"log"
 )
 
+// Generated from example definition: 2022-01-01/Alerts/SimulateAlerts_example.json
+func ExampleAlertsClient_BeginSimulate() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewAlertsClient().BeginSimulate(ctx, "centralus", armsecurity.AlertSimulatorRequestBody{
+		Properties: &armsecurity.AlertSimulatorBundlesRequestProperties{
+			Bundles: []*armsecurity.BundleType{
+				to.Ptr(armsecurity.BundleTypeAppServices),
+				to.Ptr(armsecurity.BundleTypeDNS),
+				to.Ptr(armsecurity.BundleTypeKeyVaults),
+				to.Ptr(armsecurity.BundleTypeKubernetesService),
+				to.Ptr(armsecurity.BundleTypeResourceManager),
+				to.Ptr(armsecurity.BundleTypeSQLServers),
+				to.Ptr(armsecurity.BundleTypeStorageAccounts),
+				to.Ptr(armsecurity.BundleTypeVirtualMachines),
+				to.Ptr(armsecurity.BundleTypeCosmosDbs),
+			},
+			Kind: to.Ptr(armsecurity.KindBundles),
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	_, err = poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+}
+
 // Generated from example definition: 2022-01-01/Alerts/GetAlertResourceGroupLocation_example.json
 func ExampleAlertsClient_GetResourceGroupLevel() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
@@ -42,7 +78,7 @@ func ExampleAlertsClient_GetResourceGroupLevel() {
 	// 			AlertURI: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security/AlertBlade/alertId/2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a/subscriptionId/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroup/myRg1/referencedFrom/alertDeepLink/location/westeurope"),
 	// 			CompromisedEntity: to.Ptr("vm1"),
 	// 			CorrelationKey: to.Ptr("kso0LFWxzCll5tqrk5hmrBJ+MY1BX806W6q6+0s9Lk="),
-	// 			EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
+	// 			EndTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
 	// 			Entities: []*armsecurity.AlertEntity{
 	// 				{
 	// 					Type: to.Ptr("ip"),
@@ -72,7 +108,7 @@ func ExampleAlertsClient_GetResourceGroupLevel() {
 	// 			},
 	// 			Intent: to.Ptr(armsecurity.IntentExecution),
 	// 			IsIncident: to.Ptr(true),
-	// 			ProcessingEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.9205584Z"); return t}()),
+	// 			ProcessingEndTimeUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 920558400, time.UTC)),
 	// 			ProductComponentName: to.Ptr("testName"),
 	// 			ProductName: to.Ptr("Azure Security Center"),
 	// 			RemediationSteps: []*string{
@@ -92,7 +128,7 @@ func ExampleAlertsClient_GetResourceGroupLevel() {
 	// 				},
 	// 			},
 	// 			Severity: to.Ptr(armsecurity.AlertSeverityHigh),
-	// 			StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
+	// 			StartTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armsecurity.AlertStatusActive),
 	// 			SubTechniques: []*string{
 	// 				to.Ptr("T1059.001"),
@@ -171,7 +207,7 @@ func ExampleAlertsClient_GetResourceGroupLevel() {
 	// 				to.Ptr("T1053"),
 	// 				to.Ptr("T1072"),
 	// 			},
-	// 			TimeGeneratedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.0000000Z"); return t}()),
+	// 			TimeGeneratedUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 0, time.UTC)),
 	// 			VendorName: to.Ptr("Microsoft"),
 	// 			Version: to.Ptr("2022-01-01"),
 	// 		},
@@ -209,7 +245,7 @@ func ExampleAlertsClient_GetSubscriptionLevel() {
 	// 			AlertURI: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security/AlertBlade/alertId/2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a/subscriptionId/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroup/myRg1/referencedFrom/alertDeepLink/location/westeurope"),
 	// 			CompromisedEntity: to.Ptr("vm1"),
 	// 			CorrelationKey: to.Ptr("kso0LFWxzCll5tqrk5hmrBJ+MY1BX806W6q6+0s9Lk="),
-	// 			EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
+	// 			EndTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
 	// 			Entities: []*armsecurity.AlertEntity{
 	// 				{
 	// 					Type: to.Ptr("ip"),
@@ -239,7 +275,7 @@ func ExampleAlertsClient_GetSubscriptionLevel() {
 	// 			},
 	// 			Intent: to.Ptr(armsecurity.IntentExecution),
 	// 			IsIncident: to.Ptr(true),
-	// 			ProcessingEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.9205584Z"); return t}()),
+	// 			ProcessingEndTimeUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 920558400, time.UTC)),
 	// 			ProductComponentName: to.Ptr("testName"),
 	// 			ProductName: to.Ptr("Azure Security Center"),
 	// 			RemediationSteps: []*string{
@@ -259,7 +295,7 @@ func ExampleAlertsClient_GetSubscriptionLevel() {
 	// 				},
 	// 			},
 	// 			Severity: to.Ptr(armsecurity.AlertSeverityHigh),
-	// 			StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
+	// 			StartTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
 	// 			Status: to.Ptr(armsecurity.AlertStatusActive),
 	// 			SubTechniques: []*string{
 	// 				to.Ptr("T1059.001"),
@@ -308,12 +344,188 @@ func ExampleAlertsClient_GetSubscriptionLevel() {
 	// 				to.Ptr("T1053"),
 	// 				to.Ptr("T1072"),
 	// 			},
-	// 			TimeGeneratedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.0000000Z"); return t}()),
+	// 			TimeGeneratedUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 0, time.UTC)),
 	// 			VendorName: to.Ptr("Microsoft"),
 	// 			Version: to.Ptr("2022-01-01"),
 	// 		},
 	// 	},
 	// }
+}
+
+// Generated from example definition: 2022-01-01/Alerts/GetAlertsResourceGroup_example.json
+func ExampleAlertsClient_NewListByResourceGroupPager() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armsecurity.NewClientFactory("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewAlertsClient().NewListByResourceGroupPager("myRg1", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armsecurity.AlertsClientListByResourceGroupResponse{
+		// 	AlertList: armsecurity.AlertList{
+		// 		Value: []*armsecurity.Alert{
+		// 			{
+		// 				Name: to.Ptr("2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a"),
+		// 				Type: to.Ptr("Microsoft.Security/Locations/alerts"),
+		// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Security/locations/westeurope/alerts/2518770965529163669_F144EE95-A3E5-42DA-A279-967D115809AA"),
+		// 				Properties: &armsecurity.AlertProperties{
+		// 					Description: to.Ptr("This is a test alert generated by Azure Security Center. No further action is needed."),
+		// 					AlertDisplayName: to.Ptr("Azure Security Center test alert (not a threat)"),
+		// 					AlertType: to.Ptr("VM_EICAR"),
+		// 					AlertURI: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security/AlertBlade/alertId/2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a/subscriptionId/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroup/myRg1/referencedFrom/alertDeepLink/location/westeurope"),
+		// 					CompromisedEntity: to.Ptr("vm1"),
+		// 					CorrelationKey: to.Ptr("kso0LFWxzCll5tqrk5hmrBJ+MY1BX806W6q6+0s9Lk="),
+		// 					EndTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
+		// 					Entities: []*armsecurity.AlertEntity{
+		// 						{
+		// 							Type: to.Ptr("ip"),
+		// 							AdditionalProperties: map[string]any{
+		// 							"address": "192.0.2.1",
+		// 							"location": map[string]any{
+		// 								"asn": 6584,
+		// 								"city": "sonning",
+		// 								"countryCode": "gb",
+		// 								"latitude": 51.468,
+		// 								"longitude": -0.909,
+		// 								"state": "wokingham",
+		// 							},
+		// 						},
+		// 						},
+		// 					},
+		// 					ExtendedLinks: []map[string]*string{
+		// 						map[string]*string{
+		// 							"Category": to.Ptr("threat_reports"),
+		// 							"Href": to.Ptr("https://contoso.com/reports/DisplayReport"),
+		// 							"Label": to.Ptr("Report: RDP Brute Forcing"),
+		// 							"Type": to.Ptr("webLink"),
+		// 						},
+		// 					},
+		// 					ExtendedProperties: map[string]*string{
+		// 						"Property1": to.Ptr("Property1 information"),
+		// 					},
+		// 					Intent: to.Ptr(armsecurity.IntentExecution),
+		// 					IsIncident: to.Ptr(true),
+		// 					ProcessingEndTimeUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 920558400, time.UTC)),
+		// 					ProductComponentName: to.Ptr("testName"),
+		// 					ProductName: to.Ptr("Azure Security Center"),
+		// 					RemediationSteps: []*string{
+		// 						to.Ptr("No further action is needed."),
+		// 					},
+		// 					ResourceIdentifiers: []armsecurity.ResourceIdentifierClassification{
+		// 						&armsecurity.AzureResourceIdentifier{
+		// 							Type: to.Ptr(armsecurity.ResourceIdentifierTypeAzureResource),
+		// 							AzureResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
+		// 						},
+		// 						&armsecurity.LogAnalyticsIdentifier{
+		// 							Type: to.Ptr(armsecurity.ResourceIdentifierTypeLogAnalytics),
+		// 							AgentID: to.Ptr("75724a01-f021-4aa8-9ec2-329792373e6e"),
+		// 							WorkspaceID: to.Ptr("f419f624-acad-4d89-b86d-f62fa387f019"),
+		// 							WorkspaceResourceGroup: to.Ptr("myRg1"),
+		// 							WorkspaceSubscriptionID: to.Ptr("20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
+		// 						},
+		// 					},
+		// 					Severity: to.Ptr(armsecurity.AlertSeverityHigh),
+		// 					StartTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
+		// 					Status: to.Ptr(armsecurity.AlertStatusActive),
+		// 					SubTechniques: []*string{
+		// 						to.Ptr("T1059.001"),
+		// 						to.Ptr("T1059.006"),
+		// 						to.Ptr("T1053.002"),
+		// 					},
+		// 					SupportingEvidence: &armsecurity.AlertPropertiesSupportingEvidence{
+		// 						Type: to.Ptr("supportingEvidenceList"),
+		// 						AdditionalProperties: map[string]any{
+		// 						"supportingEvidenceList": []any{
+		// 							map[string]any{
+		// 								"type": "nestedList",
+		// 								"evidenceElements": []any{
+		// 									map[string]any{
+		// 										"type": "evidenceElement",
+		// 										"innerElements": nil,
+		// 										"text": map[string]any{
+		// 											"arguments": map[string]any{
+		// 												"domainName": map[string]any{
+		// 													"type": "string",
+		// 													"value": "domainName",
+		// 												},
+		// 												"sensitiveEnumerationTypes": map[string]any{
+		// 													"type": "string[]",
+		// 													"value": []any{
+		// 														"UseDesKey",
+		// 													},
+		// 												},
+		// 											},
+		// 											"fallback": "Actor enumerated UseDesKey on domain1.test.local",
+		// 											"localizationKey": "AATP_ALERTS_LDAP_SENSITIVE_ATTRIBUTE_RECONNAISSANCE_SECURITY_ALERT_EVIDENCE_ENUMERATION_DETAIL_A7C00BD7",
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 							map[string]any{
+		// 								"type": "tabularEvidences",
+		// 								"columns": []any{
+		// 									"Date",
+		// 									"Activity",
+		// 									"User",
+		// 									"TestedText",
+		// 									"TestedValue",
+		// 								},
+		// 								"rows": []any{
+		// 									[]any{
+		// 										"2022-01-17T07:03:52.034Z",
+		// 										"Log on",
+		// 										"testUser",
+		// 										"false",
+		// 										false,
+		// 									},
+		// 									[]any{
+		// 										"2022-01-17T07:03:52.034Z",
+		// 										"Log on",
+		// 										"testUser2",
+		// 										"false",
+		// 										false,
+		// 									},
+		// 									[]any{
+		// 										"2022-01-17T07:03:52.034Z",
+		// 										"Log on",
+		// 										"testUser3",
+		// 										"true",
+		// 										true,
+		// 									},
+		// 								},
+		// 								"title": "Investigate activity test",
+		// 							},
+		// 						},
+		// 					},
+		// 					},
+		// 					SystemAlertID: to.Ptr("2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a"),
+		// 					Techniques: []*string{
+		// 						to.Ptr("T1059"),
+		// 						to.Ptr("T1053"),
+		// 						to.Ptr("T1072"),
+		// 					},
+		// 					TimeGeneratedUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 0, time.UTC)),
+		// 					VendorName: to.Ptr("Microsoft"),
+		// 					Version: to.Ptr("2022-01-01"),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
 }
 
 // Generated from example definition: 2022-01-01/Alerts/GetAlertsSubscription_example.json
@@ -352,7 +564,7 @@ func ExampleAlertsClient_NewListPager() {
 		// 					AlertURI: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security/AlertBlade/alertId/2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a/subscriptionId/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroup/myRg1/referencedFrom/alertDeepLink/location/westeurope"),
 		// 					CompromisedEntity: to.Ptr("vm1"),
 		// 					CorrelationKey: to.Ptr("kso0LFWxzCll5tqrk5hmrBJ+MY1BX806W6q6+0s9Lk="),
-		// 					EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
+		// 					EndTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
 		// 					Entities: []*armsecurity.AlertEntity{
 		// 						{
 		// 							Type: to.Ptr("ip"),
@@ -382,7 +594,7 @@ func ExampleAlertsClient_NewListPager() {
 		// 					},
 		// 					Intent: to.Ptr(armsecurity.IntentExecution),
 		// 					IsIncident: to.Ptr(true),
-		// 					ProcessingEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.9205584Z"); return t}()),
+		// 					ProcessingEndTimeUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 920558400, time.UTC)),
 		// 					ProductComponentName: to.Ptr("testName"),
 		// 					ProductName: to.Ptr("Azure Security Center"),
 		// 					RemediationSteps: []*string{
@@ -402,7 +614,7 @@ func ExampleAlertsClient_NewListPager() {
 		// 						},
 		// 					},
 		// 					Severity: to.Ptr(armsecurity.AlertSeverityHigh),
-		// 					StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
+		// 					StartTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armsecurity.AlertStatusActive),
 		// 					SubTechniques: []*string{
 		// 						to.Ptr("T1059.001"),
@@ -451,7 +663,7 @@ func ExampleAlertsClient_NewListPager() {
 		// 						to.Ptr("T1053"),
 		// 						to.Ptr("T1072"),
 		// 					},
-		// 					TimeGeneratedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.0000000Z"); return t}()),
+		// 					TimeGeneratedUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 0, time.UTC)),
 		// 					VendorName: to.Ptr("Microsoft"),
 		// 					Version: to.Ptr("2022-01-01"),
 		// 				},
@@ -467,7 +679,7 @@ func ExampleAlertsClient_NewListPager() {
 		// 					AlertURI: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security/AlertBlade/alertId/2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a/subscriptionId/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroup/myRg1/referencedFrom/alertDeepLink/location/westeurope"),
 		// 					CompromisedEntity: to.Ptr("vm2"),
 		// 					CorrelationKey: to.Ptr("4hno6LF0xzCl5tqrk4nrBW+MY1BX816W6q6+0srk4"),
-		// 					EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-07T13:51:45.0045913Z"); return t}()),
+		// 					EndTimeUTC: to.Ptr(time.Date(2019, time.May, 7, 13, 51, 45, 4591300, time.UTC)),
 		// 					Entities: []*armsecurity.AlertEntity{
 		// 						{
 		// 							Type: to.Ptr("host"),
@@ -542,7 +754,7 @@ func ExampleAlertsClient_NewListPager() {
 		// 					},
 		// 					Intent: to.Ptr(armsecurity.IntentExecution),
 		// 					IsIncident: to.Ptr(true),
-		// 					ProcessingEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-07T13:51:48.9810457Z"); return t}()),
+		// 					ProcessingEndTimeUTC: to.Ptr(time.Date(2019, time.May, 7, 13, 51, 48, 981045700, time.UTC)),
 		// 					ProductComponentName: to.Ptr("testName2"),
 		// 					ProductName: to.Ptr("Azure Security Center"),
 		// 					RemediationSteps: []*string{
@@ -567,7 +779,7 @@ func ExampleAlertsClient_NewListPager() {
 		// 						},
 		// 					},
 		// 					Severity: to.Ptr(armsecurity.AlertSeverityMedium),
-		// 					StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-07T13:51:45.0045913Z"); return t}()),
+		// 					StartTimeUTC: to.Ptr(time.Date(2019, time.May, 7, 13, 51, 45, 4591300, time.UTC)),
 		// 					Status: to.Ptr(armsecurity.AlertStatusActive),
 		// 					SubTechniques: []*string{
 		// 						to.Ptr("T1059.001"),
@@ -646,183 +858,7 @@ func ExampleAlertsClient_NewListPager() {
 		// 						to.Ptr("T1053"),
 		// 						to.Ptr("T1072"),
 		// 					},
-		// 					TimeGeneratedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-07T13:51:48.3810457Z"); return t}()),
-		// 					VendorName: to.Ptr("Microsoft"),
-		// 					Version: to.Ptr("2022-01-01"),
-		// 				},
-		// 			},
-		// 		},
-		// 	},
-		// }
-	}
-}
-
-// Generated from example definition: 2022-01-01/Alerts/GetAlertsResourceGroup_example.json
-func ExampleAlertsClient_NewListByResourceGroupPager() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	pager := clientFactory.NewAlertsClient().NewListByResourceGroupPager("myRg1", nil)
-	for pager.More() {
-		page, err := pager.NextPage(ctx)
-		if err != nil {
-			log.Fatalf("failed to advance page: %v", err)
-		}
-		for _, v := range page.Value {
-			// You could use page here. We use blank identifier for just demo purposes.
-			_ = v
-		}
-		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
-		// page = armsecurity.AlertsClientListByResourceGroupResponse{
-		// 	AlertList: armsecurity.AlertList{
-		// 		Value: []*armsecurity.Alert{
-		// 			{
-		// 				Name: to.Ptr("2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a"),
-		// 				Type: to.Ptr("Microsoft.Security/Locations/alerts"),
-		// 				ID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Security/locations/westeurope/alerts/2518770965529163669_F144EE95-A3E5-42DA-A279-967D115809AA"),
-		// 				Properties: &armsecurity.AlertProperties{
-		// 					Description: to.Ptr("This is a test alert generated by Azure Security Center. No further action is needed."),
-		// 					AlertDisplayName: to.Ptr("Azure Security Center test alert (not a threat)"),
-		// 					AlertType: to.Ptr("VM_EICAR"),
-		// 					AlertURI: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security/AlertBlade/alertId/2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a/subscriptionId/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroup/myRg1/referencedFrom/alertDeepLink/location/westeurope"),
-		// 					CompromisedEntity: to.Ptr("vm1"),
-		// 					CorrelationKey: to.Ptr("kso0LFWxzCll5tqrk5hmrBJ+MY1BX806W6q6+0s9Lk="),
-		// 					EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
-		// 					Entities: []*armsecurity.AlertEntity{
-		// 						{
-		// 							Type: to.Ptr("ip"),
-		// 							AdditionalProperties: map[string]any{
-		// 							"address": "192.0.2.1",
-		// 							"location": map[string]any{
-		// 								"asn": 6584,
-		// 								"city": "sonning",
-		// 								"countryCode": "gb",
-		// 								"latitude": 51.468,
-		// 								"longitude": -0.909,
-		// 								"state": "wokingham",
-		// 							},
-		// 						},
-		// 						},
-		// 					},
-		// 					ExtendedLinks: []map[string]*string{
-		// 						map[string]*string{
-		// 							"Category": to.Ptr("threat_reports"),
-		// 							"Href": to.Ptr("https://contoso.com/reports/DisplayReport"),
-		// 							"Label": to.Ptr("Report: RDP Brute Forcing"),
-		// 							"Type": to.Ptr("webLink"),
-		// 						},
-		// 					},
-		// 					ExtendedProperties: map[string]*string{
-		// 						"Property1": to.Ptr("Property1 information"),
-		// 					},
-		// 					Intent: to.Ptr(armsecurity.IntentExecution),
-		// 					IsIncident: to.Ptr(true),
-		// 					ProcessingEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.9205584Z"); return t}()),
-		// 					ProductComponentName: to.Ptr("testName"),
-		// 					ProductName: to.Ptr("Azure Security Center"),
-		// 					RemediationSteps: []*string{
-		// 						to.Ptr("No further action is needed."),
-		// 					},
-		// 					ResourceIdentifiers: []armsecurity.ResourceIdentifierClassification{
-		// 						&armsecurity.AzureResourceIdentifier{
-		// 							Type: to.Ptr(armsecurity.ResourceIdentifierTypeAzureResource),
-		// 							AzureResourceID: to.Ptr("/subscriptions/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroups/myRg1/providers/Microsoft.Compute/virtualMachines/vm1"),
-		// 						},
-		// 						&armsecurity.LogAnalyticsIdentifier{
-		// 							Type: to.Ptr(armsecurity.ResourceIdentifierTypeLogAnalytics),
-		// 							AgentID: to.Ptr("75724a01-f021-4aa8-9ec2-329792373e6e"),
-		// 							WorkspaceID: to.Ptr("f419f624-acad-4d89-b86d-f62fa387f019"),
-		// 							WorkspaceResourceGroup: to.Ptr("myRg1"),
-		// 							WorkspaceSubscriptionID: to.Ptr("20ff7fc3-e762-44dd-bd96-b71116dcdc23"),
-		// 						},
-		// 					},
-		// 					Severity: to.Ptr(armsecurity.AlertSeverityHigh),
-		// 					StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
-		// 					Status: to.Ptr(armsecurity.AlertStatusActive),
-		// 					SubTechniques: []*string{
-		// 						to.Ptr("T1059.001"),
-		// 						to.Ptr("T1059.006"),
-		// 						to.Ptr("T1053.002"),
-		// 					},
-		// 					SupportingEvidence: &armsecurity.AlertPropertiesSupportingEvidence{
-		// 						Type: to.Ptr("supportingEvidenceList"),
-		// 						AdditionalProperties: map[string]any{
-		// 						"supportingEvidenceList": []any{
-		// 							map[string]any{
-		// 								"type": "nestedList",
-		// 								"evidenceElements": []any{
-		// 									map[string]any{
-		// 										"type": "evidenceElement",
-		// 										"innerElements": nil,
-		// 										"text": map[string]any{
-		// 											"arguments": map[string]any{
-		// 												"domainName": map[string]any{
-		// 													"type": "string",
-		// 													"value": "domainName",
-		// 												},
-		// 												"sensitiveEnumerationTypes": map[string]any{
-		// 													"type": "string[]",
-		// 													"value": []any{
-		// 														"UseDesKey",
-		// 													},
-		// 												},
-		// 											},
-		// 											"fallback": "Actor enumerated UseDesKey on domain1.test.local",
-		// 											"localizationKey": "AATP_ALERTS_LDAP_SENSITIVE_ATTRIBUTE_RECONNAISSANCE_SECURITY_ALERT_EVIDENCE_ENUMERATION_DETAIL_A7C00BD7",
-		// 										},
-		// 									},
-		// 								},
-		// 							},
-		// 							map[string]any{
-		// 								"type": "tabularEvidences",
-		// 								"columns": []any{
-		// 									"Date",
-		// 									"Activity",
-		// 									"User",
-		// 									"TestedText",
-		// 									"TestedValue",
-		// 								},
-		// 								"rows": []any{
-		// 									[]any{
-		// 										"2022-01-17T07:03:52.034Z",
-		// 										"Log on",
-		// 										"testUser",
-		// 										"false",
-		// 										false,
-		// 									},
-		// 									[]any{
-		// 										"2022-01-17T07:03:52.034Z",
-		// 										"Log on",
-		// 										"testUser2",
-		// 										"false",
-		// 										false,
-		// 									},
-		// 									[]any{
-		// 										"2022-01-17T07:03:52.034Z",
-		// 										"Log on",
-		// 										"testUser3",
-		// 										"true",
-		// 										true,
-		// 									},
-		// 								},
-		// 								"title": "Investigate activity test",
-		// 							},
-		// 						},
-		// 					},
-		// 					},
-		// 					SystemAlertID: to.Ptr("2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a"),
-		// 					Techniques: []*string{
-		// 						to.Ptr("T1059"),
-		// 						to.Ptr("T1053"),
-		// 						to.Ptr("T1072"),
-		// 					},
-		// 					TimeGeneratedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.0000000Z"); return t}()),
+		// 					TimeGeneratedUTC: to.Ptr(time.Date(2019, time.May, 7, 13, 51, 48, 381045700, time.UTC)),
 		// 					VendorName: to.Ptr("Microsoft"),
 		// 					Version: to.Ptr("2022-01-01"),
 		// 				},
@@ -844,7 +880,7 @@ func ExampleAlertsClient_NewListResourceGroupLevelByRegionPager() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	pager := clientFactory.NewAlertsClient().NewListResourceGroupLevelByRegionPager("westeurope", "myRg1", nil)
+	pager := clientFactory.NewAlertsClient().NewListResourceGroupLevelByRegionPager("myRg1", "westeurope", nil)
 	for pager.More() {
 		page, err := pager.NextPage(ctx)
 		if err != nil {
@@ -869,7 +905,7 @@ func ExampleAlertsClient_NewListResourceGroupLevelByRegionPager() {
 		// 					AlertURI: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security/AlertBlade/alertId/2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a/subscriptionId/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroup/myRg1/referencedFrom/alertDeepLink/location/westeurope"),
 		// 					CompromisedEntity: to.Ptr("vm1"),
 		// 					CorrelationKey: to.Ptr("kso0LFWxzCll5tqrk5hmrBJ+MY1BX806W6q6+0s9Lk="),
-		// 					EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
+		// 					EndTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
 		// 					Entities: []*armsecurity.AlertEntity{
 		// 						{
 		// 							Type: to.Ptr("ip"),
@@ -899,7 +935,7 @@ func ExampleAlertsClient_NewListResourceGroupLevelByRegionPager() {
 		// 					},
 		// 					Intent: to.Ptr(armsecurity.IntentExecution),
 		// 					IsIncident: to.Ptr(true),
-		// 					ProcessingEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.9205584Z"); return t}()),
+		// 					ProcessingEndTimeUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 920558400, time.UTC)),
 		// 					ProductComponentName: to.Ptr("testName"),
 		// 					ProductName: to.Ptr("Azure Security Center"),
 		// 					RemediationSteps: []*string{
@@ -919,7 +955,7 @@ func ExampleAlertsClient_NewListResourceGroupLevelByRegionPager() {
 		// 						},
 		// 					},
 		// 					Severity: to.Ptr(armsecurity.AlertSeverityHigh),
-		// 					StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
+		// 					StartTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armsecurity.AlertStatusActive),
 		// 					SubTechniques: []*string{
 		// 						to.Ptr("T1059.001"),
@@ -998,7 +1034,7 @@ func ExampleAlertsClient_NewListResourceGroupLevelByRegionPager() {
 		// 						to.Ptr("T1053"),
 		// 						to.Ptr("T1072"),
 		// 					},
-		// 					TimeGeneratedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.0000000Z"); return t}()),
+		// 					TimeGeneratedUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 0, time.UTC)),
 		// 					VendorName: to.Ptr("Microsoft"),
 		// 					Version: to.Ptr("2022-01-01"),
 		// 				},
@@ -1045,7 +1081,7 @@ func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 		// 					AlertURI: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security/AlertBlade/alertId/2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a/subscriptionId/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroup/myRg1/referencedFrom/alertDeepLink/location/westeurope"),
 		// 					CompromisedEntity: to.Ptr("vm1"),
 		// 					CorrelationKey: to.Ptr("kso0LFWxzCll5tqrk5hmrBJ+MY1BX806W6q6+0s9Lk="),
-		// 					EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
+		// 					EndTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
 		// 					Entities: []*armsecurity.AlertEntity{
 		// 						{
 		// 							Type: to.Ptr("ip"),
@@ -1075,7 +1111,7 @@ func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 		// 					},
 		// 					Intent: to.Ptr(armsecurity.IntentExecution),
 		// 					IsIncident: to.Ptr(true),
-		// 					ProcessingEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.9205584Z"); return t}()),
+		// 					ProcessingEndTimeUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 920558400, time.UTC)),
 		// 					ProductComponentName: to.Ptr("testName"),
 		// 					ProductName: to.Ptr("Azure Security Center"),
 		// 					RemediationSteps: []*string{
@@ -1095,7 +1131,7 @@ func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 		// 						},
 		// 					},
 		// 					Severity: to.Ptr(armsecurity.AlertSeverityHigh),
-		// 					StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-22T00:00:00.0000000Z"); return t}()),
+		// 					StartTimeUTC: to.Ptr(time.Date(2020, time.February, 22, 0, 0, 0, 0, time.UTC)),
 		// 					Status: to.Ptr(armsecurity.AlertStatusActive),
 		// 					SubTechniques: []*string{
 		// 						to.Ptr("T1059.001"),
@@ -1144,7 +1180,7 @@ func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 		// 						to.Ptr("T1053"),
 		// 						to.Ptr("T1072"),
 		// 					},
-		// 					TimeGeneratedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2020-02-23T13:47:58.0000000Z"); return t}()),
+		// 					TimeGeneratedUTC: to.Ptr(time.Date(2020, time.February, 23, 13, 47, 58, 0, time.UTC)),
 		// 					VendorName: to.Ptr("Microsoft"),
 		// 					Version: to.Ptr("2022-01-01"),
 		// 				},
@@ -1160,7 +1196,7 @@ func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 		// 					AlertURI: to.Ptr("https://portal.azure.com/#blade/Microsoft_Azure_Security/AlertBlade/alertId/2518298467986649999_4d25bfef-2d77-4a08-adc0-3e35715cc92a/subscriptionId/20ff7fc3-e762-44dd-bd96-b71116dcdc23/resourceGroup/myRg1/referencedFrom/alertDeepLink/location/westeurope"),
 		// 					CompromisedEntity: to.Ptr("vm2"),
 		// 					CorrelationKey: to.Ptr("4hno6LF0xzCl5tqrk4nrBW+MY1BX816W6q6+0srk4"),
-		// 					EndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-07T13:51:45.0045913Z"); return t}()),
+		// 					EndTimeUTC: to.Ptr(time.Date(2019, time.May, 7, 13, 51, 45, 4591300, time.UTC)),
 		// 					Entities: []*armsecurity.AlertEntity{
 		// 						{
 		// 							Type: to.Ptr("host"),
@@ -1235,7 +1271,7 @@ func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 		// 					},
 		// 					Intent: to.Ptr(armsecurity.IntentExecution),
 		// 					IsIncident: to.Ptr(true),
-		// 					ProcessingEndTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-07T13:51:48.9810457Z"); return t}()),
+		// 					ProcessingEndTimeUTC: to.Ptr(time.Date(2019, time.May, 7, 13, 51, 48, 981045700, time.UTC)),
 		// 					ProductComponentName: to.Ptr("testName2"),
 		// 					ProductName: to.Ptr("Azure Security Center"),
 		// 					RemediationSteps: []*string{
@@ -1260,7 +1296,7 @@ func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 		// 						},
 		// 					},
 		// 					Severity: to.Ptr(armsecurity.AlertSeverityMedium),
-		// 					StartTimeUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-07T13:51:45.0045913Z"); return t}()),
+		// 					StartTimeUTC: to.Ptr(time.Date(2019, time.May, 7, 13, 51, 45, 4591300, time.UTC)),
 		// 					Status: to.Ptr(armsecurity.AlertStatusActive),
 		// 					SubTechniques: []*string{
 		// 						to.Ptr("T1059.001"),
@@ -1339,7 +1375,7 @@ func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 		// 						to.Ptr("T1053"),
 		// 						to.Ptr("T1072"),
 		// 					},
-		// 					TimeGeneratedUTC: to.Ptr(func() time.Time { t, _ := time.Parse(time.RFC3339Nano, "2019-05-07T13:51:48.3810457Z"); return t}()),
+		// 					TimeGeneratedUTC: to.Ptr(time.Date(2019, time.May, 7, 13, 51, 48, 381045700, time.UTC)),
 		// 					VendorName: to.Ptr("Microsoft"),
 		// 					Version: to.Ptr("2022-01-01"),
 		// 				},
@@ -1347,42 +1383,6 @@ func ExampleAlertsClient_NewListSubscriptionLevelByRegionPager() {
 		// 		},
 		// 	},
 		// }
-	}
-}
-
-// Generated from example definition: 2022-01-01/Alerts/SimulateAlerts_example.json
-func ExampleAlertsClient_BeginSimulate() {
-	cred, err := azidentity.NewDefaultAzureCredential(nil)
-	if err != nil {
-		log.Fatalf("failed to obtain a credential: %v", err)
-	}
-	ctx := context.Background()
-	clientFactory, err := armsecurity.NewClientFactory("20ff7fc3-e762-44dd-bd96-b71116dcdc23", cred, nil)
-	if err != nil {
-		log.Fatalf("failed to create client: %v", err)
-	}
-	poller, err := clientFactory.NewAlertsClient().BeginSimulate(ctx, "centralus", armsecurity.AlertSimulatorRequestBody{
-		Properties: &armsecurity.AlertSimulatorBundlesRequestProperties{
-			Bundles: []*armsecurity.BundleType{
-				to.Ptr(armsecurity.BundleTypeAppServices),
-				to.Ptr(armsecurity.BundleTypeDNS),
-				to.Ptr(armsecurity.BundleTypeKeyVaults),
-				to.Ptr(armsecurity.BundleTypeKubernetesService),
-				to.Ptr(armsecurity.BundleTypeResourceManager),
-				to.Ptr(armsecurity.BundleTypeSQLServers),
-				to.Ptr(armsecurity.BundleTypeStorageAccounts),
-				to.Ptr(armsecurity.BundleTypeVirtualMachines),
-				to.Ptr(armsecurity.BundleTypeCosmosDbs),
-			},
-			Kind: to.Ptr(armsecurity.KindBundles),
-		},
-	}, nil)
-	if err != nil {
-		log.Fatalf("failed to finish the request: %v", err)
-	}
-	_, err = poller.PollUntilDone(ctx, nil)
-	if err != nil {
-		log.Fatalf("failed to poll the result: %v", err)
 	}
 }
 

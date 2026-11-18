@@ -41,7 +41,7 @@ func TestDownloadStreamObjectReplicationRules(t *testing.T) {
 	require.NoError(t, err)
 	response, err := client.DownloadStream(t.Context(), nil)
 	require.NoError(t, err)
-	defer response.Body.Close()
+	require.NoError(t, response.Body.Close())
 
 	require.Len(t, response.ObjectReplicationRules, 2)
 	rules := make(map[string][]ObjectReplicationRules)

@@ -22,7 +22,7 @@ import (
 // ProjectsServer is a fake server for instances of the armcognitiveservices.ProjectsClient type.
 type ProjectsServer struct {
 	// BeginCreate is the fake for method ProjectsClient.BeginCreate
-	// HTTP status codes to indicate success: http.StatusOK, http.StatusCreated, http.StatusAccepted
+	// HTTP status codes to indicate success: http.StatusOK, http.StatusAccepted
 	BeginCreate func(ctx context.Context, resourceGroupName string, accountName string, projectName string, project armcognitiveservices.Project, options *armcognitiveservices.ProjectsClientBeginCreateOptions) (resp azfake.PollerResponder[armcognitiveservices.ProjectsClientCreateResponse], errResp azfake.ErrorResponder)
 
 	// BeginDelete is the fake for method ProjectsClient.BeginDelete
@@ -153,9 +153,9 @@ func (p *ProjectsServerTransport) dispatchBeginCreate(req *http.Request) (*http.
 		return nil, err
 	}
 
-	if !slices.Contains([]int{http.StatusOK, http.StatusCreated, http.StatusAccepted}, resp.StatusCode) {
+	if !slices.Contains([]int{http.StatusOK, http.StatusAccepted}, resp.StatusCode) {
 		p.beginCreate.remove(req)
-		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusCreated, http.StatusAccepted", resp.StatusCode)}
+		return nil, &nonRetriableError{fmt.Errorf("unexpected status code %d. acceptable values are http.StatusOK, http.StatusAccepted", resp.StatusCode)}
 	}
 	if !server.PollerResponderMore(beginCreate) {
 		p.beginCreate.remove(req)

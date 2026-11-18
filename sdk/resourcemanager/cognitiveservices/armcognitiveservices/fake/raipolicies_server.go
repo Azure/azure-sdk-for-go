@@ -126,7 +126,14 @@ func (r *RaiPoliciesServerTransport) dispatchBeginDelete(req *http.Request) (*ht
 		if err != nil {
 			return nil, err
 		}
-		respr, errRespr := r.srv.BeginDelete(req.Context(), resourceGroupNameParam, accountNameParam, raiPolicyNameParam, nil)
+		ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+		var options *armcognitiveservices.RaiPoliciesClientBeginDeleteOptions
+		if ifMatchParam != nil {
+			options = &armcognitiveservices.RaiPoliciesClientBeginDeleteOptions{
+				IfMatch: ifMatchParam,
+			}
+		}
+		respr, errRespr := r.srv.BeginDelete(req.Context(), resourceGroupNameParam, accountNameParam, raiPolicyNameParam, options)
 		if respErr := server.GetError(errRespr, req); respErr != nil {
 			return nil, respErr
 		}
@@ -176,7 +183,16 @@ func (r *RaiPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	if err != nil {
 		return nil, err
 	}
-	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, accountNameParam, raiPolicyNameParam, body, nil)
+	ifMatchParam := getOptional(getHeaderValue(req.Header, "If-Match"))
+	ifNoneMatchParam := getOptional(getHeaderValue(req.Header, "If-None-Match"))
+	var options *armcognitiveservices.RaiPoliciesClientCreateOrUpdateOptions
+	if ifMatchParam != nil || ifNoneMatchParam != nil {
+		options = &armcognitiveservices.RaiPoliciesClientCreateOrUpdateOptions{
+			IfMatch:     ifMatchParam,
+			IfNoneMatch: ifNoneMatchParam,
+		}
+	}
+	respr, errRespr := r.srv.CreateOrUpdate(req.Context(), resourceGroupNameParam, accountNameParam, raiPolicyNameParam, body, options)
 	if respErr := server.GetError(errRespr, req); respErr != nil {
 		return nil, respErr
 	}
@@ -187,6 +203,9 @@ func (r *RaiPoliciesServerTransport) dispatchCreateOrUpdate(req *http.Request) (
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiPolicy, req)
 	if err != nil {
 		return nil, err
+	}
+	if val := server.GetResponse(respr).EtagHeader; val != nil {
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }
@@ -224,6 +243,9 @@ func (r *RaiPoliciesServerTransport) dispatchGet(req *http.Request) (*http.Respo
 	resp, err := server.MarshalResponseAsJSON(respContent, server.GetResponse(respr).RaiPolicy, req)
 	if err != nil {
 		return nil, err
+	}
+	if val := server.GetResponse(respr).EtagHeader; val != nil {
+		resp.Header.Set("Etag", *val)
 	}
 	return resp, nil
 }

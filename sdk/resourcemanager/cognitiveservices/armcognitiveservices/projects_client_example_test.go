@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-11-01/CreateProject.json
+// Generated from example definition: 2026-11-15-preview/CreateProject.json
 func ExampleProjectsClient_BeginCreate_createProject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -31,6 +31,10 @@ func ExampleProjectsClient_BeginCreate_createProject() {
 		Properties: &armcognitiveservices.ProjectProperties{
 			Description: to.Ptr("Description of this project"),
 			DisplayName: to.Ptr("p1"),
+			CapabilitySettings: &armcognitiveservices.CapabilitySettings{
+				DocumentStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/myProjectCosmosAccount"),
+				VectorStore:   to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Search/searchServices/myProjectSearchService"),
+			},
 		},
 	}, nil)
 	if err != nil {
@@ -65,12 +69,17 @@ func ExampleProjectsClient_BeginCreate_createProject() {
 	// 			},
 	// 			IsDefault: to.Ptr(true),
 	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 			CapabilitySettings: &armcognitiveservices.CapabilitySettings{
+	// 				DocumentStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.DocumentDB/databaseAccounts/myProjectCosmosAccount"),
+	// 				VectorStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Search/searchServices/myProjectSearchService"),
+	// 				BlobStore: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.Storage/storageAccounts/myStorageAccount"),
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-11-01/CreateProjectMin.json
+// Generated from example definition: 2026-11-15-preview/CreateProjectMin.json
 func ExampleProjectsClient_BeginCreate_createProjectMin() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -123,7 +132,72 @@ func ExampleProjectsClient_BeginCreate_createProjectMin() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/DeleteProject.json
+// Generated from example definition: 2026-11-15-preview/CreateProjectWithToolControls.json
+func ExampleProjectsClient_BeginCreate_createAFoundryProjectWithToolControls() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProjectsClient().BeginCreate(ctx, "myResourceGroup", "myAccount", "myProject", armcognitiveservices.Project{
+		Location: to.Ptr("westus"),
+		Properties: &armcognitiveservices.ProjectProperties{
+			DisplayName: to.Ptr("My project"),
+			ToolControls: &armcognitiveservices.ToolControls{
+				DefaultAction: to.Ptr(armcognitiveservices.ToolControlsDefaultActionDeny),
+				AllowedTools: []*armcognitiveservices.ToolControlEntry{
+					{
+						Type: to.Ptr(armcognitiveservices.ToolControlTypeCodeInterpreter),
+					},
+					{
+						Type:      to.Ptr(armcognitiveservices.ToolControlTypeMcp),
+						ServerURL: to.Ptr("https://*.contoso.com/mcp"),
+					},
+				},
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.ProjectsClientCreateResponse{
+	// 	Project: armcognitiveservices.Project{
+	// 		Name: to.Ptr("myProject"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount/projects/myProject"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armcognitiveservices.ProjectProperties{
+	// 			DisplayName: to.Ptr("My project"),
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 			ToolControls: &armcognitiveservices.ToolControls{
+	// 				DefaultAction: to.Ptr(armcognitiveservices.ToolControlsDefaultActionDeny),
+	// 				AllowedTools: []*armcognitiveservices.ToolControlEntry{
+	// 					{
+	// 						Type: to.Ptr(armcognitiveservices.ToolControlTypeCodeInterpreter),
+	// 					},
+	// 					{
+	// 						Type: to.Ptr(armcognitiveservices.ToolControlTypeMcp),
+	// 						ServerURL: to.Ptr("https://*.contoso.com/mcp"),
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-15-preview/DeleteProject.json
 func ExampleProjectsClient_BeginDelete() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -149,8 +223,93 @@ func ExampleProjectsClient_BeginDelete() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateProjects.json
-func ExampleProjectsClient_BeginUpdate() {
+// Generated from example definition: 2026-11-15-preview/UpdateProjectClearToolControls.json
+func ExampleProjectsClient_BeginUpdate_clearAFoundryProjectSToolControlsWithExplicitNull() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProjectsClient().BeginUpdate(ctx, "myResourceGroup", "myAccount", "myProject", armcognitiveservices.Project{
+		Properties: &armcognitiveservices.ProjectProperties{
+			ToolControls: nil,
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.ProjectsClientUpdateResponse{
+	// 	Project: armcognitiveservices.Project{
+	// 		Name: to.Ptr("myProject"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount/projects/myProject"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armcognitiveservices.ProjectProperties{
+	// 			DisplayName: to.Ptr("My project"),
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-15-preview/UpdateProjectWithToolControls.json
+func ExampleProjectsClient_BeginUpdate_updateAFoundryProjectWithNoExplicitlyAllowedTools() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-1111-2222-3333-444444444444", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	poller, err := clientFactory.NewProjectsClient().BeginUpdate(ctx, "myResourceGroup", "myAccount", "myProject", armcognitiveservices.Project{
+		Properties: &armcognitiveservices.ProjectProperties{
+			ToolControls: &armcognitiveservices.ToolControls{
+				DefaultAction: to.Ptr(armcognitiveservices.ToolControlsDefaultActionDeny),
+			},
+		},
+	}, nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	res, err := poller.PollUntilDone(ctx, nil)
+	if err != nil {
+		log.Fatalf("failed to poll the result: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.ProjectsClientUpdateResponse{
+	// 	Project: armcognitiveservices.Project{
+	// 		Name: to.Ptr("myProject"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/projects"),
+	// 		ID: to.Ptr("/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/myResourceGroup/providers/Microsoft.CognitiveServices/accounts/myAccount/projects/myProject"),
+	// 		Location: to.Ptr("westus"),
+	// 		Properties: &armcognitiveservices.ProjectProperties{
+	// 			DisplayName: to.Ptr("My project"),
+	// 			ProvisioningState: to.Ptr(armcognitiveservices.ProvisioningStateSucceeded),
+	// 			ToolControls: &armcognitiveservices.ToolControls{
+	// 				DefaultAction: to.Ptr(armcognitiveservices.ToolControlsDefaultActionDeny),
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-15-preview/UpdateProjects.json
+func ExampleProjectsClient_BeginUpdate_updateProject() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -197,7 +356,7 @@ func ExampleProjectsClient_BeginUpdate() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/GetProject.json
+// Generated from example definition: 2026-11-15-preview/GetProject.json
 func ExampleProjectsClient_Get() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -240,7 +399,7 @@ func ExampleProjectsClient_Get() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/ListProjects.json
+// Generated from example definition: 2026-11-15-preview/ListProjects.json
 func ExampleProjectsClient_NewListPager() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {

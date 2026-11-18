@@ -12,7 +12,7 @@ import (
 	"log"
 )
 
-// Generated from example definition: 2026-11-01/DeleteRaiPolicy.json
+// Generated from example definition: 2026-11-15-preview/DeleteRaiPolicy.json
 func ExampleRaiPoliciesClient_BeginDelete_deleteRaiPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -33,7 +33,7 @@ func ExampleRaiPoliciesClient_BeginDelete_deleteRaiPolicy() {
 	}
 }
 
-// Generated from example definition: 2026-11-01/DeleteRaiPolicyAcs.json
+// Generated from example definition: 2026-11-15-preview/DeleteRaiPolicyAcs.json
 func ExampleRaiPoliciesClient_BeginDelete_deleteAnAcsPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -44,7 +44,8 @@ func ExampleRaiPoliciesClient_BeginDelete_deleteAnAcsPolicy() {
 	if err != nil {
 		log.Fatalf("failed to create client: %v", err)
 	}
-	poller, err := clientFactory.NewRaiPoliciesClient().BeginDelete(ctx, "resource-group", "safety-account", "agent-guard", nil)
+	poller, err := clientFactory.NewRaiPoliciesClient().BeginDelete(ctx, "resource-group", "safety-account", "agent-guard", &armcognitiveservices.RaiPoliciesClientBeginDeleteOptions{
+		IfMatch: to.Ptr("\"00000000-0000-0000-0000-000000000003\"")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -54,7 +55,7 @@ func ExampleRaiPoliciesClient_BeginDelete_deleteAnAcsPolicy() {
 	}
 }
 
-// Generated from example definition: 2026-11-01/PutRaiPolicy.json
+// Generated from example definition: 2026-11-15-preview/PutRaiPolicy.json
 func ExampleRaiPoliciesClient_CreateOrUpdate_putRaiPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -253,7 +254,7 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_putRaiPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/PutRaiPolicyAcs.json
+// Generated from example definition: 2026-11-15-preview/PutRaiPolicyAcs.json
 func ExampleRaiPoliciesClient_CreateOrUpdate_createAnAcsPolicyWithOptionalPolicyDependencies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -266,6 +267,91 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_createAnAcsPolicyWithOptionalPolicy
 	}
 	res, err := clientFactory.NewRaiPoliciesClient().CreateOrUpdate(ctx, "resource-group", "safety-account", "agent-guard", armcognitiveservices.RaiPolicy{
 		Properties: &armcognitiveservices.RaiPolicyProperties{
+			Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+			Mode:   to.Ptr(armcognitiveservices.RaiPolicyModeAsynchronousFilter),
+			Acs: &armcognitiveservices.RaiAcsManifest{
+				AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+				Metadata: map[string]any{
+					"name": "agent-guard",
+				},
+				Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+					"input-guard": {
+						Type:  to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+						Query: to.Ptr("data.input_guard.verdict"),
+					},
+					"tool-guard": {
+						Type:  to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+						Query: to.Ptr("data.tool_guard.verdict"),
+					},
+				},
+				InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+					Input: &armcognitiveservices.RaiAcsInterventionPoint{
+						PolicyTarget:     to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("input-guard"),
+							AacsModeration: &armcognitiveservices.RaiAcsModerationBindingExtension{
+								SubjectFormat: to.Ptr(armcognitiveservices.RaiAcsModerationSubjectFormatText),
+								HarmConfigs: []*armcognitiveservices.RaiAcsHarmConfiguration{
+									{
+										Category: to.Ptr(armcognitiveservices.RaiAcsHarmCategoryPromptInjection),
+									},
+								},
+							},
+						},
+					},
+					PreToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+						PolicyTarget:     to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolArguments),
+						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolArguments),
+						ToolNameFrom:     to.Ptr(armcognitiveservices.RaiAcsToolNameSelectorToolCallName),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("tool-guard"),
+						},
+					},
+					PostToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+						PolicyTarget:     to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolResult),
+						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolResult),
+						ToolNameFrom:     to.Ptr(armcognitiveservices.RaiAcsToolNameSelectorToolCallName),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("tool-guard"),
+						},
+					},
+				},
+				Tools: map[string]*armcognitiveservices.RaiAcsToolDefinition{
+					"web_search": {
+						ID:          to.Ptr("web_search"),
+						Type:        to.Ptr("retrieval"),
+						Description: to.Ptr("Search approved public documentation"),
+						SecurityLabels: []*string{
+							to.Ptr("network_egress"),
+							to.Ptr("untrusted_content"),
+						},
+						Clearance: to.Ptr("public"),
+						AdditionalProperties: map[string]any{
+							"allowed_domains": []any{
+								"learn.microsoft.com",
+							},
+						},
+					},
+					"wire_transfer": {
+						ID:   to.Ptr("wire_transfer"),
+						Type: to.Ptr("financial_action"),
+						SecurityLabels: []*string{
+							to.Ptr("financial_write"),
+						},
+						Clearance: to.Ptr("confidential"),
+					},
+				},
+				Annotators: map[string]*armcognitiveservices.RaiAcsAnnotatorDefinition{},
+			},
+			AcsRegos: []*armcognitiveservices.RaiRegoReference{
+				{
+					RegoName: to.Ptr("input-guard"),
+				},
+				{
+					RegoName: to.Ptr("tool-guard"),
+				},
+			},
 			CustomBlocklists: []*armcognitiveservices.CustomBlocklistConfig{
 				{
 					BlocklistName: to.Ptr("blocked-terms"),
@@ -273,8 +359,17 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_createAnAcsPolicyWithOptionalPolicy
 					Blocking:      to.Ptr(true),
 				},
 			},
+			CustomExternalSafetyProviders: []*armcognitiveservices.RaiPolicyCustomExternalSafetyProviderReference{
+				{
+					ExternalSafetyProviderName: to.Ptr("contoso-safety-provider"),
+					ManagedIdentityResourceID:  to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/safety-provider-identity"),
+					Source:                     to.Ptr(armcognitiveservices.RaiPolicyContentSourcePrompt),
+					Blocking:                   to.Ptr(true),
+				},
+			},
 		},
-	}, nil)
+	}, &armcognitiveservices.RaiPoliciesClientCreateOrUpdateOptions{
+		IfNoneMatch: to.Ptr("*")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -282,6 +377,7 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_createAnAcsPolicyWithOptionalPolicy
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiPoliciesClientCreateOrUpdateResponse{
+	// 	EtagHeader: to.Ptr("\"00000000-0000-0000-0000-000000000003\""),
 	// 	RaiPolicy: armcognitiveservices.RaiPolicy{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiPolicies/agent-guard"),
 	// 		Name: to.Ptr("agent-guard"),
@@ -289,9 +385,103 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_createAnAcsPolicyWithOptionalPolicy
 	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000003\""),
 	// 		Properties: &armcognitiveservices.RaiPolicyProperties{
 	// 			Type: to.Ptr(armcognitiveservices.RaiPolicyTypeUserManaged),
+	// 			Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+	// 			Mode: to.Ptr(armcognitiveservices.RaiPolicyModeAsynchronousFilter),
+	// 			Acs: &armcognitiveservices.RaiAcsManifest{
+	// 				AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+	// 				Metadata: map[string]any{
+	// 					"name": "agent-guard",
+	// 				},
+	// 				Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 					"input-guard": &armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 						Type: to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+	// 						Query: to.Ptr("data.input_guard.verdict"),
+	// 					},
+	// 					"tool-guard": &armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 						Type: to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+	// 						Query: to.Ptr("data.tool_guard.verdict"),
+	// 					},
+	// 				},
+	// 				InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+	// 					Input: &armcognitiveservices.RaiAcsInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("input-guard"),
+	// 							AacsModeration: &armcognitiveservices.RaiAcsModerationBindingExtension{
+	// 								SubjectFormat: to.Ptr(armcognitiveservices.RaiAcsModerationSubjectFormatText),
+	// 								HarmConfigs: []*armcognitiveservices.RaiAcsHarmConfiguration{
+	// 									{
+	// 										Category: to.Ptr(armcognitiveservices.RaiAcsHarmCategoryPromptInjection),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					PreToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolArguments),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolArguments),
+	// 						ToolNameFrom: to.Ptr(armcognitiveservices.RaiAcsToolNameSelectorToolCallName),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("tool-guard"),
+	// 						},
+	// 					},
+	// 					PostToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolResult),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolResult),
+	// 						ToolNameFrom: to.Ptr(armcognitiveservices.RaiAcsToolNameSelectorToolCallName),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("tool-guard"),
+	// 						},
+	// 					},
+	// 				},
+	// 				Tools: map[string]*armcognitiveservices.RaiAcsToolDefinition{
+	// 					"web_search": &armcognitiveservices.RaiAcsToolDefinition{
+	// 						ID: to.Ptr("web_search"),
+	// 						Type: to.Ptr("retrieval"),
+	// 						Description: to.Ptr("Search approved public documentation"),
+	// 						SecurityLabels: []*string{
+	// 							to.Ptr("network_egress"),
+	// 							to.Ptr("untrusted_content"),
+	// 						},
+	// 						Clearance: to.Ptr("public"),
+	// 						AdditionalProperties: map[string]any{
+	// 						"allowed_domains": []any{
+	// 							"learn.microsoft.com",
+	// 						},
+	// 					},
+	// 					},
+	// 					"wire_transfer": &armcognitiveservices.RaiAcsToolDefinition{
+	// 						ID: to.Ptr("wire_transfer"),
+	// 						Type: to.Ptr("financial_action"),
+	// 						SecurityLabels: []*string{
+	// 							to.Ptr("financial_write"),
+	// 						},
+	// 						Clearance: to.Ptr("confidential"),
+	// 					},
+	// 				},
+	// 				Annotators: map[string]*armcognitiveservices.RaiAcsAnnotatorDefinition{
+	// 				},
+	// 			},
+	// 			AcsRegos: []*armcognitiveservices.RaiRegoReference{
+	// 				{
+	// 					RegoName: to.Ptr("input-guard"),
+	// 				},
+	// 				{
+	// 					RegoName: to.Ptr("tool-guard"),
+	// 				},
+	// 			},
 	// 			CustomBlocklists: []*armcognitiveservices.CustomBlocklistConfig{
 	// 				{
 	// 					BlocklistName: to.Ptr("blocked-terms"),
+	// 					Source: to.Ptr(armcognitiveservices.RaiPolicyContentSourcePrompt),
+	// 					Blocking: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			CustomExternalSafetyProviders: []*armcognitiveservices.RaiPolicyCustomExternalSafetyProviderReference{
+	// 				{
+	// 					ExternalSafetyProviderName: to.Ptr("contoso-safety-provider"),
+	// 					ManagedIdentityResourceID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.ManagedIdentity/userAssignedIdentities/safety-provider-identity"),
 	// 					Source: to.Ptr(armcognitiveservices.RaiPolicyContentSourcePrompt),
 	// 					Blocking: to.Ptr(true),
 	// 				},
@@ -301,7 +491,314 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_createAnAcsPolicyWithOptionalPolicy
 	// }
 }
 
-// Generated from example definition: 2026-11-01/PutRaiPolicyAcsWithoutTools.json
+// Generated from example definition: 2026-11-15-preview/PutRaiPolicyAcsWithAnnotationsAndEgress.json
+func ExampleRaiPoliciesClient_CreateOrUpdate_createAnAcsPolicyWithOptionalAnnotationsAndAnEgressCompanion() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRaiPoliciesClient().CreateOrUpdate(ctx, "resource-group", "safety-account", "annotated-egress-guard", armcognitiveservices.RaiPolicy{
+		Properties: &armcognitiveservices.RaiPolicyProperties{
+			Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+			Mode:   to.Ptr(armcognitiveservices.RaiPolicyModeAsynchronousFilter),
+			Acs: &armcognitiveservices.RaiAcsManifest{
+				AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+				Metadata: map[string]any{
+					"description": "Illustrative annotation authoring; supported annotators and configuration depend on the evaluation host.",
+				},
+				Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+					"agent-guard": {
+						Type:  to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+						Query: to.Ptr("data.agent_guard.verdict"),
+					},
+				},
+				Annotators: map[string]*armcognitiveservices.RaiAcsAnnotatorDefinition{
+					"risk": {
+						Type: to.Ptr(armcognitiveservices.RaiAcsAnnotatorTypeLlm),
+						AdditionalProperties: map[string]any{
+							"provider":      "azure_openai",
+							"endpoint":      "https://synthetic-judge.openai.azure.com/",
+							"deployment":    "judge",
+							"api_version":   "2024-10-21",
+							"result_schema": "acs.judge.observation/v2",
+							"system_prompt": "Classify the complete subject for harmful intent. Score from 0 to 10: 0 is benign, 5 is ambiguous or potentially harmful, and 10 is clear harmful intent. Use label clear for scores below 4, review for scores from 4 to below 7, and high_risk for scores of 7 or higher. Report observations only; Rego decides the action.",
+							"timeout_ms":    10000,
+						},
+					},
+				},
+				InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+					AgentStartup: &armcognitiveservices.RaiAcsAgentStartupInterventionPoint{
+						PolicyTarget:     to.Ptr("$snap.agent_init"),
+						PolicyTargetKind: to.Ptr("agent_init"),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("agent-guard"),
+						},
+					},
+					Input: &armcognitiveservices.RaiAcsInterventionPoint{
+						PolicyTarget:     to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("agent-guard"),
+						},
+						Annotations: map[string]*armcognitiveservices.RaiAcsAnnotationBinding{
+							"risk": {
+								From: to.Ptr("$target.content"),
+							},
+						},
+					},
+					PreModelCall: &armcognitiveservices.RaiAcsPreModelCallInterventionPoint{
+						PolicyTarget:     to.Ptr("$snap.messages"),
+						PolicyTargetKind: to.Ptr("messages"),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("agent-guard"),
+						},
+					},
+					PostModelCall: &armcognitiveservices.RaiAcsPostModelCallInterventionPoint{
+						PolicyTarget:     to.Ptr("$snap.response"),
+						PolicyTargetKind: to.Ptr("model_response"),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("agent-guard"),
+						},
+					},
+					PreToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+						PolicyTarget:     to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolArguments),
+						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolArguments),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("agent-guard"),
+						},
+					},
+					PostToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+						PolicyTarget:     to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolResult),
+						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolResult),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("agent-guard"),
+						},
+					},
+					Output: &armcognitiveservices.RaiAcsInterventionPoint{
+						PolicyTarget:     to.Ptr(armcognitiveservices.RaiAcsPolicyTargetOutput),
+						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindAssistantOutput),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("agent-guard"),
+						},
+						Annotations: map[string]*armcognitiveservices.RaiAcsAnnotationBinding{
+							"risk": {
+								From: to.Ptr("$target.content"),
+							},
+						},
+					},
+					AgentShutdown: &armcognitiveservices.RaiAcsAgentShutdownInterventionPoint{
+						PolicyTarget:     to.Ptr("$snap.summary"),
+						PolicyTargetKind: to.Ptr("agent_summary"),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("agent-guard"),
+						},
+					},
+				},
+			},
+			AcsRegos: []*armcognitiveservices.RaiRegoReference{
+				{
+					RegoName: to.Ptr("agent-guard"),
+				},
+			},
+			EgressPolicy: &armcognitiveservices.RaiEgressPolicyConfig{
+				Mode:          to.Ptr(armcognitiveservices.RaiEgressModeAudit),
+				DefaultAction: to.Ptr(armcognitiveservices.RaiEgressDefaultActionDeny),
+				Rules: []*armcognitiveservices.RaiEgressRule{
+					{
+						Name:     to.Ptr("allow-docs"),
+						RuleType: to.Ptr(armcognitiveservices.RaiEgressRuleTypeFqdn),
+						Match: &armcognitiveservices.RaiEgressRuleMatch{
+							Host: to.Ptr("learn.microsoft.com"),
+							Path: to.Ptr("/azure/*"),
+						},
+						Action: &armcognitiveservices.RaiEgressRuleAction{
+							ActionType: to.Ptr(armcognitiveservices.RaiEgressRuleActionTypeAllow),
+						},
+					},
+					{
+						Name:     to.Ptr("label-api"),
+						RuleType: to.Ptr(armcognitiveservices.RaiEgressRuleTypeFqdn),
+						Match: &armcognitiveservices.RaiEgressRuleMatch{
+							Host: to.Ptr("api.contoso.com"),
+							Path: to.Ptr("/v1/*"),
+						},
+						Action: &armcognitiveservices.RaiEgressRuleAction{
+							ActionType: to.Ptr(armcognitiveservices.RaiEgressRuleActionTypeTransform),
+							Headers: []*armcognitiveservices.RaiEgressHeaderTransform{
+								{
+									Operation: to.Ptr(armcognitiveservices.RaiEgressHeaderOperationSet),
+									Name:      to.Ptr("X-Workload-Class"),
+									Value:     to.Ptr("public-demo"),
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}, &armcognitiveservices.RaiPoliciesClientCreateOrUpdateOptions{
+		IfNoneMatch: to.Ptr("*")})
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.RaiPoliciesClientCreateOrUpdateResponse{
+	// 	EtagHeader: to.Ptr("\"00000000-0000-0000-0000-000000000006\""),
+	// 	RaiPolicy: armcognitiveservices.RaiPolicy{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiPolicies/annotated-egress-guard"),
+	// 		Name: to.Ptr("annotated-egress-guard"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/raiPolicies"),
+	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000006\""),
+	// 		Properties: &armcognitiveservices.RaiPolicyProperties{
+	// 			Type: to.Ptr(armcognitiveservices.RaiPolicyTypeUserManaged),
+	// 			Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+	// 			Mode: to.Ptr(armcognitiveservices.RaiPolicyModeAsynchronousFilter),
+	// 			Acs: &armcognitiveservices.RaiAcsManifest{
+	// 				AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+	// 				Metadata: map[string]any{
+	// 					"description": "Illustrative annotation authoring; supported annotators and configuration depend on the evaluation host.",
+	// 				},
+	// 				Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 					"agent-guard": &armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 						Type: to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+	// 						Query: to.Ptr("data.agent_guard.verdict"),
+	// 					},
+	// 				},
+	// 				Annotators: map[string]*armcognitiveservices.RaiAcsAnnotatorDefinition{
+	// 					"risk": &armcognitiveservices.RaiAcsAnnotatorDefinition{
+	// 						Type: to.Ptr(armcognitiveservices.RaiAcsAnnotatorTypeLlm),
+	// 						AdditionalProperties: map[string]any{
+	// 						"provider": "azure_openai",
+	// 						"endpoint": "https://synthetic-judge.openai.azure.com/",
+	// 						"deployment": "judge",
+	// 						"api_version": "2024-10-21",
+	// 						"result_schema": "acs.judge.observation/v2",
+	// 						"system_prompt": "Classify the complete subject for harmful intent. Score from 0 to 10: 0 is benign, 5 is ambiguous or potentially harmful, and 10 is clear harmful intent. Use label clear for scores below 4, review for scores from 4 to below 7, and high_risk for scores of 7 or higher. Report observations only; Rego decides the action.",
+	// 						"timeout_ms": 10000,
+	// 					},
+	// 					},
+	// 				},
+	// 				InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+	// 					AgentStartup: &armcognitiveservices.RaiAcsAgentStartupInterventionPoint{
+	// 						PolicyTarget: to.Ptr("$snap.agent_init"),
+	// 						PolicyTargetKind: to.Ptr("agent_init"),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 					Input: &armcognitiveservices.RaiAcsInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 						Annotations: map[string]*armcognitiveservices.RaiAcsAnnotationBinding{
+	// 							"risk": &armcognitiveservices.RaiAcsAnnotationBinding{
+	// 								From: to.Ptr("$target.content"),
+	// 							},
+	// 						},
+	// 					},
+	// 					PreModelCall: &armcognitiveservices.RaiAcsPreModelCallInterventionPoint{
+	// 						PolicyTarget: to.Ptr("$snap.messages"),
+	// 						PolicyTargetKind: to.Ptr("messages"),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 					PostModelCall: &armcognitiveservices.RaiAcsPostModelCallInterventionPoint{
+	// 						PolicyTarget: to.Ptr("$snap.response"),
+	// 						PolicyTargetKind: to.Ptr("model_response"),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 					PreToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolArguments),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolArguments),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 					PostToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolResult),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolResult),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 					Output: &armcognitiveservices.RaiAcsInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetOutput),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindAssistantOutput),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 						Annotations: map[string]*armcognitiveservices.RaiAcsAnnotationBinding{
+	// 							"risk": &armcognitiveservices.RaiAcsAnnotationBinding{
+	// 								From: to.Ptr("$target.content"),
+	// 							},
+	// 						},
+	// 					},
+	// 					AgentShutdown: &armcognitiveservices.RaiAcsAgentShutdownInterventionPoint{
+	// 						PolicyTarget: to.Ptr("$snap.summary"),
+	// 						PolicyTargetKind: to.Ptr("agent_summary"),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			AcsRegos: []*armcognitiveservices.RaiRegoReference{
+	// 				{
+	// 					RegoName: to.Ptr("agent-guard"),
+	// 				},
+	// 			},
+	// 			EgressPolicy: &armcognitiveservices.RaiEgressPolicyConfig{
+	// 				Mode: to.Ptr(armcognitiveservices.RaiEgressModeAudit),
+	// 				DefaultAction: to.Ptr(armcognitiveservices.RaiEgressDefaultActionDeny),
+	// 				Rules: []*armcognitiveservices.RaiEgressRule{
+	// 					{
+	// 						Name: to.Ptr("allow-docs"),
+	// 						RuleType: to.Ptr(armcognitiveservices.RaiEgressRuleTypeFqdn),
+	// 						Match: &armcognitiveservices.RaiEgressRuleMatch{
+	// 							Host: to.Ptr("learn.microsoft.com"),
+	// 							Path: to.Ptr("/azure/*"),
+	// 						},
+	// 						Action: &armcognitiveservices.RaiEgressRuleAction{
+	// 							ActionType: to.Ptr(armcognitiveservices.RaiEgressRuleActionTypeAllow),
+	// 						},
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("label-api"),
+	// 						RuleType: to.Ptr(armcognitiveservices.RaiEgressRuleTypeFqdn),
+	// 						Match: &armcognitiveservices.RaiEgressRuleMatch{
+	// 							Host: to.Ptr("api.contoso.com"),
+	// 							Path: to.Ptr("/v1/*"),
+	// 						},
+	// 						Action: &armcognitiveservices.RaiEgressRuleAction{
+	// 							ActionType: to.Ptr(armcognitiveservices.RaiEgressRuleActionTypeTransform),
+	// 							Headers: []*armcognitiveservices.RaiEgressHeaderTransform{
+	// 								{
+	// 									Operation: to.Ptr(armcognitiveservices.RaiEgressHeaderOperationSet),
+	// 									Name: to.Ptr("X-Workload-Class"),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-15-preview/PutRaiPolicyAcsWithoutTools.json
 func ExampleRaiPoliciesClient_CreateOrUpdate_createAnAcsPolicyWithoutAToolCatalog() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -313,8 +810,34 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_createAnAcsPolicyWithoutAToolCatalo
 		log.Fatalf("failed to create client: %v", err)
 	}
 	res, err := clientFactory.NewRaiPoliciesClient().CreateOrUpdate(ctx, "resource-group", "safety-account", "input-guard", armcognitiveservices.RaiPolicy{
-		Properties: &armcognitiveservices.RaiPolicyProperties{},
-	}, nil)
+		Properties: &armcognitiveservices.RaiPolicyProperties{
+			Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+			Acs: &armcognitiveservices.RaiAcsManifest{
+				AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+				Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+					"input-guard": {
+						Type:  to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+						Query: to.Ptr("data.input_guard.verdict"),
+					},
+				},
+				InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+					Input: &armcognitiveservices.RaiAcsInterventionPoint{
+						PolicyTarget:     to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("input-guard"),
+						},
+					},
+				},
+			},
+			AcsRegos: []*armcognitiveservices.RaiRegoReference{
+				{
+					RegoName: to.Ptr("input-guard"),
+				},
+			},
+		},
+	}, &armcognitiveservices.RaiPoliciesClientCreateOrUpdateOptions{
+		IfNoneMatch: to.Ptr("*")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -322,6 +845,7 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_createAnAcsPolicyWithoutAToolCatalo
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiPoliciesClientCreateOrUpdateResponse{
+	// 	EtagHeader: to.Ptr("\"00000000-0000-0000-0000-000000000005\""),
 	// 	RaiPolicy: armcognitiveservices.RaiPolicy{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiPolicies/input-guard"),
 	// 		Name: to.Ptr("input-guard"),
@@ -329,12 +853,36 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_createAnAcsPolicyWithoutAToolCatalo
 	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000005\""),
 	// 		Properties: &armcognitiveservices.RaiPolicyProperties{
 	// 			Type: to.Ptr(armcognitiveservices.RaiPolicyTypeUserManaged),
+	// 			Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+	// 			Acs: &armcognitiveservices.RaiAcsManifest{
+	// 				AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+	// 				Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 					"input-guard": &armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 						Type: to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+	// 						Query: to.Ptr("data.input_guard.verdict"),
+	// 					},
+	// 				},
+	// 				InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+	// 					Input: &armcognitiveservices.RaiAcsInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("input-guard"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			AcsRegos: []*armcognitiveservices.RaiRegoReference{
+	// 				{
+	// 					RegoName: to.Ptr("input-guard"),
+	// 				},
+	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-11-01/PutRaiPolicyWithEgress.json
+// Generated from example definition: 2026-11-15-preview/PutRaiPolicyWithEgress.json
 func ExampleRaiPoliciesClient_CreateOrUpdate_putRaiPolicyWithEgress() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -499,7 +1047,7 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_putRaiPolicyWithEgress() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/UpdateRaiPolicyAcs.json
+// Generated from example definition: 2026-11-15-preview/UpdateRaiPolicyAcs.json
 func ExampleRaiPoliciesClient_CreateOrUpdate_replaceAnAcsPolicyConditionally() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -512,9 +1060,96 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_replaceAnAcsPolicyConditionally() {
 	}
 	res, err := clientFactory.NewRaiPoliciesClient().CreateOrUpdate(ctx, "resource-group", "safety-account", "agent-guard", armcognitiveservices.RaiPolicy{
 		Properties: &armcognitiveservices.RaiPolicyProperties{
-			CustomBlocklists: []*armcognitiveservices.CustomBlocklistConfig{},
+			Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+			Acs: &armcognitiveservices.RaiAcsManifest{
+				AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+				Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+					"input-guard": {
+						Type:  to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+						Query: to.Ptr("data.input_guard.verdict"),
+					},
+					"tool-guard": {
+						Type:  to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+						Query: to.Ptr("data.tool_guard.verdict"),
+					},
+				},
+				InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+					Input: &armcognitiveservices.RaiAcsInterventionPoint{
+						PolicyTarget:     to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("input-guard"),
+							AacsModeration: &armcognitiveservices.RaiAcsModerationBindingExtension{
+								SubjectFormat: to.Ptr(armcognitiveservices.RaiAcsModerationSubjectFormatText),
+								HarmConfigs: []*armcognitiveservices.RaiAcsHarmConfiguration{
+									{
+										Category:     to.Ptr(armcognitiveservices.RaiAcsHarmCategoryHate),
+										HarmConfigID: to.Ptr("Hate_Text_MultiSev"),
+									},
+									{
+										Category: to.Ptr(armcognitiveservices.RaiAcsHarmCategoryPromptInjection),
+									},
+								},
+							},
+						},
+					},
+					PreToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+						PolicyTarget:     to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolArguments),
+						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolArguments),
+						ToolNameFrom:     to.Ptr(armcognitiveservices.RaiAcsToolNameSelectorToolCallName),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("tool-guard"),
+						},
+					},
+					PostToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+						PolicyTarget:     to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolResult),
+						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolResult),
+						ToolNameFrom:     to.Ptr(armcognitiveservices.RaiAcsToolNameSelectorToolCallName),
+						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+							ID: to.Ptr("tool-guard"),
+						},
+					},
+				},
+				Tools: map[string]*armcognitiveservices.RaiAcsToolDefinition{
+					"web_search": {
+						ID:          to.Ptr("web_search"),
+						Type:        to.Ptr("retrieval"),
+						Description: to.Ptr("Search approved public documentation and approved partner sites"),
+						SecurityLabels: []*string{
+							to.Ptr("network_egress"),
+							to.Ptr("untrusted_content"),
+						},
+						Clearance: to.Ptr("public"),
+						AdditionalProperties: map[string]any{
+							"allowed_domains": []any{
+								"learn.microsoft.com",
+								"support.microsoft.com",
+							},
+						},
+					},
+					"wire_transfer": {
+						ID:   to.Ptr("wire_transfer"),
+						Type: to.Ptr("financial_action"),
+						SecurityLabels: []*string{
+							to.Ptr("financial_write"),
+						},
+						Clearance: to.Ptr("confidential"),
+					},
+				},
+			},
+			AcsRegos: []*armcognitiveservices.RaiRegoReference{
+				{
+					RegoName: to.Ptr("input-guard"),
+				},
+				{
+					RegoName: to.Ptr("tool-guard"),
+				},
+			},
+			CustomBlocklists:              []*armcognitiveservices.CustomBlocklistConfig{},
+			CustomExternalSafetyProviders: []*armcognitiveservices.RaiPolicyCustomExternalSafetyProviderReference{},
 		},
-	}, nil)
+	}, &armcognitiveservices.RaiPoliciesClientCreateOrUpdateOptions{
+		IfMatch: to.Ptr("\"00000000-0000-0000-0000-000000000003\"")})
 	if err != nil {
 		log.Fatalf("failed to finish the request: %v", err)
 	}
@@ -522,6 +1157,7 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_replaceAnAcsPolicyConditionally() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiPoliciesClientCreateOrUpdateResponse{
+	// 	EtagHeader: to.Ptr("\"00000000-0000-0000-0000-000000000004\""),
 	// 	RaiPolicy: armcognitiveservices.RaiPolicy{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiPolicies/agent-guard"),
 	// 		Name: to.Ptr("agent-guard"),
@@ -529,14 +1165,101 @@ func ExampleRaiPoliciesClient_CreateOrUpdate_replaceAnAcsPolicyConditionally() {
 	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000004\""),
 	// 		Properties: &armcognitiveservices.RaiPolicyProperties{
 	// 			Type: to.Ptr(armcognitiveservices.RaiPolicyTypeUserManaged),
+	// 			Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+	// 			Acs: &armcognitiveservices.RaiAcsManifest{
+	// 				AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+	// 				Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 					"input-guard": &armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 						Type: to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+	// 						Query: to.Ptr("data.input_guard.verdict"),
+	// 					},
+	// 					"tool-guard": &armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 						Type: to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+	// 						Query: to.Ptr("data.tool_guard.verdict"),
+	// 					},
+	// 				},
+	// 				InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+	// 					Input: &armcognitiveservices.RaiAcsInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("input-guard"),
+	// 							AacsModeration: &armcognitiveservices.RaiAcsModerationBindingExtension{
+	// 								SubjectFormat: to.Ptr(armcognitiveservices.RaiAcsModerationSubjectFormatText),
+	// 								HarmConfigs: []*armcognitiveservices.RaiAcsHarmConfiguration{
+	// 									{
+	// 										Category: to.Ptr(armcognitiveservices.RaiAcsHarmCategoryHate),
+	// 										HarmConfigID: to.Ptr("Hate_Text_MultiSev"),
+	// 									},
+	// 									{
+	// 										Category: to.Ptr(armcognitiveservices.RaiAcsHarmCategoryPromptInjection),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					PreToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolArguments),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolArguments),
+	// 						ToolNameFrom: to.Ptr(armcognitiveservices.RaiAcsToolNameSelectorToolCallName),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("tool-guard"),
+	// 						},
+	// 					},
+	// 					PostToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolResult),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolResult),
+	// 						ToolNameFrom: to.Ptr(armcognitiveservices.RaiAcsToolNameSelectorToolCallName),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("tool-guard"),
+	// 						},
+	// 					},
+	// 				},
+	// 				Tools: map[string]*armcognitiveservices.RaiAcsToolDefinition{
+	// 					"web_search": &armcognitiveservices.RaiAcsToolDefinition{
+	// 						ID: to.Ptr("web_search"),
+	// 						Type: to.Ptr("retrieval"),
+	// 						Description: to.Ptr("Search approved public documentation and approved partner sites"),
+	// 						SecurityLabels: []*string{
+	// 							to.Ptr("network_egress"),
+	// 							to.Ptr("untrusted_content"),
+	// 						},
+	// 						Clearance: to.Ptr("public"),
+	// 						AdditionalProperties: map[string]any{
+	// 						"allowed_domains": []any{
+	// 							"learn.microsoft.com",
+	// 							"support.microsoft.com",
+	// 						},
+	// 					},
+	// 					},
+	// 					"wire_transfer": &armcognitiveservices.RaiAcsToolDefinition{
+	// 						ID: to.Ptr("wire_transfer"),
+	// 						Type: to.Ptr("financial_action"),
+	// 						SecurityLabels: []*string{
+	// 							to.Ptr("financial_write"),
+	// 						},
+	// 						Clearance: to.Ptr("confidential"),
+	// 					},
+	// 				},
+	// 			},
+	// 			AcsRegos: []*armcognitiveservices.RaiRegoReference{
+	// 				{
+	// 					RegoName: to.Ptr("input-guard"),
+	// 				},
+	// 				{
+	// 					RegoName: to.Ptr("tool-guard"),
+	// 				},
+	// 			},
 	// 			CustomBlocklists: []*armcognitiveservices.CustomBlocklistConfig{
+	// 			},
+	// 			CustomExternalSafetyProviders: []*armcognitiveservices.RaiPolicyCustomExternalSafetyProviderReference{
 	// 			},
 	// 		},
 	// 	},
 	// }
 }
 
-// Generated from example definition: 2026-11-01/GetRaiPolicy.json
+// Generated from example definition: 2026-11-15-preview/GetRaiPolicy.json
 func ExampleRaiPoliciesClient_Get_getRaiPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -648,7 +1371,7 @@ func ExampleRaiPoliciesClient_Get_getRaiPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/GetRaiPolicyAcs.json
+// Generated from example definition: 2026-11-15-preview/GetRaiPolicyAcs.json
 func ExampleRaiPoliciesClient_Get_getAnAcsPolicy() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
@@ -667,6 +1390,7 @@ func ExampleRaiPoliciesClient_Get_getAnAcsPolicy() {
 	_ = res
 	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
 	// res = armcognitiveservices.RaiPoliciesClientGetResponse{
+	// 	EtagHeader: to.Ptr("\"00000000-0000-0000-0000-000000000003\""),
 	// 	RaiPolicy: armcognitiveservices.RaiPolicy{
 	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiPolicies/agent-guard"),
 	// 		Name: to.Ptr("agent-guard"),
@@ -674,9 +1398,102 @@ func ExampleRaiPoliciesClient_Get_getAnAcsPolicy() {
 	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000003\""),
 	// 		Properties: &armcognitiveservices.RaiPolicyProperties{
 	// 			Type: to.Ptr(armcognitiveservices.RaiPolicyTypeUserManaged),
+	// 			Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+	// 			Mode: to.Ptr(armcognitiveservices.RaiPolicyModeAsynchronousFilter),
+	// 			Acs: &armcognitiveservices.RaiAcsManifest{
+	// 				AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+	// 				Metadata: map[string]any{
+	// 					"name": "agent-guard",
+	// 				},
+	// 				Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 					"input-guard": &armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 						Type: to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+	// 						Query: to.Ptr("data.input_guard.verdict"),
+	// 					},
+	// 					"tool-guard": &armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 						Type: to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+	// 						Query: to.Ptr("data.tool_guard.verdict"),
+	// 					},
+	// 				},
+	// 				InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+	// 					Input: &armcognitiveservices.RaiAcsInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("input-guard"),
+	// 							AacsModeration: &armcognitiveservices.RaiAcsModerationBindingExtension{
+	// 								SubjectFormat: to.Ptr(armcognitiveservices.RaiAcsModerationSubjectFormatText),
+	// 								HarmConfigs: []*armcognitiveservices.RaiAcsHarmConfiguration{
+	// 									{
+	// 										Category: to.Ptr(armcognitiveservices.RaiAcsHarmCategoryPromptInjection),
+	// 									},
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 					PreToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolArguments),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolArguments),
+	// 						ToolNameFrom: to.Ptr(armcognitiveservices.RaiAcsToolNameSelectorToolCallName),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("tool-guard"),
+	// 						},
+	// 					},
+	// 					PostToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolResult),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolResult),
+	// 						ToolNameFrom: to.Ptr(armcognitiveservices.RaiAcsToolNameSelectorToolCallName),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("tool-guard"),
+	// 						},
+	// 					},
+	// 				},
+	// 				Tools: map[string]*armcognitiveservices.RaiAcsToolDefinition{
+	// 					"web_search": &armcognitiveservices.RaiAcsToolDefinition{
+	// 						ID: to.Ptr("web_search"),
+	// 						Type: to.Ptr("retrieval"),
+	// 						Description: to.Ptr("Search approved public documentation"),
+	// 						SecurityLabels: []*string{
+	// 							to.Ptr("network_egress"),
+	// 							to.Ptr("untrusted_content"),
+	// 						},
+	// 						Clearance: to.Ptr("public"),
+	// 						AdditionalProperties: map[string]any{
+	// 						"allowed_domains": []any{
+	// 							"learn.microsoft.com",
+	// 						},
+	// 					},
+	// 					},
+	// 					"wire_transfer": &armcognitiveservices.RaiAcsToolDefinition{
+	// 						ID: to.Ptr("wire_transfer"),
+	// 						Type: to.Ptr("financial_action"),
+	// 						SecurityLabels: []*string{
+	// 							to.Ptr("financial_write"),
+	// 						},
+	// 						Clearance: to.Ptr("confidential"),
+	// 					},
+	// 				},
+	// 				Annotators: map[string]*armcognitiveservices.RaiAcsAnnotatorDefinition{
+	// 				},
+	// 			},
+	// 			AcsRegos: []*armcognitiveservices.RaiRegoReference{
+	// 				{
+	// 					RegoName: to.Ptr("input-guard"),
+	// 				},
+	// 				{
+	// 					RegoName: to.Ptr("tool-guard"),
+	// 				},
+	// 			},
 	// 			CustomBlocklists: []*armcognitiveservices.CustomBlocklistConfig{
 	// 				{
 	// 					BlocklistName: to.Ptr("blocked-terms"),
+	// 					Source: to.Ptr(armcognitiveservices.RaiPolicyContentSourcePrompt),
+	// 					Blocking: to.Ptr(true),
+	// 				},
+	// 			},
+	// 			CustomExternalSafetyProviders: []*armcognitiveservices.RaiPolicyCustomExternalSafetyProviderReference{
+	// 				{
+	// 					ExternalSafetyProviderName: to.Ptr("contoso-safety-provider"),
 	// 					Source: to.Ptr(armcognitiveservices.RaiPolicyContentSourcePrompt),
 	// 					Blocking: to.Ptr(true),
 	// 				},
@@ -686,8 +1503,175 @@ func ExampleRaiPoliciesClient_Get_getAnAcsPolicy() {
 	// }
 }
 
-// Generated from example definition: 2026-11-01/ListRaiPolicies.json
-func ExampleRaiPoliciesClient_NewListPager() {
+// Generated from example definition: 2026-11-15-preview/GetRaiPolicyAcsWithAnnotationsAndEgress.json
+func ExampleRaiPoliciesClient_Get_getAnAcsPolicyWithOptionalAnnotationsAndAnEgressCompanion() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	res, err := clientFactory.NewRaiPoliciesClient().Get(ctx, "resource-group", "safety-account", "annotated-egress-guard", nil)
+	if err != nil {
+		log.Fatalf("failed to finish the request: %v", err)
+	}
+	// You could use response here. We use blank identifier for just demo purposes.
+	_ = res
+	// If the HTTP response code is 200 as defined in example definition, your response structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+	// res = armcognitiveservices.RaiPoliciesClientGetResponse{
+	// 	EtagHeader: to.Ptr("\"00000000-0000-0000-0000-000000000006\""),
+	// 	RaiPolicy: armcognitiveservices.RaiPolicy{
+	// 		ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiPolicies/annotated-egress-guard"),
+	// 		Name: to.Ptr("annotated-egress-guard"),
+	// 		Type: to.Ptr("Microsoft.CognitiveServices/accounts/raiPolicies"),
+	// 		Etag: to.Ptr("\"00000000-0000-0000-0000-000000000006\""),
+	// 		Properties: &armcognitiveservices.RaiPolicyProperties{
+	// 			Type: to.Ptr(armcognitiveservices.RaiPolicyTypeUserManaged),
+	// 			Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+	// 			Mode: to.Ptr(armcognitiveservices.RaiPolicyModeAsynchronousFilter),
+	// 			Acs: &armcognitiveservices.RaiAcsManifest{
+	// 				AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+	// 				Metadata: map[string]any{
+	// 					"description": "Illustrative annotation authoring; supported annotators and configuration depend on the evaluation host.",
+	// 				},
+	// 				Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 					"agent-guard": &armcognitiveservices.RaiAcsRegoPolicyDefinition{
+	// 						Type: to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+	// 						Query: to.Ptr("data.agent_guard.verdict"),
+	// 					},
+	// 				},
+	// 				Annotators: map[string]*armcognitiveservices.RaiAcsAnnotatorDefinition{
+	// 					"risk": &armcognitiveservices.RaiAcsAnnotatorDefinition{
+	// 						Type: to.Ptr(armcognitiveservices.RaiAcsAnnotatorTypeLlm),
+	// 						AdditionalProperties: map[string]any{
+	// 						"provider": "azure_openai",
+	// 						"endpoint": "https://synthetic-judge.openai.azure.com/",
+	// 						"deployment": "judge",
+	// 						"api_version": "2024-10-21",
+	// 						"result_schema": "acs.judge.observation/v2",
+	// 						"system_prompt": "Classify the complete subject for harmful intent. Score from 0 to 10: 0 is benign, 5 is ambiguous or potentially harmful, and 10 is clear harmful intent. Use label clear for scores below 4, review for scores from 4 to below 7, and high_risk for scores of 7 or higher. Report observations only; Rego decides the action.",
+	// 						"timeout_ms": 10000,
+	// 					},
+	// 					},
+	// 				},
+	// 				InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+	// 					AgentStartup: &armcognitiveservices.RaiAcsAgentStartupInterventionPoint{
+	// 						PolicyTarget: to.Ptr("$snap.agent_init"),
+	// 						PolicyTargetKind: to.Ptr("agent_init"),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 					Input: &armcognitiveservices.RaiAcsInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 						Annotations: map[string]*armcognitiveservices.RaiAcsAnnotationBinding{
+	// 							"risk": &armcognitiveservices.RaiAcsAnnotationBinding{
+	// 								From: to.Ptr("$target.content"),
+	// 							},
+	// 						},
+	// 					},
+	// 					PreModelCall: &armcognitiveservices.RaiAcsPreModelCallInterventionPoint{
+	// 						PolicyTarget: to.Ptr("$snap.messages"),
+	// 						PolicyTargetKind: to.Ptr("messages"),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 					PostModelCall: &armcognitiveservices.RaiAcsPostModelCallInterventionPoint{
+	// 						PolicyTarget: to.Ptr("$snap.response"),
+	// 						PolicyTargetKind: to.Ptr("model_response"),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 					PreToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolArguments),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolArguments),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 					PostToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolResult),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolResult),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 					Output: &armcognitiveservices.RaiAcsInterventionPoint{
+	// 						PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetOutput),
+	// 						PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindAssistantOutput),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 						Annotations: map[string]*armcognitiveservices.RaiAcsAnnotationBinding{
+	// 							"risk": &armcognitiveservices.RaiAcsAnnotationBinding{
+	// 								From: to.Ptr("$target.content"),
+	// 							},
+	// 						},
+	// 					},
+	// 					AgentShutdown: &armcognitiveservices.RaiAcsAgentShutdownInterventionPoint{
+	// 						PolicyTarget: to.Ptr("$snap.summary"),
+	// 						PolicyTargetKind: to.Ptr("agent_summary"),
+	// 						Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+	// 							ID: to.Ptr("agent-guard"),
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 			AcsRegos: []*armcognitiveservices.RaiRegoReference{
+	// 				{
+	// 					RegoName: to.Ptr("agent-guard"),
+	// 				},
+	// 			},
+	// 			EgressPolicy: &armcognitiveservices.RaiEgressPolicyConfig{
+	// 				Mode: to.Ptr(armcognitiveservices.RaiEgressModeAudit),
+	// 				DefaultAction: to.Ptr(armcognitiveservices.RaiEgressDefaultActionDeny),
+	// 				Rules: []*armcognitiveservices.RaiEgressRule{
+	// 					{
+	// 						Name: to.Ptr("allow-docs"),
+	// 						RuleType: to.Ptr(armcognitiveservices.RaiEgressRuleTypeFqdn),
+	// 						Match: &armcognitiveservices.RaiEgressRuleMatch{
+	// 							Host: to.Ptr("learn.microsoft.com"),
+	// 							Path: to.Ptr("/azure/*"),
+	// 						},
+	// 						Action: &armcognitiveservices.RaiEgressRuleAction{
+	// 							ActionType: to.Ptr(armcognitiveservices.RaiEgressRuleActionTypeAllow),
+	// 						},
+	// 					},
+	// 					{
+	// 						Name: to.Ptr("label-api"),
+	// 						RuleType: to.Ptr(armcognitiveservices.RaiEgressRuleTypeFqdn),
+	// 						Match: &armcognitiveservices.RaiEgressRuleMatch{
+	// 							Host: to.Ptr("api.contoso.com"),
+	// 							Path: to.Ptr("/v1/*"),
+	// 						},
+	// 						Action: &armcognitiveservices.RaiEgressRuleAction{
+	// 							ActionType: to.Ptr(armcognitiveservices.RaiEgressRuleActionTypeTransform),
+	// 							Headers: []*armcognitiveservices.RaiEgressHeaderTransform{
+	// 								{
+	// 									Operation: to.Ptr(armcognitiveservices.RaiEgressHeaderOperationSet),
+	// 									Name: to.Ptr("X-Workload-Class"),
+	// 								},
+	// 							},
+	// 						},
+	// 					},
+	// 				},
+	// 			},
+	// 		},
+	// 	},
+	// }
+}
+
+// Generated from example definition: 2026-11-15-preview/ListRaiPolicies.json
+func ExampleRaiPoliciesClient_NewListPager_listRaiPolicies() {
 	cred, err := azidentity.NewDefaultAzureCredential(nil)
 	if err != nil {
 		log.Fatalf("failed to obtain a credential: %v", err)
@@ -799,6 +1783,214 @@ func ExampleRaiPoliciesClient_NewListPager() {
 		// 						},
 		// 					},
 		// 					Mode: to.Ptr(armcognitiveservices.RaiPolicyModeAsynchronousFilter),
+		// 				},
+		// 			},
+		// 		},
+		// 	},
+		// }
+	}
+}
+
+// Generated from example definition: 2026-11-15-preview/ListRaiPoliciesAcsWithAnnotationsAndEgress.json
+func ExampleRaiPoliciesClient_NewListPager_listAcsPoliciesWithOptionalAnnotationsAndEgressCompanions() {
+	cred, err := azidentity.NewDefaultAzureCredential(nil)
+	if err != nil {
+		log.Fatalf("failed to obtain a credential: %v", err)
+	}
+	ctx := context.Background()
+	clientFactory, err := armcognitiveservices.NewClientFactory("00000000-0000-0000-0000-000000000000", cred, nil)
+	if err != nil {
+		log.Fatalf("failed to create client: %v", err)
+	}
+	pager := clientFactory.NewRaiPoliciesClient().NewListPager("resource-group", "safety-account", nil)
+	for pager.More() {
+		page, err := pager.NextPage(ctx)
+		if err != nil {
+			log.Fatalf("failed to advance page: %v", err)
+		}
+		for _, v := range page.Value {
+			// You could use page here. We use blank identifier for just demo purposes.
+			_ = v
+		}
+		// If the HTTP response code is 200 as defined in example definition, your page structure would look as follows. Please pay attention that all the values in the output are fake values for just demo purposes.
+		// page = armcognitiveservices.RaiPoliciesClientListResponse{
+		// 	RaiPolicyListResult: armcognitiveservices.RaiPolicyListResult{
+		// 		Value: []*armcognitiveservices.RaiPolicy{
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiPolicies/annotated-egress-guard"),
+		// 				Name: to.Ptr("annotated-egress-guard"),
+		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts/raiPolicies"),
+		// 				Etag: to.Ptr("\"00000000-0000-0000-0000-000000000006\""),
+		// 				Properties: &armcognitiveservices.RaiPolicyProperties{
+		// 					Type: to.Ptr(armcognitiveservices.RaiPolicyTypeUserManaged),
+		// 					Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+		// 					Mode: to.Ptr(armcognitiveservices.RaiPolicyModeAsynchronousFilter),
+		// 					Acs: &armcognitiveservices.RaiAcsManifest{
+		// 						AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+		// 						Metadata: map[string]any{
+		// 							"description": "Illustrative annotation authoring; supported annotators and configuration depend on the evaluation host.",
+		// 						},
+		// 						Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+		// 							"agent-guard": &armcognitiveservices.RaiAcsRegoPolicyDefinition{
+		// 								Type: to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+		// 								Query: to.Ptr("data.agent_guard.verdict"),
+		// 							},
+		// 						},
+		// 						Annotators: map[string]*armcognitiveservices.RaiAcsAnnotatorDefinition{
+		// 							"risk": &armcognitiveservices.RaiAcsAnnotatorDefinition{
+		// 								Type: to.Ptr(armcognitiveservices.RaiAcsAnnotatorTypeLlm),
+		// 								AdditionalProperties: map[string]any{
+		// 								"provider": "azure_openai",
+		// 								"endpoint": "https://synthetic-judge.openai.azure.com/",
+		// 								"deployment": "judge",
+		// 								"api_version": "2024-10-21",
+		// 								"result_schema": "acs.judge.observation/v2",
+		// 								"system_prompt": "Classify the complete subject for harmful intent. Score from 0 to 10: 0 is benign, 5 is ambiguous or potentially harmful, and 10 is clear harmful intent. Use label clear for scores below 4, review for scores from 4 to below 7, and high_risk for scores of 7 or higher. Report observations only; Rego decides the action.",
+		// 								"timeout_ms": 10000,
+		// 							},
+		// 							},
+		// 						},
+		// 						InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+		// 							AgentStartup: &armcognitiveservices.RaiAcsAgentStartupInterventionPoint{
+		// 								PolicyTarget: to.Ptr("$snap.agent_init"),
+		// 								PolicyTargetKind: to.Ptr("agent_init"),
+		// 								Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+		// 									ID: to.Ptr("agent-guard"),
+		// 								},
+		// 							},
+		// 							Input: &armcognitiveservices.RaiAcsInterventionPoint{
+		// 								PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+		// 								PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+		// 								Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+		// 									ID: to.Ptr("agent-guard"),
+		// 								},
+		// 								Annotations: map[string]*armcognitiveservices.RaiAcsAnnotationBinding{
+		// 									"risk": &armcognitiveservices.RaiAcsAnnotationBinding{
+		// 										From: to.Ptr("$target.content"),
+		// 									},
+		// 								},
+		// 							},
+		// 							PreModelCall: &armcognitiveservices.RaiAcsPreModelCallInterventionPoint{
+		// 								PolicyTarget: to.Ptr("$snap.messages"),
+		// 								PolicyTargetKind: to.Ptr("messages"),
+		// 								Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+		// 									ID: to.Ptr("agent-guard"),
+		// 								},
+		// 							},
+		// 							PostModelCall: &armcognitiveservices.RaiAcsPostModelCallInterventionPoint{
+		// 								PolicyTarget: to.Ptr("$snap.response"),
+		// 								PolicyTargetKind: to.Ptr("model_response"),
+		// 								Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+		// 									ID: to.Ptr("agent-guard"),
+		// 								},
+		// 							},
+		// 							PreToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+		// 								PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolArguments),
+		// 								PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolArguments),
+		// 								Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+		// 									ID: to.Ptr("agent-guard"),
+		// 								},
+		// 							},
+		// 							PostToolCall: &armcognitiveservices.RaiAcsToolInterventionPoint{
+		// 								PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetToolResult),
+		// 								PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindToolResult),
+		// 								Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+		// 									ID: to.Ptr("agent-guard"),
+		// 								},
+		// 							},
+		// 							Output: &armcognitiveservices.RaiAcsInterventionPoint{
+		// 								PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetOutput),
+		// 								PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindAssistantOutput),
+		// 								Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+		// 									ID: to.Ptr("agent-guard"),
+		// 								},
+		// 								Annotations: map[string]*armcognitiveservices.RaiAcsAnnotationBinding{
+		// 									"risk": &armcognitiveservices.RaiAcsAnnotationBinding{
+		// 										From: to.Ptr("$target.content"),
+		// 									},
+		// 								},
+		// 							},
+		// 							AgentShutdown: &armcognitiveservices.RaiAcsAgentShutdownInterventionPoint{
+		// 								PolicyTarget: to.Ptr("$snap.summary"),
+		// 								PolicyTargetKind: to.Ptr("agent_summary"),
+		// 								Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+		// 									ID: to.Ptr("agent-guard"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					AcsRegos: []*armcognitiveservices.RaiRegoReference{
+		// 						{
+		// 							RegoName: to.Ptr("agent-guard"),
+		// 						},
+		// 					},
+		// 					EgressPolicy: &armcognitiveservices.RaiEgressPolicyConfig{
+		// 						Mode: to.Ptr(armcognitiveservices.RaiEgressModeAudit),
+		// 						DefaultAction: to.Ptr(armcognitiveservices.RaiEgressDefaultActionDeny),
+		// 						Rules: []*armcognitiveservices.RaiEgressRule{
+		// 							{
+		// 								Name: to.Ptr("allow-docs"),
+		// 								RuleType: to.Ptr(armcognitiveservices.RaiEgressRuleTypeFqdn),
+		// 								Match: &armcognitiveservices.RaiEgressRuleMatch{
+		// 									Host: to.Ptr("learn.microsoft.com"),
+		// 									Path: to.Ptr("/azure/*"),
+		// 								},
+		// 								Action: &armcognitiveservices.RaiEgressRuleAction{
+		// 									ActionType: to.Ptr(armcognitiveservices.RaiEgressRuleActionTypeAllow),
+		// 								},
+		// 							},
+		// 							{
+		// 								Name: to.Ptr("label-api"),
+		// 								RuleType: to.Ptr(armcognitiveservices.RaiEgressRuleTypeFqdn),
+		// 								Match: &armcognitiveservices.RaiEgressRuleMatch{
+		// 									Host: to.Ptr("api.contoso.com"),
+		// 									Path: to.Ptr("/v1/*"),
+		// 								},
+		// 								Action: &armcognitiveservices.RaiEgressRuleAction{
+		// 									ActionType: to.Ptr(armcognitiveservices.RaiEgressRuleActionTypeTransform),
+		// 									Headers: []*armcognitiveservices.RaiEgressHeaderTransform{
+		// 										{
+		// 											Operation: to.Ptr(armcognitiveservices.RaiEgressHeaderOperationSet),
+		// 											Name: to.Ptr("X-Workload-Class"),
+		// 										},
+		// 									},
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 				},
+		// 			},
+		// 			{
+		// 				ID: to.Ptr("/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group/providers/Microsoft.CognitiveServices/accounts/safety-account/raiPolicies/input-guard"),
+		// 				Name: to.Ptr("input-guard"),
+		// 				Type: to.Ptr("Microsoft.CognitiveServices/accounts/raiPolicies"),
+		// 				Etag: to.Ptr("\"00000000-0000-0000-0000-000000000005\""),
+		// 				Properties: &armcognitiveservices.RaiPolicyProperties{
+		// 					Type: to.Ptr(armcognitiveservices.RaiPolicyTypeUserManaged),
+		// 					Format: to.Ptr(armcognitiveservices.RaiPolicyFormatACS),
+		// 					Acs: &armcognitiveservices.RaiAcsManifest{
+		// 						AgentControlSpecificationVersion: to.Ptr("0.4.0-alpha.1"),
+		// 						Policies: map[string]*armcognitiveservices.RaiAcsRegoPolicyDefinition{
+		// 							"input-guard": &armcognitiveservices.RaiAcsRegoPolicyDefinition{
+		// 								Type: to.Ptr(armcognitiveservices.RaiAcsPolicyDefinitionTypeRego),
+		// 								Query: to.Ptr("data.input_guard.verdict"),
+		// 							},
+		// 						},
+		// 						InterventionPoints: &armcognitiveservices.RaiAcsInterventionPoints{
+		// 							Input: &armcognitiveservices.RaiAcsInterventionPoint{
+		// 								PolicyTarget: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetInput),
+		// 								PolicyTargetKind: to.Ptr(armcognitiveservices.RaiAcsPolicyTargetKindUserInput),
+		// 								Policy: &armcognitiveservices.RaiAcsPolicyBinding{
+		// 									ID: to.Ptr("input-guard"),
+		// 								},
+		// 							},
+		// 						},
+		// 					},
+		// 					AcsRegos: []*armcognitiveservices.RaiRegoReference{
+		// 						{
+		// 							RegoName: to.Ptr("input-guard"),
+		// 						},
+		// 					},
 		// 				},
 		// 			},
 		// 		},

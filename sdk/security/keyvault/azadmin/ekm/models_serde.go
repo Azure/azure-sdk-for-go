@@ -17,10 +17,10 @@ func (c Connection) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
 	populate(objectMap, "host", c.Host)
 	populate(objectMap, "path_prefix", c.PathPrefix)
-	populateByteArray(objectMap, "server_ca_certificates", c.ServerCaCertificates, func() any {
-		encodedValue := make([]string, len(c.ServerCaCertificates))
-		for i := 0; i < len(c.ServerCaCertificates); i++ {
-			encodedValue[i] = runtime.EncodeByteArray(c.ServerCaCertificates[i], runtime.Base64StdFormat)
+	populateByteArray(objectMap, "server_ca_certificates", c.ServerCACertificates, func() any {
+		encodedValue := make([]string, len(c.ServerCACertificates))
+		for i := 0; i < len(c.ServerCACertificates); i++ {
+			encodedValue[i] = runtime.EncodeByteArray(c.ServerCACertificates[i], runtime.Base64StdFormat)
 		}
 		return encodedValue
 	})
@@ -45,11 +45,11 @@ func (c *Connection) UnmarshalJSON(data []byte) error {
 			delete(rawMsg, key)
 		case "server_ca_certificates":
 			var encodedValue []string
-			err = unpopulate(val, "ServerCaCertificates", &encodedValue)
+			err = unpopulate(val, "ServerCACertificates", &encodedValue)
 			if err == nil && len(encodedValue) > 0 {
-				c.ServerCaCertificates = make([][]byte, len(encodedValue))
+				c.ServerCACertificates = make([][]byte, len(encodedValue))
 				for i := 0; i < len(encodedValue) && err == nil; i++ {
-					err = runtime.DecodeByteArray(encodedValue[i], &c.ServerCaCertificates[i], runtime.Base64StdFormat)
+					err = runtime.DecodeByteArray(encodedValue[i], &c.ServerCACertificates[i], runtime.Base64StdFormat)
 				}
 			}
 			delete(rawMsg, key)
@@ -67,10 +67,10 @@ func (c *Connection) UnmarshalJSON(data []byte) error {
 // MarshalJSON implements the json.Marshaller interface for type ProxyClientCertificateInfo.
 func (p ProxyClientCertificateInfo) MarshalJSON() ([]byte, error) {
 	objectMap := make(map[string]any)
-	populateByteArray(objectMap, "ca_certificates", p.CaCertificates, func() any {
-		encodedValue := make([]string, len(p.CaCertificates))
-		for i := 0; i < len(p.CaCertificates); i++ {
-			encodedValue[i] = runtime.EncodeByteArray(p.CaCertificates[i], runtime.Base64StdFormat)
+	populateByteArray(objectMap, "ca_certificates", p.CACertificates, func() any {
+		encodedValue := make([]string, len(p.CACertificates))
+		for i := 0; i < len(p.CACertificates); i++ {
+			encodedValue[i] = runtime.EncodeByteArray(p.CACertificates[i], runtime.Base64StdFormat)
 		}
 		return encodedValue
 	})
@@ -89,11 +89,11 @@ func (p *ProxyClientCertificateInfo) UnmarshalJSON(data []byte) error {
 		switch key {
 		case "ca_certificates":
 			var encodedValue []string
-			err = unpopulate(val, "CaCertificates", &encodedValue)
+			err = unpopulate(val, "CACertificates", &encodedValue)
 			if err == nil && len(encodedValue) > 0 {
-				p.CaCertificates = make([][]byte, len(encodedValue))
+				p.CACertificates = make([][]byte, len(encodedValue))
 				for i := 0; i < len(encodedValue) && err == nil; i++ {
-					err = runtime.DecodeByteArray(encodedValue[i], &p.CaCertificates[i], runtime.Base64StdFormat)
+					err = runtime.DecodeByteArray(encodedValue[i], &p.CACertificates[i], runtime.Base64StdFormat)
 				}
 			}
 			delete(rawMsg, key)

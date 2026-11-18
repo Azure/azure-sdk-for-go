@@ -44,7 +44,7 @@ func ExampleClient_CreateConnection() {
 
 	conn := ekm.Connection{
 		Host:                 to.Ptr("ekm-proxy.example.com:443"),
-		ServerCaCertificates: [][]byte{caCert},
+		ServerCACertificates: [][]byte{caCert},
 		// ServerSubjectCommonName must equal the host portion of Host (without
 		// the port) so the Managed HSM can validate the EKM proxy's TLS cert.
 		ServerSubjectCommonName: to.Ptr("ekm-proxy.example.com"),
@@ -110,7 +110,7 @@ func ExampleClient_GetCertificate() {
 	// Add it to the EKM proxy's trust store so the proxy accepts requests from
 	// this HSM instance.
 	fmt.Printf("HSM client certificate subject: %s, CA chain length: %d",
-		*cert.SubjectCommonName, len(cert.CaCertificates))
+		*cert.SubjectCommonName, len(cert.CACertificates))
 }
 
 func ExampleClient_CheckConnection() {

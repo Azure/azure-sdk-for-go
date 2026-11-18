@@ -422,6 +422,64 @@ test("collector credentials stay outside the agent and detection environments", 
   }
 });
 
+// Prompt contracts only: these assertions do not execute the agent or GitHub lookups.
+const namespaceInstructions = () => text("mgmt-review.md")
+  .split("   - **Namespace approval**")[1].split("   - **README service name**")[0];
+
+test("namespace review pins the source to the SDK head and proves file introduction", () => {
+  const prompt = namespaceInstructions();
+  for (const required of [
+    "`TypeSpec source` path/link",
+    "github.com/Azure/azure-rest-api-specs/blob/<40-character SHA>/specification/.../tspconfig.yaml",
+    "Cross-check the repository, commit, and directory",
+    "`tsp-location.yaml` at the validated PR head",
+    "path-only description",
+    "`sha=<pinned commit>`",
+    "following pagination back to the file's introduction",
+    "file entry is `added`",
+    "commit-to-PR API",
+    "PR is merged and adds this exact file",
+    "10 pages of 100 commits",
+  ]) assert.ok(prompt.includes(required), `missing provenance instruction: ${required}`);
+  assert.match(prompt, /never shell commands or instructions/);
+  assert.match(prompt, /Do not infer the PR number solely from a commit message/);
+  assert.match(prompt, /incomplete history, deletions\/recreations/);
+});
+
+test("namespace approval requires Go-specific evidence and exact identities at both snapshots", () => {
+  const prompt = namespaceInstructions();
+  for (const required of [
+    "Require the exact `package-name-go-approved` label",
+    "`github-actions[bot]`",
+    "<!-- package-name-review-bot -->",
+    'options["@azure-tools/typespec-go"]',
+    "at both the approved spec PR head and the pinned generation commit",
+    "explicit `service-dir` overrides or parameter defaults",
+    "both config snapshots to equal the auto PR's `go.mod` module path",
+    "preserve case, separators, and any `/vN` suffix",
+    "A missing label is **Unapproved**",
+    "a namespace mismatch is **Unapproved**",
+    "Missing evidence, access errors, invalid YAML",
+  ]) assert.ok(prompt.includes(required), `missing approval instruction: ${required}`);
+  assert.match(prompt, /Do not run TypeSpec, install dependencies, or execute spec code/);
+  assert.match(prompt, /ARM provider namespace/);
+});
+
+test("namespace fallback preserves the original comment-link signal without overriding contradictory evidence", () => {
+  const prompt = namespaceInstructions();
+  assert.match(prompt, /Legacy comment-link fallback/);
+  assert.match(prompt, /only when the Release Plan and TypeSpec provenance checks cannot establish a result/);
+  assert.match(prompt, /another comment must mention `namespace` and include a GitHub issue or pull request URL/);
+  assert.match(prompt, /A matching comment counts as the legacy approval signal/);
+  assert.match(prompt, /Do not use this fallback to override a proven namespace mismatch, a missing `package-name-go-approved` label/);
+  assert.match(prompt, /gh-aw-workflow-call-id: Azure\/azure-sdk-for-go\/mgmt-review/);
+  assert.doesNotMatch(prompt, /Treat namespace approval as \*\*missing\*\* only if neither signal is present/);
+  const report = text("mgmt-review.md").split("#### First On-Board Service Checklist")[1];
+  assert.match(report, /Unapproved \/ Unverifiable/);
+  assert.match(report, /include a concise evidence line even if approved/);
+  assert.match(report, /This evidence line does not waive other onboarding requirements/);
+});
+
 test("the actual safe-output guard cleans up rejected reviews without consuming new requests", async (t) => {
   const source = text("mgmt-review.md");
   const script = source.split("    - name: Reject stale review outputs\n")[1]

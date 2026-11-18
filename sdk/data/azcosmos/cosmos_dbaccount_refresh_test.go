@@ -1569,3 +1569,29 @@ func TestFix9b_LeaderRefreshPanicIsReturnedAsError(t *testing.T) {
 	require.ErrorContains(t, err, "panic in GEM refresh: transport exploded")
 	require.False(t, gem.hasInflight(), "the in-flight slot must be released")
 }
+
+// F9c: the bootstrap refresh can outlive a caller that stopped waiting on its
+// ctx deadline. It must not write the GEM's account-properties response
+// through the caller's policy.WithCaptureResponse destination after Update
+// has returned.
+func TestFix9c_BootstrapDoesNotWriteCallerCaptureResponseAfterReturn(t *testing.T) {
+	if testing.Short() {
+		t.Skip("blocks on a 500ms GEM refresh by design; skipped under -short")
+	}
+	body, _ := json.Marshal(accountProperties{
+		ReadRegions:  []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+		WriteRegions: []accountRegion{{Name: "West US", Endpoint: "https://fake.documents.azure.com:443/"}},
+	})
+	transport := &countingTransport{status: http.StatusOK, body: body, delay: 500 * time.Millisecond}
+	gem := newGEMWithTransport(t, []string{"West US"}, transport, 5*time.Minute)
+
+	var captured *http.Response
+	ctx, cancel := context.WithTimeout(policy.WithCaptureResponse(context.Background(), &captured), 50*time.Millisecond)
+	defer cancel()
+	err := gem.Update(ctx, false)
+	require.ErrorIs(t, err, context.DeadlineExceeded)
+
+	require.Eventually(t, gem.populated, 5*time.Second, 10*time.Millisecond,
+		"the bootstrap refresh must complete in the background")
+	require.Nil(t, captured, "the background refresh must not write the caller's captured response after Update returned")
+}

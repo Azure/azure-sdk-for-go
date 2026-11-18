@@ -16,6 +16,7 @@ import (
 	"time"
 
 	azlog "github.com/Azure/azure-sdk-for-go/sdk/azcore/log"
+	"github.com/Azure/azure-sdk-for-go/sdk/azcore/policy"
 	azruntime "github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/log"
 )
@@ -323,6 +324,13 @@ func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool)
 		// ctx deadline by the shared HTTP call. The flight itself runs
 		// under context.WithoutCancel and records its result for every
 		// other caller even if the leader stops waiting.
+		//
+		// Because the flight can outlive the leader's caller, give it its
+		// own policy.WithCaptureResponse destination. Otherwise the GEM's
+		// account-properties response would be written through the caller's
+		// pointer after Update has returned. Other ctx values are kept.
+		var flightResp *http.Response
+		flightCtx := policy.WithCaptureResponse(ctx, &flightResp)
 		go func() {
 			// runLeaderFlight records a panic as the flight error and then
 			// re-panics. An unrecovered panic in this goroutine would crash
@@ -334,7 +342,7 @@ func (gem *globalEndpointManager) Update(ctx context.Context, forceRefresh bool)
 						"panic in azcosmos GEM refresh: %v\n%s", r, debug.Stack())
 				}
 			}()
-			_ = gem.runLeaderFlight(ctx, flight, genAtStart)
+			_ = gem.runLeaderFlight(flightCtx, flight, genAtStart)
 		}()
 		var err error
 		select {

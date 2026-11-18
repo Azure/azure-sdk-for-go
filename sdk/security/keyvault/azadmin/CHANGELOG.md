@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.6.0 (2026-11-17)
+### 1.6.0 (2026-11-18)
 
 #### Features Added
 * Added the `ekm` package for external key management operations

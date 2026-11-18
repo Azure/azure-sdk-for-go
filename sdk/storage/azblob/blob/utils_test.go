@@ -4,7 +4,8 @@
 package blob
 
 import (
-	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
+	"net/http"
+	"net/http/httptest"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -25,45 +26,31 @@ func TestParseContentRangeLength(t *testing.T) {
 	require.Equal(t, int64(0), parseContentRangeLength("invalid"))
 }
 
-func TestDeserializeORSPolicies(t *testing.T) {
+func TestDownloadStreamObjectReplicationRules(t *testing.T) {
+	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.Header().Set("x-ms-or-abc_123", "Complete")
+		w.Header().Set("x-ms-or-abc_def", "Failed")
+		w.Header().Set("x-ms-or-fed_123", "Failed")
+		w.Header().Set("x-ms-or-policy-id", "destination-policy")
+		w.Header().Set("x-ms-meta-extra_key", "metadata")
+		w.WriteHeader(http.StatusOK)
+	}))
+	defer server.Close()
 
-	headers := map[string]*string{
-		"x-ms-or-111_111":   to.Ptr("Completed"),
-		"x-ms-or-111_222":   to.Ptr("Failed"),
-		"x-ms-or-222_111":   to.Ptr("Completed"),
-		"x-ms-or-222_222":   to.Ptr("Failed"),
-		"x-ms-or-policy-id": to.Ptr("333"),     // to be ignored
-		"x-ms-not-related":  to.Ptr("garbage"), // to be ignored
+	client, err := NewClientWithNoCredential(server.URL+"/container/blob", nil)
+	require.NoError(t, err)
+	response, err := client.DownloadStream(t.Context(), nil)
+	require.NoError(t, err)
+	defer response.Body.Close()
+
+	require.Len(t, response.ObjectReplicationRules, 2)
+	rules := make(map[string][]ObjectReplicationRules)
+	for _, policy := range response.ObjectReplicationRules {
+		rules[*policy.PolicyID] = *policy.Rules
 	}
-
-	result := deserializeORSPolicies(headers)
-	require.NotEmpty(t, result)
-	rules0, rules1 := *result[0].Rules, *result[1].Rules
-	require.Len(t, result, 2)
-	require.Len(t, rules0, 2)
-	require.Len(t, rules1, 2)
-
-	if rules0[0].RuleID == "111" {
-		require.Equal(t, rules0[0].Status, "Completed")
-	} else {
-		require.Equal(t, rules0[0].Status, "Failed")
-	}
-
-	if rules0[1].RuleID == "222" {
-		require.Equal(t, rules0[1].Status, "Failed")
-	} else {
-		require.Equal(t, rules0[1].Status, "Completed")
-	}
-
-	if rules1[0].RuleID == "111" {
-		require.Equal(t, rules1[0].Status, "Completed")
-	} else {
-		require.Equal(t, rules1[0].Status, "Failed")
-	}
-
-	if rules1[1].RuleID == "222" {
-		require.Equal(t, rules1[1].Status, "Failed")
-	} else {
-		require.Equal(t, rules1[1].Status, "Completed")
-	}
+	require.ElementsMatch(t, []ObjectReplicationRules{
+		{RuleID: "123", Status: "Complete"},
+		{RuleID: "def", Status: "Failed"},
+	}, rules["abc"])
+	require.Equal(t, []ObjectReplicationRules{{RuleID: "123", Status: "Failed"}}, rules["fed"])
 }

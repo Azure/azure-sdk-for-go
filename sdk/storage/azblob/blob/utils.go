@@ -78,25 +78,15 @@ func convertDownloadResponse(dr generated.BlobClientDownloadResponseInternal) Do
 
 // deserializeORSPolicies is utility function to deserialize ORS Policies.
 func deserializeORSPolicies(policies map[string]*string) (objectReplicationPolicies []ObjectReplicationPolicy) {
-	if policies == nil {
-		return nil
-	}
-	// For source blobs (blobs that have policy ids and rule ids applied to them),
-	// the header will be formatted as "x-ms-or-<policy_id>_<rule_id>: {Complete, Failed}".
-	// The value of this header is the status of the replication.
-	orPolicyStatusHeader := make(map[string]*string)
-	for key, value := range policies {
-		if strings.Contains(key, "or-") && key != "x-ms-or-policy-id" {
-			orPolicyStatusHeader[key] = value
-		}
-	}
-
+	// The generated client strips x-ms-or- and HTTP header canonicalization
+	// can capitalize parts of the policy and rule IDs.
 	parsedResult := make(map[string][]ObjectReplicationRules)
-	for key, value := range orPolicyStatusHeader {
-		policyAndRuleIDs := strings.Split(strings.Split(key, "or-")[1], "_")
-		policyId, ruleId := policyAndRuleIDs[0], policyAndRuleIDs[1]
-
-		parsedResult[policyId] = append(parsedResult[policyId], ObjectReplicationRules{RuleID: ruleId, Status: *value})
+	for key, value := range policies {
+		policyID, ruleID, ok := strings.Cut(strings.ToLower(key), "_")
+		if !ok || policyID == "" || ruleID == "" || value == nil {
+			continue
+		}
+		parsedResult[policyID] = append(parsedResult[policyID], ObjectReplicationRules{RuleID: ruleID, Status: *value})
 	}
 
 	for policyId, rules := range parsedResult {

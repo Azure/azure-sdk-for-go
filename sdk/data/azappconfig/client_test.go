@@ -15,6 +15,7 @@ import (
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/runtime"
 	"github.com/Azure/azure-sdk-for-go/sdk/azcore/to"
 	"github.com/Azure/azure-sdk-for-go/sdk/data/azappconfig/v2"
+	"github.com/Azure/azure-sdk-for-go/sdk/internal/mock"
 	"github.com/Azure/azure-sdk-for-go/sdk/internal/recording"
 	"github.com/stretchr/testify/require"
 )
@@ -1753,4 +1754,71 @@ func TestSnapshotDescription(t *testing.T) {
 	// Best-effort cleanup
 	require.NoError(t, CleanupSnapshot(client, snapshotName))
 	_, _ = client.DeleteSetting(context.Background(), seedKey, nil)
+}
+
+func TestClientMissingSyncTokenHeader(t *testing.T) {
+	srv, close := mock.NewServer()
+	defer close()
+
+	client, err := azappconfig.NewClientFromConnectionString("Endpoint="+srv.URL()+";Id=id;Secret=c2VjcmV0", &azappconfig.ClientOptions{
+		ClientOptions: azcore.ClientOptions{
+			Transport: srv,
+		},
+	})
+	require.NoError(t, err)
+
+	ctx := context.Background()
+
+	// 1. GetSetting without Sync-Token header
+	srv.AppendResponse(mock.WithBody([]byte(`{"key":"k","value":"v"}`)))
+	getResp, err := client.GetSetting(ctx, "k", nil)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SyncToken(""), getResp.SyncToken)
+	require.NotNil(t, getResp.Key)
+	require.Equal(t, "k", *getResp.Key)
+
+	// 2. AddSetting without Sync-Token header
+	srv.AppendResponse(mock.WithBody([]byte(`{"key":"k","value":"v"}`)))
+	addResp, err := client.AddSetting(ctx, "k", to.Ptr("v"), nil)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SyncToken(""), addResp.SyncToken)
+
+	// 3. SetSetting without Sync-Token header
+	srv.AppendResponse(mock.WithBody([]byte(`{"key":"k","value":"v"}`)))
+	setResp, err := client.SetSetting(ctx, "k", to.Ptr("v"), nil)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SyncToken(""), setResp.SyncToken)
+
+	// 4. SetReadOnly without Sync-Token header
+	srv.AppendResponse(mock.WithBody([]byte(`{"key":"k","value":"v","locked":true}`)))
+	roResp, err := client.SetReadOnly(ctx, "k", true, nil)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SyncToken(""), roResp.SyncToken)
+
+	// 5. DeleteSetting without Sync-Token header
+	srv.AppendResponse(mock.WithBody([]byte(`{"key":"k","value":"v"}`)))
+	delResp, err := client.DeleteSetting(ctx, "k", nil)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SyncToken(""), delResp.SyncToken)
+
+	// 6. NewListSettingsPager without Sync-Token header
+	srv.AppendResponse(mock.WithBody([]byte(`{"items":[{"key":"k","value":"v"}]}`)))
+	pager := client.NewListSettingsPager(azappconfig.SettingSelector{}, nil)
+	page, err := pager.NextPage(ctx)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SyncToken(""), page.SyncToken)
+
+	// 7. NewListRevisionsPager without Sync-Token header
+	srv.AppendResponse(mock.WithBody([]byte(`{"items":[{"key":"k","value":"v"}]}`)))
+	revPager := client.NewListRevisionsPager(azappconfig.SettingSelector{}, nil)
+	revPage, err := revPager.NextPage(ctx)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SyncToken(""), revPage.SyncToken)
+
+	// 8. NewCheckSettingsPager without Sync-Token header
+	srv.AppendResponse(mock.WithStatusCode(200))
+	checkPager := client.NewCheckSettingsPager(azappconfig.SettingSelector{}, nil)
+	checkPage, err := checkPager.NextPage(ctx)
+	require.NoError(t, err)
+	require.Equal(t, azappconfig.SyncToken(""), checkPage.SyncToken)
 }

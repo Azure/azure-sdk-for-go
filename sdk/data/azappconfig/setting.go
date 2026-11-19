@@ -60,6 +60,13 @@ func settingFromGenerated(kv generated.KeyValue) Setting {
 	}
 }
 
+func syncTokenFromGenerated(s *string) SyncToken {
+	if s == nil {
+		return ""
+	}
+	return SyncToken(*s)
+}
+
 func toGeneratedETagString(etag *azcore.ETag) *string {
 	if etag == nil || *etag == azcore.ETagAny {
 		return (*string)(etag)

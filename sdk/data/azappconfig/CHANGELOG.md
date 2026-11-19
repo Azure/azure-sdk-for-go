@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+* Fixed nil pointer dereference when a response does not include a `Sync-Token` header.
 
 ### Other Changes
 * Improved Microsoft Entra ID authentication audience inference for additional App Configuration endpoint formats.

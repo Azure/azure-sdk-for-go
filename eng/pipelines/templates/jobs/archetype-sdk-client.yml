@@ -125,6 +125,7 @@ extends:
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
+          - template: /eng/common/pipelines/templates/variables/api-review-break-glass.yml
         jobs:
           - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
             parameters:

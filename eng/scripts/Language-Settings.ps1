@@ -2,39 +2,7 @@ $Language = "go"
 $packagePattern = "go.mod"
 $LanguageDisplayName = "go"
 
-# get version from specific files (*constants.go, *version.go)
-function Get-GoModuleVersionInfo($modPath)
-{
-  # Only SDK version declarations qualify; service enums can also contain semantic versions.
-  $VERSION_CONSTANT_REGEX = "(?m)^\s*(?:const\s+)?(?:moduleVersion|serviceLibVersion|version)\s*(?:string\s*)?=\s*"
-  $NO_PREFIX_VERSION_LINE_REGEX = "$VERSION_CONSTANT_REGEX`"(?<bad_version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
-  $VERSION_LINE_REGEX = "$VERSION_CONSTANT_REGEX`"v(?<version>$([AzureEngSemanticVersion]::SEMVER_REGEX))`""
-
-  $versionFiles = Get-ChildItem -Recurse -Path $modPath -Filter *.go
-
-  # for each version file, use regex to search go version num
-  foreach ($versionFile in $versionFiles)
-  {
-    # limit the search to constant and version file
-    if (!$versionFile.Name.Contains("constant") -and !$versionFile.Name.Contains("version")) {
-      continue
-    }
-    $content = Get-Content $versionFile -Raw
-
-    # finding where the version number are
-    if ($content -match $VERSION_LINE_REGEX) {
-      return "$($matches["version"])", $versionFile.ToString()
-    }
-
-    # This is an easy mistake to make (X.Y.Z instead of vX.Y.Z) so add a very clear error log to make debugging easier
-    if ($content -match $NO_PREFIX_VERSION_LINE_REGEX) {
-      LogError "Version in $versionFile should be 'v$($matches["bad_version"])' not '$($matches["bad_version"])'"
-    }
-  }
-
-  LogWarning "Unable to find version for $modPath"
-  return $null
-}
+. (Join-Path $PSScriptRoot Get-GoModuleVersionInfo.ps1)
 
 # returns the major version suffix (e.g. 2) from a module's identity.
 # if there's no major version, $null is returned

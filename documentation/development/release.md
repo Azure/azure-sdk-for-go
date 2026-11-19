@@ -23,3 +23,13 @@ After going through a minimal architects board review and preparing your package
 2. Mark the package as 'in-release' by running the `./eng/common/scripts/Prepare-Release.ps1` script and following the prompts. The script may update the version and/or `CHANGELOG.md` of the package. If changes are made, these changes need to be committed and merged before continuing with the release process.
 3. Run the pipeline from the `internal` Azure Devops. This will require you to approve the release after both the live and recorded test pipelines pass.
 4. Validate the package was released properly by running `go get <your-package>@<your-version>` (ie. `go get github.com/Azure/azure-sdk-for-go/sdk/azcore@v0.20.0`) and validating that pkg.go.dev has updated with the latest version.
+
+## API Review Hub
+
+Obtain package-name approval and any required API review approval before releasing. The internal release pipeline checks approval against the generated API hash before creating the tag, then records the release after verifying the tag.
+
+Repository registration and authorization of the **ADO to ARH Service Connection** are required; forks also need the GitHub Apps described in the [onboarding guide](https://github.com/Azure/azure-sdk-tools/wiki/API-Review-Hub-Onboarding).
+
+The Go APIView parser must correctly resolve aliased composite types and their methods. Tool builds check this capability and fail until a compatible `azure-sdk-tools` parser is available.
+
+If release recording fails after the tag is created, repair it using `azsdk package mark-released` with the package name, version, and API hash from the pipeline logs rather than creating the tag again.
